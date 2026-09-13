@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Businesses | NearAfrica</title>
+  <meta name="description" content="Search and discover local businesses across Africa. Filter by distance, rating, and category.">
+  <meta property="og:title" content="Search Businesses | NearAfrica">
+  <meta property="og:description" content="Search and discover local businesses across Africa.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="../images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo" aria-label="NearAfrica home">
+        <img src="../images/logo.png" alt="NearAfrica" class="logo-img" width="160" height="40">
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="search.html" class="active">Explore</a>
+        <a href="list-business.html">List Your Business</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+      <div class="header-actions">
+        <a href="list-business.html" class="btn btn-primary btn-sm">List Your Business</a>
+        <button type="button" class="btn-menu" id="menu-btn" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
+      <a href="../index.html">Home</a>
+      <a href="search.html">Explore</a>
+      <a href="list-business.html">List Your Business</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+
+  <div class="flags-marquee" aria-label="African countries">
+    <div class="flags-track">
+      <span class="flag-item"><span class="flag-emoji">🇳🇬</span> Nigeria</span><span class="flag-item"><span class="flag-emoji">🇬🇭</span> Ghana</span><span class="flag-item"><span class="flag-emoji">🇰🇪</span> Kenya</span><span class="flag-item"><span class="flag-emoji">🇿🇦</span> South Africa</span><span class="flag-item"><span class="flag-emoji">🇺🇬</span> Uganda</span><span class="flag-item"><span class="flag-emoji">🇹🇿</span> Tanzania</span><span class="flag-item"><span class="flag-emoji">🇷🇼</span> Rwanda</span><span class="flag-item"><span class="flag-emoji">🇨🇲</span> Cameroon</span><span class="flag-item"><span class="flag-emoji">🇪🇬</span> Egypt</span><span class="flag-item"><span class="flag-emoji">🇲🇦</span> Morocco</span><span class="flag-item"><span class="flag-emoji">🇸🇳</span> Senegal</span><span class="flag-item"><span class="flag-emoji">🇪🇹</span> Ethiopia</span><span class="flag-item"><span class="flag-emoji">🇿🇲</span> Zambia</span><span class="flag-item"><span class="flag-emoji">🇿🇼</span> Zimbabwe</span><span class="flag-item"><span class="flag-emoji">🇧🇼</span> Botswana</span><span class="flag-item"><span class="flag-emoji">🇳🇦</span> Namibia</span><span class="flag-item"><span class="flag-emoji">🇨🇮</span> Côte d'Ivoire</span><span class="flag-item"><span class="flag-emoji">🇧🇯</span> Benin</span><span class="flag-item"><span class="flag-emoji">🇹🇬</span> Togo</span><span class="flag-item"><span class="flag-emoji">🇩🇿</span> Algeria</span><span class="flag-item"><span class="flag-emoji">🇦🇴</span> Angola</span><span class="flag-item"><span class="flag-emoji">🇧🇫</span> Burkina Faso</span><span class="flag-item"><span class="flag-emoji">🇧🇮</span> Burundi</span><span class="flag-item"><span class="flag-emoji">🇨🇻</span> Cape Verde</span><span class="flag-item"><span class="flag-emoji">🇨🇫</span> CAR</span><span class="flag-item"><span class="flag-emoji">🇹🇩</span> Chad</span><span class="flag-item"><span class="flag-emoji">🇰🇲</span> Comoros</span><span class="flag-item"><span class="flag-emoji">🇨🇬</span> Congo</span><span class="flag-item"><span class="flag-emoji">🇨🇩</span> DR Congo</span><span class="flag-item"><span class="flag-emoji">🇩🇯</span> Djibouti</span><span class="flag-item"><span class="flag-emoji">🇬🇶</span> Eq. Guinea</span><span class="flag-item"><span class="flag-emoji">🇪🇷</span> Eritrea</span><span class="flag-item"><span class="flag-emoji">🇸🇿</span> Eswatini</span><span class="flag-item"><span class="flag-emoji">🇬🇦</span> Gabon</span><span class="flag-item"><span class="flag-emoji">🇬🇲</span> Gambia</span><span class="flag-item"><span class="flag-emoji">🇬🇳</span> Guinea</span><span class="flag-item"><span class="flag-emoji">🇬🇼</span> Guinea-Bissau</span><span class="flag-item"><span class="flag-emoji">🇱🇸</span> Lesotho</span><span class="flag-item"><span class="flag-emoji">🇱🇷</span> Liberia</span><span class="flag-item"><span class="flag-emoji">🇱🇾</span> Libya</span><span class="flag-item"><span class="flag-emoji">🇲🇬</span> Madagascar</span><span class="flag-item"><span class="flag-emoji">🇲🇼</span> Malawi</span><span class="flag-item"><span class="flag-emoji">🇲🇱</span> Mali</span><span class="flag-item"><span class="flag-emoji">🇲🇷</span> Mauritania</span><span class="flag-item"><span class="flag-emoji">🇲🇺</span> Mauritius</span><span class="flag-item"><span class="flag-emoji">🇲🇿</span> Mozambique</span><span class="flag-item"><span class="flag-emoji">🇳🇪</span> Niger</span><span class="flag-item"><span class="flag-emoji">🇸🇹</span> São Tomé</span><span class="flag-item"><span class="flag-emoji">🇸🇨</span> Seychelles</span><span class="flag-item"><span class="flag-emoji">🇸🇱</span> Sierra Leone</span><span class="flag-item"><span class="flag-emoji">🇸🇴</span> Somalia</span><span class="flag-item"><span class="flag-emoji">🇸🇸</span> South Sudan</span><span class="flag-item"><span class="flag-emoji">🇸🇩</span> Sudan</span><span class="flag-item"><span class="flag-emoji">🇹🇳</span> Tunisia</span>
+      <span class="flag-item"><span class="flag-emoji">🇳🇬</span> Nigeria</span><span class="flag-item"><span class="flag-emoji">🇬🇭</span> Ghana</span><span class="flag-item"><span class="flag-emoji">🇰🇪</span> Kenya</span><span class="flag-item"><span class="flag-emoji">🇿🇦</span> South Africa</span><span class="flag-item"><span class="flag-emoji">🇺🇬</span> Uganda</span><span class="flag-item"><span class="flag-emoji">🇹🇿</span> Tanzania</span><span class="flag-item"><span class="flag-emoji">🇷🇼</span> Rwanda</span><span class="flag-item"><span class="flag-emoji">🇨🇲</span> Cameroon</span><span class="flag-item"><span class="flag-emoji">🇪🇬</span> Egypt</span><span class="flag-item"><span class="flag-emoji">🇲🇦</span> Morocco</span><span class="flag-item"><span class="flag-emoji">🇸🇳</span> Senegal</span><span class="flag-item"><span class="flag-emoji">🇪🇹</span> Ethiopia</span><span class="flag-item"><span class="flag-emoji">🇿🇲</span> Zambia</span><span class="flag-item"><span class="flag-emoji">🇿🇼</span> Zimbabwe</span><span class="flag-item"><span class="flag-emoji">🇧🇼</span> Botswana</span><span class="flag-item"><span class="flag-emoji">🇳🇦</span> Namibia</span><span class="flag-item"><span class="flag-emoji">🇨🇮</span> Côte d'Ivoire</span><span class="flag-item"><span class="flag-emoji">🇧🇯</span> Benin</span><span class="flag-item"><span class="flag-emoji">🇹🇬</span> Togo</span><span class="flag-item"><span class="flag-emoji">🇩🇿</span> Algeria</span><span class="flag-item"><span class="flag-emoji">🇦🇴</span> Angola</span><span class="flag-item"><span class="flag-emoji">🇧🇫</span> Burkina Faso</span><span class="flag-item"><span class="flag-emoji">🇧🇮</span> Burundi</span><span class="flag-item"><span class="flag-emoji">🇨🇻</span> Cape Verde</span><span class="flag-item"><span class="flag-emoji">🇨🇫</span> CAR</span><span class="flag-item"><span class="flag-emoji">🇹🇩</span> Chad</span><span class="flag-item"><span class="flag-emoji">🇰🇲</span> Comoros</span><span class="flag-item"><span class="flag-emoji">🇨🇬</span> Congo</span><span class="flag-item"><span class="flag-emoji">🇨🇩</span> DR Congo</span><span class="flag-item"><span class="flag-emoji">🇩🇯</span> Djibouti</span><span class="flag-item"><span class="flag-emoji">🇬🇶</span> Eq. Guinea</span><span class="flag-item"><span class="flag-emoji">🇪🇷</span> Eritrea</span><span class="flag-item"><span class="flag-emoji">🇸🇿</span> Eswatini</span><span class="flag-item"><span class="flag-emoji">🇬🇦</span> Gabon</span><span class="flag-item"><span class="flag-emoji">🇬🇲</span> Gambia</span><span class="flag-item"><span class="flag-emoji">🇬🇳</span> Guinea</span><span class="flag-item"><span class="flag-emoji">🇬🇼</span> Guinea-Bissau</span><span class="flag-item"><span class="flag-emoji">🇱🇸</span> Lesotho</span><span class="flag-item"><span class="flag-emoji">🇱🇷</span> Liberia</span><span class="flag-item"><span class="flag-emoji">🇱🇾</span> Libya</span><span class="flag-item"><span class="flag-emoji">🇲🇬</span> Madagascar</span><span class="flag-item"><span class="flag-emoji">🇲🇼</span> Malawi</span><span class="flag-item"><span class="flag-emoji">🇲🇱</span> Mali</span><span class="flag-item"><span class="flag-emoji">🇲🇷</span> Mauritania</span><span class="flag-item"><span class="flag-emoji">🇲🇺</span> Mauritius</span><span class="flag-item"><span class="flag-emoji">🇲🇿</span> Mozambique</span><span class="flag-item"><span class="flag-emoji">🇳🇪</span> Niger</span><span class="flag-item"><span class="flag-emoji">🇸🇹</span> São Tomé</span><span class="flag-item"><span class="flag-emoji">🇸🇨</span> Seychelles</span><span class="flag-item"><span class="flag-emoji">🇸🇱</span> Sierra Leone</span><span class="flag-item"><span class="flag-emoji">🇸🇴</span> Somalia</span><span class="flag-item"><span class="flag-emoji">🇸🇸</span> South Sudan</span><span class="flag-item"><span class="flag-emoji">🇸🇩</span> Sudan</span><span class="flag-item"><span class="flag-emoji">🇹🇳</span> Tunisia</span>
+    </div>
+  </div>
+
+  <main>
+    <div class="container" style="padding-top:1rem;padding-bottom:0.5rem">
+      <form id="search-form" class="search-box" style="max-width:100%;margin-bottom:0">
+        <div class="search-row">
+          <input type="search" id="query-input" name="q" class="form-input" placeholder="What are you looking for?">
+          <input type="text" id="location-input" name="loc" class="form-input" placeholder="Location e.g. Aba, Nigeria">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+        <div class="location-actions" style="justify-content:flex-start">
+          <button type="button" class="btn btn-outline btn-sm" id="use-location-btn">📍 Use My Location</button>
+        </div>
+        <p id="location-message" class="text-muted mt-1" style="font-size:0.85rem" role="status"></p>
+      </form>
+    </div>
+
+    <div class="search-layout">
+      <div class="results-panel" id="results-panel">
+        <div class="mobile-map-toggle">
+          <button type="button" class="btn btn-secondary btn-sm" id="toggle-map-btn">Show Map</button>
+        </div>
+
+        <div class="results-header">
+          <div>
+            <h1 id="results-title" style="font-size:1.25rem;margin-bottom:0.25rem">Businesses</h1>
+            <p class="results-count" id="results-count">—</p>
+          </div>
+          <div class="filters">
+            <select id="sort-select" class="filter-select" aria-label="Sort by">
+              <option value="distance">Sort: Distance</option>
+              <option value="rating">Sort: Rating</option>
+              <option value="name">Sort: Name</option>
+            </select>
+            <select id="category-filter" class="filter-select" aria-label="Filter by category">
+              <option value="">All categories</option>
+            </select>
+            <label class="filter-select" style="display:flex;align-items:center;gap:0.35rem;cursor:pointer">
+              <input type="checkbox" id="open-now-check"> Open now
+            </label>
+          </div>
+        </div>
+
+        <div id="loading-state" class="loading hidden">
+          <div class="spinner" aria-hidden="true"></div>
+          <p>Searching nearby businesses…</p>
+        </div>
+
+        <div id="empty-state" class="empty-state hidden">
+          <h3>No businesses found</h3>
+          <p>Try a different category, location, or widen your search.</p>
+        </div>
+
+        <div class="business-list" id="business-list"></div>
+      </div>
+
+      <div class="map-panel" id="map-panel">
+        <div id="map" class="map-container" role="application" aria-label="Map of business locations"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" style="margin-top:0">
+    <div class="container">
+      <div class="footer-bottom" style="border:none;padding:1rem 0">
+        <span>© 2026 NearAfrica</span>
+        <span>Demo data only</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="../js/config.js"></script>
+  <script src="../data/businesses.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/map.js"></script>
+  <script src="../js/app.js"></script>
+</body>
+</html>
