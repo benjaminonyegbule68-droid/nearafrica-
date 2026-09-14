@@ -1,146 +1,979 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Business Profile | NearAfrica</title>
-  <meta name="description" content="View business details, contact information, opening hours and location on NearAfrica.">
-  <meta property="og:title" content="Business Profile | NearAfrica">
-  <meta property="og:description" content="View business details on NearAfrica.">
-  <meta property="og:type" content="website">
-  <link rel="icon" href="../images/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-  <link rel="stylesheet" href="../css/styles.css">
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Business Profile | NearAfrica</title>
+
+    <meta
+        name="description"
+        content="Discover businesses across Africa with NearAfrica."
+    >
+
+    <link rel="icon" href="favicon.svg">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <style>
+
+        /* =========================================
+           BUSINESS PROFILE
+        ========================================= */
+
+        .business-page {
+            min-height: 100vh;
+            background: #0d0d0d;
+            color: #fff;
+        }
+
+        .profile-container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 20px 70px;
+        }
+
+        /* Back button */
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #d4af37;
+            text-decoration: none;
+            font-size: .95rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Main profile */
+
+        .profile-header {
+            background: #171717;
+            border: 1px solid #292929;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .profile-category {
+            display: inline-block;
+            margin-bottom: 10px;
+            color: #d4af37;
+            font-size: .9rem;
+            font-weight: 600;
+        }
+
+        .profile-header h1 {
+            margin: 0 0 12px;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+        }
+
+        .profile-location {
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+
+        .profile-rating {
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
+
+        .profile-description {
+            color: #bbb;
+            line-height: 1.7;
+            max-width: 750px;
+        }
+
+        /* Actions */
+
+        .profile-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .profile-btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: 700;
+            border: 1px solid #333;
+            color: #fff;
+            background: #202020;
+        }
+
+        .profile-btn.primary {
+            background: #d4af37;
+            color: #111;
+            border-color: #d4af37;
+        }
+
+        .profile-btn:hover {
+            opacity: .9;
+        }
+
+        /* Grid */
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .profile-section {
+            background: #171717;
+            border: 1px solid #292929;
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        .profile-section h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 1.2rem;
+        }
+
+        /* Details */
+
+        .detail-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+            color: #bbb;
+        }
+
+        .detail-label {
+            min-width: 100px;
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        /* Map */
+
+        #business-map {
+            width: 100%;
+            height: 350px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* Claim */
+
+        .claim-section {
+            margin-top: 25px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(212,175,55,.12),
+                    rgba(212,175,55,.03)
+                );
+
+            border: 1px solid rgba(212,175,55,.3);
+            border-radius: 18px;
+            padding: 30px;
+        }
+
+        .claim-section h2 {
+            margin-top: 0;
+        }
+
+        .claim-section p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .claim-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 12px 18px;
+            background: #d4af37;
+            color: #111;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        /* Reviews */
+
+        .review {
+            padding: 15px 0;
+            border-bottom: 1px solid #292929;
+        }
+
+        .review:last-child {
+            border-bottom: none;
+        }
+
+        .review-name {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .review-rating {
+            color: #d4af37;
+            margin-bottom: 5px;
+        }
+
+        .review-text {
+            color: #999;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+
+        .profile-footer {
+            border-top: 1px solid #222;
+            margin-top: 50px;
+            padding: 30px 20px;
+            text-align: center;
+            color: #777;
+        }
+
+        .profile-footer a {
+            color: #d4af37;
+            text-decoration: none;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 800px) {
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-header {
+                padding: 22px;
+            }
+
+            .profile-section {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
 </head>
-<body>
 
-<header class="site-header">
-    <div class="container header-inner">
-      <a href="../index.html" class="logo" aria-label="NearAfrica home">
-        <img src="../images/logo.png" alt="NearAfrica" class="logo-img" width="160" height="40">
-      </a>
-      <nav class="nav-links" aria-label="Main">
-        <a href="../index.html">Home</a>
-        <a href="search.html">Explore</a>
-        <a href="list-business.html">List Your Business</a>
-        <a href="admin.html">Admin</a>
-      </nav>
-      <div class="header-actions">
-        <a href="list-business.html" class="btn btn-primary btn-sm">List Your Business</a>
-        <button type="button" class="btn-menu" id="menu-btn" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
-      <a href="../index.html">Home</a>
-      <a href="search.html">Explore</a>
-      <a href="list-business.html">List Your Business</a>
-      <a href="admin.html">Admin</a>
-    </nav>
-  </header>
 
-  <div class="flags-marquee" aria-label="African countries">
-    <div class="flags-track">
-      <span class="flag-item"><span class="flag-emoji">🇳🇬</span> Nigeria</span><span class="flag-item"><span class="flag-emoji">🇬🇭</span> Ghana</span><span class="flag-item"><span class="flag-emoji">🇰🇪</span> Kenya</span><span class="flag-item"><span class="flag-emoji">🇿🇦</span> South Africa</span><span class="flag-item"><span class="flag-emoji">🇺🇬</span> Uganda</span><span class="flag-item"><span class="flag-emoji">🇹🇿</span> Tanzania</span><span class="flag-item"><span class="flag-emoji">🇷🇼</span> Rwanda</span><span class="flag-item"><span class="flag-emoji">🇨🇲</span> Cameroon</span><span class="flag-item"><span class="flag-emoji">🇪🇬</span> Egypt</span><span class="flag-item"><span class="flag-emoji">🇲🇦</span> Morocco</span><span class="flag-item"><span class="flag-emoji">🇸🇳</span> Senegal</span><span class="flag-item"><span class="flag-emoji">🇪🇹</span> Ethiopia</span><span class="flag-item"><span class="flag-emoji">🇿🇲</span> Zambia</span><span class="flag-item"><span class="flag-emoji">🇿🇼</span> Zimbabwe</span><span class="flag-item"><span class="flag-emoji">🇧🇼</span> Botswana</span><span class="flag-item"><span class="flag-emoji">🇳🇦</span> Namibia</span><span class="flag-item"><span class="flag-emoji">🇨🇮</span> Côte d'Ivoire</span><span class="flag-item"><span class="flag-emoji">🇧🇯</span> Benin</span><span class="flag-item"><span class="flag-emoji">🇹🇬</span> Togo</span><span class="flag-item"><span class="flag-emoji">🇩🇿</span> Algeria</span><span class="flag-item"><span class="flag-emoji">🇦🇴</span> Angola</span><span class="flag-item"><span class="flag-emoji">🇧🇫</span> Burkina Faso</span><span class="flag-item"><span class="flag-emoji">🇧🇮</span> Burundi</span><span class="flag-item"><span class="flag-emoji">🇨🇻</span> Cape Verde</span><span class="flag-item"><span class="flag-emoji">🇨🇫</span> CAR</span><span class="flag-item"><span class="flag-emoji">🇹🇩</span> Chad</span><span class="flag-item"><span class="flag-emoji">🇰🇲</span> Comoros</span><span class="flag-item"><span class="flag-emoji">🇨🇬</span> Congo</span><span class="flag-item"><span class="flag-emoji">🇨🇩</span> DR Congo</span><span class="flag-item"><span class="flag-emoji">🇩🇯</span> Djibouti</span><span class="flag-item"><span class="flag-emoji">🇬🇶</span> Eq. Guinea</span><span class="flag-item"><span class="flag-emoji">🇪🇷</span> Eritrea</span><span class="flag-item"><span class="flag-emoji">🇸🇿</span> Eswatini</span><span class="flag-item"><span class="flag-emoji">🇬🇦</span> Gabon</span><span class="flag-item"><span class="flag-emoji">🇬🇲</span> Gambia</span><span class="flag-item"><span class="flag-emoji">🇬🇳</span> Guinea</span><span class="flag-item"><span class="flag-emoji">🇬🇼</span> Guinea-Bissau</span><span class="flag-item"><span class="flag-emoji">🇱🇸</span> Lesotho</span><span class="flag-item"><span class="flag-emoji">🇱🇷</span> Liberia</span><span class="flag-item"><span class="flag-emoji">🇱🇾</span> Libya</span><span class="flag-item"><span class="flag-emoji">🇲🇬</span> Madagascar</span><span class="flag-item"><span class="flag-emoji">🇲🇼</span> Malawi</span><span class="flag-item"><span class="flag-emoji">🇲🇱</span> Mali</span><span class="flag-item"><span class="flag-emoji">🇲🇷</span> Mauritania</span><span class="flag-item"><span class="flag-emoji">🇲🇺</span> Mauritius</span><span class="flag-item"><span class="flag-emoji">🇲🇿</span> Mozambique</span><span class="flag-item"><span class="flag-emoji">🇳🇪</span> Niger</span><span class="flag-item"><span class="flag-emoji">🇸🇹</span> São Tomé</span><span class="flag-item"><span class="flag-emoji">🇸🇨</span> Seychelles</span><span class="flag-item"><span class="flag-emoji">🇸🇱</span> Sierra Leone</span><span class="flag-item"><span class="flag-emoji">🇸🇴</span> Somalia</span><span class="flag-item"><span class="flag-emoji">🇸🇸</span> South Sudan</span><span class="flag-item"><span class="flag-emoji">🇸🇩</span> Sudan</span><span class="flag-item"><span class="flag-emoji">🇹🇳</span> Tunisia</span>
-      <span class="flag-item"><span class="flag-emoji">🇳🇬</span> Nigeria</span><span class="flag-item"><span class="flag-emoji">🇬🇭</span> Ghana</span><span class="flag-item"><span class="flag-emoji">🇰🇪</span> Kenya</span><span class="flag-item"><span class="flag-emoji">🇿🇦</span> South Africa</span><span class="flag-item"><span class="flag-emoji">🇺🇬</span> Uganda</span><span class="flag-item"><span class="flag-emoji">🇹🇿</span> Tanzania</span><span class="flag-item"><span class="flag-emoji">🇷🇼</span> Rwanda</span><span class="flag-item"><span class="flag-emoji">🇨🇲</span> Cameroon</span><span class="flag-item"><span class="flag-emoji">🇪🇬</span> Egypt</span><span class="flag-item"><span class="flag-emoji">🇲🇦</span> Morocco</span><span class="flag-item"><span class="flag-emoji">🇸🇳</span> Senegal</span><span class="flag-item"><span class="flag-emoji">🇪🇹</span> Ethiopia</span><span class="flag-item"><span class="flag-emoji">🇿🇲</span> Zambia</span><span class="flag-item"><span class="flag-emoji">🇿🇼</span> Zimbabwe</span><span class="flag-item"><span class="flag-emoji">🇧🇼</span> Botswana</span><span class="flag-item"><span class="flag-emoji">🇳🇦</span> Namibia</span><span class="flag-item"><span class="flag-emoji">🇨🇮</span> Côte d'Ivoire</span><span class="flag-item"><span class="flag-emoji">🇧🇯</span> Benin</span><span class="flag-item"><span class="flag-emoji">🇹🇬</span> Togo</span><span class="flag-item"><span class="flag-emoji">🇩🇿</span> Algeria</span><span class="flag-item"><span class="flag-emoji">🇦🇴</span> Angola</span><span class="flag-item"><span class="flag-emoji">🇧🇫</span> Burkina Faso</span><span class="flag-item"><span class="flag-emoji">🇧🇮</span> Burundi</span><span class="flag-item"><span class="flag-emoji">🇨🇻</span> Cape Verde</span><span class="flag-item"><span class="flag-emoji">🇨🇫</span> CAR</span><span class="flag-item"><span class="flag-emoji">🇹🇩</span> Chad</span><span class="flag-item"><span class="flag-emoji">🇰🇲</span> Comoros</span><span class="flag-item"><span class="flag-emoji">🇨🇬</span> Congo</span><span class="flag-item"><span class="flag-emoji">🇨🇩</span> DR Congo</span><span class="flag-item"><span class="flag-emoji">🇩🇯</span> Djibouti</span><span class="flag-item"><span class="flag-emoji">🇬🇶</span> Eq. Guinea</span><span class="flag-item"><span class="flag-emoji">🇪🇷</span> Eritrea</span><span class="flag-item"><span class="flag-emoji">🇸🇿</span> Eswatini</span><span class="flag-item"><span class="flag-emoji">🇬🇦</span> Gabon</span><span class="flag-item"><span class="flag-emoji">🇬🇲</span> Gambia</span><span class="flag-item"><span class="flag-emoji">🇬🇳</span> Guinea</span><span class="flag-item"><span class="flag-emoji">🇬🇼</span> Guinea-Bissau</span><span class="flag-item"><span class="flag-emoji">🇱🇸</span> Lesotho</span><span class="flag-item"><span class="flag-emoji">🇱🇷</span> Liberia</span><span class="flag-item"><span class="flag-emoji">🇱🇾</span> Libya</span><span class="flag-item"><span class="flag-emoji">🇲🇬</span> Madagascar</span><span class="flag-item"><span class="flag-emoji">🇲🇼</span> Malawi</span><span class="flag-item"><span class="flag-emoji">🇲🇱</span> Mali</span><span class="flag-item"><span class="flag-emoji">🇲🇷</span> Mauritania</span><span class="flag-item"><span class="flag-emoji">🇲🇺</span> Mauritius</span><span class="flag-item"><span class="flag-emoji">🇲🇿</span> Mozambique</span><span class="flag-item"><span class="flag-emoji">🇳🇪</span> Niger</span><span class="flag-item"><span class="flag-emoji">🇸🇹</span> São Tomé</span><span class="flag-item"><span class="flag-emoji">🇸🇨</span> Seychelles</span><span class="flag-item"><span class="flag-emoji">🇸🇱</span> Sierra Leone</span><span class="flag-item"><span class="flag-emoji">🇸🇴</span> Somalia</span><span class="flag-item"><span class="flag-emoji">🇸🇸</span> South Sudan</span><span class="flag-item"><span class="flag-emoji">🇸🇩</span> Sudan</span><span class="flag-item"><span class="flag-emoji">🇹🇳</span> Tunisia</span>
-    </div>
-  </div>
+<body class="business-page">
 
-  <main>
-    <div id="loading-state" class="loading">
-      <div class="spinner" aria-hidden="true"></div>
-      <p>Loading business…</p>
-    </div>
 
-    <div id="not-found" class="empty-state hidden">
-      <h2>Business not found</h2>
-      <p>This listing may have been removed or the link is incorrect.</p>
-      <a href="search.html" class="btn btn-primary mt-2">Back to search</a>
-    </div>
+    <!-- HEADER -->
 
-    <div id="business-detail" class="hidden">
-      <div class="detail-hero">
-        <img id="detail-hero-img" src="" alt="" width="1200" height="400">
-      </div>
+    <header class="site-header">
 
-      <div class="container detail-content">
-        <div class="detail-header">
-          <div class="detail-title-row">
-            <h1 id="detail-name">—</h1>
-            <div id="detail-badges"></div>
-          </div>
-          <div class="detail-meta" id="detail-meta"></div>
-          <div class="detail-actions" id="detail-actions"></div>
+        <div class="container header-inner">
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+
+                <img
+                    src="logo.png"
+                    alt="NearAfrica"
+                    class="logo-img"
+                >
+
+                <span class="logo-text">
+                    NearAfrica
+                </span>
+
+            </a>
+
+
+            <nav class="nav-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="explore.html">
+                    Explore
+                </a>
+
+                <a href="list-business.html">
+                    List Your Business
+                </a>
+
+            </nav>
+
         </div>
 
-        <div class="detail-grid">
-          <div>
-            <section class="detail-section">
-              <h3>About</h3>
-              <p id="detail-about" class="text-muted"></p>
-            </section>
+    </header>
 
-            <section class="detail-section">
-              <h3>Services</h3>
-              <div class="services-list" id="detail-services"></div>
-            </section>
 
-            <section class="detail-section">
-              <h3>Opening Hours</h3>
-              <div class="hours-list" id="detail-hours"></div>
-            </section>
+    <!-- PROFILE -->
 
-            <section class="detail-section">
-              <h3>Customer Reviews</h3>
-              <div id="detail-reviews"></div>
-            </section>
-          </div>
+    <main class="profile-container">
 
-          <aside>
-            <div class="sidebar-card">
-              <h3>Location & Contact</h3>
-              <p><strong>Address</strong></p>
-              <p id="detail-address" class="text-muted mb-2"></p>
-              <p><strong>Phone</strong></p>
-              <p id="detail-phone" class="text-muted mb-2"></p>
-              <p><strong>Website</strong></p>
-              <p id="detail-website" class="text-muted mb-2"></p>
-              <div class="map-embed">
-                <div id="detail-map" style="width:100%;height:100%;min-height:200px"></div>
-              </div>
+        <a
+            href="explore.html"
+            class="back-link"
+        >
+            ← Back to Explore
+        </a>
+
+
+        <!-- BUSINESS HEADER -->
+
+        <section class="profile-header">
+
+            <span
+                class="profile-category"
+                id="businessCategory"
+            >
+                Business
+            </span>
+
+
+            <h1 id="businessName">
+                Loading...
+            </h1>
+
+
+            <div
+                class="profile-location"
+                id="businessLocation"
+            >
+                📍 Loading location...
             </div>
-          </aside>
+
+
+            <div
+                class="profile-rating"
+                id="businessRating"
+            >
+                ⭐ No rating yet
+            </div>
+
+
+            <p
+                class="profile-description"
+                id="businessDescription"
+            >
+                Loading business information...
+            </p>
+
+
+            <div class="profile-actions">
+
+                <a
+                    href="#"
+                    id="callButton"
+                    class="profile-btn primary"
+                >
+                    📞 Call
+                </a>
+
+
+                <a
+                    href="#"
+                    id="whatsappButton"
+                    class="profile-btn"
+                >
+                    💬 WhatsApp
+                </a>
+
+
+                <a
+                    href="#"
+                    id="websiteButton"
+                    class="profile-btn"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    🌐 Website
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- INFORMATION + MAP -->
+
+        <div class="profile-grid">
+
+
+            <!-- DETAILS -->
+
+            <section class="profile-section">
+
+                <h2>
+                    Business Information
+                </h2>
+
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+                        Category
+                    </span>
+
+                    <span id="detailCategory">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+                        Location
+                    </span>
+
+                    <span id="detailLocation">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+                        Phone
+                    </span>
+
+                    <span id="detailPhone">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+                        Hours
+                    </span>
+
+                    <span id="detailHours">
+                        —
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- MAP -->
+
+            <section class="profile-section">
+
+                <h2>
+                    Location
+                </h2>
+
+                <div id="business-map"></div>
+
+            </section>
+
         </div>
-      </div>
-    </div>
-  </main>
 
-  <section class="cta-section">
-    <div class="container">
-      <h2>Own a business?</h2>
-      <p>Get your business discovered by customers near you.</p>
-      <a href="list-business.html" class="btn btn-primary">List Your Business</a>
-    </div>
-  </section>
 
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-bottom" style="border:none">
-        <span>© 2026 NearAfrica</span>
-        <span>Demo data only</span>
-      </div>
-    </div>
-  </footer>
+        <!-- REVIEWS -->
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="../js/config.js"></script>
-  <script src="../data/businesses.js"></script>
-  <script src="../js/utils.js"></script>
-  <script src="../js/map.js"></script>
-  <script src="../js/app.js"></script>
+        <section
+            class="profile-section"
+            style="margin-top:25px;"
+        >
+
+            <h2>
+                Reviews
+            </h2>
+
+
+            <div id="reviews">
+
+                <div class="review">
+
+                    <div class="review-name">
+                        No reviews yet
+                    </div>
+
+                    <div class="review-text">
+                        Be the first person to review
+                        this business.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CLAIM -->
+
+        <section class="claim-section">
+
+            <h2>
+                Are you the owner?
+            </h2>
+
+            <p>
+                Is this your business?
+                Claim this listing to manage your
+                business information and keep your
+                customers up to date.
+            </p>
+
+            <a
+                href="#"
+                class="claim-btn"
+                onclick="claimBusiness(event)"
+            >
+                Claim This Business
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="profile-footer">
+
+        <p>
+            © 2026 NearAfrica ·
+            <a href="index.html">
+                Back to Home
+            </a>
+        </p>
+
+    </footer>
+
+
+    <!-- LEAFLET -->
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+
+    <!-- BUSINESS DATA -->
+
+    <script src="businesses.js"></script>
+
+
+    <script>
+
+        /* =========================================
+           BUSINESS PROFILE LOGIC
+        ========================================= */
+
+
+        function getBusinesses() {
+
+            if (Array.isArray(window.businesses)) {
+                return window.businesses;
+            }
+
+            if (Array.isArray(window.BUSINESSES)) {
+                return window.BUSINESSES;
+            }
+
+            if (Array.isArray(window.businessData)) {
+                return window.businessData;
+            }
+
+            return [];
+        }
+
+
+        function normalizeBusiness(business) {
+
+            return {
+
+                id:
+                    business.id ||
+                    business.slug ||
+                    business.name,
+
+                name:
+                    business.name ||
+                    business.businessName ||
+                    business.title ||
+                    "Unnamed Business",
+
+                category:
+                    business.category ||
+                    business.type ||
+                    "Business",
+
+                location:
+                    business.location ||
+                    business.address ||
+                    business.city ||
+                    "Nigeria",
+
+                description:
+                    business.description ||
+                    business.about ||
+                    "Business listed on NearAfrica.",
+
+                rating:
+                    business.rating ||
+                    null,
+
+                phone:
+                    business.phone ||
+                    business.phoneNumber ||
+                    "",
+
+                whatsapp:
+                    business.whatsapp ||
+                    business.phone ||
+                    "",
+
+                website:
+                    business.website ||
+                    "",
+
+                hours:
+                    business.hours ||
+                    business.openingHours ||
+                    "Contact business for opening hours.",
+
+                latitude:
+                    Number(
+                        business.latitude ||
+                        business.lat ||
+                        0
+                    ),
+
+                longitude:
+                    Number(
+                        business.longitude ||
+                        business.lng ||
+                        business.lon ||
+                        0
+                    )
+
+            };
+
+        }
+
+
+        /* -----------------------------------------
+           FIND BUSINESS
+        ----------------------------------------- */
+
+        function findBusiness() {
+
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+            const requestedId =
+                params.get("id");
+
+
+            const businesses =
+                getBusinesses()
+                    .map(normalizeBusiness);
+
+
+            if (!requestedId) {
+
+                return businesses[0] || null;
+
+            }
+
+
+            return businesses.find(
+                business =>
+                    String(business.id) ===
+                    String(requestedId)
+            ) || null;
+
+        }
+
+
+        /* -----------------------------------------
+           ESCAPE HTML
+        ----------------------------------------- */
+
+        function escapeHTML(value) {
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* -----------------------------------------
+           LOAD BUSINESS
+        ----------------------------------------- */
+
+        function loadBusiness() {
+
+            const business =
+                findBusiness();
+
+
+            if (!business) {
+
+                document.getElementById(
+                    "businessName"
+                ).textContent =
+                    "Business Not Found";
+
+                document.getElementById(
+                    "businessDescription"
+                ).textContent =
+                    "We couldn't find this business.";
+
+                return;
+
+            }
+
+
+            document.title =
+                `${business.name} | NearAfrica`;
+
+
+            document.getElementById(
+                "businessName"
+            ).textContent =
+                business.name;
+
+
+            document.getElementById(
+                "businessCategory"
+            ).textContent =
+                business.category;
+
+
+            document.getElementById(
+                "businessLocation"
+            ).textContent =
+                `📍 ${business.location}`;
+
+
+            document.getElementById(
+                "businessDescription"
+            ).textContent =
+                business.description;
+
+
+            document.getElementById(
+                "detailCategory"
+            ).textContent =
+                business.category;
+
+
+            document.getElementById(
+                "detailLocation"
+            ).textContent =
+                business.location;
+
+
+            document.getElementById(
+                "detailPhone"
+            ).textContent =
+                business.phone ||
+                "Not provided";
+
+
+            document.getElementById(
+                "detailHours"
+            ).textContent =
+                business.hours;
+
+
+            const rating =
+                document.getElementById(
+                    "businessRating"
+                );
+
+
+            rating.textContent =
+                business.rating
+                    ? `⭐ ${business.rating}`
+                    : "⭐ No rating yet";
+
+
+            /* PHONE */
+
+            if (business.phone) {
+
+                document.getElementById(
+                    "callButton"
+                ).href =
+                    `tel:${business.phone}`;
+
+            } else {
+
+                document.getElementById(
+                    "callButton"
+                ).style.display =
+                    "none";
+
+            }
+
+
+            /* WHATSAPP */
+
+            if (business.whatsapp) {
+
+                const cleanNumber =
+                    String(
+                        business.whatsapp
+                    ).replace(
+                        /[^0-9]/g,
+                        ""
+                    );
+
+
+                document.getElementById(
+                    "whatsappButton"
+                ).href =
+                    `https://wa.me/${cleanNumber}`;
+
+            } else {
+
+                document.getElementById(
+                    "whatsappButton"
+                ).style.display =
+                    "none";
+
+            }
+
+
+            /* WEBSITE */
+
+            if (business.website) {
+
+                document.getElementById(
+                    "websiteButton"
+                ).href =
+                    business.website;
+
+            } else {
+
+                document.getElementById(
+                    "websiteButton"
+                ).style.display =
+                    "none";
+
+            }
+
+
+            initializeMap(business);
+
+        }
+
+
+        /* -----------------------------------------
+           MAP
+        ----------------------------------------- */
+
+        function initializeMap(business) {
+
+            const map =
+                L.map(
+                    "business-map"
+                );
+
+
+            L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    attribution:
+                        '&copy; OpenStreetMap contributors'
+                }
+            ).addTo(map);
+
+
+            if (
+                business.latitude &&
+                business.longitude
+            ) {
+
+                map.setView(
+                    [
+                        business.latitude,
+                        business.longitude
+                    ],
+                    15
+                );
+
+
+                L.marker([
+                    business.latitude,
+                    business.longitude
+                ])
+                .addTo(map)
+                .bindPopup(
+                    `<strong>
+                        ${escapeHTML(
+                            business.name
+                        )}
+                    </strong>`
+                )
+                .openPopup();
+
+
+            } else {
+
+                map.setView(
+                    [9.0820, 8.6753],
+                    6
+                );
+
+            }
+
+        }
+
+
+        /* -----------------------------------------
+           CLAIM
+           TEMPORARY
+        ----------------------------------------- */
+
+        function claimBusiness(event) {
+
+            event.preventDefault();
+
+            alert(
+                "Business claiming will be connected " +
+                "to the NearAfrica verification system next."
+            );
+
+        }
+
+
+        /* -----------------------------------------
+           START
+        ----------------------------------------- */
+
+        loadBusiness();
+
+    </script>
+
 </body>
 </html>
