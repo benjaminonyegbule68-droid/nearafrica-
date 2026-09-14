@@ -3,153 +3,577 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>List Your Business | NearAfrica</title>
-  <meta name="description" content="Get your business discovered by customers across Africa. List your business on NearAfrica for free.">
-  <meta property="og:title" content="List Your Business | NearAfrica">
-  <meta property="og:description" content="Get your business discovered by customers across Africa.">
-  <meta property="og:type" content="website">
-  <link rel="icon" href="../images/favicon.svg" type="image/svg+xml">
+
+  <meta
+    name="description"
+    content="Add your business to NearAfrica and help customers discover your products and services."
+  >
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/styles.css">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
 <header class="site-header">
-    <div class="container header-inner">
-      <a href="../index.html" class="logo" aria-label="NearAfrica home">
-        <img src="../images/logo.png" alt="NearAfrica" class="logo-img" width="160" height="40">
-      </a>
-      <nav class="nav-links" aria-label="Main">
-        <a href="../index.html">Home</a>
-        <a href="search.html">Explore</a>
-        <a href="list-business.html" class="active">List Your Business</a>
-        <a href="admin.html">Admin</a>
-      </nav>
-      <div class="header-actions">
-        <button type="button" class="btn-menu" id="menu-btn" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
-      <a href="../index.html">Home</a>
-      <a href="search.html">Explore</a>
-      <a href="list-business.html">List Your Business</a>
-      <a href="admin.html">Admin</a>
-    </nav>
-  </header>
 
-  <div class="flags-marquee" aria-label="African countries">
-    <div class="flags-track">
-      <span class="flag-item"><span class="flag-emoji">🇳🇬</span> Nigeria</span><span class="flag-item"><span class="flag-emoji">🇬🇭</span> Ghana</span><span class="flag-item"><span class="flag-emoji">🇰🇪</span> Kenya</span><span class="flag-item"><span class="flag-emoji">🇿🇦</span> South Africa</span><span class="flag-item"><span class="flag-emoji">🇺🇬</span> Uganda</span><span class="flag-item"><span class="flag-emoji">🇹🇿</span> Tanzania</span><span class="flag-item"><span class="flag-emoji">🇷🇼</span> Rwanda</span><span class="flag-item"><span class="flag-emoji">🇨🇲</span> Cameroon</span><span class="flag-item"><span class="flag-emoji">🇪🇬</span> Egypt</span><span class="flag-item"><span class="flag-emoji">🇲🇦</span> Morocco</span><span class="flag-item"><span class="flag-emoji">🇸🇳</span> Senegal</span><span class="flag-item"><span class="flag-emoji">🇪🇹</span> Ethiopia</span><span class="flag-item"><span class="flag-emoji">🇿🇲</span> Zambia</span><span class="flag-item"><span class="flag-emoji">🇿🇼</span> Zimbabwe</span><span class="flag-item"><span class="flag-emoji">🇧🇼</span> Botswana</span><span class="flag-item"><span class="flag-emoji">🇳🇦</span> Namibia</span><span class="flag-item"><span class="flag-emoji">🇨🇮</span> Côte d'Ivoire</span><span class="flag-item"><span class="flag-emoji">🇧🇯</span> Benin</span><span class="flag-item"><span class="flag-emoji">🇹🇬</span> Togo</span><span class="flag-item"><span class="flag-emoji">🇩🇿</span> Algeria</span><span class="flag-item"><span class="flag-emoji">🇦🇴</span> Angola</span><span class="flag-item"><span class="flag-emoji">🇧🇫</span> Burkina Faso</span><span class="flag-item"><span class="flag-emoji">🇧🇮</span> Burundi</span><span class="flag-item"><span class="flag-emoji">🇨🇻</span> Cape Verde</span><span class="flag-item"><span class="flag-emoji">🇨🇫</span> CAR</span><span class="flag-item"><span class="flag-emoji">🇹🇩</span> Chad</span><span class="flag-item"><span class="flag-emoji">🇰🇲</span> Comoros</span><span class="flag-item"><span class="flag-emoji">🇨🇬</span> Congo</span><span class="flag-item"><span class="flag-emoji">🇨🇩</span> DR Congo</span><span class="flag-item"><span class="flag-emoji">🇩🇯</span> Djibouti</span><span class="flag-item"><span class="flag-emoji">🇬🇶</span> Eq. Guinea</span><span class="flag-item"><span class="flag-emoji">🇪🇷</span> Eritrea</span><span class="flag-item"><span class="flag-emoji">🇸🇿</span> Eswatini</span><span class="flag-item"><span class="flag-emoji">🇬🇦</span> Gabon</span><span class="flag-item"><span class="flag-emoji">🇬🇲</span> Gambia</span><span class="flag-item"><span class="flag-emoji">🇬🇳</span> Guinea</span><span class="flag-item"><span class="flag-emoji">🇬🇼</span> Guinea-Bissau</span><span class="flag-item"><span class="flag-emoji">🇱🇸</span> Lesotho</span><span class="flag-item"><span class="flag-emoji">🇱🇷</span> Liberia</span><span class="flag-item"><span class="flag-emoji">🇱🇾</span> Libya</span><span class="flag-item"><span class="flag-emoji">🇲🇬</span> Madagascar</span><span class="flag-item"><span class="flag-emoji">🇲🇼</span> Malawi</span><span class="flag-item"><span class="flag-emoji">🇲🇱</span> Mali</span><span class="flag-item"><span class="flag-emoji">🇲🇷</span> Mauritania</span><span class="flag-item"><span class="flag-emoji">🇲🇺</span> Mauritius</span><span class="flag-item"><span class="flag-emoji">🇲🇿</span> Mozambique</span><span class="flag-item"><span class="flag-emoji">🇳🇪</span> Niger</span><span class="flag-item"><span class="flag-emoji">🇸🇹</span> São Tomé</span><span class="flag-item"><span class="flag-emoji">🇸🇨</span> Seychelles</span><span class="flag-item"><span class="flag-emoji">🇸🇱</span> Sierra Leone</span><span class="flag-item"><span class="flag-emoji">🇸🇴</span> Somalia</span><span class="flag-item"><span class="flag-emoji">🇸🇸</span> South Sudan</span><span class="flag-item"><span class="flag-emoji">🇸🇩</span> Sudan</span><span class="flag-item"><span class="flag-emoji">🇹🇳</span> Tunisia</span>
-      <span class="flag-item"><span class="flag-emoji">🇳🇬</span> Nigeria</span><span class="flag-item"><span class="flag-emoji">🇬🇭</span> Ghana</span><span class="flag-item"><span class="flag-emoji">🇰🇪</span> Kenya</span><span class="flag-item"><span class="flag-emoji">🇿🇦</span> South Africa</span><span class="flag-item"><span class="flag-emoji">🇺🇬</span> Uganda</span><span class="flag-item"><span class="flag-emoji">🇹🇿</span> Tanzania</span><span class="flag-item"><span class="flag-emoji">🇷🇼</span> Rwanda</span><span class="flag-item"><span class="flag-emoji">🇨🇲</span> Cameroon</span><span class="flag-item"><span class="flag-emoji">🇪🇬</span> Egypt</span><span class="flag-item"><span class="flag-emoji">🇲🇦</span> Morocco</span><span class="flag-item"><span class="flag-emoji">🇸🇳</span> Senegal</span><span class="flag-item"><span class="flag-emoji">🇪🇹</span> Ethiopia</span><span class="flag-item"><span class="flag-emoji">🇿🇲</span> Zambia</span><span class="flag-item"><span class="flag-emoji">🇿🇼</span> Zimbabwe</span><span class="flag-item"><span class="flag-emoji">🇧🇼</span> Botswana</span><span class="flag-item"><span class="flag-emoji">🇳🇦</span> Namibia</span><span class="flag-item"><span class="flag-emoji">🇨🇮</span> Côte d'Ivoire</span><span class="flag-item"><span class="flag-emoji">🇧🇯</span> Benin</span><span class="flag-item"><span class="flag-emoji">🇹🇬</span> Togo</span><span class="flag-item"><span class="flag-emoji">🇩🇿</span> Algeria</span><span class="flag-item"><span class="flag-emoji">🇦🇴</span> Angola</span><span class="flag-item"><span class="flag-emoji">🇧🇫</span> Burkina Faso</span><span class="flag-item"><span class="flag-emoji">🇧🇮</span> Burundi</span><span class="flag-item"><span class="flag-emoji">🇨🇻</span> Cape Verde</span><span class="flag-item"><span class="flag-emoji">🇨🇫</span> CAR</span><span class="flag-item"><span class="flag-emoji">🇹🇩</span> Chad</span><span class="flag-item"><span class="flag-emoji">🇰🇲</span> Comoros</span><span class="flag-item"><span class="flag-emoji">🇨🇬</span> Congo</span><span class="flag-item"><span class="flag-emoji">🇨🇩</span> DR Congo</span><span class="flag-item"><span class="flag-emoji">🇩🇯</span> Djibouti</span><span class="flag-item"><span class="flag-emoji">🇬🇶</span> Eq. Guinea</span><span class="flag-item"><span class="flag-emoji">🇪🇷</span> Eritrea</span><span class="flag-item"><span class="flag-emoji">🇸🇿</span> Eswatini</span><span class="flag-item"><span class="flag-emoji">🇬🇦</span> Gabon</span><span class="flag-item"><span class="flag-emoji">🇬🇲</span> Gambia</span><span class="flag-item"><span class="flag-emoji">🇬🇳</span> Guinea</span><span class="flag-item"><span class="flag-emoji">🇬🇼</span> Guinea-Bissau</span><span class="flag-item"><span class="flag-emoji">🇱🇸</span> Lesotho</span><span class="flag-item"><span class="flag-emoji">🇱🇷</span> Liberia</span><span class="flag-item"><span class="flag-emoji">🇱🇾</span> Libya</span><span class="flag-item"><span class="flag-emoji">🇲🇬</span> Madagascar</span><span class="flag-item"><span class="flag-emoji">🇲🇼</span> Malawi</span><span class="flag-item"><span class="flag-emoji">🇲🇱</span> Mali</span><span class="flag-item"><span class="flag-emoji">🇲🇷</span> Mauritania</span><span class="flag-item"><span class="flag-emoji">🇲🇺</span> Mauritius</span><span class="flag-item"><span class="flag-emoji">🇲🇿</span> Mozambique</span><span class="flag-item"><span class="flag-emoji">🇳🇪</span> Niger</span><span class="flag-item"><span class="flag-emoji">🇸🇹</span> São Tomé</span><span class="flag-item"><span class="flag-emoji">🇸🇨</span> Seychelles</span><span class="flag-item"><span class="flag-emoji">🇸🇱</span> Sierra Leone</span><span class="flag-item"><span class="flag-emoji">🇸🇴</span> Somalia</span><span class="flag-item"><span class="flag-emoji">🇸🇸</span> South Sudan</span><span class="flag-item"><span class="flag-emoji">🇸🇩</span> Sudan</span><span class="flag-item"><span class="flag-emoji">🇹🇳</span> Tunisia</span>
+  <div class="container header-inner">
+
+    <a href="index.html" class="logo" aria-label="NearAfrica home">
+      <img
+        src="logo.png"
+        alt="NearAfrica"
+        class="logo-img"
+        width="160"
+        height="40"
+      >
+    </a>
+
+    <nav class="nav-links" aria-label="Main navigation">
+
+      <a href="index.html">Home</a>
+
+      <a href="search.html">Explore</a>
+
+      <a
+        href="list-business.html"
+        class="active"
+        aria-current="page"
+      >
+        List Your Business
+      </a>
+
+    </nav>
+
+    <div class="header-actions">
+
+      <button
+        type="button"
+        class="btn-menu"
+        id="menu-btn"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
     </div>
+
   </div>
 
-  <main>
-    <section class="section">
-      <div class="container">
-        <div class="text-center mb-2">
-          <h1>List Your Business</h1>
-          <p class="text-muted" style="max-width:520px;margin:0.5rem auto 0">
-            Get discovered by customers searching for services near them. Submit your details below.
-          </p>
-        </div>
+  <nav
+    class="mobile-nav"
+    id="mobile-nav"
+    aria-label="Mobile navigation"
+  >
 
-        <div class="list-form-wrapper">
-          <div id="form-success" class="form-success" role="status">
-            Thank you. Your business details have been received for review.
-            In the live product this will be saved and reviewed by an administrator.
-            (Demo: nothing was stored.)
+    <a href="index.html">Home</a>
+    <a href="search.html">Explore</a>
+    <a href="list-business.html">List Your Business</a>
+
+  </nav>
+
+</header>
+
+
+<main>
+
+  <section class="section">
+
+    <div class="container">
+
+      <div
+        class="section-heading"
+        style="max-width:760px;margin:0 auto 2rem;"
+      >
+
+        <h1>
+          Add Your Business
+        </h1>
+
+        <p class="text-muted">
+          Help customers across Africa discover your business
+          on NearAfrica.
+        </p>
+
+      </div>
+
+
+      <!-- =================================================
+           BUSINESS SUBMISSION FORM
+      ================================================== -->
+
+      <div
+        class="card"
+        style="max-width:800px;margin:0 auto;"
+      >
+
+        <form
+          id="business-submission-form"
+          novalidate
+        >
+
+          <!-- BUSINESS NAME -->
+
+          <div class="form-group">
+
+            <label for="business-name">
+              Business Name *
+            </label>
+
+            <input
+              type="text"
+              id="business-name"
+              name="businessName"
+              placeholder="e.g. Example Fashion Store"
+              required
+              maxlength="100"
+            >
+
           </div>
 
-          <form id="list-business-form" novalidate>
-            <div class="form-group">
-              <label class="form-label" for="name">Business name *</label>
-              <input type="text" id="name" name="name" class="form-input" required maxlength="120" placeholder="e.g. Serenity Spa">
-              <p class="form-error"></p>
-            </div>
 
-            <div class="form-group">
-              <label class="form-label" for="category">Category *</label>
-              <select id="category" name="category" class="form-select" required>
-                <option value="">Select category</option>
-              </select>
-              <p class="form-error"></p>
-            </div>
+          <!-- CATEGORY -->
 
-            <div class="form-group">
-              <label class="form-label" for="country">Country *</label>
-              <select id="country" name="country" class="form-select" required>
-                <option value="">Select country</option>
-              </select>
-              <p class="form-error"></p>
-            </div>
+          <div class="form-group">
 
-            <div class="form-group">
-              <label class="form-label" for="city">City *</label>
-              <input type="text" id="city" name="city" class="form-input" required maxlength="80" placeholder="e.g. Aba">
-              <p class="form-error"></p>
-            </div>
+            <label for="category">
+              Business Category *
+            </label>
 
-            <div class="form-group">
-              <label class="form-label" for="address">Street address *</label>
-              <input type="text" id="address" name="address" class="form-input" required maxlength="200" placeholder="Full street address">
-              <p class="form-error"></p>
-            </div>
+            <select
+              id="category"
+              name="category"
+              required
+            >
 
-            <div class="form-group">
-              <label class="form-label" for="phone">Phone *</label>
-              <input type="tel" id="phone" name="phone" class="form-input" required placeholder="+234 800 000 0000">
-              <p class="form-error"></p>
-            </div>
+              <option value="">
+                Select a category
+              </option>
 
-            <div class="form-group">
-              <label class="form-label" for="whatsapp">WhatsApp (optional)</label>
-              <input type="tel" id="whatsapp" name="whatsapp" class="form-input" placeholder="+234 800 000 0000">
-            </div>
+              <option value="Restaurant">
+                Restaurant
+              </option>
 
-            <div class="form-group">
-              <label class="form-label" for="website">Website (optional)</label>
-              <input type="url" id="website" name="website" class="form-input" placeholder="https://">
-            </div>
+              <option value="Fashion">
+                Fashion & Clothing
+              </option>
 
-            <div class="form-group">
-              <label class="form-label" for="description">Description</label>
-              <textarea id="description" name="description" class="form-textarea" maxlength="500" placeholder="Tell customers what you offer"></textarea>
-            </div>
+              <option value="Beauty">
+                Beauty & Personal Care
+              </option>
 
-            <div class="form-group">
-              <label class="form-label" for="services">Services (comma-separated)</label>
-              <input type="text" id="services" name="services" class="form-input" placeholder="e.g. Massage, Facial, Manicure">
-            </div>
+              <option value="Health">
+                Health & Medical
+              </option>
 
-            <p class="text-muted" style="font-size:0.85rem;margin-bottom:1rem">
-              Photos, opening hours and exact map coordinates can be added after approval.
-              Required fields are marked with *.
-            </p>
+              <option value="Hotel">
+                Hotels & Accommodation
+              </option>
 
-            <button type="submit" class="btn btn-primary btn-block">Submit for Review</button>
-          </form>
-        </div>
+              <option value="Education">
+                Education
+              </option>
+
+              <option value="Real Estate">
+                Real Estate
+              </option>
+
+              <option value="Automotive">
+                Automotive
+              </option>
+
+              <option value="Technology">
+                Technology
+              </option>
+
+              <option value="Professional Services">
+                Professional Services
+              </option>
+
+              <option value="Shopping">
+                Shopping & Retail
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- COUNTRY -->
+
+          <div class="form-group">
+
+            <label for="country">
+              Country *
+            </label>
+
+            <select
+              id="country"
+              name="country"
+              required
+            >
+
+              <option value="">
+                Select country
+              </option>
+
+              <option value="Nigeria">
+                Nigeria
+              </option>
+
+              <option value="Ghana">
+                Ghana
+              </option>
+
+              <option value="Kenya">
+                Kenya
+              </option>
+
+              <option value="South Africa">
+                South Africa
+              </option>
+
+              <option value="Uganda">
+                Uganda
+              </option>
+
+              <option value="Tanzania">
+                Tanzania
+              </option>
+
+              <option value="Rwanda">
+                Rwanda
+              </option>
+
+              <option value="Cameroon">
+                Cameroon
+              </option>
+
+              <option value="Egypt">
+                Egypt
+              </option>
+
+              <option value="Morocco">
+                Morocco
+              </option>
+
+              <option value="Other">
+                Other African Country
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- STATE / REGION -->
+
+          <div class="form-group">
+
+            <label for="state">
+              State / Region *
+            </label>
+
+            <input
+              type="text"
+              id="state"
+              name="state"
+              placeholder="e.g. Abia"
+              required
+              maxlength="80"
+            >
+
+          </div>
+
+
+          <!-- CITY -->
+
+          <div class="form-group">
+
+            <label for="city">
+              City *
+            </label>
+
+            <input
+              type="text"
+              id="city"
+              name="city"
+              placeholder="e.g. Aba"
+              required
+              maxlength="80"
+            >
+
+          </div>
+
+
+          <!-- ADDRESS -->
+
+          <div class="form-group">
+
+            <label for="address">
+              Business Address *
+            </label>
+
+            <textarea
+              id="address"
+              name="address"
+              placeholder="Enter the business address"
+              rows="3"
+              required
+              maxlength="300"
+            ></textarea>
+
+          </div>
+
+
+          <!-- PHONE -->
+
+          <div class="form-group">
+
+            <label for="phone">
+              Business Phone
+            </label>
+
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="+234..."
+              maxlength="30"
+            >
+
+          </div>
+
+
+          <!-- WHATSAPP -->
+
+          <div class="form-group">
+
+            <label for="whatsapp">
+              WhatsApp Number
+            </label>
+
+            <input
+              type="tel"
+              id="whatsapp"
+              name="whatsapp"
+              placeholder="+234..."
+              maxlength="30"
+            >
+
+          </div>
+
+
+          <!-- WEBSITE -->
+
+          <div class="form-group">
+
+            <label for="website">
+              Website
+            </label>
+
+            <input
+              type="url"
+              id="website"
+              name="website"
+              placeholder="https://example.com"
+              maxlength="200"
+            >
+
+          </div>
+
+
+          <!-- DESCRIPTION -->
+
+          <div class="form-group">
+
+            <label for="description">
+              Business Description *
+            </label>
+
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Tell customers what your business offers..."
+              rows="5"
+              required
+              maxlength="1000"
+            ></textarea>
+
+          </div>
+
+
+          <!-- OWNER EMAIL -->
+
+          <div class="form-group">
+
+            <label for="email">
+              Contact Email *
+            </label>
+
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              required
+              maxlength="150"
+            >
+
+          </div>
+
+
+          <!-- TERMS -->
+
+          <div
+            class="form-group"
+            style="margin-top:1.5rem;"
+          >
+
+            <label
+              style="display:flex;gap:0.7rem;align-items:flex-start;"
+            >
+
+              <input
+                type="checkbox"
+                id="terms"
+                name="terms"
+                required
+                style="margin-top:0.3rem;"
+              >
+
+              <span>
+                I confirm that the information provided is
+                accurate and that I have permission to submit
+                this business.
+              </span>
+
+            </label>
+
+          </div>
+
+
+          <!-- STATUS -->
+
+          <div
+            id="submission-status"
+            role="status"
+            aria-live="polite"
+            style="margin:1rem 0;"
+          ></div>
+
+
+          <!-- SUBMIT -->
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="submit-business"
+          >
+            Submit Business
+          </button>
+
+          <p
+            class="text-muted"
+            style="font-size:0.85rem;margin-top:1rem;"
+          >
+            Your submission will be reviewed by NearAfrica
+            before it becomes publicly visible.
+          </p>
+
+        </form>
+
       </div>
-    </section>
-  </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-bottom" style="border:none">
-        <span>© 2026 NearAfrica</span>
-        <span>Demo form — no data is stored</span>
-      </div>
     </div>
-  </footer>
 
-  <script src="../js/config.js"></script>
-  <script src="../data/businesses.js"></script>
-  <script src="../js/utils.js"></script>
-  <script src="../js/app.js"></script>
+  </section>
+
+</main>
+
+
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-bottom">
+
+      <span>
+        © 2026 NearAfrica
+      </span>
+
+      <span>
+        Find businesses across Africa
+      </span>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+<!-- Existing NearAfrica scripts -->
+
+<script src="config.js"></script>
+<script src="businesses.js"></script>
+<script src="utils.js"></script>
+<script src="app.js"></script>
+
+
+<!-- Temporary form handler -->
+<script>
+
+  const form = document.getElementById(
+    "business-submission-form"
+  );
+
+  const statusBox = document.getElementById(
+    "submission-status"
+  );
+
+  form.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    if (!form.checkValidity()) {
+
+      statusBox.textContent =
+        "Please complete all required fields.";
+
+      statusBox.style.color = "crimson";
+
+      form.reportValidity();
+
+      return;
+    }
+
+    statusBox.textContent =
+      "Your business information is ready to be submitted. The NearAfrica database will be connected next.";
+
+    statusBox.style.color = "green";
+
+  });
+
+</script>
+
 </body>
-</html>
+                </html>
