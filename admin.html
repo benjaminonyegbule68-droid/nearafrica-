@@ -3,104 +3,573 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Admin Dashboard | NearAfrica</title>
-  <meta name="description" content="NearAfrica admin dashboard for managing business listings.">
+
+  <meta
+    name="description"
+    content="NearAfrica admin dashboard for managing business listings."
+  >
+
   <meta name="robots" content="noindex, nofollow">
-  <link rel="icon" href="../images/favicon.svg" type="image/svg+xml">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/styles.css">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- NearAfrica stylesheet -->
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-<header class="site-header">
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <header class="site-header">
+
     <div class="container header-inner">
-      <a href="../index.html" class="logo" aria-label="NearAfrica home">
-        <img src="../images/logo.png" alt="NearAfrica" class="logo-img" width="160" height="40">
+
+      <a
+        href="index.html"
+        class="logo"
+        aria-label="NearAfrica home"
+      >
+        <img
+          src="logo.png"
+          alt="NearAfrica"
+          class="logo-img"
+          width="160"
+          height="40"
+        >
       </a>
-      <nav class="nav-links" aria-label="Main">
-        <a href="../index.html">Home</a>
-        <a href="search.html">Explore</a>
-        <a href="list-business.html">List Your Business</a>
-        <a href="admin.html" class="active">Admin</a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="search.html">
+          Explore
+        </a>
+
+        <a href="list-business.html">
+          List Your Business
+        </a>
+
+        <a
+          href="admin.html"
+          class="active"
+          aria-current="page"
+        >
+          Admin
+        </a>
+
       </nav>
+
       <div class="header-actions">
-        <button type="button" class="btn-menu" id="menu-btn" aria-label="Open menu">
-          <span></span><span></span><span></span>
+
+        <button
+          type="button"
+          class="btn-menu"
+          id="menu-btn"
+          aria-label="Open menu"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
+
       </div>
+
     </div>
-    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
-      <a href="../index.html">Home</a>
-      <a href="search.html">Explore</a>
-      <a href="list-business.html">List Your Business</a>
-      <a href="admin.html">Admin</a>
+
+    <!-- Mobile navigation -->
+
+    <nav
+      class="mobile-nav"
+      id="mobile-nav"
+      aria-label="Mobile navigation"
+    >
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="search.html">
+        Explore
+      </a>
+
+      <a href="list-business.html">
+        List Your Business
+      </a>
+
+      <a
+        href="admin.html"
+        aria-current="page"
+      >
+        Admin
+      </a>
+
     </nav>
+
   </header>
 
-  <div class="flags-marquee" aria-label="African countries">
+
+  <!-- =====================================================
+       AFRICAN COUNTRIES MARQUEE
+  ====================================================== -->
+
+  <div
+    class="flags-marquee"
+    aria-label="African countries"
+  >
+
     <div class="flags-track">
-      <span class="flag-item"><span class="flag-emoji">🇳🇬</span> Nigeria</span><span class="flag-item"><span class="flag-emoji">🇬🇭</span> Ghana</span><span class="flag-item"><span class="flag-emoji">🇰🇪</span> Kenya</span><span class="flag-item"><span class="flag-emoji">🇿🇦</span> South Africa</span><span class="flag-item"><span class="flag-emoji">🇺🇬</span> Uganda</span><span class="flag-item"><span class="flag-emoji">🇹🇿</span> Tanzania</span><span class="flag-item"><span class="flag-emoji">🇷🇼</span> Rwanda</span><span class="flag-item"><span class="flag-emoji">🇨🇲</span> Cameroon</span><span class="flag-item"><span class="flag-emoji">🇪🇬</span> Egypt</span><span class="flag-item"><span class="flag-emoji">🇲🇦</span> Morocco</span><span class="flag-item"><span class="flag-emoji">🇸🇳</span> Senegal</span><span class="flag-item"><span class="flag-emoji">🇪🇹</span> Ethiopia</span><span class="flag-item"><span class="flag-emoji">🇿🇲</span> Zambia</span><span class="flag-item"><span class="flag-emoji">🇿🇼</span> Zimbabwe</span><span class="flag-item"><span class="flag-emoji">🇧🇼</span> Botswana</span><span class="flag-item"><span class="flag-emoji">🇳🇦</span> Namibia</span><span class="flag-item"><span class="flag-emoji">🇨🇮</span> Côte d'Ivoire</span><span class="flag-item"><span class="flag-emoji">🇧🇯</span> Benin</span><span class="flag-item"><span class="flag-emoji">🇹🇬</span> Togo</span><span class="flag-item"><span class="flag-emoji">🇩🇿</span> Algeria</span><span class="flag-item"><span class="flag-emoji">🇦🇴</span> Angola</span><span class="flag-item"><span class="flag-emoji">🇧🇫</span> Burkina Faso</span><span class="flag-item"><span class="flag-emoji">🇧🇮</span> Burundi</span><span class="flag-item"><span class="flag-emoji">🇨🇻</span> Cape Verde</span><span class="flag-item"><span class="flag-emoji">🇨🇫</span> CAR</span><span class="flag-item"><span class="flag-emoji">🇹🇩</span> Chad</span><span class="flag-item"><span class="flag-emoji">🇰🇲</span> Comoros</span><span class="flag-item"><span class="flag-emoji">🇨🇬</span> Congo</span><span class="flag-item"><span class="flag-emoji">🇨🇩</span> DR Congo</span><span class="flag-item"><span class="flag-emoji">🇩🇯</span> Djibouti</span><span class="flag-item"><span class="flag-emoji">🇬🇶</span> Eq. Guinea</span><span class="flag-item"><span class="flag-emoji">🇪🇷</span> Eritrea</span><span class="flag-item"><span class="flag-emoji">🇸🇿</span> Eswatini</span><span class="flag-item"><span class="flag-emoji">🇬🇦</span> Gabon</span><span class="flag-item"><span class="flag-emoji">🇬🇲</span> Gambia</span><span class="flag-item"><span class="flag-emoji">🇬🇳</span> Guinea</span><span class="flag-item"><span class="flag-emoji">🇬🇼</span> Guinea-Bissau</span><span class="flag-item"><span class="flag-emoji">🇱🇸</span> Lesotho</span><span class="flag-item"><span class="flag-emoji">🇱🇷</span> Liberia</span><span class="flag-item"><span class="flag-emoji">🇱🇾</span> Libya</span><span class="flag-item"><span class="flag-emoji">🇲🇬</span> Madagascar</span><span class="flag-item"><span class="flag-emoji">🇲🇼</span> Malawi</span><span class="flag-item"><span class="flag-emoji">🇲🇱</span> Mali</span><span class="flag-item"><span class="flag-emoji">🇲🇷</span> Mauritania</span><span class="flag-item"><span class="flag-emoji">🇲🇺</span> Mauritius</span><span class="flag-item"><span class="flag-emoji">🇲🇿</span> Mozambique</span><span class="flag-item"><span class="flag-emoji">🇳🇪</span> Niger</span><span class="flag-item"><span class="flag-emoji">🇸🇹</span> São Tomé</span><span class="flag-item"><span class="flag-emoji">🇸🇨</span> Seychelles</span><span class="flag-item"><span class="flag-emoji">🇸🇱</span> Sierra Leone</span><span class="flag-item"><span class="flag-emoji">🇸🇴</span> Somalia</span><span class="flag-item"><span class="flag-emoji">🇸🇸</span> South Sudan</span><span class="flag-item"><span class="flag-emoji">🇸🇩</span> Sudan</span><span class="flag-item"><span class="flag-emoji">🇹🇳</span> Tunisia</span>
-      <span class="flag-item"><span class="flag-emoji">🇳🇬</span> Nigeria</span><span class="flag-item"><span class="flag-emoji">🇬🇭</span> Ghana</span><span class="flag-item"><span class="flag-emoji">🇰🇪</span> Kenya</span><span class="flag-item"><span class="flag-emoji">🇿🇦</span> South Africa</span><span class="flag-item"><span class="flag-emoji">🇺🇬</span> Uganda</span><span class="flag-item"><span class="flag-emoji">🇹🇿</span> Tanzania</span><span class="flag-item"><span class="flag-emoji">🇷🇼</span> Rwanda</span><span class="flag-item"><span class="flag-emoji">🇨🇲</span> Cameroon</span><span class="flag-item"><span class="flag-emoji">🇪🇬</span> Egypt</span><span class="flag-item"><span class="flag-emoji">🇲🇦</span> Morocco</span><span class="flag-item"><span class="flag-emoji">🇸🇳</span> Senegal</span><span class="flag-item"><span class="flag-emoji">🇪🇹</span> Ethiopia</span><span class="flag-item"><span class="flag-emoji">🇿🇲</span> Zambia</span><span class="flag-item"><span class="flag-emoji">🇿🇼</span> Zimbabwe</span><span class="flag-item"><span class="flag-emoji">🇧🇼</span> Botswana</span><span class="flag-item"><span class="flag-emoji">🇳🇦</span> Namibia</span><span class="flag-item"><span class="flag-emoji">🇨🇮</span> Côte d'Ivoire</span><span class="flag-item"><span class="flag-emoji">🇧🇯</span> Benin</span><span class="flag-item"><span class="flag-emoji">🇹🇬</span> Togo</span><span class="flag-item"><span class="flag-emoji">🇩🇿</span> Algeria</span><span class="flag-item"><span class="flag-emoji">🇦🇴</span> Angola</span><span class="flag-item"><span class="flag-emoji">🇧🇫</span> Burkina Faso</span><span class="flag-item"><span class="flag-emoji">🇧🇮</span> Burundi</span><span class="flag-item"><span class="flag-emoji">🇨🇻</span> Cape Verde</span><span class="flag-item"><span class="flag-emoji">🇨🇫</span> CAR</span><span class="flag-item"><span class="flag-emoji">🇹🇩</span> Chad</span><span class="flag-item"><span class="flag-emoji">🇰🇲</span> Comoros</span><span class="flag-item"><span class="flag-emoji">🇨🇬</span> Congo</span><span class="flag-item"><span class="flag-emoji">🇨🇩</span> DR Congo</span><span class="flag-item"><span class="flag-emoji">🇩🇯</span> Djibouti</span><span class="flag-item"><span class="flag-emoji">🇬🇶</span> Eq. Guinea</span><span class="flag-item"><span class="flag-emoji">🇪🇷</span> Eritrea</span><span class="flag-item"><span class="flag-emoji">🇸🇿</span> Eswatini</span><span class="flag-item"><span class="flag-emoji">🇬🇦</span> Gabon</span><span class="flag-item"><span class="flag-emoji">🇬🇲</span> Gambia</span><span class="flag-item"><span class="flag-emoji">🇬🇳</span> Guinea</span><span class="flag-item"><span class="flag-emoji">🇬🇼</span> Guinea-Bissau</span><span class="flag-item"><span class="flag-emoji">🇱🇸</span> Lesotho</span><span class="flag-item"><span class="flag-emoji">🇱🇷</span> Liberia</span><span class="flag-item"><span class="flag-emoji">🇱🇾</span> Libya</span><span class="flag-item"><span class="flag-emoji">🇲🇬</span> Madagascar</span><span class="flag-item"><span class="flag-emoji">🇲🇼</span> Malawi</span><span class="flag-item"><span class="flag-emoji">🇲🇱</span> Mali</span><span class="flag-item"><span class="flag-emoji">🇲🇷</span> Mauritania</span><span class="flag-item"><span class="flag-emoji">🇲🇺</span> Mauritius</span><span class="flag-item"><span class="flag-emoji">🇲🇿</span> Mozambique</span><span class="flag-item"><span class="flag-emoji">🇳🇪</span> Niger</span><span class="flag-item"><span class="flag-emoji">🇸🇹</span> São Tomé</span><span class="flag-item"><span class="flag-emoji">🇸🇨</span> Seychelles</span><span class="flag-item"><span class="flag-emoji">🇸🇱</span> Sierra Leone</span><span class="flag-item"><span class="flag-emoji">🇸🇴</span> Somalia</span><span class="flag-item"><span class="flag-emoji">🇸🇸</span> South Sudan</span><span class="flag-item"><span class="flag-emoji">🇸🇩</span> Sudan</span><span class="flag-item"><span class="flag-emoji">🇹🇳</span> Tunisia</span>
+
+      <span class="flag-item">🇳🇬 Nigeria</span>
+      <span class="flag-item">🇬🇭 Ghana</span>
+      <span class="flag-item">🇰🇪 Kenya</span>
+      <span class="flag-item">🇿🇦 South Africa</span>
+      <span class="flag-item">🇺🇬 Uganda</span>
+      <span class="flag-item">🇹🇿 Tanzania</span>
+      <span class="flag-item">🇷🇼 Rwanda</span>
+      <span class="flag-item">🇨🇲 Cameroon</span>
+      <span class="flag-item">🇪🇬 Egypt</span>
+      <span class="flag-item">🇲🇦 Morocco</span>
+      <span class="flag-item">🇸🇳 Senegal</span>
+      <span class="flag-item">🇪🇹 Ethiopia</span>
+      <span class="flag-item">🇿🇲 Zambia</span>
+      <span class="flag-item">🇿🇼 Zimbabwe</span>
+      <span class="flag-item">🇧🇼 Botswana</span>
+      <span class="flag-item">🇳🇦 Namibia</span>
+      <span class="flag-item">🇨🇮 Côte d'Ivoire</span>
+      <span class="flag-item">🇧🇯 Benin</span>
+      <span class="flag-item">🇹🇬 Togo</span>
+      <span class="flag-item">🇩🇿 Algeria</span>
+      <span class="flag-item">🇦🇴 Angola</span>
+      <span class="flag-item">🇧🇫 Burkina Faso</span>
+      <span class="flag-item">🇧🇮 Burundi</span>
+      <span class="flag-item">🇨🇻 Cape Verde</span>
+      <span class="flag-item">🇨🇫 Central African Republic</span>
+      <span class="flag-item">🇹🇩 Chad</span>
+      <span class="flag-item">🇰🇲 Comoros</span>
+      <span class="flag-item">🇨🇬 Congo</span>
+      <span class="flag-item">🇨🇩 DR Congo</span>
+      <span class="flag-item">🇩🇯 Djibouti</span>
+      <span class="flag-item">🇬🇶 Equatorial Guinea</span>
+      <span class="flag-item">🇪🇷 Eritrea</span>
+      <span class="flag-item">🇸🇿 Eswatini</span>
+      <span class="flag-item">🇬🇦 Gabon</span>
+      <span class="flag-item">🇬🇲 Gambia</span>
+      <span class="flag-item">🇬🇳 Guinea</span>
+      <span class="flag-item">🇬🇼 Guinea-Bissau</span>
+      <span class="flag-item">🇱🇸 Lesotho</span>
+      <span class="flag-item">🇱🇷 Liberia</span>
+      <span class="flag-item">🇱🇾 Libya</span>
+      <span class="flag-item">🇲🇬 Madagascar</span>
+      <span class="flag-item">🇲🇼 Malawi</span>
+      <span class="flag-item">🇲🇱 Mali</span>
+      <span class="flag-item">🇲🇷 Mauritania</span>
+      <span class="flag-item">🇲🇺 Mauritius</span>
+      <span class="flag-item">🇲🇿 Mozambique</span>
+      <span class="flag-item">🇳🇪 Niger</span>
+      <span class="flag-item">🇸🇹 São Tomé and Príncipe</span>
+      <span class="flag-item">🇸🇨 Seychelles</span>
+      <span class="flag-item">🇸🇱 Sierra Leone</span>
+      <span class="flag-item">🇸🇴 Somalia</span>
+      <span class="flag-item">🇸🇸 South Sudan</span>
+      <span class="flag-item">🇸🇩 Sudan</span>
+      <span class="flag-item">🇹🇳 Tunisia</span>
+
     </div>
+
   </div>
 
+
+  <!-- =====================================================
+       MAIN ADMIN AREA
+  ====================================================== -->
+
   <main class="section">
+
     <div class="container">
-      <h1 style="margin-bottom:1.5rem">Admin Dashboard</h1>
+
+      <div class="section-heading">
+
+        <h1>
+          Admin Dashboard
+        </h1>
+
+        <p class="text-muted">
+          Manage NearAfrica business listings, verification,
+          featured businesses and reports.
+        </p>
+
+      </div>
+
+
+      <!-- IMPORTANT NOTICE -->
+
+      <div
+        class="card"
+        style="margin-bottom:1.5rem;"
+      >
+
+        <p
+          class="text-muted"
+          style="margin:0;font-size:0.9rem;"
+        >
+          <strong>Development mode:</strong>
+          Business management is currently connected to the
+          NearAfrica frontend. Secure authentication and the
+          production database will be connected through the
+          backend before public launch.
+        </p>
+
+      </div>
+
 
       <div class="admin-layout">
+
+
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
+
         <aside class="admin-sidebar">
-          <nav class="admin-nav">
-            <a href="#businesses" class="active">Businesses</a>
-            <a href="#pending">Pending approval</a>
-            <a href="#verified">Verified</a>
-            <a href="#featured">Featured</a>
-            <a href="#reports">Reports</a>
+
+          <nav
+            class="admin-nav"
+            aria-label="Admin sections"
+          >
+
+            <a
+              href="#businesses"
+              class="active"
+            >
+              Businesses
+            </a>
+
+            <a href="#pending">
+              Pending Approval
+            </a>
+
+            <a href="#verified">
+              Verified
+            </a>
+
+            <a href="#featured">
+              Featured
+            </a>
+
+            <a href="#reports">
+              Reports
+            </a>
+
           </nav>
+
         </aside>
 
-        <div>
-          <p class="text-muted mb-2" style="font-size:0.9rem">
-            This is a UI prototype. Edit, approve, and remove actions require a backend with authentication.
-            Verification and Featured status should only be set by administrators.
-          </p>
 
-          <div class="admin-table-wrap card" style="padding:0;overflow:hidden">
-            <table class="admin-table" id="admin-business-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Category</th>
-                  <th>Location</th>
-                  <th>Verified</th>
-                  <th>Featured</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="admin-business-tbody">
-                <!-- Filled by app.js -->
-              </tbody>
-            </table>
-          </div>
+        <!-- =================================================
+             CONTENT
+        ================================================== -->
+
+        <div class="admin-content">
+
+
+          <!-- BUSINESS MANAGEMENT -->
+
+          <section
+            id="businesses"
+            aria-labelledby="businesses-heading"
+          >
+
+            <div
+              class="section-heading"
+              style="margin-bottom:1rem;"
+            >
+
+              <h2 id="businesses-heading">
+                Businesses
+              </h2>
+
+              <p class="text-muted">
+                Businesses approved for publication on NearAfrica.
+              </p>
+
+            </div>
+
+
+            <div
+              class="admin-table-wrap card"
+              style="padding:0;overflow:auto;"
+            >
+
+              <table
+                class="admin-table"
+                id="admin-business-table"
+              >
+
+                <thead>
+
+                  <tr>
+
+                    <th scope="col">
+                      Name
+                    </th>
+
+                    <th scope="col">
+                      Category
+                    </th>
+
+                    <th scope="col">
+                      Location
+                    </th>
+
+                    <th scope="col">
+                      Verified
+                    </th>
+
+                    <th scope="col">
+                      Featured
+                    </th>
+
+                    <th scope="col">
+                      Actions
+                    </th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody id="admin-business-tbody">
+
+                  <!--
+                    Businesses will be inserted here by app.js
+                    once the backend/database is connected.
+                  -->
+
+                  <tr>
+
+                    <td
+                      colspan="6"
+                      style="text-align:center;padding:2rem;"
+                    >
+
+                      <span class="text-muted">
+                        No businesses available yet.
+                      </span>
+
+                    </td>
+
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </section>
+
+
+          <!-- =================================================
+               PENDING
+          ================================================== -->
+
+          <section
+            id="pending"
+            class="section"
+          >
+
+            <div class="section-heading">
+
+              <h2>
+                Pending Approval
+              </h2>
+
+              <p class="text-muted">
+                Business submissions waiting for administrator review.
+              </p>
+
+            </div>
+
+            <div
+              id="pending-businesses"
+              class="card"
+            >
+
+              <p class="text-muted">
+                No pending submissions yet.
+              </p>
+
+            </div>
+
+          </section>
+
+
+          <!-- =================================================
+               VERIFIED
+          ================================================== -->
+
+          <section
+            id="verified"
+            class="section"
+          >
+
+            <div class="section-heading">
+
+              <h2>
+                Verified Businesses
+              </h2>
+
+              <p class="text-muted">
+                Businesses that have passed NearAfrica verification.
+              </p>
+
+            </div>
+
+            <div
+              id="verified-businesses"
+              class="card"
+            >
+
+              <p class="text-muted">
+                No verified businesses yet.
+              </p>
+
+            </div>
+
+          </section>
+
+
+          <!-- =================================================
+               FEATURED
+          ================================================== -->
+
+          <section
+            id="featured"
+            class="section"
+          >
+
+            <div class="section-heading">
+
+              <h2>
+                Featured Businesses
+              </h2>
+
+              <p class="text-muted">
+                Businesses selected for featured placement.
+              </p>
+
+            </div>
+
+            <div
+              id="featured-businesses"
+              class="card"
+            >
+
+              <p class="text-muted">
+                No featured businesses yet.
+              </p>
+
+            </div>
+
+          </section>
+
+
+          <!-- =================================================
+               REPORTS
+          ================================================== -->
+
+          <section
+            id="reports"
+            class="section"
+          >
+
+            <div class="section-heading">
+
+              <h2>
+                Reports
+              </h2>
+
+              <p class="text-muted">
+                Review reports submitted about business listings.
+              </p>
+
+            </div>
+
+            <div
+              id="business-reports"
+              class="card"
+            >
+
+              <p class="text-muted">
+                No reports available.
+              </p>
+
+            </div>
+
+          </section>
+
         </div>
+
       </div>
+
     </div>
+
   </main>
 
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
   <footer class="site-footer">
+
     <div class="container">
-      <div class="footer-bottom" style="border:none">
-        <span>© 2026 NearAfrica</span>
-        <span>Admin demo only</span>
+
+      <div
+        class="footer-bottom"
+        style="border:none;"
+      >
+
+        <span>
+          © 2026 NearAfrica
+        </span>
+
+        <span>
+          Admin dashboard
+        </span>
+
       </div>
+
     </div>
+
   </footer>
 
-  <script src="../js/config.js"></script>
-  <script src="../data/businesses.js"></script>
-  <script src="../js/utils.js"></script>
-  <script src="../js/app.js"></script>
+
+  <!-- =====================================================
+       JAVASCRIPT
+       Files are in the repository root.
+  ====================================================== -->
+
+  <script src="config.js"></script>
+  <script src="businesses.js"></script>
+  <script src="utils.js"></script>
+  <script src="app.js"></script>
+
 </body>
-</html>
+        </html>
