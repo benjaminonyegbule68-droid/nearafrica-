@@ -210,5 +210,5 @@ When you add a backend and database, deploy the API separately (or as serverless
 The `featured` field on each business is ready for a paid upgrade path.
 
 ---
-
+NearAfrica deployment test
 Built for beginners to learn from: plain HTML, CSS, and JavaScript, modular files, and clear comments.
