@@ -2,11 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Business Profile | NearAfrica</title>
 
@@ -16,7 +12,6 @@
     >
 
     <link rel="icon" href="favicon.svg">
-
     <link rel="stylesheet" href="styles.css">
 
     <link
@@ -25,11 +20,6 @@
     >
 
     <style>
-
-        /* =========================================
-           BUSINESS PROFILE
-        ========================================= */
-
         .business-page {
             min-height: 100vh;
             background: #0d0d0d;
@@ -42,21 +32,16 @@
             padding: 35px 20px 70px;
         }
 
-        /* Back button */
-
         .back-link {
             display: inline-block;
             margin-bottom: 25px;
             color: #d4af37;
             text-decoration: none;
-            font-size: .95rem;
         }
 
         .back-link:hover {
             text-decoration: underline;
         }
-
-        /* Main profile */
 
         .profile-header {
             background: #171717;
@@ -95,8 +80,6 @@
             max-width: 750px;
         }
 
-        /* Actions */
-
         .profile-actions {
             display: flex;
             flex-wrap: wrap;
@@ -125,8 +108,6 @@
             opacity: .9;
         }
 
-        /* Grid */
-
         .profile-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -146,8 +127,6 @@
             font-size: 1.2rem;
         }
 
-        /* Details */
-
         .detail-row {
             display: flex;
             gap: 12px;
@@ -161,16 +140,12 @@
             font-weight: 600;
         }
 
-        /* Map */
-
         #business-map {
             width: 100%;
             height: 350px;
             border-radius: 12px;
             overflow: hidden;
         }
-
-        /* Claim */
 
         .claim-section {
             margin-top: 25px;
@@ -180,7 +155,6 @@
                     rgba(212,175,55,.12),
                     rgba(212,175,55,.03)
                 );
-
             border: 1px solid rgba(212,175,55,.3);
             border-radius: 18px;
             padding: 30px;
@@ -206,8 +180,6 @@
             font-weight: 700;
         }
 
-        /* Reviews */
-
         .review {
             padding: 15px 0;
             border-bottom: 1px solid #292929;
@@ -232,7 +204,32 @@
             line-height: 1.5;
         }
 
-        /* Footer */
+        .not-found {
+            text-align: center;
+            padding: 70px 20px;
+            background: #171717;
+            border: 1px solid #292929;
+            border-radius: 18px;
+        }
+
+        .not-found h1 {
+            margin-bottom: 10px;
+        }
+
+        .not-found p {
+            color: #999;
+            margin-bottom: 25px;
+        }
+
+        .not-found a {
+            display: inline-block;
+            padding: 12px 18px;
+            background: #d4af37;
+            color: #111;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: 700;
+        }
 
         .profile-footer {
             border-top: 1px solid #222;
@@ -247,10 +244,7 @@
             text-decoration: none;
         }
 
-        /* Mobile */
-
         @media (max-width: 800px) {
-
             .profile-grid {
                 grid-template-columns: 1fr;
             }
@@ -262,27 +256,17 @@
             .profile-section {
                 padding: 20px;
             }
-
         }
-
     </style>
 </head>
 
-
 <body class="business-page">
 
-
     <!-- HEADER -->
-
     <header class="site-header">
-
         <div class="container header-inner">
 
-            <a
-                href="index.html"
-                class="logo"
-            >
-
+            <a href="index.html" class="logo">
                 <img
                     src="logo.png"
                     alt="NearAfrica"
@@ -292,33 +276,21 @@
                 <span class="logo-text">
                     NearAfrica
                 </span>
-
             </a>
 
-
             <nav class="nav-links">
-
-                <a href="index.html">
-                    Home
-                </a>
-
-                <a href="explore.html">
-                    Explore
-                </a>
-
+                <a href="index.html">Home</a>
+                <a href="explore.html">Explore</a>
                 <a href="list-business.html">
                     List Your Business
                 </a>
-
             </nav>
 
         </div>
-
     </header>
 
 
-    <!-- PROFILE -->
-
+    <!-- MAIN -->
     <main class="profile-container">
 
         <a
@@ -329,227 +301,202 @@
         </a>
 
 
-        <!-- BUSINESS HEADER -->
+        <!-- BUSINESS CONTENT -->
+        <div id="businessContent">
 
-        <section class="profile-header">
+            <section class="profile-header">
 
-            <span
-                class="profile-category"
-                id="businessCategory"
-            >
-                Business
-            </span>
-
-
-            <h1 id="businessName">
-                Loading...
-            </h1>
-
-
-            <div
-                class="profile-location"
-                id="businessLocation"
-            >
-                📍 Loading location...
-            </div>
-
-
-            <div
-                class="profile-rating"
-                id="businessRating"
-            >
-                ⭐ No rating yet
-            </div>
-
-
-            <p
-                class="profile-description"
-                id="businessDescription"
-            >
-                Loading business information...
-            </p>
-
-
-            <div class="profile-actions">
-
-                <a
-                    href="#"
-                    id="callButton"
-                    class="profile-btn primary"
+                <span
+                    class="profile-category"
+                    id="businessCategory"
                 >
-                    📞 Call
-                </a>
+                    Business
+                </span>
 
+                <h1 id="businessName">
+                    Loading...
+                </h1>
 
-                <a
-                    href="#"
-                    id="whatsappButton"
-                    class="profile-btn"
+                <div
+                    class="profile-location"
+                    id="businessLocation"
                 >
-                    💬 WhatsApp
-                </a>
-
-
-                <a
-                    href="#"
-                    id="websiteButton"
-                    class="profile-btn"
-                    target="_blank"
-                    rel="noopener"
-                >
-                    🌐 Website
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- INFORMATION + MAP -->
-
-        <div class="profile-grid">
-
-
-            <!-- DETAILS -->
-
-            <section class="profile-section">
-
-                <h2>
-                    Business Information
-                </h2>
-
-
-                <div class="detail-row">
-
-                    <span class="detail-label">
-                        Category
-                    </span>
-
-                    <span id="detailCategory">
-                        —
-                    </span>
-
+                    📍 Loading...
                 </div>
 
-
-                <div class="detail-row">
-
-                    <span class="detail-label">
-                        Location
-                    </span>
-
-                    <span id="detailLocation">
-                        —
-                    </span>
-
+                <div
+                    class="profile-rating"
+                    id="businessRating"
+                >
+                    ⭐ No rating yet
                 </div>
 
+                <p
+                    class="profile-description"
+                    id="businessDescription"
+                >
+                    Loading business information...
+                </p>
 
-                <div class="detail-row">
+                <div class="profile-actions">
 
-                    <span class="detail-label">
-                        Phone
-                    </span>
+                    <a
+                        href="#"
+                        id="callButton"
+                        class="profile-btn primary"
+                    >
+                        📞 Call
+                    </a>
 
-                    <span id="detailPhone">
-                        —
-                    </span>
+                    <a
+                        href="#"
+                        id="whatsappButton"
+                        class="profile-btn"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        💬 WhatsApp
+                    </a>
 
-                </div>
-
-
-                <div class="detail-row">
-
-                    <span class="detail-label">
-                        Hours
-                    </span>
-
-                    <span id="detailHours">
-                        —
-                    </span>
+                    <a
+                        href="#"
+                        id="websiteButton"
+                        class="profile-btn"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        🌐 Website
+                    </a>
 
                 </div>
 
             </section>
 
 
-            <!-- MAP -->
+            <!-- INFORMATION + MAP -->
+            <div class="profile-grid">
 
-            <section class="profile-section">
+                <section class="profile-section">
+
+                    <h2>
+                        Business Information
+                    </h2>
+
+                    <div class="detail-row">
+                        <span class="detail-label">
+                            Category
+                        </span>
+
+                        <span id="detailCategory">
+                            —
+                        </span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">
+                            Location
+                        </span>
+
+                        <span id="detailLocation">
+                            —
+                        </span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">
+                            Phone
+                        </span>
+
+                        <span id="detailPhone">
+                            —
+                        </span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">
+                            Hours
+                        </span>
+
+                        <span id="detailHours">
+                            —
+                        </span>
+                    </div>
+
+                </section>
+
+
+                <section class="profile-section">
+
+                    <h2>
+                        Location
+                    </h2>
+
+                    <div id="business-map"></div>
+
+                </section>
+
+            </div>
+
+
+            <!-- REVIEWS -->
+            <section
+                class="profile-section"
+                style="margin-top:25px;"
+            >
 
                 <h2>
-                    Location
+                    Reviews
                 </h2>
 
-                <div id="business-map"></div>
+                <div id="reviews">
+
+                    <div class="review">
+
+                        <div class="review-name">
+                            No reviews yet
+                        </div>
+
+                        <div class="review-text">
+                            Be the first person to review
+                            this business.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CLAIM -->
+            <section class="claim-section">
+
+                <h2>
+                    Are you the owner?
+                </h2>
+
+                <p>
+                    Is this your business?
+                    Claim this listing to manage
+                    your business information and
+                    keep your customers up to date.
+                </p>
+
+                <a
+                    href="list-business.html"
+                    class="claim-btn"
+                >
+                    Claim This Business
+                </a>
 
             </section>
 
         </div>
 
-
-        <!-- REVIEWS -->
-
-        <section
-            class="profile-section"
-            style="margin-top:25px;"
-        >
-
-            <h2>
-                Reviews
-            </h2>
-
-
-            <div id="reviews">
-
-                <div class="review">
-
-                    <div class="review-name">
-                        No reviews yet
-                    </div>
-
-                    <div class="review-text">
-                        Be the first person to review
-                        this business.
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- CLAIM -->
-
-        <section class="claim-section">
-
-            <h2>
-                Are you the owner?
-            </h2>
-
-            <p>
-                Is this your business?
-                Claim this listing to manage your
-                business information and keep your
-                customers up to date.
-            </p>
-
-            <a
-                href="#"
-                class="claim-btn"
-                onclick="claimBusiness(event)"
-            >
-                Claim This Business
-            </a>
-
-        </section>
-
     </main>
 
 
     <!-- FOOTER -->
-
     <footer class="profile-footer">
 
         <p>
@@ -563,41 +510,40 @@
 
 
     <!-- LEAFLET -->
-
     <script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
     </script>
 
 
-    <!-- BUSINESS DATA -->
-
+    <!-- NEARAFRICA DATA -->
     <script src="businesses.js"></script>
 
 
     <script>
 
         /* =========================================
-           BUSINESS PROFILE LOGIC
+           NEARAFRICA BUSINESS PROFILE
         ========================================= */
 
 
         function getBusinesses() {
 
-            if (Array.isArray(window.businesses)) {
-                return window.businesses;
-            }
-
-            if (Array.isArray(window.BUSINESSES)) {
-                return window.BUSINESSES;
-            }
-
-            if (Array.isArray(window.businessData)) {
-                return window.businessData;
+            if (
+                window.NearAfricaData &&
+                Array.isArray(
+                    window.NearAfricaData.businesses
+                )
+            ) {
+                return window.NearAfricaData.businesses;
             }
 
             return [];
         }
 
+
+        /* -----------------------------------------
+           NORMALIZE BUSINESS DATA
+        ----------------------------------------- */
 
         function normalizeBusiness(business) {
 
@@ -620,23 +566,25 @@
                     "Business",
 
                 location:
-                    business.location ||
                     business.address ||
+                    business.location ||
                     business.city ||
+                    "Nigeria",
+
+                city:
+                    business.city ||
+                    "",
+
+                country:
+                    business.country ||
                     "Nigeria",
 
                 description:
                     business.description ||
-                    business.about ||
-                    "Business listed on NearAfrica.",
-
-                rating:
-                    business.rating ||
-                    null,
+                    "No description available.",
 
                 phone:
                     business.phone ||
-                    business.phoneNumber ||
                     "",
 
                 whatsapp:
@@ -648,25 +596,31 @@
                     business.website ||
                     "",
 
-                hours:
-                    business.hours ||
+                openingHours:
                     business.openingHours ||
                     "Contact business for opening hours.",
 
                 latitude:
                     Number(
-                        business.latitude ||
-                        business.lat ||
-                        0
+                        business.latitude || 0
                     ),
 
                 longitude:
                     Number(
-                        business.longitude ||
-                        business.lng ||
-                        business.lon ||
-                        0
-                    )
+                        business.longitude || 0
+                    ),
+
+                rating:
+                    business.rating ||
+                    null,
+
+                reviewCount:
+                    business.reviewCount ||
+                    0,
+
+                verified:
+                    business.verified ||
+                    false
 
             };
 
@@ -694,9 +648,7 @@
 
 
             if (!requestedId) {
-
-                return businesses[0] || null;
-
+                return null;
             }
 
 
@@ -710,17 +662,34 @@
 
 
         /* -----------------------------------------
-           ESCAPE HTML
+           SHOW NOT FOUND
         ----------------------------------------- */
 
-        function escapeHTML(value) {
+        function showNotFound() {
 
-            return String(value)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
+            document.getElementById(
+                "businessContent"
+            ).innerHTML = `
+
+                <section class="not-found">
+
+                    <h1>
+                        Business Not Found
+                    </h1>
+
+                    <p>
+                        This business could not be
+                        found in the current NearAfrica
+                        business directory.
+                    </p>
+
+                    <a href="explore.html">
+                        Explore Businesses
+                    </a>
+
+                </section>
+
+            `;
 
         }
 
@@ -737,15 +706,7 @@
 
             if (!business) {
 
-                document.getElementById(
-                    "businessName"
-                ).textContent =
-                    "Business Not Found";
-
-                document.getElementById(
-                    "businessDescription"
-                ).textContent =
-                    "We couldn't find this business.";
+                showNotFound();
 
                 return;
 
@@ -802,7 +763,7 @@
             document.getElementById(
                 "detailHours"
             ).textContent =
-                business.hours;
+                business.openingHours;
 
 
             const rating =
@@ -811,32 +772,48 @@
                 );
 
 
-            rating.textContent =
-                business.rating
-                    ? `⭐ ${business.rating}`
-                    : "⭐ No rating yet";
+            if (business.rating) {
+
+                rating.textContent =
+                    `⭐ ${business.rating} ` +
+                    `(${business.reviewCount} reviews)`;
+
+            } else {
+
+                rating.textContent =
+                    "⭐ No rating yet";
+
+            }
 
 
             /* PHONE */
 
-            if (business.phone) {
-
+            const callButton =
                 document.getElementById(
                     "callButton"
-                ).href =
+                );
+
+
+            if (business.phone) {
+
+                callButton.href =
                     `tel:${business.phone}`;
 
             } else {
 
-                document.getElementById(
-                    "callButton"
-                ).style.display =
+                callButton.style.display =
                     "none";
 
             }
 
 
             /* WHATSAPP */
+
+            const whatsappButton =
+                document.getElementById(
+                    "whatsappButton"
+                );
+
 
             if (business.whatsapp) {
 
@@ -849,16 +826,12 @@
                     );
 
 
-                document.getElementById(
-                    "whatsappButton"
-                ).href =
+                whatsappButton.href =
                     `https://wa.me/${cleanNumber}`;
 
             } else {
 
-                document.getElementById(
-                    "whatsappButton"
-                ).style.display =
+                whatsappButton.style.display =
                     "none";
 
             }
@@ -866,22 +839,26 @@
 
             /* WEBSITE */
 
-            if (business.website) {
-
+            const websiteButton =
                 document.getElementById(
                     "websiteButton"
-                ).href =
+                );
+
+
+            if (business.website) {
+
+                websiteButton.href =
                     business.website;
 
             } else {
 
-                document.getElementById(
-                    "websiteButton"
-                ).style.display =
+                websiteButton.style.display =
                     "none";
 
             }
 
+
+            /* MAP */
 
             initializeMap(business);
 
@@ -951,18 +928,17 @@
 
 
         /* -----------------------------------------
-           CLAIM
-           TEMPORARY
+           SECURITY
         ----------------------------------------- */
 
-        function claimBusiness(event) {
+        function escapeHTML(value) {
 
-            event.preventDefault();
-
-            alert(
-                "Business claiming will be connected " +
-                "to the NearAfrica verification system next."
-            );
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
 
         }
 
@@ -976,4 +952,4 @@
     </script>
 
 </body>
-</html>
+                            </html>
