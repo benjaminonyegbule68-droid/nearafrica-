@@ -2,157 +2,478 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NearAfrica – Find Great Businesses Near You Across Africa</title>
-  <meta name="description" content="Discover trusted businesses, services and places across Africa. Search spas, restaurants, barbers, hotels and more near you.">
-  <meta name="keywords" content="Africa business directory, local businesses Africa, find businesses near me, Nigeria, Ghana, Kenya, South Africa">
-  <meta name="author" content="NearAfrica">
-  <meta property="og:title" content="NearAfrica – Find Great Businesses Near You">
-  <meta property="og:description" content="Discover trusted businesses, services and places across Africa.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://nearafrica.example.com/">
-  <meta property="og:image" content="https://nearafrica.example.com/images/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="NearAfrica – Find Great Businesses Near You">
-  <meta name="twitter:description" content="Discover trusted businesses, services and places across Africa.">
-  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>NearAfrica — Find Great Businesses Near You</title>
+
+  <meta
+    name="description"
+    content="Discover trusted businesses, services and places across Africa with NearAfrica."
+  >
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Leaflet map -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIINfQ3h5HhJ9dJ9M8Jx0w7gJ7l2xw1M5zE="
+    crossorigin=""
+  >
 </head>
+
 <body>
 
-<header class="site-header">
+  <!-- =========================
+       HEADER
+  ========================== -->
+  <header class="site-header">
+
     <div class="container header-inner">
-            <a href="index.html" class="logo" aria-label="NearAfrica home">
-        <img src="images/logo.png" alt="NearAfrica" class="logo-img" width="160" height="40">
+
+      <a href="index.html" class="brand">
+        <img
+          src="logo.png"
+          alt="NearAfrica"
+          class="brand-logo"
+        >
+        <span class="brand-name">NearAfrica</span>
       </a>
-      <nav class="nav-links" aria-label="Main">
-        <a href="index.html" class="active">Home</a>
-        <a href="pages/search.html">Explore</a>
-        <a href="pages/list-business.html">List Your Business</a>
-        <a href="pages/admin.html">Admin</a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+
+        <a href="index.html" class="active">
+          Home
+        </a>
+
+        <a href="search.html">
+          Explore
+        </a>
+
+        <a href="list-business.html">
+          List Your Business
+        </a>
+
+        <a href="admin.html">
+          Admin
+        </a>
+
       </nav>
-      <div class="header-actions">
-        <a href="pages/list-business.html" class="btn btn-primary btn-sm">List Your Business</a>
-        <button type="button" class="btn-menu" id="menu-btn" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
+
     </div>
-    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
-      <a href="index.html">Home</a>
-      <a href="pages/search.html">Explore</a>
-      <a href="pages/list-business.html">List Your Business</a>
-      <a href="pages/admin.html">Admin</a>
-    </nav>
+
   </header>
 
-  <div class="flags-marquee" aria-label="African countries">
-    <div class="flags-track">
-      <span class="flag-item"><span class="flag-emoji">🇳🇬</span> Nigeria</span><span class="flag-item"><span class="flag-emoji">🇬🇭</span> Ghana</span><span class="flag-item"><span class="flag-emoji">🇰🇪</span> Kenya</span><span class="flag-item"><span class="flag-emoji">🇿🇦</span> South Africa</span><span class="flag-item"><span class="flag-emoji">🇺🇬</span> Uganda</span><span class="flag-item"><span class="flag-emoji">🇹🇿</span> Tanzania</span><span class="flag-item"><span class="flag-emoji">🇷🇼</span> Rwanda</span><span class="flag-item"><span class="flag-emoji">🇨🇲</span> Cameroon</span><span class="flag-item"><span class="flag-emoji">🇪🇬</span> Egypt</span><span class="flag-item"><span class="flag-emoji">🇲🇦</span> Morocco</span><span class="flag-item"><span class="flag-emoji">🇸🇳</span> Senegal</span><span class="flag-item"><span class="flag-emoji">🇪🇹</span> Ethiopia</span><span class="flag-item"><span class="flag-emoji">🇿🇲</span> Zambia</span><span class="flag-item"><span class="flag-emoji">🇿🇼</span> Zimbabwe</span><span class="flag-item"><span class="flag-emoji">🇧🇼</span> Botswana</span><span class="flag-item"><span class="flag-emoji">🇳🇦</span> Namibia</span><span class="flag-item"><span class="flag-emoji">🇨🇮</span> Côte d'Ivoire</span><span class="flag-item"><span class="flag-emoji">🇧🇯</span> Benin</span><span class="flag-item"><span class="flag-emoji">🇹🇬</span> Togo</span><span class="flag-item"><span class="flag-emoji">🇩🇿</span> Algeria</span><span class="flag-item"><span class="flag-emoji">🇦🇴</span> Angola</span><span class="flag-item"><span class="flag-emoji">🇧🇫</span> Burkina Faso</span><span class="flag-item"><span class="flag-emoji">🇧🇮</span> Burundi</span><span class="flag-item"><span class="flag-emoji">🇨🇻</span> Cape Verde</span><span class="flag-item"><span class="flag-emoji">🇨🇫</span> CAR</span><span class="flag-item"><span class="flag-emoji">🇹🇩</span> Chad</span><span class="flag-item"><span class="flag-emoji">🇰🇲</span> Comoros</span><span class="flag-item"><span class="flag-emoji">🇨🇬</span> Congo</span><span class="flag-item"><span class="flag-emoji">🇨🇩</span> DR Congo</span><span class="flag-item"><span class="flag-emoji">🇩🇯</span> Djibouti</span><span class="flag-item"><span class="flag-emoji">🇬🇶</span> Eq. Guinea</span><span class="flag-item"><span class="flag-emoji">🇪🇷</span> Eritrea</span><span class="flag-item"><span class="flag-emoji">🇸🇿</span> Eswatini</span><span class="flag-item"><span class="flag-emoji">🇬🇦</span> Gabon</span><span class="flag-item"><span class="flag-emoji">🇬🇲</span> Gambia</span><span class="flag-item"><span class="flag-emoji">🇬🇳</span> Guinea</span><span class="flag-item"><span class="flag-emoji">🇬🇼</span> Guinea-Bissau</span><span class="flag-item"><span class="flag-emoji">🇱🇸</span> Lesotho</span><span class="flag-item"><span class="flag-emoji">🇱🇷</span> Liberia</span><span class="flag-item"><span class="flag-emoji">🇱🇾</span> Libya</span><span class="flag-item"><span class="flag-emoji">🇲🇬</span> Madagascar</span><span class="flag-item"><span class="flag-emoji">🇲🇼</span> Malawi</span><span class="flag-item"><span class="flag-emoji">🇲🇱</span> Mali</span><span class="flag-item"><span class="flag-emoji">🇲🇷</span> Mauritania</span><span class="flag-item"><span class="flag-emoji">🇲🇺</span> Mauritius</span><span class="flag-item"><span class="flag-emoji">🇲🇿</span> Mozambique</span><span class="flag-item"><span class="flag-emoji">🇳🇪</span> Niger</span><span class="flag-item"><span class="flag-emoji">🇸🇹</span> São Tomé</span><span class="flag-item"><span class="flag-emoji">🇸🇨</span> Seychelles</span><span class="flag-item"><span class="flag-emoji">🇸🇱</span> Sierra Leone</span><span class="flag-item"><span class="flag-emoji">🇸🇴</span> Somalia</span><span class="flag-item"><span class="flag-emoji">🇸🇸</span> South Sudan</span><span class="flag-item"><span class="flag-emoji">🇸🇩</span> Sudan</span><span class="flag-item"><span class="flag-emoji">🇹🇳</span> Tunisia</span>
-      <span class="flag-item"><span class="flag-emoji">🇳🇬</span> Nigeria</span><span class="flag-item"><span class="flag-emoji">🇬🇭</span> Ghana</span><span class="flag-item"><span class="flag-emoji">🇰🇪</span> Kenya</span><span class="flag-item"><span class="flag-emoji">🇿🇦</span> South Africa</span><span class="flag-item"><span class="flag-emoji">🇺🇬</span> Uganda</span><span class="flag-item"><span class="flag-emoji">🇹🇿</span> Tanzania</span><span class="flag-item"><span class="flag-emoji">🇷🇼</span> Rwanda</span><span class="flag-item"><span class="flag-emoji">🇨🇲</span> Cameroon</span><span class="flag-item"><span class="flag-emoji">🇪🇬</span> Egypt</span><span class="flag-item"><span class="flag-emoji">🇲🇦</span> Morocco</span><span class="flag-item"><span class="flag-emoji">🇸🇳</span> Senegal</span><span class="flag-item"><span class="flag-emoji">🇪🇹</span> Ethiopia</span><span class="flag-item"><span class="flag-emoji">🇿🇲</span> Zambia</span><span class="flag-item"><span class="flag-emoji">🇿🇼</span> Zimbabwe</span><span class="flag-item"><span class="flag-emoji">🇧🇼</span> Botswana</span><span class="flag-item"><span class="flag-emoji">🇳🇦</span> Namibia</span><span class="flag-item"><span class="flag-emoji">🇨🇮</span> Côte d'Ivoire</span><span class="flag-item"><span class="flag-emoji">🇧🇯</span> Benin</span><span class="flag-item"><span class="flag-emoji">🇹🇬</span> Togo</span><span class="flag-item"><span class="flag-emoji">🇩🇿</span> Algeria</span><span class="flag-item"><span class="flag-emoji">🇦🇴</span> Angola</span><span class="flag-item"><span class="flag-emoji">🇧🇫</span> Burkina Faso</span><span class="flag-item"><span class="flag-emoji">🇧🇮</span> Burundi</span><span class="flag-item"><span class="flag-emoji">🇨🇻</span> Cape Verde</span><span class="flag-item"><span class="flag-emoji">🇨🇫</span> CAR</span><span class="flag-item"><span class="flag-emoji">🇹🇩</span> Chad</span><span class="flag-item"><span class="flag-emoji">🇰🇲</span> Comoros</span><span class="flag-item"><span class="flag-emoji">🇨🇬</span> Congo</span><span class="flag-item"><span class="flag-emoji">🇨🇩</span> DR Congo</span><span class="flag-item"><span class="flag-emoji">🇩🇯</span> Djibouti</span><span class="flag-item"><span class="flag-emoji">🇬🇶</span> Eq. Guinea</span><span class="flag-item"><span class="flag-emoji">🇪🇷</span> Eritrea</span><span class="flag-item"><span class="flag-emoji">🇸🇿</span> Eswatini</span><span class="flag-item"><span class="flag-emoji">🇬🇦</span> Gabon</span><span class="flag-item"><span class="flag-emoji">🇬🇲</span> Gambia</span><span class="flag-item"><span class="flag-emoji">🇬🇳</span> Guinea</span><span class="flag-item"><span class="flag-emoji">🇬🇼</span> Guinea-Bissau</span><span class="flag-item"><span class="flag-emoji">🇱🇸</span> Lesotho</span><span class="flag-item"><span class="flag-emoji">🇱🇷</span> Liberia</span><span class="flag-item"><span class="flag-emoji">🇱🇾</span> Libya</span><span class="flag-item"><span class="flag-emoji">🇲🇬</span> Madagascar</span><span class="flag-item"><span class="flag-emoji">🇲🇼</span> Malawi</span><span class="flag-item"><span class="flag-emoji">🇲🇱</span> Mali</span><span class="flag-item"><span class="flag-emoji">🇲🇷</span> Mauritania</span><span class="flag-item"><span class="flag-emoji">🇲🇺</span> Mauritius</span><span class="flag-item"><span class="flag-emoji">🇲🇿</span> Mozambique</span><span class="flag-item"><span class="flag-emoji">🇳🇪</span> Niger</span><span class="flag-item"><span class="flag-emoji">🇸🇹</span> São Tomé</span><span class="flag-item"><span class="flag-emoji">🇸🇨</span> Seychelles</span><span class="flag-item"><span class="flag-emoji">🇸🇱</span> Sierra Leone</span><span class="flag-item"><span class="flag-emoji">🇸🇴</span> Somalia</span><span class="flag-item"><span class="flag-emoji">🇸🇸</span> South Sudan</span><span class="flag-item"><span class="flag-emoji">🇸🇩</span> Sudan</span><span class="flag-item"><span class="flag-emoji">🇹🇳</span> Tunisia</span>
+
+  <!-- =========================
+       COUNTRY STRIP
+  ========================== -->
+  <section class="country-strip" aria-label="African countries">
+
+    <div class="country-track">
+
+      <span>🇳🇬 Nigeria</span>
+      <span>🇬🇭 Ghana</span>
+      <span>🇰🇪 Kenya</span>
+      <span>🇿🇦 South Africa</span>
+      <span>🇺🇬 Uganda</span>
+      <span>🇹🇿 Tanzania</span>
+      <span>🇷🇼 Rwanda</span>
+      <span>🇨🇲 Cameroon</span>
+      <span>🇪🇬 Egypt</span>
+      <span>🇲🇦 Morocco</span>
+      <span>🇸🇳 Senegal</span>
+      <span>🇪🇹 Ethiopia</span>
+      <span>🇿🇲 Zambia</span>
+      <span>🇿🇼 Zimbabwe</span>
+      <span>🇧🇼 Botswana</span>
+      <span>🇳🇦 Namibia</span>
+      <span>🇨🇮 Côte d'Ivoire</span>
+      <span>🇧🇯 Benin</span>
+      <span>🇹🇬 Togo</span>
+
     </div>
-  </div>
 
+  </section>
+
+
+  <!-- =========================
+       HERO
+  ========================== -->
   <main>
-    <section class="hero">
-      <div class="container">
-        <h1 class="hero-title">Find Great Businesses Near You.</h1>
-        <p class="hero-subtitle">Discover trusted businesses, services and places across Africa.</p>
 
-        <div class="search-box">
-          <form id="search-form" action="pages/search.html" method="get">
-            <div class="search-row">
-              <label class="sr-only" for="query-input">What are you looking for?</label>
+    <section class="hero">
+
+      <div class="container hero-content">
+
+        <div class="hero-text">
+
+          <span class="eyebrow">
+            AFRICA'S BUSINESS DISCOVERY PLATFORM
+          </span>
+
+          <h1>
+            Find Great
+            <span>Businesses Near You.</span>
+          </h1>
+
+          <p>
+            Discover trusted businesses, services and places
+            across Africa.
+          </p>
+
+        </div>
+
+
+        <!-- SEARCH BOX -->
+        <div class="hero-search">
+
+          <form id="search-form">
+
+            <div class="search-field">
+
+              <label for="query-input">
+                What are you looking for?
+              </label>
+
               <input
-                type="search"
+                type="text"
                 id="query-input"
-                name="q"
-                class="form-input"
-                placeholder="What are you looking for? e.g. Spa"
+                name="query"
+                placeholder="e.g. Spa, restaurant, barber..."
                 autocomplete="off"
               >
-              <label class="sr-only" for="location-input">Location</label>
+
+            </div>
+
+
+            <div class="search-field">
+
+              <label for="location-input">
+                Location
+              </label>
+
               <input
                 type="text"
                 id="location-input"
-                name="loc"
-                class="form-input"
-                placeholder="Enter your location e.g. Aba, Nigeria"
+                name="location"
+                placeholder="e.g. Aba, Nigeria"
                 autocomplete="off"
               >
-              <button type="submit" class="btn btn-primary">Search</button>
+
             </div>
-          </form>
-          <div class="location-actions">
-            <button type="button" class="btn btn-outline btn-sm" id="use-location-btn">
-              📍 Use My Location
+
+
+            <button
+              type="submit"
+              class="search-button"
+            >
+              Search
             </button>
+
+          </form>
+
+
+          <button
+            type="button"
+            id="use-location-btn"
+            class="location-button"
+          >
+            📍 Use My Location
+          </button>
+
+          <p
+            id="location-message"
+            class="location-message"
+          ></p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         CATEGORIES
+    ========================== -->
+    <section class="categories-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span class="eyebrow">
+            EXPLORE
+          </span>
+
+          <h2>
+            Popular Categories
+          </h2>
+
+          <p>
+            Find businesses by what you need.
+          </p>
+
+        </div>
+
+
+        <div
+          id="popular-categories"
+          class="category-grid"
+        >
+
+          <a href="search.html?category=Restaurants">
+            🍽️ Restaurants
+          </a>
+
+          <a href="search.html?category=Fashion">
+            👗 Fashion
+          </a>
+
+          <a href="search.html?category=Beauty%20%26%20Salons">
+            💇 Beauty & Salons
+          </a>
+
+          <a href="search.html?category=Barbers">
+            💈 Barbers
+          </a>
+
+          <a href="search.html?category=Hotels">
+            🏨 Hotels
+          </a>
+
+          <a href="search.html?category=Healthcare">
+            🏥 Healthcare
+          </a>
+
+          <a href="search.html?category=Education">
+            🎓 Education
+          </a>
+
+          <a href="search.html?category=Real%20Estate">
+            🏠 Real Estate
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         BUSINESS OWNER CTA
+    ========================== -->
+    <section class="business-cta">
+
+      <div class="container">
+
+        <div class="cta-card">
+
+          <div>
+
+            <span class="eyebrow">
+              BUSINESS OWNERS
+            </span>
+
+            <h2>
+              Own a business?
+            </h2>
+
+            <p>
+              Get your business discovered by customers
+              near you.
+            </p>
+
           </div>
-          <p id="location-message" class="text-muted mt-1" style="font-size:0.85rem" role="status"></p>
+
+
+          <a
+            href="list-business.html"
+            class="cta-button"
+          >
+            List Your Business
+          </a>
+
         </div>
+
       </div>
+
     </section>
 
-    <section class="section">
-      <div class="container">
-        <h2 class="text-center mb-2">Popular Categories</h2>
-        <div class="categories-grid" id="categories-grid">
-          <!-- Filled by app.js -->
+
+    <!-- =========================
+         ABOUT NEARAFRICA
+    ========================== -->
+    <section class="about-section">
+
+      <div class="container about-grid">
+
+        <div>
+
+          <span class="eyebrow">
+            NEARAFRICA
+          </span>
+
+          <h2>
+            Discover what's near you.
+          </h2>
+
         </div>
+
+        <div>
+
+          <p>
+            NearAfrica helps people discover businesses,
+            services and places across Africa.
+          </p>
+
+          <p>
+            Businesses can create listings and connect
+            with customers looking for what they offer.
+          </p>
+
+        </div>
+
       </div>
+
     </section>
 
-    <section class="cta-section">
-      <div class="container">
-        <h2>Own a business?</h2>
-        <p>Get your business discovered by customers near you.</p>
-        <a href="pages/list-business.html" class="btn btn-primary">List Your Business</a>
-      </div>
-    </section>
   </main>
 
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
   <footer class="site-footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <a href="index.html" class="logo">
-            <img src="images/logo.png" alt="NearAfrica" class="logo-img" width="140" height="36">
-          </a>
-          <p>Africa-first business discovery. Find trusted local services across the continent.</p>
-        </div>
-        <div class="footer-col">
-          <h4>Explore</h4>
-          <a href="pages/search.html?q=Spas">Spas</a>
-          <a href="pages/search.html?q=Restaurants">Restaurants</a>
-          <a href="pages/search.html?q=Barbers">Barbers</a>
-          <a href="pages/search.html?q=Hotels">Hotels</a>
-        </div>
-        <div class="footer-col">
-          <h4>Countries</h4>
-          <a href="pages/search.html?loc=Lagos">Nigeria</a>
-          <a href="pages/search.html?loc=Accra">Ghana</a>
-          <a href="pages/search.html?loc=Nairobi">Kenya</a>
-          <a href="pages/search.html?loc=Cape+Town">South Africa</a>
-        </div>
-        <div class="footer-col">
-          <h4>Business</h4>
-          <a href="pages/list-business.html">List Your Business</a>
-          <a href="pages/admin.html">Admin Dashboard</a>
-        </div>
+
+    <div class="container footer-grid">
+
+      <div class="footer-brand">
+
+        <a href="index.html" class="brand">
+
+          <img
+            src="logo.png"
+            alt="NearAfrica"
+            class="brand-logo"
+          >
+
+          <span class="brand-name">
+            NearAfrica
+          </span>
+
+        </a>
+
+        <p>
+          Africa-first business discovery.
+          Find trusted local services across the continent.
+        </p>
+
       </div>
-      <div class="footer-bottom">
-        <span>© 2026 NearAfrica. All rights reserved.</span>
-        <span>Demo data only — not real businesses.</span>
+
+
+      <div>
+
+        <h3>Explore</h3>
+
+        <a href="search.html?category=Beauty%20%26%20Salons">
+          Spas
+        </a>
+
+        <a href="search.html?category=Restaurants">
+          Restaurants
+        </a>
+
+        <a href="search.html?category=Barbers">
+          Barbers
+        </a>
+
+        <a href="search.html?category=Hotels">
+          Hotels
+        </a>
+
       </div>
+
+
+      <div>
+
+        <h3>Business</h3>
+
+        <a href="list-business.html">
+          List Your Business
+        </a>
+
+        <a href="admin.html">
+          Admin Dashboard
+        </a>
+
+      </div>
+
+
+      <div>
+
+        <h3>Countries</h3>
+
+        <a href="search.html?country=Nigeria">
+          Nigeria
+        </a>
+
+        <a href="search.html?country=Ghana">
+          Ghana
+        </a>
+
+        <a href="search.html?country=Kenya">
+          Kenya
+        </a>
+
+        <a href="search.html?country=South%20Africa">
+          South Africa
+        </a>
+
+      </div>
+
     </div>
+
+
+    <div class="container footer-bottom">
+
+      <p>
+        © 2026 NearAfrica. All rights reserved.
+      </p>
+
+      <p>
+        Discover local businesses across Africa.
+      </p>
+
+    </div>
+
   </footer>
 
-  <script src="js/config.js"></script>
-  <script src="data/businesses.js"></script>
-  <script src="js/utils.js"></script>
-  <script src="js/app.js"></script>
+
+  <!-- =========================
+       SCRIPTS
+  ========================== -->
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <script src="config.js"></script>
+  <script src="businesses.js"></script>
+  <script src="utils.js"></script>
+  <script src="map.js"></script>
+  <script src="app.js"></script>
+
 </body>
-</html>
+  </html>
