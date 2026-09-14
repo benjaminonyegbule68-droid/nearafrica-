@@ -1,479 +1,384 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+    <title>NearAfrica — Discover Businesses Near You</title>
+    <meta name="description" content="Discover businesses, services, shops and opportunities near you across Africa. Start with Nigeria.">
 
-  <title>NearAfrica — Find Great Businesses Near You</title>
+    <link rel="icon" href="images/favicon.svg">
+    <link rel="stylesheet" href="css/styles.css">
 
-  <meta
-    name="description"
-    content="Discover trusted businesses, services and places across Africa with NearAfrica."
-  >
-
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-
-  <!-- Main stylesheet -->
-  <link rel="stylesheet" href="styles.css">
-
-  <!-- Leaflet map -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIINfQ3h5HhJ9dJ9M8Jx0w7gJ7l2xw1M5zE="
-    crossorigin=""
-  >
+    <!-- Leaflet Maps -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
 </head>
 
 <body>
 
-  <!-- =========================
-       HEADER
-  ========================== -->
-  <header class="site-header">
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container header-inner">
 
-    <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <img
+                    src="images/logo.png"
+                    alt="NearAfrica"
+                    class="logo-img"
+                >
 
-      <a href="index.html" class="brand">
-        <img
-          src="logo.png"
-          alt="NearAfrica"
-          class="brand-logo"
-        >
-        <span class="brand-name">NearAfrica</span>
-      </a>
+                <span class="logo-text">NearAfrica</span>
+            </a>
 
-      <nav class="main-nav" aria-label="Main navigation">
-
-        <a href="index.html" class="active">
-          Home
-        </a>
-
-        <a href="search.html">
-          Explore
-        </a>
-
-        <a href="list-business.html">
-          List Your Business
-        </a>
-
-        <a href="admin.html">
-          Admin
-        </a>
-
-      </nav>
-
-    </div>
-
-  </header>
-
-
-  <!-- =========================
-       COUNTRY STRIP
-  ========================== -->
-  <section class="country-strip" aria-label="African countries">
-
-    <div class="country-track">
-
-      <span>🇳🇬 Nigeria</span>
-      <span>🇬🇭 Ghana</span>
-      <span>🇰🇪 Kenya</span>
-      <span>🇿🇦 South Africa</span>
-      <span>🇺🇬 Uganda</span>
-      <span>🇹🇿 Tanzania</span>
-      <span>🇷🇼 Rwanda</span>
-      <span>🇨🇲 Cameroon</span>
-      <span>🇪🇬 Egypt</span>
-      <span>🇲🇦 Morocco</span>
-      <span>🇸🇳 Senegal</span>
-      <span>🇪🇹 Ethiopia</span>
-      <span>🇿🇲 Zambia</span>
-      <span>🇿🇼 Zimbabwe</span>
-      <span>🇧🇼 Botswana</span>
-      <span>🇳🇦 Namibia</span>
-      <span>🇨🇮 Côte d'Ivoire</span>
-      <span>🇧🇯 Benin</span>
-      <span>🇹🇬 Togo</span>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================
-       HERO
-  ========================== -->
-  <main>
-
-    <section class="hero">
-
-      <div class="container hero-content">
-
-        <div class="hero-text">
-
-          <span class="eyebrow">
-            AFRICA'S BUSINESS DISCOVERY PLATFORM
-          </span>
-
-          <h1>
-            Find Great
-            <span>Businesses Near You.</span>
-          </h1>
-
-          <p>
-            Discover trusted businesses, services and places
-            across Africa.
-          </p>
+            <nav class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="explore.html">Explore</a>
+                <a href="list-business.html">List Your Business</a>
+                <a href="admin.html">Admin</a>
+            </nav>
 
         </div>
+    </header>
 
 
-        <!-- SEARCH BOX -->
-        <div class="hero-search">
+    <!-- AFRICA COUNTRY STRIP -->
+    <section class="flags-marquee">
+        <div class="flags-track">
 
-          <form id="search-form">
+            <span class="flag-item">🇳🇬 Nigeria</span>
+            <span class="flag-item">🇬🇭 Ghana</span>
+            <span class="flag-item">🇿🇦 South Africa</span>
+            <span class="flag-item">🇰🇪 Kenya</span>
+            <span class="flag-item">🇺🇬 Uganda</span>
+            <span class="flag-item">🇹🇿 Tanzania</span>
+            <span class="flag-item">🇷🇼 Rwanda</span>
+            <span class="flag-item">🇪🇬 Egypt</span>
+            <span class="flag-item">🇲🇦 Morocco</span>
+            <span class="flag-item">🇪🇹 Ethiopia</span>
+            <span class="flag-item">🇸🇳 Senegal</span>
+            <span class="flag-item">🇨🇲 Cameroon</span>
+            <span class="flag-item">🇨🇮 Côte d'Ivoire</span>
+            <span class="flag-item">🇿🇲 Zambia</span>
+            <span class="flag-item">🇿🇼 Zimbabwe</span>
 
-            <div class="search-field">
+        </div>
+    </section>
 
-              <label for="query-input">
-                What are you looking for?
-              </label>
 
-              <input
-                type="text"
-                id="query-input"
-                name="query"
-                placeholder="e.g. Spa, restaurant, barber..."
-                autocomplete="off"
-              >
+    <!-- HERO -->
+    <main>
+
+        <section class="hero">
+            <div class="container hero-content">
+
+                <div class="hero-text">
+
+                    <span class="hero-eyebrow">
+                        DISCOVER AFRICA. START LOCAL.
+                    </span>
+
+                    <h1 class="hero-title">
+                        Find Great Businesses
+                        <span>Near You.</span>
+                    </h1>
+
+                    <p class="hero-subtitle">
+                        Discover trusted businesses, services and opportunities
+                        around you — starting with Nigeria and expanding across Africa.
+                    </p>
+
+                </div>
+
+
+                <!-- SEARCH -->
+                <div class="search-box">
+
+                    <form id="searchForm" class="search-row">
+
+                        <div class="search-field">
+                            <label for="search">
+                                What are you looking for?
+                            </label>
+
+                            <input
+                                type="text"
+                                id="search"
+                                name="search"
+                                placeholder="e.g. barber, hotel, restaurant..."
+                                autocomplete="off"
+                            >
+                        </div>
+
+
+                        <div class="search-field">
+                            <label for="location">
+                                Location
+                            </label>
+
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                placeholder="e.g. Aba, Lagos, Abuja..."
+                                autocomplete="off"
+                            >
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary">
+                            Search
+                        </button>
+
+                    </form>
+
+
+                    <div class="location-actions">
+
+                        <button
+                            type="button"
+                            id="useLocation"
+                            class="btn btn-secondary"
+                        >
+                            📍 Use My Location
+                        </button>
+
+                        <p
+                            id="locationMessage"
+                            class="location-message"
+                            aria-live="polite"
+                        ></p>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- CATEGORIES -->
+        <section class="section">
+            <div class="container">
+
+                <div class="section-heading">
+                    <span class="section-eyebrow">
+                        EXPLORE
+                    </span>
+
+                    <h2>
+                        What are you looking for?
+                    </h2>
+
+                    <p>
+                        Explore businesses and services by category.
+                    </p>
+                </div>
+
+
+                <div class="categories-grid">
+
+                    <a href="explore.html?category=restaurants" class="category-card">
+                        <span class="category-icon">🍽️</span>
+                        <h3>Restaurants</h3>
+                        <p>Find places to eat near you.</p>
+                    </a>
+
+                    <a href="explore.html?category=beauty" class="category-card">
+                        <span class="category-icon">💇</span>
+                        <h3>Beauty &amp; Hair</h3>
+                        <p>Salons, barbers and beauty services.</p>
+                    </a>
+
+                    <a href="explore.html?category=hotels" class="category-card">
+                        <span class="category-icon">🏨</span>
+                        <h3>Hotels</h3>
+                        <p>Find places to stay.</p>
+                    </a>
+
+                    <a href="explore.html?category=shopping" class="category-card">
+                        <span class="category-icon">🛍️</span>
+                        <h3>Shopping</h3>
+                        <p>Discover shops and stores.</p>
+                    </a>
+
+                    <a href="explore.html?category=health" class="category-card">
+                        <span class="category-icon">🏥</span>
+                        <h3>Health</h3>
+                        <p>Healthcare services near you.</p>
+                    </a>
+
+                    <a href="explore.html?category=professional" class="category-card">
+                        <span class="category-icon">💼</span>
+                        <h3>Professional Services</h3>
+                        <p>Find businesses and professionals.</p>
+                    </a>
+
+                    <a href="explore.html?category=education" class="category-card">
+                        <span class="category-icon">🎓</span>
+                        <h3>Education</h3>
+                        <p>Schools, tutors and learning services.</p>
+                    </a>
+
+                    <a href="explore.html?category=automotive" class="category-card">
+                        <span class="category-icon">🚗</span>
+                        <h3>Automotive</h3>
+                        <p>Cars, repairs and automotive services.</p>
+                    </a>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- BUSINESS OWNER CTA -->
+        <section class="cta-section">
+            <div class="container">
+
+                <div class="cta-card">
+
+                    <div>
+                        <span class="section-eyebrow">
+                            BUSINESS OWNERS
+                        </span>
+
+                        <h2>
+                            Is your business on NearAfrica?
+                        </h2>
+
+                        <p>
+                            Add your business and help more people discover
+                            what you offer.
+                        </p>
+                    </div>
+
+                    <a href="list-business.html" class="btn btn-primary">
+                        List Your Business
+                    </a>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ABOUT -->
+        <section class="section">
+            <div class="container">
+
+                <div class="section-heading">
+                    <span class="section-eyebrow">
+                        ABOUT NEARAFRICA
+                    </span>
+
+                    <h2>
+                        Real businesses. Real information. Real value.
+                    </h2>
+
+                    <p>
+                        NearAfrica is being built to make it easier for people
+                        to discover businesses and services around them,
+                        starting in Nigeria and growing across Africa.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+
+        <div class="container footer-grid">
+
+            <div class="footer-col">
+
+                <a href="index.html" class="logo">
+                    <span class="logo-text">NearAfrica</span>
+                </a>
+
+                <p>
+                    Discover businesses.
+                    Discover opportunities.
+                    Discover Africa.
+                </p>
 
             </div>
 
 
-            <div class="search-field">
+            <div class="footer-col">
 
-              <label for="location-input">
-                Location
-              </label>
+                <h3>Explore</h3>
 
-              <input
-                type="text"
-                id="location-input"
-                name="location"
-                placeholder="e.g. Aba, Nigeria"
-                autocomplete="off"
-              >
+                <a href="explore.html">Businesses</a>
+                <a href="explore.html">Categories</a>
+                <a href="explore.html">Locations</a>
 
             </div>
 
 
-            <button
-              type="submit"
-              class="search-button"
-            >
-              Search
-            </button>
+            <div class="footer-col">
 
-          </form>
+                <h3>For Businesses</h3>
 
+                <a href="list-business.html">
+                    List Your Business
+                </a>
 
-          <button
-            type="button"
-            id="use-location-btn"
-            class="location-button"
-          >
-            📍 Use My Location
-          </button>
+                <a href="claim-business.html">
+                    Claim a Business
+                </a>
 
-          <p
-            id="location-message"
-            class="location-message"
-          ></p>
-
-        </div>
-
-      </div>
-
-    </section>
+            </div>
 
 
-    <!-- =========================
-         CATEGORIES
-    ========================== -->
-    <section class="categories-section">
+            <div class="footer-col">
 
-      <div class="container">
+                <h3>NearAfrica</h3>
 
-        <div class="section-heading">
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact</a>
 
-          <span class="eyebrow">
-            EXPLORE
-          </span>
-
-          <h2>
-            Popular Categories
-          </h2>
-
-          <p>
-            Find businesses by what you need.
-          </p>
+            </div>
 
         </div>
 
 
-        <div
-          id="popular-categories"
-          class="category-grid"
-        >
-
-          <a href="search.html?category=Restaurants">
-            🍽️ Restaurants
-          </a>
-
-          <a href="search.html?category=Fashion">
-            👗 Fashion
-          </a>
-
-          <a href="search.html?category=Beauty%20%26%20Salons">
-            💇 Beauty & Salons
-          </a>
-
-          <a href="search.html?category=Barbers">
-            💈 Barbers
-          </a>
-
-          <a href="search.html?category=Hotels">
-            🏨 Hotels
-          </a>
-
-          <a href="search.html?category=Healthcare">
-            🏥 Healthcare
-          </a>
-
-          <a href="search.html?category=Education">
-            🎓 Education
-          </a>
-
-          <a href="search.html?category=Real%20Estate">
-            🏠 Real Estate
-          </a>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         BUSINESS OWNER CTA
-    ========================== -->
-    <section class="business-cta">
-
-      <div class="container">
-
-        <div class="cta-card">
-
-          <div>
-
-            <span class="eyebrow">
-              BUSINESS OWNERS
-            </span>
-
-            <h2>
-              Own a business?
-            </h2>
+        <div class="container footer-bottom">
 
             <p>
-              Get your business discovered by customers
-              near you.
+                © 2026 NearAfrica. All rights reserved.
             </p>
 
-          </div>
-
-
-          <a
-            href="list-business.html"
-            class="cta-button"
-          >
-            List Your Business
-          </a>
+            <p>
+                Built for Africa.
+            </p>
 
         </div>
 
-      </div>
-
-    </section>
+    </footer>
 
 
-    <!-- =========================
-         ABOUT NEARAFRICA
-    ========================== -->
-    <section class="about-section">
+    <!-- JAVASCRIPT -->
 
-      <div class="container about-grid">
+    <script src="js/config.js"></script>
 
-        <div>
+    <!-- Use this only if businesses.js is inside the data folder -->
+    <script src="data/businesses.js"></script>
 
-          <span class="eyebrow">
-            NEARAFRICA
-          </span>
+    <script src="js/utils.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/app.js"></script>
 
-          <h2>
-            Discover what's near you.
-          </h2>
-
-        </div>
-
-        <div>
-
-          <p>
-            NearAfrica helps people discover businesses,
-            services and places across Africa.
-          </p>
-
-          <p>
-            Businesses can create listings and connect
-            with customers looking for what they offer.
-          </p>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- =========================
-       FOOTER
-  ========================== -->
-  <footer class="site-footer">
-
-    <div class="container footer-grid">
-
-      <div class="footer-brand">
-
-        <a href="index.html" class="brand">
-
-          <img
-            src="logo.png"
-            alt="NearAfrica"
-            class="brand-logo"
-          >
-
-          <span class="brand-name">
-            NearAfrica
-          </span>
-
-        </a>
-
-        <p>
-          Africa-first business discovery.
-          Find trusted local services across the continent.
-        </p>
-
-      </div>
-
-
-      <div>
-
-        <h3>Explore</h3>
-
-        <a href="search.html?category=Beauty%20%26%20Salons">
-          Spas
-        </a>
-
-        <a href="search.html?category=Restaurants">
-          Restaurants
-        </a>
-
-        <a href="search.html?category=Barbers">
-          Barbers
-        </a>
-
-        <a href="search.html?category=Hotels">
-          Hotels
-        </a>
-
-      </div>
-
-
-      <div>
-
-        <h3>Business</h3>
-
-        <a href="list-business.html">
-          List Your Business
-        </a>
-
-        <a href="admin.html">
-          Admin Dashboard
-        </a>
-
-      </div>
-
-
-      <div>
-
-        <h3>Countries</h3>
-
-        <a href="search.html?country=Nigeria">
-          Nigeria
-        </a>
-
-        <a href="search.html?country=Ghana">
-          Ghana
-        </a>
-
-        <a href="search.html?country=Kenya">
-          Kenya
-        </a>
-
-        <a href="search.html?country=South%20Africa">
-          South Africa
-        </a>
-
-      </div>
-
-    </div>
-
-
-    <div class="container footer-bottom">
-
-      <p>
-        © 2026 NearAfrica. All rights reserved.
-      </p>
-
-      <p>
-        Discover local businesses across Africa.
-      </p>
-
-    </div>
-
-  </footer>
-
-
-  <!-- =========================
-       SCRIPTS
-  ========================== -->
-
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""
-  ></script>
-
-  <script src="config.js"></script>
-  <script src="businesses.js"></script>
-  <script src="utils.js"></script>
-  <script src="map.js"></script>
-  <script src="app.js"></script>
+    <!-- Leaflet Maps -->
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
 
 </body>
-  </html>
+                              </html>
