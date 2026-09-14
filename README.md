@@ -1,214 +1,105 @@
-# NearAfrica – Business Discovery Platform for Africa
+<h1 align="center">
+  🌍 <span style="color:#D4AF37;">NearAfrica</span>
+</h1>
 
-A professional, mobile-first web application to discover local businesses across Africa.
+<p align="center">
+  <strong>Discover businesses. Discover opportunities. Discover Africa.</strong>
+</p>
 
-**DEMO MODE:** All business listings are fictional sample data for testing the interface only. Do not treat them as real businesses.
+<p align="center">
+  A business discovery platform built for Africa.
+</p>
 
----
+<hr>
 
-## How to run locally
+<h2>🎯 Project Goal</h2>
 
-1. Open the project folder in a code editor (VS Code, etc.).
-2. Serve the files with a simple local server (required for geolocation and some browsers):
+<p>
+NearAfrica helps people discover <strong>real businesses</strong>,
+services, and opportunities across Africa.
+</p>
 
-   **Option A – VS Code Live Server**  
-   Install the “Live Server” extension → right-click `index.html` → “Open with Live Server”.
+<h3 style="color:#D4AF37;">🇳🇬 Starting with Nigeria</h3>
 
-   **Option B – Python**  
-   ```bash
-   cd nearafrica
-   python3 -m http.server 8080
-   ```
-   Then open http://localhost:8080
+<p>
+NearAfrica will initially focus on Nigeria before expanding into
+other African countries.
+</p>
 
-   **Option C – Node (npx)**  
-   ```bash
-   npx serve .
-   ```
+<h2>🏗️ Architecture</h2>
 
-3. Open the site in your browser. Use Chrome/Firefox for best geolocation support.
+<table>
+<tr>
+<td align="center">
 
----
+<b>🌍 Website</b><br>
+Cloudflare Pages
 
-## Project structure
+</td>
 
-```
-nearafrica/
-├── index.html              # Landing / home page
-├── 404.html                # Custom 404 page
-├── css/
-│   └── styles.css          # All styles (dark + gold theme)
-├── js/
-│   ├── config.js           # App config & future API key placeholders
-│   ├── utils.js            # Distance, geolocation, search, helpers
-│   ├── map.js              # Leaflet / OpenStreetMap map logic
-│   └── app.js              # UI rendering & page logic
-├── data/
-│   └── businesses.js       # DEMO business data (replace with API later)
-├── pages/
-│   ├── search.html         # Search results + map
-│   ├── business.html       # Business profile
-│   ├── list-business.html  # Owner submission form
-│   └── admin.html          # Admin dashboard UI
-├── images/
-│   └── favicon.svg         # Custom favicon
-└── README.md               # This file
-```
+<td align="center">→</td>
 
----
+<td align="center">
 
-## What each file does
+<b>⚡ API</b><br>
+Cloudflare Worker
 
-| File | Purpose |
-|------|---------|
-| `index.html` | Strong landing page with search, categories, and CTA |
-| `pages/search.html` | List + map results, filters, sort |
-| `pages/business.html` | Full business profile |
-| `pages/list-business.html` | “List Your Business” form with validation |
-| `pages/admin.html` | Admin table UI (actions disabled until backend) |
-| `404.html` | Friendly not-found page |
-| `css/styles.css` | Mobile-first dark charcoal + gold design |
-| `js/config.js` | App name, radius, map provider, future API keys |
-| `js/utils.js` | Haversine distance, open-now check, search/filter, geolocation |
-| `js/map.js` | Leaflet map init, markers, detail map |
-| `js/app.js` | Cards, forms, page boot logic |
-| `data/businesses.js` | Mock businesses + categories + countries |
+</td>
 
----
+<td align="center">→</td>
 
-## How the search works
+<td align="center">
 
-1. User enters a keyword/category and optional location (or uses “Use My Location”).
-2. On submit, the app builds a query string and goes to `search.html`.
-3. `searchBusinesses()` in `utils.js`:
-   - Filters by category and keyword
-   - Calculates distance (Haversine) if coordinates are available
-   - Filters by radius
-   - Optionally keeps only “open now”
-   - Sorts by distance, rating, or name
-   - Boosts featured listings to the top
-4. Results are rendered as cards; the map shows matching markers.
+<b>🗄️ Database</b><br>
+Cloudflare D1
 
-Location resolution for city names uses a small demo dictionary in `utils.js` (`CITY_COORDS`). Replace this with a real geocoding API later.
+</td>
+</tr>
+</table>
 
----
+<h2>🎨 Design</h2>
 
-## How location detection works
+<table>
+<tr>
+<td><b>Background</b></td>
+<td>Dark Charcoal / Black</td>
+</tr>
 
-- “Use My Location” calls the browser Geolocation API (`navigator.geolocation`).
-- If permission is granted → latitude/longitude are stored and used for distance sorting.
-- If denied or unavailable → a clear message is shown:  
-  *“Location access was unavailable. Enter your city or location manually.”*
-- Manual city names are mapped to approximate coordinates via the demo city list.
+<tr>
+<td><b>Primary</b></td>
+<td>Gold #D4AF37</td>
+</tr>
 
----
+<tr>
+<td><b>Text</b></td>
+<td>White</td>
+</tr>
 
-## Where the business data comes from
+<tr>
+<td><b>Secondary Text</b></td>
+<td>Gray</td>
+</tr>
+</table>
 
-Currently from **`data/businesses.js`** (array `DEMO_BUSINESSES`).
+<h2>📖 Mission</h2>
 
-Every listing is clearly fictional. The banner on every page states DEMO MODE.
+<blockquote>
+“Whatever you do, work at it with all your heart...”<br>
+<strong>— Colossians 3:23</strong>
+</blockquote>
 
-The object shape matches a future database:
+<h2>🚨 Data Policy</h2>
 
-```
-id, name, category, description, country, city, address,
-latitude, longitude, phone, whatsapp, website, openingHours,
-images, rating, reviewCount, services, verified, featured, createdAt
-```
+<p style="color:#D4AF37;">
+<strong>NearAfrica must NEVER create or publish fake businesses as real businesses.</strong>
+</p>
 
----
-
-## Where to connect a real maps / business API
-
-1. **Maps**  
-   - MVP uses Leaflet + OpenStreetMap (no key).  
-   - For Mapbox/Google: put the key in `js/config.js` (or better, a backend proxy) and adapt `js/map.js`.
-
-2. **Business / Places data**  
-   - Replace the `DEMO_BUSINESSES` array with `fetch('/api/businesses')` or a Places API.  
-   - Keep the same object shape so the UI keeps working.  
-   - Do not scrape Google Maps or violate any provider’s terms.
-
-3. **Geocoding**  
-   - Replace `resolveLocation()` / `CITY_COORDS` with Nominatim, Google Geocoding, or Mapbox Geocoding.
-
----
-
-## How to connect a database later
-
-Suggested approach:
-
-1. Build a small backend (Node/Express, Python/Flask, etc.).
-2. Create a `businesses` table matching the schema above.
-3. Expose REST endpoints, e.g.:
-   - `GET /api/businesses?q=&lat=&lng=&category=`
-   - `GET /api/businesses/:id`
-   - `POST /api/businesses` (owner submission)
-   - Admin routes protected by auth
-4. In the frontend, replace `NearAfricaData.businesses` with the API response.
-5. Add authentication for admin and optional owner accounts.
-
----
-
-## How to deploy
-
-Simple static hosting works for the current MVP:
-
-- **Netlify / Vercel / GitHub Pages / Cloudflare Pages**  
-  Upload the `nearafrica` folder (or connect a Git repo).  
-  Point the 404 page to `404.html` in the host settings.
-
-When you add a backend and database, deploy the API separately (or as serverless functions) and point the frontend to that API URL.
-
----
-
-## What is currently DEMO functionality
-
-- All business listings and ratings (no real reviews shown)
-- Form “success” on List Your Business (nothing is saved)
-- Admin Edit/Remove buttons (disabled)
-- City geocoding (limited static list)
-- “Featured” and “Verified” badges (set manually in the mock data)
-- Map tiles from OpenStreetMap (fine for development; check usage policy for heavy production traffic)
-
----
-
-## What to change before launching publicly
-
-1. Replace mock data with a real, licensed data source or user-submitted listings.
-2. Add a backend + database and authentication.
-3. Implement real review collection (no fake reviews).
-4. Secure any map API keys on the server side.
-5. Add privacy policy, terms of service, and cookie notice if needed.
-6. Set a real domain and update Open Graph / meta URLs in HTML and `config.js`.
-7. Test geolocation and forms on real mobile devices.
-8. Ensure compliance with local business listing and data-protection rules.
-9. Turn off or gate the public Admin link; require login.
-10. Remove or hide the DEMO MODE banners once live data is in place.
-
----
-
-## Design notes
-
-- Black / dark charcoal background, white text, gold (`#d4af37`) accents
-- Rounded cards, subtle shadows, mobile-first layout
-- Desktop: results left, map right
-- Mobile: list first, “Show Map” toggle
-- Verified and Featured badges (Featured = future paid placement)
-
----
-
-## Monetization hooks (future)
-
-- Featured badge / sponsored placement in results  
-- Business subscriptions / premium profiles  
-- Advertising slots  
-- Lead generation tools  
-- Website design services for listed businesses  
-
-The `featured` field on each business is ready for a paid upgrade path.
-
----
-NearAfrica deployment test
-Built for beginners to learn from: plain HTML, CSS, and JavaScript, modular files, and clear comments.
+<ul>
+<li>✅ Real businesses</li>
+<li>✅ Real information</li>
+<li>✅ Genuine reviews</li>
+<li>✅ Legitimate business submissions</li>
+<li>❌ No fake businesses</li>
+<li>❌ No fake reviews</li>
+<li>❌ No fake ratings</li>
+</ul>
