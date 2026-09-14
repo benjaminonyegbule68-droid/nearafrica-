@@ -30,7 +30,11 @@
 
   <div class="container header-inner">
 
-    <a href="index.html" class="logo" aria-label="NearAfrica home">
+    <a
+      href="index.html"
+      class="logo"
+      aria-label="NearAfrica home"
+    >
       <img
         src="logo.png"
         alt="NearAfrica"
@@ -40,11 +44,18 @@
       >
     </a>
 
-    <nav class="nav-links" aria-label="Main navigation">
+    <nav
+      class="nav-links"
+      aria-label="Main navigation"
+    >
 
-      <a href="index.html">Home</a>
+      <a href="index.html">
+        Home
+      </a>
 
-      <a href="search.html">Explore</a>
+      <a href="search.html">
+        Explore
+      </a>
 
       <a
         href="list-business.html"
@@ -80,9 +91,17 @@
     aria-label="Mobile navigation"
   >
 
-    <a href="index.html">Home</a>
-    <a href="search.html">Explore</a>
-    <a href="list-business.html">List Your Business</a>
+    <a href="index.html">
+      Home
+    </a>
+
+    <a href="search.html">
+      Explore
+    </a>
+
+    <a href="list-business.html">
+      List Your Business
+    </a>
 
   </nav>
 
@@ -105,16 +124,12 @@
         </h1>
 
         <p class="text-muted">
-          Help customers across Africa discover your business
-          on NearAfrica.
+          Help customers across Africa discover your
+          business on NearAfrica.
         </p>
 
       </div>
 
-
-      <!-- =================================================
-           BUSINESS SUBMISSION FORM
-      ================================================== -->
 
       <div
         class="card"
@@ -122,7 +137,7 @@
       >
 
         <form
-          id="business-submission-form"
+          id="business-form"
           novalidate
         >
 
@@ -137,7 +152,7 @@
             <input
               type="text"
               id="business-name"
-              name="businessName"
+              name="business_name"
               placeholder="e.g. Example Fashion Store"
               required
               maxlength="100"
@@ -168,20 +183,28 @@
                 Restaurant
               </option>
 
+              <option value="Food & Groceries">
+                Food & Groceries
+              </option>
+
               <option value="Fashion">
-                Fashion & Clothing
+                Fashion
               </option>
 
-              <option value="Beauty">
-                Beauty & Personal Care
+              <option value="Beauty & Salons">
+                Beauty & Salons
               </option>
 
-              <option value="Health">
-                Health & Medical
+              <option value="Barbers">
+                Barbers
               </option>
 
-              <option value="Hotel">
-                Hotels & Accommodation
+              <option value="Hotels">
+                Hotels
+              </option>
+
+              <option value="Healthcare">
+                Healthcare
               </option>
 
               <option value="Education">
@@ -196,16 +219,36 @@
                 Automotive
               </option>
 
-              <option value="Technology">
-                Technology
-              </option>
-
               <option value="Professional Services">
                 Professional Services
               </option>
 
               <option value="Shopping">
-                Shopping & Retail
+                Shopping
+              </option>
+
+              <option value="Fitness">
+                Fitness
+              </option>
+
+              <option value="Entertainment">
+                Entertainment
+              </option>
+
+              <option value="Technology">
+                Technology
+              </option>
+
+              <option value="Home Services">
+                Home Services
+              </option>
+
+              <option value="Travel">
+                Travel
+              </option>
+
+              <option value="Events">
+                Events
               </option>
 
               <option value="Other">
@@ -335,7 +378,7 @@
             <textarea
               id="address"
               name="address"
-              placeholder="Enter the business address"
+              placeholder="Enter the full business address"
               rows="3"
               required
               maxlength="300"
@@ -421,7 +464,7 @@
           </div>
 
 
-          <!-- OWNER EMAIL -->
+          <!-- EMAIL -->
 
           <div class="form-group">
 
@@ -481,6 +524,26 @@
           ></div>
 
 
+          <!-- SUCCESS -->
+
+          <div
+            id="form-success"
+            role="status"
+            aria-live="polite"
+            style="display:none;margin:1rem 0;"
+          ></div>
+
+
+          <!-- ERROR -->
+
+          <div
+            id="form-error"
+            role="alert"
+            aria-live="assertive"
+            style="display:none;margin:1rem 0;"
+          ></div>
+
+
           <!-- SUBMIT -->
 
           <button
@@ -531,49 +594,22 @@
 </footer>
 
 
-<!-- Existing NearAfrica scripts -->
+<!-- NearAfrica scripts -->
 
 <script src="config.js"></script>
 <script src="businesses.js"></script>
 <script src="utils.js"></script>
 <script src="app.js"></script>
 
-
-<!-- Temporary form handler -->
-<script>
-
-  const form = document.getElementById(
-    "business-submission-form"
-  );
-
-  const statusBox = document.getElementById(
-    "submission-status"
-  );
-
-  form.addEventListener("submit", function(event) {
-
-    event.preventDefault();
-
-    if (!form.checkValidity()) {
-
-      statusBox.textContent =
-        "Please complete all required fields.";
-
-      statusBox.style.color = "crimson";
-
-      form.reportValidity();
-
-      return;
-    }
-
-    statusBox.textContent =
-      "Your business information is ready to be submitted. The NearAfrica database will be connected next.";
-
-    statusBox.style.color = "green";
-
-  });
-
-</script>
-
 </body>
-                </html>
+</html>
+
+After pasting
+
+1. Save "list-business.html".
+2. Don't deploy yet.
+3. We need to make one small correction in "app.js": the form's "id" is now correct, but I want to verify the submission handler against this exact page before we test it.
+
+The important part is that there is now no fake/temporary submission message. When we test this, it will actually attempt to put the business into your D1 database.
+
+Send me "done" after saving it, and we'll do the API test next.
