@@ -5,42 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Explore Businesses | NearAfrica</title>
-    <meta name="description" content="Discover real businesses, services and places across Nigeria with NearAfrica.">
 
-    <link rel="icon" href="favicon.svg">
-    <link rel="stylesheet" href="styles.css">
-
-    <!-- Leaflet Map -->
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    <meta
+        name="description"
+        content="Discover businesses, services and places across Africa with NearAfrica."
     >
 
+    <link rel="stylesheet" href="styles.css">
+
     <style>
-        /* =========================================
+        /* =====================================================
            EXPLORE PAGE
-        ========================================= */
+        ===================================================== */
 
         .explore-page {
             min-height: 100vh;
-            background: var(--bg-primary, #0d0d0d);
+            background: #0b0b0b;
+            color: #fff;
         }
 
         .explore-hero {
-            padding: 55px 20px 35px;
+            padding: 120px 6% 60px;
             text-align: center;
-            background:
-                radial-gradient(
-                    circle at top,
-                    rgba(212, 175, 55, 0.12),
-                    transparent 55%
-                );
         }
 
         .explore-hero h1 {
-            margin: 0 0 12px;
-            font-size: clamp(2rem, 5vw, 3.4rem);
-            color: #fff;
+            font-size: clamp(38px, 6vw, 68px);
+            margin-bottom: 15px;
         }
 
         .explore-hero h1 span {
@@ -48,924 +39,903 @@
         }
 
         .explore-hero p {
-            max-width: 650px;
+            max-width: 700px;
             margin: 0 auto;
             color: #aaa;
             line-height: 1.7;
         }
 
-        /* Search */
+        /* SEARCH */
 
-        .explore-search-area {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px 30px;
+        .search-area {
+            width: min(1100px, 92%);
+            margin: 0 auto 50px;
         }
 
-        .explore-search {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr auto;
+        .search-box {
+            display: flex;
             gap: 10px;
-            padding: 12px;
-            background: #171717;
-            border: 1px solid rgba(212, 175, 55, 0.25);
-            border-radius: 16px;
-            box-shadow: 0 15px 40px rgba(0,0,0,.3);
+            background: #151515;
+            padding: 10px;
+            border: 1px solid #292929;
+            border-radius: 14px;
         }
 
-        .explore-search input,
-        .explore-search select {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #333;
-            background: #0f0f0f;
-            color: #fff;
-            outline: none;
-        }
-
-        .explore-search input:focus,
-        .explore-search select:focus {
-            border-color: #d4af37;
-        }
-
-        .explore-search button {
-            padding: 0 25px;
+        .search-box input {
+            flex: 1;
+            min-width: 0;
+            background: transparent;
             border: none;
-            border-radius: 10px;
+            outline: none;
+            color: #fff;
+            font-size: 16px;
+            padding: 15px;
+        }
+
+        .search-box input::placeholder {
+            color: #777;
+        }
+
+        .search-button {
             background: #d4af37;
             color: #111;
+            border: none;
+            border-radius: 9px;
+            padding: 0 25px;
             font-weight: 700;
             cursor: pointer;
         }
 
-        .explore-search button:hover {
+        .search-button:hover {
             opacity: .9;
         }
 
-        /* Categories */
+        /* FILTERS */
 
-        .explore-container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 10px 20px 60px;
-        }
-
-        .section-title {
-            color: #fff;
-            margin: 25px 0 15px;
-            font-size: 1.25rem;
-        }
-
-        .category-filters {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-        }
-
-        .category-btn {
-            padding: 9px 15px;
-            border-radius: 30px;
-            border: 1px solid #333;
-            background: #171717;
-            color: #ccc;
-            cursor: pointer;
-            transition: .2s;
-        }
-
-        .category-btn:hover,
-        .category-btn.active {
-            background: #d4af37;
-            color: #111;
-            border-color: #d4af37;
-        }
-
-        /* Layout */
-
-        .explore-layout {
+        .filters {
             display: grid;
-            grid-template-columns: 1.1fr 1fr;
-            gap: 25px;
-            align-items: start;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 15px;
         }
 
-        /* Business results */
+        .filters select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 9px;
+            border: 1px solid #292929;
+            background: #151515;
+            color: #fff;
+            outline: none;
+        }
+
+        /* RESULTS */
+
+        .results-section {
+            width: min(1200px, 92%);
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
 
         .results-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .results-header h2 {
+            margin: 0;
+            font-size: 25px;
         }
 
         .results-count {
-            color: #888;
-            font-size: .9rem;
+            color: #999;
+            font-size: 14px;
         }
 
         .business-grid {
             display: grid;
-            gap: 15px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
         .business-card {
-            background: #171717;
+            background: #151515;
             border: 1px solid #292929;
             border-radius: 15px;
-            padding: 18px;
-            transition: .2s;
+            overflow: hidden;
+            transition: transform .2s ease, border-color .2s ease;
         }
 
         .business-card:hover {
-            border-color: rgba(212, 175, 55, .6);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            border-color: #d4af37;
         }
 
-        .business-card h3 {
-            margin: 0 0 7px;
-            color: #fff;
+        .business-card-content {
+            padding: 22px;
         }
 
         .business-category {
-            display: inline-block;
-            margin-bottom: 10px;
             color: #d4af37;
-            font-size: .85rem;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .business-card h3 {
+            margin: 9px 0;
+            font-size: 21px;
         }
 
         .business-location {
             color: #aaa;
-            font-size: .9rem;
-            margin-bottom: 10px;
+            font-size: 14px;
+            margin-bottom: 13px;
         }
 
         .business-description {
             color: #999;
-            line-height: 1.5;
-            font-size: .9rem;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #d4af37;
+            font-size: 12px;
+            font-weight: 700;
             margin-bottom: 15px;
         }
 
-        .business-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .view-business {
-            display: inline-block;
-            padding: 9px 14px;
-            border-radius: 8px;
+        .business-link {
+            display: block;
+            text-align: center;
             background: #d4af37;
             color: #111;
             text-decoration: none;
-            font-size: .85rem;
+            padding: 12px;
+            border-radius: 8px;
             font-weight: 700;
         }
 
-        .no-results {
-            padding: 35px 20px;
+        .business-link:hover {
+            opacity: .9;
+        }
+
+        /* STATES */
+
+        .state-message {
             text-align: center;
-            border: 1px dashed #333;
-            border-radius: 15px;
-            color: #888;
-        }
-
-        /* Map */
-
-        .map-wrapper {
-            position: sticky;
-            top: 20px;
-        }
-
-        #explore-map {
-            height: 570px;
-            width: 100%;
-            border-radius: 16px;
-            overflow: hidden;
+            padding: 60px 20px;
+            background: #151515;
             border: 1px solid #292929;
+            border-radius: 15px;
+            color: #aaa;
         }
 
-        /* Footer */
-
-        .explore-footer {
-            border-top: 1px solid #222;
-            padding: 30px 20px;
-            text-align: center;
-            color: #777;
+        .state-message h3 {
+            color: #fff;
+            margin-bottom: 10px;
         }
 
-        .explore-footer a {
+        .loading {
             color: #d4af37;
-            text-decoration: none;
         }
 
-        /* Mobile */
+        .error {
+            color: #ff8a8a;
+        }
 
-        @media (max-width: 850px) {
-            .explore-search {
-                grid-template-columns: 1fr;
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            .business-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .explore-search button {
+            .filters {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .explore-hero {
+                padding-top: 100px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-button {
                 padding: 14px;
             }
 
-            .explore-layout {
+            .business-grid {
                 grid-template-columns: 1fr;
             }
 
-            .map-wrapper {
-                position: static;
-            }
-
-            #explore-map {
-                height: 400px;
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
 </head>
 
-<body class="explore-page">
+<body>
+
+<div class="explore-page">
 
     <!-- HEADER -->
-    <header class="site-header">
-        <div class="container header-inner">
 
-            <a href="index.html" class="logo">
-                <img
-                    src="logo.png"
-                    alt="NearAfrica"
-                    class="logo-img"
-                >
-                <span class="logo-text">NearAfrica</span>
-            </a>
+    <header>
+        <a href="index.html" class="logo">
+            Near<span>Africa</span>
+        </a>
 
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="explore.html" class="active">Explore</a>
-                <a href="list-business.html">List Your Business</a>
-            </nav>
-
-        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="explore.html">Explore</a>
+            <a href="list-business.html">List Your Business</a>
+        </nav>
     </header>
 
 
     <!-- HERO -->
+
     <section class="explore-hero">
-        <h1>Explore <span>NearAfrica</span></h1>
+
+        <h1>
+            Discover Businesses
+            <span>Near You</span>
+        </h1>
 
         <p>
-            Discover businesses, services and places around you.
-            Search by business, category or location.
+            Find businesses, services and places across Africa.
+            Search by name, category, country, state or city.
         </p>
+
     </section>
 
 
     <!-- SEARCH -->
-    <section class="explore-search-area">
 
-        <div class="explore-search">
+    <section class="search-area">
+
+        <div class="search-box">
 
             <input
                 type="text"
                 id="searchInput"
-                placeholder="What are you looking for?"
+                placeholder="Search businesses, services or locations..."
                 autocomplete="off"
             >
 
-            <input
-                type="text"
-                id="locationInput"
-                placeholder="Location e.g. Lagos"
-                autocomplete="off"
+            <button
+                class="search-button"
+                id="searchButton"
             >
-
-            <button id="searchButton">
                 Search
             </button>
 
         </div>
 
+
+        <div class="filters">
+
+            <select id="categoryFilter">
+
+                <option value="">
+                    All Categories
+                </option>
+
+                <option value="Spa">
+                    Spas
+                </option>
+
+                <option value="Restaurant">
+                    Restaurants
+                </option>
+
+                <option value="Barber">
+                    Barbers
+                </option>
+
+                <option value="Hair Salon">
+                    Hair Salons
+                </option>
+
+                <option value="Hotel">
+                    Hotels
+                </option>
+
+                <option value="Fashion">
+                    Fashion Stores
+                </option>
+
+                <option value="Gym">
+                    Gyms
+                </option>
+
+                <option value="Hospital">
+                    Hospitals / Clinics
+                </option>
+
+                <option value="Mechanic">
+                    Mechanics
+                </option>
+
+                <option value="Real Estate">
+                    Real Estate
+                </option>
+
+                <option value="School">
+                    Schools
+                </option>
+
+                <option value="Supermarket">
+                    Supermarkets
+                </option>
+
+                <option value="Photographer">
+                    Photographers
+                </option>
+
+                <option value="Event Planner">
+                    Event Planners
+                </option>
+
+            </select>
+
+
+            <select id="countryFilter">
+
+                <option value="">
+                    All Countries
+                </option>
+
+                <option value="Nigeria">
+                    Nigeria
+                </option>
+
+                <option value="Ghana">
+                    Ghana
+                </option>
+
+                <option value="Kenya">
+                    Kenya
+                </option>
+
+                <option value="South Africa">
+                    South Africa
+                </option>
+
+                <option value="Uganda">
+                    Uganda
+                </option>
+
+                <option value="Tanzania">
+                    Tanzania
+                </option>
+
+            </select>
+
+
+            <select id="stateFilter">
+
+                <option value="">
+                    All States
+                </option>
+
+            </select>
+
+        </div>
+
     </section>
 
 
-    <!-- MAIN -->
-    <main class="explore-container">
+    <!-- RESULTS -->
 
-        <h2 class="section-title">
-            Browse Categories
-        </h2>
+    <section class="results-section">
 
-        <div class="category-filters">
+        <div class="results-header">
 
-            <button class="category-btn active" data-category="all">
-                All
-            </button>
+            <h2>
+                Businesses
+            </h2>
 
-            <button class="category-btn" data-category="restaurant">
-                Restaurants
-            </button>
-
-            <button class="category-btn" data-category="beauty">
-                Beauty & Hair
-            </button>
-
-            <button class="category-btn" data-category="hotel">
-                Hotels
-            </button>
-
-            <button class="category-btn" data-category="shopping">
-                Shopping
-            </button>
-
-            <button class="category-btn" data-category="health">
-                Health
-            </button>
-
-            <button class="category-btn" data-category="professional">
-                Professional Services
-            </button>
-
-            <button class="category-btn" data-category="education">
-                Education
-            </button>
-
-            <button class="category-btn" data-category="automotive">
-                Automotive
-            </button>
+            <div
+                class="results-count"
+                id="resultsCount"
+            >
+                Loading...
+            </div>
 
         </div>
 
 
-        <div class="explore-layout">
+        <div
+            id="businessResults"
+            class="business-grid"
+        >
 
-            <!-- RESULTS -->
-            <section>
+            <div class="state-message">
 
-                <div class="results-header">
-
-                    <h2 class="section-title" style="margin:0;">
-                        Businesses
-                    </h2>
-
-                    <span
-                        class="results-count"
-                        id="resultsCount"
-                    >
-                        Loading...
-                    </span>
-
+                <div class="loading">
+                    Loading businesses...
                 </div>
 
-                <div
-                    id="businessGrid"
-                    class="business-grid"
-                >
-                </div>
-
-            </section>
-
-
-            <!-- MAP -->
-            <section class="map-wrapper">
-
-                <div id="explore-map"></div>
-
-            </section>
+            </div>
 
         </div>
 
-    </main>
+    </section>
+
+</div>
 
 
-    <!-- FOOTER -->
-    <footer class="explore-footer">
-        <p>
-            © 2026 NearAfrica ·
-            <a href="index.html">Back to Home</a>
-        </p>
-    </footer>
+<script>
+
+    /* =====================================================
+       NEARAFRICA API
+    ===================================================== */
+
+    const API_URL =
+        "https://nearafrica-api.uxmangee.workers.dev";
 
 
-    <!-- LEAFLET -->
-    <script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-    </script>
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    const searchButton =
+        document.getElementById("searchButton");
+
+    const categoryFilter =
+        document.getElementById("categoryFilter");
+
+    const countryFilter =
+        document.getElementById("countryFilter");
+
+    const stateFilter =
+        document.getElementById("stateFilter");
+
+    const businessResults =
+        document.getElementById("businessResults");
+
+    const resultsCount =
+        document.getElementById("resultsCount");
 
 
-    <!-- NEARAFRICA DATA -->
-    <script src="businesses.js"></script>
+    /* =====================================================
+       LOAD BUSINESSES
+    ===================================================== */
 
+    async function loadBusinesses() {
 
-    <script>
-        /* =========================================
-           NEARAFRICA EXPLORE
-        ========================================= */
+        try {
 
-        const searchInput =
-            document.getElementById("searchInput");
+            businessResults.innerHTML = `
+                <div class="state-message">
+                    <div class="loading">
+                        Loading businesses...
+                    </div>
+                </div>
+            `;
 
-        const locationInput =
-            document.getElementById("locationInput");
+            const params =
+                new URLSearchParams();
 
-        const searchButton =
-            document.getElementById("searchButton");
-
-        const businessGrid =
-            document.getElementById("businessGrid");
-
-        const resultsCount =
-            document.getElementById("resultsCount");
-
-        const categoryButtons =
-            document.querySelectorAll(".category-btn");
-
-
-        let activeCategory = "all";
-
-
-        /* -----------------------------------------
-           GET BUSINESS DATA
-        ----------------------------------------- */
-
-        function getBusinesses() {
-
-            /*
-             * Supports several common formats.
-             * This allows the page to work with
-             * different businesses.js structures.
-             */
-
-            if (Array.isArray(window.businesses)) {
-                return window.businesses;
-            }
-
-            if (Array.isArray(window.BUSINESSES)) {
-                return window.BUSINESSES;
-            }
-
-            if (Array.isArray(window.businessData)) {
-                return window.businessData;
-            }
-
-            return [];
-        }
-
-
-        /* -----------------------------------------
-           NORMALIZE BUSINESS
-        ----------------------------------------- */
-
-        function normalizeBusiness(business) {
-
-            return {
-                name:
-                    business.name ||
-                    business.businessName ||
-                    business.title ||
-                    "Unnamed Business",
-
-                category:
-                    business.category ||
-                    business.type ||
-                    "Business",
-
-                location:
-                    business.location ||
-                    business.address ||
-                    business.city ||
-                    "Nigeria",
-
-                description:
-                    business.description ||
-                    business.about ||
-                    "Business listed on NearAfrica.",
-
-                rating:
-                    business.rating ||
-                    null,
-
-                latitude:
-                    Number(
-                        business.latitude ||
-                        business.lat ||
-                        0
-                    ),
-
-                longitude:
-                    Number(
-                        business.longitude ||
-                        business.lng ||
-                        business.lon ||
-                        0
-                    ),
-
-                id:
-                    business.id ||
-                    business.slug ||
-                    business.name
-            };
-        }
-
-
-        /* -----------------------------------------
-           FILTER BUSINESSES
-        ----------------------------------------- */
-
-        function filterBusinesses() {
-
-            const businesses =
-                getBusinesses().map(normalizeBusiness);
 
             const search =
-                searchInput.value
-                    .trim()
-                    .toLowerCase();
+                searchInput.value.trim();
 
-            const location =
-                locationInput.value
-                    .trim()
-                    .toLowerCase();
+            const category =
+                categoryFilter.value;
 
+            const country =
+                countryFilter.value;
 
-            return businesses.filter(business => {
-
-                const searchableText =
-                    `${business.name}
-                     ${business.category}
-                     ${business.description}
-                     ${business.location}`
-                    .toLowerCase();
+            const state =
+                stateFilter.value;
 
 
-                const matchesSearch =
-                    !search ||
-                    searchableText.includes(search);
+            if (search) {
+                params.set("q", search);
+            }
+
+            if (category) {
+                params.set("category", category);
+            }
+
+            if (country) {
+                params.set("country", country);
+            }
+
+            if (state) {
+                params.set("state", state);
+            }
 
 
-                const matchesLocation =
-                    !location ||
-                    business.location
-                        .toLowerCase()
-                        .includes(location);
+            const url =
+                `${API_URL}/businesses?${params.toString()}`;
 
 
-                const category =
-                    business.category
-                        .toLowerCase();
+            const response =
+                await fetch(url);
 
 
-                const matchesCategory =
-                    activeCategory === "all" ||
-                    category.includes(
-                        activeCategory
-                    );
-
-
-                return (
-                    matchesSearch &&
-                    matchesLocation &&
-                    matchesCategory
+            if (!response.ok) {
+                throw new Error(
+                    `API returned ${response.status}`
                 );
-
-            });
-        }
+            }
 
 
-        /* -----------------------------------------
-           DISPLAY BUSINESSES
-        ----------------------------------------- */
+            const data =
+                await response.json();
 
-        function displayBusinesses() {
+
+            if (!data.success) {
+                throw new Error(
+                    data.message ||
+                    "Could not load businesses."
+                );
+            }
+
 
             const businesses =
-                filterBusinesses();
-
-
-            businessGrid.innerHTML = "";
+                Array.isArray(data.businesses)
+                    ? data.businesses
+                    : [];
 
 
             resultsCount.textContent =
-                `${businesses.length} business${
-                    businesses.length === 1
-                        ? ""
-                        : "es"
-                } found`;
+                `${businesses.length} business${businesses.length === 1 ? "" : "es"}`;
 
 
-            if (businesses.length === 0) {
-
-                businessGrid.innerHTML = `
-                    <div class="no-results">
-                        <h3>No businesses found</h3>
-                        <p>
-                            Try another search, location
-                            or category.
-                        </p>
-                    </div>
-                `;
-
-                updateMap([]);
-
-                return;
-            }
+            populateStates(businesses);
 
 
-            businesses.forEach(business => {
+            renderBusinesses(businesses);
 
-                const card =
-                    document.createElement("article");
+        } catch (error) {
 
-                card.className =
-                    "business-card";
+            console.error(
+                "NearAfrica API error:",
+                error
+            );
 
+            resultsCount.textContent =
+                "Unable to load";
 
-                const rating =
-                    business.rating
-                        ? `⭐ ${business.rating}`
-                        : "";
+            businessResults.innerHTML = `
 
-
-                card.innerHTML = `
+                <div class="state-message">
 
                     <h3>
-                        ${escapeHTML(business.name)}
+                        We couldn't load businesses
                     </h3>
 
-                    <span class="business-category">
-                        ${escapeHTML(business.category)}
-                    </span>
+                    <p>
+                        Please try again in a moment.
+                    </p>
 
-                    <div class="business-location">
-                        📍 ${escapeHTML(business.location)}
+                </div>
+
+            `;
+        }
+    }
+
+
+    /* =====================================================
+       RENDER BUSINESSES
+    ===================================================== */
+
+    function renderBusinesses(
+        businesses
+    ) {
+
+        if (!businesses.length) {
+
+            businessResults.innerHTML = `
+
+                <div class="state-message">
+
+                    <h3>
+                        No businesses found
+                    </h3>
+
+                    <p>
+                        Try another search, location or category.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        businessResults.innerHTML =
+            businesses.map(
+                business => createBusinessCard(business)
+            ).join("");
+    }
+
+
+    /* =====================================================
+       BUSINESS CARD
+    ===================================================== */
+
+    function createBusinessCard(
+        business
+    ) {
+
+        const id =
+            encodeURIComponent(
+                business.id
+            );
+
+
+        const name =
+            escapeHTML(
+                business.business_name ||
+                "Unnamed Business"
+            );
+
+
+        const category =
+            escapeHTML(
+                business.category ||
+                "Business"
+            );
+
+
+        const city =
+            escapeHTML(
+                business.city ||
+                ""
+            );
+
+
+        const state =
+            escapeHTML(
+                business.state ||
+                ""
+            );
+
+
+        const country =
+            escapeHTML(
+                business.country ||
+                ""
+            );
+
+
+        const description =
+            escapeHTML(
+                business.description ||
+                "No description available."
+            );
+
+
+        const location =
+            [city, state, country]
+                .filter(Boolean)
+                .join(", ");
+
+
+        const verified =
+            Number(business.verified) === 1;
+
+
+        return `
+
+            <article class="business-card">
+
+                <div class="business-card-content">
+
+                    <div class="business-category">
+                        ${category}
                     </div>
 
+                    <h3>
+                        ${name}
+                    </h3>
+
                     ${
-                        rating
-                            ? `<div style="color:#d4af37;margin-bottom:10px;">
-                                ${rating}
-                               </div>`
+                        verified
+                            ? `
+                                <div class="verified">
+                                    ✓ Verified Business
+                                </div>
+                              `
                             : ""
                     }
 
+                    <div class="business-location">
+                        📍 ${location || "Location unavailable"}
+                    </div>
+
                     <p class="business-description">
-                        ${escapeHTML(
-                            business.description
-                        )}
+                        ${description}
                     </p>
 
-                    <div class="business-actions">
+                    <a
+                        class="business-link"
+                        href="business.html?id=${id}"
+                    >
+                        View Business
+                    </a>
 
-                        <a
-                            href="#"
-                            class="view-business"
-                            onclick="openBusiness(event, '${encodeURIComponent(
-                                business.id
-                            )}')"
-                        >
-                            View Business
-                        </a>
+                </div>
 
-                    </div>
-                `;
+            </article>
 
+        `;
+    }
 
-                businessGrid.appendChild(card);
 
-            });
+    /* =====================================================
+       POPULATE STATES
+    ===================================================== */
 
+    function populateStates(
+        businesses
+    ) {
 
-            updateMap(businesses);
-        }
+        const current =
+            stateFilter.value;
 
 
-        /* -----------------------------------------
-           SAFE TEXT
-        ----------------------------------------- */
-
-        function escapeHTML(value) {
-
-            return String(value)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-
-        /* -----------------------------------------
-           BUSINESS CLICK
-        ----------------------------------------- */
-
-        function openBusiness(event, id) {
-
-            event.preventDefault();
-
-            /*
-             * Business profile pages can be connected
-             * later when we build them.
-             */
-
-            alert(
-                "Business profiles are coming next. " +
-                "The business has been found successfully."
-            );
-        }
-
-
-        /* -----------------------------------------
-           CATEGORY BUTTONS
-        ----------------------------------------- */
-
-        categoryButtons.forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    categoryButtons.forEach(btn => {
-                        btn.classList.remove("active");
-                    });
-
-                    button.classList.add("active");
-
-                    activeCategory =
-                        button.dataset.category;
-
-                    displayBusinesses();
-                }
-            );
-
-        });
-
-
-        /* -----------------------------------------
-           SEARCH
-        ----------------------------------------- */
-
-        searchButton.addEventListener(
-            "click",
-            displayBusinesses
-        );
-
-
-        searchInput.addEventListener(
-            "keydown",
-            event => {
-
-                if (event.key === "Enter") {
-                    displayBusinesses();
-                }
-
-            }
-        );
-
-
-        locationInput.addEventListener(
-            "keydown",
-            event => {
-
-                if (event.key === "Enter") {
-                    displayBusinesses();
-                }
-
-            }
-        );
-
-
-        /* -----------------------------------------
-           MAP
-        ----------------------------------------- */
-
-        let exploreMap;
-        let markers = [];
-
-
-        function initializeMap() {
-
-            exploreMap =
-                L.map("explore-map")
-                 .setView(
-                     [9.0820, 8.6753],
-                     6
-                 );
-
-
-            L.tileLayer(
-                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                {
-                    attribution:
-                        '&copy; OpenStreetMap contributors'
-                }
-            ).addTo(exploreMap);
-        }
-
-
-        function updateMap(businesses) {
-
-            if (!exploreMap) {
-                return;
-            }
-
-
-            markers.forEach(marker => {
-
-                exploreMap.removeLayer(marker);
-
-            });
-
-            markers = [];
-
-
-            const validBusinesses =
-                businesses.filter(
-                    business =>
-                        business.latitude &&
-                        business.longitude
-                );
-
-
-            validBusinesses.forEach(
-                business => {
-
-                    const marker =
-                        L.marker([
-                            business.latitude,
-                            business.longitude
-                        ])
-                        .addTo(exploreMap);
-
-
-                    marker.bindPopup(`
-                        <strong>
-                            ${escapeHTML(
-                                business.name
-                            )}
-                        </strong>
-                        <br>
-                        ${escapeHTML(
-                            business.category
-                        )}
-                        <br>
-                        ${escapeHTML(
-                            business.location
-                        )}
-                    `);
-
-
-                    markers.push(marker);
-                }
-            );
-
-
-            if (validBusinesses.length === 1) {
-
-                exploreMap.setView(
-                    [
-                        validBusinesses[0].latitude,
-                        validBusinesses[0].longitude
-                    ],
-                    14
-                );
-
-            }
-
-            else if (validBusinesses.length > 1) {
-
-                const bounds =
-                    L.latLngBounds(
-                        validBusinesses.map(
-                            business => [
-                                business.latitude,
-                                business.longitude
-                            ]
+        const states =
+            [
+                ...new Set(
+                    businesses
+                        .map(
+                            business =>
+                                business.state
                         )
+                        .filter(Boolean)
+                )
+            ]
+            .sort();
+
+
+        stateFilter.innerHTML = `
+            <option value="">
+                All States
+            </option>
+        `;
+
+
+        states.forEach(
+            state => {
+
+                const option =
+                    document.createElement(
+                        "option"
                     );
 
-                exploreMap.fitBounds(
-                    bounds,
-                    {
-                        padding: [30, 30]
-                    }
+                option.value =
+                    state;
+
+                option.textContent =
+                    state;
+
+                stateFilter.appendChild(
+                    option
                 );
-
             }
+        );
 
+
+        if (
+            states.includes(current)
+        ) {
+
+            stateFilter.value =
+                current;
         }
+    }
 
 
-        /* -----------------------------------------
-           START
-        ----------------------------------------- */
+    /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
 
-        initializeMap();
+    function escapeHTML(
+        value
+    ) {
 
-        displayBusinesses();
+        return String(value)
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+    }
 
-    </script>
+
+    /* =====================================================
+       EVENTS
+    ===================================================== */
+
+    searchButton.addEventListener(
+        "click",
+        loadBusinesses
+    );
+
+
+    searchInput.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                loadBusinesses();
+            }
+        }
+    );
+
+
+    categoryFilter.addEventListener(
+        "change",
+        loadBusinesses
+    );
+
+
+    countryFilter.addEventListener(
+        "change",
+        loadBusinesses
+    );
+
+
+    stateFilter.addEventListener(
+        "change",
+        loadBusinesses
+    );
+
+
+    /* =====================================================
+       INITIAL LOAD
+    ===================================================== */
+
+    loadBusinesses();
+
+</script>
 
 </body>
-  </html>
+</html>
