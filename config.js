@@ -24,8 +24,9 @@ const NearAfricaConfig = {
   // =========================================================
 
   api: {
-    baseUrl: "https://nearafrica-api.uxmangee.workers.dev"
+    baseUrl: "https://nearafrica-api.nearafrica-onyxtech.workers.dev"
   },
+
 
   // =========================================================
   // APPLICATION
@@ -39,9 +40,12 @@ const NearAfricaConfig = {
     description:
       "Discover trusted businesses, services, shops and places across Africa.",
 
-    // Change this when your real domain is ready.
-    baseUrl: "https://nearafrica.com",
+    // Current live frontend URL.
+    // Change this when a custom domain is purchased and connected.
+    baseUrl: "https://nearafrica.pages.dev",
 
+    // Replace this with your real support email when your
+    // custom domain/email is ready.
     supportEmail: "support@nearafrica.com",
 
     environment: "production",
@@ -145,6 +149,7 @@ const NearAfricaConfig = {
 
     requireRealBusinessInformation: true,
 
+    // NearAfrica must not create fictional businesses.
     allowGeneratedBusinesses: false,
 
     preventFakeDemoBusinesses: true,
@@ -165,7 +170,7 @@ const NearAfricaConfig = {
 
 
   // =========================================================
-  // BUSINESS SUBMISSION
+  // BUSINESS SUBMISSIONS
   // =========================================================
 
   submissions: {
@@ -190,7 +195,7 @@ const NearAfricaConfig = {
 
     rateLimitEnabled: true,
 
-    adminReviewRequired: false,
+    adminReviewRequired: true,
 
     suspiciousListingsRequireReview: true
   },
@@ -454,9 +459,6 @@ const NearAfricaConfig = {
       freshness: 10
     },
 
-    // Commercial boosts should NOT completely
-    // override relevance.
-
     premiumBoost: 20,
 
     sponsoredBoost: 10,
@@ -608,9 +610,7 @@ const NearAfricaConfig = {
 
     automaticRenewal: true,
 
-    // IMPORTANT:
-    // Actual secret/payment credentials must live
-    // on the backend, NOT in this file.
+    // Payment credentials must NEVER be stored here.
 
     secretKeysInFrontend: false
   },
@@ -917,9 +917,6 @@ const NearAfricaConfig = {
 
     suspiciousActivityDetection: true,
 
-    // Paying for Premium must never automatically
-    // create a fake impression of verification.
-
     paymentDoesNotEqualVerification: true
   },
 
@@ -927,22 +924,28 @@ const NearAfricaConfig = {
   // =========================================================
   // CATEGORIES
   // =========================================================
+  //
+  // These match the categories currently used by the
+  // NearAfrica Worker and business submission form.
+  //
 
   categories: [
 
-    "Restaurants",
+    "Restaurants & Food",
 
-    "Food & Groceries",
+    "Hotels & Accommodation",
 
-    "Fashion",
+    "Beauty & Spa",
 
-    "Beauty & Salons",
+    "Health & Medical",
 
-    "Barbers",
+    "Shopping & Retail",
 
-    "Hotels",
+    "Supermarkets",
 
-    "Healthcare",
+    "Banks & Finance",
+
+    "Professional Services",
 
     "Education",
 
@@ -950,21 +953,25 @@ const NearAfricaConfig = {
 
     "Automotive",
 
-    "Professional Services",
+    "Travel & Tourism",
 
-    "Shopping",
-
-    "Fitness",
-
-    "Entertainment",
+    "Logistics & Delivery",
 
     "Technology",
 
-    "Home Services",
+    "Entertainment",
 
-    "Travel",
+    "Fitness & Sports",
 
-    "Events",
+    "Construction & Home Services",
+
+    "Fashion",
+
+    "Agriculture",
+
+    "Religious Organizations",
+
+    "Government & Public Services",
 
     "Other"
   ],
@@ -978,6 +985,7 @@ const NearAfricaConfig = {
 
     enabled: true,
 
+    // Nigeria is the current launch country.
     launchCountry: "NG",
 
     supportedCountries: [
@@ -1149,4 +1157,4 @@ if (
   module.exports
 ) {
   module.exports = NearAfricaConfig;
-    }
+}
