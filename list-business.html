@@ -141,7 +141,9 @@
           novalidate
         >
 
-          <!-- BUSINESS NAME -->
+          <!-- ==================================================
+               BUSINESS NAME
+               ================================================== -->
 
           <div class="form-group">
 
@@ -161,7 +163,9 @@
           </div>
 
 
-          <!-- CATEGORY -->
+          <!-- ==================================================
+               CATEGORY
+               ================================================== -->
 
           <div class="form-group">
 
@@ -179,32 +183,36 @@
                 Select a category
               </option>
 
-              <option value="Restaurant">
-                Restaurant
+              <option value="Restaurants & Food">
+                Restaurants & Food
               </option>
 
-              <option value="Food & Groceries">
-                Food & Groceries
+              <option value="Hotels & Accommodation">
+                Hotels & Accommodation
               </option>
 
-              <option value="Fashion">
-                Fashion
+              <option value="Beauty & Spa">
+                Beauty & Spa
               </option>
 
-              <option value="Beauty & Salons">
-                Beauty & Salons
+              <option value="Health & Medical">
+                Health & Medical
               </option>
 
-              <option value="Barbers">
-                Barbers
+              <option value="Shopping & Retail">
+                Shopping & Retail
               </option>
 
-              <option value="Hotels">
-                Hotels
+              <option value="Supermarkets">
+                Supermarkets
               </option>
 
-              <option value="Healthcare">
-                Healthcare
+              <option value="Banks & Finance">
+                Banks & Finance
+              </option>
+
+              <option value="Professional Services">
+                Professional Services
               </option>
 
               <option value="Education">
@@ -219,36 +227,44 @@
                 Automotive
               </option>
 
-              <option value="Professional Services">
-                Professional Services
+              <option value="Travel & Tourism">
+                Travel & Tourism
               </option>
 
-              <option value="Shopping">
-                Shopping
-              </option>
-
-              <option value="Fitness">
-                Fitness
-              </option>
-
-              <option value="Entertainment">
-                Entertainment
+              <option value="Logistics & Delivery">
+                Logistics & Delivery
               </option>
 
               <option value="Technology">
                 Technology
               </option>
 
-              <option value="Home Services">
-                Home Services
+              <option value="Entertainment">
+                Entertainment
               </option>
 
-              <option value="Travel">
-                Travel
+              <option value="Fitness & Sports">
+                Fitness & Sports
               </option>
 
-              <option value="Events">
-                Events
+              <option value="Construction & Home Services">
+                Construction & Home Services
+              </option>
+
+              <option value="Fashion">
+                Fashion
+              </option>
+
+              <option value="Agriculture">
+                Agriculture
+              </option>
+
+              <option value="Religious Organizations">
+                Religious Organizations
+              </option>
+
+              <option value="Government & Public Services">
+                Government & Public Services
               </option>
 
               <option value="Other">
@@ -260,7 +276,9 @@
           </div>
 
 
-          <!-- COUNTRY -->
+          <!-- ==================================================
+               COUNTRY
+               ================================================== -->
 
           <div class="form-group">
 
@@ -327,27 +345,48 @@
           </div>
 
 
-          <!-- STATE / REGION -->
+          <!-- ==================================================
+               STATE / REGION
+               ================================================== -->
 
           <div class="form-group">
 
-            <label for="state">
+            <label for="state-select">
               State / Region *
             </label>
 
+
+            <!-- Nigerian States -->
+
+            <select
+              id="state-select"
+              required
+              disabled
+            >
+
+              <option value="">
+                Select country first
+              </option>
+
+            </select>
+
+
+            <!-- Other African Countries -->
+
             <input
               type="text"
-              id="state"
-              name="state"
-              placeholder="e.g. Abia"
-              required
+              id="state-other"
+              placeholder="Enter your state, province or region"
               maxlength="80"
+              style="display:none;"
             >
 
           </div>
 
 
-          <!-- CITY -->
+          <!-- ==================================================
+               CITY
+               ================================================== -->
 
           <div class="form-group">
 
@@ -367,7 +406,9 @@
           </div>
 
 
-          <!-- ADDRESS -->
+          <!-- ==================================================
+               ADDRESS
+               ================================================== -->
 
           <div class="form-group">
 
@@ -387,7 +428,9 @@
           </div>
 
 
-          <!-- PHONE -->
+          <!-- ==================================================
+               PHONE
+               ================================================== -->
 
           <div class="form-group">
 
@@ -406,7 +449,9 @@
           </div>
 
 
-          <!-- WHATSAPP -->
+          <!-- ==================================================
+               WHATSAPP
+               ================================================== -->
 
           <div class="form-group">
 
@@ -425,7 +470,9 @@
           </div>
 
 
-          <!-- WEBSITE -->
+          <!-- ==================================================
+               WEBSITE
+               ================================================== -->
 
           <div class="form-group">
 
@@ -444,7 +491,9 @@
           </div>
 
 
-          <!-- DESCRIPTION -->
+          <!-- ==================================================
+               DESCRIPTION
+               ================================================== -->
 
           <div class="form-group">
 
@@ -464,7 +513,9 @@
           </div>
 
 
-          <!-- EMAIL -->
+          <!-- ==================================================
+               EMAIL
+               ================================================== -->
 
           <div class="form-group">
 
@@ -484,7 +535,9 @@
           </div>
 
 
-          <!-- TERMS -->
+          <!-- ==================================================
+               TERMS
+               ================================================== -->
 
           <div
             class="form-group"
@@ -514,7 +567,9 @@
           </div>
 
 
-          <!-- STATUS -->
+          <!-- ==================================================
+               STATUS
+               ================================================== -->
 
           <div
             id="submission-status"
@@ -524,7 +579,9 @@
           ></div>
 
 
-          <!-- SUCCESS -->
+          <!-- ==================================================
+               SUCCESS
+               ================================================== -->
 
           <div
             id="form-success"
@@ -534,7 +591,9 @@
           ></div>
 
 
-          <!-- ERROR -->
+          <!-- ==================================================
+               ERROR
+               ================================================== -->
 
           <div
             id="form-error"
@@ -544,7 +603,9 @@
           ></div>
 
 
-          <!-- SUBMIT -->
+          <!-- ==================================================
+               SUBMIT
+               ================================================== -->
 
           <button
             type="submit"
@@ -553,6 +614,7 @@
           >
             Submit Business
           </button>
+
 
           <p
             class="text-muted"
@@ -572,6 +634,10 @@
 
 </main>
 
+
+<!-- ========================================================
+     FOOTER
+     ======================================================== -->
 
 <footer class="site-footer">
 
@@ -594,7 +660,216 @@
 </footer>
 
 
-<!-- NearAfrica scripts -->
+<!-- ========================================================
+     COUNTRY / STATE LOGIC
+     ======================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const countrySelect =
+    document.getElementById("country");
+
+  const stateSelect =
+    document.getElementById("state-select");
+
+  const stateOther =
+    document.getElementById("state-other");
+
+
+  /*
+   * All Nigerian states + Federal Capital Territory
+   */
+
+  const nigeriaStates = [
+
+    "Abia",
+    "Adamawa",
+    "Akwa Ibom",
+    "Anambra",
+    "Bauchi",
+    "Bayelsa",
+    "Benue",
+    "Borno",
+    "Cross River",
+    "Delta",
+    "Ebonyi",
+    "Edo",
+    "Ekiti",
+    "Enugu",
+    "Gombe",
+    "Imo",
+    "Jigawa",
+    "Kaduna",
+    "Kano",
+    "Katsina",
+    "Kebbi",
+    "Kogi",
+    "Kwara",
+    "Lagos",
+    "Nasarawa",
+    "Niger",
+    "Ogun",
+    "Ondo",
+    "Osun",
+    "Oyo",
+    "Plateau",
+    "Rivers",
+    "Sokoto",
+    "Taraba",
+    "Yobe",
+    "Zamfara",
+    "Federal Capital Territory"
+
+  ];
+
+
+  /*
+   * Change State/Region field
+   * based on selected country.
+   */
+
+  function updateStateField() {
+
+    const country =
+      countrySelect.value;
+
+
+    /* ==========================================
+       NIGERIA
+       ========================================== */
+
+    if (country === "Nigeria") {
+
+      stateOther.style.display = "none";
+
+      stateOther.removeAttribute("name");
+
+      stateOther.required = false;
+
+      stateOther.value = "";
+
+
+      stateSelect.style.display = "block";
+
+      stateSelect.disabled = false;
+
+      stateSelect.name = "state";
+
+      stateSelect.required = true;
+
+
+      stateSelect.innerHTML =
+        '<option value="">Select Nigerian state</option>' +
+
+        nigeriaStates
+          .map(function (state) {
+
+            return (
+              '<option value="' +
+              state +
+              '">' +
+              state +
+              '</option>'
+            );
+
+          })
+          .join("");
+
+
+      return;
+    }
+
+
+    /* ==========================================
+       OTHER AFRICAN COUNTRIES
+       ========================================== */
+
+    if (country !== "") {
+
+      stateSelect.style.display = "none";
+
+      stateSelect.removeAttribute("name");
+
+      stateSelect.required = false;
+
+      stateSelect.disabled = true;
+
+      stateSelect.value = "";
+
+
+      stateOther.style.display = "block";
+
+      stateOther.name = "state";
+
+      stateOther.required = true;
+
+
+      if (country === "Ghana") {
+
+        stateOther.placeholder =
+          "e.g. Greater Accra Region";
+
+      } else {
+
+        stateOther.placeholder =
+          "Enter your state, province or region";
+
+      }
+
+
+      return;
+    }
+
+
+    /* ==========================================
+       NO COUNTRY SELECTED
+       ========================================== */
+
+    stateSelect.style.display = "block";
+
+    stateSelect.disabled = true;
+
+    stateSelect.removeAttribute("name");
+
+    stateSelect.required = false;
+
+    stateSelect.innerHTML =
+      '<option value="">Select country first</option>';
+
+
+    stateOther.style.display = "none";
+
+    stateOther.removeAttribute("name");
+
+    stateOther.required = false;
+
+    stateOther.value = "";
+
+  }
+
+
+  countrySelect.addEventListener(
+    "change",
+    updateStateField
+  );
+
+
+  /*
+   * Run once when the page loads.
+   */
+
+  updateStateField();
+
+});
+
+</script>
+
+
+<!-- ========================================================
+     NEARAFRICA SCRIPTS
+     ======================================================== -->
 
 <script src="config.js"></script>
 <script src="businesses.js"></script>
@@ -602,4 +877,4 @@
 <script src="app.js"></script>
 
 </body>
-</html>
+  </html>
