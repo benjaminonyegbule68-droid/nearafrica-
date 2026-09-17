@@ -1,160 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>NearAfrica Admin Dashboard</title>
 
-  <meta
-    name="description"
-    content="NearAfrica administration dashboard."
-  >
-
-  <link
-    rel="icon"
-    href="favicon.svg"
-    type="image/svg+xml"
-  >
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  >
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
-
   <style>
-
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      font-family: Manrope, Arial, sans-serif;
-      background: #f6f4ef;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f3ed;
       color: #171717;
     }
 
     header {
       background: #111;
-      color: #fff;
+      color: white;
       padding: 20px;
     }
 
     .header-inner {
       max-width: 1200px;
-      margin: 0 auto;
+      margin: auto;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       gap: 20px;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: #fff;
-      text-decoration: none;
-      font-family: "Plus Jakarta Sans", sans-serif;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
     }
 
-    .brand img {
-      width: 150px;
-      height: auto;
-      object-fit: contain;
+    .brand span {
+      color: #d4af37;
     }
 
-    .admin-label {
-      font-size: 14px;
-      color: #d4af37;
-      font-weight: 700;
+    .header-subtitle {
+      color: #ccc;
+      font-size: 13px;
+      margin-top: 4px;
     }
 
     main {
       max-width: 1200px;
-      margin: 35px auto;
-      padding: 0 20px;
+      margin: 30px auto;
+      padding: 0 18px;
     }
 
-    .page-heading {
-      margin-bottom: 25px;
+    .hidden {
+      display: none !important;
     }
 
-    .page-heading h1 {
-      margin: 0 0 8px;
-      font-family: "Plus Jakarta Sans", sans-serif;
-      font-size: 32px;
-    }
-
-    .page-heading p {
-      margin: 0;
-      color: #666;
-    }
-
-    .login-card,
-    .dashboard-card {
-      background: #fff;
+    .panel {
+      background: white;
       border-radius: 14px;
-      padding: 25px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.07);
-      margin-bottom: 25px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.06);
     }
 
     .login-card {
       max-width: 500px;
-      margin: 60px auto;
+      margin: 70px auto;
     }
 
-    .login-card h2 {
+    h1, h2, h3 {
       margin-top: 0;
+    }
+
+    .muted {
+      color: #777;
     }
 
     label {
       display: block;
-      margin-bottom: 8px;
       font-weight: 700;
+      margin-bottom: 7px;
     }
 
     input,
     select {
       width: 100%;
-      padding: 13px 14px;
-      border: 1px solid #d5d5d5;
+      padding: 13px;
+      border: 1px solid #ccc;
       border-radius: 8px;
-      font: inherit;
-      background: #fff;
-    }
-
-    input:focus,
-    select:focus {
-      outline: none;
-      border-color: #d4af37;
+      font-size: 15px;
+      margin-bottom: 14px;
     }
 
     button {
       border: 0;
       border-radius: 8px;
-      padding: 12px 18px;
-      font: inherit;
-      font-weight: 700;
+      padding: 11px 16px;
       cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
     }
 
     .btn-primary {
@@ -163,89 +115,76 @@
     }
 
     .btn-dark {
-      background: #111;
-      color: #fff;
+      background: #222;
+      color: white;
     }
 
     .btn-danger {
       background: #b42318;
-      color: #fff;
+      color: white;
     }
 
-    .btn-small {
-      padding: 8px 12px;
-      font-size: 13px;
+    .btn-secondary {
+      background: #eee;
+      color: #222;
     }
 
     .error {
       color: #b42318;
       margin-top: 12px;
+      font-weight: 600;
     }
 
     .success {
-      color: #16794c;
+      color: #087443;
       margin-top: 12px;
+      font-weight: 600;
     }
 
-    .muted {
-      color: #777;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .top-bar {
+    .toolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 15px;
       flex-wrap: wrap;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     .stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin-bottom: 25px;
+      gap: 16px;
+      margin-bottom: 24px;
     }
 
     .stat {
-      background: #fff;
-      border-radius: 12px;
+      background: white;
+      border-radius: 14px;
       padding: 20px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 18px rgba(0,0,0,.06);
     }
 
     .stat-label {
-      font-size: 13px;
       color: #777;
+      font-size: 13px;
       margin-bottom: 8px;
     }
 
     .stat-value {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 800;
-      font-family: "Plus Jakarta Sans", sans-serif;
     }
 
     .section-title {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 15px;
+      gap: 10px;
       flex-wrap: wrap;
-      margin-bottom: 18px;
+      margin-bottom: 15px;
     }
 
-    .section-title h2 {
-      margin: 0;
-      font-family: "Plus Jakarta Sans", sans-serif;
-      font-size: 22px;
-    }
-
-    .table-wrapper {
+    .table-wrap {
       width: 100%;
       overflow-x: auto;
     }
@@ -253,113 +192,89 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 850px;
+      min-width: 750px;
     }
 
     th,
     td {
       text-align: left;
-      padding: 13px 12px;
+      padding: 13px 10px;
       border-bottom: 1px solid #eee;
       vertical-align: top;
     }
 
     th {
-      font-size: 13px;
-      color: #666;
       background: #fafafa;
+      font-size: 13px;
     }
 
     td {
       font-size: 14px;
     }
 
-    .status {
+    .badge {
       display: inline-block;
       padding: 5px 9px;
       border-radius: 999px;
-      background: #fff3c4;
-      color: #725900;
+      background: #eee;
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 700;
+    }
+
+    .badge-pending {
+      background: #fff0bd;
+    }
+
+    .badge-active {
+      background: #dff7e8;
+      color: #087443;
+    }
+
+    .badge-rejected {
+      background: #fde2e1;
+      color: #b42318;
+    }
+
+    .badge-verified {
+      background: #e1efff;
+      color: #175cd3;
     }
 
     .empty {
-      padding: 35px 10px;
+      padding: 30px;
       text-align: center;
       color: #777;
+      background: #fafafa;
+      border-radius: 10px;
     }
 
-    .loading {
-      padding: 30px 10px;
-      text-align: center;
-      color: #777;
-    }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px 20px;
-    }
-
-    .detail-item {
-      padding: 7px 0;
-    }
-
-    .detail-label {
-      font-size: 12px;
-      color: #777;
-      margin-bottom: 2px;
-    }
-
-    .detail-value {
-      font-weight: 600;
-      word-break: break-word;
-    }
-
-    .logout-area {
+    .actions {
       display: flex;
-      align-items: center;
-      gap: 10px;
+      gap: 7px;
+      flex-wrap: wrap;
     }
 
-    footer {
-      text-align: center;
-      color: #777;
-      padding: 30px 20px;
-      font-size: 13px;
+    .small {
+      font-size: 12px;
     }
 
-    @media (max-width: 800px) {
+    .status-box {
+      margin-bottom: 20px;
+      padding: 12px 15px;
+      border-radius: 8px;
+      background: #f5f5f5;
+      color: #555;
+    }
 
+    @media (max-width: 900px) {
       .stats {
         grid-template-columns: repeat(2, 1fr);
       }
-
-      .detail-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .page-heading h1 {
-        font-size: 27px;
-      }
-
     }
 
-    @media (max-width: 500px) {
-
-      main {
-        padding: 0 12px;
-        margin-top: 25px;
-      }
-
+    @media (max-width: 600px) {
       .stats {
         grid-template-columns: 1fr;
-      }
-
-      .login-card,
-      .dashboard-card {
-        padding: 18px;
       }
 
       .header-inner {
@@ -367,75 +282,59 @@
         flex-direction: column;
       }
 
+      main {
+        padding: 0 12px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
     }
-
   </style>
-
 </head>
-
 
 <body>
 
-
-<!-- =========================================================
-     HEADER
-     ========================================================= -->
-
 <header>
-
   <div class="header-inner">
 
-    <a
-      href="index.html"
-      class="brand"
-    >
+    <div>
+      <div class="brand">
+        Near<span>Africa</span>
+      </div>
 
-      <img
-        src="logo.png"
-        alt="NearAfrica"
-      >
-
-    </a>
-
-    <div class="logout-area">
-
-      <span class="admin-label">
-        ADMIN DASHBOARD
-      </span>
-
-      <button
-        id="logout-button"
-        class="btn-dark hidden"
-        type="button"
-      >
-        Log Out
-      </button>
-
+      <div class="header-subtitle">
+        Administration Dashboard
+      </div>
     </div>
 
-  </div>
+    <button
+      id="logout-button"
+      class="btn-dark hidden"
+      type="button"
+    >
+      Log Out
+    </button>
 
+  </div>
 </header>
 
 
-<!-- =========================================================
-     LOGIN
-     ========================================================= -->
-
 <main>
+
+  <!-- =====================================================
+       LOGIN
+  ====================================================== -->
 
   <section
     id="login-section"
-    class="login-card"
+    class="panel login-card"
   >
 
-    <h2>
-      Admin Login
-    </h2>
+    <h2>Admin Login</h2>
 
     <p class="muted">
-      Enter your NearAfrica admin API key to access
-      the management dashboard.
+      Enter your NearAfrica admin API key to access the management dashboard.
     </p>
 
     <label for="admin-key">
@@ -443,17 +342,16 @@
     </label>
 
     <input
-      type="password"
       id="admin-key"
+      type="password"
       placeholder="Enter admin API key"
       autocomplete="off"
     >
 
     <button
-      type="button"
       id="login-button"
       class="btn-primary"
-      style="margin-top:15px;"
+      type="button"
     >
       Log In
     </button>
@@ -466,790 +364,1883 @@
   </section>
 
 
-  <!-- =======================================================
+  <!-- =====================================================
        DASHBOARD
-       ======================================================= -->
+  ====================================================== -->
 
   <section
     id="dashboard-section"
     class="hidden"
   >
 
-    <div class="page-heading">
-
-      <h1>
-        NearAfrica Admin Dashboard
-      </h1>
-
-      <p>
-        Manage NearAfrica's businesses, submissions,
-        claims, reviews, reports and other administrative data.
-      </p>
-
+    <div
+      id="global-status"
+      class="status-box"
+    >
+      Loading dashboard...
     </div>
 
 
-    <!-- =====================================================
-         TOP BAR
-         ===================================================== -->
-
-    <div class="top-bar">
-
-      <div>
-
-        <strong>
-          Connected to:
-        </strong>
-
-        <span class="muted">
-          NearAfrica API v15
-        </span>
-
-      </div>
-
-      <button
-        type="button"
-        id="refresh-button"
-        class="btn-primary"
-      >
-        Refresh Data
-      </button>
-
-    </div>
-
-
-    <!-- =====================================================
-         STATS
-         ===================================================== -->
+    <!-- STATS -->
 
     <div class="stats">
 
       <div class="stat">
-
         <div class="stat-label">
           Active Businesses
         </div>
 
         <div
-          class="stat-value"
           id="stat-businesses"
+          class="stat-value"
         >
-          —
+          0
         </div>
-
       </div>
 
 
       <div class="stat">
-
         <div class="stat-label">
           Pending Submissions
         </div>
 
         <div
-          class="stat-value"
           id="stat-submissions"
+          class="stat-value"
         >
-          —
+          0
         </div>
-
       </div>
 
 
       <div class="stat">
-
         <div class="stat-label">
           Pending Claims
         </div>
 
         <div
-          class="stat-value"
           id="stat-claims"
+          class="stat-value"
         >
-          —
+          0
         </div>
-
       </div>
 
 
       <div class="stat">
-
         <div class="stat-label">
           Reports
         </div>
 
         <div
-          class="stat-value"
           id="stat-reports"
+          class="stat-value"
         >
-          —
+          0
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         PENDING SUBMISSIONS
+    ================================================== -->
+
+    <section class="panel">
+
+      <div class="section-title">
+
+        <div>
+          <h2>Pending Business Submissions</h2>
+
+          <div class="muted">
+            Business listings submitted through NearAfrica.
+          </div>
+        </div>
+
+        <button
+          class="btn-secondary"
+          type="button"
+          onclick="loadAll()"
+        >
+          Refresh
+        </button>
+
+      </div>
+
+      <div id="submissions-container">
+        Loading...
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         ACTIVE BUSINESSES
+    ================================================== -->
+
+    <section class="panel">
+
+      <div class="section-title">
+
+        <div>
+          <h2>Active Businesses</h2>
+
+          <div class="muted">
+            Businesses currently published on NearAfrica.
+          </div>
         </div>
 
       </div>
 
-    </div>
-
-
-    <!-- =====================================================
-         PENDING SUBMISSIONS
-         ===================================================== -->
-
-    <div class="dashboard-card">
-
-      <div class="section-title">
-
-        <h2>
-          Pending Business Submissions
-        </h2>
-
-        <span class="muted">
-          Real submissions from D1
-        </span>
-
+      <div id="businesses-container">
+        Loading...
       </div>
 
-
-      <div
-        id="submissions-message"
-        class="loading"
-      >
-        Loading submissions...
-      </div>
+    </section>
 
 
-      <div
-        id="submissions-table-wrapper"
-        class="table-wrapper hidden"
-      >
-
-        <table>
-
-          <thead>
-
-            <tr>
-
-              <th>
-                Business
-              </th>
-
-              <th>
-                Category
-              </th>
-
-              <th>
-                Location
-              </th>
-
-              <th>
-                Contact
-              </th>
-
-              <th>
-                Status
-              </th>
-
-              <th>
-                Submitted
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody
-            id="submissions-tbody"
-          ></tbody>
-
-        </table>
-
-      </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         ACTIVE BUSINESSES
-         ===================================================== -->
-
-    <div class="dashboard-card">
-
-      <div class="section-title">
-
-        <h2>
-          Active Businesses
-        </h2>
-
-        <span class="muted">
-          Currently published businesses
-        </span>
-
-      </div>
-
-
-      <div
-        id="businesses-message"
-        class="loading"
-      >
-        Loading businesses...
-      </div>
-
-
-      <div
-        id="businesses-table-wrapper"
-        class="table-wrapper hidden"
-      >
-
-        <table>
-
-          <thead>
-
-            <tr>
-
-              <th>
-                Business
-              </th>
-
-              <th>
-                Category
-              </th>
-
-              <th>
-                Location
-              </th>
-
-              <th>
-                Verified
-              </th>
-
-              <th>
-                Featured
-              </th>
-
-              <th>
-                Views
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody
-            id="businesses-tbody"
-          ></tbody>
-
-        </table>
-
-      </div>
-
-    </div>
-
-
-    <!-- =====================================================
+    <!-- =================================================
          CLAIMS
-         ===================================================== -->
+    ================================================== -->
 
-    <div class="dashboard-card">
+    <section class="panel">
 
       <div class="section-title">
 
-        <h2>
-          Claims
-        </h2>
+        <div>
+          <h2>Business Claims</h2>
 
-        <span class="muted">
-          Business ownership claims
-        </span>
-
-      </div>
-
-
-      <div
-        id="claims-message"
-        class="loading"
-      >
-        Loading claims...
-      </div>
-
-
-      <div
-        id="claims-table-wrapper"
-        class="table-wrapper hidden"
-      >
-
-        <table>
-
-          <thead>
-
-            <tr>
-
-              <th>
-                Business
-              </th>
-
-              <th>
-                Claimant
-              </th>
-
-              <th>
-                Email
-              </th>
-
-              <th>
-                Evidence
-              </th>
-
-              <th>
-                Status
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody
-            id="claims-tbody"
-          ></tbody>
-
-        </table>
+          <div class="muted">
+            Ownership claims submitted by businesses.
+          </div>
+        </div>
 
       </div>
 
-    </div>
+      <div id="claims-container">
+        Loading...
+      </div>
+
+    </section>
 
 
-    <!-- =====================================================
+    <!-- =================================================
+         REVIEWS
+    ================================================== -->
+
+    <section class="panel">
+
+      <div class="section-title">
+
+        <div>
+          <h2>Reviews</h2>
+
+          <div class="muted">
+            Customer reviews submitted to NearAfrica.
+          </div>
+        </div>
+
+      </div>
+
+      <div id="reviews-container">
+        Loading...
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
          REPORTS
-         ===================================================== -->
+    ================================================== -->
 
-    <div class="dashboard-card">
+    <section class="panel">
 
       <div class="section-title">
 
-        <h2>
-          Reports
-        </h2>
+        <div>
+          <h2>Reports</h2>
 
-        <span class="muted">
-          Reports submitted about listings
-        </span>
-
-      </div>
-
-
-      <div
-        id="reports-message"
-        class="loading"
-      >
-        Loading reports...
-      </div>
-
-
-      <div
-        id="reports-table-wrapper"
-        class="table-wrapper hidden"
-      >
-
-        <table>
-
-          <thead>
-
-            <tr>
-
-              <th>
-                Business
-              </th>
-
-              <th>
-                Reporter
-              </th>
-
-              <th>
-                Reason
-              </th>
-
-              <th>
-                Message
-              </th>
-
-              <th>
-                Status
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody
-            id="reports-tbody"
-          ></tbody>
-
-        </table>
+          <div class="muted">
+            Reports submitted about business listings.
+          </div>
+        </div>
 
       </div>
 
-    </div>
+      <div id="reports-container">
+        Loading...
+      </div>
+
+    </section>
 
 
-    <!-- =====================================================
-         SYSTEM MESSAGE
-         ===================================================== -->
+    <!-- =================================================
+         HELP WANTED
+    ================================================== -->
 
-    <div
-      id="system-message"
-      class="dashboard-card hidden"
-    ></div>
+    <section class="panel">
+
+      <div class="section-title">
+
+        <div>
+          <h2>Help Wanted</h2>
+
+          <div class="muted">
+            Help-wanted posts submitted to NearAfrica.
+          </div>
+        </div>
+
+      </div>
+
+      <div id="help-container">
+        Loading...
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         SUBSCRIPTIONS
+    ================================================== -->
+
+    <section class="panel">
+
+      <div class="section-title">
+
+        <div>
+          <h2>Subscriptions</h2>
+
+          <div class="muted">
+            Business subscription records.
+          </div>
+        </div>
+
+      </div>
+
+      <div id="subscriptions-container">
+        Loading...
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         DISCOVERIES
+    ================================================== -->
+
+    <section class="panel">
+
+      <div class="section-title">
+
+        <div>
+          <h2>Discoveries</h2>
+
+          <div class="muted">
+            Businesses discovered through the NearAfrica discovery system.
+          </div>
+        </div>
+
+      </div>
+
+      <div id="discoveries-container">
+        Loading...
+      </div>
+
+    </section>
 
   </section>
 
 </main>
 
 
-<footer>
-
-  © 2026 NearAfrica — Administration
-
-</footer>
-
-
-<!-- =========================================================
-     ADMIN JAVASCRIPT
-     ========================================================= -->
-
 <script>
 
-(function () {
+"use strict";
 
-  "use strict";
+/*
+===========================================================
+NEARAFRICA ADMIN CONFIGURATION
+===========================================================
+*/
 
+const API_BASE =
+  "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
-  /* =========================================================
-     CONFIGURATION
-     ========================================================= */
-
-  const API_BASE =
-    "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
-
-
-  /* =========================================================
-     ELEMENTS
-     ========================================================= */
-
-  const loginSection =
-    document.getElementById("login-section");
-
-  const dashboardSection =
-    document.getElementById("dashboard-section");
-
-  const adminKeyInput =
-    document.getElementById("admin-key");
-
-  const loginButton =
-    document.getElementById("login-button");
-
-  const loginError =
-    document.getElementById("login-error");
-
-  const logoutButton =
-    document.getElementById("logout-button");
-
-  const refreshButton =
-    document.getElementById("refresh-button");
+const STORAGE_KEY =
+  "nearafrica_admin_key";
 
 
-  /* =========================================================
-     STORAGE
-     ========================================================= */
+/*
+===========================================================
+DOM
+===========================================================
+*/
 
-  const STORAGE_KEY =
-    "nearafrica_admin_key";
+const loginSection =
+  document.getElementById("login-section");
+
+const dashboardSection =
+  document.getElementById("dashboard-section");
+
+const adminKeyInput =
+  document.getElementById("admin-key");
+
+const loginButton =
+  document.getElementById("login-button");
+
+const loginError =
+  document.getElementById("login-error");
+
+const logoutButton =
+  document.getElementById("logout-button");
+
+const globalStatus =
+  document.getElementById("global-status");
 
 
-  function getStoredKey() {
+/*
+===========================================================
+HELPERS
+===========================================================
+*/
 
-    return sessionStorage.getItem(STORAGE_KEY) || "";
+function getKey() {
+  return sessionStorage.getItem(STORAGE_KEY) || "";
+}
+
+
+function setKey(key) {
+  sessionStorage.setItem(
+    STORAGE_KEY,
+    key
+  );
+}
+
+
+function clearKey() {
+  sessionStorage.removeItem(
+    STORAGE_KEY
+  );
+}
+
+
+function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+function formatDate(value) {
+
+  if (!value) {
+    return "—";
+  }
+
+  try {
+
+    return new Date(value)
+      .toLocaleString();
+
+  } catch {
+
+    return value;
 
   }
 
+}
 
-  function storeKey(key) {
 
-    sessionStorage.setItem(
-      STORAGE_KEY,
-      key
+function locationText(item) {
+
+  const parts = [
+    item.city,
+    item.state,
+    item.country
+  ].filter(Boolean);
+
+  return parts.length
+    ? parts.join(", ")
+    : "—";
+
+}
+
+
+function statusBadge(status) {
+
+  const value =
+    String(status || "unknown")
+      .toLowerCase();
+
+  let className =
+    "badge";
+
+  if (value === "pending") {
+    className += " badge-pending";
+  }
+
+  if (
+    value === "active" ||
+    value === "approved"
+  ) {
+    className += " badge-active";
+  }
+
+  if (
+    value === "rejected" ||
+    value === "suspended"
+  ) {
+    className += " badge-rejected";
+  }
+
+  return `
+    <span class="${className}">
+      ${escapeHTML(status || "unknown")}
+    </span>
+  `;
+
+}
+
+
+/*
+===========================================================
+API REQUEST
+===========================================================
+*/
+
+async function apiRequest(
+  endpoint,
+  options = {}
+) {
+
+  const key = getKey();
+
+  if (!key) {
+    throw new Error(
+      "Admin key is missing."
+    );
+  }
+
+  const headers = {
+
+    "Content-Type":
+      "application/json",
+
+    "X-Admin-Key":
+      key,
+
+    ...(options.headers || {})
+
+  };
+
+
+  const response =
+    await fetch(
+      API_BASE + endpoint,
+      {
+        ...options,
+        headers
+      }
+    );
+
+
+  let data = null;
+
+  try {
+
+    data =
+      await response.json();
+
+  } catch {
+
+    throw new Error(
+      `Server returned HTTP ${response.status}`
     );
 
   }
 
 
-  function clearKey() {
-
-    sessionStorage.removeItem(
-      STORAGE_KEY
-    );
-
-  }
-
-
-  /* =========================================================
-     ESCAPE HTML
-     ========================================================= */
-
-  function escapeHtml(value) {
-
-    const div =
-      document.createElement("div");
-
-    div.textContent =
-      value === null ||
-      value === undefined
-        ? ""
-        : String(value);
-
-    return div.innerHTML;
-
-  }
-
-
-  /* =========================================================
-     API REQUEST
-     ========================================================= */
-
-  async function apiRequest(
-    endpoint,
-    options = {}
+  if (
+    response.status === 401
   ) {
 
-    const key =
-      getStoredKey();
+    clearKey();
 
-    const headers = {
-      "Content-Type":
-        "application/json",
-      "X-Admin-Key":
-        key,
-      ...(options.headers || {})
-    };
+    showLogin();
 
-
-    const response =
-      await fetch(
-        API_BASE + endpoint,
-        {
-          ...options,
-          headers
-        }
-      );
-
-
-    let data = {};
-
-    try {
-
-      data =
-        await response.json();
-
-    } catch {
-
-      data = {};
-
-    }
-
-
-    if (response.status === 401) {
-
-      clearKey();
-
-      showLogin(
-        "Your admin session is no longer authorized."
-      );
-
-      throw new Error(
-        "Unauthorized"
-      );
-
-    }
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        data.message ||
-        "API request failed."
-      );
-
-    }
-
-
-    return data;
+    throw new Error(
+      "Unauthorized. Your admin key is invalid or has changed."
+    );
 
   }
 
 
-  /* =========================================================
-     LOGIN SCREEN
-     ========================================================= */
+  if (!response.ok || data.success === false) {
 
-  function showLogin(message = "") {
-
-    dashboardSection.classList.add(
-      "hidden"
+    throw new Error(
+      data.error ||
+      `Request failed with HTTP ${response.status}`
     );
 
-    loginSection.classList.remove(
-      "hidden"
-    );
+  }
 
-    logoutButton.classList.add(
-      "hidden"
-    );
+
+  return data;
+
+}
+
+
+/*
+===========================================================
+LOGIN
+===========================================================
+*/
+
+async function login() {
+
+  const key =
+    adminKeyInput.value.trim();
+
+  loginError.textContent = "";
+
+  if (!key) {
 
     loginError.textContent =
-      message;
+      "Enter your admin API key.";
+
+    return;
 
   }
 
 
-  function showDashboard() {
+  loginButton.disabled = true;
 
-    loginSection.classList.add(
-      "hidden"
+  loginButton.textContent =
+    "Checking...";
+
+
+  try {
+
+    /*
+      /admin/businesses is an authenticated
+      v15 admin resource.
+    */
+
+    await apiRequest(
+      "/admin/businesses?limit=1"
     );
 
-    dashboardSection.classList.remove(
-      "hidden"
-    );
+    setKey(key);
 
-    logoutButton.classList.remove(
-      "hidden"
-    );
+    showDashboard();
 
-  }
+    await loadAll();
 
+  } catch (error) {
 
-  /* =========================================================
-     VERIFY ADMIN KEY
-     ========================================================= */
+    loginError.textContent =
+      error.message ||
+      "Login failed.";
 
-  async function verifyKey() {
+    clearKey();
 
-    const key =
-      getStoredKey();
+  } finally {
 
-    if (!key) {
-
-      showLogin();
-
-      return false;
-
-    }
-
-
-    try {
-
-      await apiRequest(
-        "/admin/stats"
-      );
-
-      showDashboard();
-
-      return true;
-
-    } catch (error) {
-
-      if (
-        error.message !==
-        "Unauthorized"
-      ) {
-
-        showLogin(
-          error.message
-        );
-
-      }
-
-      return false;
-
-    }
-
-  }
-
-
-  /* =========================================================
-     LOGIN
-     ========================================================= */
-
-  async function login() {
-
-    const key =
-      adminKeyInput.value.trim();
-
-
-    if (!key) {
-
-      loginError.textContent =
-        "Enter your admin API key.";
-
-      return;
-
-    }
-
-
-    loginButton.disabled =
-      true;
+    loginButton.disabled = false;
 
     loginButton.textContent =
-      "Checking...";
+      "Log In";
 
-    loginError.textContent =
-      "";
+  }
+
+}
 
 
-    sessionStorage.setItem(
-      STORAGE_KEY,
-      key
+/*
+===========================================================
+SHOW LOGIN
+===========================================================
+*/
+
+function showLogin() {
+
+  loginSection.classList.remove(
+    "hidden"
+  );
+
+  dashboardSection.classList.add(
+    "hidden"
+  );
+
+  logoutButton.classList.add(
+    "hidden"
+  );
+
+}
+
+
+/*
+===========================================================
+SHOW DASHBOARD
+===========================================================
+*/
+
+function showDashboard() {
+
+  loginSection.classList.add(
+    "hidden"
+  );
+
+  dashboardSection.classList.remove(
+    "hidden"
+  );
+
+  logoutButton.classList.remove(
+    "hidden"
+  );
+
+}
+
+
+/*
+===========================================================
+LOGOUT
+===========================================================
+*/
+
+function logout() {
+
+  clearKey();
+
+  adminKeyInput.value = "";
+
+  showLogin();
+
+}
+
+
+/*
+===========================================================
+GENERIC ADMIN RESOURCE
+===========================================================
+*/
+
+async function getResource(
+  resource
+) {
+
+  const data =
+    await apiRequest(
+      `/admin/${resource}?limit=100`
+    );
+
+  /*
+    v15 returns:
+
+    {
+      success: true,
+      resource: "...",
+      items: [...],
+      count: ...
+    }
+  */
+
+  return Array.isArray(data.items)
+    ? data.items
+    : [];
+
+}
+
+
+/*
+===========================================================
+LOAD ALL
+===========================================================
+*/
+
+async function loadAll() {
+
+  globalStatus.textContent =
+    "Loading NearAfrica admin data...";
+
+
+  try {
+
+    const results =
+      await Promise.allSettled([
+
+        loadBusinesses(),
+
+        loadSubmissions(),
+
+        loadClaims(),
+
+        loadReviews(),
+
+        loadReports(),
+
+        loadHelpWanted(),
+
+        loadSubscriptions(),
+
+        loadDiscoveries()
+
+      ]);
+
+
+    /*
+      Update statistics from the
+      successfully loaded resources.
+    */
+
+    const businesses =
+      results[0].status === "fulfilled"
+        ? results[0].value
+        : [];
+
+    const submissions =
+      results[1].status === "fulfilled"
+        ? results[1].value
+        : [];
+
+    const claims =
+      results[2].status === "fulfilled"
+        ? results[2].value
+        : [];
+
+    const reports =
+      results[4].status === "fulfilled"
+        ? results[4].value
+        : [];
+
+
+    document.getElementById(
+      "stat-businesses"
+    ).textContent =
+      businesses.filter(
+        x => String(x.status).toLowerCase() === "active"
+      ).length;
+
+
+    document.getElementById(
+      "stat-submissions"
+    ).textContent =
+      submissions.filter(
+        x =>
+          !x.status ||
+          String(x.status).toLowerCase() === "pending"
+      ).length;
+
+
+    document.getElementById(
+      "stat-claims"
+    ).textContent =
+      claims.filter(
+        x =>
+          !x.status ||
+          String(x.status).toLowerCase() === "pending"
+      ).length;
+
+
+    document.getElementById(
+      "stat-reports"
+    ).textContent =
+      reports.filter(
+        x =>
+          !x.status ||
+          String(x.status).toLowerCase() === "pending"
+      ).length;
+
+
+    globalStatus.textContent =
+      "Dashboard loaded successfully.";
+
+    globalStatus.style.color =
+      "#087443";
+
+
+  } catch (error) {
+
+    globalStatus.textContent =
+      error.message ||
+      "Some admin data could not be loaded.";
+
+    globalStatus.style.color =
+      "#b42318";
+
+  }
+
+}
+
+
+/*
+===========================================================
+BUSINESSES
+===========================================================
+*/
+
+async function loadBusinesses() {
+
+  const container =
+    document.getElementById(
+      "businesses-container"
+    );
+
+  try {
+
+    const items =
+      await getResource(
+        "businesses"
+      );
+
+
+    const active =
+      items.filter(
+        item =>
+          String(item.status || "")
+            .toLowerCase() === "active"
+      );
+
+
+    if (!active.length) {
+
+      container.innerHTML =
+        `<div class="empty">
+          No active businesses found.
+        </div>`;
+
+      return items;
+
+    }
+
+
+    container.innerHTML = `
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Business</th>
+              <th>Category</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Verified</th>
+              <th>Featured</th>
+              <th>Views</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${active.map(item => `
+
+              <tr>
+
+                <td>
+                  <strong>
+                    ${escapeHTML(item.business_name)}
+                  </strong>
+
+                  <div class="small muted">
+                    ${escapeHTML(item.id)}
+                  </div>
+                </td>
+
+                <td>
+                  ${escapeHTML(item.category || "—")}
+                </td>
+
+                <td>
+                  ${escapeHTML(locationText(item))}
+                </td>
+
+                <td>
+                  ${statusBadge(item.status)}
+                </td>
+
+                <td>
+                  ${item.verified
+                    ? '<span class="badge badge-verified">Verified</span>'
+                    : '<span class="badge">No</span>'}
+                </td>
+
+                <td>
+                  ${item.featured
+                    ? '<span class="badge badge-active">Featured</span>'
+                    : '<span class="badge">No</span>'}
+                </td>
+
+                <td>
+                  ${escapeHTML(item.views ?? 0)}
+                </td>
+
+              </tr>
+
+            `).join("")}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    `;
+
+
+    return items;
+
+  } catch (error) {
+
+    container.innerHTML =
+      `<div class="empty">
+        Could not load businesses.<br>
+        <span class="small">
+          ${escapeHTML(error.message)}
+        </span>
+      </div>`;
+
+    throw error;
+
+  }
+
+}
+
+
+/*
+===========================================================
+SUBMISSIONS
+===========================================================
+*/
+
+async function loadSubmissions() {
+
+  const container =
+    document.getElementById(
+      "submissions-container"
     );
 
 
-    try {
+  try {
 
-      await apiRequest(
-        "/admin/stats"
+    const items =
+      await getResource(
+        "submissions"
       );
 
-      adminKeyInput.value =
-        "";
 
-      showDashboard();
+    const pending =
+      items.filter(
+        item =>
+          !item.status ||
+          String(item.status).toLowerCase() === "pending"
+      );
 
-      await loadDashboard();
 
-    } catch (error) {
+    if (!pending.length) {
 
-      clearKey();
+      container.innerHTML =
+        `<div class="empty">
+          No pending business submissions found.
+        </div>`;
 
-      loginError.textContent =
-        error.message ||
-        "Invalid admin key.";
-
-    } finally {
-
-      loginButton.disabled =
-        false;
-
-      loginButton.textContent =
-        "Log In";
+      return items;
 
     }
+
+
+    container.innerHTML = `
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Business</th>
+              <th>Category</th>
+              <th>Location</th>
+              <th>Contact</th>
+              <th>Status</th>
+              <th>Submitted</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${pending.map(item => `
+
+              <tr>
+
+                <td>
+
+                  <strong>
+                    ${escapeHTML(item.business_name)}
+                  </strong>
+
+                  <div class="small muted">
+                    ID: ${escapeHTML(item.id)}
+                  </div>
+
+                </td>
+
+                <td>
+                  ${escapeHTML(item.category || "—")}
+                </td>
+
+                <td>
+                  ${escapeHTML(locationText(item))}
+                </td>
+
+                <td>
+
+                  ${escapeHTML(item.email || "—")}
+
+                  <br>
+
+                  ${escapeHTML(item.phone || "—")}
+
+                </td>
+
+                <td>
+                  ${statusBadge(item.status || "pending")}
+                </td>
+
+                <td>
+                  ${formatDate(item.created_at)}
+                </td>
+
+              </tr>
+
+            `).join("")}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    `;
+
+
+    return items;
+
+  } catch (error) {
+
+    container.innerHTML =
+      `<div class="empty">
+        Could not load submissions.<br>
+        <span class="small">
+          ${escapeHTML(error.message)}
+        </span>
+      </div>`;
+
+    throw error;
+
+  }
+
+}
+
+
+/*
+===========================================================
+CLAIMS
+===========================================================
+*/
+
+async function loadClaims() {
+
+  const container =
+    document.getElementById(
+      "claims-container"
+    );
+
+
+  try {
+
+    const items =
+      await getResource(
+        "claims"
+      );
+
+
+    if (!items.length) {
+
+      container.innerHTML =
+        `<div class="empty">
+          No claims found.
+        </div>`;
+
+      return items;
+
+    }
+
+
+    container.innerHTML = `
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Business ID</th>
+              <th>Claimant</th>
+              <th>Contact</th>
+              <th>Evidence</th>
+              <th>Status</th>
+              <th>Submitted</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${items.map(item => `
+
+              <tr>
+
+                <td>
+                  ${escapeHTML(item.business_id || "—")}
+                </td>
+
+                <td>
+                  ${escapeHTML(item.claimant_name || "—")}
+                </td>
+
+                <td>
+                  ${escapeHTML(item.claimant_email || "—")}
+                  <br>
+                  ${escapeHTML(item.claimant_phone || "—")}
+                </td>
+
+                <td>
+                  ${escapeHTML(
+                    item.evidence_type ||
+                    item.message ||
+                    "—"
+                  )}
+                </td>
+
+                <td>
+                  ${statusBadge(item.status)}
+                </td>
+
+                <td>
+                  ${formatDate(item.created_at)}
+                </td>
+
+              </tr>
+
+            `).join("")}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    `;
+
+
+    return items;
+
+  } catch (error) {
+
+    container.innerHTML =
+      `<div class="empty">
+        Could not load claims.<br>
+        <span class="small">
+          ${escapeHTML(error.message)}
+        </span>
+      </div>`;
+
+    throw error;
+
+  }
+
+}
+
+
+/*
+===========================================================
+REVIEWS
+===========================================================
+*/
+
+async function loadReviews() {
+
+  const container =
+    document.getElementById(
+      "reviews-container"
+    );
+
+
+  try {
+
+    const items =
+      await getResource(
+        "reviews"
+      );
+
+
+    if (!items.length) {
+
+      container.innerHTML =
+        `<div class="empty">
+          No reviews found.
+        </div>`;
+
+      return items;
+
+    }
+
+
+    container.innerHTML = `
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Name</th>
+              <th>Business ID</th>
+              <th>Rating</th>
+              <th>Comment</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${items.map(item => `
+
+              <tr>
+
+                <td>
+                  ${escapeHTML(item.name || "Anonymous")}
+                </td>
+
+                <td>
+                  ${escapeHTML(item.business_id || "—")}
+                </td>
+
+                <td>
+                  ${escapeHTML(item.rating || "—")} / 5
+                </td>
+
+                <td>
+                  ${escapeHTML(item.comment || "—")}
+                </td>
+
+                <td>
+                  ${statusBadge(item.status)}
+                </td>
+
+                <td>
+                  ${formatDate(item.created_at)}
+                </td>
+
+              </tr>
+
+            `).join("")}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    `;
+
+
+    return items;
+
+  } catch (error) {
+
+    container.innerHTML =
+      `<div class="empty">
+        Could not load reviews.<br>
+        <span class="small">
+          ${escapeHTML(error.message)}
+        </span>
+      </div>`;
+
+    throw error;
+
+  }
+
+}
+
+
+/*
+===========================================================
+REPORTS
+===========================================================
+*/
+
+async function loadReports() {
+
+  const container =
+    document.getElementById(
+      "reports-container"
+    );
+
+
+  try {
+
+    const items =
+      await getResource(
+        "reports"
+      );
+
+
+    if (!items.length) {
+
+      container.innerHTML =
+        `<div class="empty">
+          No reports found.
+        </div>`;
+
+      return items;
+
+    }
+
+
+    container.innerHTML = `
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Business ID</th>
+              <th>Reporter</th>
+              <th>Reason</th>
+              <th>Message</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${items.map(item => `
+
+              <tr>
+
+                <td>
+                  ${escapeHTML(item.business_id || "—")}
+                </td>
+
+                <td>
+
+                  ${escapeHTML(
+                    item.reporter_name ||
+                    "Anonymous"
+                  )}
+
+                  <br>
+
+                  <span class="small muted">
+                    ${escapeHTML(
+                      item.reporter_email ||
+                      "—"
+                    )}
+                  </span>
+
+                </td>
+
+                <td>
+                  ${escapeHTML(item.reason || "—")}
+                </td>
+
+                <td>
+                  ${escapeHTML(item.message || "—")}
+                </td>
+
+                <td>
+                  ${statusBadge(item.status)}
+                </td>
+
+                <td>
+                  ${formatDate(item.created_at)}
+                </td>
+
+              </tr>
+
+            `).join("")}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    `;
+
+
+    return items;
+
+  } catch (error) {
+
+    container.innerHTML =
+      `<div class="empty">
+        Could not load reports.<br>
+        <span class="small">
+          ${escapeHTML(error.message)}
+        </span>
+      </div>`;
+
+    throw error;
+
+  }
+
+}
+
+
+/*
+===========================================================
+HELP WANTED
+===========================================================
+*/
+
+async function loadHelpWanted() {
+
+  const container =
+    document.getElementById(
+      "help-container"
+    );
+
+
+  try {
+
+    const items =
+      await getResource(
+        "help-wanted"
+      );
+
+
+    if (!items.length) {
+
+      container.innerHTML =
+        `<div class="empty">
+          No help-wanted posts found.
+        </div>`;
+
+      return items;
+
+    }
+
+
+    container.innerHTML = `
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Location</th>
+              <th>Contact</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${items.map(item => `
+
+              <tr>
+
+                <td>
+                  <strong>
+                    ${escapeHTML(item.title || "—")}
+                  </strong>
+
+                  <div class="small muted">
+                    ${escapeHTML(
+                      item.description || ""
+                    )}
+                  </div>
+                </td>
+
+                <td>
+                  ${escapeHTML(item.category || "—")}
+                </td>
+
+                <td>
+                  ${escapeHTML(locationText(item))}
+                </td>
+
+                <td>
+                  ${escapeHTML(item.contact || "—")}
+                </td>
+
+                <td>
+                  ${statusBadge(item.status)}
+                </td>
+
+                <td>
+                  ${formatDate(item.created_at)}
+                </td>
+
+              </tr>
+
+            `).join("")}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    `;
+
+
+    return items;
+
+  } catch (error) {
+
+    container.innerHTML =
+      `<div class="empty">
+        Could not load help-wanted posts.<br>
+        <span class="small">
+          ${escapeHTML(error.message)}
+        </span>
+      </div>`;
+
+    throw error;
+
+  }
+
+}
+
+
+/*
+===========================================================
+SUBSCRIPTIONS
+===========================================================
+*/
+
+async function loadSubscriptions() {
+
+  const container =
+    document.getElementById(
+      "subscriptions-container"
+    );
+
+
+  try {
+
+    const items =
+      await getResource(
+        "subscriptions"
+      );
+
+
+    if (!items.length) {
+
+      container.innerHTML =
+        `<div class="empty">
+          No subscriptions found.
+        </div>`;
+
+      return items;
+
+    }
+
+
+    container.innerHTML = `
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Business ID</th>
+              <th>Plan</th>
+              <th>Amount</th>
+              <th>Provider</th>
+              <th>Reference</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${items.map(item => `
+
+              <tr>
+
+                <td>
+                  ${escapeHTML(item.business_id || "—")}
+                </td>
+
+                <td>
+                  ${escapeHTML(item.plan || "—")}
+                </td>
+
+                <td>
+                  ${escapeHTML(item.amount ?? 0)}
+                  ${escapeHTML(item.currency || "NGN")}
+                </td>
+
+                <td>
+                  ${escapeHTML(item.provider || "—")}
+                </td>
+
+                <td>
+                  ${escapeHTML(item.reference || "—")}
+                </td>
+
+                <td>
+                  ${statusBadge(item.status)}
+                </td>
+
+                <td>
+                  ${formatDate(item.created_at)}
+                </td>
+
+              </tr>
+
+            `).join("")}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    `;
+
+
+    return items;
+
+  } catch (error) {
+
+    container.innerHTML =
+      `<div class="empty">
+        Could not load subscriptions.<br>
+        <span class="small">
+          ${escapeHTML(error.message)}
+        </span>
+      </div>`;
+
+    throw error;
+
+  }
+
+}
+
+
+/*
+===========================================================
+DISCOVERIES
+===========================================================
+*/
+
+async function loadDiscoveries() {
+
+  const container =
+    document.getElementById(
+      "discoveries-container"
+    );
+
+
+  try {
+
+    const items =
+      await getResource(
+        "discoveries"
+      );
+
+
+    if (!items.length) {
+
+      container.innerHTML =
+        `<div class="empty">
+          No discoveries found.
+        </div>`;
+
+      return items;
+
+    }
+
+
+    container.innerHTML = `
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Location</th>
+              <th>Source</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${items.map(item => `
+
+              <tr>
+
+                <td>
+                  <strong>
+                    ${escapeHTML(item.name || "—")}
+                  </strong>
+                </td>
+
+                <td>
+                  ${escapeHTML(item.category || "—")}
+                </td>
+
+                <td>
+                  ${escapeHTML(locationText(item))}
+                </td>
+
+                <td>
+                  ${escapeHTML(item.source || "—")}
+                </td>
+
+                <td>
+                  ${statusBadge(item.status)}
+                </td>
+
+                <td>
+                  ${formatDate(item.created_at)}
+                </td>
+
+              </tr>
+
+            `).join("")}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    `;
+
+
+    return items;
+
+  } catch (error) {
+
+    container.innerHTML =
+      `<div class="empty">
+        Could not load discoveries.<br>
+        <span class="small">
+          ${escapeHTML(error.message)}
+        </span>
+      </div>`;
+
+    throw error;
+
+  }
+
+}
+
+
+/*
+===========================================================
+EVENTS
+===========================================================
+*/
+
+loginButton.addEventListener(
+  "click",
+  login
+);
+
+
+logoutButton.addEventListener(
+  "click",
+  logout
+);
+
+
+adminKeyInput.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (event.key === "Enter") {
+      login();
+    }
+
+  }
+);
+
+
+/*
+===========================================================
+AUTO LOGIN
+===========================================================
+*/
+
+(async function init() {
+
+  const existingKey =
+    getKey();
+
+  if (!existingKey) {
+
+    showLogin();
+
+    return;
 
   }
 
 
-  /* =========================================================
-     LOGOUT
-     ========================================================= */
+  try {
 
-  function logout() {
+    await apiRequest(
+      "/admin/businesses?limit=1"
+    );
+
+    showDashboard();
+
+    await loadAll();
+
+  } catch {
 
     clearKey();
 
@@ -1257,845 +2248,9 @@
 
   }
 
-
-  /* =========================================================
-     STATS
-     ========================================================= */
-
-  async function loadStats() {
-
-    const data =
-      await apiRequest(
-        "/admin/stats"
-      );
-
-
-    const stats =
-      data.stats ||
-      data.data ||
-      data;
-
-
-    document.getElementById(
-      "stat-businesses"
-    ).textContent =
-      stats.businesses ??
-      stats.active_businesses ??
-      "0";
-
-
-    document.getElementById(
-      "stat-submissions"
-    ).textContent =
-      stats.submissions ??
-      stats.pending_submissions ??
-      "0";
-
-
-    document.getElementById(
-      "stat-claims"
-    ).textContent =
-      stats.claims ??
-      stats.pending_claims ??
-      "0";
-
-
-    document.getElementById(
-      "stat-reports"
-    ).textContent =
-      stats.reports ??
-      stats.pending_reports ??
-      "0";
-
-  }
-
-
-  /* =========================================================
-     NORMALIZE ADMIN RESOURCE RESPONSE
-     ========================================================= */
-
-  function getRows(data) {
-
-    if (
-      Array.isArray(data)
-    ) {
-
-      return data;
-
-    }
-
-
-    if (
-      Array.isArray(data.results)
-    ) {
-
-      return data.results;
-
-    }
-
-
-    if (
-      Array.isArray(data.data)
-    ) {
-
-      return data.data;
-
-    }
-
-
-    if (
-      Array.isArray(data.businesses)
-    ) {
-
-      return data.businesses;
-
-    }
-
-
-    if (
-      Array.isArray(data.submissions)
-    ) {
-
-      return data.submissions;
-
-    }
-
-
-    if (
-      Array.isArray(data.claims)
-    ) {
-
-      return data.claims;
-
-    }
-
-
-    if (
-      Array.isArray(data.reports)
-    ) {
-
-      return data.reports;
-
-    }
-
-
-    return [];
-
-  }
-
-
-  /* =========================================================
-     SUBMISSIONS
-     ========================================================= */
-
-  async function loadSubmissions() {
-
-    const message =
-      document.getElementById(
-        "submissions-message"
-      );
-
-    const wrapper =
-      document.getElementById(
-        "submissions-table-wrapper"
-      );
-
-    const tbody =
-      document.getElementById(
-        "submissions-tbody"
-      );
-
-
-    message.classList.remove(
-      "hidden"
-    );
-
-    wrapper.classList.add(
-      "hidden"
-    );
-
-    message.textContent =
-      "Loading submissions...";
-
-
-    try {
-
-      const data =
-        await apiRequest(
-          "/admin/submissions?limit=100"
-        );
-
-
-      const rows =
-        getRows(data);
-
-
-      tbody.innerHTML =
-        "";
-
-
-      if (!rows.length) {
-
-        message.textContent =
-          "No submissions found.";
-
-        return;
-
-      }
-
-
-      rows.forEach(function (item) {
-
-        const tr =
-          document.createElement("tr");
-
-
-        const location = [
-          item.city,
-          item.state,
-          item.country
-        ]
-          .filter(Boolean)
-          .join(", ");
-
-
-        const contact = [
-          item.email,
-          item.phone
-        ]
-          .filter(Boolean)
-          .join("<br>");
-
-
-        tr.innerHTML = `
-
-          <td>
-            <strong>
-              ${escapeHtml(
-                item.business_name ||
-                item.name ||
-                "Unnamed Business"
-              )}
-            </strong>
-          </td>
-
-          <td>
-            ${escapeHtml(
-              item.category ||
-              "—"
-            )}
-          </td>
-
-          <td>
-            ${escapeHtml(
-              location ||
-              "—"
-            )}
-          </td>
-
-          <td>
-            ${contact || "—"}
-          </td>
-
-          <td>
-            <span class="status">
-              ${escapeHtml(
-                item.status ||
-                "pending"
-              )}
-            </span>
-          </td>
-
-          <td>
-            ${escapeHtml(
-              formatDate(
-                item.created_at
-              )
-            )}
-          </td>
-
-        `;
-
-
-        tbody.appendChild(
-          tr
-        );
-
-      });
-
-
-      message.classList.add(
-        "hidden"
-      );
-
-      wrapper.classList.remove(
-        "hidden"
-      );
-
-
-    } catch (error) {
-
-      message.textContent =
-        "Unable to load submissions: " +
-        error.message;
-
-    }
-
-  }
-
-
-  /* =========================================================
-     BUSINESSES
-     ========================================================= */
-
-  async function loadBusinesses() {
-
-    const message =
-      document.getElementById(
-        "businesses-message"
-      );
-
-    const wrapper =
-      document.getElementById(
-        "businesses-table-wrapper"
-      );
-
-    const tbody =
-      document.getElementById(
-        "businesses-tbody"
-      );
-
-
-    message.classList.remove(
-      "hidden"
-    );
-
-    wrapper.classList.add(
-      "hidden"
-    );
-
-    message.textContent =
-      "Loading businesses...";
-
-
-    try {
-
-      const data =
-        await apiRequest(
-          "/admin/businesses?limit=100"
-        );
-
-
-      const rows =
-        getRows(data);
-
-
-      tbody.innerHTML =
-        "";
-
-
-      if (!rows.length) {
-
-        message.textContent =
-          "No businesses found.";
-
-        return;
-
-      }
-
-
-      rows.forEach(function (item) {
-
-        const tr =
-          document.createElement("tr");
-
-
-        const location = [
-          item.city,
-          item.state,
-          item.country
-        ]
-          .filter(Boolean)
-          .join(", ");
-
-
-        tr.innerHTML = `
-
-          <td>
-            <strong>
-              ${escapeHtml(
-                item.business_name ||
-                item.name ||
-                "Unnamed Business"
-              )}
-            </strong>
-          </td>
-
-          <td>
-            ${escapeHtml(
-              item.category ||
-              "—"
-            )}
-          </td>
-
-          <td>
-            ${escapeHtml(
-              location ||
-              "—"
-            )}
-          </td>
-
-          <td>
-            ${Number(item.verified || 0) === 1
-              ? "✓"
-              : "—"}
-          </td>
-
-          <td>
-            ${Number(item.featured || 0) === 1
-              ? "✓"
-              : "—"}
-          </td>
-
-          <td>
-            ${escapeHtml(
-              item.views ??
-              "0"
-            )}
-          </td>
-
-        `;
-
-
-        tbody.appendChild(
-          tr
-        );
-
-      });
-
-
-      message.classList.add(
-        "hidden"
-      );
-
-      wrapper.classList.remove(
-        "hidden"
-      );
-
-
-    } catch (error) {
-
-      message.textContent =
-        "Unable to load businesses: " +
-        error.message;
-
-    }
-
-  }
-
-
-  /* =========================================================
-     CLAIMS
-     ========================================================= */
-
-  async function loadClaims() {
-
-    const message =
-      document.getElementById(
-        "claims-message"
-      );
-
-    const wrapper =
-      document.getElementById(
-        "claims-table-wrapper"
-      );
-
-    const tbody =
-      document.getElementById(
-        "claims-tbody"
-      );
-
-
-    message.classList.remove(
-      "hidden"
-    );
-
-    wrapper.classList.add(
-      "hidden"
-    );
-
-
-    try {
-
-      const data =
-        await apiRequest(
-          "/admin/claims?limit=100"
-        );
-
-
-      const rows =
-        getRows(data);
-
-
-      tbody.innerHTML =
-        "";
-
-
-      if (!rows.length) {
-
-        message.textContent =
-          "No claims found.";
-
-        return;
-
-      }
-
-
-      rows.forEach(function (item) {
-
-        const tr =
-          document.createElement("tr");
-
-
-        tr.innerHTML = `
-
-          <td>
-            ${escapeHtml(
-              item.business_name ||
-              item.business_id ||
-              "—"
-            )}
-          </td>
-
-          <td>
-            ${escapeHtml(
-              item.claimant_name ||
-              "—"
-            )}
-          </td>
-
-          <td>
-            ${escapeHtml(
-              item.claimant_email ||
-              "—"
-            )}
-          </td>
-
-          <td>
-            ${escapeHtml(
-              item.evidence_details ||
-              item.message ||
-              "—"
-            )}
-          </td>
-
-          <td>
-            <span class="status">
-              ${escapeHtml(
-                item.status ||
-                "pending"
-              )}
-            </span>
-          </td>
-
-        `;
-
-
-        tbody.appendChild(
-          tr
-        );
-
-      });
-
-
-      message.classList.add(
-        "hidden"
-      );
-
-      wrapper.classList.remove(
-        "hidden"
-      );
-
-
-    } catch (error) {
-
-      message.textContent =
-        "Unable to load claims: " +
-        error.message;
-
-    }
-
-  }
-
-
-  /* =========================================================
-     REPORTS
-     ========================================================= */
-
-  async function loadReports() {
-
-    const message =
-      document.getElementById(
-        "reports-message"
-      );
-
-    const wrapper =
-      document.getElementById(
-        "reports-table-wrapper"
-      );
-
-    const tbody =
-      document.getElementById(
-        "reports-tbody"
-      );
-
-
-    message.classList.remove(
-      "hidden"
-    );
-
-    wrapper.classList.add(
-      "hidden"
-    );
-
-
-    try {
-
-      const data =
-        await apiRequest(
-          "/admin/reports?limit=100"
-        );
-
-
-      const rows =
-        getRows(data);
-
-
-      tbody.innerHTML =
-        "";
-
-
-      if (!rows.length) {
-
-        message.textContent =
-          "No reports found.";
-
-        return;
-
-      }
-
-
-      rows.forEach(function (item) {
-
-        const tr =
-          document.createElement("tr");
-
-
-        tr.innerHTML = `
-
-          <td>
-            ${escapeHtml(
-              item.business_id ||
-              "—"
-            )}
-          </td>
-
-          <td>
-            ${escapeHtml(
-              item.reporter_name ||
-              "—"
-            )}
-          </td>
-
-          <td>
-            ${escapeHtml(
-              item.reason ||
-              "—"
-            )}
-          </td>
-
-          <td>
-            ${escapeHtml(
-              item.message ||
-              "—"
-            )}
-          </td>
-
-          <td>
-            <span class="status">
-              ${escapeHtml(
-                item.status ||
-                "pending"
-              )}
-            </span>
-          </td>
-
-        `;
-
-
-        tbody.appendChild(
-          tr
-        );
-
-      });
-
-
-      message.classList.add(
-        "hidden"
-      );
-
-      wrapper.classList.remove(
-        "hidden"
-      );
-
-
-    } catch (error) {
-
-      message.textContent =
-        "Unable to load reports: " +
-        error.message;
-
-    }
-
-  }
-
-
-  /* =========================================================
-     DATE FORMAT
-     ========================================================= */
-
-  function formatDate(value) {
-
-    if (!value) {
-
-      return "—";
-
-    }
-
-
-    const date =
-      new Date(value);
-
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-
-      return String(value);
-
-    }
-
-
-    return date.toLocaleString();
-
-  }
-
-
-  /* =========================================================
-     LOAD EVERYTHING
-     ========================================================= */
-
-  async function loadDashboard() {
-
-    refreshButton.disabled =
-      true;
-
-    refreshButton.textContent =
-      "Refreshing...";
-
-
-    try {
-
-      await Promise.all([
-        loadStats(),
-        loadSubmissions(),
-        loadBusinesses(),
-        loadClaims(),
-        loadReports()
-      ]);
-
-    } catch (error) {
-
-      console.error(
-        "Dashboard loading error:",
-        error
-      );
-
-    } finally {
-
-      refreshButton.disabled =
-        false;
-
-      refreshButton.textContent =
-        "Refresh Data";
-
-    }
-
-  }
-
-
-  /* =========================================================
-     EVENTS
-     ========================================================= */
-
-  loginButton.addEventListener(
-    "click",
-    login
-  );
-
-
-  adminKeyInput.addEventListener(
-    "keydown",
-    function (event) {
-
-      if (
-        event.key === "Enter"
-      ) {
-
-        login();
-
-      }
-
-    }
-  );
-
-
-  logoutButton.addEventListener(
-    "click",
-    logout
-  );
-
-
-  refreshButton.addEventListener(
-    "click",
-    loadDashboard
-  );
-
-
-  /* =========================================================
-     INITIALIZE
-     ========================================================= */
-
-  (async function () {
-
-    const authenticated =
-      await verifyKey();
-
-
-    if (authenticated) {
-
-      await loadDashboard();
-
-    }
-
-  })();
-
 })();
 
 </script>
-
 
 </body>
   </html>
