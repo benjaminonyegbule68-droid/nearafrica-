@@ -1,575 +1,2101 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Admin Dashboard | NearAfrica</title>
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>NearAfrica Admin Dashboard</title>
 
   <meta
     name="description"
-    content="NearAfrica admin dashboard for managing business listings."
+    content="NearAfrica administration dashboard."
   >
 
-  <meta name="robots" content="noindex, nofollow">
+  <link
+    rel="icon"
+    href="favicon.svg"
+    type="image/svg+xml"
+  >
 
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
 
   <link
     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
     rel="stylesheet"
   >
 
-  <!-- NearAfrica stylesheet -->
-  <link rel="stylesheet" href="styles.css">
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Manrope, Arial, sans-serif;
+      background: #f6f4ef;
+      color: #171717;
+    }
+
+    header {
+      background: #111;
+      color: #fff;
+      padding: 20px;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+      text-decoration: none;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .brand img {
+      width: 150px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .admin-label {
+      font-size: 14px;
+      color: #d4af37;
+      font-weight: 700;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 35px auto;
+      padding: 0 20px;
+    }
+
+    .page-heading {
+      margin-bottom: 25px;
+    }
+
+    .page-heading h1 {
+      margin: 0 0 8px;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 32px;
+    }
+
+    .page-heading p {
+      margin: 0;
+      color: #666;
+    }
+
+    .login-card,
+    .dashboard-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 25px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.07);
+      margin-bottom: 25px;
+    }
+
+    .login-card {
+      max-width: 500px;
+      margin: 60px auto;
+    }
+
+    .login-card h2 {
+      margin-top: 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d5d5d5;
+      border-radius: 8px;
+      font: inherit;
+      background: #fff;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #d4af37;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 12px 18px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #d4af37;
+      color: #111;
+    }
+
+    .btn-dark {
+      background: #111;
+      color: #fff;
+    }
+
+    .btn-danger {
+      background: #b42318;
+      color: #fff;
+    }
+
+    .btn-small {
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+
+    .error {
+      color: #b42318;
+      margin-top: 12px;
+    }
+
+    .success {
+      color: #16794c;
+      margin-top: 12px;
+    }
+
+    .muted {
+      color: #777;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: #777;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 22px;
+    }
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 13px 12px;
+      border-bottom: 1px solid #eee;
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 13px;
+      color: #666;
+      background: #fafafa;
+    }
+
+    td {
+      font-size: 14px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #fff3c4;
+      color: #725900;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .empty {
+      padding: 35px 10px;
+      text-align: center;
+      color: #777;
+    }
+
+    .loading {
+      padding: 30px 10px;
+      text-align: center;
+      color: #777;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px 20px;
+    }
+
+    .detail-item {
+      padding: 7px 0;
+    }
+
+    .detail-label {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 2px;
+    }
+
+    .detail-value {
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    .logout-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    footer {
+      text-align: center;
+      color: #777;
+      padding: 30px 20px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 800px) {
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-heading h1 {
+        font-size: 27px;
+      }
+
+    }
+
+    @media (max-width: 500px) {
+
+      main {
+        padding: 0 12px;
+        margin-top: 25px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .login-card,
+      .dashboard-card {
+        padding: 18px;
+      }
+
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+    }
+
+  </style>
+
 </head>
+
 
 <body>
 
-  <!-- =====================================================
-       HEADER
-  ====================================================== -->
 
-  <header class="site-header">
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
 
-    <div class="container header-inner">
+<header>
 
-      <a
-        href="index.html"
-        class="logo"
-        aria-label="NearAfrica home"
-      >
-        <img
-          src="logo.png"
-          alt="NearAfrica"
-          class="logo-img"
-          width="160"
-          height="40"
-        >
-      </a>
+  <div class="header-inner">
 
-      <nav class="nav-links" aria-label="Main navigation">
-
-        <a href="index.html">
-          Home
-        </a>
-
-        <a href="search.html">
-          Explore
-        </a>
-
-        <a href="list-business.html">
-          List Your Business
-        </a>
-
-        <a
-          href="admin.html"
-          class="active"
-          aria-current="page"
-        >
-          Admin
-        </a>
-
-      </nav>
-
-      <div class="header-actions">
-
-        <button
-          type="button"
-          class="btn-menu"
-          id="menu-btn"
-          aria-label="Open menu"
-          aria-expanded="false"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-      </div>
-
-    </div>
-
-    <!-- Mobile navigation -->
-
-    <nav
-      class="mobile-nav"
-      id="mobile-nav"
-      aria-label="Mobile navigation"
+    <a
+      href="index.html"
+      class="brand"
     >
 
-      <a href="index.html">
-        Home
-      </a>
-
-      <a href="search.html">
-        Explore
-      </a>
-
-      <a href="list-business.html">
-        List Your Business
-      </a>
-
-      <a
-        href="admin.html"
-        aria-current="page"
+      <img
+        src="logo.png"
+        alt="NearAfrica"
       >
-        Admin
-      </a>
 
-    </nav>
+    </a>
 
-  </header>
+    <div class="logout-area">
 
+      <span class="admin-label">
+        ADMIN DASHBOARD
+      </span>
 
-  <!-- =====================================================
-       AFRICAN COUNTRIES MARQUEE
-  ====================================================== -->
-
-  <div
-    class="flags-marquee"
-    aria-label="African countries"
-  >
-
-    <div class="flags-track">
-
-      <span class="flag-item">🇳🇬 Nigeria</span>
-      <span class="flag-item">🇬🇭 Ghana</span>
-      <span class="flag-item">🇰🇪 Kenya</span>
-      <span class="flag-item">🇿🇦 South Africa</span>
-      <span class="flag-item">🇺🇬 Uganda</span>
-      <span class="flag-item">🇹🇿 Tanzania</span>
-      <span class="flag-item">🇷🇼 Rwanda</span>
-      <span class="flag-item">🇨🇲 Cameroon</span>
-      <span class="flag-item">🇪🇬 Egypt</span>
-      <span class="flag-item">🇲🇦 Morocco</span>
-      <span class="flag-item">🇸🇳 Senegal</span>
-      <span class="flag-item">🇪🇹 Ethiopia</span>
-      <span class="flag-item">🇿🇲 Zambia</span>
-      <span class="flag-item">🇿🇼 Zimbabwe</span>
-      <span class="flag-item">🇧🇼 Botswana</span>
-      <span class="flag-item">🇳🇦 Namibia</span>
-      <span class="flag-item">🇨🇮 Côte d'Ivoire</span>
-      <span class="flag-item">🇧🇯 Benin</span>
-      <span class="flag-item">🇹🇬 Togo</span>
-      <span class="flag-item">🇩🇿 Algeria</span>
-      <span class="flag-item">🇦🇴 Angola</span>
-      <span class="flag-item">🇧🇫 Burkina Faso</span>
-      <span class="flag-item">🇧🇮 Burundi</span>
-      <span class="flag-item">🇨🇻 Cape Verde</span>
-      <span class="flag-item">🇨🇫 Central African Republic</span>
-      <span class="flag-item">🇹🇩 Chad</span>
-      <span class="flag-item">🇰🇲 Comoros</span>
-      <span class="flag-item">🇨🇬 Congo</span>
-      <span class="flag-item">🇨🇩 DR Congo</span>
-      <span class="flag-item">🇩🇯 Djibouti</span>
-      <span class="flag-item">🇬🇶 Equatorial Guinea</span>
-      <span class="flag-item">🇪🇷 Eritrea</span>
-      <span class="flag-item">🇸🇿 Eswatini</span>
-      <span class="flag-item">🇬🇦 Gabon</span>
-      <span class="flag-item">🇬🇲 Gambia</span>
-      <span class="flag-item">🇬🇳 Guinea</span>
-      <span class="flag-item">🇬🇼 Guinea-Bissau</span>
-      <span class="flag-item">🇱🇸 Lesotho</span>
-      <span class="flag-item">🇱🇷 Liberia</span>
-      <span class="flag-item">🇱🇾 Libya</span>
-      <span class="flag-item">🇲🇬 Madagascar</span>
-      <span class="flag-item">🇲🇼 Malawi</span>
-      <span class="flag-item">🇲🇱 Mali</span>
-      <span class="flag-item">🇲🇷 Mauritania</span>
-      <span class="flag-item">🇲🇺 Mauritius</span>
-      <span class="flag-item">🇲🇿 Mozambique</span>
-      <span class="flag-item">🇳🇪 Niger</span>
-      <span class="flag-item">🇸🇹 São Tomé and Príncipe</span>
-      <span class="flag-item">🇸🇨 Seychelles</span>
-      <span class="flag-item">🇸🇱 Sierra Leone</span>
-      <span class="flag-item">🇸🇴 Somalia</span>
-      <span class="flag-item">🇸🇸 South Sudan</span>
-      <span class="flag-item">🇸🇩 Sudan</span>
-      <span class="flag-item">🇹🇳 Tunisia</span>
+      <button
+        id="logout-button"
+        class="btn-dark hidden"
+        type="button"
+      >
+        Log Out
+      </button>
 
     </div>
 
   </div>
 
+</header>
 
-  <!-- =====================================================
-       MAIN ADMIN AREA
-  ====================================================== -->
 
-  <main class="section">
+<!-- =========================================================
+     LOGIN
+     ========================================================= -->
 
-    <div class="container">
+<main>
 
-      <div class="section-heading">
+  <section
+    id="login-section"
+    class="login-card"
+  >
 
-        <h1>
-          Admin Dashboard
-        </h1>
+    <h2>
+      Admin Login
+    </h2>
 
-        <p class="text-muted">
-          Manage NearAfrica business listings, verification,
-          featured businesses and reports.
-        </p>
+    <p class="muted">
+      Enter your NearAfrica admin API key to access
+      the management dashboard.
+    </p>
+
+    <label for="admin-key">
+      Admin API Key
+    </label>
+
+    <input
+      type="password"
+      id="admin-key"
+      placeholder="Enter admin API key"
+      autocomplete="off"
+    >
+
+    <button
+      type="button"
+      id="login-button"
+      class="btn-primary"
+      style="margin-top:15px;"
+    >
+      Log In
+    </button>
+
+    <div
+      id="login-error"
+      class="error"
+    ></div>
+
+  </section>
+
+
+  <!-- =======================================================
+       DASHBOARD
+       ======================================================= -->
+
+  <section
+    id="dashboard-section"
+    class="hidden"
+  >
+
+    <div class="page-heading">
+
+      <h1>
+        NearAfrica Admin Dashboard
+      </h1>
+
+      <p>
+        Manage NearAfrica's businesses, submissions,
+        claims, reviews, reports and other administrative data.
+      </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         TOP BAR
+         ===================================================== -->
+
+    <div class="top-bar">
+
+      <div>
+
+        <strong>
+          Connected to:
+        </strong>
+
+        <span class="muted">
+          NearAfrica API v15
+        </span>
 
       </div>
 
-
-      <!-- IMPORTANT NOTICE -->
-
-      <div
-        class="card"
-        style="margin-bottom:1.5rem;"
+      <button
+        type="button"
+        id="refresh-button"
+        class="btn-primary"
       >
+        Refresh Data
+      </button>
 
-        <p
-          class="text-muted"
-          style="margin:0;font-size:0.9rem;"
+    </div>
+
+
+    <!-- =====================================================
+         STATS
+         ===================================================== -->
+
+    <div class="stats">
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Active Businesses
+        </div>
+
+        <div
+          class="stat-value"
+          id="stat-businesses"
         >
-          <strong>Development mode:</strong>
-          Business management is currently connected to the
-          NearAfrica frontend. Secure authentication and the
-          production database will be connected through the
-          backend before public launch.
-        </p>
+          —
+        </div>
 
       </div>
 
 
-      <div class="admin-layout">
+      <div class="stat">
 
+        <div class="stat-label">
+          Pending Submissions
+        </div>
 
-        <!-- =================================================
-             SIDEBAR
-        ================================================== -->
+        <div
+          class="stat-value"
+          id="stat-submissions"
+        >
+          —
+        </div>
 
-        <aside class="admin-sidebar">
+      </div>
 
-          <nav
-            class="admin-nav"
-            aria-label="Admin sections"
-          >
 
-            <a
-              href="#businesses"
-              class="active"
-            >
-              Businesses
-            </a>
+      <div class="stat">
 
-            <a href="#pending">
-              Pending Approval
-            </a>
+        <div class="stat-label">
+          Pending Claims
+        </div>
 
-            <a href="#verified">
-              Verified
-            </a>
+        <div
+          class="stat-value"
+          id="stat-claims"
+        >
+          —
+        </div>
 
-            <a href="#featured">
-              Featured
-            </a>
+      </div>
 
-            <a href="#reports">
-              Reports
-            </a>
 
-          </nav>
+      <div class="stat">
 
-        </aside>
+        <div class="stat-label">
+          Reports
+        </div>
 
-
-        <!-- =================================================
-             CONTENT
-        ================================================== -->
-
-        <div class="admin-content">
-
-
-          <!-- BUSINESS MANAGEMENT -->
-
-          <section
-            id="businesses"
-            aria-labelledby="businesses-heading"
-          >
-
-            <div
-              class="section-heading"
-              style="margin-bottom:1rem;"
-            >
-
-              <h2 id="businesses-heading">
-                Businesses
-              </h2>
-
-              <p class="text-muted">
-                Businesses approved for publication on NearAfrica.
-              </p>
-
-            </div>
-
-
-            <div
-              class="admin-table-wrap card"
-              style="padding:0;overflow:auto;"
-            >
-
-              <table
-                class="admin-table"
-                id="admin-business-table"
-              >
-
-                <thead>
-
-                  <tr>
-
-                    <th scope="col">
-                      Name
-                    </th>
-
-                    <th scope="col">
-                      Category
-                    </th>
-
-                    <th scope="col">
-                      Location
-                    </th>
-
-                    <th scope="col">
-                      Verified
-                    </th>
-
-                    <th scope="col">
-                      Featured
-                    </th>
-
-                    <th scope="col">
-                      Actions
-                    </th>
-
-                  </tr>
-
-                </thead>
-
-                <tbody id="admin-business-tbody">
-
-                  <!--
-                    Businesses will be inserted here by app.js
-                    once the backend/database is connected.
-                  -->
-
-                  <tr>
-
-                    <td
-                      colspan="6"
-                      style="text-align:center;padding:2rem;"
-                    >
-
-                      <span class="text-muted">
-                        No businesses available yet.
-                      </span>
-
-                    </td>
-
-                  </tr>
-
-                </tbody>
-
-              </table>
-
-            </div>
-
-          </section>
-
-
-          <!-- =================================================
-               PENDING
-          ================================================== -->
-
-          <section
-            id="pending"
-            class="section"
-          >
-
-            <div class="section-heading">
-
-              <h2>
-                Pending Approval
-              </h2>
-
-              <p class="text-muted">
-                Business submissions waiting for administrator review.
-              </p>
-
-            </div>
-
-            <div
-              id="pending-businesses"
-              class="card"
-            >
-
-              <p class="text-muted">
-                No pending submissions yet.
-              </p>
-
-            </div>
-
-          </section>
-
-
-          <!-- =================================================
-               VERIFIED
-          ================================================== -->
-
-          <section
-            id="verified"
-            class="section"
-          >
-
-            <div class="section-heading">
-
-              <h2>
-                Verified Businesses
-              </h2>
-
-              <p class="text-muted">
-                Businesses that have passed NearAfrica verification.
-              </p>
-
-            </div>
-
-            <div
-              id="verified-businesses"
-              class="card"
-            >
-
-              <p class="text-muted">
-                No verified businesses yet.
-              </p>
-
-            </div>
-
-          </section>
-
-
-          <!-- =================================================
-               FEATURED
-          ================================================== -->
-
-          <section
-            id="featured"
-            class="section"
-          >
-
-            <div class="section-heading">
-
-              <h2>
-                Featured Businesses
-              </h2>
-
-              <p class="text-muted">
-                Businesses selected for featured placement.
-              </p>
-
-            </div>
-
-            <div
-              id="featured-businesses"
-              class="card"
-            >
-
-              <p class="text-muted">
-                No featured businesses yet.
-              </p>
-
-            </div>
-
-          </section>
-
-
-          <!-- =================================================
-               REPORTS
-          ================================================== -->
-
-          <section
-            id="reports"
-            class="section"
-          >
-
-            <div class="section-heading">
-
-              <h2>
-                Reports
-              </h2>
-
-              <p class="text-muted">
-                Review reports submitted about business listings.
-              </p>
-
-            </div>
-
-            <div
-              id="business-reports"
-              class="card"
-            >
-
-              <p class="text-muted">
-                No reports available.
-              </p>
-
-            </div>
-
-          </section>
-
+        <div
+          class="stat-value"
+          id="stat-reports"
+        >
+          —
         </div>
 
       </div>
 
     </div>
 
-  </main>
 
+    <!-- =====================================================
+         PENDING SUBMISSIONS
+         ===================================================== -->
 
-  <!-- =====================================================
-       FOOTER
-  ====================================================== -->
+    <div class="dashboard-card">
 
-  <footer class="site-footer">
+      <div class="section-title">
 
-    <div class="container">
+        <h2>
+          Pending Business Submissions
+        </h2>
+
+        <span class="muted">
+          Real submissions from D1
+        </span>
+
+      </div>
+
 
       <div
-        class="footer-bottom"
-        style="border:none;"
+        id="submissions-message"
+        class="loading"
+      >
+        Loading submissions...
+      </div>
+
+
+      <div
+        id="submissions-table-wrapper"
+        class="table-wrapper hidden"
       >
 
-        <span>
-          © 2026 NearAfrica
-        </span>
+        <table>
 
-        <span>
-          Admin dashboard
-        </span>
+          <thead>
+
+            <tr>
+
+              <th>
+                Business
+              </th>
+
+              <th>
+                Category
+              </th>
+
+              <th>
+                Location
+              </th>
+
+              <th>
+                Contact
+              </th>
+
+              <th>
+                Status
+              </th>
+
+              <th>
+                Submitted
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody
+            id="submissions-tbody"
+          ></tbody>
+
+        </table>
 
       </div>
 
     </div>
 
-  </footer>
+
+    <!-- =====================================================
+         ACTIVE BUSINESSES
+         ===================================================== -->
+
+    <div class="dashboard-card">
+
+      <div class="section-title">
+
+        <h2>
+          Active Businesses
+        </h2>
+
+        <span class="muted">
+          Currently published businesses
+        </span>
+
+      </div>
 
 
-  <!-- =====================================================
-       JAVASCRIPT
-       Files are in the repository root.
-  ====================================================== -->
+      <div
+        id="businesses-message"
+        class="loading"
+      >
+        Loading businesses...
+      </div>
 
-  <script src="config.js"></script>
-  <script src="businesses.js"></script>
-  <script src="utils.js"></script>
-  <script src="app.js"></script>
+
+      <div
+        id="businesses-table-wrapper"
+        class="table-wrapper hidden"
+      >
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Business
+              </th>
+
+              <th>
+                Category
+              </th>
+
+              <th>
+                Location
+              </th>
+
+              <th>
+                Verified
+              </th>
+
+              <th>
+                Featured
+              </th>
+
+              <th>
+                Views
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody
+            id="businesses-tbody"
+          ></tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CLAIMS
+         ===================================================== -->
+
+    <div class="dashboard-card">
+
+      <div class="section-title">
+
+        <h2>
+          Claims
+        </h2>
+
+        <span class="muted">
+          Business ownership claims
+        </span>
+
+      </div>
+
+
+      <div
+        id="claims-message"
+        class="loading"
+      >
+        Loading claims...
+      </div>
+
+
+      <div
+        id="claims-table-wrapper"
+        class="table-wrapper hidden"
+      >
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Business
+              </th>
+
+              <th>
+                Claimant
+              </th>
+
+              <th>
+                Email
+              </th>
+
+              <th>
+                Evidence
+              </th>
+
+              <th>
+                Status
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody
+            id="claims-tbody"
+          ></tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         REPORTS
+         ===================================================== -->
+
+    <div class="dashboard-card">
+
+      <div class="section-title">
+
+        <h2>
+          Reports
+        </h2>
+
+        <span class="muted">
+          Reports submitted about listings
+        </span>
+
+      </div>
+
+
+      <div
+        id="reports-message"
+        class="loading"
+      >
+        Loading reports...
+      </div>
+
+
+      <div
+        id="reports-table-wrapper"
+        class="table-wrapper hidden"
+      >
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Business
+              </th>
+
+              <th>
+                Reporter
+              </th>
+
+              <th>
+                Reason
+              </th>
+
+              <th>
+                Message
+              </th>
+
+              <th>
+                Status
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody
+            id="reports-tbody"
+          ></tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SYSTEM MESSAGE
+         ===================================================== -->
+
+    <div
+      id="system-message"
+      class="dashboard-card hidden"
+    ></div>
+
+  </section>
+
+</main>
+
+
+<footer>
+
+  © 2026 NearAfrica — Administration
+
+</footer>
+
+
+<!-- =========================================================
+     ADMIN JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+(function () {
+
+  "use strict";
+
+
+  /* =========================================================
+     CONFIGURATION
+     ========================================================= */
+
+  const API_BASE =
+    "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+
+
+  /* =========================================================
+     ELEMENTS
+     ========================================================= */
+
+  const loginSection =
+    document.getElementById("login-section");
+
+  const dashboardSection =
+    document.getElementById("dashboard-section");
+
+  const adminKeyInput =
+    document.getElementById("admin-key");
+
+  const loginButton =
+    document.getElementById("login-button");
+
+  const loginError =
+    document.getElementById("login-error");
+
+  const logoutButton =
+    document.getElementById("logout-button");
+
+  const refreshButton =
+    document.getElementById("refresh-button");
+
+
+  /* =========================================================
+     STORAGE
+     ========================================================= */
+
+  const STORAGE_KEY =
+    "nearafrica_admin_key";
+
+
+  function getStoredKey() {
+
+    return sessionStorage.getItem(STORAGE_KEY) || "";
+
+  }
+
+
+  function storeKey(key) {
+
+    sessionStorage.setItem(
+      STORAGE_KEY,
+      key
+    );
+
+  }
+
+
+  function clearKey() {
+
+    sessionStorage.removeItem(
+      STORAGE_KEY
+    );
+
+  }
+
+
+  /* =========================================================
+     ESCAPE HTML
+     ========================================================= */
+
+  function escapeHtml(value) {
+
+    const div =
+      document.createElement("div");
+
+    div.textContent =
+      value === null ||
+      value === undefined
+        ? ""
+        : String(value);
+
+    return div.innerHTML;
+
+  }
+
+
+  /* =========================================================
+     API REQUEST
+     ========================================================= */
+
+  async function apiRequest(
+    endpoint,
+    options = {}
+  ) {
+
+    const key =
+      getStoredKey();
+
+    const headers = {
+      "Content-Type":
+        "application/json",
+      "X-Admin-Key":
+        key,
+      ...(options.headers || {})
+    };
+
+
+    const response =
+      await fetch(
+        API_BASE + endpoint,
+        {
+          ...options,
+          headers
+        }
+      );
+
+
+    let data = {};
+
+    try {
+
+      data =
+        await response.json();
+
+    } catch {
+
+      data = {};
+
+    }
+
+
+    if (response.status === 401) {
+
+      clearKey();
+
+      showLogin(
+        "Your admin session is no longer authorized."
+      );
+
+      throw new Error(
+        "Unauthorized"
+      );
+
+    }
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        data.message ||
+        "API request failed."
+      );
+
+    }
+
+
+    return data;
+
+  }
+
+
+  /* =========================================================
+     LOGIN SCREEN
+     ========================================================= */
+
+  function showLogin(message = "") {
+
+    dashboardSection.classList.add(
+      "hidden"
+    );
+
+    loginSection.classList.remove(
+      "hidden"
+    );
+
+    logoutButton.classList.add(
+      "hidden"
+    );
+
+    loginError.textContent =
+      message;
+
+  }
+
+
+  function showDashboard() {
+
+    loginSection.classList.add(
+      "hidden"
+    );
+
+    dashboardSection.classList.remove(
+      "hidden"
+    );
+
+    logoutButton.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  /* =========================================================
+     VERIFY ADMIN KEY
+     ========================================================= */
+
+  async function verifyKey() {
+
+    const key =
+      getStoredKey();
+
+    if (!key) {
+
+      showLogin();
+
+      return false;
+
+    }
+
+
+    try {
+
+      await apiRequest(
+        "/admin/stats"
+      );
+
+      showDashboard();
+
+      return true;
+
+    } catch (error) {
+
+      if (
+        error.message !==
+        "Unauthorized"
+      ) {
+
+        showLogin(
+          error.message
+        );
+
+      }
+
+      return false;
+
+    }
+
+  }
+
+
+  /* =========================================================
+     LOGIN
+     ========================================================= */
+
+  async function login() {
+
+    const key =
+      adminKeyInput.value.trim();
+
+
+    if (!key) {
+
+      loginError.textContent =
+        "Enter your admin API key.";
+
+      return;
+
+    }
+
+
+    loginButton.disabled =
+      true;
+
+    loginButton.textContent =
+      "Checking...";
+
+    loginError.textContent =
+      "";
+
+
+    sessionStorage.setItem(
+      STORAGE_KEY,
+      key
+    );
+
+
+    try {
+
+      await apiRequest(
+        "/admin/stats"
+      );
+
+      adminKeyInput.value =
+        "";
+
+      showDashboard();
+
+      await loadDashboard();
+
+    } catch (error) {
+
+      clearKey();
+
+      loginError.textContent =
+        error.message ||
+        "Invalid admin key.";
+
+    } finally {
+
+      loginButton.disabled =
+        false;
+
+      loginButton.textContent =
+        "Log In";
+
+    }
+
+  }
+
+
+  /* =========================================================
+     LOGOUT
+     ========================================================= */
+
+  function logout() {
+
+    clearKey();
+
+    showLogin();
+
+  }
+
+
+  /* =========================================================
+     STATS
+     ========================================================= */
+
+  async function loadStats() {
+
+    const data =
+      await apiRequest(
+        "/admin/stats"
+      );
+
+
+    const stats =
+      data.stats ||
+      data.data ||
+      data;
+
+
+    document.getElementById(
+      "stat-businesses"
+    ).textContent =
+      stats.businesses ??
+      stats.active_businesses ??
+      "0";
+
+
+    document.getElementById(
+      "stat-submissions"
+    ).textContent =
+      stats.submissions ??
+      stats.pending_submissions ??
+      "0";
+
+
+    document.getElementById(
+      "stat-claims"
+    ).textContent =
+      stats.claims ??
+      stats.pending_claims ??
+      "0";
+
+
+    document.getElementById(
+      "stat-reports"
+    ).textContent =
+      stats.reports ??
+      stats.pending_reports ??
+      "0";
+
+  }
+
+
+  /* =========================================================
+     NORMALIZE ADMIN RESOURCE RESPONSE
+     ========================================================= */
+
+  function getRows(data) {
+
+    if (
+      Array.isArray(data)
+    ) {
+
+      return data;
+
+    }
+
+
+    if (
+      Array.isArray(data.results)
+    ) {
+
+      return data.results;
+
+    }
+
+
+    if (
+      Array.isArray(data.data)
+    ) {
+
+      return data.data;
+
+    }
+
+
+    if (
+      Array.isArray(data.businesses)
+    ) {
+
+      return data.businesses;
+
+    }
+
+
+    if (
+      Array.isArray(data.submissions)
+    ) {
+
+      return data.submissions;
+
+    }
+
+
+    if (
+      Array.isArray(data.claims)
+    ) {
+
+      return data.claims;
+
+    }
+
+
+    if (
+      Array.isArray(data.reports)
+    ) {
+
+      return data.reports;
+
+    }
+
+
+    return [];
+
+  }
+
+
+  /* =========================================================
+     SUBMISSIONS
+     ========================================================= */
+
+  async function loadSubmissions() {
+
+    const message =
+      document.getElementById(
+        "submissions-message"
+      );
+
+    const wrapper =
+      document.getElementById(
+        "submissions-table-wrapper"
+      );
+
+    const tbody =
+      document.getElementById(
+        "submissions-tbody"
+      );
+
+
+    message.classList.remove(
+      "hidden"
+    );
+
+    wrapper.classList.add(
+      "hidden"
+    );
+
+    message.textContent =
+      "Loading submissions...";
+
+
+    try {
+
+      const data =
+        await apiRequest(
+          "/admin/submissions?limit=100"
+        );
+
+
+      const rows =
+        getRows(data);
+
+
+      tbody.innerHTML =
+        "";
+
+
+      if (!rows.length) {
+
+        message.textContent =
+          "No submissions found.";
+
+        return;
+
+      }
+
+
+      rows.forEach(function (item) {
+
+        const tr =
+          document.createElement("tr");
+
+
+        const location = [
+          item.city,
+          item.state,
+          item.country
+        ]
+          .filter(Boolean)
+          .join(", ");
+
+
+        const contact = [
+          item.email,
+          item.phone
+        ]
+          .filter(Boolean)
+          .join("<br>");
+
+
+        tr.innerHTML = `
+
+          <td>
+            <strong>
+              ${escapeHtml(
+                item.business_name ||
+                item.name ||
+                "Unnamed Business"
+              )}
+            </strong>
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.category ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              location ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            ${contact || "—"}
+          </td>
+
+          <td>
+            <span class="status">
+              ${escapeHtml(
+                item.status ||
+                "pending"
+              )}
+            </span>
+          </td>
+
+          <td>
+            ${escapeHtml(
+              formatDate(
+                item.created_at
+              )
+            )}
+          </td>
+
+        `;
+
+
+        tbody.appendChild(
+          tr
+        );
+
+      });
+
+
+      message.classList.add(
+        "hidden"
+      );
+
+      wrapper.classList.remove(
+        "hidden"
+      );
+
+
+    } catch (error) {
+
+      message.textContent =
+        "Unable to load submissions: " +
+        error.message;
+
+    }
+
+  }
+
+
+  /* =========================================================
+     BUSINESSES
+     ========================================================= */
+
+  async function loadBusinesses() {
+
+    const message =
+      document.getElementById(
+        "businesses-message"
+      );
+
+    const wrapper =
+      document.getElementById(
+        "businesses-table-wrapper"
+      );
+
+    const tbody =
+      document.getElementById(
+        "businesses-tbody"
+      );
+
+
+    message.classList.remove(
+      "hidden"
+    );
+
+    wrapper.classList.add(
+      "hidden"
+    );
+
+    message.textContent =
+      "Loading businesses...";
+
+
+    try {
+
+      const data =
+        await apiRequest(
+          "/admin/businesses?limit=100"
+        );
+
+
+      const rows =
+        getRows(data);
+
+
+      tbody.innerHTML =
+        "";
+
+
+      if (!rows.length) {
+
+        message.textContent =
+          "No businesses found.";
+
+        return;
+
+      }
+
+
+      rows.forEach(function (item) {
+
+        const tr =
+          document.createElement("tr");
+
+
+        const location = [
+          item.city,
+          item.state,
+          item.country
+        ]
+          .filter(Boolean)
+          .join(", ");
+
+
+        tr.innerHTML = `
+
+          <td>
+            <strong>
+              ${escapeHtml(
+                item.business_name ||
+                item.name ||
+                "Unnamed Business"
+              )}
+            </strong>
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.category ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              location ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            ${Number(item.verified || 0) === 1
+              ? "✓"
+              : "—"}
+          </td>
+
+          <td>
+            ${Number(item.featured || 0) === 1
+              ? "✓"
+              : "—"}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.views ??
+              "0"
+            )}
+          </td>
+
+        `;
+
+
+        tbody.appendChild(
+          tr
+        );
+
+      });
+
+
+      message.classList.add(
+        "hidden"
+      );
+
+      wrapper.classList.remove(
+        "hidden"
+      );
+
+
+    } catch (error) {
+
+      message.textContent =
+        "Unable to load businesses: " +
+        error.message;
+
+    }
+
+  }
+
+
+  /* =========================================================
+     CLAIMS
+     ========================================================= */
+
+  async function loadClaims() {
+
+    const message =
+      document.getElementById(
+        "claims-message"
+      );
+
+    const wrapper =
+      document.getElementById(
+        "claims-table-wrapper"
+      );
+
+    const tbody =
+      document.getElementById(
+        "claims-tbody"
+      );
+
+
+    message.classList.remove(
+      "hidden"
+    );
+
+    wrapper.classList.add(
+      "hidden"
+    );
+
+
+    try {
+
+      const data =
+        await apiRequest(
+          "/admin/claims?limit=100"
+        );
+
+
+      const rows =
+        getRows(data);
+
+
+      tbody.innerHTML =
+        "";
+
+
+      if (!rows.length) {
+
+        message.textContent =
+          "No claims found.";
+
+        return;
+
+      }
+
+
+      rows.forEach(function (item) {
+
+        const tr =
+          document.createElement("tr");
+
+
+        tr.innerHTML = `
+
+          <td>
+            ${escapeHtml(
+              item.business_name ||
+              item.business_id ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.claimant_name ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.claimant_email ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.evidence_details ||
+              item.message ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            <span class="status">
+              ${escapeHtml(
+                item.status ||
+                "pending"
+              )}
+            </span>
+          </td>
+
+        `;
+
+
+        tbody.appendChild(
+          tr
+        );
+
+      });
+
+
+      message.classList.add(
+        "hidden"
+      );
+
+      wrapper.classList.remove(
+        "hidden"
+      );
+
+
+    } catch (error) {
+
+      message.textContent =
+        "Unable to load claims: " +
+        error.message;
+
+    }
+
+  }
+
+
+  /* =========================================================
+     REPORTS
+     ========================================================= */
+
+  async function loadReports() {
+
+    const message =
+      document.getElementById(
+        "reports-message"
+      );
+
+    const wrapper =
+      document.getElementById(
+        "reports-table-wrapper"
+      );
+
+    const tbody =
+      document.getElementById(
+        "reports-tbody"
+      );
+
+
+    message.classList.remove(
+      "hidden"
+    );
+
+    wrapper.classList.add(
+      "hidden"
+    );
+
+
+    try {
+
+      const data =
+        await apiRequest(
+          "/admin/reports?limit=100"
+        );
+
+
+      const rows =
+        getRows(data);
+
+
+      tbody.innerHTML =
+        "";
+
+
+      if (!rows.length) {
+
+        message.textContent =
+          "No reports found.";
+
+        return;
+
+      }
+
+
+      rows.forEach(function (item) {
+
+        const tr =
+          document.createElement("tr");
+
+
+        tr.innerHTML = `
+
+          <td>
+            ${escapeHtml(
+              item.business_id ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.reporter_name ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.reason ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.message ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            <span class="status">
+              ${escapeHtml(
+                item.status ||
+                "pending"
+              )}
+            </span>
+          </td>
+
+        `;
+
+
+        tbody.appendChild(
+          tr
+        );
+
+      });
+
+
+      message.classList.add(
+        "hidden"
+      );
+
+      wrapper.classList.remove(
+        "hidden"
+      );
+
+
+    } catch (error) {
+
+      message.textContent =
+        "Unable to load reports: " +
+        error.message;
+
+    }
+
+  }
+
+
+  /* =========================================================
+     DATE FORMAT
+     ========================================================= */
+
+  function formatDate(value) {
+
+    if (!value) {
+
+      return "—";
+
+    }
+
+
+    const date =
+      new Date(value);
+
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+
+      return String(value);
+
+    }
+
+
+    return date.toLocaleString();
+
+  }
+
+
+  /* =========================================================
+     LOAD EVERYTHING
+     ========================================================= */
+
+  async function loadDashboard() {
+
+    refreshButton.disabled =
+      true;
+
+    refreshButton.textContent =
+      "Refreshing...";
+
+
+    try {
+
+      await Promise.all([
+        loadStats(),
+        loadSubmissions(),
+        loadBusinesses(),
+        loadClaims(),
+        loadReports()
+      ]);
+
+    } catch (error) {
+
+      console.error(
+        "Dashboard loading error:",
+        error
+      );
+
+    } finally {
+
+      refreshButton.disabled =
+        false;
+
+      refreshButton.textContent =
+        "Refresh Data";
+
+    }
+
+  }
+
+
+  /* =========================================================
+     EVENTS
+     ========================================================= */
+
+  loginButton.addEventListener(
+    "click",
+    login
+  );
+
+
+  adminKeyInput.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        login();
+
+      }
+
+    }
+  );
+
+
+  logoutButton.addEventListener(
+    "click",
+    logout
+  );
+
+
+  refreshButton.addEventListener(
+    "click",
+    loadDashboard
+  );
+
+
+  /* =========================================================
+     INITIALIZE
+     ========================================================= */
+
+  (async function () {
+
+    const authenticated =
+      await verifyKey();
+
+
+    if (authenticated) {
+
+      await loadDashboard();
+
+    }
+
+  })();
+
+})();
+
+</script>
+
 
 </body>
-        </html>
+  </html>
