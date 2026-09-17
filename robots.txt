@@ -6,4 +6,4 @@ Disallow: /admin/
 Disallow: /private/
 Disallow: /api/
 
-Sitemap: https://nearafrica.com/sitemap.xml
+Sitemap: https://nearafrica.com.ng/sitemap.xml
