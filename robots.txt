@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin.html
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+
+Sitemap: https://nearafrica.com/sitemap.xml
