@@ -57,13 +57,19 @@
     }
 
     input,
-    select {
+    select,
+    textarea {
       width: 100%;
       padding: 13px;
       border: 1px solid #ccc;
       border-radius: 7px;
       margin: 8px 0 15px;
       font-size: 15px;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
     }
 
     button {
@@ -73,6 +79,11 @@
       cursor: pointer;
       font-weight: bold;
       margin: 3px;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .gold {
@@ -165,7 +176,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 800px;
+      min-width: 900px;
     }
 
     th,
@@ -194,7 +205,8 @@
       font-weight: bold;
     }
 
-    .badge.active {
+    .badge.active,
+    .badge.approved {
       background: #dff6e7;
       color: #16803c;
     }
@@ -234,6 +246,32 @@
       white-space: nowrap;
     }
 
+    .action-row button {
+      margin: 2px;
+    }
+
+    .submission-name {
+      min-width: 180px;
+    }
+
+    .notice {
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: #fff8df;
+      border: 1px solid #ead58a;
+      color: #6d5700;
+    }
+
+    .success-box {
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: #e8f7ee;
+      border: 1px solid #9ed4b2;
+      color: #166534;
+    }
+
     @media (max-width: 700px) {
       header {
         align-items: flex-start;
@@ -255,13 +293,27 @@
 
 <header>
   <h1>Near<span>Africa</span> Admin</h1>
-  <button id="logoutBtn" class="dark hidden">Log Out</button>
+
+  <button
+    id="logoutBtn"
+    class="dark hidden"
+  >
+    Log Out
+  </button>
 </header>
+
 
 <main>
 
+  <!-- ================================================== -->
   <!-- LOGIN -->
-  <section id="loginPanel" class="panel login-panel">
+  <!-- ================================================== -->
+
+  <section
+    id="loginPanel"
+    class="panel login-panel"
+  >
+
     <h2>Admin Login</h2>
 
     <p class="muted">
@@ -275,16 +327,31 @@
       autocomplete="off"
     >
 
-    <button id="loginBtn" class="gold">
+    <button
+      id="loginBtn"
+      class="gold"
+    >
       Log In
     </button>
 
-    <p id="loginError" class="error"></p>
+    <p
+      id="loginError"
+      class="error"
+    ></p>
+
   </section>
 
 
+  <!-- ================================================== -->
   <!-- ADMIN -->
-  <section id="adminPanel" class="hidden">
+  <!-- ================================================== -->
+
+  <section
+    id="adminPanel"
+    class="hidden"
+  >
+
+    <!-- STATS -->
 
     <div class="stats">
 
@@ -324,58 +391,98 @@
     <div class="panel">
 
       <div class="topbar">
+
         <div>
-          <h2 id="sectionTitle">Businesses</h2>
+          <h2 id="sectionTitle">
+            Businesses
+          </h2>
+
           <p class="muted">
             Manage NearAfrica data.
           </p>
         </div>
 
-        <button id="refreshBtn" class="blue">
+        <button
+          id="refreshBtn"
+          class="blue"
+        >
           Refresh
         </button>
+
       </div>
+
+
+      <!-- ================================================== -->
+      <!-- TABS -->
+      <!-- ================================================== -->
 
       <div class="tabs">
 
-        <button class="tab active" data-resource="businesses">
+        <button
+          class="tab active"
+          data-resource="businesses"
+        >
           Businesses
         </button>
 
-        <button class="tab" data-resource="submissions">
+        <button
+          class="tab"
+          data-resource="submissions"
+        >
           Submissions
         </button>
 
-        <button class="tab" data-resource="claims">
+        <button
+          class="tab"
+          data-resource="claims"
+        >
           Claims
         </button>
 
-        <button class="tab" data-resource="reviews">
+        <button
+          class="tab"
+          data-resource="reviews"
+        >
           Reviews
         </button>
 
-        <button class="tab" data-resource="reports">
+        <button
+          class="tab"
+          data-resource="reports"
+        >
           Reports
         </button>
 
-        <button class="tab" data-resource="help-wanted">
+        <button
+          class="tab"
+          data-resource="help-wanted"
+        >
           Help Wanted
         </button>
 
-        <button class="tab" data-resource="subscriptions">
+        <button
+          class="tab"
+          data-resource="subscriptions"
+        >
           Subscriptions
         </button>
 
-        <button class="tab" data-resource="discoveries">
+        <button
+          class="tab"
+          data-resource="discoveries"
+        >
           Discoveries
         </button>
 
       </div>
 
+
       <div id="content">
+
         <div class="loading">
           Loading...
         </div>
+
       </div>
 
     </div>
@@ -387,6 +494,10 @@
 
 <script>
 
+/* ==========================================================
+   CONFIG
+   ========================================================== */
+
 const API_BASE =
   "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
@@ -394,44 +505,62 @@ const STORAGE_KEY =
   "nearafrica_admin_key";
 
 let adminKey =
-  sessionStorage.getItem(STORAGE_KEY) || "";
+  sessionStorage.getItem(
+    STORAGE_KEY
+  ) || "";
 
 let currentResource =
   "businesses";
 
 
-// --------------------------------------------------
-// ELEMENTS
-// --------------------------------------------------
+/* ==========================================================
+   ELEMENTS
+   ========================================================== */
 
 const loginPanel =
-  document.getElementById("loginPanel");
+  document.getElementById(
+    "loginPanel"
+  );
 
 const adminPanel =
-  document.getElementById("adminPanel");
+  document.getElementById(
+    "adminPanel"
+  );
 
 const logoutBtn =
-  document.getElementById("logoutBtn");
+  document.getElementById(
+    "logoutBtn"
+  );
 
 const loginBtn =
-  document.getElementById("loginBtn");
+  document.getElementById(
+    "loginBtn"
+  );
 
 const adminKeyInput =
-  document.getElementById("adminKey");
+  document.getElementById(
+    "adminKey"
+  );
 
 const loginError =
-  document.getElementById("loginError");
+  document.getElementById(
+    "loginError"
+  );
 
 const content =
-  document.getElementById("content");
+  document.getElementById(
+    "content"
+  );
 
 const sectionTitle =
-  document.getElementById("sectionTitle");
+  document.getElementById(
+    "sectionTitle"
+  );
 
 
-// --------------------------------------------------
-// API REQUEST
-// --------------------------------------------------
+/* ==========================================================
+   API REQUEST
+   ========================================================== */
 
 async function apiRequest(
   path,
@@ -455,12 +584,18 @@ async function apiRequest(
   let data = null;
 
   try {
-    data = await response.json();
+
+    data =
+      await response.json();
+
   } catch {
+
     data = {
       success: false,
-      error: "Invalid server response"
+      error:
+        "Invalid server response"
     };
+
   }
 
   if (!response.ok) {
@@ -469,15 +604,16 @@ async function apiRequest(
       data.error ||
       `Request failed (${response.status})`
     );
+
   }
 
   return data;
 }
 
 
-// --------------------------------------------------
-// LOGIN
-// --------------------------------------------------
+/* ==========================================================
+   LOGIN
+   ========================================================== */
 
 async function login() {
 
@@ -495,10 +631,9 @@ async function login() {
   loginError.textContent =
     "Checking key...";
 
-  try {
+  loginBtn.disabled = true;
 
-    const oldKey =
-      adminKey;
+  try {
 
     adminKey =
       key;
@@ -511,8 +646,10 @@ async function login() {
     if (!data.success) {
 
       throw new Error(
-        data.error || "Authentication failed."
+        data.error ||
+        "Authentication failed."
       );
+
     }
 
     sessionStorage.setItem(
@@ -537,27 +674,38 @@ async function login() {
       error.message ||
       "Invalid Admin API key.";
 
+  } finally {
+
+    loginBtn.disabled =
+      false;
+
   }
 }
 
 
-// --------------------------------------------------
-// SHOW ADMIN
-// --------------------------------------------------
+/* ==========================================================
+   SHOW ADMIN
+   ========================================================== */
 
 function showAdmin() {
 
-  loginPanel.classList.add("hidden");
+  loginPanel.classList.add(
+    "hidden"
+  );
 
-  adminPanel.classList.remove("hidden");
+  adminPanel.classList.remove(
+    "hidden"
+  );
 
-  logoutBtn.classList.remove("hidden");
+  logoutBtn.classList.remove(
+    "hidden"
+  );
 }
 
 
-// --------------------------------------------------
-// LOGOUT
-// --------------------------------------------------
+/* ==========================================================
+   LOGOUT
+   ========================================================== */
 
 function logout() {
 
@@ -567,22 +715,30 @@ function logout() {
 
   adminKey = "";
 
-  adminPanel.classList.add("hidden");
+  adminPanel.classList.add(
+    "hidden"
+  );
 
-  logoutBtn.classList.add("hidden");
+  logoutBtn.classList.add(
+    "hidden"
+  );
 
-  loginPanel.classList.remove("hidden");
+  loginPanel.classList.remove(
+    "hidden"
+  );
 
-  adminKeyInput.value = "";
+  adminKeyInput.value =
+    "";
 
-  loginError.textContent = "";
+  loginError.textContent =
+    "";
 
 }
 
 
-// --------------------------------------------------
-// LOAD RESOURCE
-// --------------------------------------------------
+/* ==========================================================
+   LOAD RESOURCE
+   ========================================================== */
 
 async function loadResource(
   resource
@@ -592,7 +748,9 @@ async function loadResource(
     resource;
 
   sectionTitle.textContent =
-    formatTitle(resource);
+    formatTitle(
+      resource
+    );
 
   content.innerHTML =
     '<div class="loading">Loading...</div>';
@@ -605,7 +763,9 @@ async function loadResource(
       );
 
     const items =
-      Array.isArray(data.items)
+      Array.isArray(
+        data.items
+      )
         ? data.items
         : [];
 
@@ -624,7 +784,9 @@ async function loadResource(
     content.innerHTML = `
       <div class="panel">
         <p class="error">
-          ${escapeHtml(error.message)}
+          ${escapeHtml(
+            error.message
+          )}
         </p>
       </div>
     `;
@@ -633,15 +795,19 @@ async function loadResource(
       error.message ===
       "Unauthorized"
     ) {
+
       logout();
+
     }
+
   }
+
 }
 
 
-// --------------------------------------------------
-// TITLE
-// --------------------------------------------------
+/* ==========================================================
+   TITLE
+   ========================================================== */
 
 function formatTitle(
   value
@@ -655,12 +821,13 @@ function formatTitle(
         word.slice(1)
     )
     .join(" ");
+
 }
 
 
-// --------------------------------------------------
-// STATS
-// --------------------------------------------------
+/* ==========================================================
+   STATS
+   ========================================================== */
 
 function updateStats(
   resource,
@@ -668,6 +835,7 @@ function updateStats(
 ) {
 
   const map = {
+
     businesses:
       "statBusinesses",
 
@@ -685,6 +853,7 @@ function updateStats(
 
     subscriptions:
       "statSubscriptions"
+
   };
 
   if (map[resource]) {
@@ -693,13 +862,15 @@ function updateStats(
       map[resource]
     ).textContent =
       items.length;
+
   }
+
 }
 
 
-// --------------------------------------------------
-// RENDER
-// --------------------------------------------------
+/* ==========================================================
+   RENDER RESOURCE
+   ========================================================== */
 
 function renderResource(
   resource,
@@ -710,7 +881,9 @@ function renderResource(
 
     content.innerHTML = `
       <div class="empty">
-        No ${escapeHtml(formatTitle(resource))}
+        No ${escapeHtml(
+          formatTitle(resource)
+        )}
         available.
       </div>
     `;
@@ -718,23 +891,46 @@ function renderResource(
     return;
   }
 
-  if (resource === "businesses") {
 
-    renderBusinesses(items);
+  if (
+    resource ===
+    "businesses"
+  ) {
+
+    renderBusinesses(
+      items
+    );
+
     return;
 
   }
+
+
+  if (
+    resource ===
+    "submissions"
+  ) {
+
+    renderSubmissions(
+      items
+    );
+
+    return;
+
+  }
+
 
   renderGeneric(
     resource,
     items
   );
+
 }
 
 
-// --------------------------------------------------
-// BUSINESSES
-// --------------------------------------------------
+/* ==========================================================
+   BUSINESSES
+   ========================================================== */
 
 function renderBusinesses(
   items
@@ -758,7 +954,9 @@ function renderBusinesses(
                   "Unnamed"
                 )}
               </strong>
+
               <br>
+
               <span class="muted">
                 ${escapeHtml(
                   business.id || ""
@@ -785,9 +983,13 @@ function renderBusinesses(
             </td>
 
             <td>
-              <span class="badge ${escapeHtml(status)}">
+
+              <span
+                class="badge ${escapeHtml(status)}"
+              >
                 ${escapeHtml(status)}
               </span>
+
             </td>
 
             <td>
@@ -809,7 +1011,9 @@ function renderBusinesses(
               <button
                 class="green"
                 onclick="changeBusinessStatus(
-                  '${escapeJs(business.id)}',
+                  '${escapeJs(
+                    business.id
+                  )}',
                   'active'
                 )"
               >
@@ -819,7 +1023,9 @@ function renderBusinesses(
               <button
                 class="red"
                 onclick="changeBusinessStatus(
-                  '${escapeJs(business.id)}',
+                  '${escapeJs(
+                    business.id
+                  )}',
                   'rejected'
                 )"
               >
@@ -829,7 +1035,9 @@ function renderBusinesses(
               <button
                 class="dark"
                 onclick="changeBusinessStatus(
-                  '${escapeJs(business.id)}',
+                  '${escapeJs(
+                    business.id
+                  )}',
                   'suspended'
                 )"
               >
@@ -840,15 +1048,19 @@ function renderBusinesses(
 
           </tr>
         `;
+
       }
     ).join("");
 
+
   content.innerHTML = `
+
     <div class="table-wrap">
 
       <table>
 
         <thead>
+
           <tr>
             <th>Business</th>
             <th>Category</th>
@@ -859,6 +1071,7 @@ function renderBusinesses(
             <th>Views</th>
             <th>Actions</th>
           </tr>
+
         </thead>
 
         <tbody>
@@ -868,13 +1081,491 @@ function renderBusinesses(
       </table>
 
     </div>
+
   `;
+
 }
 
 
-// --------------------------------------------------
-// GENERIC RESOURCE TABLE
-// --------------------------------------------------
+/* ==========================================================
+   SUBMISSIONS
+   ========================================================== */
+
+function renderSubmissions(
+  items
+) {
+
+  const rows =
+    items.map(
+      submission => {
+
+        const status =
+          submission.status ||
+          "pending";
+
+        const submissionId =
+          submission.id;
+
+        const isPending =
+          status ===
+          "pending";
+
+
+        return `
+          <tr>
+
+            <td>
+              <strong>
+                ${escapeHtml(
+                  submission.id ??
+                  "—"
+                )}
+              </strong>
+            </td>
+
+
+            <td class="submission-name">
+
+              <strong>
+                ${escapeHtml(
+                  submission.name ||
+                  submission.business_name ||
+                  "Unnamed Business"
+                )}
+              </strong>
+
+              ${
+                submission.description
+                  ? `
+                    <br>
+                    <span class="muted">
+                      ${escapeHtml(
+                        submission.description
+                      )}
+                    </span>
+                  `
+                  : ""
+              }
+
+            </td>
+
+
+            <td>
+              ${escapeHtml(
+                submission.category ||
+                "—"
+              )}
+            </td>
+
+
+            <td>
+
+              <span
+                class="badge ${escapeHtml(status)}"
+              >
+                ${escapeHtml(status)}
+              </span>
+
+            </td>
+
+
+            <td>
+              ${escapeHtml(
+                submission.email ||
+                "—"
+              )}
+            </td>
+
+
+            <td>
+              ${escapeHtml(
+                submission.phone ||
+                "—"
+              )}
+            </td>
+
+
+            <td>
+              ${escapeHtml(
+                submission.city ||
+                "—"
+              )},
+              ${escapeHtml(
+                submission.state ||
+                "—"
+              )}
+            </td>
+
+
+            <td>
+              ${escapeHtml(
+                submission.country ||
+                "Nigeria"
+              )}
+            </td>
+
+
+            <td>
+              ${escapeHtml(
+                submission.created_at ||
+                "—"
+              )}
+            </td>
+
+
+            <td class="action-row">
+
+              ${
+                isPending
+                  ? `
+
+                    <button
+                      class="green"
+                      onclick="approveSubmission(
+                        '${escapeJs(
+                          submissionId
+                        )}',
+                        '${escapeJs(
+                          submission.name ||
+                          submission.business_name ||
+                          "this business"
+                        )}'
+                      )"
+                    >
+                      Approve
+                    </button>
+
+                    <button
+                      class="red"
+                      onclick="rejectSubmission(
+                        '${escapeJs(
+                          submissionId
+                        )}',
+                        '${escapeJs(
+                          submission.name ||
+                          submission.business_name ||
+                          "this business"
+                        )}'
+                      )"
+                    >
+                      Reject
+                    </button>
+
+                  `
+                  : `
+
+                    <span class="muted">
+                      No actions
+                    </span>
+
+                  `
+              }
+
+            </td>
+
+          </tr>
+        `;
+
+      }
+    ).join("");
+
+
+  content.innerHTML = `
+
+    <div class="notice">
+
+      <strong>
+        Submission review
+      </strong>
+
+      <br>
+
+      Approving a submission creates the
+      business in the NearAfrica directory
+      and changes its status to active.
+
+    </div>
+
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>ID</th>
+            <th>Business</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Location</th>
+            <th>Country</th>
+            <th>Created</th>
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          ${rows}
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ==========================================================
+   APPROVE SUBMISSION
+   ========================================================== */
+
+async function approveSubmission(
+  submissionId,
+  businessName
+) {
+
+  const confirmed =
+    confirm(
+      `Approve "${businessName}"?\n\n` +
+      `This will create the business in the ` +
+      `NearAfrica directory and make it active.`
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  try {
+
+    content.innerHTML = `
+      <div class="loading">
+        Approving ${escapeHtml(
+          businessName
+        )}...
+      </div>
+    `;
+
+
+    const data =
+      await apiRequest(
+        `/admin/submissions/${encodeURIComponent(
+          submissionId
+        )}/approve`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({})
+        }
+      );
+
+
+    if (
+      !data.success
+    ) {
+
+      throw new Error(
+        data.error ||
+        "Approval failed."
+      );
+
+    }
+
+
+    content.innerHTML = `
+
+      <div class="success-box">
+
+        <strong>
+          Business approved successfully.
+        </strong>
+
+        <br><br>
+
+        ${escapeHtml(
+          businessName
+        )}
+
+        has been added to the
+        NearAfrica business directory.
+
+      </div>
+
+    `;
+
+
+    await loadResource(
+      "submissions"
+    );
+
+
+  } catch (error) {
+
+    content.innerHTML = `
+
+      <div class="panel">
+
+        <p class="error">
+
+          ${escapeHtml(
+            error.message ||
+            "Could not approve submission."
+          )}
+
+        </p>
+
+        <button
+          class="blue"
+          onclick="loadResource('submissions')"
+        >
+          Back to Submissions
+        </button>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* ==========================================================
+   REJECT SUBMISSION
+   ========================================================== */
+
+async function rejectSubmission(
+  submissionId,
+  businessName
+) {
+
+  const reason =
+    prompt(
+      `Why are you rejecting "${businessName}"?\n\n` +
+      `You can leave this blank.`
+    );
+
+
+  if (
+    reason ===
+    null
+  ) {
+    return;
+  }
+
+
+  const confirmed =
+    confirm(
+      `Reject "${businessName}"?`
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  try {
+
+    content.innerHTML = `
+      <div class="loading">
+        Rejecting ${escapeHtml(
+          businessName
+        )}...
+      </div>
+    `;
+
+
+    const data =
+      await apiRequest(
+        `/admin/submissions/${encodeURIComponent(
+          submissionId
+        )}/reject`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              reason:
+                reason.trim()
+            })
+        }
+      );
+
+
+    if (
+      !data.success
+    ) {
+
+      throw new Error(
+        data.error ||
+        "Rejection failed."
+      );
+
+    }
+
+
+    await loadResource(
+      "submissions"
+    );
+
+
+  } catch (error) {
+
+    content.innerHTML = `
+
+      <div class="panel">
+
+        <p class="error">
+
+          ${escapeHtml(
+            error.message ||
+            "Could not reject submission."
+          )}
+
+        </p>
+
+        <button
+          class="blue"
+          onclick="loadResource('submissions')"
+        >
+          Back to Submissions
+        </button>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* ==========================================================
+   GENERIC RESOURCE TABLE
+   ========================================================== */
 
 function renderGeneric(
   resource,
@@ -882,7 +1573,10 @@ function renderGeneric(
 ) {
 
   const keys =
-    getUsefulKeys(items);
+    getUsefulKeys(
+      items
+    );
+
 
   const header =
     keys.map(
@@ -891,6 +1585,7 @@ function renderGeneric(
           formatTitle(key)
         )}</th>`
     ).join("");
+
 
   const rows =
     items.map(
@@ -903,19 +1598,30 @@ function renderGeneric(
               let value =
                 item[key];
 
+
               if (
                 value === null ||
                 value === undefined
               ) {
-                value = "—";
+
+                value =
+                  "—";
+
               }
 
+
               if (
-                typeof value === "object"
+                typeof value ===
+                "object"
               ) {
+
                 value =
-                  JSON.stringify(value);
+                  JSON.stringify(
+                    value
+                  );
+
               }
+
 
               return `
                 <td>
@@ -924,27 +1630,35 @@ function renderGeneric(
                   )}
                 </td>
               `;
+
             }
           ).join("");
+
 
         return `
           <tr>
             ${cells}
           </tr>
         `;
+
       }
     ).join("");
 
+
   content.innerHTML = `
+
     <div class="table-wrap">
 
       <table>
 
         <thead>
+
           <tr>
             ${header}
           </tr>
+
         </thead>
+
 
         <tbody>
           ${rows}
@@ -953,75 +1667,115 @@ function renderGeneric(
       </table>
 
     </div>
+
   `;
+
 }
 
 
-// --------------------------------------------------
-// USEFUL KEYS
-// --------------------------------------------------
+/* ==========================================================
+   USEFUL KEYS
+   ========================================================== */
 
 function getUsefulKeys(
   items
 ) {
 
   const preferred = [
+
     "id",
+
     "business_name",
+
     "name",
+
     "category",
+
     "status",
+
     "claimant_name",
+
     "claimant_email",
+
     "rating",
+
     "comment",
+
     "reason",
+
     "report_type",
+
     "email",
+
     "phone",
+
     "city",
+
     "state",
+
     "country",
+
     "created_at",
+
     "updated_at"
+
   ];
+
 
   const available =
     new Set();
 
+
   items.forEach(
     item => {
 
-      Object.keys(item)
-        .forEach(
-          key =>
-            available.add(key)
-        );
+      Object.keys(
+        item
+      ).forEach(
+        key =>
+          available.add(
+            key
+          )
+      );
 
     }
   );
 
+
   const selected =
     preferred.filter(
       key =>
-        available.has(key)
+        available.has(
+          key
+        )
     );
 
-  if (!selected.length) {
+
+  if (
+    !selected.length
+  ) {
 
     return Array.from(
       available
-    ).slice(0, 10);
+    ).slice(
+      0,
+      10
+    );
 
   }
 
-  return selected.slice(0, 12);
+
+  return selected.slice(
+    0,
+    12
+  );
+
 }
 
 
-// --------------------------------------------------
-// CHANGE BUSINESS STATUS
-// --------------------------------------------------
+/* ==========================================================
+   CHANGE BUSINESS STATUS
+   ========================================================== */
 
 async function changeBusinessStatus(
   businessId,
@@ -1033,9 +1787,11 @@ async function changeBusinessStatus(
       `Change this business status to "${status}"?`
     );
 
+
   if (!confirmed) {
     return;
   }
+
 
   try {
 
@@ -1058,9 +1814,11 @@ async function changeBusinessStatus(
       }
     );
 
+
     await loadResource(
       "businesses"
     );
+
 
   } catch (error) {
 
@@ -1068,24 +1826,44 @@ async function changeBusinessStatus(
       error.message ||
       "Could not update business status."
     );
+
   }
+
 }
 
 
-// --------------------------------------------------
-// ESCAPING
-// --------------------------------------------------
+/* ==========================================================
+   ESCAPING
+   ========================================================== */
 
 function escapeHtml(
   value
 ) {
 
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+  return String(
+    value
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
 }
 
 
@@ -1093,18 +1871,29 @@ function escapeJs(
   value
 ) {
 
-  return String(value)
-    .replaceAll("\\", "\\\\")
-    .replaceAll("'", "\\'");
+  return String(
+    value
+  )
+    .replaceAll(
+      "\\",
+      "\\\\"
+    )
+    .replaceAll(
+      "'",
+      "\\'"
+    );
+
 }
 
 
-// --------------------------------------------------
-// TABS
-// --------------------------------------------------
+/* ==========================================================
+   TABS
+   ========================================================== */
 
 document
-  .querySelectorAll(".tab")
+  .querySelectorAll(
+    ".tab"
+  )
   .forEach(
     button => {
 
@@ -1113,7 +1902,9 @@ document
         () => {
 
           document
-            .querySelectorAll(".tab")
+            .querySelectorAll(
+              ".tab"
+            )
             .forEach(
               btn =>
                 btn.classList.remove(
@@ -1121,9 +1912,11 @@ document
                 )
             );
 
+
           button.classList.add(
             "active"
           );
+
 
           loadResource(
             button.dataset.resource
@@ -1136,35 +1929,43 @@ document
   );
 
 
-// --------------------------------------------------
-// BUTTONS
-// --------------------------------------------------
+/* ==========================================================
+   BUTTONS
+   ========================================================== */
 
 loginBtn.addEventListener(
   "click",
   login
 );
 
+
 adminKeyInput.addEventListener(
   "keydown",
   event => {
 
     if (
-      event.key === "Enter"
+      event.key ===
+      "Enter"
     ) {
+
       login();
+
     }
 
   }
 );
+
 
 logoutBtn.addEventListener(
   "click",
   logout
 );
 
+
 document
-  .getElementById("refreshBtn")
+  .getElementById(
+    "refreshBtn"
+  )
   .addEventListener(
     "click",
     () =>
@@ -1174,9 +1975,9 @@ document
   );
 
 
-// --------------------------------------------------
-// AUTO LOGIN
-// --------------------------------------------------
+/* ==========================================================
+   AUTO LOGIN
+   ========================================================== */
 
 if (adminKey) {
 
