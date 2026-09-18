@@ -60,16 +60,26 @@
             font-weight: 700;
         }
 
-        .verified-badge {
-            display: none;
+        .verified-badge,
+        .claimed-badge {
+            display: inline-block;
             margin-left: 8px;
             padding: 4px 9px;
             border-radius: 20px;
+            font-size: .75rem;
+            vertical-align: middle;
+        }
+
+        .verified-badge {
             background: rgba(212,175,55,.15);
             border: 1px solid rgba(212,175,55,.4);
             color: #d4af37;
-            font-size: .75rem;
-            vertical-align: middle;
+        }
+
+        .claimed-badge {
+            background: rgba(80,160,255,.12);
+            border: 1px solid rgba(80,160,255,.35);
+            color: #8fc5ff;
         }
 
         .profile-header h1 {
@@ -160,7 +170,30 @@
             overflow: hidden;
         }
 
-        /* CLAIM SECTION */
+        /* IMAGES */
+
+        .business-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .business-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid #292929;
+            background: #101010;
+        }
+
+        .business-image-cover {
+            grid-column: span 2;
+            height: 300px;
+        }
+
+        /* CLAIM */
 
         .claim-section {
             margin-top: 25px;
@@ -295,6 +328,8 @@
             color: #ff9b9b;
         }
 
+        /* REVIEWS */
+
         .review {
             padding: 15px 0;
             border-bottom: 1px solid #292929;
@@ -318,6 +353,27 @@
             color: #999;
             line-height: 1.5;
         }
+
+        .rating-summary {
+            padding: 15px;
+            background: #101010;
+            border: 1px solid #292929;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .rating-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #d4af37;
+        }
+
+        .rating-count {
+            color: #888;
+            margin-left: 8px;
+        }
+
+        /* NOT FOUND */
 
         .not-found {
             text-align: center;
@@ -366,6 +422,7 @@
         }
 
         @media (max-width: 800px) {
+
             .profile-grid {
                 grid-template-columns: 1fr;
             }
@@ -382,6 +439,16 @@
                 flex-direction: column;
                 gap: 4px;
             }
+
+            .business-images {
+                grid-template-columns: 1fr;
+            }
+
+            .business-image-cover {
+                grid-column: span 1;
+                height: 240px;
+            }
+
         }
     </style>
 </head>
@@ -389,9 +456,11 @@
 <body class="business-page">
 
 <header class="site-header">
+
     <div class="container header-inner">
 
         <a href="index.html" class="logo">
+
             <img
                 src="logo.png"
                 alt="NearAfrica"
@@ -401,17 +470,27 @@
             <span class="logo-text">
                 NearAfrica
             </span>
+
         </a>
 
         <nav class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="explore.html">Explore</a>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="explore.html">
+                Explore
+            </a>
+
             <a href="list-business.html">
                 List Your Business
             </a>
+
         </nav>
 
     </div>
+
 </header>
 
 
@@ -455,19 +534,10 @@
 
 /* =====================================================
    NEARAFRICA API
-   =====================================================
-
-   IMPORTANT:
-   Replace the URL below with your actual
-   nearafrica-api Worker URL.
-
-   Example:
-   https://nearafrica-api.your-subdomain.workers.dev
-
 ===================================================== */
 
 const API_URL =
-     "https://nearafrica-api.uxmangee.workers.dev";
+    "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
 
 /* =====================================================
@@ -506,9 +576,13 @@ function escapeHTML(value) {
    SHOW NOT FOUND
 ===================================================== */
 
-function showNotFound(message = "This business could not be found.") {
+function showNotFound(
+    message = "This business could not be found."
+) {
 
-    document.getElementById("businessContent").innerHTML = `
+    document.getElementById(
+        "businessContent"
+    ).innerHTML = `
 
         <section class="not-found">
 
@@ -532,7 +606,7 @@ function showNotFound(message = "This business could not be found.") {
 
 
 /* =====================================================
-   LOAD BUSINESS FROM D1 API
+   LOAD BUSINESS
 ===================================================== */
 
 async function loadBusiness() {
@@ -549,7 +623,6 @@ async function loadBusiness() {
         return;
 
     }
-
 
     try {
 
@@ -569,7 +642,10 @@ async function loadBusiness() {
             !result.business
         ) {
 
-            showNotFound();
+            showNotFound(
+                result.error ||
+                "This business could not be found."
+            );
 
             return;
 
@@ -577,7 +653,8 @@ async function loadBusiness() {
 
 
         displayBusiness(
-            result.business
+            result.business,
+            result
         );
 
 
@@ -602,10 +679,94 @@ async function loadBusiness() {
    DISPLAY BUSINESS
 ===================================================== */
 
-function displayBusiness(business) {
+function displayBusiness(
+    business,
+    result
+) {
 
     document.title =
         `${business.business_name} | NearAfrica`;
+
+
+    const isVerified =
+        Number(business.verified) === 1;
+
+
+    const isClaimed =
+        Number(business.claimed) === 1;
+
+
+    const ratingAverage =
+        Number(
+            result.rating_average ??
+            business.rating_average ??
+            0
+        );
+
+
+    const reviewCount =
+        Number(
+            result.review_count ??
+            business.review_count ??
+            0
+        );
+
+
+    const reviews =
+        Array.isArray(result.reviews)
+            ? result.reviews
+            : [];
+
+
+    const images =
+        Array.isArray(result.images)
+            ? result.images
+            : [];
+
+
+    let ratingHTML =
+        "⭐ No rating yet";
+
+
+    if (
+        reviewCount > 0 &&
+        ratingAverage > 0
+    ) {
+
+        ratingHTML = `
+            ⭐ ${ratingAverage.toFixed(1)}
+            <span style="color:#888;">
+                (${reviewCount}
+                ${reviewCount === 1 ? "review" : "reviews"})
+            </span>
+        `;
+
+    }
+
+
+    const statusBadges = `
+
+        ${
+            isVerified
+            ? `
+                <span class="verified-badge">
+                    ✓ Verified
+                </span>
+              `
+            : ""
+        }
+
+        ${
+            isClaimed && !isVerified
+            ? `
+                <span class="claimed-badge">
+                    ✓ Claimed
+                </span>
+              `
+            : ""
+        }
+
+    `;
 
 
     document.getElementById(
@@ -615,26 +776,22 @@ function displayBusiness(business) {
         <section class="profile-header">
 
             <span class="profile-category">
+
                 ${escapeHTML(
                     business.category || "Business"
                 )}
 
-                ${
-                    Number(business.verified) === 1
-                    ? `<span class="verified-badge"
-                            style="display:inline-block;">
-                            ✓ Verified
-                       </span>`
-                    : ""
-                }
+                ${statusBadges}
 
             </span>
 
 
             <h1 id="businessName">
+
                 ${escapeHTML(
                     business.business_name
                 )}
+
             </h1>
 
 
@@ -642,14 +799,19 @@ function displayBusiness(business) {
 
                 📍 ${escapeHTML(
                     business.address ||
-                    `${business.city}, ${business.state}`
+                    [business.city, business.state]
+                        .filter(Boolean)
+                        .join(", ") ||
+                    "Location not provided"
                 )}
 
             </div>
 
 
             <div class="profile-rating">
-                ⭐ No rating yet
+
+                ${ratingHTML}
+
             </div>
 
 
@@ -719,6 +881,48 @@ function displayBusiness(business) {
             </div>
 
         </section>
+
+
+        ${
+            images.length > 0
+            ? `
+
+            <section class="profile-section">
+
+                <h2>
+                    Photos
+                </h2>
+
+                <div class="business-images">
+
+                    ${images.map(
+                        (image, index) => `
+
+                            <img
+                                src="${escapeHTML(
+                                    image.image_url || image.url || ""
+                                )}"
+                                alt="${escapeHTML(
+                                    business.business_name
+                                )} photo ${index + 1}"
+                                class="business-image ${
+                                    image.image_type === "cover"
+                                    ? "business-image-cover"
+                                    : ""
+                                }"
+                                loading="lazy"
+                            >
+
+                        `
+                    ).join("")}
+
+                </div>
+
+            </section>
+
+            `
+            : ""
+        }
 
 
         <div class="profile-grid">
@@ -830,15 +1034,19 @@ function displayBusiness(business) {
                 <div class="detail-row">
 
                     <span class="detail-label">
-                        Status
+                        Listing
                     </span>
 
                     <span>
+
                         ${
-                            Number(business.verified) === 1
+                            isVerified
                             ? "✓ Verified"
-                            : "Pending verification"
+                            : isClaimed
+                            ? "✓ Claimed"
+                            : "Unclaimed"
                         }
+
                     </span>
 
                 </div>
@@ -871,18 +1079,101 @@ function displayBusiness(business) {
             </h2>
 
 
-            <div class="review">
+            ${
+                reviewCount > 0
+                ? `
 
-                <div class="review-name">
-                    No reviews yet
-                </div>
+                    <div class="rating-summary">
 
-                <div class="review-text">
-                    Be the first person to review
-                    this business.
-                </div>
+                        <span class="rating-number">
+                            ${ratingAverage.toFixed(1)}
+                        </span>
 
-            </div>
+                        <span>
+                            ⭐
+                        </span>
+
+                        <span class="rating-count">
+                            ${reviewCount}
+                            ${reviewCount === 1
+                                ? "review"
+                                : "reviews"}
+                        </span>
+
+                    </div>
+
+                  `
+                : ""
+            }
+
+
+            ${
+                reviews.length > 0
+
+                ?
+
+                reviews.map(
+                    review => `
+
+                        <div class="review">
+
+                            <div class="review-name">
+
+                                ${escapeHTML(
+                                    review.name ||
+                                    "Anonymous"
+                                )}
+
+                            </div>
+
+                            <div class="review-rating">
+
+                                ${"⭐".repeat(
+                                    Math.max(
+                                        0,
+                                        Math.min(
+                                            5,
+                                            Number(review.rating) || 0
+                                        )
+                                    )
+                                )}
+
+                            </div>
+
+                            <div class="review-text">
+
+                                ${escapeHTML(
+                                    review.comment ||
+                                    "No comment provided."
+                                )}
+
+                            </div>
+
+                        </div>
+
+                    `
+                ).join("")
+
+                :
+
+                `
+
+                    <div class="review">
+
+                        <div class="review-name">
+                            No reviews yet
+                        </div>
+
+                        <div class="review-text">
+                            Be the first person to review
+                            this business.
+                        </div>
+
+                    </div>
+
+                `
+
+            }
 
         </section>
 
@@ -890,11 +1181,12 @@ function displayBusiness(business) {
         <!-- CLAIM -->
 
         ${
-            Number(business.verified) === 1
+            isVerified
 
             ?
 
             `
+
             <section class="claim-section">
 
                 <h2>
@@ -902,26 +1194,43 @@ function displayBusiness(business) {
                 </h2>
 
                 <p>
-                    This business has already been
-                    claimed and verified on NearAfrica.
-                    If you believe this verification
-                    is incorrect, you can report the
-                    listing for review.
+                    This business has been claimed
+                    and verified on NearAfrica.
                 </p>
 
-                <a
-                    href="list-business.html"
-                    class="claim-btn"
-                >
-                    Report a Problem
-                </a>
+            </section>
+
+            `
+
+            :
+
+            isClaimed
+
+            ?
+
+            `
+
+            <section class="claim-section">
+
+                <h2>
+                    ✓ This business has been claimed
+                </h2>
+
+                <p>
+                    This business has already been
+                    claimed on NearAfrica and is
+                    currently undergoing or awaiting
+                    verification.
+                </p>
 
             </section>
+
             `
 
             :
 
             `
+
             <section class="claim-section">
 
                 <h2>
@@ -1088,20 +1397,17 @@ function displayBusiness(business) {
                 </div>
 
             </section>
+
             `
         }
 
     `;
 
 
-    /* Initialize map */
-
     initializeMap(
         business
     );
 
-
-    /* Setup claim form */
 
     setupClaimForm(
         business.id
@@ -1217,15 +1523,6 @@ function initializeMap(business) {
 
     } else {
 
-        /*
-           No coordinates have been saved for
-           this business yet.
-
-           We show Nigeria as the fallback
-           map location rather than pretending
-           the business is at a specific point.
-        */
-
         map.setView(
             [9.0820, 8.6753],
             6
@@ -1303,12 +1600,6 @@ function setupClaimForm(
                 );
 
 
-            const message =
-                document.getElementById(
-                    "claimMessage"
-                );
-
-
             const claimantName =
                 document.getElementById(
                     "claimantName"
@@ -1364,14 +1655,6 @@ function setupClaimForm(
                 "Submitting...";
 
 
-            message.className =
-                "claim-message";
-
-
-            message.textContent =
-                "";
-
-
             try {
 
                 const response =
@@ -1415,9 +1698,10 @@ function setupClaimForm(
                     await response.json();
 
 
-                if (!response.ok) {
+                if (!response.ok || !result.success) {
 
                     throw new Error(
+                        result.error ||
                         result.message ||
                         "Unable to submit claim."
                     );
