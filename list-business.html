@@ -1,880 +1,1182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>List Your Business | NearAfrica</title>
 
   <meta
     name="description"
-    content="Add your business to NearAfrica and help customers discover your products and services."
-  >
+    content="Add your business to NearAfrica and help customers discover your business."
+  />
 
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f7f7f7;
+      color: #111;
+    }
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
+    .page {
+      min-height: 100vh;
+      padding: 40px 20px 70px;
+    }
 
-  <link rel="stylesheet" href="styles.css">
+    .container {
+      width: 100%;
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 10px;
+    }
+
+    .logo span {
+      color: #c99a2e;
+    }
+
+    .header h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+    }
+
+    .header p {
+      margin: 0 auto;
+      max-width: 620px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    label span {
+      color: #d12f2f;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #d8d8d8;
+      border-radius: 10px;
+      padding: 13px 14px;
+      font-size: 15px;
+      outline: none;
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #c99a2e;
+      box-shadow: 0 0 0 3px rgba(201, 154, 46, 0.12);
+    }
+
+    input:disabled,
+    select:disabled {
+      background: #f1f1f1;
+      cursor: not-allowed;
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #777;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .terms {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 5px;
+    }
+
+    .terms input {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .terms label {
+      font-weight: 400;
+      margin: 0;
+      line-height: 1.5;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .submit-area {
+      margin-top: 10px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 11px;
+      padding: 15px 20px;
+      background: #111;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    #submission-status {
+      display: none;
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 15px;
+      border-radius: 10px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    #form-success {
+      background: #eaf8ee;
+      border: 1px solid #b7e4c3;
+      color: #1d6b32;
+    }
+
+    #form-error {
+      background: #fff0f0;
+      border: 1px solid #efbcbc;
+      color: #a32929;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 25px;
+      color: #555;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back-link:hover {
+      color: #c99a2e;
+    }
+
+    @media (max-width: 700px) {
+      .page {
+        padding: 25px 14px 50px;
+      }
+
+      .card {
+        padding: 20px;
+        border-radius: 14px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+
+      .header h1 {
+        font-size: 26px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header class="site-header">
-
-  <div class="container header-inner">
-
-    <a
-      href="index.html"
-      class="logo"
-      aria-label="NearAfrica home"
-    >
-      <img
-        src="logo.png"
-        alt="NearAfrica"
-        class="logo-img"
-        width="160"
-        height="40"
-      >
-    </a>
-
-    <nav
-      class="nav-links"
-      aria-label="Main navigation"
-    >
-
-      <a href="index.html">
-        Home
-      </a>
-
-      <a href="search.html">
-        Explore
-      </a>
-
-      <a
-        href="list-business.html"
-        class="active"
-        aria-current="page"
-      >
-        List Your Business
-      </a>
-
-    </nav>
-
-    <div class="header-actions">
-
-      <button
-        type="button"
-        class="btn-menu"
-        id="menu-btn"
-        aria-label="Open menu"
-        aria-expanded="false"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
-    </div>
-
-  </div>
-
-  <nav
-    class="mobile-nav"
-    id="mobile-nav"
-    aria-label="Mobile navigation"
-  >
-
-    <a href="index.html">
-      Home
-    </a>
-
-    <a href="search.html">
-      Explore
-    </a>
-
-    <a href="list-business.html">
-      List Your Business
-    </a>
-
-  </nav>
-
-</header>
-
-
-<main>
-
-  <section class="section">
-
+  <main class="page">
     <div class="container">
 
-      <div
-        class="section-heading"
-        style="max-width:760px;margin:0 auto 2rem;"
-      >
+      <!-- HEADER -->
+      <header class="header">
+        <div class="logo">
+          Near<span>Africa</span>
+        </div>
 
-        <h1>
-          Add Your Business
-        </h1>
+        <h1>List Your Business</h1>
 
-        <p class="text-muted">
-          Help customers across Africa discover your
-          business on NearAfrica.
+        <p>
+          Help people discover your business on NearAfrica.
+          Submit your business information below for review.
         </p>
-
-      </div>
-
-
-      <div
-        class="card"
-        style="max-width:800px;margin:0 auto;"
-      >
-
-        <form
-          id="business-form"
-          novalidate
-        >
-
-          <!-- ==================================================
-               BUSINESS NAME
-               ================================================== -->
-
-          <div class="form-group">
-
-            <label for="business-name">
-              Business Name *
-            </label>
-
-            <input
-              type="text"
-              id="business-name"
-              name="business_name"
-              placeholder="e.g. Example Fashion Store"
-              required
-              maxlength="100"
-            >
-
-          </div>
-
-
-          <!-- ==================================================
-               CATEGORY
-               ================================================== -->
-
-          <div class="form-group">
-
-            <label for="category">
-              Business Category *
-            </label>
-
-            <select
-              id="category"
-              name="category"
-              required
-            >
-
-              <option value="">
-                Select a category
-              </option>
-
-              <option value="Restaurants & Food">
-                Restaurants & Food
-              </option>
-
-              <option value="Hotels & Accommodation">
-                Hotels & Accommodation
-              </option>
-
-              <option value="Beauty & Spa">
-                Beauty & Spa
-              </option>
-
-              <option value="Health & Medical">
-                Health & Medical
-              </option>
-
-              <option value="Shopping & Retail">
-                Shopping & Retail
-              </option>
-
-              <option value="Supermarkets">
-                Supermarkets
-              </option>
-
-              <option value="Banks & Finance">
-                Banks & Finance
-              </option>
-
-              <option value="Professional Services">
-                Professional Services
-              </option>
-
-              <option value="Education">
-                Education
-              </option>
-
-              <option value="Real Estate">
-                Real Estate
-              </option>
-
-              <option value="Automotive">
-                Automotive
-              </option>
-
-              <option value="Travel & Tourism">
-                Travel & Tourism
-              </option>
-
-              <option value="Logistics & Delivery">
-                Logistics & Delivery
-              </option>
-
-              <option value="Technology">
-                Technology
-              </option>
-
-              <option value="Entertainment">
-                Entertainment
-              </option>
-
-              <option value="Fitness & Sports">
-                Fitness & Sports
-              </option>
-
-              <option value="Construction & Home Services">
-                Construction & Home Services
-              </option>
-
-              <option value="Fashion">
-                Fashion
-              </option>
-
-              <option value="Agriculture">
-                Agriculture
-              </option>
-
-              <option value="Religious Organizations">
-                Religious Organizations
-              </option>
-
-              <option value="Government & Public Services">
-                Government & Public Services
-              </option>
-
-              <option value="Other">
-                Other
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <!-- ==================================================
-               COUNTRY
-               ================================================== -->
-
-          <div class="form-group">
-
-            <label for="country">
-              Country *
-            </label>
-
-            <select
-              id="country"
-              name="country"
-              required
-            >
-
-              <option value="">
-                Select country
-              </option>
-
-              <option value="Nigeria">
-                Nigeria
-              </option>
-
-              <option value="Ghana">
-                Ghana
-              </option>
-
-              <option value="Kenya">
-                Kenya
-              </option>
-
-              <option value="South Africa">
-                South Africa
-              </option>
-
-              <option value="Uganda">
-                Uganda
-              </option>
-
-              <option value="Tanzania">
-                Tanzania
-              </option>
-
-              <option value="Rwanda">
-                Rwanda
-              </option>
-
-              <option value="Cameroon">
-                Cameroon
-              </option>
-
-              <option value="Egypt">
-                Egypt
-              </option>
-
-              <option value="Morocco">
-                Morocco
-              </option>
-
-              <option value="Other">
-                Other African Country
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <!-- ==================================================
-               STATE / REGION
-               ================================================== -->
-
-          <div class="form-group">
-
-            <label for="state-select">
-              State / Region *
-            </label>
-
-
-            <!-- Nigerian States -->
-
-            <select
-              id="state-select"
-              required
-              disabled
-            >
-
-              <option value="">
-                Select country first
-              </option>
-
-            </select>
-
-
-            <!-- Other African Countries -->
-
-            <input
-              type="text"
-              id="state-other"
-              placeholder="Enter your state, province or region"
-              maxlength="80"
-              style="display:none;"
-            >
-
-          </div>
-
-
-          <!-- ==================================================
-               CITY
-               ================================================== -->
-
-          <div class="form-group">
-
-            <label for="city">
-              City *
-            </label>
-
-            <input
-              type="text"
-              id="city"
-              name="city"
-              placeholder="e.g. Aba"
-              required
-              maxlength="80"
-            >
-
-          </div>
-
-
-          <!-- ==================================================
-               ADDRESS
-               ================================================== -->
-
-          <div class="form-group">
-
-            <label for="address">
-              Business Address *
-            </label>
-
-            <textarea
-              id="address"
-              name="address"
-              placeholder="Enter the full business address"
-              rows="3"
-              required
-              maxlength="300"
-            ></textarea>
-
-          </div>
-
-
-          <!-- ==================================================
-               PHONE
-               ================================================== -->
-
-          <div class="form-group">
-
-            <label for="phone">
-              Business Phone
-            </label>
-
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              placeholder="+234..."
-              maxlength="30"
-            >
-
-          </div>
-
-
-          <!-- ==================================================
-               WHATSAPP
-               ================================================== -->
-
-          <div class="form-group">
-
-            <label for="whatsapp">
-              WhatsApp Number
-            </label>
-
-            <input
-              type="tel"
-              id="whatsapp"
-              name="whatsapp"
-              placeholder="+234..."
-              maxlength="30"
-            >
-
-          </div>
-
-
-          <!-- ==================================================
-               WEBSITE
-               ================================================== -->
-
-          <div class="form-group">
-
-            <label for="website">
-              Website
-            </label>
-
-            <input
-              type="url"
-              id="website"
-              name="website"
-              placeholder="https://example.com"
-              maxlength="200"
-            >
-
-          </div>
-
-
-          <!-- ==================================================
-               DESCRIPTION
-               ================================================== -->
-
-          <div class="form-group">
-
-            <label for="description">
-              Business Description *
-            </label>
-
-            <textarea
-              id="description"
-              name="description"
-              placeholder="Tell customers what your business offers..."
-              rows="5"
-              required
-              maxlength="1000"
-            ></textarea>
-
-          </div>
-
-
-          <!-- ==================================================
-               EMAIL
-               ================================================== -->
-
-          <div class="form-group">
-
-            <label for="email">
-              Contact Email *
-            </label>
-
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="you@example.com"
-              required
-              maxlength="150"
-            >
-
-          </div>
-
-
-          <!-- ==================================================
-               TERMS
-               ================================================== -->
-
-          <div
-            class="form-group"
-            style="margin-top:1.5rem;"
-          >
-
-            <label
-              style="display:flex;gap:0.7rem;align-items:flex-start;"
-            >
+      </header>
+
+      <!-- FORM -->
+      <div class="card">
+
+        <form id="business-form" novalidate>
+
+          <!-- BUSINESS INFORMATION -->
+          <section class="section">
+
+            <div class="section-title">
+              Business Information
+            </div>
+
+            <div class="grid">
+
+              <div class="field full">
+                <label for="business-name">
+                  Business Name <span>*</span>
+                </label>
+
+                <input
+                  type="text"
+                  id="business-name"
+                  name="business_name"
+                  placeholder="e.g. Ambrose Boutique"
+                  required
+                />
+              </div>
+
+              <div class="field">
+                <label for="category">
+                  Category <span>*</span>
+                </label>
+
+                <select
+                  id="category"
+                  name="category"
+                  required
+                >
+                  <option value="">Select a category</option>
+
+                  <option value="spas">Spas</option>
+                  <option value="salons">Salons & Beauty</option>
+                  <option value="barbers">Barbers</option>
+                  <option value="restaurants">Restaurants</option>
+                  <option value="hotels">Hotels</option>
+                  <option value="fashion">Fashion & Clothing</option>
+                  <option value="shopping">Shopping</option>
+                  <option value="supermarkets">Supermarkets</option>
+                  <option value="banks">Banks & Financial Services</option>
+                  <option value="hospitals">Hospitals & Healthcare</option>
+                  <option value="schools">Schools & Education</option>
+                  <option value="real-estate">Real Estate</option>
+                  <option value="law-firms">Law Firms</option>
+                  <option value="professional-services">
+                    Professional Services
+                  </option>
+                  <option value="automotive">Automotive</option>
+                  <option value="fitness">Fitness & Gyms</option>
+                  <option value="cleaning">Cleaning Services</option>
+                  <option value="technology">Technology</option>
+                  <option value="travel">Travel & Tourism</option>
+                  <option value="entertainment">Entertainment</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="country">
+                  Country <span>*</span>
+                </label>
+
+                <select
+                  id="country"
+                  name="country"
+                  required
+                >
+                  <option value="">Select country</option>
+
+                  <option value="Nigeria">Nigeria</option>
+                  <option value="Ghana">Ghana</option>
+                  <option value="Kenya">Kenya</option>
+                  <option value="South Africa">South Africa</option>
+                  <option value="Uganda">Uganda</option>
+                  <option value="Tanzania">Tanzania</option>
+                  <option value="Rwanda">Rwanda</option>
+                  <option value="Zambia">Zambia</option>
+                  <option value="Zimbabwe">Zimbabwe</option>
+                  <option value="Botswana">Botswana</option>
+                  <option value="Namibia">Namibia</option>
+                  <option value="Ethiopia">Ethiopia</option>
+                  <option value="Egypt">Egypt</option>
+                  <option value="Morocco">Morocco</option>
+                  <option value="Algeria">Algeria</option>
+                  <option value="Tunisia">Tunisia</option>
+                  <option value="Senegal">Senegal</option>
+                  <option value="Ivory Coast">Ivory Coast</option>
+                  <option value="Cameroon">Cameroon</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <!-- NIGERIAN STATE -->
+              <div class="field">
+                <label for="state-select">
+                  State / Region <span>*</span>
+                </label>
+
+                <select
+                  id="state-select"
+                  name="state"
+                  required
+                  disabled
+                >
+                  <option value="">Select state</option>
+
+                  <option value="Abia">Abia</option>
+                  <option value="Adamawa">Adamawa</option>
+                  <option value="Akwa Ibom">Akwa Ibom</option>
+                  <option value="Anambra">Anambra</option>
+                  <option value="Bauchi">Bauchi</option>
+                  <option value="Bayelsa">Bayelsa</option>
+                  <option value="Benue">Benue</option>
+                  <option value="Borno">Borno</option>
+                  <option value="Cross River">Cross River</option>
+                  <option value="Delta">Delta</option>
+                  <option value="Ebonyi">Ebonyi</option>
+                  <option value="Edo">Edo</option>
+                  <option value="Ekiti">Ekiti</option>
+                  <option value="Enugu">Enugu</option>
+                  <option value="Gombe">Gombe</option>
+                  <option value="Imo">Imo</option>
+                  <option value="Jigawa">Jigawa</option>
+                  <option value="Kaduna">Kaduna</option>
+                  <option value="Kano">Kano</option>
+                  <option value="Katsina">Katsina</option>
+                  <option value="Kebbi">Kebbi</option>
+                  <option value="Kogi">Kogi</option>
+                  <option value="Kwara">Kwara</option>
+                  <option value="Lagos">Lagos</option>
+                  <option value="Nasarawa">Nasarawa</option>
+                  <option value="Niger">Niger</option>
+                  <option value="Ogun">Ogun</option>
+                  <option value="Ondo">Ondo</option>
+                  <option value="Osun">Osun</option>
+                  <option value="Oyo">Oyo</option>
+                  <option value="Plateau">Plateau</option>
+                  <option value="Rivers">Rivers</option>
+                  <option value="Sokoto">Sokoto</option>
+                  <option value="Taraba">Taraba</option>
+                  <option value="Yobe">Yobe</option>
+                  <option value="Zamfara">Zamfara</option>
+                  <option value="FCT">Federal Capital Territory</option>
+                </select>
+
+                <input
+                  type="text"
+                  id="state-other"
+                  placeholder="Enter state / region"
+                  style="display:none;"
+                />
+              </div>
+
+              <div class="field">
+                <label for="city">
+                  City <span>*</span>
+                </label>
+
+                <input
+                  type="text"
+                  id="city"
+                  name="city"
+                  placeholder="e.g. Lagos"
+                  required
+                />
+              </div>
+
+              <div class="field full">
+                <label for="address">
+                  Business Address <span>*</span>
+                </label>
+
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  placeholder="Full business address"
+                  required
+                />
+              </div>
+
+            </div>
+          </section>
+
+
+          <!-- CONTACT -->
+          <section class="section">
+
+            <div class="section-title">
+              Contact Information
+            </div>
+
+            <div class="grid">
+
+              <div class="field">
+                <label for="phone">
+                  Phone Number
+                </label>
+
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="+234..."
+                />
+              </div>
+
+              <div class="field">
+                <label for="whatsapp">
+                  WhatsApp Number
+                </label>
+
+                <input
+                  type="tel"
+                  id="whatsapp"
+                  name="whatsapp"
+                  placeholder="+234..."
+                />
+              </div>
+
+              <div class="field">
+                <label for="email">
+                  Business Email
+                </label>
+
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="business@example.com"
+                />
+              </div>
+
+              <div class="field">
+                <label for="website">
+                  Website
+                </label>
+
+                <input
+                  type="url"
+                  id="website"
+                  name="website"
+                  placeholder="https://example.com"
+                />
+
+                <div class="hint">
+                  Leave blank if the business does not have a website.
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+
+          <!-- DESCRIPTION -->
+          <section class="section">
+
+            <div class="section-title">
+              About the Business
+            </div>
+
+            <div class="field">
+
+              <label for="description">
+                Business Description
+              </label>
+
+              <textarea
+                id="description"
+                name="description"
+                placeholder="Tell people what this business offers..."
+              ></textarea>
+
+              <div class="hint">
+                Keep the description clear and useful to potential customers.
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- TERMS -->
+          <section class="section">
+
+            <div class="terms">
 
               <input
                 type="checkbox"
                 id="terms"
                 name="terms"
                 required
-                style="margin-top:0.3rem;"
-              >
+              />
 
-              <span>
-                I confirm that the information provided is
-                accurate and that I have permission to submit
-                this business.
-              </span>
+              <label for="terms">
+                I confirm that the information submitted is accurate to the
+                best of my knowledge and I agree that NearAfrica may review
+                and publish the listing according to its listing policies.
+                <span>*</span>
+              </label>
 
-            </label>
+            </div>
+
+          </section>
+
+
+          <!-- SUBMIT -->
+          <div class="submit-area">
+
+            <button
+              type="submit"
+              id="submit-business"
+            >
+              Submit Business
+            </button>
+
+            <div id="submission-status">
+              Submitting your business...
+            </div>
+
+            <div
+              id="form-success"
+              class="message"
+            ></div>
+
+            <div
+              id="form-error"
+              class="message"
+            ></div>
 
           </div>
-
-
-          <!-- ==================================================
-               STATUS
-               ================================================== -->
-
-          <div
-            id="submission-status"
-            role="status"
-            aria-live="polite"
-            style="margin:1rem 0;"
-          ></div>
-
-
-          <!-- ==================================================
-               SUCCESS
-               ================================================== -->
-
-          <div
-            id="form-success"
-            role="status"
-            aria-live="polite"
-            style="display:none;margin:1rem 0;"
-          ></div>
-
-
-          <!-- ==================================================
-               ERROR
-               ================================================== -->
-
-          <div
-            id="form-error"
-            role="alert"
-            aria-live="assertive"
-            style="display:none;margin:1rem 0;"
-          ></div>
-
-
-          <!-- ==================================================
-               SUBMIT
-               ================================================== -->
-
-          <button
-            type="submit"
-            class="btn btn-primary"
-            id="submit-business"
-          >
-            Submit Business
-          </button>
-
-
-          <p
-            class="text-muted"
-            style="font-size:0.85rem;margin-top:1rem;"
-          >
-            Your submission will be reviewed by NearAfrica
-            before it becomes publicly visible.
-          </p>
 
         </form>
 
       </div>
 
-    </div>
-
-  </section>
-
-</main>
-
-
-<!-- ========================================================
-     FOOTER
-     ======================================================== -->
-
-<footer class="site-footer">
-
-  <div class="container">
-
-    <div class="footer-bottom">
-
-      <span>
-        © 2026 NearAfrica
-      </span>
-
-      <span>
-        Find businesses across Africa
-      </span>
+      <a
+        href="https://nearafrica.pages.dev/"
+        class="back-link"
+      >
+        ← Back to NearAfrica
+      </a>
 
     </div>
-
-  </div>
-
-</footer>
+  </main>
 
 
-<!-- ========================================================
-     COUNTRY / STATE LOGIC
-     ======================================================== -->
+  <!-- =========================================================
+       NEARAFRICA CONFIG
+       ========================================================= -->
 
-<script>
+  <script>
+    const NearAfricaConfig = {
+      api: {
+        baseUrl:
+          "https://nearafrica-api.nearafrica-onyxtech.workers.dev"
+      }
+    };
 
-document.addEventListener("DOMContentLoaded", function () {
-
-  const countrySelect =
-    document.getElementById("country");
-
-  const stateSelect =
-    document.getElementById("state-select");
-
-  const stateOther =
-    document.getElementById("state-other");
+    window.NearAfricaConfig = NearAfricaConfig;
+  </script>
 
 
-  /*
-   * All Nigerian states + Federal Capital Territory
-   */
+  <!-- =========================================================
+       COUNTRY / STATE LOGIC
+       ========================================================= -->
 
-  const nigeriaStates = [
+  <script>
+    (function () {
 
-    "Abia",
-    "Adamawa",
-    "Akwa Ibom",
-    "Anambra",
-    "Bauchi",
-    "Bayelsa",
-    "Benue",
-    "Borno",
-    "Cross River",
-    "Delta",
-    "Ebonyi",
-    "Edo",
-    "Ekiti",
-    "Enugu",
-    "Gombe",
-    "Imo",
-    "Jigawa",
-    "Kaduna",
-    "Kano",
-    "Katsina",
-    "Kebbi",
-    "Kogi",
-    "Kwara",
-    "Lagos",
-    "Nasarawa",
-    "Niger",
-    "Ogun",
-    "Ondo",
-    "Osun",
-    "Oyo",
-    "Plateau",
-    "Rivers",
-    "Sokoto",
-    "Taraba",
-    "Yobe",
-    "Zamfara",
-    "Federal Capital Territory"
+      const country =
+        document.getElementById("country");
 
-  ];
+      const stateSelect =
+        document.getElementById("state-select");
 
+      const stateOther =
+        document.getElementById("state-other");
 
-  /*
-   * Change State/Region field
-   * based on selected country.
-   */
+      function updateStateField() {
 
-  function updateStateField() {
+        const selectedCountry =
+          country.value;
 
-    const country =
-      countrySelect.value;
+        if (selectedCountry === "Nigeria") {
 
+          stateSelect.style.display = "block";
+          stateSelect.disabled = false;
+          stateSelect.required = true;
+          stateSelect.name = "state";
 
-    /* ==========================================
-       NIGERIA
-       ========================================== */
+          stateOther.style.display = "none";
+          stateOther.required = false;
+          stateOther.removeAttribute("name");
 
-    if (country === "Nigeria") {
+        } else {
 
-      stateOther.style.display = "none";
+          stateSelect.style.display = "none";
+          stateSelect.disabled = true;
+          stateSelect.required = false;
+          stateSelect.removeAttribute("name");
+          stateSelect.value = "";
 
-      stateOther.removeAttribute("name");
+          stateOther.style.display = "block";
+          stateOther.required = true;
+          stateOther.name = "state";
 
-      stateOther.required = false;
+        }
+      }
 
-      stateOther.value = "";
+      country.addEventListener(
+        "change",
+        updateStateField
+      );
+
+      updateStateField();
+
+    })();
+  </script>
 
 
-      stateSelect.style.display = "block";
+  <!-- =========================================================
+       BUSINESS SUBMISSION SYSTEM
+       ========================================================= -->
 
-      stateSelect.disabled = false;
+  <script>
+    (function () {
 
-      stateSelect.name = "state";
+      const form =
+        document.getElementById("business-form");
 
-      stateSelect.required = true;
+      const submitButton =
+        document.getElementById("submit-business");
 
+      const statusBox =
+        document.getElementById("submission-status");
 
-      stateSelect.innerHTML =
-        '<option value="">Select Nigerian state</option>' +
+      const successBox =
+        document.getElementById("form-success");
 
-        nigeriaStates
-          .map(function (state) {
-
-            return (
-              '<option value="' +
-              state +
-              '">' +
-              state +
-              '</option>'
-            );
-
-          })
-          .join("");
+      const errorBox =
+        document.getElementById("form-error");
 
 
-      return;
-    }
+      function escapeHtml(value) {
 
+        return String(value || "").replace(
+          /[&<>"']/g,
+          function (char) {
 
-    /* ==========================================
-       OTHER AFRICAN COUNTRIES
-       ========================================== */
+            return {
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#039;"
+            }[char];
 
-    if (country !== "") {
-
-      stateSelect.style.display = "none";
-
-      stateSelect.removeAttribute("name");
-
-      stateSelect.required = false;
-
-      stateSelect.disabled = true;
-
-      stateSelect.value = "";
-
-
-      stateOther.style.display = "block";
-
-      stateOther.name = "state";
-
-      stateOther.required = true;
-
-
-      if (country === "Ghana") {
-
-        stateOther.placeholder =
-          "e.g. Greater Accra Region";
-
-      } else {
-
-        stateOther.placeholder =
-          "Enter your state, province or region";
+          }
+        );
 
       }
 
 
-      return;
-    }
+      function showSuccess(message) {
+
+        successBox.innerHTML =
+          escapeHtml(message);
+
+        successBox.style.display =
+          "block";
+
+        errorBox.style.display =
+          "none";
+
+      }
 
 
-    /* ==========================================
-       NO COUNTRY SELECTED
-       ========================================== */
+      function showError(message) {
 
-    stateSelect.style.display = "block";
+        errorBox.innerHTML =
+          escapeHtml(message);
 
-    stateSelect.disabled = true;
+        errorBox.style.display =
+          "block";
 
-    stateSelect.removeAttribute("name");
+        successBox.style.display =
+          "none";
 
-    stateSelect.required = false;
-
-    stateSelect.innerHTML =
-      '<option value="">Select country first</option>';
+      }
 
 
-    stateOther.style.display = "none";
+      function hideMessages() {
 
-    stateOther.removeAttribute("name");
+        successBox.style.display =
+          "none";
 
-    stateOther.required = false;
+        errorBox.style.display =
+          "none";
 
-    stateOther.value = "";
-
-  }
-
-
-  countrySelect.addEventListener(
-    "change",
-    updateStateField
-  );
+      }
 
 
-  /*
-   * Run once when the page loads.
-   */
+      form.addEventListener(
+        "submit",
+        async function (event) {
 
-  updateStateField();
+          event.preventDefault();
 
-});
+          hideMessages();
 
-</script>
+          /*
+           * Browser validation
+           */
+
+          if (!form.checkValidity()) {
+
+            form.reportValidity();
+
+            return;
+
+          }
 
 
-<!-- ========================================================
-     NEARAFRICA SCRIPTS
-     ======================================================== -->
+          const apiBase =
+            window.NearAfricaConfig &&
+            window.NearAfricaConfig.api &&
+            window.NearAfricaConfig.api.baseUrl
+              ? window.NearAfricaConfig.api.baseUrl.replace(/\/$/, "")
+              : "";
 
-<script src="config.js"></script>
-<script src="businesses.js"></script>
-<script src="utils.js"></script>
-<script src="app.js"></script>
+
+          if (!apiBase) {
+
+            showError(
+              "NearAfrica API is not configured."
+            );
+
+            return;
+
+          }
+
+
+          /*
+           * Collect form data
+           */
+
+          const formData =
+            new FormData(form);
+
+
+          const submission = {
+
+            business_name:
+              String(
+                formData.get("business_name") || ""
+              ).trim(),
+
+            category:
+              String(
+                formData.get("category") || ""
+              ).trim(),
+
+            country:
+              String(
+                formData.get("country") || ""
+              ).trim(),
+
+            state:
+              String(
+                formData.get("state") || ""
+              ).trim(),
+
+            city:
+              String(
+                formData.get("city") || ""
+              ).trim(),
+
+            address:
+              String(
+                formData.get("address") || ""
+              ).trim(),
+
+            phone:
+              String(
+                formData.get("phone") || ""
+              ).trim(),
+
+            whatsapp:
+              String(
+                formData.get("whatsapp") || ""
+              ).trim(),
+
+            website:
+              String(
+                formData.get("website") || ""
+              ).trim(),
+
+            description:
+              String(
+                formData.get("description") || ""
+              ).trim(),
+
+            email:
+              String(
+                formData.get("email") || ""
+              ).trim(),
+
+            terms:
+              formData.get("terms") !== null
+
+          };
+
+
+          /*
+           * Extra client-side validation
+           */
+
+          if (!submission.business_name) {
+
+            showError(
+              "Please enter the business name."
+            );
+
+            return;
+
+          }
+
+
+          if (!submission.category) {
+
+            showError(
+              "Please select a business category."
+            );
+
+            return;
+
+          }
+
+
+          if (!submission.country) {
+
+            showError(
+              "Please select a country."
+            );
+
+            return;
+
+          }
+
+
+          if (!submission.state) {
+
+            showError(
+              "Please enter or select the state / region."
+            );
+
+            return;
+
+          }
+
+
+          if (!submission.city) {
+
+            showError(
+              "Please enter the city."
+            );
+
+            return;
+
+          }
+
+
+          if (!submission.address) {
+
+            showError(
+              "Please enter the business address."
+            );
+
+            return;
+
+          }
+
+
+          if (!submission.terms) {
+
+            showError(
+              "Please agree to the confirmation before submitting."
+            );
+
+            return;
+
+          }
+
+
+          /*
+           * Start submission
+           */
+
+          submitButton.disabled = true;
+
+          submitButton.textContent =
+            "Submitting...";
+
+          statusBox.textContent =
+            "Submitting your business for review...";
+
+          statusBox.style.display =
+            "block";
+
+
+          try {
+
+            const response =
+              await fetch(
+                `${apiBase}/submissions`,
+                {
+                  method: "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json",
+
+                    "Accept":
+                      "application/json"
+                  },
+
+                  body:
+                    JSON.stringify(submission)
+                }
+              );
+
+
+            let data = null;
+
+
+            try {
+
+              data =
+                await response.json();
+
+            } catch (jsonError) {
+
+              data = null;
+
+            }
+
+
+            /*
+             * Handle HTTP errors
+             */
+
+            if (!response.ok) {
+
+              const serverError =
+                data &&
+                (
+                  data.error ||
+                  data.message
+                );
+
+              throw new Error(
+                serverError ||
+                `Submission failed (${response.status})`
+              );
+
+            }
+
+
+            /*
+             * Handle API-level errors
+             */
+
+            if (
+              data &&
+              data.success === false
+            ) {
+
+              throw new Error(
+                data.error ||
+                data.message ||
+                "The business could not be submitted."
+              );
+
+            }
+
+
+            /*
+             * SUCCESS
+             */
+
+            statusBox.style.display =
+              "none";
+
+            showSuccess(
+              "Your business has been submitted successfully and is now awaiting review. Thank you for helping build NearAfrica."
+            );
+
+
+            /*
+             * Clear form
+             */
+
+            form.reset();
+
+
+            /*
+             * Reset state field
+             */
+
+            const country =
+              document.getElementById("country");
+
+            const stateSelect =
+              document.getElementById("state-select");
+
+            const stateOther =
+              document.getElementById("state-other");
+
+
+            stateSelect.style.display =
+              "block";
+
+            stateSelect.disabled =
+              true;
+
+            stateSelect.required =
+              true;
+
+            stateSelect.name =
+              "state";
+
+            stateSelect.value =
+              "";
+
+
+            stateOther.style.display =
+              "none";
+
+            stateOther.required =
+              false;
+
+            stateOther.removeAttribute(
+              "name"
+            );
+
+
+            /*
+             * Scroll user to success message
+             */
+
+            successBox.scrollIntoView({
+              behavior: "smooth",
+              block: "center"
+            });
+
+
+          } catch (error) {
+
+            statusBox.style.display =
+              "none";
+
+            showError(
+              error &&
+              error.message
+                ? error.message
+                : "Something went wrong while submitting your business. Please try again."
+            );
+
+            console.error(
+              "NearAfrica submission error:",
+              error
+            );
+
+          } finally {
+
+            submitButton.disabled =
+              false;
+
+            submitButton.textContent =
+              "Submit Business";
+
+          }
+
+        }
+      );
+
+    })();
+  </script>
 
 </body>
-  </html>
+</html>
