@@ -9,165 +9,398 @@
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background: #f5f5f5;
-      color: #171717;
+      background: #0b0b0b;
+      color: #f5f5f5;
+      min-height: 100vh;
     }
 
-    header {
-      background: #111;
-      color: white;
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    header span {
-      color: #d4af37;
-    }
-
-    main {
-      max-width: 1400px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-
-    .panel {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 18px rgba(0,0,0,.06);
-    }
-
-    .login-panel {
-      max-width: 500px;
-      margin: 80px auto;
-    }
-
+    button,
     input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #ccc;
-      border-radius: 7px;
-      margin: 8px 0 15px;
-      font-size: 15px;
-    }
-
-    textarea {
-      min-height: 100px;
-      resize: vertical;
+    select {
+      font: inherit;
     }
 
     button {
-      border: 0;
-      border-radius: 7px;
-      padding: 11px 16px;
       cursor: pointer;
-      font-weight: bold;
-      margin: 3px;
     }
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    /* =========================
+       LOGIN
+    ========================= */
+
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background:
+        radial-gradient(circle at top, rgba(212, 175, 55, 0.12), transparent 35%),
+        #0b0b0b;
     }
 
-    .gold {
+    .login-card {
+      width: 100%;
+      max-width: 430px;
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 18px;
+      padding: 35px 28px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .login-logo {
+      width: 62px;
+      height: 62px;
+      margin: 0 auto 18px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #d4af37, #9d7d19);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #080808;
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .login-card h1 {
+      text-align: center;
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+
+    .login-card p {
+      text-align: center;
+      color: #999;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #ccc;
+      font-size: 14px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 13px 14px;
+      background: #0a0a0a;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .input-group input:focus {
+      border-color: #d4af37;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
       background: #d4af37;
-      color: #111;
+      color: #080808;
+      font-weight: 800;
+      transition: 0.2s;
     }
 
-    .dark {
-      background: #222;
-      color: white;
+    .login-btn:hover {
+      background: #e4c45c;
     }
 
-    .red {
-      background: #b42318;
-      color: white;
+    .login-error {
+      margin-top: 15px;
+      padding: 11px;
+      border-radius: 9px;
+      background: rgba(220, 53, 69, 0.12);
+      border: 1px solid rgba(220, 53, 69, 0.35);
+      color: #ff7b86;
+      display: none;
+      font-size: 14px;
+      line-height: 1.4;
     }
 
-    .green {
-      background: #16803c;
-      color: white;
+    /* =========================
+       ADMIN APP
+    ========================= */
+
+    .admin-app {
+      display: none;
+      min-height: 100vh;
     }
 
-    .blue {
-      background: #2563eb;
-      color: white;
+    .topbar {
+      height: 70px;
+      padding: 0 25px;
+      background: #111;
+      border-bottom: 1px solid #252525;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
 
-    .hidden {
-      display: none !important;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    .error {
-      color: #b42318;
-      margin-top: 10px;
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #d4af37, #9d7d19);
+      color: #080808;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
     }
 
-    .success {
-      color: #16803c;
-      margin-top: 10px;
+    .brand-text strong {
+      display: block;
+      font-size: 18px;
     }
 
-    .muted {
+    .brand-text span {
+      display: block;
       color: #777;
+      font-size: 11px;
+      margin-top: 2px;
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    .topbar-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .api-status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #999;
+      font-size: 12px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #777;
+    }
+
+    .status-dot.online {
+      background: #39d98a;
+      box-shadow: 0 0 10px rgba(57, 217, 138, 0.5);
+    }
+
+    .logout-btn {
+      background: transparent;
+      border: 1px solid #333;
+      color: #bbb;
+      padding: 8px 13px;
+      border-radius: 8px;
+    }
+
+    .logout-btn:hover {
+      border-color: #d4af37;
+      color: #d4af37;
+    }
+
+    /* =========================
+       LAYOUT
+    ========================= */
+
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 70px);
+    }
+
+    .sidebar {
+      width: 235px;
+      flex-shrink: 0;
+      background: #0e0e0e;
+      border-right: 1px solid #222;
+      padding: 20px 14px;
+    }
+
+    .sidebar-title {
+      color: #555;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin: 10px 10px 10px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: #999;
+      text-align: left;
+      padding: 11px 12px;
+      border-radius: 9px;
+      margin-bottom: 4px;
+      transition: 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: #181818;
+      color: #eee;
+    }
+
+    .nav-btn.active {
+      background: rgba(212, 175, 55, 0.12);
+      color: #d4af37;
+      border: 1px solid rgba(212, 175, 55, 0.18);
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      padding: 28px;
+      overflow-x: hidden;
+    }
+
+    /* =========================
+       DASHBOARD HEADER
+    ========================= */
+
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
       gap: 15px;
       margin-bottom: 25px;
     }
 
-    .stat {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,.05);
+    .page-header h1 {
+      font-size: 28px;
+      margin-bottom: 5px;
     }
 
-    .stat h3 {
-      margin: 0 0 8px;
-      color: #666;
+    .page-header p {
+      color: #777;
       font-size: 14px;
     }
 
-    .stat strong {
-      font-size: 28px;
+    .refresh-btn {
+      padding: 10px 15px;
+      border-radius: 9px;
+      border: 1px solid #333;
+      background: #151515;
+      color: #ddd;
     }
 
-    .tabs {
+    .refresh-btn:hover {
+      border-color: #d4af37;
+      color: #d4af37;
+    }
+
+    /* =========================
+       STATS
+    ========================= */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 15px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: #111;
+      border: 1px solid #242424;
+      border-radius: 14px;
+      padding: 19px;
+    }
+
+    .stat-card span {
+      display: block;
+      color: #777;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 26px;
+      color: #eee;
+    }
+
+    /* =========================
+       CONTENT
+    ========================= */
+
+    .content-card {
+      background: #111;
+      border: 1px solid #242424;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    .content-card-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid #242424;
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 20px;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
     }
 
-    .tab {
-      background: #e8e8e8;
-      color: #222;
+    .content-card-header h2 {
+      font-size: 18px;
     }
 
-    .tab.active {
-      background: #d4af37;
+    .record-count {
+      color: #777;
+      font-size: 12px;
     }
+
+    .loading {
+      padding: 45px 20px;
+      text-align: center;
+      color: #777;
+    }
+
+    .empty {
+      padding: 45px 20px;
+      text-align: center;
+      color: #777;
+    }
+
+    .error-box {
+      margin: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(220, 53, 69, 0.10);
+      border: 1px solid rgba(220, 53, 69, 0.28);
+      color: #ff818b;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    /* =========================
+       TABLE
+    ========================= */
 
     .table-wrap {
       overflow-x: auto;
@@ -176,114 +409,243 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 900px;
+      min-width: 760px;
     }
 
     th,
     td {
-      padding: 12px;
-      border-bottom: 1px solid #eee;
       text-align: left;
+      padding: 13px 17px;
+      border-bottom: 1px solid #1f1f1f;
       vertical-align: top;
     }
 
     th {
-      background: #fafafa;
-      font-size: 13px;
+      color: #777;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      font-weight: 600;
     }
 
     td {
-      font-size: 14px;
+      color: #ccc;
+      font-size: 13px;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .business-name {
+      color: #eee;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .muted {
+      color: #666;
+      font-size: 12px;
     }
 
     .badge {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 20px;
-      background: #eee;
-      font-size: 12px;
-      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
     }
 
     .badge.active,
-    .badge.approved {
-      background: #dff6e7;
-      color: #16803c;
+    .badge.approved,
+    .badge.verified {
+      background: rgba(57, 217, 138, 0.11);
+      color: #55dc98;
+      border: 1px solid rgba(57, 217, 138, 0.2);
     }
 
     .badge.pending {
-      background: #fff3cd;
-      color: #856404;
+      background: rgba(212, 175, 55, 0.11);
+      color: #d4af37;
+      border: 1px solid rgba(212, 175, 55, 0.2);
     }
 
     .badge.rejected,
     .badge.suspended {
-      background: #fce4e4;
-      color: #b42318;
+      background: rgba(220, 53, 69, 0.11);
+      color: #ff727d;
+      border: 1px solid rgba(220, 53, 69, 0.2);
     }
 
-    .loading {
-      padding: 30px;
-      text-align: center;
-      color: #777;
+    .badge.unverified,
+    .badge.unclaimed {
+      background: rgba(150, 150, 150, 0.1);
+      color: #999;
+      border: 1px solid #303030;
     }
 
-    .empty {
-      padding: 30px;
-      text-align: center;
-      color: #777;
-    }
+    /* =========================
+       ACTIONS
+    ========================= */
 
-    .topbar {
+    .actions {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
+      gap: 7px;
       flex-wrap: wrap;
     }
 
-    .action-row {
-      white-space: nowrap;
+    .action-btn {
+      border: 1px solid #333;
+      background: #171717;
+      color: #ccc;
+      padding: 7px 10px;
+      border-radius: 7px;
+      font-size: 11px;
     }
 
-    .action-row button {
-      margin: 2px;
+    .action-btn:hover {
+      border-color: #d4af37;
+      color: #d4af37;
     }
 
-    .submission-name {
-      min-width: 180px;
+    .action-btn.approve {
+      border-color: rgba(57, 217, 138, 0.35);
+      color: #55dc98;
     }
 
-    .notice {
+    .action-btn.approve:hover {
+      background: rgba(57, 217, 138, 0.08);
+    }
+
+    .action-btn.danger {
+      border-color: rgba(220, 53, 69, 0.35);
+      color: #ff727d;
+    }
+
+    .action-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast-container {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 200;
+      width: min(380px, calc(100vw - 40px));
+    }
+
+    .toast {
       padding: 14px 16px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      background: #fff8df;
-      border: 1px solid #ead58a;
-      color: #6d5700;
+      border-radius: 10px;
+      background: #171717;
+      border: 1px solid #333;
+      color: #ddd;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.45;
     }
 
-    .success-box {
-      padding: 14px 16px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      background: #e8f7ee;
-      border: 1px solid #9ed4b2;
-      color: #166534;
+    .toast.success {
+      border-color: rgba(57, 217, 138, 0.4);
+    }
+
+    .toast.error {
+      border-color: rgba(220, 53, 69, 0.4);
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 900px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .sidebar {
+        width: 190px;
+      }
     }
 
     @media (max-width: 700px) {
-      header {
-        align-items: flex-start;
+      .topbar {
+        padding: 0 14px;
+      }
+
+      .brand-text span {
+        display: none;
+      }
+
+      .api-status {
+        display: none;
+      }
+
+      .layout {
+        display: block;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #222;
+        padding: 10px;
+        display: flex;
+        gap: 5px;
+        overflow-x: auto;
+      }
+
+      .sidebar-title {
+        display: none;
+      }
+
+      .nav-btn {
+        width: auto;
+        white-space: nowrap;
+        margin: 0;
+      }
+
+      .main {
+        padding: 18px 12px;
+      }
+
+      .page-header {
+        align-items: stretch;
         flex-direction: column;
       }
 
-      main {
-        padding: 0 12px;
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
       }
 
-      .panel {
-        padding: 16px;
+      .stat-card {
+        padding: 14px;
+      }
+
+      .stat-card strong {
+        font-size: 21px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-text strong {
+        font-size: 16px;
+      }
+
+      .logout-btn {
+        padding: 7px 9px;
       }
     }
   </style>
@@ -291,276 +653,388 @@
 
 <body>
 
-<header>
-  <h1>Near<span>Africa</span> Admin</h1>
+  <!-- =========================
+       LOGIN SCREEN
+  ========================== -->
 
-  <button
-    id="logoutBtn"
-    class="dark hidden"
-  >
-    Log Out
-  </button>
-</header>
+  <section class="login-screen" id="loginScreen">
 
+    <div class="login-card">
 
-<main>
+      <div class="login-logo">
+        NA
+      </div>
 
-  <!-- ================================================== -->
-  <!-- LOGIN -->
-  <!-- ================================================== -->
+      <h1>NearAfrica Admin</h1>
 
-  <section
-    id="loginPanel"
-    class="panel login-panel"
-  >
+      <p>
+        Secure administration and moderation dashboard.
+      </p>
 
-    <h2>Admin Login</h2>
+      <form id="loginForm">
 
-    <p class="muted">
-      Enter your NearAfrica Admin API key.
-    </p>
+        <div class="input-group">
+          <label for="adminKey">
+            Admin API Key
+          </label>
 
-    <input
-      id="adminKey"
-      type="password"
-      placeholder="Admin API Key"
-      autocomplete="off"
-    >
+          <input
+            type="password"
+            id="adminKey"
+            placeholder="Enter admin key"
+            autocomplete="current-password"
+            required
+          >
+        </div>
 
-    <button
-      id="loginBtn"
-      class="gold"
-    >
-      Log In
-    </button>
+        <button
+          type="submit"
+          class="login-btn"
+          id="loginBtn"
+        >
+          Sign In
+        </button>
 
-    <p
-      id="loginError"
-      class="error"
-    ></p>
+      </form>
+
+      <div
+        class="login-error"
+        id="loginError"
+      ></div>
+
+    </div>
 
   </section>
 
 
-  <!-- ================================================== -->
-  <!-- ADMIN -->
-  <!-- ================================================== -->
+  <!-- =========================
+       ADMIN APPLICATION
+  ========================== -->
 
-  <section
-    id="adminPanel"
-    class="hidden"
-  >
+  <section class="admin-app" id="adminApp">
 
-    <!-- STATS -->
+    <!-- TOP BAR -->
 
-    <div class="stats">
+    <header class="topbar">
 
-      <div class="stat">
-        <h3>Businesses</h3>
-        <strong id="statBusinesses">0</strong>
+      <div class="brand">
+
+        <div class="brand-logo">
+          NA
+        </div>
+
+        <div class="brand-text">
+          <strong>NearAfrica</strong>
+          <span>Administration</span>
+        </div>
+
       </div>
 
-      <div class="stat">
-        <h3>Submissions</h3>
-        <strong id="statSubmissions">0</strong>
-      </div>
+      <div class="topbar-actions">
 
-      <div class="stat">
-        <h3>Claims</h3>
-        <strong id="statClaims">0</strong>
-      </div>
+        <div class="api-status">
 
-      <div class="stat">
-        <h3>Reviews</h3>
-        <strong id="statReviews">0</strong>
-      </div>
+          <span
+            class="status-dot"
+            id="apiStatusDot"
+          ></span>
 
-      <div class="stat">
-        <h3>Reports</h3>
-        <strong id="statReports">0</strong>
-      </div>
+          <span id="apiStatusText">
+            Checking API...
+          </span>
 
-      <div class="stat">
-        <h3>Subscriptions</h3>
-        <strong id="statSubscriptions">0</strong>
-      </div>
-
-    </div>
-
-
-    <div class="panel">
-
-      <div class="topbar">
-
-        <div>
-          <h2 id="sectionTitle">
-            Businesses
-          </h2>
-
-          <p class="muted">
-            Manage NearAfrica data.
-          </p>
         </div>
 
         <button
-          id="refreshBtn"
-          class="blue"
+          class="logout-btn"
+          id="logoutBtn"
         >
-          Refresh
+          Logout
         </button>
 
       </div>
 
+    </header>
 
-      <!-- ================================================== -->
-      <!-- TABS -->
-      <!-- ================================================== -->
 
-      <div class="tabs">
+    <!-- MAIN LAYOUT -->
+
+    <div class="layout">
+
+      <!-- SIDEBAR -->
+
+      <aside class="sidebar">
+
+        <div class="sidebar-title">
+          Management
+        </div>
 
         <button
-          class="tab active"
+          class="nav-btn active"
           data-resource="businesses"
         >
           Businesses
         </button>
 
         <button
-          class="tab"
+          class="nav-btn"
           data-resource="submissions"
         >
           Submissions
         </button>
 
         <button
-          class="tab"
+          class="nav-btn"
           data-resource="claims"
         >
           Claims
         </button>
 
         <button
-          class="tab"
+          class="nav-btn"
           data-resource="reviews"
         >
           Reviews
         </button>
 
         <button
-          class="tab"
+          class="nav-btn"
           data-resource="reports"
         >
           Reports
         </button>
 
         <button
-          class="tab"
-          data-resource="help-wanted"
-        >
-          Help Wanted
-        </button>
-
-        <button
-          class="tab"
-          data-resource="subscriptions"
-        >
-          Subscriptions
-        </button>
-
-        <button
-          class="tab"
+          class="nav-btn"
           data-resource="discoveries"
         >
           Discoveries
         </button>
 
-      </div>
+      </aside>
 
 
-      <div id="content">
+      <!-- MAIN CONTENT -->
 
-        <div class="loading">
-          Loading...
+      <main class="main">
+
+        <div class="page-header">
+
+          <div>
+            <h1 id="pageTitle">
+              Businesses
+            </h1>
+
+            <p id="pageDescription">
+              Manage businesses listed on NearAfrica.
+            </p>
+          </div>
+
+          <button
+            class="refresh-btn"
+            id="refreshBtn"
+          >
+            ↻ Refresh
+          </button>
+
         </div>
 
-      </div>
+
+        <!-- STATS -->
+
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <span>Businesses</span>
+            <strong id="statBusinesses">—</strong>
+          </div>
+
+          <div class="stat-card">
+            <span>Pending Submissions</span>
+            <strong id="statSubmissions">—</strong>
+          </div>
+
+          <div class="stat-card">
+            <span>Pending Claims</span>
+            <strong id="statClaims">—</strong>
+          </div>
+
+          <div class="stat-card">
+            <span>Pending Reviews</span>
+            <strong id="statReviews">—</strong>
+          </div>
+
+        </div>
+
+
+        <!-- CONTENT -->
+
+        <section class="content-card">
+
+          <div class="content-card-header">
+
+            <h2 id="tableTitle">
+              Businesses
+            </h2>
+
+            <span
+              class="record-count"
+              id="recordCount"
+            >
+              0 records
+            </span>
+
+          </div>
+
+          <div id="tableContent">
+
+            <div class="loading">
+              Loading...
+            </div>
+
+          </div>
+
+        </section>
+
+      </main>
 
     </div>
 
   </section>
 
-</main>
+
+  <!-- TOASTS -->
+
+  <div
+    class="toast-container"
+    id="toastContainer"
+  ></div>
 
 
 <script>
-
-/* ==========================================================
-   CONFIG
-   ========================================================== */
+/* ============================================================
+   NEARAFRICA ADMIN
+   CURRENT V17 API
+============================================================ */
 
 const API_BASE =
   "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
-const STORAGE_KEY =
-  "nearafrica_admin_key";
+
+/* ============================================================
+   RESOURCE CONFIGURATION
+============================================================ */
+
+const RESOURCE_CONFIG = {
+
+  businesses: {
+    title: "Businesses",
+    description:
+      "Manage businesses listed on NearAfrica.",
+    key: "businesses"
+  },
+
+  submissions: {
+    title: "Submissions",
+    description:
+      "Review businesses submitted by users.",
+    key: "submissions"
+  },
+
+  claims: {
+    title: "Claims",
+    description:
+      "Review business ownership claims.",
+    key: "claims"
+  },
+
+  reviews: {
+    title: "Reviews",
+    description:
+      "Moderate submitted business reviews.",
+    key: "reviews"
+  },
+
+  reports: {
+    title: "Reports",
+    description:
+      "Review reports submitted about businesses.",
+    key: "reports"
+  },
+
+  discoveries: {
+    title: "Discoveries",
+    description:
+      "Review businesses discovered through external sources.",
+    key: "discoveries"
+  }
+
+};
+
+
+/* ============================================================
+   STATE
+============================================================ */
 
 let adminKey =
-  sessionStorage.getItem(
-    STORAGE_KEY
-  ) || "";
+  sessionStorage.getItem("nearafrica_admin_key") || "";
 
-let currentResource =
-  "businesses";
+let currentResource = "businesses";
 
 
-/* ==========================================================
-   ELEMENTS
-   ========================================================== */
+/* ============================================================
+   DOM
+============================================================ */
 
-const loginPanel =
-  document.getElementById(
-    "loginPanel"
-  );
+const loginScreen =
+  document.getElementById("loginScreen");
 
-const adminPanel =
-  document.getElementById(
-    "adminPanel"
-  );
+const adminApp =
+  document.getElementById("adminApp");
 
-const logoutBtn =
-  document.getElementById(
-    "logoutBtn"
-  );
+const loginForm =
+  document.getElementById("loginForm");
 
 const loginBtn =
-  document.getElementById(
-    "loginBtn"
-  );
-
-const adminKeyInput =
-  document.getElementById(
-    "adminKey"
-  );
+  document.getElementById("loginBtn");
 
 const loginError =
-  document.getElementById(
-    "loginError"
-  );
+  document.getElementById("loginError");
 
-const content =
-  document.getElementById(
-    "content"
-  );
+const adminKeyInput =
+  document.getElementById("adminKey");
 
-const sectionTitle =
-  document.getElementById(
-    "sectionTitle"
-  );
+const logoutBtn =
+  document.getElementById("logoutBtn");
+
+const refreshBtn =
+  document.getElementById("refreshBtn");
+
+const tableContent =
+  document.getElementById("tableContent");
+
+const recordCount =
+  document.getElementById("recordCount");
+
+const tableTitle =
+  document.getElementById("tableTitle");
+
+const pageTitle =
+  document.getElementById("pageTitle");
+
+const pageDescription =
+  document.getElementById("pageDescription");
+
+const apiStatusDot =
+  document.getElementById("apiStatusDot");
+
+const apiStatusText =
+  document.getElementById("apiStatusText");
 
 
-/* ==========================================================
-   API REQUEST
-   ========================================================== */
+/* ============================================================
+   GENERIC API REQUEST
+============================================================ */
 
 async function apiRequest(
   path,
@@ -568,9 +1042,13 @@ async function apiRequest(
 ) {
 
   const headers = {
-    ...(options.headers || {}),
-    "X-Admin-Key": adminKey
+    "Content-Type": "application/json",
+    ...(options.headers || {})
   };
+
+  if (adminKey) {
+    headers["X-Admin-Key"] = adminKey;
+  }
 
   const response =
     await fetch(
@@ -584,1326 +1062,469 @@ async function apiRequest(
   let data = null;
 
   try {
-
-    data =
-      await response.json();
-
-  } catch {
-
-    data = {
-      success: false,
-      error:
-        "Invalid server response"
-    };
-
+    data = await response.json();
+  } catch (error) {
+    data = null;
   }
 
   if (!response.ok) {
 
-    throw new Error(
-      data.error ||
-      `Request failed (${response.status})`
-    );
+    const message =
+      data?.message ||
+      data?.error ||
+      `Request failed (${response.status})`;
 
+    throw new Error(message);
   }
 
   return data;
 }
 
 
-/* ==========================================================
-   LOGIN
-   ========================================================== */
+/* ============================================================
+   TOAST
+============================================================ */
 
-async function login() {
+function showToast(
+  message,
+  type = "success"
+) {
 
-  const key =
-    adminKeyInput.value.trim();
+  const container =
+    document.getElementById("toastContainer");
 
-  if (!key) {
+  const toast =
+    document.createElement("div");
 
-    loginError.textContent =
-      "Please enter your Admin API key.";
+  toast.className =
+    `toast ${type}`;
 
-    return;
-  }
+  toast.textContent =
+    message;
 
-  loginError.textContent =
-    "Checking key...";
+  container.appendChild(toast);
 
-  loginBtn.disabled = true;
+  setTimeout(() => {
 
-  try {
+    toast.remove();
 
-    adminKey =
-      key;
-
-    const data =
-      await apiRequest(
-        "/admin/businesses?limit=1"
-      );
-
-    if (!data.success) {
-
-      throw new Error(
-        data.error ||
-        "Authentication failed."
-      );
-
-    }
-
-    sessionStorage.setItem(
-      STORAGE_KEY,
-      key
-    );
-
-    loginError.textContent =
-      "";
-
-    showAdmin();
-
-    await loadResource(
-      currentResource
-    );
-
-  } catch (error) {
-
-    adminKey = "";
-
-    loginError.textContent =
-      error.message ||
-      "Invalid Admin API key.";
-
-  } finally {
-
-    loginBtn.disabled =
-      false;
-
-  }
+  }, 4500);
 }
 
 
-/* ==========================================================
+/* ============================================================
+   LOGIN ERROR
+============================================================ */
+
+function showLoginError(message) {
+
+  loginError.textContent =
+    message;
+
+  loginError.style.display =
+    "block";
+}
+
+
+function hideLoginError() {
+
+  loginError.textContent =
+    "";
+
+  loginError.style.display =
+    "none";
+}
+
+
+/* ============================================================
+   LOGIN
+============================================================ */
+
+loginForm.addEventListener(
+  "submit",
+  async function(event) {
+
+    event.preventDefault();
+
+    hideLoginError();
+
+    const key =
+      adminKeyInput.value.trim();
+
+    if (!key) {
+
+      showLoginError(
+        "Please enter the admin API key."
+      );
+
+      return;
+    }
+
+    loginBtn.disabled = true;
+    loginBtn.textContent =
+      "Checking...";
+
+    try {
+
+      /*
+       * The v17 API returns:
+       *
+       * {
+       *   status: "ok",
+       *   businesses: [...]
+       * }
+       *
+       * It does NOT return success:true.
+       */
+
+      const response =
+        await fetch(
+          API_BASE +
+          "/admin/businesses?limit=1",
+          {
+            method: "GET",
+            headers: {
+              "X-Admin-Key": key
+            }
+          }
+        );
+
+      let data = null;
+
+      try {
+
+        data =
+          await response.json();
+
+      } catch (error) {
+
+        data = null;
+      }
+
+      if (
+        !response.ok ||
+        !data ||
+        data.status !== "ok"
+      ) {
+
+        throw new Error(
+          data?.message ||
+          data?.error ||
+          `Authentication failed (${response.status})`
+        );
+      }
+
+      adminKey =
+        key;
+
+      sessionStorage.setItem(
+        "nearafrica_admin_key",
+        adminKey
+      );
+
+      showAdmin();
+
+    } catch (error) {
+
+      showLoginError(
+        error.message ||
+        "Unable to connect to the admin API."
+      );
+
+    } finally {
+
+      loginBtn.disabled = false;
+      loginBtn.textContent =
+        "Sign In";
+    }
+
+  }
+);
+
+
+/* ============================================================
    SHOW ADMIN
-   ========================================================== */
+============================================================ */
 
 function showAdmin() {
 
-  loginPanel.classList.add(
-    "hidden"
-  );
+  loginScreen.style.display =
+    "none";
 
-  adminPanel.classList.remove(
-    "hidden"
-  );
+  adminApp.style.display =
+    "block";
 
-  logoutBtn.classList.remove(
-    "hidden"
+  checkApiStatus();
+
+  loadStats();
+
+  loadResource(
+    currentResource
   );
 }
 
 
-/* ==========================================================
+/* ============================================================
    LOGOUT
-   ========================================================== */
+============================================================ */
 
-function logout() {
+logoutBtn.addEventListener(
+  "click",
+  function() {
 
-  sessionStorage.removeItem(
-    STORAGE_KEY
-  );
-
-  adminKey = "";
-
-  adminPanel.classList.add(
-    "hidden"
-  );
-
-  logoutBtn.classList.add(
-    "hidden"
-  );
-
-  loginPanel.classList.remove(
-    "hidden"
-  );
-
-  adminKeyInput.value =
-    "";
-
-  loginError.textContent =
-    "";
-
-}
-
-
-/* ==========================================================
-   LOAD RESOURCE
-   ========================================================== */
-
-async function loadResource(
-  resource
-) {
-
-  currentResource =
-    resource;
-
-  sectionTitle.textContent =
-    formatTitle(
-      resource
+    sessionStorage.removeItem(
+      "nearafrica_admin_key"
     );
 
-  content.innerHTML =
-    '<div class="loading">Loading...</div>';
+    adminKey = "";
+
+    adminApp.style.display =
+      "none";
+
+    loginScreen.style.display =
+      "flex";
+
+    adminKeyInput.value =
+      "";
+
+    hideLoginError();
+
+  }
+);
+
+
+/* ============================================================
+   API STATUS
+============================================================ */
+
+async function checkApiStatus() {
 
   try {
 
     const data =
       await apiRequest(
-        `/admin/${resource}?limit=100`
+        "/health"
       );
 
-    const items =
-      Array.isArray(
-        data.items
-      )
-        ? data.items
-        : [];
+    if (data.status === "ok") {
 
-    renderResource(
-      resource,
-      items
-    );
+      apiStatusDot.classList.add(
+        "online"
+      );
 
-    updateStats(
-      resource,
-      items
-    );
+      apiStatusText.textContent =
+        "API Online";
+
+    } else {
+
+      throw new Error(
+        "API did not return OK"
+      );
+    }
 
   } catch (error) {
 
-    content.innerHTML = `
-      <div class="panel">
-        <p class="error">
-          ${escapeHtml(
-            error.message
-          )}
-        </p>
-      </div>
-    `;
+    apiStatusDot.classList.remove(
+      "online"
+    );
+
+    apiStatusText.textContent =
+      "API Error";
+  }
+}
+
+
+/* ============================================================
+   LOAD STATS
+============================================================ */
+
+async function loadStats() {
+
+  try {
+
+    const data =
+      await apiRequest(
+        "/admin/stats"
+      );
 
     if (
-      error.message ===
-      "Unauthorized"
+      !data ||
+      data.status !== "ok"
     ) {
 
-      logout();
-
+      throw new Error(
+        data?.message ||
+        "Unable to load statistics."
+      );
     }
 
-  }
+    /*
+     * v17 returns a counts object.
+     *
+     * We deliberately tolerate different
+     * possible field names so the dashboard
+     * doesn't break if a count is missing.
+     */
 
-}
+    const counts =
+      data.counts ||
+      data.stats ||
+      data;
 
+    const businesses =
+      getCount(
+        counts,
+        [
+          "businesses",
+          "business_count"
+        ]
+      );
 
-/* ==========================================================
-   TITLE
-   ========================================================== */
+    const submissions =
+      getCount(
+        counts,
+        [
+          "submissions",
+          "submission_count"
+        ]
+      );
 
-function formatTitle(
-  value
-) {
+    const claims =
+      getCount(
+        counts,
+        [
+          "claims",
+          "claim_count",
+          "business_claims"
+        ]
+      );
 
-  return value
-    .split("-")
-    .map(
-      word =>
-        word.charAt(0).toUpperCase() +
-        word.slice(1)
-    )
-    .join(" ");
-
-}
-
-
-/* ==========================================================
-   STATS
-   ========================================================== */
-
-function updateStats(
-  resource,
-  items
-) {
-
-  const map = {
-
-    businesses:
-      "statBusinesses",
-
-    submissions:
-      "statSubmissions",
-
-    claims:
-      "statClaims",
-
-    reviews:
-      "statReviews",
-
-    reports:
-      "statReports",
-
-    subscriptions:
-      "statSubscriptions"
-
-  };
-
-  if (map[resource]) {
+    const reviews =
+      getCount(
+        counts,
+        [
+          "reviews",
+          "review_count"
+        ]
+      );
 
     document.getElementById(
-      map[resource]
+      "statBusinesses"
     ).textContent =
-      items.length;
+      formatNumber(businesses);
 
+    document.getElementById(
+      "statSubmissions"
+    ).textContent =
+      formatNumber(submissions);
+
+    document.getElementById(
+      "statClaims"
+    ).textContent =
+      formatNumber(claims);
+
+    document.getElementById(
+      "statReviews"
+    ).textContent =
+      formatNumber(reviews);
+
+  } catch (error) {
+
+    console.error(
+      "Stats error:",
+      error
+    );
+
+    document.getElementById(
+      "statBusinesses"
+    ).textContent = "—";
+
+    document.getElementById(
+      "statSubmissions"
+    ).textContent = "—";
+
+    document.getElementById(
+      "statClaims"
+    ).textContent = "—";
+
+    document.getElementById(
+      "statReviews"
+    ).textContent = "—";
   }
-
 }
 
 
-/* ==========================================================
-   RENDER RESOURCE
-   ========================================================== */
+/* ============================================================
+   COUNT HELPER
+============================================================ */
 
-function renderResource(
-  resource,
-  items
+function getCount(
+  object,
+  keys
 ) {
 
-  if (!items.length) {
-
-    content.innerHTML = `
-      <div class="empty">
-        No ${escapeHtml(
-          formatTitle(resource)
-        )}
-        available.
-      </div>
-    `;
-
-    return;
-  }
-
-
-  if (
-    resource ===
-    "businesses"
+  for (
+    const key of keys
   ) {
-
-    renderBusinesses(
-      items
-    );
-
-    return;
-
-  }
-
-
-  if (
-    resource ===
-    "submissions"
-  ) {
-
-    renderSubmissions(
-      items
-    );
-
-    return;
-
-  }
-
-
-  renderGeneric(
-    resource,
-    items
-  );
-
-}
-
-
-/* ==========================================================
-   BUSINESSES
-   ========================================================== */
-
-function renderBusinesses(
-  items
-) {
-
-  const rows =
-    items.map(
-      business => {
-
-        const status =
-          business.status ||
-          "unknown";
-
-        return `
-          <tr>
-
-            <td>
-              <strong>
-                ${escapeHtml(
-                  business.business_name ||
-                  "Unnamed"
-                )}
-              </strong>
-
-              <br>
-
-              <span class="muted">
-                ${escapeHtml(
-                  business.id || ""
-                )}
-              </span>
-            </td>
-
-            <td>
-              ${escapeHtml(
-                business.category ||
-                "—"
-              )}
-            </td>
-
-            <td>
-              ${escapeHtml(
-                business.city ||
-                "—"
-              )},
-              ${escapeHtml(
-                business.state ||
-                "—"
-              )}
-            </td>
-
-            <td>
-
-              <span
-                class="badge ${escapeHtml(status)}"
-              >
-                ${escapeHtml(status)}
-              </span>
-
-            </td>
-
-            <td>
-              ${business.verified ? "Yes" : "No"}
-            </td>
-
-            <td>
-              ${business.claimed ? "Yes" : "No"}
-            </td>
-
-            <td>
-              ${Number(
-                business.views || 0
-              )}
-            </td>
-
-            <td class="action-row">
-
-              <button
-                class="green"
-                onclick="changeBusinessStatus(
-                  '${escapeJs(
-                    business.id
-                  )}',
-                  'active'
-                )"
-              >
-                Activate
-              </button>
-
-              <button
-                class="red"
-                onclick="changeBusinessStatus(
-                  '${escapeJs(
-                    business.id
-                  )}',
-                  'rejected'
-                )"
-              >
-                Reject
-              </button>
-
-              <button
-                class="dark"
-                onclick="changeBusinessStatus(
-                  '${escapeJs(
-                    business.id
-                  )}',
-                  'suspended'
-                )"
-              >
-                Suspend
-              </button>
-
-            </td>
-
-          </tr>
-        `;
-
-      }
-    ).join("");
-
-
-  content.innerHTML = `
-
-    <div class="table-wrap">
-
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>Business</th>
-            <th>Category</th>
-            <th>Location</th>
-            <th>Status</th>
-            <th>Verified</th>
-            <th>Claimed</th>
-            <th>Views</th>
-            <th>Actions</th>
-          </tr>
-
-        </thead>
-
-        <tbody>
-          ${rows}
-        </tbody>
-
-      </table>
-
-    </div>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   SUBMISSIONS
-   ========================================================== */
-
-function renderSubmissions(
-  items
-) {
-
-  const rows =
-    items.map(
-      submission => {
-
-        const status =
-          submission.status ||
-          "pending";
-
-        const submissionId =
-          submission.id;
-
-        const isPending =
-          status ===
-          "pending";
-
-
-        return `
-          <tr>
-
-            <td>
-              <strong>
-                ${escapeHtml(
-                  submission.id ??
-                  "—"
-                )}
-              </strong>
-            </td>
-
-
-            <td class="submission-name">
-
-              <strong>
-                ${escapeHtml(
-                  submission.name ||
-                  submission.business_name ||
-                  "Unnamed Business"
-                )}
-              </strong>
-
-              ${
-                submission.description
-                  ? `
-                    <br>
-                    <span class="muted">
-                      ${escapeHtml(
-                        submission.description
-                      )}
-                    </span>
-                  `
-                  : ""
-              }
-
-            </td>
-
-
-            <td>
-              ${escapeHtml(
-                submission.category ||
-                "—"
-              )}
-            </td>
-
-
-            <td>
-
-              <span
-                class="badge ${escapeHtml(status)}"
-              >
-                ${escapeHtml(status)}
-              </span>
-
-            </td>
-
-
-            <td>
-              ${escapeHtml(
-                submission.email ||
-                "—"
-              )}
-            </td>
-
-
-            <td>
-              ${escapeHtml(
-                submission.phone ||
-                "—"
-              )}
-            </td>
-
-
-            <td>
-              ${escapeHtml(
-                submission.city ||
-                "—"
-              )},
-              ${escapeHtml(
-                submission.state ||
-                "—"
-              )}
-            </td>
-
-
-            <td>
-              ${escapeHtml(
-                submission.country ||
-                "Nigeria"
-              )}
-            </td>
-
-
-            <td>
-              ${escapeHtml(
-                submission.created_at ||
-                "—"
-              )}
-            </td>
-
-
-            <td class="action-row">
-
-              ${
-                isPending
-                  ? `
-
-                    <button
-                      class="green"
-                      onclick="approveSubmission(
-                        '${escapeJs(
-                          submissionId
-                        )}',
-                        '${escapeJs(
-                          submission.name ||
-                          submission.business_name ||
-                          "this business"
-                        )}'
-                      )"
-                    >
-                      Approve
-                    </button>
-
-                    <button
-                      class="red"
-                      onclick="rejectSubmission(
-                        '${escapeJs(
-                          submissionId
-                        )}',
-                        '${escapeJs(
-                          submission.name ||
-                          submission.business_name ||
-                          "this business"
-                        )}'
-                      )"
-                    >
-                      Reject
-                    </button>
-
-                  `
-                  : `
-
-                    <span class="muted">
-                      No actions
-                    </span>
-
-                  `
-              }
-
-            </td>
-
-          </tr>
-        `;
-
-      }
-    ).join("");
-
-
-  content.innerHTML = `
-
-    <div class="notice">
-
-      <strong>
-        Submission review
-      </strong>
-
-      <br>
-
-      Approving a submission creates the
-      business in the NearAfrica directory
-      and changes its status to active.
-
-    </div>
-
-
-    <div class="table-wrap">
-
-      <table>
-
-        <thead>
-
-          <tr>
-
-            <th>ID</th>
-            <th>Business</th>
-            <th>Category</th>
-            <th>Status</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Location</th>
-            <th>Country</th>
-            <th>Created</th>
-            <th>Actions</th>
-
-          </tr>
-
-        </thead>
-
-
-        <tbody>
-
-          ${rows}
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   APPROVE SUBMISSION
-   ========================================================== */
-
-async function approveSubmission(
-  submissionId,
-  businessName
-) {
-
-  const confirmed =
-    confirm(
-      `Approve "${businessName}"?\n\n` +
-      `This will create the business in the ` +
-      `NearAfrica directory and make it active.`
-    );
-
-  if (!confirmed) {
-    return;
-  }
-
-
-  try {
-
-    content.innerHTML = `
-      <div class="loading">
-        Approving ${escapeHtml(
-          businessName
-        )}...
-      </div>
-    `;
-
-
-    const data =
-      await apiRequest(
-        `/admin/submissions/${encodeURIComponent(
-          submissionId
-        )}/approve`,
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify({})
-        }
-      );
-
 
     if (
-      !data.success
+      object &&
+      object[key] !== undefined &&
+      object[key] !== null
     ) {
 
-      throw new Error(
-        data.error ||
-        "Approval failed."
-      );
+      const value =
+        Number(object[key]);
 
+      if (
+        Number.isFinite(value)
+      ) {
+
+        return value;
+      }
     }
-
-
-    content.innerHTML = `
-
-      <div class="success-box">
-
-        <strong>
-          Business approved successfully.
-        </strong>
-
-        <br><br>
-
-        ${escapeHtml(
-          businessName
-        )}
-
-        has been added to the
-        NearAfrica business directory.
-
-      </div>
-
-    `;
-
-
-    await loadResource(
-      "submissions"
-    );
-
-
-  } catch (error) {
-
-    content.innerHTML = `
-
-      <div class="panel">
-
-        <p class="error">
-
-          ${escapeHtml(
-            error.message ||
-            "Could not approve submission."
-          )}
-
-        </p>
-
-        <button
-          class="blue"
-          onclick="loadResource('submissions')"
-        >
-          Back to Submissions
-        </button>
-
-      </div>
-
-    `;
-
   }
 
+  return 0;
 }
 
 
-/* ==========================================================
-   REJECT SUBMISSION
-   ========================================================== */
+/* ============================================================
+   NUMBER FORMAT
+============================================================ */
 
-async function rejectSubmission(
-  submissionId,
-  businessName
-) {
+function formatNumber(value) {
 
-  const reason =
-    prompt(
-      `Why are you rejecting "${businessName}"?\n\n` +
-      `You can leave this blank.`
-    );
-
+  const number =
+    Number(value);
 
   if (
-    reason ===
-    null
-  ) {
-    return;
-  }
-
-
-  const confirmed =
-    confirm(
-      `Reject "${businessName}"?`
-    );
-
-
-  if (!confirmed) {
-    return;
-  }
-
-
-  try {
-
-    content.innerHTML = `
-      <div class="loading">
-        Rejecting ${escapeHtml(
-          businessName
-        )}...
-      </div>
-    `;
-
-
-    const data =
-      await apiRequest(
-        `/admin/submissions/${encodeURIComponent(
-          submissionId
-        )}/reject`,
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify({
-              reason:
-                reason.trim()
-            })
-        }
-      );
-
-
-    if (
-      !data.success
-    ) {
-
-      throw new Error(
-        data.error ||
-        "Rejection failed."
-      );
-
-    }
-
-
-    await loadResource(
-      "submissions"
-    );
-
-
-  } catch (error) {
-
-    content.innerHTML = `
-
-      <div class="panel">
-
-        <p class="error">
-
-          ${escapeHtml(
-            error.message ||
-            "Could not reject submission."
-          )}
-
-        </p>
-
-        <button
-          class="blue"
-          onclick="loadResource('submissions')"
-        >
-          Back to Submissions
-        </button>
-
-      </div>
-
-    `;
-
-  }
-
-}
-
-
-/* ==========================================================
-   GENERIC RESOURCE TABLE
-   ========================================================== */
-
-function renderGeneric(
-  resource,
-  items
-) {
-
-  const keys =
-    getUsefulKeys(
-      items
-    );
-
-
-  const header =
-    keys.map(
-      key =>
-        `<th>${escapeHtml(
-          formatTitle(key)
-        )}</th>`
-    ).join("");
-
-
-  const rows =
-    items.map(
-      item => {
-
-        const cells =
-          keys.map(
-            key => {
-
-              let value =
-                item[key];
-
-
-              if (
-                value === null ||
-                value === undefined
-              ) {
-
-                value =
-                  "—";
-
-              }
-
-
-              if (
-                typeof value ===
-                "object"
-              ) {
-
-                value =
-                  JSON.stringify(
-                    value
-                  );
-
-              }
-
-
-              return `
-                <td>
-                  ${escapeHtml(
-                    String(value)
-                  )}
-                </td>
-              `;
-
-            }
-          ).join("");
-
-
-        return `
-          <tr>
-            ${cells}
-          </tr>
-        `;
-
-      }
-    ).join("");
-
-
-  content.innerHTML = `
-
-    <div class="table-wrap">
-
-      <table>
-
-        <thead>
-
-          <tr>
-            ${header}
-          </tr>
-
-        </thead>
-
-
-        <tbody>
-          ${rows}
-        </tbody>
-
-      </table>
-
-    </div>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   USEFUL KEYS
-   ========================================================== */
-
-function getUsefulKeys(
-  items
-) {
-
-  const preferred = [
-
-    "id",
-
-    "business_name",
-
-    "name",
-
-    "category",
-
-    "status",
-
-    "claimant_name",
-
-    "claimant_email",
-
-    "rating",
-
-    "comment",
-
-    "reason",
-
-    "report_type",
-
-    "email",
-
-    "phone",
-
-    "city",
-
-    "state",
-
-    "country",
-
-    "created_at",
-
-    "updated_at"
-
-  ];
-
-
-  const available =
-    new Set();
-
-
-  items.forEach(
-    item => {
-
-      Object.keys(
-        item
-      ).forEach(
-        key =>
-          available.add(
-            key
-          )
-      );
-
-    }
-  );
-
-
-  const selected =
-    preferred.filter(
-      key =>
-        available.has(
-          key
-        )
-    );
-
-
-  if (
-    !selected.length
+    !Number.isFinite(number)
   ) {
 
-    return Array.from(
-      available
-    ).slice(
-      0,
-      10
-    );
-
+    return "0";
   }
 
-
-  return selected.slice(
-    0,
-    12
-  );
-
+  return number.toLocaleString();
 }
 
 
-/* ==========================================================
-   CHANGE BUSINESS STATUS
-   ========================================================== */
-
-async function changeBusinessStatus(
-  businessId,
-  status
-) {
-
-  const confirmed =
-    confirm(
-      `Change this business status to "${status}"?`
-    );
-
-
-  if (!confirmed) {
-    return;
-  }
-
-
-  try {
-
-    await apiRequest(
-      `/admin/businesses/${encodeURIComponent(
-        businessId
-      )}/status`,
-      {
-        method: "PATCH",
-
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
-
-        body:
-          JSON.stringify({
-            status
-          })
-      }
-    );
-
-
-    await loadResource(
-      "businesses"
-    );
-
-
-  } catch (error) {
-
-    alert(
-      error.message ||
-      "Could not update business status."
-    );
-
-  }
-
-}
-
-
-/* ==========================================================
-   ESCAPING
-   ========================================================== */
-
-function escapeHtml(
-  value
-) {
-
-  return String(
-    value
-  )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-}
-
-
-function escapeJs(
-  value
-) {
-
-  return String(
-    value
-  )
-    .replaceAll(
-      "\\",
-      "\\\\"
-    )
-    .replaceAll(
-      "'",
-      "\\'"
-    );
-
-}
-
-
-/* ==========================================================
-   TABS
-   ========================================================== */
+/* ============================================================
+   NAVIGATION
+============================================================ */
 
 document
-  .querySelectorAll(
-    ".tab"
-  )
+  .querySelectorAll(".nav-btn")
   .forEach(
     button => {
 
       button.addEventListener(
         "click",
-        () => {
+        function() {
 
           document
             .querySelectorAll(
-              ".tab"
+              ".nav-btn"
             )
             .forEach(
               btn =>
@@ -1912,14 +1533,15 @@ document
                 )
             );
 
-
-          button.classList.add(
+          this.classList.add(
             "active"
           );
 
+          currentResource =
+            this.dataset.resource;
 
           loadResource(
-            button.dataset.resource
+            currentResource
           );
 
         }
@@ -1929,66 +1551,1564 @@ document
   );
 
 
-/* ==========================================================
-   BUTTONS
-   ========================================================== */
+/* ============================================================
+   REFRESH
+============================================================ */
 
-loginBtn.addEventListener(
+refreshBtn.addEventListener(
   "click",
-  login
-);
+  async function() {
 
+    refreshBtn.disabled =
+      true;
 
-adminKeyInput.addEventListener(
-  "keydown",
-  event => {
+    refreshBtn.textContent =
+      "Refreshing...";
 
-    if (
-      event.key ===
-      "Enter"
-    ) {
+    await Promise.all([
+      loadStats(),
+      checkApiStatus()
+    ]);
 
-      login();
+    await loadResource(
+      currentResource
+    );
 
-    }
+    refreshBtn.disabled =
+      false;
 
+    refreshBtn.textContent =
+      "↻ Refresh";
   }
 );
 
 
-logoutBtn.addEventListener(
-  "click",
-  logout
-);
+/* ============================================================
+   LOAD RESOURCE
+============================================================ */
 
+async function loadResource(
+  resource
+) {
 
-document
-  .getElementById(
-    "refreshBtn"
-  )
-  .addEventListener(
-    "click",
-    () =>
-      loadResource(
-        currentResource
+  const config =
+    RESOURCE_CONFIG[resource];
+
+  if (!config) {
+
+    return;
+  }
+
+  pageTitle.textContent =
+    config.title;
+
+  pageDescription.textContent =
+    config.description;
+
+  tableTitle.textContent =
+    config.title;
+
+  recordCount.textContent =
+    "Loading...";
+
+  tableContent.innerHTML =
+    `
+      <div class="loading">
+        Loading ${escapeHtml(
+          config.title.toLowerCase()
+        )}...
+      </div>
+    `;
+
+  try {
+
+    /*
+     * Important:
+     *
+     * The v17 API does NOT return:
+     *
+     * data.items
+     *
+     * Instead it returns:
+     *
+     * data.businesses
+     * data.submissions
+     * data.claims
+     * data.reviews
+     * data.reports
+     * data.discoveries
+     */
+
+    const data =
+      await apiRequest(
+        `/admin/${resource}?limit=100`
+      );
+
+    if (
+      !data ||
+      data.status !== "ok"
+    ) {
+
+      throw new Error(
+        data?.message ||
+        "The API returned an unsuccessful response."
+      );
+    }
+
+    const items =
+      Array.isArray(
+        data[config.key]
       )
+        ? data[config.key]
+        : [];
+
+    recordCount.textContent =
+      `${items.length.toLocaleString()} record${
+        items.length === 1
+          ? ""
+          : "s"
+      }`;
+
+    renderResource(
+      resource,
+      items
+    );
+
+  } catch (error) {
+
+    console.error(
+      `Failed loading ${resource}:`,
+      error
+    );
+
+    recordCount.textContent =
+      "Error";
+
+    tableContent.innerHTML =
+      `
+        <div class="error-box">
+          <strong>
+            Failed to load ${escapeHtml(
+              config.title
+            )}
+          </strong>
+          <br><br>
+          ${escapeHtml(
+            error.message ||
+            "Unknown error"
+          )}
+        </div>
+      `;
+
+  }
+}
+
+
+/* ============================================================
+   RENDER RESOURCE
+============================================================ */
+
+function renderResource(
+  resource,
+  items
+) {
+
+  if (!items.length) {
+
+    tableContent.innerHTML =
+      `
+        <div class="empty">
+          No ${escapeHtml(
+            RESOURCE_CONFIG[
+              resource
+            ].title.toLowerCase()
+          )} found.
+        </div>
+      `;
+
+    return;
+  }
+
+  switch (resource) {
+
+    case "businesses":
+      renderBusinesses(items);
+      break;
+
+    case "submissions":
+      renderSubmissions(items);
+      break;
+
+    case "claims":
+      renderClaims(items);
+      break;
+
+    case "reviews":
+      renderReviews(items);
+      break;
+
+    case "reports":
+      renderReports(items);
+      break;
+
+    case "discoveries":
+      renderDiscoveries(items);
+      break;
+
+    default:
+
+      renderGeneric(
+        items
+      );
+  }
+}
+
+
+/* ============================================================
+   BUSINESSES
+============================================================ */
+
+function renderBusinesses(
+  businesses
+) {
+
+  const rows =
+    businesses
+      .map(
+        business => {
+
+          const status =
+            business.status ||
+            "unknown";
+
+          const verified =
+            Number(
+              business.verified
+            ) === 1;
+
+          const claimed =
+            Number(
+              business.claimed
+            ) === 1;
+
+          return `
+            <tr>
+
+              <td>
+                <div class="business-name">
+                  ${escapeHtml(
+                    business.business_name ||
+                    business.name ||
+                    "Unnamed business"
+                  )}
+                </div>
+
+                <div class="muted">
+                  ID:
+                  ${escapeHtml(
+                    business.id ||
+                    "—"
+                  )}
+                </div>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  business.category ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  business.city ||
+                  "—"
+                )},
+                ${escapeHtml(
+                  business.state ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                <span class="badge ${badgeClass(
+                  status
+                )}">
+                  ${escapeHtml(
+                    status
+                  )}
+                </span>
+              </td>
+
+              <td>
+                ${
+                  verified
+                    ? `
+                      <span class="badge verified">
+                        Verified
+                      </span>
+                    `
+                    : `
+                      <span class="badge unverified">
+                        Unverified
+                      </span>
+                    `
+                }
+
+                ${
+                  claimed
+                    ? `
+                      <span class="badge approved">
+                        Claimed
+                      </span>
+                    `
+                    : `
+                      <span class="badge unclaimed">
+                        Unclaimed
+                      </span>
+                    `
+                }
+              </td>
+
+              <td>
+                ${formatNumber(
+                  business.views || 0
+                )}
+              </td>
+
+            </tr>
+          `;
+        }
+      )
+      .join("");
+
+  tableContent.innerHTML =
+    `
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Business</th>
+              <th>Category</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Trust</th>
+              <th>Views</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${rows}
+          </tbody>
+
+        </table>
+
+      </div>
+    `;
+}
+
+
+/* ============================================================
+   SUBMISSIONS
+============================================================ */
+
+function renderSubmissions(
+  submissions
+) {
+
+  const rows =
+    submissions
+      .map(
+        submission => {
+
+          const status =
+            submission.status ||
+            "pending";
+
+          const approved =
+            status === "approved";
+
+          return `
+            <tr>
+
+              <td>
+                <div class="business-name">
+                  ${escapeHtml(
+                    submission.name ||
+                    "Unnamed submission"
+                  )}
+                </div>
+
+                <div class="muted">
+                  ID:
+                  ${escapeHtml(
+                    submission.id ||
+                    "—"
+                  )}
+                </div>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  submission.category ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  submission.city ||
+                  "—"
+                )},
+                ${escapeHtml(
+                  submission.state ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                <span class="badge ${badgeClass(
+                  status
+                )}">
+                  ${escapeHtml(
+                    status
+                  )}
+                </span>
+              </td>
+
+              <td>
+                ${
+                  submission.email
+                    ? escapeHtml(
+                        submission.email
+                      )
+                    : "—"
+                }
+              </td>
+
+              <td>
+
+                <div class="actions">
+
+                  ${
+                    approved
+                      ? `
+                        <button
+                          class="action-btn"
+                          disabled
+                        >
+                          Approved
+                        </button>
+                      `
+                      : `
+                        <button
+                          class="action-btn approve"
+                          onclick="approveSubmission('${escapeJs(
+                            submission.id
+                          )}')"
+                        >
+                          Approve
+                        </button>
+                      `
+                  }
+
+                </div>
+
+              </td>
+
+            </tr>
+          `;
+        }
+      )
+      .join("");
+
+  tableContent.innerHTML =
+    `
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Business</th>
+              <th>Category</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Email</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${rows}
+          </tbody>
+
+        </table>
+
+      </div>
+    `;
+}
+
+
+/* ============================================================
+   APPROVE SUBMISSION
+============================================================ */
+
+async function approveSubmission(
+  id
+) {
+
+  if (!id) {
+
+    showToast(
+      "Submission ID is missing.",
+      "error"
+    );
+
+    return;
+  }
+
+  const confirmed =
+    confirm(
+      "Approve this submission and create the business listing?"
+    );
+
+  if (!confirmed) {
+
+    return;
+  }
+
+  try {
+
+    const data =
+      await apiRequest(
+        `/admin/submissions/${encodeURIComponent(
+          id
+        )}/approve`,
+        {
+          method: "POST"
+        }
+      );
+
+    /*
+     * v17 returns:
+     *
+     * {
+     *   status: "ok",
+     *   message: "...",
+     *   business_id: "...",
+     *   slug: "..."
+     * }
+     */
+
+    if (
+      !data ||
+      data.status !== "ok"
+    ) {
+
+      throw new Error(
+        data?.message ||
+        "Submission approval failed."
+      );
+    }
+
+    showToast(
+      data.message ||
+      "Submission approved successfully.",
+      "success"
+    );
+
+    await Promise.all([
+      loadStats(),
+      loadResource("submissions")
+    ]);
+
+  } catch (error) {
+
+    console.error(
+      "Approval error:",
+      error
+    );
+
+    showToast(
+      error.message ||
+      "Unable to approve submission.",
+      "error"
+    );
+  }
+}
+
+
+/* ============================================================
+   CLAIMS
+============================================================ */
+
+function renderClaims(
+  claims
+) {
+
+  const rows =
+    claims
+      .map(
+        claim => {
+
+          const status =
+            claim.status ||
+            "pending";
+
+          return `
+            <tr>
+
+              <td>
+                <div class="business-name">
+                  ${escapeHtml(
+                    claim.claimant_name ||
+                    "Unknown claimant"
+                  )}
+                </div>
+
+                <div class="muted">
+                  Claim ID:
+                  ${escapeHtml(
+                    claim.id ||
+                    "—"
+                  )}
+                </div>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  claim.business_id ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  claim.claimant_email ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  claim.evidence_type ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                <span class="badge ${badgeClass(
+                  status
+                )}">
+                  ${escapeHtml(
+                    status
+                  )}
+                </span>
+              </td>
+
+            </tr>
+          `;
+        }
+      )
+      .join("");
+
+  tableContent.innerHTML =
+    `
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Claimant</th>
+              <th>Business ID</th>
+              <th>Email</th>
+              <th>Evidence</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${rows}
+          </tbody>
+
+        </table>
+
+      </div>
+    `;
+}
+
+
+/* ============================================================
+   REVIEWS
+============================================================ */
+
+function renderReviews(
+  reviews
+) {
+
+  const rows =
+    reviews
+      .map(
+        review => {
+
+          const status =
+            review.status ||
+            (
+              Number(
+                review.approved
+              ) === 1
+                ? "approved"
+                : "pending"
+            );
+
+          return `
+            <tr>
+
+              <td>
+                <div class="business-name">
+                  ${escapeHtml(
+                    review.reviewer_name ||
+                    review.name ||
+                    "Anonymous"
+                  )}
+                </div>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  review.business_id ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                ${renderStars(
+                  review.rating
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  review.comment ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                <span class="badge ${badgeClass(
+                  status
+                )}">
+                  ${escapeHtml(
+                    status
+                  )}
+                </span>
+              </td>
+
+              <td>
+                <div class="actions">
+
+                  ${
+                    status === "pending"
+                      ? `
+                        <button
+                          class="action-btn approve"
+                          onclick="moderateReview(
+                            '${escapeJs(
+                              review.id
+                            )}',
+                            'approve'
+                          )"
+                        >
+                          Approve
+                        </button>
+
+                        <button
+                          class="action-btn danger"
+                          onclick="moderateReview(
+                            '${escapeJs(
+                              review.id
+                            )}',
+                            'reject'
+                          )"
+                        >
+                          Reject
+                        </button>
+                      `
+                      : "—"
+                  }
+
+                </div>
+              </td>
+
+            </tr>
+          `;
+        }
+      )
+      .join("");
+
+  tableContent.innerHTML =
+    `
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Reviewer</th>
+              <th>Business</th>
+              <th>Rating</th>
+              <th>Comment</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${rows}
+          </tbody>
+
+        </table>
+
+      </div>
+    `;
+}
+
+
+/* ============================================================
+   REVIEW MODERATION
+============================================================ */
+
+async function moderateReview(
+  id,
+  action
+) {
+
+  if (!id) {
+
+    showToast(
+      "Review ID is missing.",
+      "error"
+    );
+
+    return;
+  }
+
+  try {
+
+    const data =
+      await apiRequest(
+        `/admin/reviews/${encodeURIComponent(
+          id
+        )}/${action}`,
+        {
+          method: "POST"
+        }
+      );
+
+    if (
+      !data ||
+      data.status !== "ok"
+    ) {
+
+      throw new Error(
+        data?.message ||
+        `Unable to ${action} review.`
+      );
+    }
+
+    showToast(
+      data.message ||
+      `Review ${action}d successfully.`,
+      "success"
+    );
+
+    await Promise.all([
+      loadStats(),
+      loadResource("reviews")
+    ]);
+
+  } catch (error) {
+
+    showToast(
+      error.message ||
+      "Review moderation failed.",
+      "error"
+    );
+  }
+}
+
+
+/* ============================================================
+   REPORTS
+============================================================ */
+
+function renderReports(
+  reports
+) {
+
+  const rows =
+    reports
+      .map(
+        report => {
+
+          const status =
+            report.status ||
+            "pending";
+
+          return `
+            <tr>
+
+              <td>
+                <div class="business-name">
+                  ${escapeHtml(
+                    report.reporter_name ||
+                    "Unknown"
+                  )}
+                </div>
+
+                <div class="muted">
+                  ${escapeHtml(
+                    report.reporter_email ||
+                    ""
+                  )}
+                </div>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  report.business_id ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  report.reason ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  report.details ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                <span class="badge ${badgeClass(
+                  status
+                )}">
+                  ${escapeHtml(
+                    status
+                  )}
+                </span>
+              </td>
+
+              <td>
+
+                ${
+                  status === "pending"
+                    ? `
+                      <div class="actions">
+
+                        <button
+                          class="action-btn approve"
+                          onclick="moderateReport(
+                            '${escapeJs(
+                              report.id
+                            )}',
+                            'resolve'
+                          )"
+                        >
+                          Resolve
+                        </button>
+
+                        <button
+                          class="action-btn danger"
+                          onclick="moderateReport(
+                            '${escapeJs(
+                              report.id
+                            )}',
+                            'reject'
+                          )"
+                        >
+                          Reject
+                        </button>
+
+                      </div>
+                    `
+                    : "—"
+                }
+
+              </td>
+
+            </tr>
+          `;
+        }
+      )
+      .join("");
+
+  tableContent.innerHTML =
+    `
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Reporter</th>
+              <th>Business</th>
+              <th>Reason</th>
+              <th>Details</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${rows}
+          </tbody>
+
+        </table>
+
+      </div>
+    `;
+}
+
+
+/* ============================================================
+   REPORT MODERATION
+============================================================ */
+
+async function moderateReport(
+  id,
+  action
+) {
+
+  if (!id) {
+
+    showToast(
+      "Report ID is missing.",
+      "error"
+    );
+
+    return;
+  }
+
+  try {
+
+    const data =
+      await apiRequest(
+        `/admin/reports/${encodeURIComponent(
+          id
+        )}/${action}`,
+        {
+          method: "POST"
+        }
+      );
+
+    if (
+      !data ||
+      data.status !== "ok"
+    ) {
+
+      throw new Error(
+        data?.message ||
+        `Unable to ${action} report.`
+      );
+    }
+
+    showToast(
+      data.message ||
+      `Report ${action}d successfully.`,
+      "success"
+    );
+
+    await loadResource(
+      "reports"
+    );
+
+  } catch (error) {
+
+    showToast(
+      error.message ||
+      "Report moderation failed.",
+      "error"
+    );
+  }
+}
+
+
+/* ============================================================
+   DISCOVERIES
+============================================================ */
+
+function renderDiscoveries(
+  discoveries
+) {
+
+  const rows =
+    discoveries
+      .map(
+        discovery => {
+
+          const status =
+            discovery.status ||
+            "pending";
+
+          return `
+            <tr>
+
+              <td>
+                <div class="business-name">
+                  ${escapeHtml(
+                    discovery.business_name ||
+                    "Unnamed discovery"
+                  )}
+                </div>
+
+                <div class="muted">
+                  ID:
+                  ${escapeHtml(
+                    discovery.id ||
+                    "—"
+                  )}
+                </div>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  discovery.source ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  discovery.category ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  discovery.city ||
+                  "—"
+                )},
+                ${escapeHtml(
+                  discovery.state ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                <span class="badge ${badgeClass(
+                  status
+                )}">
+                  ${escapeHtml(
+                    status
+                  )}
+                </span>
+              </td>
+
+              <td>
+                ${
+                  discovery.source_url
+                    ? `
+                      <a
+                        href="${safeUrl(
+                          discovery.source_url
+                        )}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="
+                          color:#d4af37;
+                          text-decoration:none;
+                        "
+                      >
+                        Source
+                      </a>
+                    `
+                    : "—"
+                }
+              </td>
+
+            </tr>
+          `;
+        }
+      )
+      .join("");
+
+  tableContent.innerHTML =
+    `
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Business</th>
+              <th>Source</th>
+              <th>Category</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Source Link</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${rows}
+          </tbody>
+
+        </table>
+
+      </div>
+    `;
+}
+
+
+/* ============================================================
+   GENERIC FALLBACK
+============================================================ */
+
+function renderGeneric(
+  items
+) {
+
+  if (!items.length) {
+
+    tableContent.innerHTML =
+      `
+        <div class="empty">
+          No records found.
+        </div>
+      `;
+
+    return;
+  }
+
+  const keys =
+    Object.keys(
+      items[0]
+    ).slice(0, 8);
+
+  const header =
+    keys
+      .map(
+        key =>
+          `<th>${escapeHtml(
+            key
+          )}</th>`
+      )
+      .join("");
+
+  const rows =
+    items
+      .map(
+        item => {
+
+          return `
+            <tr>
+
+              ${
+                keys
+                  .map(
+                    key =>
+                      `<td>${escapeHtml(
+                        item[key]
+                      )}</td>`
+                  )
+                  .join("")
+              }
+
+            </tr>
+          `;
+        }
+      )
+      .join("");
+
+  tableContent.innerHTML =
+    `
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+            <tr>
+              ${header}
+            </tr>
+          </thead>
+
+          <tbody>
+            ${rows}
+          </tbody>
+
+        </table>
+
+      </div>
+    `;
+}
+
+
+/* ============================================================
+   BADGE CLASS
+============================================================ */
+
+function badgeClass(
+  status
+) {
+
+  const value =
+    String(
+      status ||
+      ""
+    )
+      .toLowerCase()
+      .replace(
+        /[^a-z0-9_-]/g,
+        ""
+      );
+
+  if (
+    value === "active" ||
+    value === "approved" ||
+    value === "verified" ||
+    value === "resolved"
+  ) {
+
+    return "active";
+  }
+
+  if (
+    value === "pending"
+  ) {
+
+    return "pending";
+  }
+
+  if (
+    value === "rejected" ||
+    value === "suspended"
+  ) {
+
+    return value;
+  }
+
+  return "unverified";
+}
+
+
+/* ============================================================
+   STAR DISPLAY
+============================================================ */
+
+function renderStars(
+  rating
+) {
+
+  const number =
+    Number(
+      rating
+    );
+
+  if (
+    !Number.isFinite(number)
+  ) {
+
+    return "—";
+  }
+
+  const rounded =
+    Math.max(
+      0,
+      Math.min(
+        5,
+        Math.round(number)
+      )
+    );
+
+  return (
+    "★".repeat(
+      rounded
+    ) +
+    "☆".repeat(
+      5 - rounded
+    )
   );
+}
 
 
-/* ==========================================================
-   AUTO LOGIN
-   ========================================================== */
+/* ============================================================
+   HTML ESCAPING
+============================================================ */
+
+function escapeHtml(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return "";
+  }
+
+  return String(
+    value
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+}
+
+
+/* ============================================================
+   JAVASCRIPT STRING ESCAPING
+============================================================ */
+
+function escapeJs(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return "";
+  }
+
+  return String(
+    value
+  )
+    .replace(
+      /\\/g,
+      "\\\\"
+    )
+    .replace(
+      /'/g,
+      "\\'"
+    )
+    .replace(
+      /"/g,
+      '\\"'
+    )
+    .replace(
+      /\n/g,
+      "\\n"
+    )
+    .replace(
+      /\r/g,
+      "\\r"
+    );
+}
+
+
+/* ============================================================
+   SAFE URL
+============================================================ */
+
+function safeUrl(
+  value
+) {
+
+  try {
+
+    const url =
+      new URL(
+        String(value)
+      );
+
+    if (
+      url.protocol === "http:" ||
+      url.protocol === "https:"
+    ) {
+
+      return url.href;
+    }
+
+  } catch (error) {}
+
+  return "#";
+}
+
+
+/* ============================================================
+   INITIAL SESSION CHECK
+============================================================ */
 
 if (adminKey) {
 
-  showAdmin();
+  /*
+   * We don't automatically assume that a stored
+   * key is valid. Verify it against the API.
+   */
 
-  loadResource(
-    currentResource
-  );
+  (async function() {
+
+    try {
+
+      const data =
+        await apiRequest(
+          "/admin/businesses?limit=1"
+        );
+
+      if (
+        data &&
+        data.status === "ok"
+      ) {
+
+        showAdmin();
+
+      } else {
+
+        sessionStorage.removeItem(
+          "nearafrica_admin_key"
+        );
+
+        adminKey = "";
+      }
+
+    } catch (error) {
+
+      sessionStorage.removeItem(
+        "nearafrica_admin_key"
+      );
+
+      adminKey = "";
+    }
+
+  })();
 
 }
 
+
+/* ============================================================
+   END
+============================================================ */
 </script>
 
 </body>
