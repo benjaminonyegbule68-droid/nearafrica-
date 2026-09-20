@@ -41,7 +41,11 @@
       justify-content: center;
       padding: 20px;
       background:
-        radial-gradient(circle at top, rgba(212, 175, 55, 0.12), transparent 35%),
+        radial-gradient(
+          circle at top,
+          rgba(212, 175, 55, 0.12),
+          transparent 35%
+        ),
         #0b0b0b;
     }
 
@@ -60,7 +64,11 @@
       height: 62px;
       margin: 0 auto 18px;
       border-radius: 16px;
-      background: linear-gradient(135deg, #d4af37, #9d7d19);
+      background: linear-gradient(
+        135deg,
+        #d4af37,
+        #9d7d19
+      );
       display: flex;
       align-items: center;
       justify-content: center;
@@ -122,6 +130,11 @@
       background: #e4c45c;
     }
 
+    .login-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
     .login-error {
       margin-top: 15px;
       padding: 11px;
@@ -166,7 +179,11 @@
       width: 40px;
       height: 40px;
       border-radius: 10px;
-      background: linear-gradient(135deg, #d4af37, #9d7d19);
+      background: linear-gradient(
+        135deg,
+        #d4af37,
+        #9d7d19
+      );
       color: #080808;
       display: flex;
       align-items: center;
@@ -247,7 +264,7 @@
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 1.2px;
-      margin: 10px 10px 10px;
+      margin: 10px 10px;
     }
 
     .nav-btn {
@@ -281,7 +298,7 @@
     }
 
     /* =========================
-       DASHBOARD HEADER
+       HEADER
     ========================= */
 
     .page-header {
@@ -315,13 +332,21 @@
       color: #d4af37;
     }
 
+    .refresh-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
     /* =========================
        STATS
     ========================= */
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(
+        4,
+        minmax(0, 1fr)
+      );
       gap: 15px;
       margin-bottom: 28px;
     }
@@ -461,7 +486,8 @@
 
     .badge.active,
     .badge.approved,
-    .badge.verified {
+    .badge.verified,
+    .badge.resolved {
       background: rgba(57, 217, 138, 0.11);
       color: #55dc98;
       border: 1px solid rgba(57, 217, 138, 0.2);
@@ -539,7 +565,10 @@
       right: 20px;
       bottom: 20px;
       z-index: 200;
-      width: min(380px, calc(100vw - 40px));
+      width: min(
+        380px,
+        calc(100vw - 40px)
+      );
     }
 
     .toast {
@@ -568,7 +597,8 @@
 
     @media (max-width: 900px) {
       .stats-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
       }
 
       .sidebar {
@@ -654,10 +684,13 @@
 <body>
 
   <!-- =========================
-       LOGIN SCREEN
+       LOGIN
   ========================== -->
 
-  <section class="login-screen" id="loginScreen">
+  <section
+    class="login-screen"
+    id="loginScreen"
+  >
 
     <div class="login-card">
 
@@ -674,6 +707,7 @@
       <form id="loginForm">
 
         <div class="input-group">
+
           <label for="adminKey">
             Admin API Key
           </label>
@@ -685,6 +719,7 @@
             autocomplete="current-password"
             required
           >
+
         </div>
 
         <button
@@ -708,12 +743,13 @@
 
 
   <!-- =========================
-       ADMIN APPLICATION
+       ADMIN APP
   ========================== -->
 
-  <section class="admin-app" id="adminApp">
-
-    <!-- TOP BAR -->
+  <section
+    class="admin-app"
+    id="adminApp"
+  >
 
     <header class="topbar">
 
@@ -757,11 +793,7 @@
     </header>
 
 
-    <!-- MAIN LAYOUT -->
-
     <div class="layout">
-
-      <!-- SIDEBAR -->
 
       <aside class="sidebar">
 
@@ -814,13 +846,12 @@
       </aside>
 
 
-      <!-- MAIN CONTENT -->
-
       <main class="main">
 
         <div class="page-header">
 
           <div>
+
             <h1 id="pageTitle">
               Businesses
             </h1>
@@ -828,6 +859,7 @@
             <p id="pageDescription">
               Manage businesses listed on NearAfrica.
             </p>
+
           </div>
 
           <button
@@ -840,34 +872,38 @@
         </div>
 
 
-        <!-- STATS -->
-
         <div class="stats-grid">
 
           <div class="stat-card">
             <span>Businesses</span>
-            <strong id="statBusinesses">—</strong>
+            <strong id="statBusinesses">
+              —
+            </strong>
           </div>
 
           <div class="stat-card">
             <span>Pending Submissions</span>
-            <strong id="statSubmissions">—</strong>
+            <strong id="statSubmissions">
+              —
+            </strong>
           </div>
 
           <div class="stat-card">
             <span>Pending Claims</span>
-            <strong id="statClaims">—</strong>
+            <strong id="statClaims">
+              —
+            </strong>
           </div>
 
           <div class="stat-card">
             <span>Pending Reviews</span>
-            <strong id="statReviews">—</strong>
+            <strong id="statReviews">
+              —
+            </strong>
           </div>
 
         </div>
 
-
-        <!-- CONTENT -->
 
         <section class="content-card">
 
@@ -903,8 +939,6 @@
   </section>
 
 
-  <!-- TOASTS -->
-
   <div
     class="toast-container"
     id="toastContainer"
@@ -912,13 +946,14 @@
 
 
 <script>
+
 /* ============================================================
    NEARAFRICA ADMIN
-   CURRENT V17 API
+   CURRENT API
 ============================================================ */
 
 const API_BASE =
-  "https://nearafrica-api-v17.nearafrica-onyxtech.workers.dev";
+  "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
 
 /* ============================================================
@@ -977,9 +1012,12 @@ const RESOURCE_CONFIG = {
 ============================================================ */
 
 let adminKey =
-  sessionStorage.getItem("nearafrica_admin_key") || "";
+  sessionStorage.getItem(
+    "nearafrica_admin_key"
+  ) || "";
 
-let currentResource = "businesses";
+let currentResource =
+  "businesses";
 
 
 /* ============================================================
@@ -987,49 +1025,79 @@ let currentResource = "businesses";
 ============================================================ */
 
 const loginScreen =
-  document.getElementById("loginScreen");
+  document.getElementById(
+    "loginScreen"
+  );
 
 const adminApp =
-  document.getElementById("adminApp");
+  document.getElementById(
+    "adminApp"
+  );
 
 const loginForm =
-  document.getElementById("loginForm");
+  document.getElementById(
+    "loginForm"
+  );
 
 const loginBtn =
-  document.getElementById("loginBtn");
+  document.getElementById(
+    "loginBtn"
+  );
 
 const loginError =
-  document.getElementById("loginError");
+  document.getElementById(
+    "loginError"
+  );
 
 const adminKeyInput =
-  document.getElementById("adminKey");
+  document.getElementById(
+    "adminKey"
+  );
 
 const logoutBtn =
-  document.getElementById("logoutBtn");
+  document.getElementById(
+    "logoutBtn"
+  );
 
 const refreshBtn =
-  document.getElementById("refreshBtn");
+  document.getElementById(
+    "refreshBtn"
+  );
 
 const tableContent =
-  document.getElementById("tableContent");
+  document.getElementById(
+    "tableContent"
+  );
 
 const recordCount =
-  document.getElementById("recordCount");
+  document.getElementById(
+    "recordCount"
+  );
 
 const tableTitle =
-  document.getElementById("tableTitle");
+  document.getElementById(
+    "tableTitle"
+  );
 
 const pageTitle =
-  document.getElementById("pageTitle");
+  document.getElementById(
+    "pageTitle"
+  );
 
 const pageDescription =
-  document.getElementById("pageDescription");
+  document.getElementById(
+    "pageDescription"
+  );
 
 const apiStatusDot =
-  document.getElementById("apiStatusDot");
+  document.getElementById(
+    "apiStatusDot"
+  );
 
 const apiStatusText =
-  document.getElementById("apiStatusText");
+  document.getElementById(
+    "apiStatusText"
+  );
 
 
 /* ============================================================
@@ -1042,12 +1110,22 @@ async function apiRequest(
 ) {
 
   const headers = {
-    "Content-Type": "application/json",
+    "Content-Type":
+      "application/json",
     ...(options.headers || {})
   };
 
+  /*
+   * This is the authentication header
+   * expected by the current NearAfrica
+   * Worker.
+   */
+
   if (adminKey) {
-    headers["X-Admin-Key"] = adminKey;
+
+    headers["X-Admin-Key"] =
+      adminKey;
+
   }
 
   const response =
@@ -1062,9 +1140,14 @@ async function apiRequest(
   let data = null;
 
   try {
-    data = await response.json();
+
+    data =
+      await response.json();
+
   } catch (error) {
+
     data = null;
+
   }
 
   if (!response.ok) {
@@ -1075,6 +1158,7 @@ async function apiRequest(
       `Request failed (${response.status})`;
 
     throw new Error(message);
+
   }
 
   return data;
@@ -1091,10 +1175,14 @@ function showToast(
 ) {
 
   const container =
-    document.getElementById("toastContainer");
+    document.getElementById(
+      "toastContainer"
+    );
 
   const toast =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   toast.className =
     `toast ${type}`;
@@ -1102,13 +1190,14 @@ function showToast(
   toast.textContent =
     message;
 
-  container.appendChild(toast);
+  container.appendChild(
+    toast
+  );
 
-  setTimeout(() => {
-
-    toast.remove();
-
-  }, 4500);
+  setTimeout(
+    () => toast.remove(),
+    4500
+  );
 }
 
 
@@ -1116,7 +1205,9 @@ function showToast(
    LOGIN ERROR
 ============================================================ */
 
-function showLoginError(message) {
+function showLoginError(
+  message
+) {
 
   loginError.textContent =
     message;
@@ -1160,22 +1251,13 @@ loginForm.addEventListener(
       return;
     }
 
-    loginBtn.disabled = true;
+    loginBtn.disabled =
+      true;
+
     loginBtn.textContent =
       "Checking...";
 
     try {
-
-      /*
-       * The v17 API returns:
-       *
-       * {
-       *   status: "ok",
-       *   businesses: [...]
-       * }
-       *
-       * It does NOT return success:true.
-       */
 
       const response =
         await fetch(
@@ -1199,6 +1281,7 @@ loginForm.addEventListener(
       } catch (error) {
 
         data = null;
+
       }
 
       if (
@@ -1212,6 +1295,7 @@ loginForm.addEventListener(
           data?.error ||
           `Authentication failed (${response.status})`
         );
+
       }
 
       adminKey =
@@ -1233,9 +1317,12 @@ loginForm.addEventListener(
 
     } finally {
 
-      loginBtn.disabled = false;
+      loginBtn.disabled =
+        false;
+
       loginBtn.textContent =
         "Sign In";
+
     }
 
   }
@@ -1306,7 +1393,10 @@ async function checkApiStatus() {
         "/health"
       );
 
-    if (data.status === "ok") {
+    if (
+      data &&
+      data.status === "ok"
+    ) {
 
       apiStatusDot.classList.add(
         "online"
@@ -1320,6 +1410,7 @@ async function checkApiStatus() {
       throw new Error(
         "API did not return OK"
       );
+
     }
 
   } catch (error) {
@@ -1330,6 +1421,7 @@ async function checkApiStatus() {
 
     apiStatusText.textContent =
       "API Error";
+
   }
 }
 
@@ -1356,15 +1448,8 @@ async function loadStats() {
         data?.message ||
         "Unable to load statistics."
       );
-    }
 
-    /*
-     * v17 returns a counts object.
-     *
-     * We deliberately tolerate different
-     * possible field names so the dashboard
-     * doesn't break if a count is missing.
-     */
+    }
 
     const counts =
       data.counts ||
@@ -1411,22 +1496,30 @@ async function loadStats() {
     document.getElementById(
       "statBusinesses"
     ).textContent =
-      formatNumber(businesses);
+      formatNumber(
+        businesses
+      );
 
     document.getElementById(
       "statSubmissions"
     ).textContent =
-      formatNumber(submissions);
+      formatNumber(
+        submissions
+      );
 
     document.getElementById(
       "statClaims"
     ).textContent =
-      formatNumber(claims);
+      formatNumber(
+        claims
+      );
 
     document.getElementById(
       "statReviews"
     ).textContent =
-      formatNumber(reviews);
+      formatNumber(
+        reviews
+      );
 
   } catch (error) {
 
@@ -1437,19 +1530,24 @@ async function loadStats() {
 
     document.getElementById(
       "statBusinesses"
-    ).textContent = "—";
+    ).textContent =
+      "—";
 
     document.getElementById(
       "statSubmissions"
-    ).textContent = "—";
+    ).textContent =
+      "—";
 
     document.getElementById(
       "statClaims"
-    ).textContent = "—";
+    ).textContent =
+      "—";
 
     document.getElementById(
       "statReviews"
-    ).textContent = "—";
+    ).textContent =
+      "—";
+
   }
 }
 
@@ -1474,15 +1572,22 @@ function getCount(
     ) {
 
       const value =
-        Number(object[key]);
+        Number(
+          object[key]
+        );
 
       if (
-        Number.isFinite(value)
+        Number.isFinite(
+          value
+        )
       ) {
 
         return value;
+
       }
+
     }
+
   }
 
   return 0;
@@ -1493,16 +1598,21 @@ function getCount(
    NUMBER FORMAT
 ============================================================ */
 
-function formatNumber(value) {
+function formatNumber(
+  value
+) {
 
   const number =
     Number(value);
 
   if (
-    !Number.isFinite(number)
+    !Number.isFinite(
+      number
+    )
   ) {
 
     return "0";
+
   }
 
   return number.toLocaleString();
@@ -1514,7 +1624,9 @@ function formatNumber(value) {
 ============================================================ */
 
 document
-  .querySelectorAll(".nav-btn")
+  .querySelectorAll(
+    ".nav-btn"
+  )
   .forEach(
     button => {
 
@@ -1565,20 +1677,27 @@ refreshBtn.addEventListener(
     refreshBtn.textContent =
       "Refreshing...";
 
-    await Promise.all([
-      loadStats(),
-      checkApiStatus()
-    ]);
+    try {
 
-    await loadResource(
-      currentResource
-    );
+      await Promise.all([
+        loadStats(),
+        checkApiStatus()
+      ]);
 
-    refreshBtn.disabled =
-      false;
+      await loadResource(
+        currentResource
+      );
 
-    refreshBtn.textContent =
-      "↻ Refresh";
+    } finally {
+
+      refreshBtn.disabled =
+        false;
+
+      refreshBtn.textContent =
+        "↻ Refresh";
+
+    }
+
   }
 );
 
@@ -1592,11 +1711,14 @@ async function loadResource(
 ) {
 
   const config =
-    RESOURCE_CONFIG[resource];
+    RESOURCE_CONFIG[
+      resource
+    ];
 
   if (!config) {
 
     return;
+
   }
 
   pageTitle.textContent =
@@ -1622,23 +1744,6 @@ async function loadResource(
 
   try {
 
-    /*
-     * Important:
-     *
-     * The v17 API does NOT return:
-     *
-     * data.items
-     *
-     * Instead it returns:
-     *
-     * data.businesses
-     * data.submissions
-     * data.claims
-     * data.reviews
-     * data.reports
-     * data.discoveries
-     */
-
     const data =
       await apiRequest(
         `/admin/${resource}?limit=100`
@@ -1653,6 +1758,7 @@ async function loadResource(
         data?.message ||
         "The API returned an unsuccessful response."
       );
+
     }
 
     const items =
@@ -1692,7 +1798,9 @@ async function loadResource(
               config.title
             )}
           </strong>
+
           <br><br>
+
           ${escapeHtml(
             error.message ||
             "Unknown error"
@@ -1727,6 +1835,7 @@ function renderResource(
       `;
 
     return;
+
   }
 
   switch (resource) {
@@ -1756,10 +1865,8 @@ function renderResource(
       break;
 
     default:
+      renderGeneric(items);
 
-      renderGeneric(
-        items
-      );
   }
 }
 
@@ -1841,6 +1948,7 @@ function renderBusinesses(
               </td>
 
               <td>
+
                 ${
                   verified
                     ? `
@@ -1868,16 +1976,19 @@ function renderBusinesses(
                       </span>
                     `
                 }
+
               </td>
 
               <td>
                 ${formatNumber(
-                  business.views || 0
+                  business.views ||
+                  0
                 )}
               </td>
 
             </tr>
           `;
+
         }
       )
       .join("");
@@ -2020,6 +2131,7 @@ function renderSubmissions(
 
             </tr>
           `;
+
         }
       )
       .join("");
@@ -2092,17 +2204,6 @@ async function approveSubmission(
         }
       );
 
-    /*
-     * v17 returns:
-     *
-     * {
-     *   status: "ok",
-     *   message: "...",
-     *   business_id: "...",
-     *   slug: "..."
-     * }
-     */
-
     if (
       !data ||
       data.status !== "ok"
@@ -2112,6 +2213,7 @@ async function approveSubmission(
         data?.message ||
         "Submission approval failed."
       );
+
     }
 
     showToast(
@@ -2122,7 +2224,9 @@ async function approveSubmission(
 
     await Promise.all([
       loadStats(),
-      loadResource("submissions")
+      loadResource(
+        "submissions"
+      )
     ]);
 
   } catch (error) {
@@ -2137,6 +2241,7 @@ async function approveSubmission(
       "Unable to approve submission.",
       "error"
     );
+
   }
 }
 
@@ -2162,6 +2267,7 @@ function renderClaims(
             <tr>
 
               <td>
+
                 <div class="business-name">
                   ${escapeHtml(
                     claim.claimant_name ||
@@ -2176,6 +2282,7 @@ function renderClaims(
                     "—"
                   )}
                 </div>
+
               </td>
 
               <td>
@@ -2200,6 +2307,7 @@ function renderClaims(
               </td>
 
               <td>
+
                 <span class="badge ${badgeClass(
                   status
                 )}">
@@ -2207,10 +2315,24 @@ function renderClaims(
                     status
                   )}
                 </span>
+
+              </td>
+
+              <td>
+
+                <div class="muted">
+                  ${
+                    claim.evidence_details ||
+                    claim.message ||
+                    "No additional evidence provided."
+                  }
+                </div>
+
               </td>
 
             </tr>
           `;
+
         }
       )
       .join("");
@@ -2228,6 +2350,7 @@ function renderClaims(
               <th>Email</th>
               <th>Evidence</th>
               <th>Status</th>
+              <th>Details</th>
             </tr>
           </thead>
 
@@ -2299,6 +2422,7 @@ function renderReviews(
               </td>
 
               <td>
+
                 <span class="badge ${badgeClass(
                   status
                 )}">
@@ -2306,9 +2430,11 @@ function renderReviews(
                     status
                   )}
                 </span>
+
               </td>
 
               <td>
+
                 <div class="actions">
 
                   ${
@@ -2342,10 +2468,12 @@ function renderReviews(
                   }
 
                 </div>
+
               </td>
 
             </tr>
           `;
+
         }
       )
       .join("");
@@ -2357,6 +2485,7 @@ function renderReviews(
         <table>
 
           <thead>
+
             <tr>
               <th>Reviewer</th>
               <th>Business</th>
@@ -2365,6 +2494,7 @@ function renderReviews(
               <th>Status</th>
               <th>Action</th>
             </tr>
+
           </thead>
 
           <tbody>
@@ -2418,6 +2548,7 @@ async function moderateReview(
         data?.message ||
         `Unable to ${action} review.`
       );
+
     }
 
     showToast(
@@ -2428,7 +2559,9 @@ async function moderateReview(
 
     await Promise.all([
       loadStats(),
-      loadResource("reviews")
+      loadResource(
+        "reviews"
+      )
     ]);
 
   } catch (error) {
@@ -2438,6 +2571,7 @@ async function moderateReview(
       "Review moderation failed.",
       "error"
     );
+
   }
 }
 
@@ -2463,6 +2597,7 @@ function renderReports(
             <tr>
 
               <td>
+
                 <div class="business-name">
                   ${escapeHtml(
                     report.reporter_name ||
@@ -2476,6 +2611,7 @@ function renderReports(
                     ""
                   )}
                 </div>
+
               </td>
 
               <td>
@@ -2500,6 +2636,7 @@ function renderReports(
               </td>
 
               <td>
+
                 <span class="badge ${badgeClass(
                   status
                 )}">
@@ -2507,6 +2644,7 @@ function renderReports(
                     status
                   )}
                 </span>
+
               </td>
 
               <td>
@@ -2549,6 +2687,7 @@ function renderReports(
 
             </tr>
           `;
+
         }
       )
       .join("");
@@ -2560,6 +2699,7 @@ function renderReports(
         <table>
 
           <thead>
+
             <tr>
               <th>Reporter</th>
               <th>Business</th>
@@ -2568,6 +2708,7 @@ function renderReports(
               <th>Status</th>
               <th>Action</th>
             </tr>
+
           </thead>
 
           <tbody>
@@ -2621,6 +2762,7 @@ async function moderateReport(
         data?.message ||
         `Unable to ${action} report.`
       );
+
     }
 
     showToast(
@@ -2640,6 +2782,7 @@ async function moderateReport(
       "Report moderation failed.",
       "error"
     );
+
   }
 }
 
@@ -2665,6 +2808,7 @@ function renderDiscoveries(
             <tr>
 
               <td>
+
                 <div class="business-name">
                   ${escapeHtml(
                     discovery.business_name ||
@@ -2679,6 +2823,7 @@ function renderDiscoveries(
                     "—"
                   )}
                 </div>
+
               </td>
 
               <td>
@@ -2707,6 +2852,7 @@ function renderDiscoveries(
               </td>
 
               <td>
+
                 <span class="badge ${badgeClass(
                   status
                 )}">
@@ -2714,9 +2860,11 @@ function renderDiscoveries(
                     status
                   )}
                 </span>
+
               </td>
 
               <td>
+
                 ${
                   discovery.source_url
                     ? `
@@ -2736,10 +2884,12 @@ function renderDiscoveries(
                     `
                     : "—"
                 }
+
               </td>
 
             </tr>
           `;
+
         }
       )
       .join("");
@@ -2751,6 +2901,7 @@ function renderDiscoveries(
         <table>
 
           <thead>
+
             <tr>
               <th>Business</th>
               <th>Source</th>
@@ -2759,6 +2910,7 @@ function renderDiscoveries(
               <th>Status</th>
               <th>Source Link</th>
             </tr>
+
           </thead>
 
           <tbody>
@@ -2795,7 +2947,10 @@ function renderGeneric(
   const keys =
     Object.keys(
       items[0]
-    ).slice(0, 8);
+    ).slice(
+      0,
+      8
+    );
 
   const header =
     keys
@@ -2828,6 +2983,7 @@ function renderGeneric(
 
             </tr>
           `;
+
         }
       )
       .join("");
@@ -2839,9 +2995,11 @@ function renderGeneric(
         <table>
 
           <thead>
+
             <tr>
               ${header}
             </tr>
+
           </thead>
 
           <tbody>
@@ -2881,7 +3039,10 @@ function badgeClass(
     value === "resolved"
   ) {
 
-    return "active";
+    return value === "resolved"
+      ? "resolved"
+      : "active";
+
   }
 
   if (
@@ -2889,6 +3050,7 @@ function badgeClass(
   ) {
 
     return "pending";
+
   }
 
   if (
@@ -2897,6 +3059,7 @@ function badgeClass(
   ) {
 
     return value;
+
   }
 
   return "unverified";
@@ -2917,10 +3080,13 @@ function renderStars(
     );
 
   if (
-    !Number.isFinite(number)
+    !Number.isFinite(
+      number
+    )
   ) {
 
     return "—";
+
   }
 
   const rounded =
@@ -2928,7 +3094,9 @@ function renderStars(
       0,
       Math.min(
         5,
-        Math.round(number)
+        Math.round(
+          number
+        )
       )
     );
 
@@ -3048,6 +3216,7 @@ function safeUrl(
     ) {
 
       return url.href;
+
     }
 
   } catch (error) {}
@@ -3061,11 +3230,6 @@ function safeUrl(
 ============================================================ */
 
 if (adminKey) {
-
-  /*
-   * We don't automatically assume that a stored
-   * key is valid. Verify it against the API.
-   */
 
   (async function() {
 
@@ -3090,6 +3254,7 @@ if (adminKey) {
         );
 
         adminKey = "";
+
       }
 
     } catch (error) {
@@ -3099,16 +3264,13 @@ if (adminKey) {
       );
 
       adminKey = "";
+
     }
 
   })();
 
 }
 
-
-/* ============================================================
-   END
-============================================================ */
 </script>
 
 </body>
