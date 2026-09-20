@@ -46,13 +46,20 @@ const App = {
       throw new Error(`API request failed: ${response.status}`);
     }
 
-    const data = await response.json();
+   const data = await response.json();
 
-    if (!data.success) {
-      throw new Error(data.message || "Unable to load businesses.");
-    }
+if (
+  data.status !== "ok" &&
+  data.success !== true
+) {
+  throw new Error(
+    data.message || "Unable to load businesses."
+  );
+}
 
-    return Array.isArray(data.businesses) ? data.businesses : [];
+return Array.isArray(data.businesses)
+  ? data.businesses
+  : [];
   },
 
   // ---------------------------------------------------------
