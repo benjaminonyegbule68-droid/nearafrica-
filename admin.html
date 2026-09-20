@@ -423,6 +423,11 @@
                 rgba(212,175,55,0.08);
         }
 
+        .refresh-btn:disabled {
+            opacity: 0.55;
+            cursor: wait;
+        }
+
         /* =====================================================
            CONTENT
         ===================================================== */
@@ -591,6 +596,100 @@
 
         .action-btn.primary:hover {
             background: #e4c45a;
+        }
+
+        .action-btn.resolve {
+            color: #4ade80;
+            border-color: rgba(74,222,128,0.3);
+            background: rgba(74,222,128,0.05);
+        }
+
+        .action-btn.resolve:hover {
+            color: #090909;
+            background: #4ade80;
+            border-color: #4ade80;
+        }
+
+        .action-btn.dismiss {
+            color: #f87171;
+            border-color: rgba(248,113,113,0.3);
+            background: rgba(248,113,113,0.05);
+        }
+
+        .action-btn.dismiss:hover {
+            color: #090909;
+            background: #f87171;
+            border-color: #f87171;
+        }
+
+        .action-btn:disabled {
+            opacity: 0.55;
+            cursor: wait;
+        }
+
+        /* =====================================================
+           REPORT MODERATION
+        ===================================================== */
+
+        .report-moderation {
+            min-width: 260px;
+        }
+
+        .report-note {
+            width: 100%;
+            min-height: 72px;
+
+            padding: 9px 10px;
+
+            resize: vertical;
+
+            color: #fff;
+            background: #080808;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
+
+            border-radius: 7px;
+
+            outline: none;
+
+            line-height: 1.45;
+        }
+
+        .report-note:focus {
+            border-color: #d4af37;
+        }
+
+        .report-note::placeholder {
+            color: #666;
+        }
+
+        .report-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+
+            margin-top: 8px;
+        }
+
+        .report-action-message {
+            margin-top: 8px;
+
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .report-action-message.success {
+            color: #4ade80;
+        }
+
+        .report-action-message.error {
+            color: #f87171;
+        }
+
+        .report-action-message.info {
+            color: #aaa;
         }
 
         /* =====================================================
@@ -1225,11 +1324,6 @@
                     key;
 
 
-                /*
-                 * The health/admin stats request
-                 * is used to verify the key.
-                 */
-
                 await loadStats();
 
 
@@ -1408,11 +1502,6 @@
     ========================================================= */
 
     async function loadStats() {
-
-        /*
-         * Current Worker supports the admin
-         * statistics endpoint.
-         */
 
         const data =
             await apiRequest(
@@ -1717,6 +1806,177 @@
 
 
     /* =========================================================
+       MODERATE REPORT
+    ========================================================= */
+
+    async function moderateReportFromAdmin(
+        reportId,
+        action,
+        button
+    ) {
+
+        if (!reportId) {
+
+            alert(
+                "This report does not have a valid ID."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            action !== "resolve" &&
+            action !== "dismiss"
+        ) {
+
+            return;
+
+        }
+
+
+        const noteInput =
+            document.querySelector(
+                `.report-note[data-report-id="${CSS.escape(
+                    reportId
+                )}"]`
+            );
+
+
+        const note =
+            noteInput
+                ? noteInput.value.trim()
+                : "";
+
+
+        const actionName =
+            action === "resolve"
+                ? "resolve"
+                : "dismiss";
+
+
+        const confirmed =
+            confirm(
+                `Are you sure you want to ${actionName} this report?`
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        const actionButtons =
+            document.querySelectorAll(
+                `.report-action[data-report-id="${CSS.escape(
+                    reportId
+                )}"]`
+            );
+
+
+        actionButtons.forEach(
+            item => {
+
+                item.disabled =
+                    true;
+
+            }
+        );
+
+
+        const messageElement =
+            document.querySelector(
+                `.report-action-message[data-report-id="${CSS.escape(
+                    reportId
+                )}"]`
+            );
+
+
+        if (messageElement) {
+
+            messageElement.className =
+                "report-action-message info";
+
+            messageElement.textContent =
+                "Saving moderation decision...";
+
+        }
+
+
+        try {
+
+            const response =
+                await apiRequest(
+                    `/admin/reports/${encodeURIComponent(
+                        reportId
+                    )}/${action}`,
+                    {
+                        method: "POST",
+
+                        body: JSON.stringify({
+                            admin_notes:
+                                note
+                        })
+                    }
+                );
+
+
+            if (messageElement) {
+
+                messageElement.className =
+                    "report-action-message success";
+
+                messageElement.textContent =
+                    response.message ||
+                    "Report updated successfully.";
+
+            }
+
+
+            /*
+             * Refresh the reports list shortly after
+             * the successful moderation request.
+             */
+
+            await loadStats();
+
+            await loadResource(
+                "reports"
+            );
+
+
+        } catch (error) {
+
+            actionButtons.forEach(
+                item => {
+
+                    item.disabled =
+                        false;
+
+                }
+            );
+
+
+            if (messageElement) {
+
+                messageElement.className =
+                    "report-action-message error";
+
+                messageElement.textContent =
+                    error.message ||
+                    "Unable to update report.";
+
+            }
+
+        }
+
+    }
+
+
+    /* =========================================================
        REPORTS
     ========================================================= */
 
@@ -1814,6 +2074,93 @@
                                 <span class="muted">
                                     —
                                 </span>
+                            `;
+
+
+                    const isPending =
+                        status === "pending";
+
+
+                    const moderationControls =
+                        isPending
+                            ? `
+                                <div
+                                    class="report-moderation"
+                                >
+
+                                    <textarea
+                                        class="report-note"
+                                        data-report-id="${escapeAttribute(
+                                            reportId
+                                        )}"
+                                        maxlength="2000"
+                                        placeholder="Optional admin note..."
+                                    ></textarea>
+
+
+                                    <div
+                                        class="report-actions"
+                                    >
+
+                                        <button
+                                            type="button"
+                                            class="action-btn resolve report-action"
+                                            data-report-id="${escapeAttribute(
+                                                reportId
+                                            )}"
+                                            onclick="moderateReportFromAdmin(
+                                                '${escapeAttribute(
+                                                    reportId
+                                                )}',
+                                                'resolve',
+                                                this
+                                            )"
+                                        >
+                                            Resolve
+                                        </button>
+
+
+                                        <button
+                                            type="button"
+                                            class="action-btn dismiss report-action"
+                                            data-report-id="${escapeAttribute(
+                                                reportId
+                                            )}"
+                                            onclick="moderateReportFromAdmin(
+                                                '${escapeAttribute(
+                                                    reportId
+                                                )}',
+                                                'dismiss',
+                                                this
+                                            )"
+                                        >
+                                            Dismiss
+                                        </button>
+
+                                    </div>
+
+
+                                    <div
+                                        class="report-action-message"
+                                        data-report-id="${escapeAttribute(
+                                            reportId
+                                        )}"
+                                    ></div>
+
+                                </div>
+                            `
+                            : `
+                                <div
+                                    class="muted"
+                                    style="
+                                        line-height:1.5;
+                                    "
+                                >
+                                    Report already
+                                    ${escapeHtml(
+                                        status
+                                    )}.
+                                </div>
                             `;
 
 
@@ -1953,6 +2300,13 @@
 
                             </td>
 
+
+                            <td>
+
+                                ${moderationControls}
+
+                            </td>
+
                         </tr>
 
                     `;
@@ -1993,6 +2347,10 @@
 
                             <th>
                                 Admin Notes
+                            </th>
+
+                            <th>
+                                Actions
                             </th>
 
                         </tr>
