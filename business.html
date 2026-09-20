@@ -694,20 +694,17 @@ function displayBusiness(
         Number(business.claimed) === 1;
 
 
-    const ratingAverage =
-        Number(
-            result.rating_average ??
-            business.rating_average ??
-            0
-        );
+   const ratingAverage = Number(
+    result.statistics?.average_rating ??
+    business.rating_average ??
+    0
+);
 
-
-    const reviewCount =
-        Number(
-            result.review_count ??
-            business.review_count ??
-            0
-        );
+const reviewCount = Number(
+    result.statistics?.review_count ??
+    business.review_count ??
+    0
+);
 
 
     const reviews =
