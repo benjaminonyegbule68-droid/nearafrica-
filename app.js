@@ -46,7 +46,7 @@ const App = {
       throw new Error(`API request failed: ${response.status}`);
     }
 
-   const data = await response.json();
+  const data = await response.json();
 
 if (
   data.status !== "ok" &&
