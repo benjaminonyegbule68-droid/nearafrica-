@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="NearAfrica Claim Business Policy. Learn how businesses can claim listings, what verification may be required, and how fraudulent claims are handled."
+  >
+
+  <meta
+    name="robots"
+    content="index, follow"
+  >
+
+  <title>Claim Business Policy | NearAfrica</title>
+
+  <link
+    rel="icon"
+    href="favicon.ico"
+    type="image/x-icon"
+  >
+
+
+  <style>
+
+    :root {
+
+      --bg: #0b0b0b;
+      --bg-soft: #111111;
+      --card: #151515;
+
+      --gold: #d4af37;
+      --gold-light: #f0d477;
+
+      --text: #f5f5f5;
+      --text-soft: #c9c9c9;
+      --text-muted: #999999;
+
+      --border: rgba(212, 175, 55, 0.22);
+
+      --max-width: 1100px;
+
+      --radius: 14px;
+
+    }
+
+
+    * {
+
+      box-sizing: border-box;
+
+      margin: 0;
+
+      padding: 0;
+
+    }
+
+
+    html {
+
+      scroll-behavior: smooth;
+
+    }
+
+
+    body {
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(212, 175, 55, 0.08),
+          transparent 35%
+        ),
+        var(--bg);
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+      line-height: 1.7;
+
+    }
+
+
+    a {
+
+      color: var(--gold-light);
+
+      text-decoration: none;
+
+    }
+
+
+    a:hover {
+
+      text-decoration: underline;
+
+    }
+
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    header {
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 1000;
+
+      background:
+        rgba(11, 11, 11, 0.94);
+
+      backdrop-filter: blur(12px);
+
+      border-bottom:
+        1px solid var(--border);
+
+    }
+
+
+    .header-inner {
+
+      width:
+        min(
+          calc(100% - 32px),
+          var(--max-width)
+        );
+
+      margin: 0 auto;
+
+      min-height: 72px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 20px;
+
+    }
+
+
+    .brand {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      color: var(--text);
+
+      font-size: 1.25rem;
+
+      font-weight: 800;
+
+      letter-spacing: -0.02em;
+
+      text-decoration: none;
+
+    }
+
+
+    .brand:hover {
+
+      text-decoration: none;
+
+    }
+
+
+    .brand-mark {
+
+      width: 38px;
+
+      height: 38px;
+
+      border-radius: 10px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--gold),
+          #8e6d14
+        );
+
+      color: #080808;
+
+      font-size: 0.9rem;
+
+      font-weight: 900;
+
+      box-shadow:
+        0 0 20px rgba(212, 175, 55, 0.18);
+
+    }
+
+
+    nav {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 22px;
+
+    }
+
+
+    nav a {
+
+      color: var(--text-soft);
+
+      font-size: 0.92rem;
+
+      font-weight: 600;
+
+      text-decoration: none;
+
+    }
+
+
+    nav a:hover {
+
+      color: var(--gold-light);
+
+      text-decoration: none;
+
+    }
+
+
+    .nav-cta {
+
+      padding: 9px 15px;
+
+      border: 1px solid var(--gold);
+
+      border-radius: 999px;
+
+      color: var(--gold) !important;
+
+    }
+
+
+    .nav-cta:hover {
+
+      background: var(--gold);
+
+      color: #080808 !important;
+
+    }
+
+
+    /* =====================================================
+       HERO
+       ===================================================== */
+
+    .hero {
+
+      width:
+        min(
+          calc(100% - 32px),
+          var(--max-width)
+        );
+
+      margin: 0 auto;
+
+      padding: 80px 0 55px;
+
+    }
+
+
+    .eyebrow {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      padding: 6px 12px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 999px;
+
+      color: var(--gold-light);
+
+      background:
+        rgba(212, 175, 55, 0.06);
+
+      font-size: 0.78rem;
+
+      font-weight: 700;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.08em;
+
+    }
+
+
+    .hero h1 {
+
+      margin-top: 20px;
+
+      font-size:
+        clamp(2.3rem, 6vw, 4.3rem);
+
+      line-height: 1.05;
+
+      letter-spacing: -0.045em;
+
+    }
+
+
+    .hero h1 span {
+
+      color: var(--gold);
+
+    }
+
+
+    .hero-description {
+
+      max-width: 780px;
+
+      margin-top: 22px;
+
+      color: var(--text-soft);
+
+      font-size:
+        clamp(1rem, 2vw, 1.12rem);
+
+    }
+
+
+    .updated {
+
+      margin-top: 18px;
+
+      color: var(--text-muted);
+
+      font-size: 0.9rem;
+
+    }
+
+
+    /* =====================================================
+       LAYOUT
+       ===================================================== */
+
+    .page-layout {
+
+      width:
+        min(
+          calc(100% - 32px),
+          var(--max-width)
+        );
+
+      margin: 0 auto 80px;
+
+      display: grid;
+
+      grid-template-columns:
+        250px minmax(0, 1fr);
+
+      gap: 34px;
+
+      align-items: start;
+
+    }
+
+
+    /* =====================================================
+       TOC
+       ===================================================== */
+
+    .toc {
+
+      position: sticky;
+
+      top: 95px;
+
+      padding: 22px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      background:
+        rgba(21, 21, 21, 0.85);
+
+    }
+
+
+    .toc-title {
+
+      color: var(--gold);
+
+      font-size: 0.82rem;
+
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.08em;
+
+      margin-bottom: 14px;
+
+    }
+
+
+    .toc a {
+
+      display: block;
+
+      padding: 7px 0;
+
+      color: var(--text-muted);
+
+      font-size: 0.86rem;
+
+      line-height: 1.4;
+
+      text-decoration: none;
+
+    }
+
+
+    .toc a:hover {
+
+      color: var(--gold-light);
+
+    }
+
+
+    /* =====================================================
+       CONTENT
+       ===================================================== */
+
+    .policy {
+
+      min-width: 0;
+
+    }
+
+
+    .policy-section {
+
+      padding-bottom: 38px;
+
+      margin-bottom: 38px;
+
+      border-bottom:
+        1px solid rgba(255, 255, 255, 0.07);
+
+    }
+
+
+    .policy-section:last-child {
+
+      border-bottom: none;
+
+    }
+
+
+    .policy-section h2 {
+
+      margin-bottom: 16px;
+
+      color: var(--text);
+
+      font-size:
+        clamp(1.35rem, 3vw, 1.75rem);
+
+      line-height: 1.25;
+
+      letter-spacing: -0.02em;
+
+    }
+
+
+    .policy-section h2::before {
+
+      content: "";
+
+      display: inline-block;
+
+      width: 5px;
+
+      height: 24px;
+
+      margin-right: 11px;
+
+      vertical-align: -3px;
+
+      border-radius: 5px;
+
+      background: var(--gold);
+
+    }
+
+
+    .policy-section h3 {
+
+      margin:
+        22px 0 8px;
+
+      color: var(--gold-light);
+
+      font-size: 1.05rem;
+
+    }
+
+
+    .policy-section p {
+
+      margin-bottom: 13px;
+
+      color: var(--text-soft);
+
+      font-size: 0.98rem;
+
+    }
+
+
+    .policy-section ul,
+    .policy-section ol {
+
+      margin:
+        12px 0 18px 22px;
+
+    }
+
+
+    .policy-section li {
+
+      margin-bottom: 8px;
+
+      color: var(--text-soft);
+
+      padding-left: 3px;
+
+    }
+
+
+    .policy-section strong {
+
+      color: var(--text);
+
+    }
+
+
+    .notice {
+
+      margin: 22px 0;
+
+      padding: 20px 22px;
+
+      border:
+        1px solid var(--border);
+
+      border-left:
+        4px solid var(--gold);
+
+      border-radius:
+        0 var(--radius) var(--radius) 0;
+
+      background:
+        rgba(212, 175, 55, 0.055);
+
+    }
+
+
+    .notice p:last-child {
+
+      margin-bottom: 0;
+
+    }
+
+
+    .steps {
+
+      counter-reset: claim-step;
+
+      margin: 25px 0;
+
+    }
+
+
+    .step {
+
+      position: relative;
+
+      padding:
+        18px 18px 18px 60px;
+
+      margin-bottom: 14px;
+
+      border:
+        1px solid rgba(212, 175, 55, 0.16);
+
+      border-radius: var(--radius);
+
+      background:
+        rgba(255, 255, 255, 0.025);
+
+      counter-increment: claim-step;
+
+    }
+
+
+    .step::before {
+
+      content:
+        counter(claim-step);
+
+      position: absolute;
+
+      left: 18px;
+
+      top: 18px;
+
+      width: 29px;
+
+      height: 29px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background: var(--gold);
+
+      color: #080808;
+
+      font-weight: 900;
+
+      font-size: 0.85rem;
+
+    }
+
+
+    .step h3 {
+
+      margin: 0 0 6px;
+
+    }
+
+
+    .step p {
+
+      margin: 0;
+
+    }
+
+
+    .status-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 15px;
+
+      margin: 22px 0;
+
+    }
+
+
+    .status-card {
+
+      padding: 20px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      background:
+        rgba(255, 255, 255, 0.025);
+
+    }
+
+
+    .status-card h3 {
+
+      margin-top: 0;
+
+      color: var(--gold);
+
+    }
+
+
+    .status-card p {
+
+      margin-bottom: 0;
+
+      font-size: 0.9rem;
+
+    }
+
+
+    .contact-card {
+
+      margin-top: 20px;
+
+      padding: 25px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(212, 175, 55, 0.09),
+          rgba(255, 255, 255, 0.025)
+        );
+
+    }
+
+
+    .contact-card strong {
+
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: var(--gold-light);
+
+      font-size: 1.1rem;
+
+    }
+
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    footer {
+
+      border-top:
+        1px solid var(--border);
+
+      background: #080808;
+
+    }
+
+
+    .footer-inner {
+
+      width:
+        min(
+          calc(100% - 32px),
+          var(--max-width)
+        );
+
+      margin: 0 auto;
+
+      padding: 35px 0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 20px;
+
+    }
+
+
+    .footer-brand {
+
+      color: var(--text);
+
+      font-weight: 800;
+
+    }
+
+
+    .footer-copy {
+
+      margin-top: 5px;
+
+      color: var(--text-muted);
+
+      font-size: 0.85rem;
+
+    }
+
+
+    .footer-links {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      justify-content: flex-end;
+
+      gap: 15px 22px;
+
+    }
+
+
+    .footer-links a {
+
+      color: var(--text-muted);
+
+      font-size: 0.85rem;
+
+    }
+
+
+    .footer-links a:hover {
+
+      color: var(--gold-light);
+
+    }
+
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+    @media (max-width: 850px) {
+
+      nav {
+
+        gap: 10px;
+
+      }
+
+
+      nav a:not(.nav-cta) {
+
+        display: none;
+
+      }
+
+
+      .hero {
+
+        padding-top: 55px;
+
+      }
+
+
+      .page-layout {
+
+        grid-template-columns: 1fr;
+
+        gap: 22px;
+
+      }
+
+
+      .toc {
+
+        position: static;
+
+      }
+
+
+      .toc a {
+
+        display: inline-block;
+
+        margin-right: 14px;
+
+      }
+
+
+      .status-grid {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .footer-inner {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+      }
+
+
+      .footer-links {
+
+        justify-content: flex-start;
+
+      }
+
+    }
+
+
+    @media (max-width: 480px) {
+
+      .header-inner,
+      .hero,
+      .page-layout,
+      .footer-inner {
+
+        width:
+          min(
+            calc(100% - 22px),
+            var(--max-width)
+          );
+
+      }
+
+
+      .hero h1 {
+
+        font-size: 2.3rem;
+
+      }
+
+
+      .policy-section p,
+      .policy-section li {
+
+        font-size: 0.94rem;
+
+      }
+
+
+      .toc {
+
+        padding: 17px;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header>
+
+    <div class="header-inner">
+
+      <a
+        href="index.html"
+        class="brand"
+        aria-label="NearAfrica Home"
+      >
+
+        <span class="brand-mark">
+          NA
+        </span>
+
+        <span>
+          NearAfrica
+        </span>
+
+      </a>
+
+
+      <nav aria-label="Main navigation">
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="explore.html">
+          Explore
+        </a>
+
+        <a href="list-business.html">
+          List Your Business
+        </a>
+
+        <a
+          href="contact.html"
+          class="nav-cta"
+        >
+          Contact
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       HERO
+       ===================================================== -->
+
+  <section class="hero">
+
+    <span class="eyebrow">
+      Business Ownership
+    </span>
+
+
+    <h1>
+      Claim <span>Business</span>
+    </h1>
+
+
+    <p class="hero-description">
+      This policy explains how business representatives can
+      claim NearAfrica listings, what information may be
+      required, how claims are reviewed, and what happens
+      when ownership or authorization cannot be established.
+    </p>
+
+
+    <p class="updated">
+      <strong>Last Updated:</strong>
+      September 20, 2026
+    </p>
+
+  </section>
+
+
+  <!-- =====================================================
+       CONTENT
+       ===================================================== -->
+
+  <main class="page-layout">
+
+
+    <!-- ===================================================
+         TOC
+         =================================================== -->
+
+    <aside class="toc">
+
+      <div class="toc-title">
+        On this page
+      </div>
+
+
+      <a href="#purpose">
+        1. Purpose
+      </a>
+
+      <a href="#who">
+        2. Who Can Claim
+      </a>
+
+      <a href="#process">
+        3. Claim Process
+      </a>
+
+      <a href="#evidence">
+        4. Verification Evidence
+      </a>
+
+      <a href="#email">
+        5. Business Email
+      </a>
+
+      <a href="#phone">
+        6. Phone Verification
+      </a>
+
+      <a href="#documents">
+        7. Supporting Documents
+      </a>
+
+      <a href="#review">
+        8. Review
+      </a>
+
+      <a href="#statuses">
+        9. Claim Statuses
+      </a>
+
+      <a href="#approval">
+        10. Approval
+      </a>
+
+      <a href="#rejection">
+        11. Rejection
+      </a>
+
+      <a href="#fraud">
+        12. Fraudulent Claims
+      </a>
+
+      <a href="#disputes">
+        13. Claim Disputes
+      </a>
+
+      <a href="#security">
+        14. Account Security
+      </a>
+
+      <a href="#privacy">
+        15. Personal Information
+      </a>
+
+      <a href="#revocation">
+        16. Revoking Access
+      </a>
+
+      <a href="#limitations">
+        17. Limitations
+      </a>
+
+      <a href="#contact">
+        18. Contact
+      </a>
+
+    </aside>
+
+
+    <!-- ===================================================
+         POLICY
+         =================================================== -->
+
+    <article class="policy">
+
+
+      <!-- 1 -->
+
+      <section
+        class="policy-section"
+        id="purpose"
+      >
+
+        <h2>
+          1. Purpose of the Claim System
+        </h2>
+
+        <p>
+          NearAfrica may allow an authorized representative
+          of a business to claim an existing business listing.
+        </p>
+
+        <p>
+          The purpose of the claim system is to provide an
+          appropriate process for businesses to identify
+          themselves as the authorized representative of a
+          listing and, where approved, manage eligible
+          business information.
+        </p>
+
+        <div class="notice">
+
+          <p>
+            <strong>
+              Submitting a claim does not automatically give
+              the claimant control of a business listing.
+            </strong>
+          </p>
+
+          <p>
+            A claim must be reviewed and accepted before
+            claim-based access or status is granted.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- 2 -->
+
+      <section
+        class="policy-section"
+        id="who"
+      >
+
+        <h2>
+          2. Who Can Claim a Business
+        </h2>
+
+        <p>
+          A claim should only be submitted by a person who is
+          genuinely authorized to represent the business.
+        </p>
+
+        <p>
+          Depending on the circumstances, an eligible claimant
+          may include:
+        </p>
+
+        <ul>
+
+          <li>
+            The business owner.
+          </li>
+
+          <li>
+            A director, partner, or authorized officer.
+          </li>
+
+          <li>
+            An authorized manager.
+          </li>
+
+          <li>
+            An employee authorized to manage the listing.
+          </li>
+
+          <li>
+            An officially authorized representative or agency.
+          </li>
+
+        </ul>
+
+        <p>
+          A customer, competitor, unrelated individual, or
+          other person without authorization should not submit
+          a claim merely because they know information about
+          the business.
+        </p>
+
+      </section>
+
+
+      <!-- 3 -->
+
+      <section
+        class="policy-section"
+        id="process"
+      >
+
+        <h2>
+          3. Claim Process
+        </h2>
+
+        <p>
+          A typical claim may involve the following process:
+        </p>
+
+
+        <div class="steps">
+
+
+          <div class="step">
+
+            <h3>
+              Identify the listing
+            </h3>
+
+            <p>
+              Locate the correct NearAfrica business listing
+              and confirm that it represents the business you
+              are authorized to represent.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <h3>
+              Submit claim information
+            </h3>
+
+            <p>
+              Provide your name, contact information, role,
+              relationship to the business, and other requested
+              information.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <h3>
+              Provide evidence when requested
+            </h3>
+
+            <p>
+              NearAfrica may request information reasonably
+              necessary to establish authorization.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <h3>
+              Review
+            </h3>
+
+            <p>
+              NearAfrica may review the claim and compare the
+              information with the listing and available
+              evidence.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <h3>
+              Decision
+            </h3>
+
+            <p>
+              The claim may be approved, rejected, or placed
+              on hold while additional information is requested.
+            </p>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- 4 -->
+
+      <section
+        class="policy-section"
+        id="evidence"
+      >
+
+        <h2>
+          4. Verification Evidence
+        </h2>
+
+        <p>
+          NearAfrica may use reasonable evidence to determine
+          whether a claimant appears authorized to represent
+          a business.
+        </p>
+
+        <p>
+          Depending on the circumstances, this may include:
+        </p>
+
+        <ul>
+
+          <li>
+            A business email address.
+          </li>
+
+          <li>
+            A business telephone number.
+          </li>
+
+          <li>
+            Information already displayed on the business
+            listing.
+          </li>
+
+          <li>
+            Information supplied through another established
+            business channel.
+          </li>
+
+          <li>
+            Evidence of a relationship with the business.
+          </li>
+
+          <li>
+            Business registration or other official information
+            where reasonably necessary.
+          </li>
+
+          <li>
+            Other evidence reasonably relevant to the claim.
+          </li>
+
+        </ul>
+
+        <p>
+          NearAfrica may use more than one verification method
+          when the circumstances require additional confidence.
+        </p>
+
+      </section>
+
+
+      <!-- 5 -->
+
+      <section
+        class="policy-section"
+        id="email"
+      >
+
+        <h2>
+          5. Business Email Verification
+        </h2>
+
+        <p>
+          Where appropriate, NearAfrica may use an email
+          address associated with the business to help assess
+          a claim.
+        </p>
+
+        <p>
+          Possession of an email address alone does not
+          necessarily establish legal ownership or authority.
+        </p>
+
+        <p>
+          NearAfrica may request additional evidence where
+          an email address does not provide sufficient
+          assurance.
+        </p>
+
+      </section>
+
+
+      <!-- 6 -->
+
+      <section
+        class="policy-section"
+        id="phone"
+      >
+
+        <h2>
+          6. Telephone Verification
+        </h2>
+
+        <p>
+          NearAfrica may use a business telephone number or
+          another appropriate communication method as part of
+          claim verification.
+        </p>
+
+        <p>
+          Telephone verification may help establish a
+          connection with the business but does not necessarily
+          prove legal ownership by itself.
+        </p>
+
+      </section>
+
+
+      <!-- 7 -->
+
+      <section
+        class="policy-section"
+        id="documents"
+      >
+
+        <h2>
+          7. Supporting Documents
+        </h2>
+
+        <p>
+          In some cases, NearAfrica may request supporting
+          documentation where other verification methods are
+          insufficient.
+        </p>
+
+        <p>
+          Examples may include documents or records that
+          reasonably demonstrate the claimant's relationship
+          with the business.
+        </p>
+
+        <div class="notice">
+
+          <p>
+            <strong>
+              Do not send unnecessary sensitive personal
+              information.
+            </strong>
+          </p>
+
+          <p>
+            If NearAfrica requests documentation, provide only
+            information reasonably necessary for the stated
+            verification purpose.
+          </p>
+
+        </div>
+
+        <p>
+          NearAfrica may reject documents that appear altered,
+          misleading, fraudulent, irrelevant, or insufficient.
+        </p>
+
+      </section>
+
+
+      <!-- 8 -->
+
+      <section
+        class="policy-section"
+        id="review"
+      >
+
+        <h2>
+          8. Claim Review
+        </h2>
+
+        <p>
+          NearAfrica may consider multiple factors when
+          reviewing a claim.
+        </p>
+
+        <p>
+          These may include:
+        </p>
+
+        <ul>
+
+          <li>
+            Whether the claimed listing matches the business.
+          </li>
+
+          <li>
+            Whether the claimant's information is consistent.
+          </li>
+
+          <li>
+            Whether the claimant has a reasonable connection
+            to the business.
+          </li>
+
+          <li>
+            Whether submitted evidence appears authentic.
+          </li>
+
+          <li>
+            Whether another person has already claimed the
+            listing.
+          </li>
+
+          <li>
+            Whether the claim appears suspicious or abusive.
+          </li>
+
+        </ul>
+
+        <p>
+          NearAfrica may request additional information before
+          making a decision.
+        </p>
+
+      </section>
+
+
+      <!-- 9 -->
+
+      <section
+        class="policy-section"
+        id="statuses"
+      >
+
+        <h2>
+          9. Claim Statuses
+        </h2>
+
+        <p>
+          A claim may have different statuses during the
+          review process.
+        </p>
+
+
+        <div class="status-grid">
+
+
+          <div class="status-card">
+
+            <h3>
+              Pending
+            </h3>
+
+            <p>
+              The claim has been submitted and is awaiting
+              review or additional information.
+            </p>
+
+          </div>
+
+
+          <div class="status-card">
+
+            <h3>
+              Approved
+            </h3>
+
+            <p>
+              NearAfrica has accepted the claim based on the
+              information and verification available.
+            </p>
+
+          </div>
+
+
+          <div class="status-card">
+
+            <h3>
+              Rejected
+            </h3>
+
+            <p>
+              The claim was not accepted because authorization
+              could not be sufficiently established or another
+              applicable issue was identified.
+            </p>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- 10 -->
+
+      <section
+        class="policy-section"
+        id="approval"
+      >
+
+        <h2>
+          10. What Happens After Approval
+        </h2>
+
+        <p>
+          If a claim is approved, NearAfrica may associate
+          the claimant with the relevant business listing.
+        </p>
+
+        <p>
+          Depending on the features available at the time,
+          an approved representative may be able to:
+        </p>
+
+        <ul>
+
+          <li>
+            Request or manage eligible listing information.
+          </li>
+
+          <li>
+            Provide updated business details.
+          </li>
+
+          <li>
+            Add or manage eligible business media.
+          </li>
+
+          <li>
+            Respond to certain reviews or reports.
+          </li>
+
+          <li>
+            Access other business-management features
+            provided by NearAfrica.
+          </li>
+
+        </ul>
+
+        <p>
+          Approval does not transfer ownership of the business
+          to NearAfrica or transfer ownership of intellectual
+          property belonging to the business.
+        </p>
+
+      </section>
+
+
+      <!-- 11 -->
+
+      <section
+        class="policy-section"
+        id="rejection"
+      >
+
+        <h2>
+          11. Rejected Claims
+        </h2>
+
+        <p>
+          A claim may be rejected where NearAfrica cannot
+          reasonably establish that the claimant is authorized
+          to represent the business.
+        </p>
+
+        <p>
+          Other reasons may include:
+        </p>
+
+        <ul>
+
+          <li>
+            Insufficient evidence.
+          </li>
+
+          <li>
+            Conflicting information.
+          </li>
+
+          <li>
+            Suspected impersonation.
+          </li>
+
+          <li>
+            Suspected fraud.
+          </li>
+
+          <li>
+            Duplicate or conflicting claims.
+          </li>
+
+          <li>
+            Inability to verify the submitted information.
+          </li>
+
+        </ul>
+
+        <p>
+          A rejected claimant may contact NearAfrica with
+          additional relevant information where appropriate.
+        </p>
+
+      </section>
+
+
+      <!-- 12 -->
+
+      <section
+        class="policy-section"
+        id="fraud"
+      >
+
+        <h2>
+          12. Fraudulent or Unauthorized Claims
+        </h2>
+
+        <p>
+          Attempting to claim a business that you do not
+          legitimately represent is prohibited.
+        </p>
+
+        <p>
+          NearAfrica may take action where a claim appears
+          fraudulent or intentionally misleading.
+        </p>
+
+        <p>
+          Depending on the circumstances, this may include:
+        </p>
+
+        <ul>
+
+          <li>
+            Rejecting the claim.
+          </li>
+
+          <li>
+            Restricting the claimant's access.
+          </li>
+
+          <li>
+            Removing associated content.
+          </li>
+
+          <li>
+            Cancelling improperly granted access.
+          </li>
+
+          <li>
+            Preserving relevant records.
+          </li>
+
+          <li>
+            Reporting suspected unlawful conduct to an
+            appropriate authority where legally required or
+            appropriate.
+          </li>
+
+        </ul>
+
+        <div class="notice">
+
+          <p>
+            <strong>
+              Never submit a claim simply to gain control of
+              another business's listing.
+            </strong>
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- 13 -->
+
+      <section
+        class="policy-section"
+        id="disputes"
+      >
+
+        <h2>
+          13. Competing Claims and Disputes
+        </h2>
+
+        <p>
+          More than one person may sometimes claim to represent
+          the same business.
+        </p>
+
+        <p>
+          When competing claims occur, NearAfrica may place
+          the claim or listing on hold while the matter is
+          reviewed.
+        </p>
+
+        <p>
+          NearAfrica may request additional evidence from one
+          or more claimants.
+        </p>
+
+        <p>
+          NearAfrica's internal claim decision does not
+          determine legal ownership of a company, business,
+          trademark, property, or other asset.
+        </p>
+
+        <div class="notice">
+
+          <p>
+            Where a dispute concerns legal ownership or rights
+            that NearAfrica cannot reasonably determine,
+            NearAfrica may decline to decide the underlying
+            legal dispute and may take temporary administrative
+            action concerning the listing.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- 14 -->
+
+      <section
+        class="policy-section"
+        id="security"
+      >
+
+        <h2>
+          14. Account and Claim Security
+        </h2>
+
+        <p>
+          Claimants are responsible for protecting their
+          account credentials and information used to access
+          NearAfrica features.
+        </p>
+
+        <p>
+          You should not:
+        </p>
+
+        <ul>
+
+          <li>
+            Share passwords or authentication codes.
+          </li>
+
+          <li>
+            Allow unauthorized people to use your account.
+          </li>
+
+          <li>
+            Attempt to bypass NearAfrica's verification
+            procedures.
+          </li>
+
+          <li>
+            Attempt to access another claimant's account.
+          </li>
+
+          <li>
+            Submit false information to obtain access.
+          </li>
+
+        </ul>
+
+        <p>
+          Suspected unauthorized access should be reported to
+          NearAfrica as soon as reasonably possible.
+        </p>
+
+      </section>
+
+
+      <!-- 15 -->
+
+      <section
+        class="policy-section"
+        id="privacy"
+      >
+
+        <h2>
+          15. Personal Information Used During Claims
+        </h2>
+
+        <p>
+          Claim processing may require NearAfrica to collect
+          personal information such as a claimant's name,
+          email address, telephone number, role, and
+          verification information.
+        </p>
+
+        <p>
+          Such information may be used to:
+        </p>
+
+        <ul>
+
+          <li>
+            Process and verify the claim.
+          </li>
+
+          <li>
+            Communicate with the claimant.
+          </li>
+
+          <li>
+            Prevent fraudulent claims.
+          </li>
+
+          <li>
+            Resolve disputes.
+          </li>
+
+          <li>
+            Maintain administrative and security records.
+          </li>
+
+          <li>
+            Comply with applicable legal obligations.
+          </li>
+
+        </ul>
+
+        <p>
+          Personal information is handled according to the
+          NearAfrica Privacy Policy and applicable law.
+        </p>
+
+        <p>
+          NearAfrica may retain limited claim records after
+          a claim is resolved where reasonably necessary for
+          security, legal, dispute-resolution, or audit
+          purposes.
+        </p>
+
+      </section>
+
+
+      <!-- 16 -->
+
+      <section
+        class="policy-section"
+        id="revocation"
+      >
+
+        <h2>
+          16. Revocation or Loss of Claim Access
+        </h2>
+
+        <p>
+          Claim-based access may be revoked or restricted if:
+        </p>
+
+        <ul>
+
+          <li>
+            The original claim is discovered to have been
+            fraudulent.
+          </li>
+
+          <li>
+            The claimant is no longer authorized to represent
+            the business.
+          </li>
+
+          <li>
+            The account is compromised.
+          </li>
+
+          <li>
+            The claimant violates NearAfrica policies.
+          </li>
+
+          <li>
+            Material information used to approve the claim is
+            found to be false or misleading.
+          </li>
+
+          <li>
+            Legal or security considerations require action.
+          </li>
+
+        </ul>
+
+        <p>
+          NearAfrica may request updated evidence when
+          continued authorization is reasonably in question.
+        </p>
+
+      </section>
+
+
+      <!-- 17 -->
+
+      <section
+        class="policy-section"
+        id="limitations"
+      >
+
+        <h2>
+          17. Limitations of the Claim System
+        </h2>
+
+        <p>
+          NearAfrica's claim system is an administrative
+          verification process. It is not a court proceeding
+          and does not determine legal ownership of a business.
+        </p>
+
+        <p>
+          Approval does not guarantee that:
+        </p>
+
+        <ul>
+
+          <li>
+            The claimant is legally entitled to every business
+            asset.
+          </li>
+
+          <li>
+            The business is properly licensed.
+          </li>
+
+          <li>
+            The business complies with every applicable law.
+          </li>
+
+          <li>
+            The information on the listing is permanently
+            accurate.
+          </li>
+
+          <li>
+            The business is endorsed or recommended by
+            NearAfrica.
+          </li>
+
+        </ul>
+
+        <p>
+          NearAfrica may update its verification procedures as
+          the platform develops and as new risks or verification
+          methods arise.
+        </p>
+
+      </section>
+
+
+      <!-- 18 -->
+
+      <section
+        class="policy-section"
+        id="contact"
+      >
+
+        <h2>
+          18. Claim Support
+        </h2>
+
+        <p>
+          Questions about claims, verification, competing
+          claims, unauthorized access, or suspected fraudulent
+          claims can be reported to NearAfrica.
+        </p>
+
+
+        <div class="contact-card">
+
+          <strong>
+            NearAfrica Claim Support
+          </strong>
+
+          <p>
+
+            Email:
+
+            <a
+              href="mailto:contactnearafrica43@gmail.com"
+            >
+              contactnearafrica43@gmail.com
+            </a>
+
+          </p>
+
+
+          <p>
+            When contacting us, include the business name,
+            listing URL or business ID where available, your
+            relationship to the business, and a clear
+            explanation of the issue.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- FINAL -->
+
+      <section class="policy-section">
+
+        <h2>
+          NearAfrica
+        </h2>
+
+        <p>
+          Discover businesses and opportunities across Africa.
+        </p>
+
+        <p>
+
+          <strong>
+            Related policies:
+          </strong>
+
+          <a href="terms.html">
+            Terms of Service
+          </a>
+          ·
+          <a href="privacy.html">
+            Privacy Policy
+          </a>
+          ·
+          <a href="listing-policy.html">
+            Listing Policy
+          </a>
+
+        </p>
+
+        <p>
+
+          <strong>
+            Last Updated:
+          </strong>
+
+          September 20, 2026
+
+        </p>
+
+      </section>
+
+
+    </article>
+
+  </main>
+
+
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+
+  <footer>
+
+    <div class="footer-inner">
+
+      <div>
+
+        <div class="footer-brand">
+          NearAfrica
+        </div>
+
+        <div class="footer-copy">
+          Discover businesses and opportunities across Africa.
+        </div>
+
+      </div>
+
+
+      <div class="footer-links">
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="explore.html">
+          Explore
+        </a>
+
+        <a href="list-business.html">
+          List Your Business
+        </a>
+
+        <a href="terms.html">
+          Terms of Service
+        </a>
+
+        <a href="privacy.html">
+          Privacy Policy
+        </a>
+
+        <a href="listing-policy.html">
+          Listing Policy
+        </a>
+
+        <a href="claim-business.html">
+          Claim Business
+        </a>
+
+        <a href="contact.html">
+          Contact
+        </a>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+</body>
+</html>
