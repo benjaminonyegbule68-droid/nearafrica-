@@ -1726,350 +1726,709 @@
         pagination.appendChild(next);
 
       }
+   
+      
+      
+     // =====================================================
+// CATEGORY NORMALIZATION
+// =====================================================
+
+function normalizeCategory(value) {
+
+  const category =
+    String(value || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[_-]+/g, " ")
+      .replace(/\s+/g, " ");
+
+  const categoryMap = {
+
+    // Restaurants & Food
+    "restaurants food": "Restaurants & Food",
+    "restaurant food": "Restaurants & Food",
+    "restaurants and food": "Restaurants & Food",
+    "food restaurants": "Restaurants & Food",
+    "restaurant": "Restaurants & Food",
+    "restaurants": "Restaurants & Food",
+    "food": "Restaurants & Food",
+
+    // Hotels & Accommodation
+    "hotels accommodation": "Hotels & Accommodation",
+    "hotel accommodation": "Hotels & Accommodation",
+    "hotels": "Hotels & Accommodation",
+    "hotel": "Hotels & Accommodation",
+    "accommodation": "Hotels & Accommodation",
+
+    // Beauty & Spa
+    "beauty spa": "Beauty & Spa",
+    "beauty and spa": "Beauty & Spa",
+    "spa": "Beauty & Spa",
+    "beauty": "Beauty & Spa",
+    "beauty salon": "Beauty & Spa",
+    "salon": "Beauty & Spa",
+
+    // Health & Medical
+    "health medical": "Health & Medical",
+    "health and medical": "Health & Medical",
+    "health": "Health & Medical",
+    "medical": "Health & Medical",
+    "hospital": "Health & Medical",
+    "hospitals": "Health & Medical",
+    "clinic": "Health & Medical",
+    "clinics": "Health & Medical",
+    "pharmacy": "Health & Medical",
+    "pharmacies": "Health & Medical",
+
+    // Shopping & Retail
+    "shopping retail": "Shopping & Retail",
+    "shopping and retail": "Shopping & Retail",
+    "shopping": "Shopping & Retail",
+    "retail": "Shopping & Retail",
+
+    // Supermarkets
+    "supermarket": "Supermarkets",
+    "supermarkets": "Supermarkets",
+
+    // Banks & Finance
+    "banks finance": "Banks & Finance",
+    "banks and finance": "Banks & Finance",
+    "bank": "Banks & Finance",
+    "banks": "Banks & Finance",
+    "finance": "Banks & Finance",
+
+    // Professional Services
+    "professional services": "Professional Services",
+    "professional service": "Professional Services",
+    "business services": "Professional Services",
+    "consulting": "Professional Services",
+
+    // Education
+    "education": "Education",
+    "school": "Education",
+    "schools": "Education",
+    "university": "Education",
+    "universities": "Education",
+
+    // Real Estate
+    "real estate": "Real Estate",
+    "realestate": "Real Estate",
+    "property": "Real Estate",
+    "properties": "Real Estate",
+
+    // Automotive
+    "automotive": "Automotive",
+    "automotive services": "Automotive",
+    "auto": "Automotive",
+    "car": "Automotive",
+    "cars": "Automotive",
+    "car services": "Automotive",
+
+    // Travel & Tourism
+    "travel tourism": "Travel & Tourism",
+    "travel and tourism": "Travel & Tourism",
+    "travel": "Travel & Tourism",
+    "tourism": "Travel & Tourism",
+
+    // Logistics & Delivery
+    "logistics delivery": "Logistics & Delivery",
+    "logistics and delivery": "Logistics & Delivery",
+    "logistics": "Logistics & Delivery",
+    "delivery": "Logistics & Delivery",
+
+    // Technology
+    "technology": "Technology",
+    "tech": "Technology",
+    "technology services": "Technology",
+    "software": "Technology",
+    "it": "Technology",
+
+    // Entertainment
+    "entertainment": "Entertainment",
+    "media": "Entertainment",
+    "events": "Entertainment",
+
+    // Fitness & Sports
+    "fitness sports": "Fitness & Sports",
+    "fitness and sports": "Fitness & Sports",
+    "fitness": "Fitness & Sports",
+    "sports": "Fitness & Sports",
+    "gym": "Fitness & Sports",
+    "gyms": "Fitness & Sports",
+
+    // Construction & Home Services
+    "construction home services":
+      "Construction & Home Services",
+
+    "construction and home services":
+      "Construction & Home Services",
+
+    "construction":
+      "Construction & Home Services",
+
+    "home services":
+      "Construction & Home Services",
+
+    "home service":
+      "Construction & Home Services",
+
+    // Fashion
+    "fashion": "Fashion",
+    "clothing": "Fashion",
+    "clothes": "Fashion",
+
+    // Agriculture
+    "agriculture": "Agriculture",
+    "farming": "Agriculture",
+    "farm": "Agriculture",
+
+    // Religious Organizations
+    "religious organizations":
+      "Religious Organizations",
+
+    "religious organization":
+      "Religious Organizations",
+
+    "religious":
+      "Religious Organizations",
+
+    "church":
+      "Religious Organizations",
+
+    "mosque":
+      "Religious Organizations",
+
+    // Government & Public Services
+    "government public services":
+      "Government & Public Services",
+
+    "government and public services":
+      "Government & Public Services",
+
+    "government":
+      "Government & Public Services",
+
+    "public services":
+      "Government & Public Services",
+
+    // Other
+    "other": "Other"
+
+  };
 
 
-      // =====================================================
-      // FILTERING
-      // =====================================================
+  return (
+    categoryMap[category] ||
+    String(value || "").trim()
+  );
+}
 
-      function applyFilters() {
 
-        const search =
-          searchInput.value
-            .trim()
+
+// =====================================================
+// FILTERING
+// =====================================================
+
+function applyFilters() {
+
+  const search =
+    String(
+      searchInput.value || ""
+    )
+      .trim()
+      .toLowerCase();
+
+
+  /*
+   * Normalize the selected category.
+   *
+   * Example:
+   *
+   * Professional Services
+   * professional-services
+   * professional_services
+   *
+   * all resolve to:
+   *
+   * Professional Services
+   */
+
+  const category =
+    normalizeCategory(
+      categoryFilter.value
+    );
+
+
+  const state =
+    String(
+      stateFilter.value || ""
+    )
+      .trim()
+      .toLowerCase();
+
+
+  const rating =
+    ratingFilter.value
+      ? Number(ratingFilter.value)
+      : null;
+
+
+  const verifiedOnly =
+    verifiedFilter.value === "1";
+
+
+  filteredBusinesses =
+    allBusinesses.filter(
+      business => {
+
+
+        // =================================================
+        // SEARCH
+        // =================================================
+
+        if (search) {
+
+          const searchable = [
+
+            business.business_name,
+
+            business.name,
+
+            business.category,
+
+            business.description,
+
+            business.city,
+
+            business.state,
+
+            business.country,
+
+            business.address,
+
+            business.subcategory,
+
+            business.phone,
+
+            business.whatsapp,
+
+            business.email
+
+          ]
+            .filter(Boolean)
+            .join(" ")
             .toLowerCase();
 
-
-        const category =
-          categoryFilter.value
-            .trim()
-            .toLowerCase();
-
-
-        const state =
-          stateFilter.value
-            .trim()
-            .toLowerCase();
-
-
-        const rating =
-          ratingFilter.value
-            ? Number(ratingFilter.value)
-            : null;
-
-
-        const verifiedOnly =
-          verifiedFilter.value === "1";
-
-
-        filteredBusinesses =
-          allBusinesses.filter(
-            business => {
-
-
-              // ---------------------------------------------
-              // SEARCH
-              // ---------------------------------------------
-
-              if (search) {
-
-                const searchable = [
-
-                  business.business_name,
-
-                  business.category,
-
-                  business.description,
-
-                  business.city,
-
-                  business.state,
-
-                  business.country,
-
-                  business.address,
-
-                  business.subcategory
-
-                ]
-                  .filter(Boolean)
-                  .join(" ")
-                  .toLowerCase();
-
-
-                if (
-                  !searchable.includes(search)
-                ) {
-
-                  return false;
-
-                }
-
-              }
-
-
-              // ---------------------------------------------
-              // CATEGORY
-              // ---------------------------------------------
-
-              if (category) {
-
-                const businessCategory =
-                  String(
-                    business.category || ""
-                  )
-                    .trim()
-                    .toLowerCase();
-
-
-                if (
-                  businessCategory !== category
-                ) {
-
-                  return false;
-
-                }
-
-              }
-
-
-              // ---------------------------------------------
-              // STATE
-              // ---------------------------------------------
-
-              if (state) {
-
-                const businessState =
-                  String(
-                    business.state || ""
-                  )
-                    .trim()
-                    .toLowerCase();
-
-
-                if (
-                  businessState !== state
-                ) {
-
-                  return false;
-
-                }
-
-              }
-
-
-              // ---------------------------------------------
-              // RATING
-              // ---------------------------------------------
-
-              if (rating !== null) {
-
-                const businessRating =
-                  Number(
-                    business.rating ||
-                    business.average_rating ||
-                    0
-                  );
-
-
-                if (
-                  businessRating < rating
-                ) {
-
-                  return false;
-
-                }
-
-              }
-
-
-              // ---------------------------------------------
-              // VERIFIED
-              // ---------------------------------------------
-
-              if (verifiedOnly) {
-
-                if (
-                  Number(
-                    business.verified
-                  ) !== 1
-                ) {
-
-                  return false;
-
-                }
-
-              }
-
-
-              return true;
-
-            }
-          );
-
-
-        currentPage = 1;
-
-        renderBusinesses();
-
-      }
-
-
-          // =====================================================
-      // LOAD BUSINESSES
-      // =====================================================
-
-      async function loadBusinesses() {
-        showLoading();
-
-        try {
-          const response = await fetch(API_URL, {
-            method: "GET",
-            headers: {
-              Accept: "application/json"
-            },
-            cache: "no-store"
-          });
-
-          if (!response.ok) {
-            throw new Error(
-              "API request failed with HTTP " + response.status
-            );
-          }
-
-          const data = await response.json();
-
-          console.log("NearAfrica API response:", data);
-
-          if (!data) {
-            throw new Error("Empty API response.");
-          }
 
           if (
-            data.status !== "ok" &&
-            data.success !== true
+            !searchable.includes(search)
           ) {
-            throw new Error(
-              data.error ||
-              data.message ||
-              "The API returned an unsuccessful response."
-            );
+
+            return false;
+
           }
 
-          if (!Array.isArray(data.businesses)) {
-            throw new Error(
-              "The API response does not contain a businesses array."
-            );
-          }
-
-          // Load every business returned by the API.
-          allBusinesses = data.businesses;
-          filteredBusinesses = [...allBusinesses];
-
-          currentPage = 1;
-
-          hideStatus();
-
-          renderBusinesses();
-
-          console.log(
-            "NearAfrica: Loaded " +
-            allBusinesses.length +
-            " businesses."
-          );
-
-        } catch (error) {
-          console.error(
-            "NearAfrica Explore error:",
-            error
-          );
-
-          allBusinesses = [];
-          filteredBusinesses = [];
-
-          if (businessGrid) {
-            businessGrid.innerHTML = "";
-          }
-
-          if (pagination) {
-            pagination.innerHTML = "";
-          }
-
-          if (resultCount) {
-            resultCount.textContent =
-              "Unable to load businesses";
-          }
-
-          showError(
-            "We couldn't load businesses right now. Please try again in a moment."
-          );
         }
+
+
+        // =================================================
+        // CATEGORY
+        // =================================================
+
+        if (category) {
+
+          /*
+           * Normalize the category stored in the database.
+           *
+           * This is the actual fix for:
+           *
+           * professional-services
+           * vs
+           * Professional Services
+           *
+           * and:
+           *
+           * Spa
+           * vs
+           * Beauty & Spa
+           */
+
+          const businessCategory =
+            normalizeCategory(
+              business.category
+            );
+
+
+          if (
+            businessCategory !== category
+          ) {
+
+            return false;
+
+          }
+
+        }
+
+
+        // =================================================
+        // STATE
+        // =================================================
+
+        if (state) {
+
+          const businessState =
+            String(
+              business.state || ""
+            )
+              .trim()
+              .toLowerCase();
+
+
+          if (
+            businessState !== state
+          ) {
+
+            return false;
+
+          }
+
+        }
+
+
+        // =================================================
+        // RATING
+        // =================================================
+
+        if (rating !== null) {
+
+          const businessRating =
+            Number(
+              business.rating ||
+              business.average_rating ||
+              business.avg_rating ||
+              0
+            );
+
+
+          if (
+            businessRating < rating
+          ) {
+
+            return false;
+
+          }
+
+        }
+
+
+        // =================================================
+        // VERIFIED
+        // =================================================
+
+        if (verifiedOnly) {
+
+          const isVerified =
+            business.verified === true ||
+            business.verified === 1 ||
+            business.verified === "1" ||
+            business.verified === "true" ||
+            business.status === "verified";
+
+
+          if (!isVerified) {
+
+            return false;
+
+          }
+
+        }
+
+
+        // =================================================
+        // PASSED ALL FILTERS
+        // =================================================
+
+        return true;
+
       }
+    );
 
 
-      // =====================================================
-      // EVENTS
-      // =====================================================
-
-      searchButton.addEventListener(
-        "click",
-        applyFilters
-      );
+  // Reset pagination
+  currentPage = 1;
 
 
-      searchInput.addEventListener(
-        "keydown",
-        event => {
-          if (event.key === "Enter") {
-            applyFilters();
-          }
+  // Render results
+  renderBusinesses();
+
+
+  // Debug information
+  console.log(
+    "NearAfrica: Filters applied.",
+    {
+      search: search,
+      category: category,
+      state: state,
+      rating: rating,
+      verifiedOnly: verifiedOnly,
+      totalBusinesses:
+        allBusinesses.length,
+      filteredBusinesses:
+        filteredBusinesses.length
+    }
+  );
+
+}
+
+
+
+// =====================================================
+// LOAD BUSINESSES
+// =====================================================
+
+async function loadBusinesses() {
+
+  showLoading();
+
+
+  try {
+
+    const response =
+      await fetch(
+        API_URL,
+        {
+          method: "GET",
+
+          headers: {
+            Accept:
+              "application/json"
+          },
+
+          cache: "no-store"
         }
       );
 
 
-      searchInput.addEventListener(
-        "input",
-        () => {
-          // Search updates automatically
-          // without requiring a button.
-          applyFilters();
-        }
+    if (!response.ok) {
+
+      throw new Error(
+        "API request failed with HTTP " +
+        response.status
       );
 
+    }
 
-      categoryFilter.addEventListener(
-        "change",
-        applyFilters
+
+    const data =
+      await response.json();
+
+
+    console.log(
+      "NearAfrica API response:",
+      data
+    );
+
+
+    if (!data) {
+
+      throw new Error(
+        "Empty API response."
       );
 
+    }
 
-      stateFilter.addEventListener(
-        "change",
-        applyFilters
+
+    if (
+      data.status !== "ok" &&
+      data.success !== true
+    ) {
+
+      throw new Error(
+        data.error ||
+        data.message ||
+        "The API returned an unsuccessful response."
       );
 
+    }
 
-      ratingFilter.addEventListener(
-        "change",
-        applyFilters
+
+    if (
+      !Array.isArray(
+        data.businesses
+      )
+    ) {
+
+      throw new Error(
+        "The API response does not contain a businesses array."
       );
 
+    }
 
-      verifiedFilter.addEventListener(
-        "change",
-        applyFilters
-      );
+
+    // =================================================
+    // LOAD ALL BUSINESSES
+    // =================================================
+
+    allBusinesses =
+      data.businesses;
+
+
+    filteredBusinesses =
+      [...allBusinesses];
+
+
+    currentPage = 1;
+
+
+    hideStatus();
+
+
+    renderBusinesses();
+
+
+    console.log(
+      "NearAfrica: Loaded " +
+      allBusinesses.length +
+      " businesses."
+    );
+
+
+    // =================================================
+    // DEBUG CATEGORY DATA
+    // =================================================
+
+    const categories =
+      [
+        ...new Set(
+          allBusinesses.map(
+            business =>
+              business.category
+          )
+        )
+      ];
+
+
+    console.log(
+      "NearAfrica: Categories returned by API:",
+      categories
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "NearAfrica Explore error:",
+      error
+    );
+
+
+    allBusinesses = [];
+
+    filteredBusinesses = [];
+
+
+    if (businessGrid) {
+
+      businessGrid.innerHTML = "";
+
+    }
+
+
+    if (pagination) {
+
+      pagination.innerHTML = "";
+
+    }
+
+
+    if (resultCount) {
+
+      resultCount.textContent =
+        "Unable to load businesses";
+
+    }
+
+
+    showError(
+      "We couldn't load businesses right now. Please try again in a moment."
+    );
+
+  }
+
+}
+
+
+
+// =====================================================
+// EVENTS
+// =====================================================
+
+searchButton.addEventListener(
+  "click",
+  applyFilters
+);
+
+
+searchInput.addEventListener(
+  "keydown",
+  event => {
+
+    if (event.key === "Enter") {
+
+      applyFilters();
+
+    }
+
+  }
+);
+
+
+searchInput.addEventListener(
+  "input",
+  () => {
+
+    // Search updates automatically
+    // as the user types.
+
+    applyFilters();
+
+  }
+);
+
+
+categoryFilter.addEventListener(
+  "change",
+  applyFilters
+);
+
+
+stateFilter.addEventListener(
+  "change",
+  applyFilters
+);
+
+
+ratingFilter.addEventListener(
+  "change",
+  applyFilters
+);
+
+
+verifiedFilter.addEventListener(
+  "change",
+  applyFilters
+);
+
 
 
       // =====================================================
       // START
       // =====================================================
 
-      // Load all businesses immediately when Explore opens.
-      // No category selection is required.
+      // Load all businesses immediately.
+      // No category is selected automatically.
 
       loadBusinesses();
-
 
     })();
 
