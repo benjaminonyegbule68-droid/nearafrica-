@@ -1919,59 +1919,35 @@
       // LOAD BUSINESSES
       // =====================================================
 
-     async function loadBusinesses() {
+   async function loadBusinesses() {
   showLoading();
 
   try {
-    const response = await fetch(
-      API_URL,
-      {
-        method: "GET",
-        headers: {
-          "Accept": "application/json"
-        },
-        cache: "no-store"
-      }
-    );
+    const response = await fetch(API_URL, {
+      method: "GET",
+      headers: {
+        Accept: "application/json"
+      },
+      cache: "no-store"
+    });
 
     if (!response.ok) {
       throw new Error(
-        `API request failed with HTTP ${response.status}`
+        "API request failed with HTTP " + response.status
       );
     }
 
     const data = await response.json();
 
-    /*
-     * NearAfrica API currently returns:
-     *
-     * {
-     *   "status": "ok",
-     *   "count": 4,
-     *   "businesses": [...]
-     * }
-     *
-     * Some older endpoints may use:
-     *
-     * {
-     *   "success": true,
-     *   "businesses": [...]
-     * }
-     *
-     * Accept both formats.
-     */
-    if (
-      !data ||
-      (
-        data.status !== "ok" &&
-        data.success !== true
-      )
-    ) {
+    if (!data) {
+      throw new Error("Empty API response.");
+    }
+
+    if (data.status !== "ok" && data.success !== true) {
       throw new Error(
-        data &&
-        (data.error || data.message)
-          ? (data.error || data.message)
-          : "The API returned an unsuccessful response."
+        data.error ||
+        data.message ||
+        "The API returned an unsuccessful response."
       );
     }
 
@@ -1984,27 +1960,28 @@
     allBusinesses = data.businesses;
     filteredBusinesses = [...allBusinesses];
 
-    hideStatus();
-
     currentPage = 1;
 
+    hideStatus();
     renderBusinesses();
 
   } catch (error) {
-
-    console.error(
-      "NearAfrica Explore error:",
-      error
-    );
+    console.error("NearAfrica Explore error:", error);
 
     allBusinesses = [];
     filteredBusinesses = [];
 
-    businessGrid.innerHTML = "";
-    pagination.innerHTML = "";
+    if (businessGrid) {
+      businessGrid.innerHTML = "";
+    }
 
-    resultCount.textContent =
-      "Unable to load businesses";
+    if (pagination) {
+      pagination.innerHTML = "";
+    }
+
+    if (resultCount) {
+      resultCount.textContent = "Unable to load businesses";
+    }
 
     showError(
       "We couldn't load businesses right now. Please try again in a moment."
