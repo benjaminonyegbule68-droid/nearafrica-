@@ -637,19 +637,17 @@ async function loadBusiness() {
 
 
         if (
-            !response.ok ||
-            !result.success ||
-            !result.business
-        ) {
-
-            showNotFound(
-                result.error ||
-                "This business could not be found."
-            );
-
-            return;
-
-        }
+    !response.ok ||
+    result.status !== "ok" ||
+    !result.business
+) {
+    showNotFound(
+        result.message ||
+        result.error ||
+        "This business could not be found."
+    );
+    return;
+}
 
 
         displayBusiness(
