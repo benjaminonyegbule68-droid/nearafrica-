@@ -12,7 +12,7 @@
 
   <meta
     name="description"
-    content="NearAfrica Privacy Policy explaining how personal information is collected, used, protected, retained, and handled."
+    content="NearAfrica Privacy Policy explaining how we collect, use, protect, and handle personal information."
   >
 
   <meta
@@ -20,25 +20,32 @@
     content="index, follow"
   >
 
-  <link rel="icon" href="favicon.ico">
+  <link
+    rel="icon"
+    type="image/x-icon"
+    href="favicon.ico"
+  >
 
   <style>
 
-    /* =====================================================
-       GLOBAL
-       ===================================================== */
-
     :root {
       --black: #080808;
-      --black-soft: #101010;
-      --black-card: #151515;
+      --black-2: #101010;
+      --black-3: #171717;
+
       --gold: #d4af37;
-      --gold-light: #f0cf62;
+      --gold-light: #f0d878;
+
       --white: #ffffff;
-      --text: #e9e9e9;
-      --muted: #a9a9a9;
+      --text: #eeeeee;
+      --muted: #a8a8a8;
+
       --border: rgba(212, 175, 55, 0.22);
+      --card: rgba(255, 255, 255, 0.035);
+
+      --danger: #f87171;
     }
+
 
     * {
       box-sizing: border-box;
@@ -46,28 +53,39 @@
       padding: 0;
     }
 
+
     html {
       scroll-behavior: smooth;
     }
 
+
     body {
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(212, 175, 55, 0.08),
+          transparent 35%
+        ),
+        var(--black);
+
+      color: var(--text);
+
       font-family:
         Arial,
         Helvetica,
         sans-serif;
 
-      background: var(--black);
+      line-height: 1.75;
 
-      color: var(--text);
-
-      line-height: 1.7;
+      min-height: 100vh;
     }
+
 
     a {
       color: var(--gold-light);
-
       text-decoration: none;
     }
+
 
     a:hover {
       text-decoration: underline;
@@ -80,95 +98,101 @@
 
     header {
       position: sticky;
-
       top: 0;
-
       z-index: 1000;
 
       background:
         rgba(8, 8, 8, 0.96);
 
+      backdrop-filter: blur(12px);
+
       border-bottom:
         1px solid var(--border);
-
-      backdrop-filter:
-        blur(10px);
     }
 
-    .nav {
-      max-width: 1180px;
 
-      margin: auto;
+    .header-inner {
+      max-width: 1180px;
+      margin: 0 auto;
 
       min-height: 72px;
 
       padding:
-        0 24px;
+        0 22px;
 
       display: flex;
-
       align-items: center;
-
       justify-content: space-between;
 
-      gap: 25px;
+      gap: 24px;
     }
+
 
     .brand {
       display: flex;
-
       align-items: center;
 
       gap: 12px;
 
       color: var(--white);
 
-      font-size: 20px;
-
       font-weight: 800;
 
-      white-space: nowrap;
+      font-size: 20px;
+
+      letter-spacing: -0.3px;
     }
+
 
     .brand:hover {
       text-decoration: none;
     }
 
+
     .brand-mark {
-      width: 38px;
-
-      height: 38px;
-
-      display: grid;
-
-      place-items: center;
+      width: 40px;
+      height: 40px;
 
       border-radius: 10px;
 
-      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      color: var(--black);
+      background:
+        linear-gradient(
+          135deg,
+          var(--gold),
+          var(--gold-light)
+        );
+
+      color: #111;
 
       font-weight: 900;
 
-      font-size: 14px;
+      box-shadow:
+        0 0 24px
+        rgba(212, 175, 55, 0.18);
     }
+
 
     nav {
       display: flex;
-
       align-items: center;
 
       gap: 22px;
     }
 
+
     nav a {
-      color: #dddddd;
+      color: #cfcfcf;
 
       font-size: 14px;
 
-      transition: 0.2s ease;
+      transition:
+        color 0.2s ease;
     }
+
 
     nav a:hover {
       color: var(--gold-light);
@@ -184,54 +208,44 @@
     .hero {
       max-width: 1180px;
 
-      margin: auto;
+      margin: 0 auto;
 
       padding:
-        75px 24px
-        55px;
+        80px 22px 55px;
     }
+
 
     .eyebrow {
-      display: inline-block;
+      color: var(--gold);
 
-      margin-bottom: 16px;
+      font-size: 13px;
 
-      padding:
-        6px 12px;
+      font-weight: 800;
 
-      border:
-        1px solid var(--border);
-
-      border-radius: 999px;
-
-      color: var(--gold-light);
-
-      font-size: 12px;
-
-      font-weight: 700;
-
-      letter-spacing: 0.08em;
+      letter-spacing: 1.8px;
 
       text-transform: uppercase;
+
+      margin-bottom: 12px;
     }
 
-    .hero h1 {
+
+    h1 {
       color: var(--white);
 
       font-size:
-        clamp(34px, 6vw, 58px);
+        clamp(38px, 6vw, 64px);
 
       line-height: 1.05;
+
+      letter-spacing: -2px;
 
       margin-bottom: 20px;
     }
 
-    .hero h1 span {
-      color: var(--gold);
-    }
 
-    .hero p {
-      max-width: 780px;
+    .hero-description {
+      max-width: 760px;
 
       color: var(--muted);
 
@@ -239,24 +253,44 @@
     }
 
 
-    /* =====================================================
-       MAIN LAYOUT
-       ===================================================== */
+    .updated {
+      margin-top: 22px;
 
-    .layout {
-      max-width: 1180px;
-
-      margin: auto;
+      display: inline-block;
 
       padding:
-        0 24px
-        70px;
+        8px 14px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 999px;
+
+      background:
+        rgba(212, 175, 55, 0.06);
+
+      color: #d7d7d7;
+
+      font-size: 13px;
+    }
+
+
+    /* =====================================================
+       LAYOUT
+       ===================================================== */
+
+    .page-layout {
+      max-width: 1180px;
+
+      margin: 0 auto;
+
+      padding:
+        0 22px 80px;
 
       display: grid;
 
       grid-template-columns:
-        280px
-        minmax(0, 1fr);
+        250px minmax(0, 1fr);
 
       gap: 45px;
 
@@ -270,37 +304,46 @@
 
     .toc {
       position: sticky;
-
-      top: 100px;
-
-      background: var(--black-card);
+      top: 95px;
 
       border:
         1px solid var(--border);
 
+      background:
+        var(--card);
+
       border-radius: 16px;
 
-      padding: 22px;
+      padding: 20px;
     }
 
-    .toc h3 {
-      color: var(--white);
 
-      font-size: 15px;
+    .toc-title {
+      color: var(--gold-light);
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+      letter-spacing: 1px;
 
       margin-bottom: 14px;
     }
 
+
     .toc a {
       display: block;
 
-      padding:
-        7px 0;
-
-      color: var(--muted);
+      color: #aaa;
 
       font-size: 13px;
+
+      padding:
+        6px 0;
     }
+
 
     .toc a:hover {
       color: var(--gold-light);
@@ -317,188 +360,131 @@
       min-width: 0;
     }
 
-    .notice {
-      margin-bottom: 30px;
 
-      padding:
-        20px 22px;
-
+    .policy-card {
       background:
-        rgba(212, 175, 55, 0.08);
+        rgba(255, 255, 255, 0.025);
 
       border:
-        1px solid var(--border);
+        1px solid rgba(255, 255, 255, 0.08);
 
-      border-left:
-        4px solid var(--gold);
+      border-radius: 20px;
 
-      border-radius: 12px;
+      padding:
+        clamp(24px, 4vw, 48px);
     }
 
-    .notice strong {
-      display: block;
 
-      color: var(--gold-light);
-
-      margin-bottom: 6px;
-    }
-
-    .section {
-      padding-bottom: 38px;
+    .policy-section {
+      padding:
+        0 0 38px;
 
       margin-bottom: 38px;
 
       border-bottom:
-        1px solid rgba(255, 255, 255, 0.08);
+        1px solid
+        rgba(255, 255, 255, 0.08);
     }
 
-    .section:last-child {
+
+    .policy-section:last-child {
       border-bottom: none;
+
+      margin-bottom: 0;
+
+      padding-bottom: 0;
     }
 
-    .section h2 {
+
+    h2 {
       color: var(--white);
 
       font-size: 25px;
 
+      line-height: 1.25;
+
       margin-bottom: 15px;
+
+      letter-spacing: -0.5px;
     }
 
-    .section h2 span {
-      color: var(--gold);
 
-      margin-right: 8px;
-    }
-
-    .section h3 {
+    h3 {
       color: var(--gold-light);
 
       font-size: 17px;
 
       margin:
-        20px 0
-        8px;
+        24px 0 10px;
     }
 
-    .section p {
-      color: #cfcfcf;
+
+    p {
+      color: #c5c5c5;
 
       margin-bottom: 14px;
     }
 
-    .section ul {
+
+    ul,
+    ol {
       margin:
-        12px 0
-        16px 22px;
+        12px 0 18px 24px;
+
+      color: #c5c5c5;
     }
 
-    .section li {
-      color: #cfcfcf;
 
+    li {
       margin-bottom: 8px;
     }
 
 
-    /* =====================================================
-       DATA CARDS
-       ===================================================== */
-
-    .data-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-      gap: 14px;
-
-      margin-top: 18px;
-    }
-
-    .data-card {
-      background: var(--black-card);
-
-      border:
-        1px solid rgba(255, 255, 255, 0.08);
-
-      border-radius: 12px;
-
-      padding: 18px;
-    }
-
-    .data-card h3 {
-      color: var(--gold-light);
-
-      font-size: 16px;
-
-      margin:
-        0 0
-        7px;
-    }
-
-    .data-card p {
-      margin: 0;
-
-      color: var(--muted);
-
-      font-size: 14px;
+    strong {
+      color: #eeeeee;
     }
 
 
-    /* =====================================================
-       CONTACT
-       ===================================================== */
-
-    .contact-card {
-      margin-top: 20px;
-
-      padding: 25px;
+    .highlight {
+      border-left:
+        3px solid var(--gold);
 
       background:
-        linear-gradient(
-          145deg,
-          rgba(212, 175, 55, 0.13),
-          rgba(255, 255, 255, 0.02)
-        );
+        rgba(212, 175, 55, 0.06);
+
+      padding:
+        17px 18px;
+
+      border-radius:
+        0 10px 10px 0;
+
+      margin:
+        18px 0;
+    }
+
+
+    .highlight p {
+      margin-bottom: 0;
+    }
+
+
+    .contact-box {
+      margin-top: 22px;
+
+      padding: 24px;
 
       border:
         1px solid var(--border);
 
+      background:
+        rgba(212, 175, 55, 0.055);
+
       border-radius: 16px;
     }
 
-    .contact-card h2 {
-      color: var(--white);
 
-      margin-bottom: 10px;
-    }
-
-    .contact-card p {
-      color: var(--muted);
-
-      margin-bottom: 10px;
-    }
-
-    .email-button {
-      display: inline-block;
-
-      margin-top: 8px;
-
-      padding:
-        11px 18px;
-
-      border-radius: 9px;
-
-      background: var(--gold);
-
-      color: var(--black);
-
-      font-weight: 800;
-    }
-
-    .email-button:hover {
-      background: var(--gold-light);
-
-      text-decoration: none;
+    .contact-box strong {
+      color: var(--gold-light);
     }
 
 
@@ -510,27 +496,30 @@
       border-top:
         1px solid var(--border);
 
-      background: #050505;
+      background:
+        #050505;
     }
+
 
     .footer-inner {
       max-width: 1180px;
 
-      margin: auto;
+      margin: 0 auto;
 
       padding:
-        35px 24px;
+        35px 22px;
 
       display: flex;
 
-      align-items: center;
-
       justify-content: space-between;
 
-      gap: 20px;
+      align-items: center;
+
+      gap: 25px;
 
       flex-wrap: wrap;
     }
+
 
     .footer-brand {
       color: var(--white);
@@ -538,11 +527,15 @@
       font-weight: 800;
     }
 
+
     .footer-copy {
       color: #777;
 
       font-size: 13px;
+
+      margin-top: 5px;
     }
+
 
     .footer-links {
       display: flex;
@@ -552,11 +545,13 @@
       flex-wrap: wrap;
     }
 
+
     .footer-links a {
       color: #999;
 
       font-size: 13px;
     }
+
 
     .footer-links a:hover {
       color: var(--gold-light);
@@ -564,86 +559,120 @@
 
 
     /* =====================================================
-       RESPONSIVE
+       MOBILE
        ===================================================== */
 
     @media (max-width: 850px) {
 
       nav {
-        display: none;
+        gap: 12px;
       }
 
-      .layout {
+      nav a {
+        font-size: 13px;
+      }
+
+      .page-layout {
         grid-template-columns: 1fr;
 
         gap: 25px;
       }
 
       .toc {
-        position: relative;
-
-        top: auto;
+        position: static;
       }
 
     }
+
 
     @media (max-width: 600px) {
 
+      .header-inner {
+        min-height: 64px;
+
+        padding:
+          0 16px;
+      }
+
+
+      .brand {
+        font-size: 17px;
+      }
+
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+      }
+
+
+      nav {
+        gap: 9px;
+      }
+
+
+      nav a:nth-child(n+3) {
+        display: none;
+      }
+
+
       .hero {
         padding:
-          55px 18px
-          40px;
+          55px 16px 35px;
       }
 
-      .layout {
-        padding:
-          0 18px
-          55px;
+
+      h1 {
+        font-size: 42px;
+
+        letter-spacing: -1.5px;
       }
 
-      .hero p {
+
+      .hero-description {
         font-size: 15px;
       }
 
-      .section h2 {
+
+      .page-layout {
+        padding:
+          0 16px 55px;
+      }
+
+
+      .policy-card {
+        padding:
+          23px 18px;
+      }
+
+
+      h2 {
         font-size: 22px;
       }
 
-      .data-grid {
-        grid-template-columns: 1fr;
-      }
 
       .footer-inner {
         padding:
-          30px 18px;
+          28px 16px;
       }
 
     }
 
-    @media (max-width: 480px) {
 
-      .brand {
-        font-size: 18px;
-      }
+    @media (max-width: 420px) {
 
-      .brand-mark {
-        width: 34px;
-
-        height: 34px;
-      }
-
-      .hero h1 {
+      h1 {
         font-size: 36px;
       }
 
+
       .toc {
-        padding: 18px;
+        padding: 16px;
       }
 
-      .section {
-        padding-bottom: 30px;
 
-        margin-bottom: 30px;
+      .policy-card {
+        border-radius: 15px;
       }
 
     }
@@ -661,11 +690,12 @@
 
   <header>
 
-    <div class="nav">
+    <div class="header-inner">
 
       <a
-        href="index.html"
         class="brand"
+        href="index.html"
+        aria-label="NearAfrica Home"
       >
 
         <span class="brand-mark">
@@ -679,7 +709,7 @@
       </a>
 
 
-      <nav>
+      <nav aria-label="Main navigation">
 
         <a href="index.html">
           Home
@@ -704,36 +734,43 @@
   </header>
 
 
+
   <!-- =====================================================
        HERO
        ===================================================== -->
 
   <section class="hero">
 
-    <span class="eyebrow">
-      Privacy & Data Protection
-    </span>
+    <div class="eyebrow">
+      NearAfrica
+    </div>
+
 
     <h1>
-      Privacy <span>Policy</span>
+      Privacy Policy
     </h1>
 
-    <p>
-      This Privacy Policy explains how NearAfrica may
-      collect, use, store, protect, and disclose personal
-      information when you use our website, directory,
-      business-listing tools, claim system, reporting
-      system, reviews, and related services.
+
+    <p class="hero-description">
+      This Privacy Policy explains how NearAfrica collects,
+      uses, stores, protects, and handles personal information
+      when you use our website and services.
     </p>
+
+
+    <div class="updated">
+      Last updated: September 20, 2026
+    </div>
 
   </section>
 
 
+
   <!-- =====================================================
-       MAIN
+       CONTENT
        ===================================================== -->
 
-  <main class="layout">
+  <main class="page-layout">
 
 
     <!-- ===================================================
@@ -742,1397 +779,1087 @@
 
     <aside class="toc">
 
-      <h3>
-        On this page
-      </h3>
+      <div class="toc-title">
+        Contents
+      </div>
+
 
       <a href="#introduction">
         1. Introduction
       </a>
 
-      <a href="#controller">
-        2. Who We Are
-      </a>
-
       <a href="#information">
-        3. Information We Collect
+        2. Information We Collect
       </a>
 
-      <a href="#sources">
-        4. Where Information Comes From
+      <a href="#business">
+        3. Business Listing Information
       </a>
 
-      <a href="#purposes">
-        5. Why We Use Information
+      <a href="#automatic">
+        4. Automatically Collected Information
       </a>
 
-      <a href="#lawful-basis">
-        6. Lawful Basis
+      <a href="#use">
+        5. How We Use Information
       </a>
 
-      <a href="#public-business-data">
-        7. Business Directory Data
-      </a>
-
-      <a href="#submissions">
-        8. Listings & Submissions
-      </a>
-
-      <a href="#claims">
-        9. Claims & Verification
-      </a>
-
-      <a href="#reports">
-        10. Reports & Complaints
-      </a>
-
-      <a href="#reviews">
-        11. Reviews
-      </a>
-
-      <a href="#cookies">
-        12. Cookies & Technical Data
-      </a>
-
-      <a href="#third-party">
-        13. Service Providers
+      <a href="#legal-basis">
+        6. Legal Basis
       </a>
 
       <a href="#sharing">
-        14. Information Sharing
+        7. Sharing Information
       </a>
 
-      <a href="#security">
-        15. Security
+      <a href="#third-party">
+        8. Third-Party Services
+      </a>
+
+      <a href="#cookies">
+        9. Cookies & Similar Technologies
       </a>
 
       <a href="#retention">
-        16. Data Retention
+        10. Data Retention
+      </a>
+
+      <a href="#security">
+        11. Data Security
       </a>
 
       <a href="#rights">
-        17. Your Rights
+        12. Your Privacy Rights
+      </a>
+
+      <a href="#corrections">
+        13. Corrections & Removal
       </a>
 
       <a href="#children">
-        18. Children
+        14. Children
       </a>
 
       <a href="#international">
-        19. International Processing
+        15. International Processing
       </a>
 
       <a href="#changes">
-        20. Changes
+        16. Policy Changes
       </a>
 
       <a href="#contact">
-        21. Contact
+        17. Contact
       </a>
 
     </aside>
 
 
+
     <!-- ===================================================
-         CONTENT
+         POLICY
          =================================================== -->
 
     <article class="content">
 
+      <div class="policy-card">
 
-      <div class="notice">
 
-        <strong>
-          Last Updated: September 20, 2026
-        </strong>
+        <!-- =================================================
+             1
+             ================================================= -->
 
-        Please read this Privacy Policy together with
-        NearAfrica's
-        <a href="terms.html">
-          Terms of Service
-        </a>
-        and
-        <a href="listing-policy.html">
-          Listing Policy
-        </a>.
+        <section
+          class="policy-section"
+          id="introduction"
+        >
 
-        This policy describes our intended privacy practices
-        and may be updated as NearAfrica's features,
-        infrastructure, and legal obligations develop.
+          <h2>
+            1. Introduction
+          </h2>
+
+
+          <p>
+            NearAfrica is a business discovery and directory
+            platform designed to help people discover businesses,
+            services, opportunities, and other useful information
+            across Africa.
+          </p>
+
+
+          <p>
+            This Privacy Policy explains how we handle personal
+            information when you visit or use NearAfrica,
+            submit information, interact with listings, submit
+            reviews or reports, claim a business, or otherwise
+            communicate with us.
+          </p>
+
+
+          <div class="highlight">
+
+            <p>
+              <strong>
+                Important:
+              </strong>
+
+              NearAfrica aims to collect only information that
+              is reasonably necessary for the relevant service.
+              We do not intentionally request sensitive personal
+              information when it is not necessary for the
+              service being provided.
+            </p>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             2
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="information"
+        >
+
+          <h2>
+            2. Information We Collect
+          </h2>
+
+
+          <p>
+            Depending on how you use NearAfrica, we may collect
+            different categories of information.
+          </p>
+
+
+          <h3>
+            Information you provide
+          </h3>
+
+
+          <ul>
+
+            <li>
+              Name or business contact name.
+            </li>
+
+            <li>
+              Email address.
+            </li>
+
+            <li>
+              Telephone or WhatsApp number.
+            </li>
+
+            <li>
+              Business name and business contact information.
+            </li>
+
+            <li>
+              Business address, city, state, country,
+              latitude, and longitude.
+            </li>
+
+            <li>
+              Website and social-media information submitted
+              for a business listing.
+            </li>
+
+            <li>
+              Business descriptions and other listing details.
+            </li>
+
+            <li>
+              Reviews, comments, ratings, and responses.
+            </li>
+
+            <li>
+              Reports, complaints, correction requests,
+              and removal requests.
+            </li>
+
+            <li>
+              Information submitted during a business claim.
+            </li>
+
+            <li>
+              Information submitted when contacting NearAfrica.
+            </li>
+
+            <li>
+              Images, logos, and other material that you
+              voluntarily submit where applicable.
+            </li>
+
+          </ul>
+
+
+          <h3>
+            Information collected through use
+          </h3>
+
+
+          <p>
+            We may also collect technical and usage information
+            associated with your interaction with the platform,
+            such as pages visited, basic device or browser
+            information, approximate usage information,
+            timestamps, and technical information needed to
+            maintain security and functionality.
+          </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             3
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="business"
+        >
+
+          <h2>
+            3. Business Listing Information
+          </h2>
+
+
+          <p>
+            NearAfrica may contain information about businesses
+            obtained from business owners, authorized users,
+            public sources, user submissions, discovery systems,
+            or other lawful sources.
+          </p>
+
+
+          <p>
+            A business listing may contain information such as
+            the business name, category, location, telephone
+            number, website, social-media links, description,
+            opening information, images, and other business
+            information.
+          </p>
+
+
+          <p>
+            Some business information may be publicly visible
+            because it is intended to help people discover or
+            contact a business.
+          </p>
+
+
+          <p>
+            If you believe a listing contains incorrect,
+            outdated, private, or otherwise inappropriate
+            information about you or your business, you may
+            contact us using the details provided below.
+          </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             4
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="automatic"
+        >
+
+          <h2>
+            4. Automatically Collected Information
+          </h2>
+
+
+          <p>
+            When you access NearAfrica, certain technical
+            information may be processed automatically.
+          </p>
+
+
+          <p>
+            This may include:
+          </p>
+
+
+          <ul>
+
+            <li>
+              IP address or network-related information.
+            </li>
+
+            <li>
+              Browser type and version.
+            </li>
+
+            <li>
+              Device type or operating-system information.
+            </li>
+
+            <li>
+              Pages or resources requested.
+            </li>
+
+            <li>
+              Date and time of requests.
+            </li>
+
+            <li>
+              Basic security and diagnostic information.
+            </li>
+
+            <li>
+              Business listing views and related usage
+              information.
+            </li>
+
+          </ul>
+
+
+          <p>
+            We may use this information to operate the platform,
+            diagnose technical problems, improve performance,
+            understand usage, prevent abuse, and maintain
+            security.
+          </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             5
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="use"
+        >
+
+          <h2>
+            5. How We Use Information
+          </h2>
+
+
+          <p>
+            We may use information collected through NearAfrica
+            for purposes including:
+          </p>
+
+
+          <ul>
+
+            <li>
+              Providing and operating the NearAfrica platform.
+            </li>
+
+            <li>
+              Creating and managing business listings.
+            </li>
+
+            <li>
+              Processing business submissions.
+            </li>
+
+            <li>
+              Processing business claims and verification
+              requests.
+            </li>
+
+            <li>
+              Publishing reviews and business information where
+              appropriate.
+            </li>
+
+            <li>
+              Processing reports, complaints, and correction
+              requests.
+            </li>
+
+            <li>
+              Responding to support or contact requests.
+            </li>
+
+            <li>
+              Maintaining security and preventing fraud,
+              abuse, spam, or unauthorized activity.
+            </li>
+
+            <li>
+              Improving the functionality and reliability
+              of NearAfrica.
+            </li>
+
+            <li>
+              Maintaining administrative records and audit
+              trails.
+            </li>
+
+            <li>
+              Complying with applicable legal obligations.
+            </li>
+
+          </ul>
+
+        </section>
+
+
+
+        <!-- =================================================
+             6
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="legal-basis"
+        >
+
+          <h2>
+            6. Legal Basis for Processing
+          </h2>
+
+
+          <p>
+            Where applicable, NearAfrica will process personal
+            information in accordance with a lawful basis
+            recognized under applicable data-protection law.
+          </p>
+
+
+          <p>
+            Depending on the circumstances, processing may be
+            necessary for purposes such as providing a requested
+            service, responding to a request, complying with a
+            legal obligation, protecting legitimate interests,
+            maintaining security, or obtaining consent where
+            consent is required.
+          </p>
+
+
+          <p>
+            We aim to process personal information in a fair,
+            lawful, and transparent manner and to apply
+            appropriate privacy safeguards.
+          </p>
+
+
+          <div class="highlight">
+
+            <p>
+              NearAfrica's privacy practices are intended to
+              operate consistently with applicable Nigerian
+              data-protection requirements, including the
+              Nigeria Data Protection Act 2023.
+            </p>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             7
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="sharing"
+        >
+
+          <h2>
+            7. When We Share Information
+          </h2>
+
+
+          <p>
+            We do not sell personal information simply because
+            it has been submitted to NearAfrica.
+          </p>
+
+
+          <p>
+            Information may nevertheless be shared or disclosed
+            where reasonably necessary for operating the service,
+            protecting users, complying with law, or handling a
+            legitimate request.
+          </p>
+
+
+          <p>
+            This may include sharing information with:
+          </p>
+
+
+          <ul>
+
+            <li>
+              Service providers that help operate NearAfrica.
+            </li>
+
+            <li>
+              Hosting, database, storage, security, analytics,
+              or infrastructure providers.
+            </li>
+
+            <li>
+              Technical providers used to process submitted
+              images or other platform content.
+            </li>
+
+            <li>
+              Professional advisers where reasonably necessary.
+            </li>
+
+            <li>
+              Law-enforcement, regulatory, judicial, or other
+              authorized government bodies where legally
+              required or permitted.
+            </li>
+
+            <li>
+              Parties involved in protecting NearAfrica,
+              its users, or the public from fraud, abuse,
+              security threats, or unlawful activity.
+            </li>
+
+          </ul>
+
+
+          <p>
+            We aim to limit disclosures to information reasonably
+            necessary for the relevant purpose.
+          </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             8
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="third-party"
+        >
+
+          <h2>
+            8. Third-Party Services
+          </h2>
+
+
+          <p>
+            NearAfrica may use third-party technology providers
+            to provide hosting, databases, storage, security,
+            analytics, maps, communications, or other technical
+            functions.
+          </p>
+
+
+          <p>
+            These providers may process information according to
+            their own privacy policies and applicable agreements.
+          </p>
+
+
+          <p>
+            Examples of technologies that may be used by
+            NearAfrica include cloud infrastructure, database
+            services, image storage, mapping services, and
+            security services.
+          </p>
+
+
+          <p>
+            Third-party services may change as NearAfrica
+            develops. Where appropriate, this Privacy Policy
+            may be updated to reflect material changes.
+          </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             9
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="cookies"
+        >
+
+          <h2>
+            9. Cookies and Similar Technologies
+          </h2>
+
+
+          <p>
+            NearAfrica may use cookies, local storage, session
+            storage, or similar technologies where necessary
+            for website functionality, security, preferences,
+            analytics, or other legitimate purposes.
+          </p>
+
+
+          <p>
+            Some third-party services used by the website may
+            also use their own cookies or similar technologies.
+          </p>
+
+
+          <p>
+            You can usually control cookies through your browser
+            settings. Disabling certain technologies may affect
+            some website functionality.
+          </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             10
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="retention"
+        >
+
+          <h2>
+            10. Data Retention
+          </h2>
+
+
+          <p>
+            We retain information for only as long as reasonably
+            necessary for the purpose for which it was collected,
+            to provide the relevant service, maintain legitimate
+            business and administrative records, resolve disputes,
+            enforce agreements, prevent abuse, or comply with
+            legal obligations.
+          </p>
+
+
+          <p>
+            Different categories of information may therefore
+            be retained for different periods.
+          </p>
+
+
+          <p>
+            When information is no longer reasonably required,
+            we may delete, anonymize, or otherwise securely
+            dispose of it, subject to applicable legal or
+            legitimate record-keeping requirements.
+          </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             11
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="security"
+        >
+
+          <h2>
+            11. Data Security
+          </h2>
+
+
+          <p>
+            We take reasonable technical and organizational
+            measures designed to protect personal information
+            against unauthorized access, alteration, disclosure,
+            loss, misuse, or destruction.
+          </p>
+
+
+          <p>
+            Security measures may include access controls,
+            authentication, server-side protections, restricted
+            administrative access, secure transmission where
+            appropriate, monitoring, and other technical
+            safeguards.
+          </p>
+
+
+          <div class="highlight">
+
+            <p>
+              No internet-based service can guarantee absolute
+              security. Users should avoid submitting unnecessary
+              sensitive information through public forms or
+              communications.
+            </p>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             12
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="rights"
+        >
+
+          <h2>
+            12. Your Privacy Rights
+          </h2>
+
+
+          <p>
+            Subject to applicable law and any lawful limitations,
+            you may have rights relating to personal information
+            processed by NearAfrica.
+          </p>
+
+
+          <p>
+            These may include rights to:
+          </p>
+
+
+          <ul>
+
+            <li>
+              Request access to personal information we hold
+              about you.
+            </li>
+
+            <li>
+              Request correction of inaccurate or incomplete
+              personal information.
+            </li>
+
+            <li>
+              Request deletion of personal information where
+              applicable.
+            </li>
+
+            <li>
+              Object to or request restriction of certain
+              processing where applicable.
+            </li>
+
+            <li>
+              Request portability of personal information where
+              the applicable legal requirements are satisfied.
+            </li>
+
+            <li>
+              Withdraw consent where processing is based on
+              consent, subject to applicable limitations.
+            </li>
+
+            <li>
+              Make a complaint regarding the handling of your
+              personal information.
+            </li>
+
+          </ul>
+
+
+          <p>
+            These rights are not absolute and may be subject to
+            legal exceptions, security requirements, legitimate
+            interests, contractual obligations, or other lawful
+            limitations.
+          </p>
+
+
+          <p>
+            To exercise an applicable privacy right, contact us
+            using the details in the Contact section.
+          </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             13
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="corrections"
+        >
+
+          <h2>
+            13. Corrections, Removal, and Listing Requests
+          </h2>
+
+
+          <p>
+            If personal information connected to a NearAfrica
+            listing is inaccurate, outdated, improperly published,
+            or should otherwise be reviewed, you may contact us.
+          </p>
+
+
+          <p>
+            Depending on the circumstances, NearAfrica may:
+          </p>
+
+
+          <ul>
+
+            <li>
+              Correct inaccurate information.
+            </li>
+
+            <li>
+              Update outdated information.
+            </li>
+
+            <li>
+              Review a request to remove information.
+            </li>
+
+            <li>
+              Request reasonable information needed to verify
+              a request.
+            </li>
+
+            <li>
+              Restrict or remove content where appropriate.
+            </li>
+
+          </ul>
+
+
+          <p>
+            We may need to balance privacy requests against
+            legitimate legal, security, public-interest,
+            contractual, or record-keeping requirements.
+          </p>
+
+
+          <p>
+            A request does not automatically guarantee immediate
+            removal or deletion.
+          </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             14
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="children"
+        >
+
+          <h2>
+            14. Children and Young Users
+          </h2>
+
+
+          <p>
+            NearAfrica is a general business-discovery platform
+            and is not designed specifically to collect personal
+            information from children.
+          </p>
+
+
+          <p>
+            We encourage young users to avoid submitting
+            unnecessary personal information, particularly
+            information such as home addresses, private contact
+            information, passwords, identity documents, or other
+            sensitive information.
+          </p>
+
+
+          <p>
+            If you believe a child has provided personal
+            information to NearAfrica in circumstances where
+            collection was inappropriate, please contact us so
+            that we can review the situation.
+          </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             15
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="international"
+        >
+
+          <h2>
+            15. International Processing
+          </h2>
+
+
+          <p>
+            Some technical service providers used by NearAfrica
+            may process or store information outside Nigeria.
+          </p>
+
+
+          <p>
+            Where personal information is transferred or processed
+            outside Nigeria, we aim to use appropriate safeguards
+            and comply with applicable data-protection requirements.
+          </p>
+
+
+          <p>
+            Because third-party infrastructure may change,
+            the countries or locations in which technical
+            information is processed may also change over time.
+          </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             16
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="changes"
+        >
+
+          <h2>
+            16. Changes to This Privacy Policy
+          </h2>
+
+
+          <p>
+            NearAfrica may update this Privacy Policy when our
+            services, technology, legal requirements, or data
+            practices change.
+          </p>
+
+
+          <p>
+            When we make changes, we may update the
+            “Last updated” date shown at the beginning of this
+            policy.
+          </p>
+
+
+          <p>
+            Your continued use of NearAfrica after an updated
+            Privacy Policy becomes available means that you
+            acknowledge the updated policy to the extent
+            permitted by applicable law.
+          </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             17
+             ================================================= -->
+
+        <section
+          class="policy-section"
+          id="contact"
+        >
+
+          <h2>
+            17. Contact NearAfrica
+          </h2>
+
+
+          <p>
+            If you have a privacy question, data-access request,
+            correction request, removal request, complaint, or
+            other concern about how NearAfrica handles personal
+            information, contact us.
+          </p>
+
+
+          <div class="contact-box">
+
+            <p>
+              <strong>
+                NearAfrica
+              </strong>
+            </p>
+
+
+            <p>
+              Privacy and Data Protection Contact
+            </p>
+
+
+            <p>
+              Email:
+              <a
+                href="mailto:contactnearafrica43@gmail.com"
+              >
+                contactnearafrica43@gmail.com
+              </a>
+            </p>
+
+
+            <p>
+              Website:
+              <a
+                href="https://nearafrica.pages.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                nearafrica.pages.dev
+              </a>
+            </p>
+
+          </div>
+
+
+          <p>
+            When making a privacy request, please provide enough
+            information for us to understand and verify the
+            request. We may request reasonable additional
+            information where necessary to protect personal
+            information from unauthorized disclosure.
+          </p>
+
+        </section>
+
+
 
       </div>
-
-
-      <!-- =================================================
-           1
-           ================================================= -->
-
-      <section
-        class="section"
-        id="introduction"
-      >
-
-        <h2>
-          <span>1.</span>
-          Introduction
-        </h2>
-
-        <p>
-          NearAfrica is a business-discovery and directory
-          platform intended to help people discover
-          businesses and opportunities across Africa.
-        </p>
-
-        <p>
-          We take privacy seriously and aim to handle
-          personal information responsibly, transparently,
-          and only for legitimate purposes connected with
-          operating and improving NearAfrica.
-        </p>
-
-        <p>
-          This policy applies to information processed
-          through NearAfrica websites, forms, business
-          listings, claims, reports, reviews, administrative
-          systems, and related services.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           2
-           ================================================= -->
-
-      <section
-        class="section"
-        id="controller"
-      >
-
-        <h2>
-          <span>2.</span>
-          Who We Are
-        </h2>
-
-        <p>
-          NearAfrica operates the NearAfrica directory and
-          related services.
-        </p>
-
-        <p>
-          For privacy questions, requests, corrections,
-          complaints, or data-protection concerns, contact:
-        </p>
-
-        <div class="contact-card">
-
-          <h2>
-            NearAfrica Privacy Contact
-          </h2>
-
-          <p>
-            Email:
-            <strong>
-              contactnearafrica43@gmail.com
-            </strong>
-          </p>
-
-          <a
-            class="email-button"
-            href="mailto:contactnearafrica43@gmail.com?subject=NearAfrica%20Privacy%20Request"
-          >
-            Contact Privacy Support
-          </a>
-
-        </div>
-
-        <p style="margin-top:20px;">
-          If NearAfrica's legal or organizational structure
-          changes, this section may be updated to identify
-          the applicable data controller or other responsible
-          entity.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           3
-           ================================================= -->
-
-      <section
-        class="section"
-        id="information"
-      >
-
-        <h2>
-          <span>3.</span>
-          Information We May Collect
-        </h2>
-
-        <p>
-          Depending on how you use NearAfrica, the
-          information we process may include:
-        </p>
-
-        <div class="data-grid">
-
-          <div class="data-card">
-
-            <h3>
-              Contact Information
-            </h3>
-
-            <p>
-              Name, email address, telephone number,
-              WhatsApp number, and other contact information
-              you voluntarily provide.
-            </p>
-
-          </div>
-
-
-          <div class="data-card">
-
-            <h3>
-              Business Information
-            </h3>
-
-            <p>
-              Business name, address, category, city, state,
-              country, website, business description,
-              operating information, and related details.
-            </p>
-
-          </div>
-
-
-          <div class="data-card">
-
-            <h3>
-              Claim Information
-            </h3>
-
-            <p>
-              Information supplied when claiming or verifying
-              a business listing.
-            </p>
-
-          </div>
-
-
-          <div class="data-card">
-
-            <h3>
-              Report Information
-            </h3>
-
-            <p>
-              Information submitted when reporting a listing,
-              review, image, privacy concern, or other issue.
-            </p>
-
-          </div>
-
-
-          <div class="data-card">
-
-            <h3>
-              Review Information
-            </h3>
-
-            <p>
-              Name or display information, ratings, comments,
-              and other information submitted with a review.
-            </p>
-
-          </div>
-
-
-          <div class="data-card">
-
-            <h3>
-              Location Information
-            </h3>
-
-            <p>
-              Business location information and, where a
-              feature specifically requests it, location
-              information supplied by the user.
-            </p>
-
-          </div>
-
-
-          <div class="data-card">
-
-            <h3>
-              Images & Files
-            </h3>
-
-            <p>
-              Images, logos, documents, or other files you
-              voluntarily submit where a feature allows them.
-            </p>
-
-          </div>
-
-
-          <div class="data-card">
-
-            <h3>
-              Technical Information
-            </h3>
-
-            <p>
-              IP address, browser information, device
-              information, timestamps, pages visited, and
-              technical logs where collected by our
-              infrastructure or service providers.
-            </p>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =================================================
-           4
-           ================================================= -->
-
-      <section
-        class="section"
-        id="sources"
-      >
-
-        <h2>
-          <span>4.</span>
-          Where Information Comes From
-        </h2>
-
-        <p>
-          Information may come from several sources,
-          including:
-        </p>
-
-        <ul>
-
-          <li>
-            Information you provide directly
-          </li>
-
-          <li>
-            Business owners or authorized representatives
-          </li>
-
-          <li>
-            Users who submit listings, reviews, or reports
-          </li>
-
-          <li>
-            Publicly available business information
-          </li>
-
-          <li>
-            Third-party data sources used for directory
-            discovery
-          </li>
-
-          <li>
-            Our technology and hosting providers
-          </li>
-
-          <li>
-            Administrative and security systems
-          </li>
-
-        </ul>
-
-        <p>
-          Public business information may be collected or
-          processed for directory purposes, but NearAfrica
-          does not intend to represent that every piece of
-          third-party information is permanently accurate.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           5
-           ================================================= -->
-
-      <section
-        class="section"
-        id="purposes"
-      >
-
-        <h2>
-          <span>5.</span>
-          Why We Use Information
-        </h2>
-
-        <p>
-          NearAfrica may process information for purposes
-          including:
-        </p>
-
-        <ul>
-
-          <li>
-            Creating and displaying business listings
-          </li>
-
-          <li>
-            Processing business submissions
-          </li>
-
-          <li>
-            Processing business claims and verification
-          </li>
-
-          <li>
-            Reviewing reports and complaints
-          </li>
-
-          <li>
-            Publishing and moderating reviews
-          </li>
-
-          <li>
-            Preventing fraud, abuse, spam, and manipulation
-          </li>
-
-          <li>
-            Maintaining platform security
-          </li>
-
-          <li>
-            Measuring usage and improving the platform
-          </li>
-
-          <li>
-            Responding to support requests
-          </li>
-
-          <li>
-            Communicating with users where necessary
-          </li>
-
-          <li>
-            Maintaining administrative records
-          </li>
-
-          <li>
-            Complying with applicable legal obligations
-          </li>
-
-          <li>
-            Protecting NearAfrica, users, businesses, and
-            other affected persons
-          </li>
-
-        </ul>
-
-      </section>
-
-
-      <!-- =================================================
-           6
-           ================================================= -->
-
-      <section
-        class="section"
-        id="lawful-basis"
-      >
-
-        <h2>
-          <span>6.</span>
-          Lawful Basis for Processing
-        </h2>
-
-        <p>
-          Where applicable, NearAfrica will process personal
-          information on a lawful basis recognized by
-          applicable data-protection law.
-        </p>
-
-        <p>
-          Depending on the circumstances, this may include:
-        </p>
-
-        <ul>
-
-          <li>
-            Consent
-          </li>
-
-          <li>
-            Performance of a requested service or agreement
-          </li>
-
-          <li>
-            Compliance with a legal obligation
-          </li>
-
-          <li>
-            Protection of legitimate interests where
-            permitted by law
-          </li>
-
-          <li>
-            Other lawful grounds recognized by applicable
-            law
-          </li>
-
-        </ul>
-
-        <p>
-          The appropriate lawful basis depends on the specific
-          processing activity and the circumstances in which
-          information is collected.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           7
-           ================================================= -->
-
-      <section
-        class="section"
-        id="public-business-data"
-      >
-
-        <h2>
-          <span>7.</span>
-          Public Business Directory Information
-        </h2>
-
-        <p>
-          NearAfrica is a directory. Some business
-          information may therefore be displayed publicly.
-        </p>
-
-        <p>
-          Public information may include:
-        </p>
-
-        <ul>
-
-          <li>
-            Business name
-          </li>
-
-          <li>
-            Business category
-          </li>
-
-          <li>
-            General business location
-          </li>
-
-          <li>
-            Business address
-          </li>
-
-          <li>
-            Business telephone number
-          </li>
-
-          <li>
-            Business website
-          </li>
-
-          <li>
-            Business social-media links
-          </li>
-
-          <li>
-            Business description
-          </li>
-
-          <li>
-            Business images and logos where permitted
-          </li>
-
-          <li>
-            Reviews and ratings submitted through NearAfrica
-          </li>
-
-          <li>
-            Listing status such as Unclaimed, Claimed, or
-            Verified
-          </li>
-
-        </ul>
-
-        <p>
-          Information intended to identify a business should
-          not automatically be understood as personal
-          information belonging to an individual. However,
-          where business information relates to an identifiable
-          individual, applicable privacy obligations may still
-          apply.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           8
-           ================================================= -->
-
-      <section
-        class="section"
-        id="submissions"
-      >
-
-        <h2>
-          <span>8.</span>
-          Business Listings and Submissions
-        </h2>
-
-        <p>
-          When you submit a business to NearAfrica, we may
-          process the information required to review and
-          publish the listing.
-        </p>
-
-        <p>
-          This may include your contact information so that
-          NearAfrica can communicate with you about the
-          submission where necessary.
-        </p>
-
-        <p>
-          You are responsible for ensuring that information
-          you submit is accurate and that you have the
-          appropriate authority or rights to submit material
-          that you provide.
-        </p>
-
-        <p>
-          Additional rules are described in our
-          <a href="terms.html">
-            Terms of Service
-          </a>
-          and
-          <a href="listing-policy.html">
-            Listing Policy
-          </a>.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           9
-           ================================================= -->
-
-      <section
-        class="section"
-        id="claims"
-      >
-
-        <h2>
-          <span>9.</span>
-          Business Claims and Verification
-        </h2>
-
-        <p>
-          When someone attempts to claim a business listing,
-          NearAfrica may collect information needed to
-          evaluate whether the claimant is authorized to
-          represent the business.
-        </p>
-
-        <p>
-          Depending on the claim process, this may include:
-        </p>
-
-        <ul>
-
-          <li>
-            Name
-          </li>
-
-          <li>
-            Email address
-          </li>
-
-          <li>
-            Telephone number
-          </li>
-
-          <li>
-            Relationship to the business
-          </li>
-
-          <li>
-            Verification information
-          </li>
-
-          <li>
-            Supporting evidence where reasonably necessary
-          </li>
-
-        </ul>
-
-        <p>
-          NearAfrica should request only information that is
-          reasonably necessary for the claim or verification
-          process.
-        </p>
-
-        <p>
-          Claim approval is an administrative verification
-          process. It is not a court determination of legal
-          ownership.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           10
-           ================================================= -->
-
-      <section
-        class="section"
-        id="reports"
-      >
-
-        <h2>
-          <span>10.</span>
-          Reports and Complaints
-        </h2>
-
-        <p>
-          When you submit a report, NearAfrica may process
-          the information you provide to investigate the
-          issue and determine whether administrative action
-          is appropriate.
-        </p>
-
-        <p>
-          Reports may relate to inaccurate information,
-          duplicate listings, impersonation, fraud concerns,
-          privacy issues, copyright complaints, inappropriate
-          content, or removal requests.
-        </p>
-
-        <p>
-          Information associated with a report may be retained
-          as an administrative record where reasonably
-          necessary for security, dispute handling, legal
-          compliance, or audit purposes.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           11
-           ================================================= -->
-
-      <section
-        class="section"
-        id="reviews"
-      >
-
-        <h2>
-          <span>11.</span>
-          Reviews and Ratings
-        </h2>
-
-        <p>
-          If NearAfrica provides review functionality, the
-          information you submit may be publicly displayed
-          according to the applicable review system.
-        </p>
-
-        <p>
-          Reviews may include a display name, rating,
-          comment, date, and other information associated with
-          the review.
-        </p>
-
-        <p>
-          Reviews may be moderated, restricted, or removed
-          where they violate applicable NearAfrica policies.
-        </p>
-
-        <p>
-          NearAfrica may retain moderation records to help
-          prevent repeated abuse or manipulation.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           12
-           ================================================= -->
-
-      <section
-        class="section"
-        id="cookies"
-      >
-
-        <h2>
-          <span>12.</span>
-          Cookies and Technical Information
-        </h2>
-
-        <p>
-          NearAfrica may use cookies, local storage, server
-          logs, or similar technologies where necessary for
-          functionality, security, preferences, analytics, or
-          other legitimate platform purposes.
-        </p>
-
-        <p>
-          Technical information may include:
-        </p>
-
-        <ul>
-
-          <li>
-            IP address
-          </li>
-
-          <li>
-            Browser type
-          </li>
-
-          <li>
-            Device information
-          </li>
-
-          <li>
-            Operating-system information
-          </li>
-
-          <li>
-            Referring pages
-          </li>
-
-          <li>
-            Pages or resources requested
-          </li>
-
-          <li>
-            Date and time of requests
-          </li>
-
-          <li>
-            Security and error logs
-          </li>
-
-        </ul>
-
-        <p>
-          The exact technologies used may change as the
-          platform develops.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           13
-           ================================================= -->
-
-      <section
-        class="section"
-        id="third-party"
-      >
-
-        <h2>
-          <span>13.</span>
-          Third-Party Service Providers
-        </h2>
-
-        <p>
-          NearAfrica may use third-party technology providers
-          to operate parts of the platform.
-        </p>
-
-        <p>
-          These may include providers for:
-        </p>
-
-        <ul>
-
-          <li>
-            Website hosting
-          </li>
-
-          <li>
-            Database infrastructure
-          </li>
-
-          <li>
-            Image and file storage
-          </li>
-
-          <li>
-            Analytics
-          </li>
-
-          <li>
-            Security and abuse prevention
-          </li>
-
-          <li>
-            Email or communications
-          </li>
-
-          <li>
-            Payments and subscriptions
-          </li>
-
-          <li>
-            Maps and location services
-          </li>
-
-        </ul>
-
-        <p>
-          Providers may process information only to the extent
-          reasonably necessary to provide the relevant service
-          or as otherwise permitted by applicable law.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           14
-           ================================================= -->
-
-      <section
-        class="section"
-        id="sharing"
-      >
-
-        <h2>
-          <span>14.</span>
-          When Information May Be Shared
-        </h2>
-
-        <p>
-          NearAfrica does not intend to sell personal
-          information simply because someone uses the
-          directory.
-        </p>
-
-        <p>
-          Information may nevertheless be disclosed where
-          reasonably necessary for legitimate purposes,
-          including:
-        </p>
-
-        <ul>
-
-          <li>
-            Publishing information that you intentionally
-            submit for public display
-          </li>
-
-          <li>
-            Using service providers that help operate
-            NearAfrica
-          </li>
-
-          <li>
-            Processing payments or subscriptions
-          </li>
-
-          <li>
-            Investigating fraud or abuse
-          </li>
-
-          <li>
-            Protecting users or the platform
-          </li>
-
-          <li>
-            Responding to lawful requests from authorities
-          </li>
-
-          <li>
-            Complying with applicable legal obligations
-          </li>
-
-          <li>
-            Handling disputes, claims, or legal proceedings
-          </li>
-
-        </ul>
-
-        <p>
-          NearAfrica will seek to limit disclosures to what
-          is reasonably appropriate for the relevant purpose,
-          subject to applicable law.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           15
-           ================================================= -->
-
-      <section
-        class="section"
-        id="security"
-      >
-
-        <h2>
-          <span>15.</span>
-          Security
-        </h2>
-
-        <p>
-          NearAfrica will use reasonable technical and
-          organizational measures intended to protect
-          information against unauthorized access,
-          alteration, disclosure, loss, or destruction.
-        </p>
-
-        <p>
-          Security measures may include:
-        </p>
-
-        <ul>
-
-          <li>
-            Access controls
-          </li>
-
-          <li>
-            Administrative authentication
-          </li>
-
-          <li>
-            Secure transport where supported
-          </li>
-
-          <li>
-            Database access restrictions
-          </li>
-
-          <li>
-            Administrative logs
-          </li>
-
-          <li>
-            Security monitoring and abuse controls
-          </li>
-
-        </ul>
-
-        <p>
-          No internet service can guarantee absolute security.
-          Users should therefore avoid submitting unnecessary
-          confidential information.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           16
-           ================================================= -->
-
-      <section
-        class="section"
-        id="retention"
-      >
-
-        <h2>
-          <span>16.</span>
-          Data Retention
-        </h2>
-
-        <p>
-          NearAfrica may retain information for as long as
-          reasonably necessary for the purpose for which it
-          was collected or for other legitimate purposes such
-          as security, dispute resolution, fraud prevention,
-          accounting, legal compliance, or maintaining
-          administrative records.
-        </p>
-
-        <p>
-          Different categories of information may therefore
-          have different retention periods.
-        </p>
-
-        <p>
-          Where information is no longer reasonably required,
-          NearAfrica may delete, anonymize, or otherwise
-          dispose of it subject to applicable legal and
-          operational requirements.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           17
-           ================================================= -->
-
-      <section
-        class="section"
-        id="rights"
-      >
-
-        <h2>
-          <span>17.</span>
-          Your Privacy Rights
-        </h2>
-
-        <p>
-          Subject to applicable law and relevant exceptions,
-          individuals may have rights concerning their
-          personal information.
-        </p>
-
-        <p>
-          Depending on the circumstances, these may include
-          rights relating to:
-        </p>
-
-        <ul>
-
-          <li>
-            Access to personal information
-          </li>
-
-          <li>
-            Correction of inaccurate information
-          </li>
-
-          <li>
-            Deletion or erasure where legally applicable
-          </li>
-
-          <li>
-            Restriction or objection to certain processing
-          </li>
-
-          <li>
-            Withdrawal of consent where processing relies on
-            consent
-          </li>
-
-          <li>
-            Data portability where applicable
-          </li>
-
-          <li>
-            Complaints concerning personal-data processing
-          </li>
-
-        </ul>
-
-        <p>
-          These rights are not absolute and may be subject to
-          legal exceptions, legitimate interests, security
-          requirements, or other applicable restrictions.
-        </p>
-
-        <p>
-          To make a privacy request, contact:
-        </p>
-
-        <p>
-          <a href="mailto:contactnearafrica43@gmail.com">
-            contactnearafrica43@gmail.com
-          </a>
-        </p>
-
-        <p>
-          Please provide enough information for us to
-          understand and process the request. We may need to
-          verify the identity or authority of the requester
-          before disclosing, correcting, or deleting
-          information.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           18
-           ================================================= -->
-
-      <section
-        class="section"
-        id="children"
-      >
-
-        <h2>
-          <span>18.</span>
-          Children and Minors
-        </h2>
-
-        <p>
-          NearAfrica is not designed to encourage children to
-          provide unnecessary personal information.
-        </p>
-
-        <p>
-          If a feature involves age restrictions or additional
-          consent requirements, those requirements will apply
-          to that feature.
-        </p>
-
-        <p>
-          If you believe that a child has provided personal
-          information to NearAfrica in circumstances where it
-          should not have been collected, contact us so the
-          matter can be reviewed.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           19
-           ================================================= -->
-
-      <section
-        class="section"
-        id="international"
-      >
-
-        <h2>
-          <span>19.</span>
-          International Processing
-        </h2>
-
-        <p>
-          Some technology providers used by NearAfrica may
-          process or store information in countries other
-          than the country where the user is located.
-        </p>
-
-        <p>
-          Where applicable, NearAfrica will take reasonable
-          steps required by applicable law when information is
-          transferred or processed across borders.
-        </p>
-
-        <p>
-          The countries and providers involved may change as
-          NearAfrica's infrastructure develops.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           20
-           ================================================= -->
-
-      <section
-        class="section"
-        id="changes"
-      >
-
-        <h2>
-          <span>20.</span>
-          Changes to This Privacy Policy
-        </h2>
-
-        <p>
-          NearAfrica may update this Privacy Policy when the
-          platform, technology, business model, legal
-          requirements, or data-processing practices change.
-        </p>
-
-        <p>
-          The updated version will be published on this page
-          with a revised "Last Updated" date where
-          appropriate.
-        </p>
-
-        <p>
-          Users should periodically review this page for
-          changes.
-        </p>
-
-      </section>
-
-
-      <!-- =================================================
-           21
-           ================================================= -->
-
-      <section
-        class="section"
-        id="contact"
-      >
-
-        <h2>
-          <span>21.</span>
-          Privacy Contact and Complaints
-        </h2>
-
-        <p>
-          If you have a question, complaint, correction
-          request, access request, deletion request, or other
-          concern regarding your personal information, contact
-          NearAfrica first so that we can review and attempt
-          to address the matter internally.
-        </p>
-
-        <div class="contact-card">
-
-          <h2>
-            Contact NearAfrica
-          </h2>
-
-          <p>
-            Privacy and data-protection enquiries:
-          </p>
-
-          <p>
-            <strong>
-              contactnearafrica43@gmail.com
-            </strong>
-          </p>
-
-          <a
-            class="email-button"
-            href="mailto:contactnearafrica43@gmail.com?subject=NearAfrica%20Privacy%20Request"
-          >
-            Email NearAfrica
-          </a>
-
-        </div>
-
-        <p style="margin-top:20px;">
-          Where applicable, individuals may also have the
-          right to lodge a complaint with the relevant data
-          protection authority. Nigeria's data-protection
-          framework provides for complaint and redress
-          mechanisms. :contentReference[oaicite:1]{index=1}
-        </p>
-
-      </section>
-
 
     </article>
 
   </main>
+
 
 
   <!-- =====================================================
@@ -2158,12 +1885,12 @@
 
       <div class="footer-links">
 
-        <a href="privacy.html">
-          Privacy
+        <a href="index.html">
+          Home
         </a>
 
-        <a href="terms.html">
-          Terms
+        <a href="explore.html">
+          Explore
         </a>
 
         <a href="listing-policy.html">
@@ -2174,8 +1901,12 @@
           Claim Business
         </a>
 
-        <a href="report-listing.html">
-          Report Listing
+        <a href="terms.html">
+          Terms
+        </a>
+
+        <a href="privacy.html">
+          Privacy
         </a>
 
         <a href="contact.html">
