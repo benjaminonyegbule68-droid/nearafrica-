@@ -1305,22 +1305,34 @@ async function loadResource(
 
         }
 
-        if (
-            resource === "submissions"
-        ) {
+       if (
+    resource === "submissions"
+) {
 
-            renderSubmissions(
-                records
-            );
+    renderSubmissions(
+        records
+    );
 
-            return;
+    return;
 
-        }
+}
 
-        renderGeneric(
-            records,
-            resource
-        );
+if (
+    resource === "reports"
+) {
+
+    renderReports(
+        records
+    );
+
+    return;
+
+}
+
+renderGeneric(
+    records,
+    resource
+);
 
     } catch (error) {
 
