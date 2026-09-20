@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
@@ -17,11 +18,10 @@
     <link rel="icon" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
 
+    <!-- Leaflet CSS -->
     <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIINfQ3u9eQY1Qm3fM5s4w6Y8XJw4y6M7M="
-        crossorigin=""
     >
 
     <style>
@@ -514,20 +514,23 @@
     </p>
 </footer>
 
+<!-- Leaflet JavaScript -->
 <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""
 ></script>
 
 <script>
 (function () {
+
+    "use strict";
 
     const API_URL =
         "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
     const content =
         document.getElementById("businessContent");
+
+    let activeMap = null;
 
 
     function getBusinessId() {
@@ -568,6 +571,7 @@
                 .toLowerCase();
 
         const map = {
+
             "professional-services":
                 "Professional Services",
 
@@ -659,8 +663,7 @@
                 "Other"
         };
 
-        return map[value] ||
-            String(category);
+        return map[value] || String(category);
     }
 
 
@@ -913,6 +916,7 @@
                 )
                 : "active";
 
+
         let logoHtml;
 
         if (business.logo_url) {
@@ -1042,7 +1046,6 @@
                     `;
                 })
                 .join("");
-
         }
 
         if (!photosHtml && business.image_url) {
@@ -1317,9 +1320,11 @@
 
                     <section class="profile-card">
 
-                        <h2>About ${escapeHtml(
-                            businessName
-                        )}</h2>
+                        <h2>
+                            About ${escapeHtml(
+                                businessName
+                            )}
+                        </h2>
 
                         <div class="description">
                             ${description}
@@ -1349,8 +1354,7 @@
                         <div id="businessMap">
 
                             <div class="map-message">
-                                Map location is not available
-                                for this business yet.
+                                Loading map...
                             </div>
 
                         </div>
@@ -1652,7 +1656,12 @@
 
         `;
 
-
+        /*
+         * IMPORTANT:
+         *
+         * Map is initialized ONLY here.
+         * loadBusiness() must NOT initialize it again.
+         */
         initializeMap(business);
 
         setupClaimForm(
@@ -1669,8 +1678,25 @@
             );
 
         if (!mapElement) {
+            console.warn(
+                "NearAfrica: Map container not found."
+            );
             return;
         }
+
+
+        /*
+         * Prevent Leaflet from being initialized twice.
+         */
+        if (activeMap) {
+
+            try {
+                activeMap.remove();
+            } catch (_) {}
+
+            activeMap = null;
+        }
+
 
         const latitude =
             Number(business.latitude);
@@ -1678,10 +1704,21 @@
         const longitude =
             Number(business.longitude);
 
+
+        console.log(
+            "NearAfrica: Map coordinates:",
+            {
+                latitude,
+                longitude
+            }
+        );
+
+
         if (
             !Number.isFinite(latitude) ||
             !Number.isFinite(longitude)
         ) {
+
             mapElement.innerHTML = `
                 <div class="map-message">
                     📍 Exact map coordinates are not
@@ -1692,15 +1729,50 @@
             return;
         }
 
+
+        /*
+         * Basic geographic validation.
+         */
         if (
-            typeof L === "undefined"
+            latitude < -90 ||
+            latitude > 90 ||
+            longitude < -180 ||
+            longitude > 180
+        ) {
+
+            mapElement.innerHTML = `
+                <div class="map-message">
+                    📍 The business has invalid map coordinates.
+                </div>
+            `;
+
+            console.error(
+                "NearAfrica: Invalid coordinates:",
+                latitude,
+                longitude
+            );
+
+            return;
+        }
+
+
+        /*
+         * Check Leaflet.
+         */
+        if (
+            typeof window.L === "undefined"
         ) {
 
             mapElement.innerHTML = `
                 <div class="map-message">
                     Map service could not be loaded.
+                    Please refresh the page and try again.
                 </div>
             `;
+
+            console.error(
+                "NearAfrica: Leaflet library was not loaded."
+            );
 
             return;
         }
@@ -1708,15 +1780,22 @@
 
         try {
 
-            const map =
-                L.map(mapElement)
-                    .setView(
-                        [
+            mapElement.innerHTML = "";
+
+
+            activeMap =
+                L.map(
+                    mapElement,
+                    {
+                        center: [
                             latitude,
                             longitude
                         ],
-                        15
-                    );
+                        zoom: 15,
+                        scrollWheelZoom: true
+                    }
+                );
+
 
             L.tileLayer(
                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -1725,29 +1804,55 @@
                     attribution:
                         '&copy; OpenStreetMap contributors'
                 }
-            ).addTo(map);
+            ).addTo(activeMap);
 
-            L.marker(
-                [
+
+            const marker =
+                L.marker([
                     latitude,
                     longitude
-                ]
-            )
-            .addTo(map)
-            .bindPopup(
+                ]).addTo(activeMap);
+
+
+            marker.bindPopup(
                 `<strong>${escapeHtml(
                     business.business_name ||
                     "Business"
                 )}</strong>`
-            )
-            .openPopup();
+            );
+
+
+            marker.openPopup();
+
+
+            /*
+             * Leaflet sometimes needs this after
+             * being created inside dynamic HTML.
+             */
+            setTimeout(
+                function () {
+
+                    if (activeMap) {
+                        activeMap.invalidateSize();
+                    }
+
+                },
+                250
+            );
+
+
+            console.log(
+                "NearAfrica: Map initialized successfully."
+            );
 
         } catch (error) {
 
             console.error(
-                "Map initialization error:",
+                "NearAfrica: Map initialization error:",
                 error
             );
+
+            activeMap = null;
 
             mapElement.innerHTML = `
                 <div class="map-message">
@@ -1783,6 +1888,7 @@
 
                 event.preventDefault();
 
+
                 const submitButton =
                     form.querySelector(
                         'button[type="submit"]'
@@ -1796,7 +1902,8 @@
                 message.className =
                     "form-message";
 
-                message.textContent = "";
+                message.textContent =
+                    "";
 
 
                 const formData =
@@ -1842,7 +1949,6 @@
                                 "evidence_details"
                             ) || ""
                         ).trim()
-
                 };
 
 
@@ -1870,9 +1976,12 @@
                     let result = {};
 
                     try {
+
                         result =
                             await response.json();
+
                     } catch (_) {
+
                         result = {};
                     }
 
@@ -1896,9 +2005,9 @@
 
                     form.reset();
 
-
                     submitButton.textContent =
                         "Claim Submitted";
+
 
                 } catch (error) {
 
@@ -1986,23 +2095,6 @@
             );
 
 
-            /*
-             * IMPORTANT:
-             *
-             * NearAfrica API returns:
-             *
-             * {
-             *   "status": "ok",
-             *   "business": {...}
-             * }
-             *
-             * It does NOT return:
-             *
-             * {
-             *   "success": true
-             * }
-             */
-
             if (
                 !response.ok ||
                 result.status !== "ok" ||
@@ -2019,15 +2111,19 @@
             }
 
 
-           displayBusiness(
-    result.business,
-    result
-);
-
-initializeMap(
-    result.business
-);
-
+            /*
+             * IMPORTANT:
+             *
+             * displayBusiness() handles map
+             * initialization.
+             *
+             * DO NOT call initializeMap()
+             * again here.
+             */
+            displayBusiness(
+                result.business,
+                result
+            );
 
         } catch (error) {
 
