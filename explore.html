@@ -1919,69 +1919,98 @@
       // LOAD BUSINESSES
       // =====================================================
 
-      async function loadBusinesses() {
+     async function loadBusinesses() {
+  showLoading();
 
-        showLoading();
+  try {
+    const response = await fetch(
+      API_URL,
+      {
+        method: "GET",
+        headers: {
+          "Accept": "application/json"
+        },
+        cache: "no-store"
+      }
+    );
 
+    if (!response.ok) {
+      throw new Error(
+        `API request failed with HTTP ${response.status}`
+      );
+    }
 
-        try {
+    const data = await response.json();
 
-          const response =
-            await fetch(
-              API_URL,
-              {
-                method: "GET",
+    /*
+     * NearAfrica API currently returns:
+     *
+     * {
+     *   "status": "ok",
+     *   "count": 4,
+     *   "businesses": [...]
+     * }
+     *
+     * Some older endpoints may use:
+     *
+     * {
+     *   "success": true,
+     *   "businesses": [...]
+     * }
+     *
+     * Accept both formats.
+     */
+    if (
+      !data ||
+      (
+        data.status !== "ok" &&
+        data.success !== true
+      )
+    ) {
+      throw new Error(
+        data &&
+        (data.error || data.message)
+          ? (data.error || data.message)
+          : "The API returned an unsuccessful response."
+      );
+    }
 
-                headers: {
-                  "Accept":
-                    "application/json"
-                },
+    if (!Array.isArray(data.businesses)) {
+      throw new Error(
+        "The API response does not contain a businesses array."
+      );
+    }
 
-                cache: "no-store"
-              }
-            );
+    allBusinesses = data.businesses;
+    filteredBusinesses = [...allBusinesses];
 
+    hideStatus();
 
-          if (!response.ok) {
+    currentPage = 1;
 
-            throw new Error(
-              `API request failed with HTTP ${response.status}`
-            );
+    renderBusinesses();
 
-          }
+  } catch (error) {
 
+    console.error(
+      "NearAfrica Explore error:",
+      error
+    );
 
-          const data =
-            await response.json();
+    allBusinesses = [];
+    filteredBusinesses = [];
 
+    businessGrid.innerHTML = "";
+    pagination.innerHTML = "";
 
-          if (
-            !data ||
-            data.success !== true
-          ) {
+    resultCount.textContent =
+      "Unable to load businesses";
 
-            throw new Error(
-              data &&
-              data.error
-                ? data.error
-                : "The API returned an unsuccessful response."
-            );
-
-          }
-
-
-          if (
-            !Array.isArray(
-              data.businesses
-            )
-          ) {
-
-            throw new Error(
-              "The API response does not contain a businesses array."
-            );
-
-          }
-
+    showError(
+      "We couldn't load businesses right now. Please try again in a moment."
+    );
+  }
+}
 
           // -----------------------------------------------
           // IMPORTANT:
