@@ -1,0 +1,2267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="NearAfrica Listing Policy. Learn what businesses and organizations may be listed, how listings are reviewed, and how corrections, removals, claims, and reports are handled."
+  >
+
+  <meta
+    name="robots"
+    content="index, follow"
+  >
+
+  <title>Listing Policy | NearAfrica</title>
+
+  <link
+    rel="icon"
+    href="favicon.ico"
+    type="image/x-icon"
+  >
+
+
+  <style>
+
+    :root {
+
+      --bg: #0b0b0b;
+      --bg-soft: #111111;
+      --card: #151515;
+
+      --gold: #d4af37;
+      --gold-light: #f0d477;
+
+      --text: #f5f5f5;
+      --text-soft: #c9c9c9;
+      --text-muted: #999999;
+
+      --border: rgba(212, 175, 55, 0.22);
+
+      --max-width: 1100px;
+
+      --radius: 14px;
+
+    }
+
+
+    * {
+
+      box-sizing: border-box;
+
+      margin: 0;
+
+      padding: 0;
+
+    }
+
+
+    html {
+
+      scroll-behavior: smooth;
+
+    }
+
+
+    body {
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(212, 175, 55, 0.08),
+          transparent 35%
+        ),
+        var(--bg);
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+      line-height: 1.7;
+
+    }
+
+
+    a {
+
+      color: var(--gold-light);
+
+      text-decoration: none;
+
+    }
+
+
+    a:hover {
+
+      text-decoration: underline;
+
+    }
+
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    header {
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 1000;
+
+      background:
+        rgba(11, 11, 11, 0.94);
+
+      backdrop-filter: blur(12px);
+
+      border-bottom:
+        1px solid var(--border);
+
+    }
+
+
+    .header-inner {
+
+      width:
+        min(
+          calc(100% - 32px),
+          var(--max-width)
+        );
+
+      margin: 0 auto;
+
+      min-height: 72px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 20px;
+
+    }
+
+
+    .brand {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      color: var(--text);
+
+      font-size: 1.25rem;
+
+      font-weight: 800;
+
+      letter-spacing: -0.02em;
+
+      text-decoration: none;
+
+    }
+
+
+    .brand:hover {
+
+      text-decoration: none;
+
+    }
+
+
+    .brand-mark {
+
+      width: 38px;
+
+      height: 38px;
+
+      border-radius: 10px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--gold),
+          #8e6d14
+        );
+
+      color: #080808;
+
+      font-size: 0.9rem;
+
+      font-weight: 900;
+
+      box-shadow:
+        0 0 20px rgba(212, 175, 55, 0.18);
+
+    }
+
+
+    nav {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 22px;
+
+    }
+
+
+    nav a {
+
+      color: var(--text-soft);
+
+      font-size: 0.92rem;
+
+      font-weight: 600;
+
+      text-decoration: none;
+
+    }
+
+
+    nav a:hover {
+
+      color: var(--gold-light);
+
+      text-decoration: none;
+
+    }
+
+
+    .nav-cta {
+
+      padding: 9px 15px;
+
+      border: 1px solid var(--gold);
+
+      border-radius: 999px;
+
+      color: var(--gold) !important;
+
+    }
+
+
+    .nav-cta:hover {
+
+      background: var(--gold);
+
+      color: #080808 !important;
+
+    }
+
+
+    /* =====================================================
+       HERO
+       ===================================================== */
+
+    .hero {
+
+      width:
+        min(
+          calc(100% - 32px),
+          var(--max-width)
+        );
+
+      margin: 0 auto;
+
+      padding: 80px 0 55px;
+
+    }
+
+
+    .eyebrow {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      padding: 6px 12px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 999px;
+
+      color: var(--gold-light);
+
+      background:
+        rgba(212, 175, 55, 0.06);
+
+      font-size: 0.78rem;
+
+      font-weight: 700;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.08em;
+
+    }
+
+
+    .hero h1 {
+
+      margin-top: 20px;
+
+      font-size:
+        clamp(2.3rem, 6vw, 4.3rem);
+
+      line-height: 1.05;
+
+      letter-spacing: -0.045em;
+
+    }
+
+
+    .hero h1 span {
+
+      color: var(--gold);
+
+    }
+
+
+    .hero-description {
+
+      max-width: 780px;
+
+      margin-top: 22px;
+
+      color: var(--text-soft);
+
+      font-size:
+        clamp(1rem, 2vw, 1.12rem);
+
+    }
+
+
+    .updated {
+
+      margin-top: 18px;
+
+      color: var(--text-muted);
+
+      font-size: 0.9rem;
+
+    }
+
+
+    /* =====================================================
+       LAYOUT
+       ===================================================== */
+
+    .page-layout {
+
+      width:
+        min(
+          calc(100% - 32px),
+          var(--max-width)
+        );
+
+      margin: 0 auto 80px;
+
+      display: grid;
+
+      grid-template-columns:
+        250px minmax(0, 1fr);
+
+      gap: 34px;
+
+      align-items: start;
+
+    }
+
+
+    /* =====================================================
+       TOC
+       ===================================================== */
+
+    .toc {
+
+      position: sticky;
+
+      top: 95px;
+
+      padding: 22px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      background:
+        rgba(21, 21, 21, 0.85);
+
+    }
+
+
+    .toc-title {
+
+      color: var(--gold);
+
+      font-size: 0.82rem;
+
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.08em;
+
+      margin-bottom: 14px;
+
+    }
+
+
+    .toc a {
+
+      display: block;
+
+      padding: 7px 0;
+
+      color: var(--text-muted);
+
+      font-size: 0.86rem;
+
+      line-height: 1.4;
+
+      text-decoration: none;
+
+    }
+
+
+    .toc a:hover {
+
+      color: var(--gold-light);
+
+    }
+
+
+    /* =====================================================
+       CONTENT
+       ===================================================== */
+
+    .policy {
+
+      min-width: 0;
+
+    }
+
+
+    .policy-section {
+
+      padding-bottom: 38px;
+
+      margin-bottom: 38px;
+
+      border-bottom:
+        1px solid rgba(255, 255, 255, 0.07);
+
+    }
+
+
+    .policy-section:last-child {
+
+      border-bottom: none;
+
+    }
+
+
+    .policy-section h2 {
+
+      margin-bottom: 16px;
+
+      color: var(--text);
+
+      font-size:
+        clamp(1.35rem, 3vw, 1.75rem);
+
+      line-height: 1.25;
+
+      letter-spacing: -0.02em;
+
+    }
+
+
+    .policy-section h2::before {
+
+      content: "";
+
+      display: inline-block;
+
+      width: 5px;
+
+      height: 24px;
+
+      margin-right: 11px;
+
+      vertical-align: -3px;
+
+      border-radius: 5px;
+
+      background: var(--gold);
+
+    }
+
+
+    .policy-section h3 {
+
+      margin:
+        22px 0 8px;
+
+      color: var(--gold-light);
+
+      font-size: 1.05rem;
+
+    }
+
+
+    .policy-section p {
+
+      margin-bottom: 13px;
+
+      color: var(--text-soft);
+
+      font-size: 0.98rem;
+
+    }
+
+
+    .policy-section ul,
+    .policy-section ol {
+
+      margin:
+        12px 0 18px 22px;
+
+    }
+
+
+    .policy-section li {
+
+      margin-bottom: 8px;
+
+      color: var(--text-soft);
+
+      padding-left: 3px;
+
+    }
+
+
+    .policy-section strong {
+
+      color: var(--text);
+
+    }
+
+
+    .notice {
+
+      margin: 22px 0;
+
+      padding: 20px 22px;
+
+      border:
+        1px solid var(--border);
+
+      border-left:
+        4px solid var(--gold);
+
+      border-radius:
+        0 var(--radius) var(--radius) 0;
+
+      background:
+        rgba(212, 175, 55, 0.055);
+
+    }
+
+
+    .notice p:last-child {
+
+      margin-bottom: 0;
+
+    }
+
+
+    .status-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 15px;
+
+      margin: 22px 0;
+
+    }
+
+
+    .status-card {
+
+      padding: 20px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      background:
+        rgba(255, 255, 255, 0.025);
+
+    }
+
+
+    .status-card h3 {
+
+      margin-top: 0;
+
+      color: var(--gold);
+
+    }
+
+
+    .status-card p {
+
+      margin-bottom: 0;
+
+      font-size: 0.9rem;
+
+    }
+
+
+    .contact-card {
+
+      margin-top: 20px;
+
+      padding: 25px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(212, 175, 55, 0.09),
+          rgba(255, 255, 255, 0.025)
+        );
+
+    }
+
+
+    .contact-card strong {
+
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: var(--gold-light);
+
+      font-size: 1.1rem;
+
+    }
+
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    footer {
+
+      border-top:
+        1px solid var(--border);
+
+      background: #080808;
+
+    }
+
+
+    .footer-inner {
+
+      width:
+        min(
+          calc(100% - 32px),
+          var(--max-width)
+        );
+
+      margin: 0 auto;
+
+      padding: 35px 0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 20px;
+
+    }
+
+
+    .footer-brand {
+
+      color: var(--text);
+
+      font-weight: 800;
+
+    }
+
+
+    .footer-copy {
+
+      margin-top: 5px;
+
+      color: var(--text-muted);
+
+      font-size: 0.85rem;
+
+    }
+
+
+    .footer-links {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      justify-content: flex-end;
+
+      gap: 15px 22px;
+
+    }
+
+
+    .footer-links a {
+
+      color: var(--text-muted);
+
+      font-size: 0.85rem;
+
+    }
+
+
+    .footer-links a:hover {
+
+      color: var(--gold-light);
+
+    }
+
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+    @media (max-width: 850px) {
+
+      nav {
+
+        gap: 10px;
+
+      }
+
+
+      nav a:not(.nav-cta) {
+
+        display: none;
+
+      }
+
+
+      .hero {
+
+        padding-top: 55px;
+
+      }
+
+
+      .page-layout {
+
+        grid-template-columns: 1fr;
+
+        gap: 22px;
+
+      }
+
+
+      .toc {
+
+        position: static;
+
+      }
+
+
+      .toc a {
+
+        display: inline-block;
+
+        margin-right: 14px;
+
+      }
+
+
+      .status-grid {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .footer-inner {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+      }
+
+
+      .footer-links {
+
+        justify-content: flex-start;
+
+      }
+
+    }
+
+
+    @media (max-width: 480px) {
+
+      .header-inner,
+      .hero,
+      .page-layout,
+      .footer-inner {
+
+        width:
+          min(
+            calc(100% - 22px),
+            var(--max-width)
+          );
+
+      }
+
+
+      .hero h1 {
+
+        font-size: 2.3rem;
+
+      }
+
+
+      .policy-section p,
+      .policy-section li {
+
+        font-size: 0.94rem;
+
+      }
+
+
+      .toc {
+
+        padding: 17px;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header>
+
+    <div class="header-inner">
+
+      <a
+        href="index.html"
+        class="brand"
+        aria-label="NearAfrica Home"
+      >
+
+        <span class="brand-mark">
+          NA
+        </span>
+
+        <span>
+          NearAfrica
+        </span>
+
+      </a>
+
+
+      <nav aria-label="Main navigation">
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="explore.html">
+          Explore
+        </a>
+
+        <a href="list-business.html">
+          List Your Business
+        </a>
+
+        <a
+          href="contact.html"
+          class="nav-cta"
+        >
+          Contact
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       HERO
+       ===================================================== -->
+
+  <section class="hero">
+
+    <span class="eyebrow">
+      Directory Rules
+    </span>
+
+
+    <h1>
+      Listing <span>Policy</span>
+    </h1>
+
+
+    <p class="hero-description">
+      This policy explains what may be listed on NearAfrica,
+      how listings are reviewed and managed, and how businesses
+      and users can request corrections, report problems, or
+      request removal.
+    </p>
+
+
+    <p class="updated">
+      <strong>Last Updated:</strong>
+      September 20, 2026
+    </p>
+
+  </section>
+
+
+  <!-- =====================================================
+       CONTENT
+       ===================================================== -->
+
+  <main class="page-layout">
+
+
+    <!-- ===================================================
+         TOC
+         =================================================== -->
+
+    <aside class="toc">
+
+      <div class="toc-title">
+        On this page
+      </div>
+
+
+      <a href="#purpose">
+        1. Purpose
+      </a>
+
+      <a href="#eligible">
+        2. Eligible Listings
+      </a>
+
+      <a href="#prohibited">
+        3. Prohibited Listings
+      </a>
+
+      <a href="#information">
+        4. Listing Information
+      </a>
+
+      <a href="#sources">
+        5. Public & Third-Party Sources
+      </a>
+
+      <a href="#review">
+        6. Review & Moderation
+      </a>
+
+      <a href="#statuses">
+        7. Listing Statuses
+      </a>
+
+      <a href="#claimed">
+        8. Claims
+      </a>
+
+      <a href="#verification">
+        9. Verification
+      </a>
+
+      <a href="#duplicates">
+        10. Duplicate Listings
+      </a>
+
+      <a href="#accuracy">
+        11. Accuracy & Corrections
+      </a>
+
+      <a href="#removal">
+        12. Removal Requests
+      </a>
+
+      <a href="#reports">
+        13. Reports
+      </a>
+
+      <a href="#reviews">
+        14. Reviews
+      </a>
+
+      <a href="#images">
+        15. Images & Copyright
+      </a>
+
+      <a href="#ranking">
+        16. Ranking & Featured Listings
+      </a>
+
+      <a href="#suspension">
+        17. Suspension
+      </a>
+
+      <a href="#legal">
+        18. Legal Requests
+      </a>
+
+      <a href="#contact">
+        19. Contact
+      </a>
+
+    </aside>
+
+
+    <!-- ===================================================
+         POLICY
+         =================================================== -->
+
+    <article class="policy">
+
+
+      <!-- 1 -->
+
+      <section
+        class="policy-section"
+        id="purpose"
+      >
+
+        <h2>
+          1. Purpose of This Policy
+        </h2>
+
+        <p>
+          NearAfrica is a business discovery and directory
+          platform designed to help users discover businesses
+          and opportunities across Africa.
+        </p>
+
+        <p>
+          This Listing Policy establishes standards for
+          businesses, organizations, users, submitted content,
+          public-source information, and directory listings.
+        </p>
+
+        <div class="notice">
+
+          <p>
+            <strong>
+              A listing on NearAfrica is not automatically an
+              endorsement, certification, recommendation, or
+              guarantee by NearAfrica.
+            </strong>
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- 2 -->
+
+      <section
+        class="policy-section"
+        id="eligible"
+      >
+
+        <h2>
+          2. Eligible Listings
+        </h2>
+
+        <p>
+          NearAfrica may list legitimate businesses,
+          organizations, professionals, services, venues,
+          institutions, and other entities that reasonably fit
+          the purpose of the platform.
+        </p>
+
+        <p>
+          Depending on the category and applicable law, this
+          may include:
+        </p>
+
+        <ul>
+
+          <li>
+            Restaurants and food businesses
+          </li>
+
+          <li>
+            Hotels and accommodation providers
+          </li>
+
+          <li>
+            Beauty and spa businesses
+          </li>
+
+          <li>
+            Health and medical businesses
+          </li>
+
+          <li>
+            Shops and retailers
+          </li>
+
+          <li>
+            Supermarkets
+          </li>
+
+          <li>
+            Banks and financial businesses
+          </li>
+
+          <li>
+            Professional service providers
+          </li>
+
+          <li>
+            Educational institutions
+          </li>
+
+          <li>
+            Real-estate businesses
+          </li>
+
+          <li>
+            Automotive businesses
+          </li>
+
+          <li>
+            Travel and tourism businesses
+          </li>
+
+          <li>
+            Logistics and delivery businesses
+          </li>
+
+          <li>
+            Technology businesses
+          </li>
+
+          <li>
+            Entertainment businesses
+          </li>
+
+          <li>
+            Fitness and sports businesses
+          </li>
+
+          <li>
+            Construction and home-service providers
+          </li>
+
+          <li>
+            Fashion businesses
+          </li>
+
+          <li>
+            Agricultural businesses
+          </li>
+
+          <li>
+            Religious organizations
+          </li>
+
+          <li>
+            Government and public-service organizations
+          </li>
+
+          <li>
+            Other legitimate organizations or services that
+            reasonably fit the platform.
+          </li>
+
+        </ul>
+
+      </section>
+
+
+      <!-- 3 -->
+
+      <section
+        class="policy-section"
+        id="prohibited"
+      >
+
+        <h2>
+          3. Prohibited Listings
+        </h2>
+
+        <p>
+          NearAfrica may reject, remove, restrict, or suspend
+          listings that involve unlawful, deceptive, harmful,
+          fraudulent, or otherwise prohibited activity.
+        </p>
+
+        <p>
+          Examples include:
+        </p>
+
+        <ul>
+
+          <li>
+            Fake or completely fabricated businesses presented
+            as real.
+          </li>
+
+          <li>
+            Fraudulent businesses or deceptive schemes.
+          </li>
+
+          <li>
+            Listings impersonating another business or person.
+          </li>
+
+          <li>
+            Listings containing knowingly false information.
+          </li>
+
+          <li>
+            Listings promoting unlawful goods or services.
+          </li>
+
+          <li>
+            Listings designed primarily to facilitate scams,
+            fraud, or abuse.
+          </li>
+
+          <li>
+            Listings containing malware, malicious code, or
+            harmful links.
+          </li>
+
+          <li>
+            Listings that unlawfully expose sensitive personal
+            information.
+          </li>
+
+          <li>
+            Listings containing material that violates the
+            rights of third parties.
+          </li>
+
+          <li>
+            Spam or mass-created duplicate listings.
+          </li>
+
+        </ul>
+
+        <p>
+          This list is not exhaustive. NearAfrica may take
+          reasonable action against listings that create
+          significant legal, security, safety, or platform
+          integrity concerns.
+        </p>
+
+      </section>
+
+
+      <!-- 4 -->
+
+      <section
+        class="policy-section"
+        id="information"
+      >
+
+        <h2>
+          4. Listing Information
+        </h2>
+
+        <p>
+          A listing may contain information such as:
+        </p>
+
+        <ul>
+
+          <li>
+            Business name
+          </li>
+
+          <li>
+            Category and subcategory
+          </li>
+
+          <li>
+            Description
+          </li>
+
+          <li>
+            Address
+          </li>
+
+          <li>
+            City
+          </li>
+
+          <li>
+            State or region
+          </li>
+
+          <li>
+            Country
+          </li>
+
+          <li>
+            Telephone number
+          </li>
+
+          <li>
+            WhatsApp number
+          </li>
+
+          <li>
+            Email address
+          </li>
+
+          <li>
+            Website
+          </li>
+
+          <li>
+            Social-media links
+          </li>
+
+          <li>
+            Business hours
+          </li>
+
+          <li>
+            Geographic coordinates
+          </li>
+
+          <li>
+            Photographs or logos
+          </li>
+
+          <li>
+            Reviews
+          </li>
+
+          <li>
+            Listing status
+          </li>
+
+        </ul>
+
+        <p>
+          NearAfrica may limit, modify, correct, or remove
+          information where reasonably necessary to maintain
+          directory quality, comply with applicable law, or
+          protect users and third parties.
+        </p>
+
+      </section>
+
+
+      <!-- 5 -->
+
+      <section
+        class="policy-section"
+        id="sources"
+      >
+
+        <h2>
+          5. Publicly Available and Third-Party Information
+        </h2>
+
+        <p>
+          NearAfrica may discover or receive business
+          information from public sources, users, businesses,
+          third-party services, or other legitimate sources.
+        </p>
+
+        <p>
+          Information being publicly available does not mean
+          that every piece of information is permanently
+          accurate, complete, current, or suitable for
+          publication.
+        </p>
+
+        <p>
+          NearAfrica may review, update, correct, restrict,
+          or remove information when appropriate.
+        </p>
+
+        <div class="notice">
+
+          <p>
+            NearAfrica does not guarantee that every publicly
+            available business detail will always be accurate
+            or current.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- 6 -->
+
+      <section
+        class="policy-section"
+        id="review"
+      >
+
+        <h2>
+          6. Listing Review and Moderation
+        </h2>
+
+        <p>
+          NearAfrica may review submitted or discovered
+          listings before publication or after publication.
+        </p>
+
+        <p>
+          Review may consider factors including:
+        </p>
+
+        <ul>
+
+          <li>
+            Whether the business appears to exist.
+          </li>
+
+          <li>
+            Whether submitted information appears internally
+            consistent.
+          </li>
+
+          <li>
+            Whether the listing duplicates an existing
+            listing.
+          </li>
+
+          <li>
+            Whether the listing violates this policy.
+          </li>
+
+          <li>
+            Whether a report or complaint has been received.
+          </li>
+
+          <li>
+            Whether information requires clarification.
+          </li>
+
+        </ul>
+
+        <p>
+          Moderation does not guarantee that a listing is
+          completely accurate or that the business is legally
+          licensed, financially sound, safe, reputable, or
+          suitable for a particular user.
+        </p>
+
+      </section>
+
+
+      <!-- 7 -->
+
+      <section
+        class="policy-section"
+        id="statuses"
+      >
+
+        <h2>
+          7. Listing Statuses
+        </h2>
+
+        <p>
+          NearAfrica may use different statuses to communicate
+          the state of a listing.
+        </p>
+
+
+        <div class="status-grid">
+
+
+          <div class="status-card">
+
+            <h3>
+              Unclaimed
+            </h3>
+
+            <p>
+              The business has not been successfully claimed
+              by an authorized representative through
+              NearAfrica's claim process.
+            </p>
+
+          </div>
+
+
+          <div class="status-card">
+
+            <h3>
+              Claimed
+            </h3>
+
+            <p>
+              A claim has been accepted or associated with
+              the listing through NearAfrica's claim process.
+            </p>
+
+          </div>
+
+
+          <div class="status-card">
+
+            <h3>
+              Verified
+            </h3>
+
+            <p>
+              NearAfrica has completed a defined verification
+              process. Verification does not mean government
+              certification or endorsement.
+            </p>
+
+          </div>
+
+
+        </div>
+
+
+        <p>
+          NearAfrica may change listing statuses when new
+          information becomes available.
+        </p>
+
+      </section>
+
+
+      <!-- 8 -->
+
+      <section
+        class="policy-section"
+        id="claimed"
+      >
+
+        <h2>
+          8. Business Claims
+        </h2>
+
+        <p>
+          A person may request to claim a business listing
+          where they are authorized to represent that business.
+        </p>
+
+        <p>
+          NearAfrica may request evidence reasonably necessary
+          to assess the claim.
+        </p>
+
+        <p>
+          A claim may be rejected where:
+        </p>
+
+        <ul>
+
+          <li>
+            The claimant cannot reasonably demonstrate
+            authorization.
+          </li>
+
+          <li>
+            The information conflicts with available evidence.
+          </li>
+
+          <li>
+            Another claimant has a stronger or previously
+            established claim.
+          </li>
+
+          <li>
+            The claim appears fraudulent or abusive.
+          </li>
+
+          <li>
+            Additional information is required.
+          </li>
+
+        </ul>
+
+        <p>
+          Claiming a listing does not automatically grant
+          ownership of the NearAfrica listing itself or of
+          information belonging to third parties.
+        </p>
+
+      </section>
+
+
+      <!-- 9 -->
+
+      <section
+        class="policy-section"
+        id="verification"
+      >
+
+        <h2>
+          9. Verification
+        </h2>
+
+        <p>
+          Where NearAfrica provides verification, the
+          verification process may involve checking information
+          supplied by the business or other available evidence.
+        </p>
+
+        <p>
+          The exact verification method may differ depending
+          on the business and the information available.
+        </p>
+
+        <div class="notice">
+
+          <p>
+            <strong>
+              A NearAfrica verification badge must not be
+              interpreted as a government license, professional
+              accreditation, safety certification, financial
+              guarantee, or general endorsement.
+            </strong>
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- 10 -->
+
+      <section
+        class="policy-section"
+        id="duplicates"
+      >
+
+        <h2>
+          10. Duplicate Listings
+        </h2>
+
+        <p>
+          NearAfrica may merge, remove, redirect, or otherwise
+          manage duplicate listings.
+        </p>
+
+        <p>
+          Duplicate listings may be created accidentally,
+          through multiple submissions, business relocations,
+          changes of name, or other circumstances.
+        </p>
+
+        <p>
+          Where appropriate, NearAfrica may preserve relevant
+          information while consolidating duplicate records.
+        </p>
+
+      </section>
+
+
+      <!-- 11 -->
+
+      <section
+        class="policy-section"
+        id="accuracy"
+      >
+
+        <h2>
+          11. Accuracy and Correction Requests
+        </h2>
+
+        <p>
+          Businesses and users may report inaccurate,
+          outdated, incomplete, or misleading information.
+        </p>
+
+        <p>
+          A correction request should provide enough
+          information for NearAfrica to identify the listing
+          and understand the requested correction.
+        </p>
+
+        <p>
+          NearAfrica may request supporting evidence where
+          appropriate.
+        </p>
+
+        <p>
+          NearAfrica may not accept every requested change
+          automatically.
+        </p>
+
+      </section>
+
+
+      <!-- 12 -->
+
+      <section
+        class="policy-section"
+        id="removal"
+      >
+
+        <h2>
+          12. Business Removal Requests
+        </h2>
+
+        <p>
+          A business or authorized representative may request
+          removal of a listing.
+        </p>
+
+        <p>
+          Removal requests may be reviewed to determine:
+        </p>
+
+        <ul>
+
+          <li>
+            Whether the requester has authority to make the
+            request.
+          </li>
+
+          <li>
+            Whether the listing should remain available for
+            legitimate directory purposes.
+          </li>
+
+          <li>
+            Whether legal or safety considerations apply.
+          </li>
+
+          <li>
+            Whether the information can instead be corrected
+            or restricted.
+          </li>
+
+        </ul>
+
+        <p>
+          NearAfrica may retain limited records concerning
+          the listing or removal request where reasonably
+          necessary for legal, security, dispute-resolution,
+          or administrative purposes.
+        </p>
+
+      </section>
+
+
+      <!-- 13 -->
+
+      <section
+        class="policy-section"
+        id="reports"
+      >
+
+        <h2>
+          13. Reports and Complaints
+        </h2>
+
+        <p>
+          Users may report listings that they believe violate
+          NearAfrica policies or contain serious inaccuracies.
+        </p>
+
+        <p>
+          Reports may concern:
+        </p>
+
+        <ul>
+
+          <li>
+            Fraud or suspected scams.
+          </li>
+
+          <li>
+            Impersonation.
+          </li>
+
+          <li>
+            Incorrect business information.
+          </li>
+
+          <li>
+            Duplicate listings.
+          </li>
+
+          <li>
+            Copyright concerns.
+          </li>
+
+          <li>
+            Privacy concerns.
+          </li>
+
+          <li>
+            Inappropriate content.
+          </li>
+
+          <li>
+            Other policy violations.
+          </li>
+
+        </ul>
+
+        <p>
+          Submitting a report does not guarantee that a listing
+          will be removed.
+        </p>
+
+        <p>
+          Knowingly submitting false or abusive reports may
+          itself violate NearAfrica's Terms of Service.
+        </p>
+
+      </section>
+
+
+      <!-- 14 -->
+
+      <section
+        class="policy-section"
+        id="reviews"
+      >
+
+        <h2>
+          14. Reviews
+        </h2>
+
+        <p>
+          Reviews should reflect genuine experiences and
+          should not be fabricated, manipulated, or submitted
+          for the purpose of misleading users.
+        </p>
+
+        <p>
+          Reviews must not:
+        </p>
+
+        <ul>
+
+          <li>
+            Impersonate another person.
+          </li>
+
+          <li>
+            Contain deliberately fabricated experiences.
+          </li>
+
+          <li>
+            Be created through coordinated manipulation.
+          </li>
+
+          <li>
+            Contain threats or unlawful harassment.
+          </li>
+
+          <li>
+            Expose unnecessary private information.
+          </li>
+
+          <li>
+            Contain unlawful or prohibited material.
+          </li>
+
+        </ul>
+
+        <p>
+          NearAfrica may moderate, restrict, remove, or retain
+          reviews according to its policies and applicable law.
+        </p>
+
+        <p>
+          A business may report a review it believes violates
+          the rules.
+        </p>
+
+      </section>
+
+
+      <!-- 15 -->
+
+      <section
+        class="policy-section"
+        id="images"
+      >
+
+        <h2>
+          15. Images, Logos, and Copyright
+        </h2>
+
+        <p>
+          Users and businesses must not upload photographs,
+          logos, graphics, or other material unless they have
+          the necessary rights or authorization to provide
+          that material.
+        </p>
+
+        <p>
+          NearAfrica may remove or restrict material when it
+          receives a credible copyright or rights-related
+          complaint.
+        </p>
+
+        <p>
+          NearAfrica may also preserve relevant records when
+          reasonably necessary to investigate a dispute.
+        </p>
+
+        <div class="notice">
+
+          <p>
+            If you believe content on NearAfrica infringes
+            your rights, contact us with enough information
+            to identify the material and explain the basis
+            of your complaint.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- 16 -->
+
+      <section
+        class="policy-section"
+        id="ranking"
+      >
+
+        <h2>
+          16. Listing Ranking and Featured Placement
+        </h2>
+
+        <p>
+          NearAfrica may organize listings using factors such
+          as relevance, category, location, listing quality,
+          completeness, activity, verification status, and
+          other platform factors.
+        </p>
+
+        <p>
+          NearAfrica may introduce paid or promotional
+          placement features in the future.
+        </p>
+
+        <p>
+          Where paid placement is introduced, NearAfrica may
+          identify promotional or featured placements where
+          appropriate.
+        </p>
+
+        <p>
+          Paid placement does not automatically mean that a
+          business is verified, endorsed, or guaranteed by
+          NearAfrica.
+        </p>
+
+      </section>
+
+
+      <!-- 17 -->
+
+      <section
+        class="policy-section"
+        id="suspension"
+      >
+
+        <h2>
+          17. Suspension, Restriction, or Removal
+        </h2>
+
+        <p>
+          NearAfrica may suspend, restrict, hide, modify,
+          merge, or remove a listing where reasonably
+          necessary.
+        </p>
+
+        <p>
+          Reasons may include:
+        </p>
+
+        <ul>
+
+          <li>
+            Violation of this Listing Policy.
+          </li>
+
+          <li>
+            Violation of the Terms of Service.
+          </li>
+
+          <li>
+            Fraud or suspected fraudulent activity.
+          </li>
+
+          <li>
+            Impersonation.
+          </li>
+
+          <li>
+            Significant inaccuracies.
+          </li>
+
+          <li>
+            Repeated abuse of platform systems.
+          </li>
+
+          <li>
+            Legal or regulatory requirements.
+          </li>
+
+          <li>
+            Security or safety concerns.
+          </li>
+
+        </ul>
+
+        <p>
+          NearAfrica may restore or modify a listing when
+          sufficient information becomes available to justify
+          doing so.
+        </p>
+
+      </section>
+
+
+      <!-- 18 -->
+
+      <section
+        class="policy-section"
+        id="legal"
+      >
+
+        <h2>
+          18. Legal Requests
+        </h2>
+
+        <p>
+          NearAfrica may respond to valid legal requests,
+          court orders, regulatory requirements, law-enforcement
+          requests, or other legally binding processes where
+          required or permitted by applicable law.
+        </p>
+
+        <p>
+          Depending on the circumstances, NearAfrica may
+          preserve relevant records while a matter is being
+          investigated or resolved.
+        </p>
+
+      </section>
+
+
+      <!-- 19 -->
+
+      <section
+        class="policy-section"
+        id="contact"
+      >
+
+        <h2>
+          19. Contact NearAfrica
+        </h2>
+
+        <p>
+          For listing corrections, removal requests, reports,
+          copyright concerns, verification questions, or
+          other listing-related matters, contact NearAfrica.
+        </p>
+
+
+        <div class="contact-card">
+
+          <strong>
+            NearAfrica Listing Support
+          </strong>
+
+          <p>
+            Email:
+            <a
+              href="mailto:contactnearafrica43@gmail.com"
+            >
+              contactnearafrica43@gmail.com
+            </a>
+          </p>
+
+          <p>
+            Please include the business name, listing URL or
+            ID where available, the issue you are reporting,
+            and any relevant supporting information.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- FINAL -->
+
+      <section class="policy-section">
+
+        <h2>
+          NearAfrica
+        </h2>
+
+        <p>
+          Discover businesses and opportunities across Africa.
+        </p>
+
+        <p>
+
+          <strong>
+            Related policies:
+          </strong>
+
+          <a href="terms.html">
+            Terms of Service
+          </a>
+          ·
+          <a href="privacy.html">
+            Privacy Policy
+          </a>
+
+        </p>
+
+        <p>
+
+          <strong>
+            Last Updated:
+          </strong>
+
+          September 20, 2026
+
+        </p>
+
+      </section>
+
+
+    </article>
+
+  </main>
+
+
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+
+  <footer>
+
+    <div class="footer-inner">
+
+      <div>
+
+        <div class="footer-brand">
+          NearAfrica
+        </div>
+
+        <div class="footer-copy">
+          Discover businesses and opportunities across Africa.
+        </div>
+
+      </div>
+
+
+      <div class="footer-links">
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="explore.html">
+          Explore
+        </a>
+
+        <a href="list-business.html">
+          List Your Business
+        </a>
+
+        <a href="terms.html">
+          Terms of Service
+        </a>
+
+        <a href="privacy.html">
+          Privacy Policy
+        </a>
+
+        <a href="listing-policy.html">
+          Listing Policy
+        </a>
+
+        <a href="contact.html">
+          Contact
+        </a>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+</body>
+</html>
