@@ -11,6 +11,12 @@
     content="Add your business to NearAfrica and help customers discover your business."
   />
 
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
   <style>
     * {
       box-sizing: border-box;
@@ -116,7 +122,9 @@
       font-size: 15px;
       outline: none;
       background: #fff;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
     }
 
     input:focus,
@@ -142,6 +150,94 @@
       color: #777;
       margin-top: 6px;
       line-height: 1.4;
+    }
+
+    /* =====================================================
+       LOCATION
+       ===================================================== */
+
+    .location-box {
+      border: 1px solid #e3e3e3;
+      border-radius: 14px;
+      padding: 16px;
+      background: #fafafa;
+    }
+
+    .location-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .location-button {
+      width: auto;
+      flex: 1;
+      background: #111;
+      color: #fff;
+      padding: 13px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .location-button.secondary {
+      background: #fff;
+      color: #111;
+      border: 1px solid #d8d8d8;
+    }
+
+    .location-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .location-status {
+      display: none;
+      padding: 10px 12px;
+      border-radius: 9px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .location-status.success {
+      display: block;
+      background: #eaf8ee;
+      border: 1px solid #b7e4c3;
+      color: #1d6b32;
+    }
+
+    .location-status.error {
+      display: block;
+      background: #fff0f0;
+      border: 1px solid #efbcbc;
+      color: #a32929;
+    }
+
+    .location-status.info {
+      display: block;
+      background: #f1f5f9;
+      border: 1px solid #d9e1ea;
+      color: #475569;
+    }
+
+    #location-map {
+      width: 100%;
+      height: 280px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #ddd;
+      display: none;
+    }
+
+    .coordinates {
+      display: none;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #666;
+      word-break: break-word;
+    }
+
+    .coordinates strong {
+      color: #111;
     }
 
     .terms {
@@ -180,7 +276,9 @@
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
-      transition: transform 0.15s, opacity 0.15s;
+      transition:
+        transform 0.15s,
+        opacity 0.15s;
     }
 
     button:hover {
@@ -236,6 +334,7 @@
     }
 
     @media (max-width: 700px) {
+
       .page {
         padding: 25px 14px 50px;
       }
@@ -256,6 +355,15 @@
       .header h1 {
         font-size: 26px;
       }
+
+      .location-actions {
+        flex-direction: column;
+      }
+
+      .location-button {
+        width: 100%;
+      }
+
     }
   </style>
 </head>
@@ -263,6 +371,7 @@
 <body>
 
   <main class="page">
+
     <div class="container">
 
       <!-- HEADER -->
@@ -287,7 +396,11 @@
 
         <form id="business-form" novalidate>
 
-          <!-- BUSINESS INFORMATION -->
+
+          <!-- =====================================================
+               BUSINESS INFORMATION
+               ===================================================== -->
+
           <section class="section">
 
             <div class="section-title">
@@ -295,6 +408,7 @@
             </div>
 
             <div class="grid">
+
 
               <!-- BUSINESS NAME -->
               <div class="field full">
@@ -576,6 +690,7 @@
                   <option value="Taraba">Taraba</option>
                   <option value="Yobe">Yobe</option>
                   <option value="Zamfara">Zamfara</option>
+
                   <option value="FCT">
                     Federal Capital Territory
                   </option>
@@ -633,7 +748,89 @@
           </section>
 
 
-          <!-- CONTACT INFORMATION -->
+          <!-- =====================================================
+               BUSINESS LOCATION
+               ===================================================== -->
+
+          <section class="section">
+
+            <div class="section-title">
+              Business Location
+            </div>
+
+            <div class="location-box">
+
+              <div class="hint" style="margin-top:0;margin-bottom:12px;">
+
+                Adding the business location helps customers find
+                your business on the NearAfrica map.
+
+                <strong>
+                  Location is recommended but not required.
+                </strong>
+
+              </div>
+
+
+              <div class="location-actions">
+
+                <button
+                  type="button"
+                  id="use-location"
+                  class="location-button"
+                >
+                  📍 Use My Current Location
+                </button>
+
+
+                <button
+                  type="button"
+                  id="clear-location"
+                  class="location-button secondary"
+                >
+                  Clear Location
+                </button>
+
+              </div>
+
+
+              <div
+                id="location-status"
+                class="location-status"
+              ></div>
+
+
+              <div id="location-map"></div>
+
+
+              <div
+                id="coordinates"
+                class="coordinates"
+              ></div>
+
+
+              <!-- Hidden coordinates submitted to API -->
+              <input
+                type="hidden"
+                id="latitude"
+                name="latitude"
+              />
+
+              <input
+                type="hidden"
+                id="longitude"
+                name="longitude"
+              />
+
+            </div>
+
+          </section>
+
+
+          <!-- =====================================================
+               CONTACT INFORMATION
+               ===================================================== -->
+
           <section class="section">
 
             <div class="section-title">
@@ -641,6 +838,7 @@
             </div>
 
             <div class="grid">
+
 
               <!-- PHONE -->
               <div class="field">
@@ -718,7 +916,10 @@
           </section>
 
 
-          <!-- DESCRIPTION -->
+          <!-- =====================================================
+               DESCRIPTION
+               ===================================================== -->
+
           <section class="section">
 
             <div class="section-title">
@@ -746,7 +947,10 @@
           </section>
 
 
-          <!-- TERMS -->
+          <!-- =====================================================
+               TERMS
+               ===================================================== -->
+
           <section class="section">
 
             <div class="terms">
@@ -774,7 +978,10 @@
           </section>
 
 
-          <!-- SUBMIT -->
+          <!-- =====================================================
+               SUBMIT
+               ===================================================== -->
+
           <div class="submit-area">
 
             <button
@@ -817,7 +1024,17 @@
       </a>
 
     </div>
+
   </main>
+
+
+  <!-- =========================================================
+       LEAFLET
+       ========================================================= -->
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  ></script>
 
 
   <!-- =========================================================
@@ -948,6 +1165,507 @@
 
 
       updateStateField();
+
+    })();
+
+  </script>
+
+
+  <!-- =========================================================
+       LOCATION SYSTEM
+       ========================================================= -->
+
+  <script>
+
+    (function () {
+
+      const useLocationButton =
+        document.getElementById(
+          "use-location"
+        );
+
+
+      const clearLocationButton =
+        document.getElementById(
+          "clear-location"
+        );
+
+
+      const locationStatus =
+        document.getElementById(
+          "location-status"
+        );
+
+
+      const locationMap =
+        document.getElementById(
+          "location-map"
+        );
+
+
+      const coordinatesBox =
+        document.getElementById(
+          "coordinates"
+        );
+
+
+      const latitudeInput =
+        document.getElementById(
+          "latitude"
+        );
+
+
+      const longitudeInput =
+        document.getElementById(
+          "longitude"
+        );
+
+
+      let locationMapInstance =
+        null;
+
+
+      let locationMarker =
+        null;
+
+
+      /*
+       * Display location status
+       */
+
+      function setLocationStatus(
+        message,
+        type
+      ) {
+
+        locationStatus.textContent =
+          message;
+
+        locationStatus.className =
+          "location-status " +
+          type;
+
+      }
+
+
+      /*
+       * Validate coordinates
+       */
+
+      function validCoordinates(
+        latitude,
+        longitude
+      ) {
+
+        return (
+          Number.isFinite(latitude) &&
+          Number.isFinite(longitude) &&
+          latitude >= -90 &&
+          latitude <= 90 &&
+          longitude >= -180 &&
+          longitude <= 180
+        );
+
+      }
+
+
+      /*
+       * Show coordinates
+       */
+
+      function showCoordinates(
+        latitude,
+        longitude
+      ) {
+
+        coordinatesBox.innerHTML =
+          "<strong>Latitude:</strong> " +
+          latitude.toFixed(6) +
+          " &nbsp; " +
+          "<strong>Longitude:</strong> " +
+          longitude.toFixed(6);
+
+
+        coordinatesBox.style.display =
+          "block";
+
+      }
+
+
+      /*
+       * Initialize map
+       */
+
+      function initializeMap(
+        latitude,
+        longitude
+      ) {
+
+        if (
+          typeof L === "undefined"
+        ) {
+
+          setLocationStatus(
+            "The map library could not be loaded. Your coordinates were still captured.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        locationMap.style.display =
+          "block";
+
+
+        /*
+         * Create map once
+         */
+
+        if (
+          !locationMapInstance
+        ) {
+
+          locationMapInstance =
+            L.map(
+              locationMap
+            ).setView(
+              [
+                latitude,
+                longitude
+              ],
+              16
+            );
+
+
+          L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+              maxZoom: 19,
+              attribution:
+                "&copy; OpenStreetMap contributors"
+            }
+          ).addTo(
+            locationMapInstance
+          );
+
+        }
+
+        else {
+
+          locationMapInstance.setView(
+            [
+              latitude,
+              longitude
+            ],
+            16
+          );
+
+        }
+
+
+        /*
+         * Remove old marker
+         */
+
+        if (
+          locationMarker
+        ) {
+
+          locationMapInstance.removeLayer(
+            locationMarker
+          );
+
+        }
+
+
+        /*
+         * Add marker
+         */
+
+        locationMarker =
+          L.marker(
+            [
+              latitude,
+              longitude
+            ]
+          )
+            .addTo(
+              locationMapInstance
+            )
+            .bindPopup(
+              "Business location"
+            )
+            .openPopup();
+
+
+        /*
+         * Fix Leaflet sizing
+         */
+
+        setTimeout(
+          function () {
+
+            if (
+              locationMapInstance
+            ) {
+
+              locationMapInstance.invalidateSize();
+
+            }
+
+          },
+          250
+        );
+
+      }
+
+
+      /*
+       * Use browser GPS
+       */
+
+      function useCurrentLocation() {
+
+        if (
+          !navigator.geolocation
+        ) {
+
+          setLocationStatus(
+            "Location services are not supported by this browser.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        useLocationButton.disabled =
+          true;
+
+        useLocationButton.textContent =
+          "Getting location...";
+
+
+        setLocationStatus(
+          "Requesting your current location. Please allow location access when your browser asks.",
+          "info"
+        );
+
+
+        navigator.geolocation.getCurrentPosition(
+
+          function (position) {
+
+            const latitude =
+              Number(
+                position.coords.latitude
+              );
+
+
+            const longitude =
+              Number(
+                position.coords.longitude
+              );
+
+
+            if (
+              !validCoordinates(
+                latitude,
+                longitude
+              )
+            ) {
+
+              setLocationStatus(
+                "The browser returned invalid coordinates.",
+                "error"
+              );
+
+              useLocationButton.disabled =
+                false;
+
+              useLocationButton.textContent =
+                "📍 Use My Current Location";
+
+              return;
+
+            }
+
+
+            /*
+             * Save coordinates
+             */
+
+            latitudeInput.value =
+              latitude.toFixed(8);
+
+            longitudeInput.value =
+              longitude.toFixed(8);
+
+
+            /*
+             * Display them
+             */
+
+            showCoordinates(
+              latitude,
+              longitude
+            );
+
+
+            initializeMap(
+              latitude,
+              longitude
+            );
+
+
+            setLocationStatus(
+              "Location captured successfully. Please make sure the marker represents the actual business location before submitting.",
+              "success"
+            );
+
+
+            useLocationButton.disabled =
+              false;
+
+            useLocationButton.textContent =
+              "📍 Update My Location";
+
+          },
+
+
+          function (error) {
+
+            let message =
+              "We couldn't get your location.";
+
+
+            if (
+              error.code ===
+              error.PERMISSION_DENIED
+            ) {
+
+              message =
+                "Location permission was denied. You can still submit the business using its address.";
+
+            }
+
+            else if (
+              error.code ===
+              error.POSITION_UNAVAILABLE
+            ) {
+
+              message =
+                "Your location is currently unavailable. Please try again or submit using the business address.";
+
+            }
+
+            else if (
+              error.code ===
+              error.TIMEOUT
+            ) {
+
+              message =
+                "Location request timed out. Please try again.";
+
+            }
+
+
+            setLocationStatus(
+              message,
+              "error"
+            );
+
+
+            useLocationButton.disabled =
+              false;
+
+            useLocationButton.textContent =
+              "📍 Use My Current Location";
+
+
+            console.error(
+              "NearAfrica geolocation error:",
+              error
+            );
+
+          },
+
+
+          {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0
+          }
+
+        );
+
+      }
+
+
+      /*
+       * Clear location
+       */
+
+      function clearLocation() {
+
+        latitudeInput.value =
+          "";
+
+        longitudeInput.value =
+          "";
+
+
+        coordinatesBox.textContent =
+          "";
+
+        coordinatesBox.style.display =
+          "none";
+
+
+        locationMap.style.display =
+          "none";
+
+
+        if (
+          locationMarker &&
+          locationMapInstance
+        ) {
+
+          locationMapInstance.removeLayer(
+            locationMarker
+          );
+
+          locationMarker =
+            null;
+
+        }
+
+
+        setLocationStatus(
+          "Location cleared. You can submit without coordinates.",
+          "info"
+        );
+
+
+        useLocationButton.textContent =
+          "📍 Use My Current Location";
+
+      }
+
+
+      useLocationButton.addEventListener(
+        "click",
+        useCurrentLocation
+      );
+
+
+      clearLocationButton.addEventListener(
+        "click",
+        clearLocation
+      );
 
     })();
 
@@ -1139,13 +1857,44 @@
 
 
           /*
+           * Coordinates
+           *
+           * These are optional.
+           */
+
+          const latitudeValue =
+            String(
+              formData.get(
+                "latitude"
+              ) || ""
+            ).trim();
+
+
+          const longitudeValue =
+            String(
+              formData.get(
+                "longitude"
+              ) || ""
+            ).trim();
+
+
+          const latitude =
+            latitudeValue
+              ? Number(latitudeValue)
+              : null;
+
+
+          const longitude =
+            longitudeValue
+              ? Number(longitudeValue)
+              : null;
+
+
+          /*
            * IMPORTANT:
            *
            * D1 submissions table uses
            * "name", NOT "business_name".
-           *
-           * The visible HTML field can still
-           * use business_name.
            */
 
           const submission = {
@@ -1236,6 +1985,18 @@
                   "email"
                 ) || ""
               ).trim(),
+
+
+            latitude:
+              Number.isFinite(latitude)
+                ? latitude
+                : null,
+
+
+            longitude:
+              Number.isFinite(longitude)
+                ? longitude
+                : null,
 
 
             terms:
@@ -1344,6 +2105,53 @@
             );
 
             return;
+
+          }
+
+
+          /*
+           * Validate coordinates if supplied
+           */
+
+          if (
+            (
+              submission.latitude !== null &&
+              submission.longitude === null
+            ) ||
+            (
+              submission.latitude === null &&
+              submission.longitude !== null
+            )
+          ) {
+
+            showError(
+              "The business location is incomplete. Please set the location again or clear it."
+            );
+
+            return;
+
+          }
+
+
+          if (
+            submission.latitude !== null &&
+            submission.longitude !== null
+          ) {
+
+            if (
+              submission.latitude < -90 ||
+              submission.latitude > 90 ||
+              submission.longitude < -180 ||
+              submission.longitude > 180
+            ) {
+
+              showError(
+                "The business coordinates are invalid. Please set the location again."
+              );
+
+              return;
+
+            }
 
           }
 
@@ -1468,7 +2276,10 @@
 
             if (
               data &&
-              data.success === false
+              (
+                data.success === false ||
+                data.status === "error"
+              )
             ) {
 
               throw new Error(
@@ -1553,6 +2364,88 @@
 
 
             /*
+             * Reset location UI
+             */
+
+            const latitudeInput =
+              document.getElementById(
+                "latitude"
+              );
+
+
+            const longitudeInput =
+              document.getElementById(
+                "longitude"
+              );
+
+
+            const locationStatus =
+              document.getElementById(
+                "location-status"
+              );
+
+
+            const locationMap =
+              document.getElementById(
+                "location-map"
+              );
+
+
+            const coordinatesBox =
+              document.getElementById(
+                "coordinates"
+              );
+
+
+            latitudeInput.value =
+              "";
+
+            longitudeInput.value =
+              "";
+
+
+            locationMap.style.display =
+              "none";
+
+
+            coordinatesBox.textContent =
+              "";
+
+            coordinatesBox.style.display =
+              "none";
+
+
+            locationStatus.textContent =
+              "";
+
+            locationStatus.className =
+              "location-status";
+
+
+            /*
+             * Remove marker
+             */
+
+            if (
+              typeof locationMarker !==
+              "undefined" &&
+              locationMarker &&
+              typeof locationMapInstance !==
+              "undefined" &&
+              locationMapInstance
+            ) {
+
+              locationMapInstance.removeLayer(
+                locationMarker
+              );
+
+              locationMarker =
+                null;
+
+            }
+
+
+            /*
              * Scroll to success
              */
 
@@ -1561,8 +2454,8 @@
               block: "center"
             });
 
-
           }
+
 
           catch (error) {
 
