@@ -1919,127 +1919,91 @@
       // LOAD BUSINESSES
       // =====================================================
 
-   async function loadBusinesses() {
-  showLoading();
+      async function loadBusinesses() {
+        showLoading();
 
-  try {
-    const response = await fetch(API_URL, {
-      method: "GET",
-      headers: {
-        Accept: "application/json"
-      },
-      cache: "no-store"
-    });
+        try {
+          const response = await fetch(API_URL, {
+            method: "GET",
+            headers: {
+              Accept: "application/json"
+            },
+            cache: "no-store"
+          });
 
-    if (!response.ok) {
-      throw new Error(
-        "API request failed with HTTP " + response.status
-      );
-    }
+          if (!response.ok) {
+            throw new Error(
+              "API request failed with HTTP " + response.status
+            );
+          }
 
-    const data = await response.json();
+          const data = await response.json();
 
-    if (!data) {
-      throw new Error("Empty API response.");
-    }
+          console.log("NearAfrica API response:", data);
 
-    if (data.status !== "ok" && data.success !== true) {
-      throw new Error(
-        data.error ||
-        data.message ||
-        "The API returned an unsuccessful response."
-      );
-    }
+          if (!data) {
+            throw new Error("Empty API response.");
+          }
 
-    if (!Array.isArray(data.businesses)) {
-      throw new Error(
-        "The API response does not contain a businesses array."
-      );
-    }
+          if (
+            data.status !== "ok" &&
+            data.success !== true
+          ) {
+            throw new Error(
+              data.error ||
+              data.message ||
+              "The API returned an unsuccessful response."
+            );
+          }
 
-    allBusinesses = data.businesses;
-    filteredBusinesses = [...allBusinesses];
+          if (!Array.isArray(data.businesses)) {
+            throw new Error(
+              "The API response does not contain a businesses array."
+            );
+          }
 
-    currentPage = 1;
-
-    hideStatus();
-    renderBusinesses();
-
-  } catch (error) {
-    console.error("NearAfrica Explore error:", error);
-
-    allBusinesses = [];
-    filteredBusinesses = [];
-
-    if (businessGrid) {
-      businessGrid.innerHTML = "";
-    }
-
-    if (pagination) {
-      pagination.innerHTML = "";
-    }
-
-    if (resultCount) {
-      resultCount.textContent = "Unable to load businesses";
-    }
-
-    showError(
-      "We couldn't load businesses right now. Please try again in a moment."
-    );
-  }
-}
-
-          // -----------------------------------------------
-          // IMPORTANT:
-          //
-          // No category is required here.
-          //
-          // Every active business returned by the API
-          // is loaded automatically.
-          // -----------------------------------------------
-
-          allBusinesses =
-            data.businesses;
-
-
-          filteredBusinesses =
-            [...allBusinesses];
-
-
-          hideStatus();
-
+          // Load every business returned by the API.
+          allBusinesses = data.businesses;
+          filteredBusinesses = [...allBusinesses];
 
           currentPage = 1;
 
+          hideStatus();
+
           renderBusinesses();
 
+          console.log(
+            "NearAfrica: Loaded " +
+            allBusinesses.length +
+            " businesses."
+          );
 
         } catch (error) {
-
           console.error(
             "NearAfrica Explore error:",
             error
           );
 
-
           allBusinesses = [];
-
           filteredBusinesses = [];
 
-          businessGrid.innerHTML = "";
+          if (businessGrid) {
+            businessGrid.innerHTML = "";
+          }
 
-          pagination.innerHTML = "";
+          if (pagination) {
+            pagination.innerHTML = "";
+          }
 
-          resultCount.textContent =
-            "Unable to load businesses";
-
+          if (resultCount) {
+            resultCount.textContent =
+              "Unable to load businesses";
+          }
 
           showError(
             "We couldn't load businesses right now. Please try again in a moment."
           );
-
         }
-
       }
 
 
@@ -2056,15 +2020,9 @@
       searchInput.addEventListener(
         "keydown",
         event => {
-
-          if (
-            event.key === "Enter"
-          ) {
-
+          if (event.key === "Enter") {
             applyFilters();
-
           }
-
         }
       );
 
@@ -2072,12 +2030,9 @@
       searchInput.addEventListener(
         "input",
         () => {
-
           // Search updates automatically
           // without requiring a button.
-
           applyFilters();
-
         }
       );
 
@@ -2110,9 +2065,7 @@
       // START
       // =====================================================
 
-      // IMPORTANT:
-      // This runs immediately when Explore opens.
-      //
+      // Load all businesses immediately when Explore opens.
       // No category selection is required.
 
       loadBusinesses();
