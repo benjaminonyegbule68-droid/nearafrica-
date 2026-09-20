@@ -221,11 +221,12 @@
 
     #location-map {
       width: 100%;
-      height: 280px;
+      height: 350px;
       border-radius: 12px;
       overflow: hidden;
       border: 1px solid #ddd;
       display: none;
+      cursor: crosshair;
     }
 
     .coordinates {
@@ -364,6 +365,10 @@
         width: 100%;
       }
 
+      #location-map {
+        height: 320px;
+      }
+
     }
   </style>
 </head>
@@ -445,87 +450,91 @@
                     Select a category
                   </option>
 
-                  <option value="spas">
-                    Spas
+                  <option value="Restaurants & Food">
+                    Restaurants & Food
                   </option>
 
-                  <option value="salons">
-                    Salons & Beauty
+                  <option value="Hotels & Accommodation">
+                    Hotels & Accommodation
                   </option>
 
-                  <option value="barbers">
-                    Barbers
+                  <option value="Beauty & Spa">
+                    Beauty & Spa
                   </option>
 
-                  <option value="restaurants">
-                    Restaurants
+                  <option value="Health & Medical">
+                    Health & Medical
                   </option>
 
-                  <option value="hotels">
-                    Hotels
+                  <option value="Shopping & Retail">
+                    Shopping & Retail
                   </option>
 
-                  <option value="fashion">
-                    Fashion & Clothing
-                  </option>
-
-                  <option value="shopping">
-                    Shopping
-                  </option>
-
-                  <option value="supermarkets">
+                  <option value="Supermarkets">
                     Supermarkets
                   </option>
 
-                  <option value="banks">
-                    Banks & Financial Services
+                  <option value="Banks & Finance">
+                    Banks & Finance
                   </option>
 
-                  <option value="hospitals">
-                    Hospitals & Healthcare
-                  </option>
-
-                  <option value="schools">
-                    Schools & Education
-                  </option>
-
-                  <option value="real-estate">
-                    Real Estate
-                  </option>
-
-                  <option value="law-firms">
-                    Law Firms
-                  </option>
-
-                  <option value="professional-services">
+                  <option value="Professional Services">
                     Professional Services
                   </option>
 
-                  <option value="automotive">
+                  <option value="Education">
+                    Education
+                  </option>
+
+                  <option value="Real Estate">
+                    Real Estate
+                  </option>
+
+                  <option value="Automotive">
                     Automotive
                   </option>
 
-                  <option value="fitness">
-                    Fitness & Gyms
-                  </option>
-
-                  <option value="cleaning">
-                    Cleaning Services
-                  </option>
-
-                  <option value="technology">
-                    Technology
-                  </option>
-
-                  <option value="travel">
+                  <option value="Travel & Tourism">
                     Travel & Tourism
                   </option>
 
-                  <option value="entertainment">
+                  <option value="Logistics & Delivery">
+                    Logistics & Delivery
+                  </option>
+
+                  <option value="Technology">
+                    Technology
+                  </option>
+
+                  <option value="Entertainment">
                     Entertainment
                   </option>
 
-                  <option value="other">
+                  <option value="Fitness & Sports">
+                    Fitness & Sports
+                  </option>
+
+                  <option value="Construction & Home Services">
+                    Construction & Home Services
+                  </option>
+
+                  <option value="Fashion">
+                    Fashion
+                  </option>
+
+                  <option value="Agriculture">
+                    Agriculture
+                  </option>
+
+                  <option value="Religious Organizations">
+                    Religious Organizations
+                  </option>
+
+                  <option value="Government & Public Services">
+                    Government & Public Services
+                  </option>
+
+                  <option value="Other">
                     Other
                   </option>
 
@@ -760,13 +769,17 @@
 
             <div class="location-box">
 
-              <div class="hint" style="margin-top:0;margin-bottom:12px;">
+              <div
+                class="hint"
+                style="margin-top:0;margin-bottom:12px;"
+              >
 
-                Adding the business location helps customers find
-                your business on the NearAfrica map.
+                Add the exact business location so customers
+                can find the business on the NearAfrica map.
 
                 <strong>
-                  Location is recommended but not required.
+                  You can use your current location or select the
+                  business location manually on the map.
                 </strong>
 
               </div>
@@ -809,7 +822,6 @@
               ></div>
 
 
-              <!-- Hidden coordinates submitted to API -->
               <input
                 type="hidden"
                 id="latitude"
@@ -840,7 +852,6 @@
             <div class="grid">
 
 
-              <!-- PHONE -->
               <div class="field">
 
                 <label for="phone">
@@ -857,7 +868,6 @@
               </div>
 
 
-              <!-- WHATSAPP -->
               <div class="field">
 
                 <label for="whatsapp">
@@ -874,7 +884,6 @@
               </div>
 
 
-              <!-- EMAIL -->
               <div class="field">
 
                 <label for="email">
@@ -891,7 +900,6 @@
               </div>
 
 
-              <!-- WEBSITE -->
               <div class="field">
 
                 <label for="website">
@@ -1015,7 +1023,6 @@
       </div>
 
 
-      <!-- BACK LINK -->
       <a
         href="https://nearafrica.pages.dev/"
         class="back-link"
@@ -1084,10 +1091,6 @@
           country.value;
 
 
-        /*
-         * Nigeria
-         */
-
         if (
           selectedCountry === "Nigeria"
         ) {
@@ -1119,11 +1122,6 @@
             "";
 
         }
-
-
-        /*
-         * Other countries
-         */
 
         else {
 
@@ -1230,7 +1228,18 @@
 
 
       /*
-       * Display location status
+       * Default Nigeria view
+       */
+
+      const DEFAULT_LAT =
+        9.0820;
+
+      const DEFAULT_LNG =
+        8.6753;
+
+
+      /*
+       * Display status
        */
 
       function setLocationStatus(
@@ -1285,9 +1294,122 @@
           "<strong>Longitude:</strong> " +
           longitude.toFixed(6);
 
-
         coordinatesBox.style.display =
           "block";
+
+      }
+
+
+      /*
+       * Save coordinates
+       */
+
+      function saveCoordinates(
+        latitude,
+        longitude
+      ) {
+
+        latitudeInput.value =
+          Number(latitude).toFixed(8);
+
+        longitudeInput.value =
+          Number(longitude).toFixed(8);
+
+        showCoordinates(
+          Number(latitude),
+          Number(longitude)
+        );
+
+      }
+
+
+      /*
+       * Place marker
+       */
+
+      function placeMarker(
+        latitude,
+        longitude
+      ) {
+
+        if (
+          !locationMapInstance
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          locationMarker
+        ) {
+
+          locationMapInstance.removeLayer(
+            locationMarker
+          );
+
+        }
+
+
+        locationMarker =
+          L.marker(
+            [
+              latitude,
+              longitude
+            ],
+            {
+              draggable: true
+            }
+          )
+            .addTo(
+              locationMapInstance
+            )
+            .bindPopup(
+              "Business location"
+            );
+
+
+        locationMarker.openPopup();
+
+
+        /*
+         * Allow marker dragging
+         */
+
+        locationMarker.on(
+          "dragend",
+          function (event) {
+
+            const position =
+              event.target.getLatLng();
+
+
+            const latitude =
+              Number(
+                position.lat.toFixed(8)
+              );
+
+
+            const longitude =
+              Number(
+                position.lng.toFixed(8)
+              );
+
+
+            saveCoordinates(
+              latitude,
+              longitude
+            );
+
+
+            setLocationStatus(
+              "Business location updated. You can drag the marker again if needed.",
+              "success"
+            );
+
+          }
+        );
 
       }
 
@@ -1306,7 +1428,7 @@
         ) {
 
           setLocationStatus(
-            "The map library could not be loaded. Your coordinates were still captured.",
+            "The map library could not be loaded.",
             "error"
           );
 
@@ -1320,7 +1442,7 @@
 
 
         /*
-         * Create map once
+         * Create map only once
          */
 
         if (
@@ -1350,6 +1472,50 @@
             locationMapInstance
           );
 
+
+          /*
+           * IMPORTANT:
+           *
+           * Clicking the map selects
+           * the business location.
+           */
+
+          locationMapInstance.on(
+            "click",
+            function (event) {
+
+              const selectedLatitude =
+                Number(
+                  event.latlng.lat.toFixed(8)
+                );
+
+
+              const selectedLongitude =
+                Number(
+                  event.latlng.lng.toFixed(8)
+                );
+
+
+              saveCoordinates(
+                selectedLatitude,
+                selectedLongitude
+              );
+
+
+              placeMarker(
+                selectedLatitude,
+                selectedLongitude
+              );
+
+
+              setLocationStatus(
+                "Business location selected. You can drag the marker to fine-tune the exact position.",
+                "success"
+              );
+
+            }
+          );
+
         }
 
         else {
@@ -1365,44 +1531,120 @@
         }
 
 
-        /*
-         * Remove old marker
-         */
+        placeMarker(
+          latitude,
+          longitude
+        );
+
+
+        setTimeout(
+          function () {
+
+            if (
+              locationMapInstance
+            ) {
+
+              locationMapInstance.invalidateSize();
+
+            }
+
+          },
+          250
+        );
+
+      }
+
+
+      /*
+       * Open map without selecting
+       */
+
+      function showMapForSelection() {
 
         if (
-          locationMarker
+          typeof L === "undefined"
         ) {
 
-          locationMapInstance.removeLayer(
-            locationMarker
+          setLocationStatus(
+            "The map library could not be loaded.",
+            "error"
           );
+
+          return;
 
         }
 
 
-        /*
-         * Add marker
-         */
-
-        locationMarker =
-          L.marker(
-            [
-              latitude,
-              longitude
-            ]
-          )
-            .addTo(
-              locationMapInstance
-            )
-            .bindPopup(
-              "Business location"
-            )
-            .openPopup();
+        locationMap.style.display =
+          "block";
 
 
-        /*
-         * Fix Leaflet sizing
-         */
+        if (
+          !locationMapInstance
+        ) {
+
+          locationMapInstance =
+            L.map(
+              locationMap
+            ).setView(
+              [
+                DEFAULT_LAT,
+                DEFAULT_LNG
+              ],
+              6
+            );
+
+
+          L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+              maxZoom: 19,
+              attribution:
+                "&copy; OpenStreetMap contributors"
+            }
+          ).addTo(
+            locationMapInstance
+          );
+
+
+          locationMapInstance.on(
+            "click",
+            function (event) {
+
+              const latitude =
+                Number(
+                  event.latlng.lat.toFixed(8)
+                );
+
+
+              const longitude =
+                Number(
+                  event.latlng.lng.toFixed(8)
+                );
+
+
+              saveCoordinates(
+                latitude,
+                longitude
+              );
+
+
+              placeMarker(
+                latitude,
+                longitude
+              );
+
+
+              setLocationStatus(
+                "Business location selected. You can drag the marker to fine-tune the exact position.",
+                "success"
+              );
+
+            }
+          );
+
+        }
+
 
         setTimeout(
           function () {
@@ -1433,9 +1675,11 @@
         ) {
 
           setLocationStatus(
-            "Location services are not supported by this browser.",
+            "Location services are not supported by this browser. You can select the business location manually on the map.",
             "error"
           );
+
+          showMapForSelection();
 
           return;
 
@@ -1494,22 +1738,7 @@
             }
 
 
-            /*
-             * Save coordinates
-             */
-
-            latitudeInput.value =
-              latitude.toFixed(8);
-
-            longitudeInput.value =
-              longitude.toFixed(8);
-
-
-            /*
-             * Display them
-             */
-
-            showCoordinates(
+            saveCoordinates(
               latitude,
               longitude
             );
@@ -1522,7 +1751,7 @@
 
 
             setLocationStatus(
-              "Location captured successfully. Please make sure the marker represents the actual business location before submitting.",
+              "Location captured successfully. Make sure the marker represents the actual business location. You can drag it or click another point on the map.",
               "success"
             );
 
@@ -1539,7 +1768,7 @@
           function (error) {
 
             let message =
-              "We couldn't get your location.";
+              "We couldn't get your location. You can select the business location manually on the map.";
 
 
             if (
@@ -1548,7 +1777,7 @@
             ) {
 
               message =
-                "Location permission was denied. You can still submit the business using its address.";
+                "Location permission was denied. You can select the business location manually on the map.";
 
             }
 
@@ -1558,7 +1787,7 @@
             ) {
 
               message =
-                "Your location is currently unavailable. Please try again or submit using the business address.";
+                "Your location is currently unavailable. You can select the business location manually on the map.";
 
             }
 
@@ -1568,7 +1797,7 @@
             ) {
 
               message =
-                "Location request timed out. Please try again.";
+                "Location request timed out. You can select the business location manually on the map.";
 
             }
 
@@ -1577,6 +1806,9 @@
               message,
               "error"
             );
+
+
+            showMapForSelection();
 
 
             useLocationButton.disabled =
@@ -1618,14 +1850,10 @@
           "";
 
 
-        coordinatesBox.textContent =
+        coordinatesBox.innerHTML =
           "";
 
         coordinatesBox.style.display =
-          "none";
-
-
-        locationMap.style.display =
           "none";
 
 
@@ -1644,11 +1872,18 @@
         }
 
 
+        locationMap.style.display =
+          "none";
+
+
         setLocationStatus(
           "Location cleared. You can submit without coordinates.",
           "info"
         );
 
+
+        useLocationButton.disabled =
+          false;
 
         useLocationButton.textContent =
           "📍 Use My Current Location";
@@ -1666,6 +1901,29 @@
         "click",
         clearLocation
       );
+
+
+      /*
+       * Expose reset function so the
+       * submission system can reset
+       * the location correctly.
+       */
+
+      window.nearAfricaLocation = {
+
+        reset: clearLocation,
+
+        hasCoordinates: function () {
+
+          return (
+            latitudeInput.value !== "" &&
+            longitudeInput.value !== ""
+          );
+
+        }
+
+      };
+
 
     })();
 
@@ -1711,7 +1969,7 @@
 
 
       /*
-       * Escape text before displaying
+       * Escape HTML
        */
 
       function escapeHtml(value) {
@@ -1739,7 +1997,7 @@
 
 
       /*
-       * Display success
+       * Success
        */
 
       function showSuccess(
@@ -1759,7 +2017,7 @@
 
 
       /*
-       * Display error
+       * Error
        */
 
       function showError(
@@ -1794,7 +2052,7 @@
 
 
       /*
-       * Submit form
+       * Submit
        */
 
       form.addEventListener(
@@ -1823,7 +2081,7 @@
 
 
           /*
-           * Get API URL
+           * API URL
            */
 
           const apiBase =
@@ -1849,7 +2107,7 @@
 
 
           /*
-           * Collect form data
+           * Form data
            */
 
           const formData =
@@ -1858,8 +2116,6 @@
 
           /*
            * Coordinates
-           *
-           * These are optional.
            */
 
           const latitudeValue =
@@ -1891,10 +2147,7 @@
 
 
           /*
-           * IMPORTANT:
-           *
-           * D1 submissions table uses
-           * "name", NOT "business_name".
+           * Submission object
            */
 
           const submission = {
@@ -2008,7 +2261,7 @@
 
 
           /*
-           * Validate business name
+           * Required validation
            */
 
           if (
@@ -2024,10 +2277,6 @@
           }
 
 
-          /*
-           * Validate category
-           */
-
           if (
             !submission.category
           ) {
@@ -2040,10 +2289,6 @@
 
           }
 
-
-          /*
-           * Validate country
-           */
 
           if (
             !submission.country
@@ -2058,10 +2303,6 @@
           }
 
 
-          /*
-           * Validate state
-           */
-
           if (
             !submission.state
           ) {
@@ -2075,10 +2316,6 @@
           }
 
 
-          /*
-           * Validate city
-           */
-
           if (
             !submission.city
           ) {
@@ -2091,10 +2328,6 @@
 
           }
 
-
-          /*
-           * Validate address
-           */
 
           if (
             !submission.address
@@ -2110,7 +2343,9 @@
 
 
           /*
-           * Validate coordinates if supplied
+           * Coordinate validation
+           *
+           * Coordinates remain optional.
            */
 
           if (
@@ -2139,6 +2374,12 @@
           ) {
 
             if (
+              !Number.isFinite(
+                submission.latitude
+              ) ||
+              !Number.isFinite(
+                submission.longitude
+              ) ||
               submission.latitude < -90 ||
               submission.latitude > 90 ||
               submission.longitude < -180 ||
@@ -2157,7 +2398,7 @@
 
 
           /*
-           * Validate terms
+           * Terms
            */
 
           if (
@@ -2174,7 +2415,7 @@
 
 
           /*
-           * Disable button
+           * Disable submit
            */
 
           submitButton.disabled =
@@ -2194,7 +2435,7 @@
           try {
 
             /*
-             * Send to Worker
+             * POST
              */
 
             const response =
@@ -2224,7 +2465,7 @@
 
 
             /*
-             * Read response
+             * Parse response
              */
 
             let data = null;
@@ -2247,7 +2488,7 @@
 
 
             /*
-             * HTTP error
+             * HTTP failure
              */
 
             if (
@@ -2271,7 +2512,7 @@
 
 
             /*
-             * API error
+             * API failure
              */
 
             if (
@@ -2312,7 +2553,7 @@
 
 
             /*
-             * Reset country/state system
+             * Reset country/state UI
              */
 
             const country =
@@ -2364,89 +2605,22 @@
 
 
             /*
-             * Reset location UI
-             */
-
-            const latitudeInput =
-              document.getElementById(
-                "latitude"
-              );
-
-
-            const longitudeInput =
-              document.getElementById(
-                "longitude"
-              );
-
-
-            const locationStatus =
-              document.getElementById(
-                "location-status"
-              );
-
-
-            const locationMap =
-              document.getElementById(
-                "location-map"
-              );
-
-
-            const coordinatesBox =
-              document.getElementById(
-                "coordinates"
-              );
-
-
-            latitudeInput.value =
-              "";
-
-            longitudeInput.value =
-              "";
-
-
-            locationMap.style.display =
-              "none";
-
-
-            coordinatesBox.textContent =
-              "";
-
-            coordinatesBox.style.display =
-              "none";
-
-
-            locationStatus.textContent =
-              "";
-
-            locationStatus.className =
-              "location-status";
-
-
-            /*
-             * Remove marker
+             * Reset location system
              */
 
             if (
-              typeof locationMarker !==
-              "undefined" &&
-              locationMarker &&
-              typeof locationMapInstance !==
-              "undefined" &&
-              locationMapInstance
+              window.nearAfricaLocation &&
+              typeof window.nearAfricaLocation.reset ===
+                "function"
             ) {
 
-              locationMapInstance.removeLayer(
-                locationMarker
-              );
-
-              locationMarker =
-                null;
+              window.nearAfricaLocation.reset();
 
             }
 
 
             /*
-             * Scroll to success
+             * Scroll success into view
              */
 
             successBox.scrollIntoView({
