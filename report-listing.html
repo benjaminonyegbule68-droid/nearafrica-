@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Report a Listing | NearAfrica</title>
+
+  <meta
+    name="description"
+    content="Report incorrect, misleading, fraudulent, inappropriate, or unauthorized business listings on NearAfrica."
+  >
+
+  <meta
+    name="robots"
+    content="index, follow"
+  >
+
+  <link rel="icon" href="favicon.ico">
+
+  <style>
+
+    /* =====================================================
+       GLOBAL
+       ===================================================== */
+
+    :root {
+      --black: #080808;
+      --black-soft: #101010;
+      --black-card: #151515;
+      --gold: #d4af37;
+      --gold-light: #f0cf62;
+      --white: #ffffff;
+      --text: #e9e9e9;
+      --muted: #a9a9a9;
+      --border: rgba(212, 175, 55, 0.22);
+      --danger: #e57373;
+      --success: #7bc67b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: var(--black);
+
+      color: var(--text);
+
+      line-height: 1.7;
+    }
+
+    a {
+      color: var(--gold-light);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      background: rgba(8, 8, 8, 0.96);
+
+      border-bottom:
+        1px solid var(--border);
+
+      backdrop-filter: blur(10px);
+    }
+
+    .nav {
+      max-width: 1180px;
+
+      margin: auto;
+
+      min-height: 72px;
+
+      padding:
+        0 24px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 25px;
+    }
+
+    .brand {
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      color: var(--white);
+
+      font-size: 20px;
+
+      font-weight: 800;
+
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 10px;
+
+      background: var(--gold);
+
+      color: var(--black);
+
+      font-weight: 900;
+
+      font-size: 14px;
+    }
+
+    nav {
+      display: flex;
+
+      align-items: center;
+
+      gap: 22px;
+    }
+
+    nav a {
+      color: #dddddd;
+
+      font-size: 14px;
+
+      transition: 0.2s ease;
+    }
+
+    nav a:hover {
+      color: var(--gold-light);
+
+      text-decoration: none;
+    }
+
+    /* =====================================================
+       HERO
+       ===================================================== */
+
+    .hero {
+      max-width: 1180px;
+
+      margin: auto;
+
+      padding:
+        75px 24px
+        55px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+
+      margin-bottom: 16px;
+
+      padding:
+        6px 12px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 999px;
+
+      color: var(--gold-light);
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.08em;
+
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      color: var(--white);
+
+      font-size:
+        clamp(34px, 6vw, 58px);
+
+      line-height: 1.05;
+
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+      color: var(--gold);
+    }
+
+    .hero p {
+      max-width: 760px;
+
+      color: var(--muted);
+
+      font-size: 17px;
+    }
+
+    /* =====================================================
+       MAIN
+       ===================================================== */
+
+    .layout {
+      max-width: 1180px;
+
+      margin: auto;
+
+      padding:
+        0 24px
+        70px;
+
+      display: grid;
+
+      grid-template-columns:
+        280px
+        minmax(0, 1fr);
+
+      gap: 45px;
+
+      align-items: start;
+    }
+
+    /* =====================================================
+       TABLE OF CONTENTS
+       ===================================================== */
+
+    .toc {
+      position: sticky;
+
+      top: 100px;
+
+      background: var(--black-card);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 16px;
+
+      padding: 22px;
+    }
+
+    .toc h3 {
+      color: var(--white);
+
+      font-size: 15px;
+
+      margin-bottom: 14px;
+    }
+
+    .toc a {
+      display: block;
+
+      padding:
+        7px 0;
+
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+    .toc a:hover {
+      color: var(--gold-light);
+
+      text-decoration: none;
+    }
+
+    /* =====================================================
+       CONTENT
+       ===================================================== */
+
+    .content {
+      min-width: 0;
+    }
+
+    .notice {
+      margin-bottom: 30px;
+
+      padding: 20px 22px;
+
+      background:
+        rgba(212, 175, 55, 0.08);
+
+      border:
+        1px solid var(--border);
+
+      border-left:
+        4px solid var(--gold);
+
+      border-radius: 12px;
+    }
+
+    .notice strong {
+      display: block;
+
+      color: var(--gold-light);
+
+      margin-bottom: 6px;
+    }
+
+    .section {
+      padding-bottom: 38px;
+
+      margin-bottom: 38px;
+
+      border-bottom:
+        1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    .section h2 {
+      color: var(--white);
+
+      font-size: 25px;
+
+      margin-bottom: 15px;
+    }
+
+    .section h2 span {
+      color: var(--gold);
+
+      margin-right: 8px;
+    }
+
+    .section p {
+      color: #cfcfcf;
+
+      margin-bottom: 14px;
+    }
+
+    .section ul {
+      margin:
+        12px 0
+        16px 22px;
+    }
+
+    .section li {
+      color: #cfcfcf;
+
+      margin-bottom: 8px;
+    }
+
+    /* =====================================================
+       REPORT TYPES
+       ===================================================== */
+
+    .report-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 14px;
+
+      margin-top: 18px;
+    }
+
+    .report-card {
+      background: var(--black-card);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+      border-radius: 12px;
+
+      padding: 18px;
+    }
+
+    .report-card h3 {
+      color: var(--gold-light);
+
+      font-size: 16px;
+
+      margin-bottom: 7px;
+    }
+
+    .report-card p {
+      margin: 0;
+
+      font-size: 14px;
+
+      color: var(--muted);
+    }
+
+    /* =====================================================
+       PROCESS
+       ===================================================== */
+
+    .steps {
+      display: grid;
+
+      gap: 14px;
+
+      margin-top: 18px;
+    }
+
+    .step {
+      display: grid;
+
+      grid-template-columns:
+        42px
+        1fr;
+
+      gap: 14px;
+
+      align-items: start;
+
+      padding: 16px;
+
+      background: var(--black-card);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+      border-radius: 12px;
+    }
+
+    .step-number {
+      width: 38px;
+      height: 38px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 50%;
+
+      background: var(--gold);
+
+      color: var(--black);
+
+      font-weight: 900;
+    }
+
+    .step h3 {
+      color: var(--white);
+
+      font-size: 16px;
+
+      margin-bottom: 5px;
+    }
+
+    .step p {
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 14px;
+    }
+
+    /* =====================================================
+       CONTACT CARD
+       ===================================================== */
+
+    .contact-card {
+      margin-top: 20px;
+
+      padding: 25px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(212, 175, 55, 0.13),
+          rgba(255, 255, 255, 0.02)
+        );
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 16px;
+    }
+
+    .contact-card h2 {
+      color: var(--white);
+
+      margin-bottom: 10px;
+    }
+
+    .contact-card p {
+      color: var(--muted);
+
+      margin-bottom: 10px;
+    }
+
+    .email-button {
+      display: inline-block;
+
+      margin-top: 8px;
+
+      padding:
+        11px 18px;
+
+      border-radius: 9px;
+
+      background: var(--gold);
+
+      color: var(--black);
+
+      font-weight: 800;
+    }
+
+    .email-button:hover {
+      background: var(--gold-light);
+
+      text-decoration: none;
+    }
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    footer {
+      border-top:
+        1px solid var(--border);
+
+      background: #050505;
+    }
+
+    .footer-inner {
+      max-width: 1180px;
+
+      margin: auto;
+
+      padding:
+        35px 24px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 20px;
+
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      color: var(--white);
+
+      font-weight: 800;
+    }
+
+    .footer-copy {
+      color: #777;
+
+      font-size: 13px;
+    }
+
+    .footer-links {
+      display: flex;
+
+      gap: 18px;
+
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #999;
+
+      font-size: 13px;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold-light);
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 850px) {
+
+      nav {
+        display: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+
+        gap: 25px;
+      }
+
+      .toc {
+        position: relative;
+
+        top: auto;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .hero {
+        padding:
+          55px 18px
+          40px;
+      }
+
+      .layout {
+        padding:
+          0 18px
+          55px;
+      }
+
+      .hero p {
+        font-size: 15px;
+      }
+
+      .section h2 {
+        font-size: 22px;
+      }
+
+      .report-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        padding:
+          30px 18px;
+      }
+
+    }
+
+    @media (max-width: 480px) {
+
+      .brand {
+        font-size: 18px;
+      }
+
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+      }
+
+      .hero h1 {
+        font-size: 36px;
+      }
+
+      .toc {
+        padding: 18px;
+      }
+
+      .section {
+        padding-bottom: 30px;
+
+        margin-bottom: 30px;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header>
+
+    <div class="nav">
+
+      <a
+        href="index.html"
+        class="brand"
+      >
+
+        <span class="brand-mark">
+          NA
+        </span>
+
+        <span>
+          NearAfrica
+        </span>
+
+      </a>
+
+      <nav>
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="explore.html">
+          Explore
+        </a>
+
+        <a href="list-business.html">
+          List Your Business
+        </a>
+
+        <a href="contact.html">
+          Contact
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       HERO
+       ===================================================== -->
+
+  <section class="hero">
+
+    <span class="eyebrow">
+      Trust & Safety
+    </span>
+
+    <h1>
+      Report a <span>Listing</span>
+    </h1>
+
+    <p>
+      Help us keep NearAfrica accurate, trustworthy,
+      and useful by reporting business listings that
+      contain incorrect, misleading, unauthorized,
+      inappropriate, or potentially harmful information.
+    </p>
+
+  </section>
+
+
+  <!-- =====================================================
+       MAIN
+       ===================================================== -->
+
+  <main class="layout">
+
+
+    <!-- ===================================================
+         TABLE OF CONTENTS
+         =================================================== -->
+
+    <aside class="toc">
+
+      <h3>
+        On this page
+      </h3>
+
+      <a href="#purpose">
+        1. Purpose
+      </a>
+
+      <a href="#what-report">
+        2. What You Can Report
+      </a>
+
+      <a href="#report-types">
+        3. Report Types
+      </a>
+
+      <a href="#before-report">
+        4. Before Reporting
+      </a>
+
+      <a href="#information">
+        5. Information to Provide
+      </a>
+
+      <a href="#review">
+        6. How Reports Are Reviewed
+      </a>
+
+      <a href="#actions">
+        7. Possible Actions
+      </a>
+
+      <a href="#urgent">
+        8. Urgent Concerns
+      </a>
+
+      <a href="#privacy">
+        9. Personal Information
+      </a>
+
+      <a href="#false-reports">
+        10. False or Abusive Reports
+      </a>
+
+      <a href="#business-response">
+        11. Business Response
+      </a>
+
+      <a href="#removal">
+        12. Removal Requests
+      </a>
+
+      <a href="#copyright">
+        13. Copyright
+      </a>
+
+      <a href="#contact">
+        14. Contact
+      </a>
+
+    </aside>
+
+
+    <!-- ===================================================
+         CONTENT
+         =================================================== -->
+
+    <article class="content">
+
+
+      <div class="notice">
+
+        <strong>
+          Important
+        </strong>
+
+        A report does not automatically mean that a
+        listing is false, illegal, fraudulent, or
+        inappropriate. NearAfrica may review the
+        information provided, compare available evidence,
+        contact relevant parties where appropriate, and
+        take action based on the circumstances.
+
+      </div>
+
+
+      <!-- =================================================
+           1
+           ================================================= -->
+
+      <section
+        class="section"
+        id="purpose"
+      >
+
+        <h2>
+          <span>1.</span>
+          Purpose of the Report System
+        </h2>
+
+        <p>
+          NearAfrica provides a reporting process so that
+          users, businesses, owners, representatives, and
+          other affected persons can bring potentially
+          inaccurate or problematic listings to our
+          attention.
+        </p>
+
+        <p>
+          The purpose of the report system is to help
+          maintain accurate directory information and
+          provide a reasonable process for corrections,
+          investigations, disputes, and removal requests.
+        </p>
+
+      </section>
+
+
+      <!-- =================================================
+           2
+           ================================================= -->
+
+      <section
+        class="section"
+        id="what-report"
+      >
+
+        <h2>
+          <span>2.</span>
+          What You Can Report
+        </h2>
+
+        <p>
+          You may report a listing when you reasonably
+          believe that something about it requires review.
+        </p>
+
+        <ul>
+
+          <li>
+            Incorrect business information
+          </li>
+
+          <li>
+            A business that appears to be permanently
+            closed
+          </li>
+
+          <li>
+            Duplicate listings
+          </li>
+
+          <li>
+            A business that appears to be fake or
+            unverifiable
+          </li>
+
+          <li>
+            Impersonation or unauthorized representation
+          </li>
+
+          <li>
+            Potentially fraudulent information
+          </li>
+
+          <li>
+            Misleading business information
+          </li>
+
+          <li>
+            Incorrect contact information
+          </li>
+
+          <li>
+            Incorrect location information
+          </li>
+
+          <li>
+            Unauthorized or problematic images
+          </li>
+
+          <li>
+            Privacy-related concerns
+          </li>
+
+          <li>
+            Copyright or intellectual-property concerns
+          </li>
+
+          <li>
+            Reviews or content that may violate NearAfrica
+            rules
+          </li>
+
+          <li>
+            Other information that you believe requires
+            administrative review
+          </li>
+
+        </ul>
+
+      </section>
+
+
+      <!-- =================================================
+           3
+           ================================================= -->
+
+      <section
+        class="section"
+        id="report-types"
+      >
+
+        <h2>
+          <span>3.</span>
+          Common Report Types
+        </h2>
+
+        <p>
+          Examples of issues that may be reported include:
+        </p>
+
+        <div class="report-grid">
+
+          <div class="report-card">
+
+            <h3>
+              Incorrect Information
+            </h3>
+
+            <p>
+              The business name, address, phone number,
+              category, website, hours, or another important
+              detail appears to be wrong.
+            </p>
+
+          </div>
+
+
+          <div class="report-card">
+
+            <h3>
+              Duplicate Listing
+            </h3>
+
+            <p>
+              The same business appears to have multiple
+              NearAfrica listings.
+            </p>
+
+          </div>
+
+
+          <div class="report-card">
+
+            <h3>
+              Fake or Unverifiable
+            </h3>
+
+            <p>
+              You have a reasonable basis to believe the
+              listed business may not exist or cannot be
+              reasonably verified.
+            </p>
+
+          </div>
+
+
+          <div class="report-card">
+
+            <h3>
+              Impersonation
+            </h3>
+
+            <p>
+              A person appears to be representing a business
+              without appropriate authorization.
+            </p>
+
+          </div>
+
+
+          <div class="report-card">
+
+            <h3>
+              Fraud Concern
+            </h3>
+
+            <p>
+              The listing appears connected to potentially
+              deceptive or fraudulent activity.
+            </p>
+
+          </div>
+
+
+          <div class="report-card">
+
+            <h3>
+              Privacy Concern
+            </h3>
+
+            <p>
+              Personal information appears to have been
+              published or handled inappropriately.
+            </p>
+
+          </div>
+
+
+          <div class="report-card">
+
+            <h3>
+              Copyright Concern
+            </h3>
+
+            <p>
+              An image, logo, description, or other material
+              may have been used without appropriate rights.
+            </p>
+
+          </div>
+
+
+          <div class="report-card">
+
+            <h3>
+              Removal Request
+            </h3>
+
+            <p>
+              You believe a listing should be reviewed for
+              possible correction, restriction, or removal.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           4
+           ================================================= -->
+
+      <section
+        class="section"
+        id="before-report"
+      >
+
+        <h2>
+          <span>4.</span>
+          Before Submitting a Report
+        </h2>
+
+        <p>
+          Please provide information that you reasonably
+          believe is accurate.
+        </p>
+
+        <p>
+          If the issue is simply an outdated business
+          detail, a correction request may be more
+          appropriate than a fraud report.
+        </p>
+
+        <p>
+          If you are a business owner or authorized
+          representative, you may also want to use the
+          NearAfrica claim process where applicable.
+        </p>
+
+        <p>
+          You can learn more on our
+          <a href="claim-business.html">
+            Claim Business
+          </a>
+          page.
+        </p>
+
+      </section>
+
+
+      <!-- =================================================
+           5
+           ================================================= -->
+
+      <section
+        class="section"
+        id="information"
+      >
+
+        <h2>
+          <span>5.</span>
+          Information to Provide
+        </h2>
+
+        <p>
+          A useful report should identify the listing and
+          clearly explain the problem.
+        </p>
+
+        <p>
+          Where appropriate, provide:
+        </p>
+
+        <ul>
+
+          <li>
+            Business name
+          </li>
+
+          <li>
+            NearAfrica business URL or listing ID
+          </li>
+
+          <li>
+            The specific information you believe is wrong
+          </li>
+
+          <li>
+            An explanation of why you believe it is wrong
+          </li>
+
+          <li>
+            Relevant dates
+          </li>
+
+          <li>
+            Supporting evidence that you are legally
+            entitled to provide
+          </li>
+
+          <li>
+            Your preferred contact information if follow-up
+            is required
+          </li>
+
+        </ul>
+
+        <p>
+          Do not send passwords, payment-card details,
+          security credentials, or unnecessary sensitive
+          personal information through a listing report.
+        </p>
+
+      </section>
+
+
+      <!-- =================================================
+           6
+           ================================================= -->
+
+      <section
+        class="section"
+        id="review"
+      >
+
+        <h2>
+          <span>6.</span>
+          How Reports Are Reviewed
+        </h2>
+
+        <p>
+          Reports may be reviewed by NearAfrica
+          administrators or other authorized personnel.
+        </p>
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">
+              1
+            </div>
+
+            <div>
+
+              <h3>
+                Report received
+              </h3>
+
+              <p>
+                The report is recorded for administrative
+                review.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              2
+            </div>
+
+            <div>
+
+              <h3>
+                Information reviewed
+              </h3>
+
+              <p>
+                The reported listing and the information
+                supplied with the report may be examined.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              3
+            </div>
+
+            <div>
+
+              <h3>
+                Additional information may be requested
+              </h3>
+
+              <p>
+                NearAfrica may request clarification or
+                supporting evidence where reasonably
+                necessary.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              4
+            </div>
+
+            <div>
+
+              <h3>
+                Administrative action
+              </h3>
+
+              <p>
+                The listing may be corrected, restricted,
+                reviewed further, marked for investigation,
+                or otherwise handled according to the
+                circumstances.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           7
+           ================================================= -->
+
+      <section
+        class="section"
+        id="actions"
+      >
+
+        <h2>
+          <span>7.</span>
+          Possible Actions
+        </h2>
+
+        <p>
+          Depending on the nature of the report and the
+          available evidence, NearAfrica may:
+        </p>
+
+        <ul>
+
+          <li>
+            Correct inaccurate information
+          </li>
+
+          <li>
+            Request additional information
+          </li>
+
+          <li>
+            Contact a business or claimant
+          </li>
+
+          <li>
+            Temporarily restrict information while it is
+            reviewed
+          </li>
+
+          <li>
+            Remove duplicate information
+          </li>
+
+          <li>
+            Remove or restrict content that violates
+            applicable NearAfrica rules
+          </li>
+
+          <li>
+            Reject a report when there is insufficient
+            basis for action
+          </li>
+
+          <li>
+            Escalate an issue for additional administrative
+            or legal review where appropriate
+          </li>
+
+        </ul>
+
+        <p>
+          NearAfrica does not guarantee that every report
+          will result in removal or another particular
+          outcome.
+        </p>
+
+      </section>
+
+
+      <!-- =================================================
+           8
+           ================================================= -->
+
+      <section
+        class="section"
+        id="urgent"
+      >
+
+        <h2>
+          <span>8.</span>
+          Urgent or Serious Concerns
+        </h2>
+
+        <p>
+          NearAfrica is a business-directory platform and
+          should not be treated as an emergency service.
+        </p>
+
+        <p>
+          If a matter involves an immediate threat to
+          someone's safety, contact the appropriate
+          emergency service or relevant authority directly.
+        </p>
+
+        <p>
+          A report to NearAfrica does not replace a police
+          report, court proceeding, regulatory complaint,
+          or other official process.
+        </p>
+
+      </section>
+
+
+      <!-- =================================================
+           9
+           ================================================= -->
+
+      <section
+        class="section"
+        id="privacy"
+      >
+
+        <h2>
+          <span>9.</span>
+          Personal Information
+        </h2>
+
+        <p>
+          Information submitted through a report may contain
+          personal information.
+        </p>
+
+        <p>
+          NearAfrica should collect and use only information
+          reasonably necessary to receive, investigate,
+          administer, and respond to the report.
+        </p>
+
+        <p>
+          Personal information should not be included in a
+          report unnecessarily, particularly information
+          that is sensitive or unrelated to the issue being
+          reported.
+        </p>
+
+        <p>
+          For more information about how personal information
+          is handled, please review our
+          <a href="privacy.html">
+            Privacy Policy
+          </a>.
+        </p>
+
+        <p>
+          Nigeria's data-protection framework includes
+          mechanisms for individuals to raise complaints
+          concerning personal-data processing. :contentReference[oaicite:2]{index=2}
+        </p>
+
+      </section>
+
+
+      <!-- =================================================
+           10
+           ================================================= -->
+
+      <section
+        class="section"
+        id="false-reports"
+      >
+
+        <h2>
+          <span>10.</span>
+          False, Abusive, or Malicious Reports
+        </h2>
+
+        <p>
+          The reporting system must not be used to harass,
+          threaten, intimidate, sabotage, or unfairly harm
+          a business or another person.
+        </p>
+
+        <p>
+          Examples of problematic use may include:
+        </p>
+
+        <ul>
+
+          <li>
+            Knowingly submitting false information
+          </li>
+
+          <li>
+            Repeatedly reporting a listing without a genuine
+            basis
+          </li>
+
+          <li>
+            Attempting to interfere with a competitor
+          </li>
+
+          <li>
+            Using reports to threaten a business
+          </li>
+
+          <li>
+            Submitting fabricated evidence
+          </li>
+
+          <li>
+            Attempting to manipulate a business's reputation
+          </li>
+
+        </ul>
+
+        <p>
+          NearAfrica may restrict reporting privileges or
+          take other appropriate action where there is
+          evidence of abuse.
+        </p>
+
+      </section>
+
+
+      <!-- =================================================
+           11
+           ================================================= -->
+
+      <section
+        class="section"
+        id="business-response"
+      >
+
+        <h2>
+          <span>11.</span>
+          Business Response
+        </h2>
+
+        <p>
+          Where appropriate, NearAfrica may allow a business
+          owner or authorized representative to respond to,
+          clarify, or challenge information associated with
+          a report.
+        </p>
+
+        <p>
+          A business may be asked to provide evidence when
+          the issue involves ownership, authorization,
+          identity, inaccurate information, or another matter
+          requiring verification.
+        </p>
+
+        <p>
+          A response from a business does not automatically
+          determine the outcome of a report.
+        </p>
+
+      </section>
+
+
+      <!-- =================================================
+           12
+           ================================================= -->
+
+      <section
+        class="section"
+        id="removal"
+      >
+
+        <h2>
+          <span>12.</span>
+          Removal Requests
+        </h2>
+
+        <p>
+          A person may request that a listing or specific
+          information be reviewed for possible removal.
+        </p>
+
+        <p>
+          NearAfrica may consider factors including:
+        </p>
+
+        <ul>
+
+          <li>
+            Whether the listing exists
+          </li>
+
+          <li>
+            Whether the information is materially inaccurate
+          </li>
+
+          <li>
+            Whether the content violates NearAfrica policy
+          </li>
+
+          <li>
+            Whether the requester has authority over the
+            affected information
+          </li>
+
+          <li>
+            Whether there are legitimate reasons to retain
+            the information
+          </li>
+
+          <li>
+            Whether removal is appropriate under applicable
+            law
+          </li>
+
+        </ul>
+
+        <p>
+          A request for removal is reviewed on its
+          circumstances and does not automatically result in
+          deletion.
+        </p>
+
+      </section>
+
+
+      <!-- =================================================
+           13
+           ================================================= -->
+
+      <section
+        class="section"
+        id="copyright"
+      >
+
+        <h2>
+          <span>13.</span>
+          Copyright and Intellectual Property
+        </h2>
+
+        <p>
+          If you believe a photo, logo, description, or
+          another piece of content on NearAfrica infringes
+          your copyright or other intellectual-property
+          rights, explain the specific material involved and
+          provide information supporting your complaint.
+        </p>
+
+        <p>
+          Where possible, identify the original work, explain
+          your relationship to it, and provide the relevant
+          NearAfrica listing.
+        </p>
+
+        <p>
+          Do not submit confidential information that is not
+          necessary to evaluate the complaint.
+        </p>
+
+        <p>
+          Copyright complaints may be handled separately
+          from ordinary listing corrections because different
+          evidence and legal considerations may apply.
+        </p>
+
+      </section>
+
+
+      <!-- =================================================
+           14
+           ================================================= -->
+
+      <section
+        class="section"
+        id="contact"
+      >
+
+        <h2>
+          <span>14.</span>
+          Submit a Report
+        </h2>
+
+        <p>
+          The NearAfrica reporting form/API can be connected
+          to this policy page so reports are stored for
+          administrative review.
+        </p>
+
+        <p>
+          Until the reporting form is connected, you can
+          contact NearAfrica directly with the relevant
+          listing and details of the issue.
+        </p>
+
+        <div class="contact-card">
+
+          <h2>
+            NearAfrica Support
+          </h2>
+
+          <p>
+            Include the business name, listing URL or ID,
+            the problem you identified, and any relevant
+            supporting information.
+          </p>
+
+          <p>
+            Please do not send unnecessary passwords,
+            financial credentials, or sensitive personal
+            information.
+          </p>
+
+          <a
+            class="email-button"
+            href="mailto:contactnearafrica43@gmail.com?subject=NearAfrica%20Listing%20Report"
+          >
+            Contact NearAfrica
+          </a>
+
+        </div>
+
+      </section>
+
+
+    </article>
+
+  </main>
+
+
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+
+  <footer>
+
+    <div class="footer-inner">
+
+      <div>
+
+        <div class="footer-brand">
+          NearAfrica
+        </div>
+
+        <div class="footer-copy">
+          Discover businesses and opportunities across Africa.
+        </div>
+
+      </div>
+
+
+      <div class="footer-links">
+
+        <a href="privacy.html">
+          Privacy
+        </a>
+
+        <a href="terms.html">
+          Terms
+        </a>
+
+        <a href="listing-policy.html">
+          Listing Policy
+        </a>
+
+        <a href="claim-business.html">
+          Claim Business
+        </a>
+
+        <a href="report-listing.html">
+          Report Listing
+        </a>
+
+        <a href="contact.html">
+          Contact
+        </a>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+</body>
+</html>
