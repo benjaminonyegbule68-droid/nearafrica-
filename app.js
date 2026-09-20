@@ -7,7 +7,6 @@ const App = {
   userLocation: null,
   currentResults: [],
   mapVisible: true,
-  apiBaseUrl: "",
 
   // ---------------------------------------------------------
   // API
@@ -35,7 +34,11 @@ const App = {
     const url = new URL(`${baseUrl}/businesses`);
 
     Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
+      if (
+        value !== undefined &&
+        value !== null &&
+        value !== ""
+      ) {
         url.searchParams.set(key, value);
       }
     });
@@ -43,44 +46,49 @@ const App = {
     const response = await fetch(url.toString());
 
     if (!response.ok) {
-      throw new Error(`API request failed: ${response.status}`);
+      throw new Error(
+        `API request failed: ${response.status}`
+      );
     }
 
-  const data = await response.json();
+    const data = await response.json();
 
-if (
-  data.status !== "ok" &&
-  data.success !== true
-) {
-  throw new Error(
-    data.message || "Unable to load businesses."
-  );
-}
+    if (
+      data.status !== "ok" &&
+      data.success !== true
+    ) {
+      throw new Error(
+        data.message || "Unable to load businesses."
+      );
+    }
 
-return Array.isArray(data.businesses)
-  ? data.businesses
-  : [];
+    return Array.isArray(data.businesses)
+      ? data.businesses
+      : [];
   },
 
   // ---------------------------------------------------------
-  // Convert API data into the format the frontend understands
+  // Normalize API business
   // ---------------------------------------------------------
 
   normalizeBusiness(business) {
     return {
-      id: business.id,
+      id: business.id || "",
 
-      name: business.business_name,
+      name:
+        business.business_name ||
+        business.name ||
+        "Unnamed Business",
 
-      category: business.category,
+      category: business.category || "",
 
-      country: business.country,
+      country: business.country || "",
 
-      state: business.state,
+      state: business.state || "",
 
-      city: business.city,
+      city: business.city || "",
 
-      address: business.address,
+      address: business.address || "",
 
       phone: business.phone || "",
 
@@ -104,21 +112,32 @@ return Array.isArray(data.businesses)
           ? Number(business.longitude)
           : null,
 
-      verified: Boolean(business.verified),
+      verified:
+        Boolean(business.verified),
 
-      featured: Boolean(business.featured),
+      featured:
+        Boolean(business.featured),
 
-      // These do NOT exist in D1 yet.
-      // We intentionally do not invent them.
-      rating: null,
+      rating:
+        typeof business.rating === "number"
+          ? business.rating
+          : null,
 
-      reviewCount: 0,
+      reviewCount:
+        Number(business.review_count || 0),
 
-      images: [],
+      images:
+        Array.isArray(business.images)
+          ? business.images
+          : [],
 
-      openingHours: null,
+      openingHours:
+        business.opening_hours || null,
 
-      services: []
+      services:
+        Array.isArray(business.services)
+          ? business.services
+          : []
     };
   },
 
@@ -127,17 +146,28 @@ return Array.isArray(data.businesses)
   // ---------------------------------------------------------
 
   escapeHtml(value) {
-    if (window.NearAfricaUtils?.escapeHtml) {
-      return window.NearAfricaUtils.escapeHtml(value || "");
+    if (
+      window.NearAfricaUtils &&
+      typeof window.NearAfricaUtils.escapeHtml === "function"
+    ) {
+      return window.NearAfricaUtils.escapeHtml(
+        value || ""
+      );
     }
 
     const div = document.createElement("div");
-    div.textContent = value || "";
+
+    div.textContent =
+      value === null ||
+      value === undefined
+        ? ""
+        : String(value);
+
     return div.innerHTML;
   },
 
   // ---------------------------------------------------------
-  // Business Card
+  // Business card
   // ---------------------------------------------------------
 
   renderBusinessCard(biz) {
@@ -155,37 +185,63 @@ return Array.isArray(data.businesses)
         : "";
 
     const phoneHtml = biz.phone
-      ? `<a href="tel:${this.escapeHtml(biz.phone)}">Call</a>`
+      ? `<a href="tel:${this.escapeHtml(
+          biz.phone
+        )}">Call</a>`
       : "";
 
+    const whatsappNumber =
+      biz.whatsapp.replace(
+        /[^0-9]/g,
+        ""
+      );
+
     const whatsappHtml = biz.whatsapp
-      ? `<a href="https://wa.me/${biz.whatsapp.replace(
-          /[^0-9]/g,
-          ""
-        )}" target="_blank" rel="noopener">WhatsApp</a>`
+      ? `<a
+          href="https://wa.me/${whatsappNumber}"
+          target="_blank"
+          rel="noopener"
+        >WhatsApp</a>`
       : "";
 
     const websiteHtml = biz.website
-      ? `<a href="${this.escapeHtml(
-          biz.website
-        )}" target="_blank" rel="noopener">Website</a>`
+      ? `<a
+          href="${this.escapeHtml(
+            biz.website
+          )}"
+          target="_blank"
+          rel="noopener"
+        >Website</a>`
       : "";
 
     return `
-      <article class="business-card" data-business-id="${this.escapeHtml(
-        biz.id
-      )}">
+      <article
+        class="business-card"
+        data-business-id="${this.escapeHtml(
+          biz.id
+        )}"
+      >
 
         <div class="business-card-content">
 
           <div class="business-card-header">
 
             <div>
-              <h3>${this.escapeHtml(biz.name)}</h3>
+              <h3>
+                ${this.escapeHtml(biz.name)}
+              </h3>
 
-              <p class="business-category">
-                ${this.escapeHtml(biz.category)}
-              </p>
+              ${
+                biz.category
+                  ? `
+                    <p class="business-category">
+                      ${this.escapeHtml(
+                        biz.category
+                      )}
+                    </p>
+                  `
+                  : ""
+              }
             </div>
 
             <div class="business-badges">
@@ -197,24 +253,47 @@ return Array.isArray(data.businesses)
 
           ${
             biz.description
-              ? `<p class="business-description">
-                  ${this.escapeHtml(biz.description)}
-                </p>`
+              ? `
+                <p class="business-description">
+                  ${this.escapeHtml(
+                    biz.description
+                  )}
+                </p>
+              `
               : ""
           }
 
           <div class="business-meta">
 
-            <span>
-              📍 ${this.escapeHtml(biz.address)}
-            </span>
+            ${
+              biz.address
+                ? `
+                  <span>
+                    📍 ${this.escapeHtml(
+                      biz.address
+                    )}
+                  </span>
+                `
+                : ""
+            }
 
             ${
-              biz.city
-                ? `<span>
-                    ${this.escapeHtml(biz.city)}, 
-                    ${this.escapeHtml(biz.state)}
-                  </span>`
+              biz.city || biz.state
+                ? `
+                  <span>
+                    ${this.escapeHtml(
+                      biz.city
+                    )}
+                    ${
+                      biz.city && biz.state
+                        ? ", "
+                        : ""
+                    }
+                    ${this.escapeHtml(
+                      biz.state
+                    )}
+                  </span>
+                `
                 : ""
             }
 
@@ -224,9 +303,11 @@ return Array.isArray(data.businesses)
 
           <div class="business-actions">
 
-            <a href="business.html?id=${encodeURIComponent(
-              biz.id
-            )}">
+            <a
+              href="business.html?id=${encodeURIComponent(
+                biz.id
+              )}"
+            >
               View Details
             </a>
 
@@ -250,23 +331,94 @@ return Array.isArray(data.businesses)
 
   renderCategories() {
     const categoryFilter =
-      document.getElementById("category-filter");
+      document.getElementById(
+        "category-filter"
+      );
 
-    if (!categoryFilter) return;
+    if (!categoryFilter) {
+      return;
+    }
 
     const categories =
-      window.NearAfricaData?.categories || [];
+      window.NearAfricaData &&
+      Array.isArray(
+        window.NearAfricaData.categories
+      )
+        ? window.NearAfricaData.categories
+        : [];
 
     categoryFilter.innerHTML =
       `<option value="">All Categories</option>` +
       categories
         .map(
-          (category) =>
-            `<option value="${this.escapeHtml(category)}">
-              ${this.escapeHtml(category)}
-            </option>`
+          (category) => `
+            <option value="${this.escapeHtml(
+              category
+            )}">
+              ${this.escapeHtml(
+                category
+              )}
+            </option>
+          `
         )
         .join("");
+  },
+
+  // ---------------------------------------------------------
+  // Render businesses
+  // ---------------------------------------------------------
+
+  renderBusinesses(businesses) {
+    const businessList =
+      document.getElementById(
+        "business-list"
+      );
+
+    const emptyState =
+      document.getElementById(
+        "empty-state"
+      );
+
+    const resultsCount =
+      document.getElementById(
+        "results-count"
+      );
+
+    if (!businessList) {
+      return;
+    }
+
+    if (!businesses.length) {
+      businessList.innerHTML = "";
+
+      if (emptyState) {
+        emptyState.hidden = false;
+      }
+
+      if (resultsCount) {
+        resultsCount.textContent = "0";
+      }
+
+      return;
+    }
+
+    if (emptyState) {
+      emptyState.hidden = true;
+    }
+
+    businessList.innerHTML =
+      businesses
+        .map((business) =>
+          this.renderBusinessCard(
+            business
+          )
+        )
+        .join("");
+
+    if (resultsCount) {
+      resultsCount.textContent =
+        String(businesses.length);
+    }
   },
 
   // ---------------------------------------------------------
@@ -274,58 +426,276 @@ return Array.isArray(data.businesses)
   // ---------------------------------------------------------
 
   async performSearch(event) {
-    if (event) event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
 
     await this.runSearchPage();
   },
 
   async runSearchPage() {
     const queryInput =
-      document.getElementById("query-input");
+      document.getElementById(
+        "query-input"
+      );
 
     const locationInput =
-      document.getElementById("location-input");
+      document.getElementById(
+        "location-input"
+      );
 
     const categoryFilter =
-      document.getElementById("category-filter");
-
-    const sortSelect =
-      document.getElementById("sort-select");
-
-    const openNowCheck =
-      document.getElementById("open-now-check");
-
-    const query = queryInput
-      ? queryInput.value.trim()
-      : "";
-
-    const location = locationInput
-      ? locationInput.value.trim()
-      : "";
-
-    const category = categoryFilter
-      ? categoryFilter.value
-      : "";
-
-    const sortBy = sortSelect
-      ? sortSelect.value
-      : "name";
-
-    const openNow = openNowCheck
-      ? openNowCheck.checked
-      : false;
+      document.getElementById(
+        "category-filter"
+      );
 
     const loadingState =
-      document.getElementById("loading-state");
+      document.getElementById(
+        "loading-state"
+      );
 
     const emptyState =
-      document.getElementById("empty-state");
+      document.getElementById(
+        "empty-state"
+      );
 
     const businessList =
-      document.getElementById("business-list");
+      document.getElementById(
+        "business-list"
+      );
 
     const resultsCount =
-      document.getElementById("results-count");
+      document.getElementById(
+        "results-count"
+      );
 
     const resultsTitle =
-      document.getElementById("results-title");
+      document.getElementById(
+        "results-title"
+      );
+
+    const query =
+      queryInput
+        ? queryInput.value.trim()
+        : "";
+
+    const location =
+      locationInput
+        ? locationInput.value.trim()
+        : "";
+
+    const category =
+      categoryFilter
+        ? categoryFilter.value
+        : "";
+
+    try {
+      if (loadingState) {
+        loadingState.hidden = false;
+      }
+
+      if (emptyState) {
+        emptyState.hidden = true;
+      }
+
+      if (businessList) {
+        businessList.innerHTML = "";
+      }
+
+      const params = {};
+
+      if (query) {
+        params.search = query;
+      }
+
+      if (location) {
+        params.location = location;
+      }
+
+      if (category) {
+        params.category = category;
+      }
+
+      const rawBusinesses =
+        await this.fetchBusinesses(
+          params
+        );
+
+      let businesses =
+        rawBusinesses.map(
+          (business) =>
+            this.normalizeBusiness(
+              business
+            )
+        );
+
+      // Client-side search fallback.
+      // This keeps the frontend useful even if
+      // the API does not yet implement all filters.
+
+      if (query) {
+        const searchText =
+          query.toLowerCase();
+
+        businesses =
+          businesses.filter(
+            (business) => {
+              const searchable = [
+                business.name,
+                business.category,
+                business.description,
+                business.address,
+                business.city,
+                business.state
+              ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+              return searchable.includes(
+                searchText
+              );
+            }
+          );
+      }
+
+      if (location) {
+        const locationText =
+          location.toLowerCase();
+
+        businesses =
+          businesses.filter(
+            (business) => {
+              const searchable = [
+                business.address,
+                business.city,
+                business.state,
+                business.country
+              ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+              return searchable.includes(
+                locationText
+              );
+            }
+          );
+      }
+
+      if (category) {
+        const categoryText =
+          category.toLowerCase();
+
+        businesses =
+          businesses.filter(
+            (business) =>
+              String(
+                business.category || ""
+              ).toLowerCase() ===
+              categoryText
+          );
+      }
+
+      businesses.sort(
+        (a, b) =>
+          String(a.name || "").localeCompare(
+            String(b.name || "")
+          )
+      );
+
+      this.currentResults =
+        businesses;
+
+      if (resultsTitle) {
+        resultsTitle.textContent =
+          query
+            ? `Search results for "${query}"`
+            : "Businesses";
+      }
+
+      this.renderBusinesses(
+        businesses
+      );
+    } catch (error) {
+      console.error(
+        "NearAfrica business loading error:",
+        error
+      );
+
+      if (businessList) {
+        businessList.innerHTML = "";
+      }
+
+      if (emptyState) {
+        emptyState.hidden = true;
+      }
+
+      if (resultsCount) {
+        resultsCount.textContent = "0";
+      }
+
+      if (resultsTitle) {
+        resultsTitle.textContent =
+          "Unable to load businesses";
+      }
+
+      const errorMessage =
+        document.getElementById(
+          "error-state"
+        );
+
+      if (errorMessage) {
+        errorMessage.hidden = false;
+      }
+    } finally {
+      if (loadingState) {
+        loadingState.hidden = true;
+      }
+    }
+  },
+
+  // ---------------------------------------------------------
+  // Initialization
+  // ---------------------------------------------------------
+
+  init() {
+    console.log(
+      "NearAfrica App initialized."
+    );
+
+    this.renderCategories();
+
+    const searchForm =
+      document.getElementById(
+        "search-form"
+      );
+
+    if (searchForm) {
+      searchForm.addEventListener(
+        "submit",
+        (event) =>
+          this.performSearch(event)
+      );
+    }
+
+    this.runSearchPage();
+  }
+};
+
+// ---------------------------------------------------------
+// Make App globally available
+// ---------------------------------------------------------
+
+window.NearAfricaApp = App;
+
+// ---------------------------------------------------------
+// Start application
+// ---------------------------------------------------------
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+    App.init();
+  }
+);
