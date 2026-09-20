@@ -967,9 +967,20 @@
         }
 
 
-        let actionButtons = "";
+       let actionButtons = "";
 
-        if (phone) {
+actionButtons += `
+    <a
+        class="profile-btn report-btn"
+        href="report-listing.html?business_id=${encodeURIComponent(
+            business.id
+        )}"
+    >
+        ⚑ Report Listing
+    </a>
+`;
+
+if (phone) {
 
             actionButtons += `
                 <a
