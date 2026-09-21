@@ -2748,9 +2748,7 @@ function renderSubmissions(
     submissions
 ) {
 
-    if (
-        !submissions.length
-    ) {
+    if (!submissions.length) {
 
         content.innerHTML = `
             <div class="empty">
@@ -2759,7 +2757,6 @@ function renderSubmissions(
         `;
 
         return;
-
     }
 
 
@@ -2773,112 +2770,69 @@ function renderSubmissions(
                         "pending"
                     ).toLowerCase();
 
-
                 const id =
                     submission.id ||
                     submission.submission_id ||
                     "";
-
 
                 const name =
                     submission.name ||
                     submission.business_name ||
                     "—";
 
-
                 const category =
                     submission.category ||
                     "—";
-
 
                 const city =
                     submission.city ||
                     "—";
 
-
                 const state =
                     submission.state ||
                     "—";
-
-
-                const country =
-                    submission.country ||
-                    "—";
-
 
                 const email =
                     submission.email ||
                     "—";
 
 
-                const phone =
-                    submission.phone ||
-                    "—";
+                let actions = `
+                    <span class="muted">
+                        No actions
+                    </span>
+                `;
 
 
-                const createdAt =
-                    submission.created_at ||
-                    "";
+                if (
+                    status === "pending" &&
+                    id
+                ) {
 
+                    actions = `
 
-                const isPending =
-                    status === "pending";
+                        <div class="actions">
 
-
-                const actions =
-                    isPending
-                        ? `
-                            <div
-                                class="actions"
+                            <button
+                                type="button"
+                                class="action-btn primary"
+                                onclick="approveSubmissionAdmin('${escapeAttribute(id)}')"
                             >
+                                Approve
+                            </button>
 
-                                <button
-                                    type="button"
-                                    class="action-btn primary submission-action"
-                                    data-submission-id="${escapeAttribute(
-                                        id
-                                    )}"
-                                    onclick="moderateSubmissionFromAdmin(
-                                        '${escapeAttribute(
-                                            id
-                                        )}',
-                                        'approve',
-                                        this
-                                    )"
-                                >
-                                    Approve
-                                </button>
-
-
-                                <button
-                                    type="button"
-                                    class="action-btn dismiss submission-action"
-                                    data-submission-id="${escapeAttribute(
-                                        id
-                                    )}"
-                                    onclick="moderateSubmissionFromAdmin(
-                                        '${escapeAttribute(
-                                            id
-                                        )}',
-                                        'reject',
-                                        this
-                                    )"
-                                >
-                                    Reject
-                                </button>
-
-                            </div>
-                        `
-                        : `
-                            <div
-                                class="muted"
-                                style="
-                                    line-height:1.5;
-                                "
+                            <button
+                                type="button"
+                                class="action-btn dismiss"
+                                onclick="rejectSubmissionAdmin('${escapeAttribute(id)}')"
                             >
-                                No actions available.
-                            </div>
-                        `;
+                                Reject
+                            </button>
+
+                        </div>
+
+                    `;
+                }
 
 
                 return `
@@ -2886,122 +2840,56 @@ function renderSubmissions(
                     <tr>
 
                         <td>
-
                             <strong>
-                                ${escapeHtml(
-                                    name
-                                )}
+                                ${escapeHtml(name)}
                             </strong>
 
                             <div
                                 class="claim-id"
-                                style="
-                                    margin-top:6px;
-                                "
+                                style="margin-top:6px;"
                             >
-                                ${escapeHtml(
-                                    id
-                                )}
+                                ${escapeHtml(id)}
+                            </div>
+                        </td>
+
+
+                        <td>
+                            ${escapeHtml(category)}
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHtml(city)}
+
+                            <div
+                                class="muted"
+                                style="margin-top:4px;"
+                            >
+                                ${escapeHtml(state)}
                             </div>
 
                         </td>
 
 
                         <td>
-                            ${escapeHtml(
-                                category
-                            )}
-                        </td>
-
-
-                        <td>
-
-                            ${escapeHtml(
-                                city
-                            )}
-
-                            <div
-                                class="muted"
-                                style="
-                                    margin-top:4px;
-                                "
-                            >
-                                ${escapeHtml(
-                                    state
-                                )}
-                            </div>
-
-                            <div
-                                class="muted"
-                                style="
-                                    margin-top:3px;
-                                "
-                            >
-                                ${escapeHtml(
-                                    country
-                                )}
-                            </div>
-
-                        </td>
-
-
-                        <td>
-
-                            ${escapeHtml(
-                                email
-                            )}
-
-                            <div
-                                class="muted"
-                                style="
-                                    margin-top:5px;
-                                "
-                            >
-                                ${escapeHtml(
-                                    phone
-                                )}
-                            </div>
-
+                            ${escapeHtml(email)}
                         </td>
 
 
                         <td>
 
                             <span
-                                class="status ${escapeAttribute(
-                                    status
-                                )}"
+                                class="status ${escapeAttribute(status)}"
                             >
-                                ${escapeHtml(
-                                    status
-                                )}
+                                ${escapeHtml(status)}
                             </span>
-
-                            ${
-                                createdAt
-                                    ? `
-                                        <div
-                                            class="muted"
-                                            style="
-                                                margin-top:7px;
-                                                font-size:11px;
-                                            "
-                                        >
-                                            ${escapeHtml(
-                                                createdAt
-                                            )}
-                                        </div>
-                                    `
-                                    : ""
-                            }
 
                         </td>
 
 
                         <td>
-
                             ${actions}
-
                         </td>
 
                     </tr>
@@ -3022,29 +2910,17 @@ function renderSubmissions(
 
                     <tr>
 
-                        <th>
-                            Business
-                        </th>
+                        <th>Business</th>
 
-                        <th>
-                            Category
-                        </th>
+                        <th>Category</th>
 
-                        <th>
-                            Location
-                        </th>
+                        <th>Location</th>
 
-                        <th>
-                            Contact
-                        </th>
+                        <th>Email</th>
 
-                        <th>
-                            Status
-                        </th>
+                        <th>Status</th>
 
-                        <th>
-                            Actions
-                        </th>
+                        <th>Actions</th>
 
                     </tr>
 
@@ -3059,7 +2935,6 @@ function renderSubmissions(
         </div>
 
     `;
-
 }
 
     /* =========================================================
