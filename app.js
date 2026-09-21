@@ -72,6 +72,16 @@ const App = {
   // ---------------------------------------------------------
 
   normalizeBusiness(business) {
+    const imageFromArray =
+      Array.isArray(business.images) &&
+      business.images.length
+        ? (
+            business.images[0]?.image_url ||
+            business.images[0]?.url ||
+            ""
+          )
+        : "";
+
     return {
       id: business.id || "",
 
@@ -126,6 +136,15 @@ const App = {
       reviewCount:
         Number(business.review_count || 0),
 
+      // -----------------------------------------------------
+      // Image support
+      // -----------------------------------------------------
+
+      imageUrl:
+        business.image_url ||
+        business.imageUrl ||
+        imageFromArray,
+
       images:
         Array.isArray(business.images)
           ? business.images
@@ -167,6 +186,83 @@ const App = {
   },
 
   // ---------------------------------------------------------
+  // Business image
+  // ---------------------------------------------------------
+
+  renderBusinessImage(biz) {
+    const businessInitial =
+      String(biz.name || "B")
+        .trim()
+        .charAt(0)
+        .toUpperCase() || "B";
+
+    const imageUrl =
+      String(biz.imageUrl || "").trim();
+
+    if (!imageUrl) {
+      return `
+        <div
+          class="business-card-image"
+          aria-label="${this.escapeHtml(
+            biz.name
+          )}"
+        >
+          <div
+            class="business-card-image-fallback"
+            aria-hidden="true"
+          >
+            ${this.escapeHtml(
+              businessInitial
+            )}
+          </div>
+        </div>
+      `;
+    }
+
+    const safeImageUrl =
+      this.escapeHtml(imageUrl);
+
+    const safeBusinessName =
+      this.escapeHtml(biz.name);
+
+    return `
+      <div
+        class="business-card-image"
+        aria-label="${safeBusinessName}"
+      >
+
+        <img
+          src="${safeImageUrl}"
+          alt="${safeBusinessName}"
+          loading="lazy"
+          onerror="
+            this.style.display='none';
+            const fallback =
+              this.parentElement.querySelector(
+                '.business-card-image-fallback'
+              );
+
+            if (fallback) {
+              fallback.style.display='flex';
+            }
+          "
+        >
+
+        <div
+          class="business-card-image-fallback"
+          aria-hidden="true"
+          style="display:none;"
+        >
+          ${this.escapeHtml(
+            businessInitial
+          )}
+        </div>
+
+      </div>
+    `;
+  },
+
+  // ---------------------------------------------------------
   // Business card
   // ---------------------------------------------------------
 
@@ -185,33 +281,48 @@ const App = {
         : "";
 
     const phoneHtml = biz.phone
-      ? `<a href="tel:${this.escapeHtml(
-          biz.phone
-        )}">Call</a>`
+      ? `
+        <a
+          href="tel:${this.escapeHtml(
+            biz.phone
+          )}"
+        >
+          Call
+        </a>
+      `
       : "";
 
     const whatsappNumber =
-      biz.whatsapp.replace(
+      String(biz.whatsapp || "").replace(
         /[^0-9]/g,
         ""
       );
 
-    const whatsappHtml = biz.whatsapp
-      ? `<a
-          href="https://wa.me/${whatsappNumber}"
-          target="_blank"
-          rel="noopener"
-        >WhatsApp</a>`
-      : "";
+    const whatsappHtml =
+      biz.whatsapp && whatsappNumber
+        ? `
+          <a
+            href="https://wa.me/${whatsappNumber}"
+            target="_blank"
+            rel="noopener"
+          >
+            WhatsApp
+          </a>
+        `
+        : "";
 
     const websiteHtml = biz.website
-      ? `<a
+      ? `
+        <a
           href="${this.escapeHtml(
             biz.website
           )}"
           target="_blank"
           rel="noopener"
-        >Website</a>`
+        >
+          Website
+        </a>
+      `
       : "";
 
     return `
@@ -222,13 +333,17 @@ const App = {
         )}"
       >
 
+        ${this.renderBusinessImage(biz)}
+
         <div class="business-card-content">
 
           <div class="business-card-header">
 
             <div>
               <h3>
-                ${this.escapeHtml(biz.name)}
+                ${this.escapeHtml(
+                  biz.name
+                )}
               </h3>
 
               ${
@@ -417,7 +532,9 @@ const App = {
 
     if (resultsCount) {
       resultsCount.textContent =
-        String(businesses.length);
+        String(
+          businesses.length
+        );
     }
   },
 
@@ -489,6 +606,11 @@ const App = {
         ? categoryFilter.value
         : "";
 
+    const errorMessage =
+      document.getElementById(
+        "error-state"
+      );
+
     try {
       if (loadingState) {
         loadingState.hidden = false;
@@ -496,6 +618,10 @@ const App = {
 
       if (emptyState) {
         emptyState.hidden = true;
+      }
+
+      if (errorMessage) {
+        errorMessage.hidden = true;
       }
 
       if (businessList) {
@@ -529,9 +655,9 @@ const App = {
             )
         );
 
-      // Client-side search fallback.
-      // This keeps the frontend useful even if
-      // the API does not yet implement all filters.
+      // -----------------------------------------------------
+      // Client-side search fallback
+      // -----------------------------------------------------
 
       if (query) {
         const searchText =
@@ -546,7 +672,8 @@ const App = {
                 business.description,
                 business.address,
                 business.city,
-                business.state
+                business.state,
+                business.country
               ]
                 .filter(Boolean)
                 .join(" ")
@@ -599,8 +726,12 @@ const App = {
 
       businesses.sort(
         (a, b) =>
-          String(a.name || "").localeCompare(
-            String(b.name || "")
+          String(
+            a.name || ""
+          ).localeCompare(
+            String(
+              b.name || ""
+            )
           )
       );
 
@@ -617,6 +748,7 @@ const App = {
       this.renderBusinesses(
         businesses
       );
+
     } catch (error) {
       console.error(
         "NearAfrica business loading error:",
@@ -640,14 +772,10 @@ const App = {
           "Unable to load businesses";
       }
 
-      const errorMessage =
-        document.getElementById(
-          "error-state"
-        );
-
       if (errorMessage) {
         errorMessage.hidden = false;
       }
+
     } finally {
       if (loadingState) {
         loadingState.hidden = true;
