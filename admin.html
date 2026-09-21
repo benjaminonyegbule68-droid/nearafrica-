@@ -2583,7 +2583,7 @@
     }
 
 
-    /* =========================================================
+   /* =========================================================
    SUBMISSIONS
 ========================================================= */
 
@@ -2614,6 +2614,14 @@ async function moderateSubmissionFromAdmin(
     }
 
 
+    const actionButtons =
+        document.querySelectorAll(
+            `.submission-action[data-submission-id="${CSS.escape(
+                String(submissionId)
+            )}"]`
+        );
+
+
     let reason = "";
 
 
@@ -2640,24 +2648,6 @@ async function moderateSubmissionFromAdmin(
     }
 
 
-    const actionButtons =
-        document.querySelectorAll(
-            `.submission-action[data-submission-id="${CSS.escape(
-                String(submissionId)
-            )}"]`
-        );
-
-
-    actionButtons.forEach(
-        item => {
-
-            item.disabled =
-                true;
-
-        }
-    );
-
-
     const confirmed =
         confirm(
             action === "approve"
@@ -2668,18 +2658,19 @@ async function moderateSubmissionFromAdmin(
 
     if (!confirmed) {
 
-        actionButtons.forEach(
-            item => {
-
-                item.disabled =
-                    false;
-
-            }
-        );
-
         return;
 
     }
+
+
+    actionButtons.forEach(
+        item => {
+
+            item.disabled =
+                true;
+
+        }
+    );
 
 
     try {
@@ -2717,6 +2708,7 @@ async function moderateSubmissionFromAdmin(
 
         await loadStats();
 
+
         await loadResource(
             "submissions"
         );
@@ -2744,11 +2736,20 @@ async function moderateSubmissionFromAdmin(
 }
 
 
+/* =========================================================
+   RENDER SUBMISSIONS
+========================================================= */
+
 function renderSubmissions(
     submissions
 ) {
 
-    if (!submissions.length) {
+    if (
+        !Array.isArray(
+            submissions
+        ) ||
+        !submissions.length
+    ) {
 
         content.innerHTML = `
             <div class="empty">
@@ -2757,6 +2758,7 @@ function renderSubmissions(
         `;
 
         return;
+
     }
 
 
@@ -2768,32 +2770,50 @@ function renderSubmissions(
                     String(
                         submission.status ||
                         "pending"
-                    ).toLowerCase();
+                    )
+                        .trim()
+                        .toLowerCase();
+
 
                 const id =
                     submission.id ||
                     submission.submission_id ||
                     "";
 
+
                 const name =
                     submission.name ||
                     submission.business_name ||
                     "—";
 
+
                 const category =
                     submission.category ||
                     "—";
+
 
                 const city =
                     submission.city ||
                     "—";
 
+
                 const state =
                     submission.state ||
                     "—";
 
+
+                const country =
+                    submission.country ||
+                    "Nigeria";
+
+
                 const email =
                     submission.email ||
+                    "—";
+
+
+                const phone =
+                    submission.phone ||
                     "—";
 
 
@@ -2804,6 +2824,10 @@ function renderSubmissions(
                 `;
 
 
+                /*
+                 * Only pending submissions can be
+                 * approved or rejected.
+                 */
                 if (
                     status === "pending" &&
                     id
@@ -2811,20 +2835,46 @@ function renderSubmissions(
 
                     actions = `
 
-                        <div class="actions">
+                        <div
+                            class="actions"
+                            style="
+                                display:flex;
+                                gap:8px;
+                                flex-wrap:wrap;
+                            "
+                        >
 
                             <button
                                 type="button"
-                                class="action-btn primary"
-                                onclick="approveSubmissionAdmin('${escapeAttribute(id)}')"
+                                class="action-btn primary submission-action"
+                                data-submission-id="${escapeAttribute(
+                                    String(id)
+                                )}"
+                                onclick="moderateSubmissionFromAdmin(
+                                    '${escapeAttribute(
+                                        String(id)
+                                    )}',
+                                    'approve',
+                                    this
+                                )"
                             >
                                 Approve
                             </button>
 
+
                             <button
                                 type="button"
-                                class="action-btn dismiss"
-                                onclick="rejectSubmissionAdmin('${escapeAttribute(id)}')"
+                                class="action-btn dismiss submission-action"
+                                data-submission-id="${escapeAttribute(
+                                    String(id)
+                                )}"
+                                onclick="moderateSubmissionFromAdmin(
+                                    '${escapeAttribute(
+                                        String(id)
+                                    )}',
+                                    'reject',
+                                    this
+                                )"
                             >
                                 Reject
                             </button>
@@ -2832,6 +2882,7 @@ function renderSubmissions(
                         </div>
 
                     `;
+
                 }
 
 
@@ -2840,49 +2891,118 @@ function renderSubmissions(
                     <tr>
 
                         <td>
+
                             <strong>
-                                ${escapeHtml(name)}
+                                ${escapeHtml(
+                                    name
+                                )}
                             </strong>
 
-                            <div
-                                class="claim-id"
-                                style="margin-top:6px;"
-                            >
-                                ${escapeHtml(id)}
-                            </div>
+
+                            ${
+                                id
+                                    ? `
+                                        <div
+                                            class="claim-id"
+                                            style="
+                                                margin-top:6px;
+                                                word-break:break-all;
+                                            "
+                                        >
+                                            ID:
+                                            ${escapeHtml(
+                                                String(id)
+                                            )}
+                                        </div>
+                                    `
+                                    : `
+                                        <div
+                                            class="muted"
+                                            style="margin-top:6px;"
+                                        >
+                                            No submission ID
+                                        </div>
+                                    `
+                            }
+
                         </td>
 
 
                         <td>
-                            ${escapeHtml(category)}
+                            ${escapeHtml(
+                                category
+                            )}
                         </td>
 
 
                         <td>
 
-                            ${escapeHtml(city)}
+                            ${escapeHtml(
+                                city
+                            )}
 
                             <div
                                 class="muted"
-                                style="margin-top:4px;"
+                                style="
+                                    margin-top:4px;
+                                "
                             >
-                                ${escapeHtml(state)}
+                                ${escapeHtml(
+                                    state
+                                )},
+                                ${escapeHtml(
+                                    country
+                                )}
                             </div>
 
                         </td>
 
 
                         <td>
-                            ${escapeHtml(email)}
+
+                            ${
+                                email !== "—"
+                                    ? `
+                                        <div>
+                                            ${escapeHtml(
+                                                email
+                                            )}
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+
+                            ${
+                                phone !== "—"
+                                    ? `
+                                        <div
+                                            class="muted"
+                                            style="
+                                                margin-top:5px;
+                                            "
+                                        >
+                                            ${escapeHtml(
+                                                phone
+                                            )}
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
                         </td>
 
 
                         <td>
 
                             <span
-                                class="status ${escapeAttribute(status)}"
+                                class="status ${escapeAttribute(
+                                    status
+                                )}"
                             >
-                                ${escapeHtml(status)}
+                                ${escapeHtml(
+                                    status
+                                )}
                             </span>
 
                         </td>
@@ -2910,21 +3030,34 @@ function renderSubmissions(
 
                     <tr>
 
-                        <th>Business</th>
+                        <th>
+                            Business
+                        </th>
 
-                        <th>Category</th>
+                        <th>
+                            Category
+                        </th>
 
-                        <th>Location</th>
+                        <th>
+                            Location
+                        </th>
 
-                        <th>Email</th>
+                        <th>
+                            Contact
+                        </th>
 
-                        <th>Status</th>
+                        <th>
+                            Status
+                        </th>
 
-                        <th>Actions</th>
+                        <th>
+                            Actions
+                        </th>
 
                     </tr>
 
                 </thead>
+
 
                 <tbody>
                     ${rows}
@@ -2935,109 +3068,70 @@ function renderSubmissions(
         </div>
 
     `;
+
 }
 
-    /* =========================================================
-       TABS
-    ========================================================= */
 
-    document
-        .querySelectorAll(
-            ".tab"
-        )
-        .forEach(
-            tab => {
+/* =========================================================
+   TABS
+========================================================= */
 
-                tab.addEventListener(
-                    "click",
-                    async () => {
+document
+    .querySelectorAll(
+        ".tab"
+    )
+    .forEach(
+        tab => {
 
-                        document
-                            .querySelectorAll(
-                                ".tab"
-                            )
-                            .forEach(
-                                item =>
-                                    item.classList.remove(
-                                        "active"
-                                    )
-                            );
+            tab.addEventListener(
+                "click",
+                async () => {
 
-
-                        tab.classList.add(
-                            "active"
+                    document
+                        .querySelectorAll(
+                            ".tab"
+                        )
+                        .forEach(
+                            item =>
+                                item.classList.remove(
+                                    "active"
+                                )
                         );
 
 
-                        const resource =
-                            tab.dataset.resource;
+                    tab.classList.add(
+                        "active"
+                    );
 
 
-                        await loadResource(
-                            resource
-                        );
-
-                    }
-                );
-
-            }
-        );
+                    const resource =
+                        tab.dataset.resource;
 
 
-    /* =========================================================
-       REFRESH
-    ========================================================= */
+                    await loadResource(
+                        resource
+                    );
 
-    refreshBtn.addEventListener(
-        "click",
-        async () => {
-
-            refreshBtn.disabled =
-                true;
-
-            refreshBtn.textContent =
-                "Refreshing...";
-
-
-            try {
-
-                await loadStats();
-
-                await loadResource(
-                    currentResource
-                );
-
-            } finally {
-
-                refreshBtn.disabled =
-                    false;
-
-                refreshBtn.textContent =
-                    "Refresh";
-
-            }
+                }
+            );
 
         }
     );
 
 
-    /* =========================================================
-       INITIALIZATION
-    ========================================================= */
+/* =========================================================
+   REFRESH
+========================================================= */
 
-    async function initialize() {
+refreshBtn.addEventListener(
+    "click",
+    async () => {
 
-        if (!adminKey) {
+        refreshBtn.disabled =
+            true;
 
-            loginScreen.style.display =
-                "flex";
-
-            adminApp.style.display =
-                "none";
-
-            return;
-
-        }
+        refreshBtn.textContent =
+            "Refreshing...";
 
 
         try {
@@ -3045,39 +3139,87 @@ function renderSubmissions(
             await loadStats();
 
 
-            loginScreen.style.display =
-                "none";
-
-            adminApp.style.display =
-                "block";
-
-
             await loadResource(
                 currentResource
             );
 
+        } finally {
 
-        } catch (error) {
+            refreshBtn.disabled =
+                false;
 
-            sessionStorage.removeItem(
-                "nearafrica_admin_key"
-            );
-
-            adminKey = "";
-
-
-            loginScreen.style.display =
-                "flex";
-
-            adminApp.style.display =
-                "none";
+            refreshBtn.textContent =
+                "Refresh";
 
         }
 
     }
+);
 
 
-    initialize();
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+async function initialize() {
+
+    if (!adminKey) {
+
+        loginScreen.style.display =
+            "flex";
+
+        adminApp.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    try {
+
+        await loadStats();
+
+
+        loginScreen.style.display =
+            "none";
+
+        adminApp.style.display =
+            "block";
+
+
+        await loadResource(
+            currentResource
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "NearAfrica admin initialization failed:",
+            error
+        );
+
+
+        sessionStorage.removeItem(
+            "nearafrica_admin_key"
+        );
+
+        adminKey = "";
+
+
+        loginScreen.style.display =
+            "flex";
+
+        adminApp.style.display =
+            "none";
+
+    }
+
+}
+
+
+initialize();
 
 </script>
 
