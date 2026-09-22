@@ -939,6 +939,8 @@ const NearAfricaConfig = {
 
     "Health & Medical",
 
+    "Gyms & Fitness",
+
     "Shopping & Retail",
 
     "Supermarkets",
