@@ -54,7 +54,8 @@
 
     button,
     input,
-    textarea {
+    textarea,
+    select {
       font: inherit;
     }
 
@@ -116,6 +117,7 @@
       margin: 0 0 10px;
       font-size: 38px;
       line-height: 1.15;
+      color: var(--accent);
     }
 
     .hero p {
@@ -157,7 +159,8 @@
     }
 
     input,
-    textarea {
+    textarea,
+    select {
       width: 100%;
       border: 1px solid var(--border);
       border-radius: 9px;
@@ -168,13 +171,19 @@
     }
 
     input:focus,
-    textarea:focus {
+    textarea:focus,
+    select:focus {
       border-color: var(--accent);
     }
 
-    input:disabled {
+    input:disabled,
+    select:disabled {
       opacity: 0.7;
       cursor: not-allowed;
+    }
+
+    input[type="file"] {
+      cursor: pointer;
     }
 
     textarea {
@@ -303,6 +312,59 @@
       font-size: 12px;
     }
 
+    .image-gallery {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fill, minmax(190px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .image-card {
+      overflow: hidden;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .image-preview {
+      width: 100%;
+      height: 180px;
+      display: block;
+      object-fit: cover;
+      background: #111111;
+    }
+
+    .image-card-body {
+      padding: 14px;
+    }
+
+    .image-type {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .image-url {
+      color: var(--text-muted);
+      font-size: 11px;
+      word-break: break-all;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .image-empty {
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 30px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      grid-column: 1 / -1;
+    }
+
     .feature-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -353,6 +415,11 @@
 
       .hero h1 {
         font-size: 31px;
+      }
+
+      .image-gallery {
+        grid-template-columns:
+          repeat(auto-fill, minmax(150px, 1fr));
       }
     }
   </style>
@@ -465,6 +532,8 @@
         id="dashboardSection"
         class="hidden"
       >
+
+        <!-- BUSINESS PROFILE -->
 
         <div class="card">
 
@@ -663,6 +732,84 @@
         </div>
 
 
+        <!-- PHOTOS -->
+
+        <div class="card">
+
+          <h2>Business Photos</h2>
+
+          <p class="card-description">
+            Add and manage photos displayed on your NearAfrica business profile.
+          </p>
+
+
+          <div class="form-group">
+
+            <label for="businessImage">
+              Select Photo
+            </label>
+
+            <input
+              type="file"
+              id="businessImage"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="imageType">
+              Photo Type
+            </label>
+
+            <select
+              id="imageType"
+            >
+              <option value="gallery">
+                Gallery Photo
+              </option>
+
+              <option value="cover">
+                Cover Photo
+              </option>
+
+              <option value="logo">
+                Business Logo
+              </option>
+            </select>
+
+          </div>
+
+
+          <div class="btn-row">
+
+            <button
+              type="button"
+              id="uploadImageButton"
+              class="btn btn-primary"
+            >
+              Upload Photo
+            </button>
+
+          </div>
+
+
+          <div
+            id="imageStatus"
+            class="status"
+          ></div>
+
+
+          <div
+            id="imageGallery"
+            class="image-gallery"
+          ></div>
+
+        </div>
+
+
         <!-- FUTURE FEATURES -->
 
         <div class="card">
@@ -675,14 +822,6 @@
 
 
           <div class="feature-grid">
-
-            <div class="feature-card">
-              <h3>Photos</h3>
-              <p>
-                Add and manage photos for your business profile.
-              </p>
-            </div>
-
 
             <div class="feature-card">
               <h3>Opening Hours</h3>
@@ -773,6 +912,21 @@
 
     const logoutButton =
       document.getElementById("logoutButton");
+
+    const businessImage =
+      document.getElementById("businessImage");
+
+    const imageType =
+      document.getElementById("imageType");
+
+    const uploadImageButton =
+      document.getElementById("uploadImageButton");
+
+    const imageStatus =
+      document.getElementById("imageStatus");
+
+    const imageGallery =
+      document.getElementById("imageGallery");
 
 
     function showStatus(
@@ -910,6 +1064,8 @@
 
 
         await loadOwnerBusiness();
+
+        await loadOwnerImages();
 
 
         loginSection.classList.add(
@@ -1196,6 +1352,479 @@
     }
 
 
+    async function loadOwnerImages() {
+
+      if (!ownerToken) {
+        return;
+      }
+
+
+      imageGallery.innerHTML =
+        '<div class="image-empty">Loading photos...</div>';
+
+
+      try {
+
+        const response =
+          await fetch(
+            API_BASE +
+            "/owner/business/images",
+            {
+              method: "GET",
+
+              headers: {
+                Authorization:
+                  "Bearer " +
+                  ownerToken
+              }
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          result.status !== "ok"
+        ) {
+
+          throw new Error(
+            result.message ||
+            "Unable to load business photos."
+          );
+
+        }
+
+
+        renderImages(
+          result.images || []
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Loading owner images failed:",
+          error
+        );
+
+        imageGallery.innerHTML =
+          '<div class="image-empty">Unable to load business photos.</div>';
+
+        showStatus(
+          imageStatus,
+          error.message ||
+            "Unable to load business photos.",
+          "error"
+        );
+      }
+    }
+
+
+    function renderImages(
+      images
+    ) {
+
+      imageGallery.innerHTML = "";
+
+
+      if (!images.length) {
+
+        imageGallery.innerHTML =
+          '<div class="image-empty">No business photos have been uploaded yet.</div>';
+
+        return;
+      }
+
+
+      images.forEach(
+        function (image) {
+
+          const card =
+            document.createElement(
+              "div"
+            );
+
+          card.className =
+            "image-card";
+
+
+          const preview =
+            document.createElement(
+              "img"
+            );
+
+          preview.className =
+            "image-preview";
+
+          preview.src =
+            image.image_url || "";
+
+          preview.alt =
+            image.alt_text ||
+            currentBusiness?.business_name ||
+            "Business photo";
+
+          preview.loading =
+            "lazy";
+
+
+          const body =
+            document.createElement(
+              "div"
+            );
+
+          body.className =
+            "image-card-body";
+
+
+          const type =
+            document.createElement(
+              "div"
+            );
+
+          type.className =
+            "image-type";
+
+          type.textContent =
+            image.image_type ||
+            "gallery";
+
+
+          const url =
+            document.createElement(
+              "div"
+            );
+
+          url.className =
+            "image-url";
+
+          url.textContent =
+            image.image_url ||
+            "Image URL unavailable";
+
+
+          const deleteButton =
+            document.createElement(
+              "button"
+            );
+
+          deleteButton.type =
+            "button";
+
+          deleteButton.className =
+            "btn btn-danger";
+
+          deleteButton.textContent =
+            "Delete";
+
+          deleteButton.addEventListener(
+            "click",
+            function () {
+              deleteOwnerImage(
+                image.id
+              );
+            }
+          );
+
+
+          body.appendChild(type);
+          body.appendChild(url);
+          body.appendChild(deleteButton);
+
+          card.appendChild(preview);
+          card.appendChild(body);
+
+          imageGallery.appendChild(card);
+        }
+      );
+    }
+
+
+    async function uploadOwnerImage() {
+
+      if (!ownerToken) {
+
+        showStatus(
+          imageStatus,
+          "Your owner session has expired. Please log in again.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const file =
+        businessImage.files &&
+        businessImage.files[0];
+
+
+      if (!file) {
+
+        showStatus(
+          imageStatus,
+          "Please select an image first.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/gif"
+      ];
+
+
+      if (
+        !allowedTypes.includes(
+          file.type
+        )
+      ) {
+
+        showStatus(
+          imageStatus,
+          "Please select a JPG, PNG, WebP, or GIF image.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (
+        file.size >
+        10 * 1024 * 1024
+      ) {
+
+        showStatus(
+          imageStatus,
+          "The selected image is larger than the 10 MB owner upload limit.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const formData =
+        new FormData();
+
+
+      formData.append(
+        "image",
+        file
+      );
+
+      formData.append(
+        "image_type",
+        imageType.value
+      );
+
+
+      uploadImageButton.disabled =
+        true;
+
+      uploadImageButton.textContent =
+        "Uploading...";
+
+
+      hideStatus(
+        imageStatus
+      );
+
+
+      try {
+
+        const response =
+          await fetch(
+            API_BASE +
+            "/owner/business/images",
+            {
+              method: "POST",
+
+              headers: {
+                Authorization:
+                  "Bearer " +
+                  ownerToken
+              },
+
+              body:
+                formData
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          result.status !== "ok"
+        ) {
+
+          throw new Error(
+            result.message ||
+            "Unable to upload the image."
+          );
+
+        }
+
+
+        businessImage.value = "";
+
+
+        await loadOwnerImages();
+
+
+        showStatus(
+          imageStatus,
+          "Photo uploaded successfully.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Owner image upload failed:",
+          error
+        );
+
+        showStatus(
+          imageStatus,
+          error.message ||
+            "Unable to upload the image.",
+          "error"
+        );
+
+      } finally {
+
+        uploadImageButton.disabled =
+          false;
+
+        uploadImageButton.textContent =
+          "Upload Photo";
+
+      }
+    }
+
+
+    async function deleteOwnerImage(
+      imageId
+    ) {
+
+      if (!ownerToken) {
+
+        showStatus(
+          imageStatus,
+          "Your owner session has expired. Please log in again.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (!imageId) {
+
+        showStatus(
+          imageStatus,
+          "This image cannot be deleted because its ID is missing.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const confirmed =
+        window.confirm(
+          "Delete this business photo?"
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      try {
+
+        showStatus(
+          imageStatus,
+          "Deleting photo...",
+          "info"
+        );
+
+
+        const response =
+          await fetch(
+            API_BASE +
+            "/owner/business/images/" +
+            encodeURIComponent(
+              imageId
+            ),
+            {
+              method: "DELETE",
+
+              headers: {
+                Authorization:
+                  "Bearer " +
+                  ownerToken
+              }
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          result.status !== "ok"
+        ) {
+
+          throw new Error(
+            result.message ||
+            "Unable to delete the image."
+          );
+
+        }
+
+
+        await loadOwnerImages();
+
+
+        showStatus(
+          imageStatus,
+          "Photo deleted successfully.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Owner image deletion failed:",
+          error
+        );
+
+        showStatus(
+          imageStatus,
+          error.message ||
+            "Unable to delete the image.",
+          "error"
+        );
+      }
+    }
+
+
     async function logoutOwner() {
 
       if (!ownerToken) {
@@ -1249,12 +1878,20 @@
 
       loginForm.reset();
 
+      businessImage.value = "";
+
+      imageGallery.innerHTML = "";
+
       hideStatus(
         loginStatus
       );
 
       hideStatus(
         dashboardStatus
+      );
+
+      hideStatus(
+        imageStatus
       );
     }
 
@@ -1289,6 +1926,12 @@
     saveButton.addEventListener(
       "click",
       saveBusiness
+    );
+
+
+    uploadImageButton.addEventListener(
+      "click",
+      uploadOwnerImage
     );
 
 
