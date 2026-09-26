@@ -1003,9 +1003,24 @@
       /*
        * Opening Hours
        *
-       * This renderer accepts several common shapes so the
-       * frontend remains compatible with the Worker as the
-       * public hours endpoint is wired in.
+       * Supports the actual Worker/D1 format:
+       *
+       * {
+       *   day_of_week: 0,
+       *   is_closed: 1,
+       *   is_24_hours: 0,
+       *   opening_time: null,
+       *   closing_time: null
+       * }
+       *
+       * day_of_week:
+       * 0 = Sunday
+       * 1 = Monday
+       * 2 = Tuesday
+       * 3 = Wednesday
+       * 4 = Thursday
+       * 5 = Friday
+       * 6 = Saturday
        */
 
       function normalizeHours(hours) {
@@ -1023,6 +1038,7 @@
         if (
           typeof hours === "object"
         ) {
+
           if (
             Array.isArray(
               hours.results
@@ -1054,7 +1070,7 @@
           value === undefined ||
           value === ""
         ) {
-          return "Closed";
+          return "Not specified";
         }
 
         if (
@@ -1070,7 +1086,11 @@
         value
       ) {
 
-        if (!value) {
+        if (
+          value === null ||
+          value === undefined ||
+          value === ""
+        ) {
           return "";
         }
 
@@ -1118,6 +1138,16 @@
           sunday: "Sunday"
         };
 
+        const sundayFirst = [
+          "sunday",
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday",
+          "saturday"
+        ];
+
         const today =
           new Date()
             .toLocaleDateString(
@@ -1129,15 +1159,10 @@
             .toLowerCase();
 
         /*
-         * Array format:
-         * [
-         *   {
-         *     day: "monday",
-         *     open_time: "08:00",
-         *     close_time: "17:00",
-         *     closed: 0
-         *   }
-         * ]
+         * Array format.
+         *
+         * This is the format returned by the
+         * Worker/D1 opening-hours system.
          */
 
         if (
@@ -1159,12 +1184,54 @@
                 return;
               }
 
-              const day =
-                getDayName(
-                  item.day ||
-                  item.day_name ||
-                  item.weekday
-                );
+              let day = "";
+
+              /*
+               * Actual D1 format:
+               *
+               * day_of_week = 0..6
+               */
+              if (
+                item.day_of_week !==
+                  undefined &&
+                item.day_of_week !==
+                  null &&
+                item.day_of_week !== ""
+              ) {
+
+                const numericDay =
+                  Number(
+                    item.day_of_week
+                  );
+
+                if (
+                  Number.isInteger(
+                    numericDay
+                  ) &&
+                  numericDay >= 0 &&
+                  numericDay <= 6
+                ) {
+
+                  day =
+                    sundayFirst[
+                      numericDay
+                    ];
+                }
+              }
+
+              /*
+               * Compatibility with possible
+               * string-based formats.
+               */
+              if (!day) {
+
+                day =
+                  getDayName(
+                    item.day ||
+                    item.day_name ||
+                    item.weekday
+                  );
+              }
 
               if (day) {
                 byDay[day] =
@@ -1183,6 +1250,7 @@
                     byDay[day];
 
                   if (!item) {
+
                     return `
                       <div
                         class="hours-row ${
@@ -1191,6 +1259,7 @@
                             : ""
                         }"
                       >
+
                         <div class="hours-day">
                           ${dayLabels[day]}
                         </div>
@@ -1198,11 +1267,16 @@
                         <div class="hours-time hours-closed">
                           Hours not available
                         </div>
+
                       </div>
                     `;
                   }
 
-                  const closed =
+                  const isClosed =
+                    Number(
+                      item.is_closed
+                    ) === 1 ||
+                    item.is_closed === true ||
                     Number(
                       item.closed
                     ) === 1 ||
@@ -1213,12 +1287,25 @@
                     ).toLowerCase() ===
                       "closed";
 
-                  const open =
+                  const is24Hours =
+                    Number(
+                      item.is_24_hours
+                    ) === 1 ||
+                    item.is_24_hours === true ||
+                    String(
+                      item.status ||
+                      ""
+                    ).toLowerCase() ===
+                      "24";
+
+                  const opening =
+                    item.opening_time ||
                     item.open_time ||
                     item.open ||
                     item.opens_at;
 
-                  const close =
+                  const closing =
+                    item.closing_time ||
                     item.close_time ||
                     item.close ||
                     item.closes_at;
@@ -1226,19 +1313,37 @@
                   let display =
                     "Closed";
 
-                  if (!closed) {
+                  let displayClass =
+                    "hours-closed";
+
+                  if (
+                    is24Hours
+                  ) {
+
+                    display =
+                      "24 Hours";
+
+                    displayClass =
+                      "hours-open";
+
+                  } else if (
+                    !isClosed
+                  ) {
 
                     if (
-                      open ||
-                      close
+                      opening ||
+                      closing
                     ) {
 
                       display =
                         `${formatHoursValue(
-                          open
+                          opening
                         )} – ${formatHoursValue(
-                          close
+                          closing
                         )}`;
+
+                      displayClass =
+                        "hours-open";
 
                     } else if (
                       item.hours
@@ -1247,11 +1352,16 @@
                       display =
                         item.hours;
 
+                      displayClass =
+                        "hours-open";
+
                     } else {
 
                       display =
                         "Hours not available";
 
+                      displayClass =
+                        "hours-closed";
                     }
                   }
 
@@ -1269,11 +1379,7 @@
                       </div>
 
                       <div
-                        class="hours-time ${
-                          closed
-                            ? "hours-closed"
-                            : "hours-open"
-                        }"
+                        class="hours-time ${displayClass}"
                       >
                         ${escapeHtml(
                           display
@@ -1290,14 +1396,7 @@
         }
 
         /*
-         * Object format:
-         *
-         * {
-         *   monday: {
-         *     open: "08:00",
-         *     close: "17:00"
-         *   }
-         * }
+         * Object format compatibility.
          */
 
         if (
@@ -1318,6 +1417,9 @@
                     "Closed";
 
                   let closed =
+                    false;
+
+                  let is24Hours =
                     false;
 
                   if (
@@ -1343,33 +1445,53 @@
 
                     closed =
                       Number(
-                        item.closed
+                        item.is_closed ??
+                        item.closed ??
+                        0
                       ) === 1 ||
-                      item.closed ===
-                        true;
+                      item.is_closed === true ||
+                      item.closed === true;
 
-                    if (!closed) {
+                    is24Hours =
+                      Number(
+                        item.is_24_hours ??
+                        0
+                      ) === 1 ||
+                      item.is_24_hours === true;
 
-                      const open =
+                    if (
+                      is24Hours
+                    ) {
+
+                      display =
+                        "24 Hours";
+
+                    } else if (
+                      !closed
+                    ) {
+
+                      const opening =
+                        item.opening_time ||
                         item.open_time ||
                         item.open ||
                         item.opens_at;
 
-                      const close =
+                      const closing =
+                        item.closing_time ||
                         item.close_time ||
                         item.close ||
                         item.closes_at;
 
                       if (
-                        open ||
-                        close
+                        opening ||
+                        closing
                       ) {
 
                         display =
                           `${formatHoursValue(
-                            open
+                            opening
                           )} – ${formatHoursValue(
-                            close
+                            closing
                           )}`;
 
                       } else if (
@@ -1383,7 +1505,6 @@
 
                         display =
                           "Hours not available";
-
                       }
                     }
                   }
@@ -1523,6 +1644,7 @@
         let actions = "";
 
         if (phone) {
+
           actions += `
             <a
               class="btn"
@@ -1536,6 +1658,7 @@
         }
 
         if (whatsapp) {
+
           actions += `
             <a
               class="btn"
@@ -1551,6 +1674,7 @@
         }
 
         if (email) {
+
           actions += `
             <a
               class="btn"
@@ -1564,6 +1688,7 @@
         }
 
         if (website) {
+
           actions += `
             <a
               class="btn"
@@ -1585,6 +1710,7 @@
             business.verified
           ) === 1
         ) {
+
           badges.push(`
             <span class="badge gold">
               ✓ Verified
@@ -1597,6 +1723,7 @@
             business.claimed
           ) === 1
         ) {
+
           badges.push(`
             <span class="badge">
               ✓ Claimed
@@ -1609,6 +1736,7 @@
             business.featured
           ) === 1
         ) {
+
           badges.push(`
             <span class="badge gold">
               Featured
@@ -1865,7 +1993,6 @@
 
               </section>
 
-
               <section class="profile-card">
 
                 <h2>
@@ -1877,7 +2004,6 @@
                 )}
 
               </section>
-
 
               <section class="profile-card">
 
@@ -1891,7 +2017,6 @@
 
               </section>
 
-
               <section class="profile-card">
 
                 <h2>
@@ -1902,7 +2027,6 @@
 
               </section>
 
-
               <section class="profile-card">
 
                 <h2>
@@ -1912,7 +2036,6 @@
                 ${reviewsHtml}
 
               </section>
-
 
               <section class="profile-card">
 
@@ -1945,7 +2068,6 @@
               </section>
 
             </div>
-
 
             <div>
 
@@ -2141,7 +2263,6 @@
 
               </section>
 
-
               <section class="profile-card">
 
                 ${
@@ -2238,7 +2359,6 @@
         );
       }
 
-
       function initializeMap(
         business
       ) {
@@ -2317,7 +2437,6 @@
           )
           .openPopup();
       }
-
 
       function setupClaimForm(
         business
@@ -2452,7 +2571,6 @@
         );
       }
 
-
       async function loadBusiness() {
 
         const businessId =
@@ -2511,7 +2629,6 @@
           );
         }
       }
-
 
       loadBusiness();
 
