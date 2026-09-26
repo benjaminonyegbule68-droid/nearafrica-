@@ -1,2171 +1,1965 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Business | NearAfrica</title>
-
-    <meta
-        name="description"
-        content="Discover businesses across Africa with NearAfrica."
-    >
-
-    <link rel="icon" href="favicon.svg">
-    <link rel="stylesheet" href="styles.css">
-
-    <!-- Leaflet CSS -->
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    >
-
-    <style>
-        .business-page {
-            min-height: 100vh;
-        }
-
-        .profile-container {
-            width: min(1180px, 92%);
-            margin: 0 auto;
-            padding: 40px 0 70px;
-        }
-
-        .profile-header {
-            background: #111;
-            border: 1px solid rgba(212, 175, 55, 0.25);
-            border-radius: 22px;
-            padding: 32px;
-            margin-bottom: 25px;
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
-        }
-
-        .profile-top {
-            display: flex;
-            gap: 25px;
-            align-items: flex-start;
-        }
-
-        .business-logo {
-            width: 110px;
-            height: 110px;
-            border-radius: 18px;
-            background: #1c1c1c;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .business-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .business-logo-placeholder {
-            font-size: 42px;
-            font-weight: 800;
-            color: #d4af37;
-        }
-
-        .profile-main {
-            flex: 1;
-        }
-
-        .business-category {
-            display: inline-block;
-            color: #d4af37;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .profile-main h1 {
-            margin: 0 0 10px;
-            font-size: clamp(30px, 5vw, 46px);
-            line-height: 1.1;
-        }
-
-        .business-location {
-            color: #bbb;
-            margin-bottom: 12px;
-        }
-
-        .business-rating {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .stars {
-            color: #d4af37;
-            letter-spacing: 2px;
-        }
-
-        .rating-text {
-            color: #ccc;
-            font-size: 14px;
-        }
-
-        .badge-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .verified-badge {
-            background: rgba(34, 197, 94, 0.12);
-            color: #4ade80;
-            border: 1px solid rgba(74, 222, 128, 0.25);
-        }
-
-        .claimed-badge {
-            background: rgba(212, 175, 55, 0.12);
-            color: #d4af37;
-            border: 1px solid rgba(212, 175, 55, 0.25);
-        }
-
-        .active-badge {
-            background: rgba(59, 130, 246, 0.12);
-            color: #60a5fa;
-            border: 1px solid rgba(96, 165, 250, 0.25);
-        }
-
-        .profile-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 22px;
-        }
-
-        .profile-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            min-height: 44px;
-            padding: 10px 18px;
-            border-radius: 10px;
-            border: 1px solid rgba(212, 175, 55, 0.35);
-            background: #171717;
-            color: #fff;
-            text-decoration: none;
-            cursor: pointer;
-            font-weight: 700;
-            transition: 0.2s ease;
-        }
-
-        .profile-btn:hover {
-            transform: translateY(-1px);
-            border-color: #d4af37;
-        }
-
-        .profile-btn.primary {
-            background: #d4af37;
-            color: #111;
-            border-color: #d4af37;
-        }
-
-       .profile-btn.primary:hover {
-    background: #e4c45a;
-}
-
-.profile-btn.report-btn {
-    color: #f87171;
-    border-color: rgba(248, 113, 113, 0.3);
-    background: rgba(248, 113, 113, 0.05);
-}
-
-.profile-btn.report-btn:hover {
-    border-color: #f87171;
-    background: rgba(248, 113, 113, 0.1);
-}
-        }
-
-        .profile-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 25px;
-        }
-
-        .profile-card {
-            background: #111;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 18px;
-            padding: 25px;
-            margin-bottom: 25px;
-        }
-
-        .profile-card h2 {
-            margin: 0 0 18px;
-            font-size: 22px;
-        }
-
-        .profile-card h3 {
-            margin: 0 0 12px;
-        }
-
-        .description {
-            color: #ccc;
-            line-height: 1.8;
-            white-space: pre-line;
-        }
-
-        .info-list {
-            display: grid;
-            gap: 14px;
-        }
-
-        .info-item {
-            display: grid;
-            grid-template-columns: 130px 1fr;
-            gap: 15px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-
-        .info-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .info-label {
-            color: #888;
-            font-size: 14px;
-        }
-
-        .info-value {
-            color: #eee;
-            word-break: break-word;
-        }
-
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        .business-photo {
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            object-fit: cover;
-            border-radius: 12px;
-            background: #1a1a1a;
-        }
-
-        #businessMap {
-            width: 100%;
-            height: 360px;
-            border-radius: 14px;
-            overflow: hidden;
-            background: #1a1a1a;
-        }
-
-        .map-message {
-            min-height: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #888;
-            padding: 25px;
-        }
-
-        .review-list {
-            display: grid;
-            gap: 15px;
-        }
-
-        .review-item {
-            padding: 17px;
-            border-radius: 12px;
-            background: #181818;
-            border: 1px solid rgba(255,255,255,0.06);
-        }
-
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin-bottom: 8px;
-        }
-
-        .review-name {
-            font-weight: 700;
-        }
-
-        .review-rating {
-            color: #d4af37;
-        }
-
-        .review-comment {
-            color: #bbb;
-            line-height: 1.6;
-        }
-
-        .claim-card {
-            border-color: rgba(212, 175, 55, 0.35);
-        }
-
-        .claim-intro {
-            color: #aaa;
-            line-height: 1.7;
-            margin-bottom: 20px;
-        }
-
-        .form-grid {
-            display: grid;
-            gap: 14px;
-        }
-
-        .form-group {
-            display: grid;
-            gap: 7px;
-        }
-
-        .form-group label {
-            font-size: 14px;
-            color: #ccc;
-            font-weight: 600;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 12px 13px;
-            border-radius: 9px;
-            border: 1px solid rgba(255,255,255,0.12);
-            background: #181818;
-            color: #fff;
-            outline: none;
-        }
-
-        .form-group textarea {
-            min-height: 110px;
-            resize: vertical;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: #d4af37;
-        }
-
-        .form-message {
-            margin-top: 12px;
-            padding: 11px 13px;
-            border-radius: 8px;
-            display: none;
-        }
-
-        .form-message.success {
-            display: block;
-            color: #4ade80;
-            background: rgba(34, 197, 94, 0.1);
-        }
-
-        .form-message.error {
-            display: block;
-            color: #f87171;
-            background: rgba(239, 68, 68, 0.1);
-        }
-
-        .not-found {
-            max-width: 700px;
-            margin: 70px auto;
-            text-align: center;
-            background: #111;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 20px;
-            padding: 45px 25px;
-        }
-
-        .not-found h1 {
-            margin-top: 0;
-        }
-
-        .not-found p {
-            color: #999;
-            line-height: 1.7;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 80px 20px;
-            color: #999;
-        }
-
-        .empty-state {
-            color: #888;
-            line-height: 1.7;
-        }
-
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .stat-box {
-            background: #181818;
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-        }
-
-        .stat-number {
-            display: block;
-            color: #d4af37;
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            color: #888;
-            font-size: 12px;
-        }
-
-        @media (max-width: 850px) {
-            .profile-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 650px) {
-            .profile-container {
-                width: 94%;
-                padding-top: 25px;
-            }
-
-            .profile-header,
-            .profile-card {
-                padding: 20px;
-            }
-
-            .profile-top {
-                flex-direction: column;
-            }
-
-            .business-logo {
-                width: 90px;
-                height: 90px;
-            }
-
-            .photo-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .info-item {
-                grid-template-columns: 1fr;
-                gap: 4px;
-            }
-
-            .stats-row {
-                grid-template-columns: 1fr;
-            }
-
-            #businessMap {
-                height: 280px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Business Profile | NearAfrica</title>
+
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --bg-secondary: #121212;
+      --card: #151515;
+      --card-hover: #1b1b1b;
+      --border: #292929;
+      --gold: #d4af37;
+      --gold-light: #e3c55b;
+      --text: #f4f4f4;
+      --text-muted: #a6a6a6;
+      --danger: #e57373;
+      --success: #81c784;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .site-header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 11, 11, 0.96);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+
+    .brand span {
+      color: var(--gold);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .nav a:hover {
+      color: var(--text);
+    }
+
+    .profile-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 34px 22px 60px;
+    }
+
+    .loading,
+    .error-state {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 14px;
+      padding: 28px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .error-state h2 {
+      color: var(--text);
+      margin-top: 0;
+    }
+
+    .profile-header {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(212, 175, 55, 0.12),
+          rgba(21, 21, 21, 0.95)
+        );
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 30px;
+      margin-bottom: 20px;
+    }
+
+    .profile-header-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 25px;
+    }
+
+    .business-title-wrap {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .business-logo {
+      width: 76px;
+      height: 76px;
+      border-radius: 16px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      flex-shrink: 0;
+    }
+
+    .business-placeholder {
+      width: 76px;
+      height: 76px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #202020;
+      border: 1px solid var(--border);
+      color: var(--gold);
+      font-size: 30px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .profile-header h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+
+    .business-category {
+      color: var(--gold-light);
+      font-size: 14px;
+      margin-bottom: 7px;
+    }
+
+    .business-location {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .badge.gold {
+      color: var(--gold-light);
+      border-color: rgba(212, 175, 55, 0.35);
+    }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      color: var(--text);
+      border-radius: 9px;
+      padding: 10px 14px;
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--card-hover);
+      border-color: #3a3a3a;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: #111;
+      border-color: var(--gold);
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      border-color: var(--gold-light);
+    }
+
+    .btn-danger {
+      color: #ffaaaa;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .stat {
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 20px;
+    }
+
+    .profile-card {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 15px;
+      padding: 23px;
+      margin-bottom: 20px;
+    }
+
+    .profile-card h2 {
+      margin: 0 0 15px;
+      font-size: 19px;
+    }
+
+    .profile-card p {
+      color: var(--text-muted);
+      margin-top: 0;
+    }
+
+    .info-list {
+      display: grid;
+      gap: 13px;
+    }
+
+    .info-item {
+      padding-bottom: 13px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-item:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .info-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+
+    .info-value {
+      word-break: break-word;
+    }
+
+    .photos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .photo {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+    }
+
+    .review {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .review:last-child {
+      border-bottom: 0;
+    }
+
+    .review-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .review-name {
+      font-weight: 700;
+    }
+
+    .review-date {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .stars {
+      color: var(--gold);
+      letter-spacing: 2px;
+      margin: 5px 0;
+    }
+
+    .review-comment {
+      color: var(--text-muted);
+      margin: 0;
+      white-space: pre-wrap;
+    }
+
+    .products-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .product-card {
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 17px;
+    }
+
+    .product-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .product-name {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .product-type {
+      color: var(--text-muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .product-price {
+      color: var(--gold-light);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .product-description {
+      color: var(--text-muted);
+      margin: 10px 0 0;
+    }
+
+    .product-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .product-meta span {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .product-unavailable {
+      color: #e6a6a6 !important;
+    }
+
+    .empty-state {
+      padding: 16px;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .map {
+      width: 100%;
+      height: 340px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .claim-box {
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--bg-secondary);
+    }
+
+    .claim-box h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .claim-box p {
+      font-size: 13px;
+    }
+
+    .claim-form {
+      display: grid;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .claim-form input,
+    .claim-form textarea {
+      width: 100%;
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 11px;
+      outline: none;
+    }
+
+    .claim-form input:focus,
+    .claim-form textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    .status.success {
+      color: var(--success);
+    }
+
+    .status.info {
+      color: var(--text-muted);
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .contact-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width: 850px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-header-main {
+        flex-direction: column;
+      }
+
+      .header-actions {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .profile-container {
+        padding: 20px 14px 45px;
+      }
+
+      .header-inner {
+        padding: 13px 14px;
+      }
+
+      .nav {
+        gap: 12px;
+        font-size: 12px;
+      }
+
+      .profile-header {
+        padding: 21px;
+      }
+
+      .business-title-wrap {
+        flex-direction: column;
+      }
+
+      .profile-header h1 {
+        font-size: 27px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .photos-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .product-top {
+        flex-direction: column;
+      }
+
+      .product-price {
+        white-space: normal;
+      }
+    }
+  </style>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
 </head>
 
 <body class="business-page">
 
-<header>
-    <nav>
-        <a href="index.html" class="logo">
-            NearAfrica
-        </a>
+  <header class="site-header">
+    <div class="header-inner">
 
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="explore.html">Explore</a>
-            <a href="list-business.html">List Your Business</a>
-        </div>
-    </nav>
-</header>
+      <a href="/" class="brand">
+        Near<span>Africa</span>
+      </a>
 
-<main class="profile-container">
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/explore.html">Explore</a>
+        <a href="/submit.html">List Your Business</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="profile-container">
 
     <div id="businessContent">
-        <div class="loading">
-            Loading business...
-        </div>
+      <div class="loading">
+        Loading business...
+      </div>
     </div>
 
-</main>
+  </main>
 
-<footer>
-    <p>
-        © 2026 NearAfrica. Discover businesses across Africa.
-    </p>
-</footer>
-
-<!-- Leaflet JavaScript -->
-<script
+  <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-></script>
+  ></script>
 
-<script>
-(function () {
+  <script>
+    (() => {
 
-    "use strict";
-
-    const API_URL =
+      const API_URL =
         "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
-    const content =
-        document.getElementById("businessContent");
+      const content =
+        document.getElementById(
+          "businessContent"
+        );
 
-    let activeMap = null;
+      let activeMap = null;
 
-
-    function getBusinessId() {
-
+      function getBusinessId() {
         const params =
-            new URLSearchParams(
-                window.location.search
-            );
+          new URLSearchParams(
+            window.location.search
+          );
 
-        return params.get("id");
-    }
+        return (
+          params.get("id") ||
+          params.get("business_id") ||
+          params.get("slug")
+        );
+      }
 
+      function escapeHtml(value) {
+        const div =
+          document.createElement("div");
 
-    function escapeHtml(value) {
+        div.textContent =
+          value === null ||
+          value === undefined
+            ? ""
+            : String(value);
 
-        if (value === null || value === undefined) {
-            return "";
-        }
+        return div.innerHTML;
+      }
 
-        return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
-
-    function normalizeCategory(category) {
-
+      function normalizeCategory(
+        category
+      ) {
         if (!category) {
-            return "Other";
+          return "";
         }
 
-        const value =
-            String(category)
-                .trim()
-                .toLowerCase();
+        return String(category)
+          .replace(/[-_]/g, " ")
+          .replace(/\b\w/g, c =>
+            c.toUpperCase()
+          );
+      }
 
-        const map = {
+      function formatLocation(
+        business
+      ) {
+        return [
+          business.address,
+          business.city,
+          business.state,
+          business.country
+        ]
+          .filter(Boolean)
+          .join(", ");
+      }
 
-            "professional-services":
-                "Professional Services",
-
-            "professional services":
-                "Professional Services",
-
-            "restaurants & food":
-                "Restaurants & Food",
-
-            "restaurant":
-                "Restaurants & Food",
-
-            "restaurants":
-                "Restaurants & Food",
-
-            "food":
-                "Restaurants & Food",
-
-            "spa":
-                "Beauty & Spa",
-
-            "beauty & spa":
-                "Beauty & Spa",
-
-            "beauty":
-                "Beauty & Spa",
-
-            "hotels & accommodation":
-                "Hotels & Accommodation",
-
-            "hotel":
-                "Hotels & Accommodation",
-
-            "shopping & retail":
-                "Shopping & Retail",
-
-            "retail":
-                "Shopping & Retail",
-
-            "supermarkets":
-                "Supermarkets",
-
-            "banks & finance":
-                "Banks & Finance",
-
-            "health & medical":
-                "Health & Medical",
-
-            "education":
-                "Education",
-
-            "real estate":
-                "Real Estate",
-
-            "automotive":
-                "Automotive",
-
-            "travel & tourism":
-                "Travel & Tourism",
-
-            "logistics & delivery":
-                "Logistics & Delivery",
-
-            "technology":
-                "Technology",
-
-            "entertainment":
-                "Entertainment",
-
-            "fitness & sports":
-                "Fitness & Sports",
-
-            "construction & home services":
-                "Construction & Home Services",
-
-            "fashion":
-                "Fashion",
-
-            "agriculture":
-                "Agriculture",
-
-            "religious organizations":
-                "Religious Organizations",
-
-            "government & public services":
-                "Government & Public Services",
-
-            "other":
-                "Other"
-        };
-
-        return map[value] || String(category);
-    }
-
-
-    function formatLocation(business) {
-
-        const parts = [
-            business.city,
-            business.state,
-            business.country
-        ].filter(Boolean);
-
-        return parts.length
-            ? parts.map(escapeHtml).join(", ")
-            : "Location not provided";
-    }
-
-
-    function formatDate(dateValue) {
-
-        if (!dateValue) {
-            return "";
+      function formatDate(
+        value
+      ) {
+        if (!value) {
+          return "";
         }
 
         const date =
-            new Date(dateValue);
+          new Date(value);
 
-        if (Number.isNaN(date.getTime())) {
-            return "";
+        if (
+          Number.isNaN(
+            date.getTime()
+          )
+        ) {
+          return String(value);
         }
 
         return date.toLocaleDateString(
-            "en-NG",
-            {
-                year: "numeric",
-                month: "short",
-                day: "numeric"
-            }
+          undefined,
+          {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+          }
         );
-    }
+      }
 
-
-    function renderStars(rating) {
-
-        const numericRating =
-            Number(rating) || 0;
-
-        const rounded =
-            Math.round(numericRating);
-
-        let stars = "";
-
-        for (let i = 1; i <= 5; i++) {
-            stars +=
-                i <= rounded ? "★" : "☆";
-        }
-
-        return stars;
-    }
-
-
-    function cleanWhatsAppNumber(number) {
-
-        if (!number) {
-            return "";
-        }
-
-        return String(number)
-            .replace(/[^\d]/g, "");
-    }
-
-
-    function normalizeWebsite(url) {
-
-        if (!url) {
-            return "";
-        }
-
-        let value =
-            String(url).trim();
+      function renderStars(
+        rating
+      ) {
+        const numeric =
+          Number(rating);
 
         if (
-            !value.startsWith("http://") &&
-            !value.startsWith("https://")
+          !Number.isFinite(
+            numeric
+          )
         ) {
-            value = "https://" + value;
+          return "";
         }
 
-        return value;
-    }
+        const rounded =
+          Math.max(
+            0,
+            Math.min(
+              5,
+              Math.round(numeric)
+            )
+          );
 
+        return "★".repeat(
+          rounded
+        ) +
+        "☆".repeat(
+          5 - rounded
+        );
+      }
 
-    function showNotFound(message) {
+      function cleanWhatsAppNumber(
+        value
+      ) {
+        if (!value) {
+          return "";
+        }
 
+        return String(value)
+          .replace(/[^\d]/g, "");
+      }
+
+      function normalizeWebsite(
+        value
+      ) {
+        if (!value) {
+          return "";
+        }
+
+        const trimmed =
+          String(value).trim();
+
+        if (
+          /^https?:\/\//i.test(
+            trimmed
+          )
+        ) {
+          return trimmed;
+        }
+
+        return (
+          "https://" +
+          trimmed
+        );
+      }
+
+      function showNotFound(
+        message
+      ) {
         content.innerHTML = `
-            <div class="not-found">
-
-                <h1>Business Not Found</h1>
-
-                <p>
-                    ${escapeHtml(
-                        message ||
-                        "This business could not be found."
-                    )}
-                </p>
-
-                <a
-                    href="explore.html"
-                    class="profile-btn primary"
-                >
-                    Explore Businesses
-                </a>
-
-            </div>
+          <div class="error-state">
+            <h2>Business Not Found</h2>
+            <p>
+              ${escapeHtml(
+                message ||
+                "This business could not be found."
+              )}
+            </p>
+            <a
+              href="/"
+              class="btn btn-primary"
+            >
+              Back to NearAfrica
+            </a>
+          </div>
         `;
-    }
+      }
 
+      function formatProductPrice(
+        product
+      ) {
+        if (
+          product.price === null ||
+          product.price === undefined ||
+          product.price === ""
+        ) {
+          return "Price not specified";
+        }
 
-    function displayBusiness(
+        const price =
+          Number(product.price);
+
+        if (
+          !Number.isFinite(
+            price
+          )
+        ) {
+          return "Price not specified";
+        }
+
+        const currency =
+          product.currency ||
+          "NGN";
+
+        return (
+          currency +
+          " " +
+          price.toLocaleString(
+            undefined,
+            {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 2
+            }
+          )
+        );
+      }
+
+      function renderProducts(
+        products
+      ) {
+        if (
+          !Array.isArray(
+            products
+          ) ||
+          products.length === 0
+        ) {
+          return `
+            <div class="empty-state">
+              No products or services have been added yet.
+            </div>
+          `;
+        }
+
+        return `
+          <div class="products-list">
+            ${products
+              .map(product => {
+
+                const type =
+                  product.item_type ===
+                  "service"
+                    ? "Service"
+                    : "Product";
+
+                const available =
+                  Number(
+                    product.available
+                  ) === 1;
+
+                return `
+                  <div class="product-card">
+
+                    <div class="product-top">
+
+                      <div>
+                        <h3 class="product-name">
+                          ${escapeHtml(
+                            product.name ||
+                            "Unnamed item"
+                          )}
+                        </h3>
+
+                        <div class="product-type">
+                          ${escapeHtml(
+                            type
+                          )}
+                        </div>
+                      </div>
+
+                      <div class="product-price">
+                        ${escapeHtml(
+                          formatProductPrice(
+                            product
+                          )
+                        )}
+                      </div>
+
+                    </div>
+
+                    <p class="product-description">
+                      ${escapeHtml(
+                        product.description ||
+                        "No description provided."
+                      )}
+                    </p>
+
+                    <div class="product-meta">
+
+                      ${
+                        product.category
+                          ? `
+                            <span>
+                              Category:
+                              ${escapeHtml(
+                                product.category
+                              )}
+                            </span>
+                          `
+                          : ""
+                      }
+
+                      <span
+                        class="${
+                          available
+                            ? ""
+                            : "product-unavailable"
+                        }"
+                      >
+                        ${
+                          available
+                            ? "Available"
+                            : "Currently unavailable"
+                        }
+                      </span>
+
+                    </div>
+
+                  </div>
+                `;
+              })
+              .join("")}
+          </div>
+        `;
+      }
+
+      function displayBusiness(
         business,
         result
-    ) {
+      ) {
 
         const statistics =
-            result.statistics || {};
-
-        const ratingAverage =
-            Number(
-                statistics.average_rating ??
-                business.rating_average ??
-                0
-            );
-
-        const reviewCount =
-            Number(
-                statistics.review_count ??
-                business.review_count ??
-                0
-            );
-
-        const viewCount =
-            Number(
-                statistics.views ??
-                business.views ??
-                0
-            );
+          result &&
+          result.statistics
+            ? result.statistics
+            : {};
 
         const reviews =
-            Array.isArray(result.reviews)
-                ? result.reviews
-                : [];
+          result &&
+          Array.isArray(
+            result.reviews
+          )
+            ? result.reviews
+            : [];
 
         const images =
-            Array.isArray(result.images)
-                ? result.images
-                : [];
+          result &&
+          Array.isArray(
+            result.images
+          )
+            ? result.images
+            : [];
 
-        const isVerified =
-            Number(business.verified) === 1;
-
-        const isClaimed =
-            Number(business.claimed) === 1;
-
-        const category =
-            normalizeCategory(
-                business.category
-            );
-
-        const phone =
-            business.phone
-                ? String(business.phone)
-                : "";
-
-        const whatsapp =
-            cleanWhatsAppNumber(
-                business.whatsapp ||
-                business.phone
-            );
-
-        const website =
-            normalizeWebsite(
-                business.website
-            );
-
-        const businessName =
-            business.business_name ||
-            "Unnamed Business";
-
-        const initials =
-            businessName
-                .trim()
-                .split(/\s+/)
-                .slice(0, 2)
-                .map(word => word[0])
-                .join("")
-                .toUpperCase();
-
-        document.title =
-            `${businessName} | NearAfrica`;
+        const products =
+          result &&
+          Array.isArray(
+            result.products
+          )
+            ? result.products
+            : [];
 
         const location =
-            formatLocation(business);
+          formatLocation(
+            business
+          );
 
-        const description =
-            business.description &&
-            String(business.description).trim()
-                ? escapeHtml(
-                    business.description
-                )
-                : "No business description has been provided yet.";
+        const category =
+          normalizeCategory(
+            business.category
+          );
 
-        const address =
-            business.address
-                ? escapeHtml(
-                    business.address
-                )
-                : "Not provided";
+        const initial =
+          (
+            business.business_name ||
+            business.name ||
+            "B"
+          )
+            .charAt(0)
+            .toUpperCase();
 
-        const country =
-            business.country
-                ? escapeHtml(
-                    business.country
-                )
-                : "Not provided";
+        const logo =
+          business.logo_url ||
+          business.image_url;
 
-        const state =
-            business.state
-                ? escapeHtml(
-                    business.state
-                )
-                : "Not provided";
+        const website =
+          normalizeWebsite(
+            business.website
+          );
 
-        const city =
-            business.city
-                ? escapeHtml(
-                    business.city
-                )
-                : "Not provided";
+        const whatsapp =
+          cleanWhatsAppNumber(
+            business.whatsapp ||
+            business.phone
+          );
+
+        const phone =
+          business.phone
+            ? String(
+                business.phone
+              )
+            : "";
 
         const email =
-            business.email
-                ? escapeHtml(
-                    business.email
-                )
-                : "";
+          business.email
+            ? String(
+                business.email
+              )
+            : "";
 
-        const status =
-            business.status
-                ? String(
-                    business.status
-                )
-                : "active";
+        let actions = "";
 
-
-        let logoHtml;
-
-        if (business.logo_url) {
-
-            logoHtml = `
-                <img
-                    src="${escapeHtml(
-                        business.logo_url
-                    )}"
-                    alt="${escapeHtml(
-                        businessName
-                    )}"
-                >
-            `;
-
-        } else if (business.image_url) {
-
-            logoHtml = `
-                <img
-                    src="${escapeHtml(
-                        business.image_url
-                    )}"
-                    alt="${escapeHtml(
-                        businessName
-                    )}"
-                >
-            `;
-
-        } else {
-
-            logoHtml = `
-                <div class="business-logo-placeholder">
-                    ${escapeHtml(initials || "N")}
-                </div>
-            `;
-        }
-
-
-       let actionButtons = "";
-
-actionButtons += `
-    <a
-        class="profile-btn report-btn"
-        href="report-listing.html?business_id=${encodeURIComponent(
-            business.id
-        )}"
-    >
-        ⚑ Report Listing
-    </a>
-`;
-
-if (phone) {
-
-            actionButtons += `
-                <a
-                    class="profile-btn primary"
-                    href="tel:${escapeHtml(phone)}"
-                >
-                    📞 Call
-                </a>
-            `;
+        if (phone) {
+          actions += `
+            <a
+              class="btn"
+              href="tel:${escapeHtml(
+                phone
+              )}"
+            >
+              Call
+            </a>
+          `;
         }
 
         if (whatsapp) {
+          actions += `
+            <a
+              class="btn"
+              href="https://wa.me/${escapeHtml(
+                whatsapp
+              )}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WhatsApp
+            </a>
+          `;
+        }
 
-            actionButtons += `
-                <a
-                    class="profile-btn"
-                    href="https://wa.me/${escapeHtml(
-                        whatsapp
-                    )}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    💬 WhatsApp
-                </a>
-            `;
+        if (email) {
+          actions += `
+            <a
+              class="btn"
+              href="mailto:${escapeHtml(
+                email
+              )}"
+            >
+              Email
+            </a>
+          `;
         }
 
         if (website) {
-
-            actionButtons += `
-                <a
-                    class="profile-btn"
-                    href="${escapeHtml(
-                        website
-                    )}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    🌐 Website
-                </a>
-            `;
+          actions += `
+            <a
+              class="btn"
+              href="${escapeHtml(
+                website
+              )}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Website
+            </a>
+          `;
         }
 
+        const badges = [];
 
-        let photosHtml = "";
+        if (
+          Number(
+            business.verified
+          ) === 1
+        ) {
+          badges.push(`
+            <span class="badge gold">
+              ✓ Verified
+            </span>
+          `);
+        }
 
-        if (images.length > 0) {
+        if (
+          Number(
+            business.claimed
+          ) === 1
+        ) {
+          badges.push(`
+            <span class="badge">
+              ✓ Claimed
+            </span>
+          `);
+        }
 
-            photosHtml = images
-                .filter(image => {
+        if (
+          Number(
+            business.featured
+          ) === 1
+        ) {
+          badges.push(`
+            <span class="badge gold">
+              Featured
+            </span>
+          `);
+        }
 
-                    if (!image) {
-                        return false;
-                    }
-
-                    if (typeof image === "string") {
-                        return true;
-                    }
-
-                    return Boolean(
+        const photosHtml =
+          images.length
+            ? `
+              <div class="photos-grid">
+                ${images
+                  .map(image => `
+                    <img
+                      class="photo"
+                      src="${escapeHtml(
+                        image.image_url ||
                         image.url ||
-                        image.image_url
-                    );
-                })
-                .map(image => {
-
-                    const imageUrl =
-                        typeof image === "string"
-                            ? image
-                            : (
-                                image.url ||
-                                image.image_url
-                            );
-
-                    return `
-                        <img
-                            class="business-photo"
-                            src="${escapeHtml(
-                                imageUrl
-                            )}"
-                            alt="${escapeHtml(
-                                businessName
-                            )}"
-                            loading="lazy"
-                        >
-                    `;
-                })
-                .join("");
-        }
-
-        if (!photosHtml && business.image_url) {
-
-            photosHtml = `
-                <img
-                    class="business-photo"
-                    src="${escapeHtml(
-                        business.image_url
-                    )}"
-                    alt="${escapeHtml(
-                        businessName
-                    )}"
-                >
+                        ""
+                      )}"
+                      alt="${escapeHtml(
+                        business.business_name ||
+                        "Business photo"
+                      )}"
+                      loading="lazy"
+                    />
+                  `)
+                  .join("")}
+              </div>
+            `
+            : `
+              <div class="empty-state">
+                No photos have been added yet.
+              </div>
             `;
-        }
 
+        const reviewsHtml =
+          reviews.length
+            ? reviews
+                .map(review => `
+                  <div class="review">
 
-        const photosSection =
-            photosHtml
-                ? `
-                    <section class="profile-card">
+                    <div class="review-top">
 
-                        <h2>Photos</h2>
+                      <div class="review-name">
+                        ${escapeHtml(
+                          review.name ||
+                          review.reviewer_name ||
+                          "Anonymous"
+                        )}
+                      </div>
 
-                        <div class="photo-grid">
-                            ${photosHtml}
-                        </div>
+                      <div class="review-date">
+                        ${escapeHtml(
+                          formatDate(
+                            review.created_at
+                          )
+                        )}
+                      </div>
 
-                    </section>
-                `
-                : "";
+                    </div>
 
+                    <div class="stars">
+                      ${escapeHtml(
+                        renderStars(
+                          review.rating
+                        )
+                      )}
+                    </div>
 
-        let reviewsHtml = "";
-
-        if (reviews.length > 0) {
-
-            reviewsHtml =
-                reviews.map(review => {
-
-                    const reviewer =
-                        review.name ||
-                        review.reviewer_name ||
-                        "Anonymous";
-
-                    const rating =
-                        Number(
-                            review.rating
-                        ) || 0;
-
-                    const comment =
+                    <p class="review-comment">
+                      ${escapeHtml(
                         review.comment ||
                         review.review ||
-                        "";
+                        ""
+                      )}
+                    </p>
 
-                    const date =
-                        formatDate(
-                            review.created_at
-                        );
-
-                    return `
-                        <div class="review-item">
-
-                            <div class="review-header">
-
-                                <div class="review-name">
-                                    ${escapeHtml(
-                                        reviewer
-                                    )}
-                                </div>
-
-                                <div class="review-rating">
-                                    ${renderStars(
-                                        rating
-                                    )}
-                                </div>
-
-                            </div>
-
-                            ${
-                                comment
-                                    ? `
-                                        <div class="review-comment">
-                                            ${escapeHtml(
-                                                comment
-                                            )}
-                                        </div>
-                                    `
-                                    : ""
-                            }
-
-                            ${
-                                date
-                                    ? `
-                                        <div
-                                            style="
-                                                margin-top:8px;
-                                                color:#777;
-                                                font-size:12px;
-                                            "
-                                        >
-                                            ${escapeHtml(
-                                                date
-                                            )}
-                                        </div>
-                                    `
-                                    : ""
-                            }
-
-                        </div>
-                    `;
-
-                }).join("");
-
-        } else {
-
-            reviewsHtml = `
-                <div class="empty-state">
-                    No reviews yet.
-                    Be the first to review this business.
-                </div>
+                  </div>
+                `)
+                .join("")
+            : `
+              <div class="empty-state">
+                No reviews yet.
+              </div>
             `;
-        }
 
+        const views =
+          statistics.views !==
+            undefined
+            ? statistics.views
+            : business.views ||
+              0;
 
-        const badges = `
-            <div class="badge-row">
-
-                ${
-                    isVerified
-                        ? `
-                            <span class="badge verified-badge">
-                                ✓ Verified
-                            </span>
-                        `
-                        : ""
-                }
-
-                ${
-                    isClaimed
-                        ? `
-                            <span class="badge claimed-badge">
-                                ✓ Claimed
-                            </span>
-                        `
-                        : ""
-                }
-
-                ${
-                    status.toLowerCase() === "active"
-                        ? `
-                            <span class="badge active-badge">
-                                Active Listing
-                            </span>
-                        `
-                        : ""
-                }
-
-            </div>
-        `;
-
+        const reviewCount =
+          statistics.review_count !==
+            undefined
+            ? statistics.review_count
+            : reviews.length;
 
         content.innerHTML = `
 
-            <section class="profile-header">
+          <section class="profile-header">
 
-                <div class="profile-top">
+            <div class="profile-header-main">
 
-                    <div class="business-logo">
-                        ${logoHtml}
-                    </div>
+              <div class="business-title-wrap">
 
-                    <div class="profile-main">
+                ${
+                  logo
+                    ? `
+                      <img
+                        class="business-logo"
+                        src="${escapeHtml(
+                          logo
+                        )}"
+                        alt="${escapeHtml(
+                          business.business_name ||
+                          business.name ||
+                          "Business"
+                        )}"
+                      />
+                    `
+                    : `
+                      <div class="business-placeholder">
+                        ${escapeHtml(
+                          initial
+                        )}
+                      </div>
+                    `
+                }
 
+                <div>
+
+                  <h1>
+                    ${escapeHtml(
+                      business.business_name ||
+                      business.name ||
+                      "Business"
+                    )}
+                  </h1>
+
+                  ${
+                    category
+                      ? `
                         <div class="business-category">
-                            ${escapeHtml(category)}
+                          ${escapeHtml(
+                            category
+                          )}
                         </div>
+                      `
+                      : ""
+                  }
 
-                        <h1>
-                            ${escapeHtml(
-                                businessName
-                            )}
-                        </h1>
-
+                  ${
+                    location
+                      ? `
                         <div class="business-location">
-                            📍 ${location}
+                          ${escapeHtml(
+                            location
+                          )}
                         </div>
+                      `
+                      : ""
+                  }
 
-                        <div class="business-rating">
-
-                            <span class="stars">
-                                ${renderStars(
-                                    ratingAverage
-                                )}
-                            </span>
-
-                            <span class="rating-text">
-                                ${
-                                    reviewCount > 0
-                                        ? `${ratingAverage.toFixed(1)} (${reviewCount} ${
-                                            reviewCount === 1
-                                                ? "review"
-                                                : "reviews"
-                                        })`
-                                        : "No reviews yet"
-                                }
-                            </span>
-
+                  ${
+                    badges.length
+                      ? `
+                        <div class="badge-row">
+                          ${badges.join("")}
                         </div>
-
-                        ${badges}
-
-                        <div class="profile-actions">
-                            ${actionButtons}
-                        </div>
-
-                    </div>
+                      `
+                      : ""
+                  }
 
                 </div>
 
-                <div class="stats-row">
+              </div>
 
-                    <div class="stat-box">
-
-                        <span class="stat-number">
-                            ${reviewCount}
-                        </span>
-
-                        <span class="stat-label">
-                            Reviews
-                        </span>
-
+              ${
+                actions
+                  ? `
+                    <div class="header-actions">
+                      ${actions}
                     </div>
-
-                    <div class="stat-box">
-
-                        <span class="stat-number">
-                            ${viewCount}
-                        </span>
-
-                        <span class="stat-label">
-                            Views
-                        </span>
-
-                    </div>
-
-                    <div class="stat-box">
-
-                        <span class="stat-number">
-                            ${
-                                isClaimed
-                                    ? "Claimed"
-                                    : "Unclaimed"
-                            }
-                        </span>
-
-                        <span class="stat-label">
-                            Ownership
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <div class="profile-grid">
-
-                <div>
-
-                    <section class="profile-card">
-
-                        <h2>
-                            About ${escapeHtml(
-                                businessName
-                            )}
-                        </h2>
-
-                        <div class="description">
-                            ${description}
-                        </div>
-
-                    </section>
-
-
-                    ${photosSection}
-
-
-                    <section class="profile-card">
-
-                        <h2>Reviews</h2>
-
-                        <div class="review-list">
-                            ${reviewsHtml}
-                        </div>
-
-                    </section>
-
-
-                    <section class="profile-card">
-
-                        <h2>Location</h2>
-
-                        <div id="businessMap">
-
-                            <div class="map-message">
-                                Loading map...
-                            </div>
-
-                        </div>
-
-                    </section>
-
-                </div>
-
-
-                <div>
-
-                    <section class="profile-card">
-
-                        <h2>Business Information</h2>
-
-                        <div class="info-list">
-
-                            <div class="info-item">
-
-                                <div class="info-label">
-                                    Category
-                                </div>
-
-                                <div class="info-value">
-                                    ${escapeHtml(
-                                        category
-                                    )}
-                                </div>
-
-                            </div>
-
-                            <div class="info-item">
-
-                                <div class="info-label">
-                                    Country
-                                </div>
-
-                                <div class="info-value">
-                                    ${country}
-                                </div>
-
-                            </div>
-
-                            <div class="info-item">
-
-                                <div class="info-label">
-                                    State
-                                </div>
-
-                                <div class="info-value">
-                                    ${state}
-                                </div>
-
-                            </div>
-
-                            <div class="info-item">
-
-                                <div class="info-label">
-                                    City
-                                </div>
-
-                                <div class="info-value">
-                                    ${city}
-                                </div>
-
-                            </div>
-
-                            <div class="info-item">
-
-                                <div class="info-label">
-                                    Address
-                                </div>
-
-                                <div class="info-value">
-                                    ${address}
-                                </div>
-
-                            </div>
-
-                            ${
-                                phone
-                                    ? `
-                                        <div class="info-item">
-
-                                            <div class="info-label">
-                                                Phone
-                                            </div>
-
-                                            <div class="info-value">
-                                                ${escapeHtml(
-                                                    phone
-                                                )}
-                                            </div>
-
-                                        </div>
-                                    `
-                                    : ""
-                            }
-
-                            ${
-                                email
-                                    ? `
-                                        <div class="info-item">
-
-                                            <div class="info-label">
-                                                Email
-                                            </div>
-
-                                            <div class="info-value">
-                                                ${email}
-                                            </div>
-
-                                        </div>
-                                    `
-                                    : ""
-                            }
-
-                            <div class="info-item">
-
-                                <div class="info-label">
-                                    Listing Status
-                                </div>
-
-                                <div class="info-value">
-                                    ${escapeHtml(
-                                        status
-                                    )}
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </section>
-
-
-                    ${
-                        !isClaimed
-                            ? `
-                                <section class="profile-card claim-card">
-
-                                    <h2>
-                                        Claim This Business
-                                    </h2>
-
-                                    <p class="claim-intro">
-                                        Are you the owner or an
-                                        authorized representative
-                                        of this business?
-                                        Submit a claim and provide
-                                        evidence so the NearAfrica
-                                        team can review it.
-                                    </p>
-
-                                    <form id="claimForm">
-
-                                        <div class="form-grid">
-
-                                            <div class="form-group">
-
-                                                <label for="claimantName">
-                                                    Your Name
-                                                </label>
-
-                                                <input
-                                                    id="claimantName"
-                                                    name="claimant_name"
-                                                    type="text"
-                                                    required
-                                                >
-
-                                            </div>
-
-                                            <div class="form-group">
-
-                                                <label for="claimantEmail">
-                                                    Email
-                                                </label>
-
-                                                <input
-                                                    id="claimantEmail"
-                                                    name="claimant_email"
-                                                    type="email"
-                                                    required
-                                                >
-
-                                            </div>
-
-                                            <div class="form-group">
-
-                                                <label for="claimantPhone">
-                                                    Phone
-                                                </label>
-
-                                                <input
-                                                    id="claimantPhone"
-                                                    name="claimant_phone"
-                                                    type="tel"
-                                                >
-
-                                            </div>
-
-                                            <div class="form-group">
-
-                                                <label for="evidenceType">
-                                                    Evidence Type
-                                                </label>
-
-                                                <select
-                                                    id="evidenceType"
-                                                    name="evidence_type"
-                                                    required
-                                                >
-
-                                                    <option value="">
-                                                        Select evidence
-                                                    </option>
-
-                                                    <option value="business_phone">
-                                                        Business phone
-                                                    </option>
-
-                                                    <option value="business_email">
-                                                        Business email
-                                                    </option>
-
-                                                    <option value="business_document">
-                                                        Business document
-                                                    </option>
-
-                                                    <option value="website">
-                                                        Official website
-                                                    </option>
-
-                                                    <option value="social_media">
-                                                        Social media
-                                                    </option>
-
-                                                    <option value="other">
-                                                        Other
-                                                    </option>
-
-                                                </select>
-
-                                            </div>
-
-                                            <div class="form-group">
-
-                                                <label for="evidenceDetails">
-                                                    Evidence Details
-                                                </label>
-
-                                                <textarea
-                                                    id="evidenceDetails"
-                                                    name="evidence_details"
-                                                    placeholder="Explain how you can verify your connection to this business."
-                                                    required
-                                                ></textarea>
-
-                                            </div>
-
-                                            <button
-                                                type="submit"
-                                                class="profile-btn primary"
-                                            >
-                                                Submit Claim
-                                            </button>
-
-                                        </div>
-
-                                        <div
-                                            id="claimMessage"
-                                            class="form-message"
-                                        ></div>
-
-                                    </form>
-
-                                </section>
-                            `
-                            : `
-                                <section class="profile-card">
-
-                                    <h2>
-                                        Business Claimed
-                                    </h2>
-
-                                    <p class="claim-intro">
-                                        This business has already
-                                        been claimed.
-                                    </p>
-
-                                </section>
-                            `
-                    }
-
-                </div>
+                  `
+                  : ""
+              }
 
             </div>
 
+            <div class="stats">
+
+              <div class="stat">
+                <div class="stat-value">
+                  ${escapeHtml(
+                    views
+                  )}
+                </div>
+                <div class="stat-label">
+                  Views
+                </div>
+              </div>
+
+              <div class="stat">
+                <div class="stat-value">
+                  ${escapeHtml(
+                    reviewCount
+                  )}
+                </div>
+                <div class="stat-label">
+                  Reviews
+                </div>
+              </div>
+
+              <div class="stat">
+                <div class="stat-value">
+                  ${escapeHtml(
+                    products.length
+                  )}
+                </div>
+                <div class="stat-label">
+                  Products &amp; Services
+                </div>
+              </div>
+
+            </div>
+
+          </section>
+
+          <div class="profile-grid">
+
+            <div>
+
+              <section class="profile-card">
+                <h2>About</h2>
+
+                <p>
+                  ${
+                    business.description
+                      ? escapeHtml(
+                          business.description
+                        )
+                      : "No business description has been provided yet."
+                  }
+                </p>
+              </section>
+
+
+              <section class="profile-card">
+
+                <h2>
+                  Products &amp; Services
+                </h2>
+
+                ${renderProducts(
+                  products
+                )}
+
+              </section>
+
+
+              <section class="profile-card">
+
+                <h2>Photos</h2>
+
+                ${photosHtml}
+
+              </section>
+
+
+              <section class="profile-card">
+
+                <h2>Reviews</h2>
+
+                ${reviewsHtml}
+
+              </section>
+
+
+              <section class="profile-card">
+
+                <h2>Location</h2>
+
+                ${
+                  business.latitude !==
+                    null &&
+                  business.latitude !==
+                    undefined &&
+                  business.longitude !==
+                    null &&
+                  business.longitude !==
+                    undefined
+                    ? `
+                      <div
+                        id="businessMap"
+                        class="map"
+                      ></div>
+                    `
+                    : `
+                      <div class="empty-state">
+                        Location coordinates are not available.
+                      </div>
+                    `
+                }
+
+              </section>
+
+            </div>
+
+
+            <div>
+
+              <section class="profile-card">
+
+                <h2>
+                  Business Information
+                </h2>
+
+                <div class="info-list">
+
+                  ${
+                    business.business_name ||
+                    business.name
+                      ? `
+                        <div class="info-item">
+                          <div class="info-label">
+                            Business Name
+                          </div>
+                          <div class="info-value">
+                            ${escapeHtml(
+                              business.business_name ||
+                              business.name
+                            )}
+                          </div>
+                        </div>
+                      `
+                      : ""
+                  }
+
+                  ${
+                    category
+                      ? `
+                        <div class="info-item">
+                          <div class="info-label">
+                            Category
+                          </div>
+                          <div class="info-value">
+                            ${escapeHtml(
+                              category
+                            )}
+                          </div>
+                        </div>
+                      `
+                      : ""
+                  }
+
+                  ${
+                    location
+                      ? `
+                        <div class="info-item">
+                          <div class="info-label">
+                            Address
+                          </div>
+                          <div class="info-value">
+                            ${escapeHtml(
+                              location
+                            )}
+                          </div>
+                        </div>
+                      `
+                      : ""
+                  }
+
+                  ${
+                    phone
+                      ? `
+                        <div class="info-item">
+                          <div class="info-label">
+                            Phone
+                          </div>
+                          <div class="info-value">
+                            ${escapeHtml(
+                              phone
+                            )}
+                          </div>
+
+                          <div class="contact-actions">
+                            <a
+                              class="btn"
+                              href="tel:${escapeHtml(
+                                phone
+                              )}"
+                            >
+                              Call Us
+                            </a>
+                          </div>
+                        </div>
+                      `
+                      : ""
+                  }
+
+                  ${
+                    whatsapp
+                      ? `
+                        <div class="info-item">
+                          <div class="info-label">
+                            WhatsApp
+                          </div>
+
+                          <div class="contact-actions">
+                            <a
+                              class="btn"
+                              href="https://wa.me/${escapeHtml(
+                                whatsapp
+                              )}"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              WhatsApp Us
+                            </a>
+                          </div>
+                        </div>
+                      `
+                      : ""
+                  }
+
+                  ${
+                    email
+                      ? `
+                        <div class="info-item">
+                          <div class="info-label">
+                            Email
+                          </div>
+
+                          <div class="contact-actions">
+                            <a
+                              class="btn"
+                              href="mailto:${escapeHtml(
+                                email
+                              )}"
+                            >
+                              Email Us
+                            </a>
+                          </div>
+                        </div>
+                      `
+                      : ""
+                  }
+
+                  ${
+                    website
+                      ? `
+                        <div class="info-item">
+                          <div class="info-label">
+                            Website
+                          </div>
+
+                          <div class="contact-actions">
+                            <a
+                              class="btn"
+                              href="${escapeHtml(
+                                website
+                              )}"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Visit Website
+                            </a>
+                          </div>
+                        </div>
+                      `
+                      : ""
+                  }
+
+                </div>
+
+              </section>
+
+
+              <section class="profile-card">
+
+                ${
+                  Number(
+                    business.claimed
+                  ) === 1
+                    ? `
+                      <div class="claim-box">
+
+                        <h3>
+                          Business Claimed
+                        </h3>
+
+                        <p>
+                          This business has been claimed by its owner.
+                        </p>
+
+                      </div>
+                    `
+                    : `
+                      <div class="claim-box">
+
+                        <h3>
+                          Claim This Business
+                        </h3>
+
+                        <p>
+                          Are you the owner or authorized representative of this business?
+                        </p>
+
+                        <form
+                          id="claimForm"
+                          class="claim-form"
+                        >
+
+                          <input
+                            type="text"
+                            id="claimName"
+                            placeholder="Your name"
+                            required
+                          />
+
+                          <input
+                            type="email"
+                            id="claimEmail"
+                            placeholder="Your email"
+                            required
+                          />
+
+                          <textarea
+                            id="claimEvidence"
+                            rows="4"
+                            placeholder="Tell us why you are authorized to claim this business."
+                            required
+                          ></textarea>
+
+                          <button
+                            type="submit"
+                            class="btn btn-primary"
+                          >
+                            Submit Claim
+                          </button>
+
+                        </form>
+
+                        <div
+                          id="claimStatus"
+                          class="status"
+                        ></div>
+
+                      </div>
+                    `
+                }
+
+              </section>
+
+            </div>
+
+          </div>
         `;
 
-        /*
-         * IMPORTANT:
-         *
-         * Map is initialized ONLY here.
-         * loadBusiness() must NOT initialize it again.
-         */
-        initializeMap(business);
+        initializeMap(
+          business
+        );
 
         setupClaimForm(
-            business.id
+          business
         );
-    }
+      }
 
 
-    function initializeMap(business) {
+      function initializeMap(
+        business
+      ) {
 
         const mapElement =
-            document.getElementById(
-                "businessMap"
-            );
+          document.getElementById(
+            "businessMap"
+          );
 
-        if (!mapElement) {
-            console.warn(
-                "NearAfrica: Map container not found."
-            );
-            return;
+        if (
+          !mapElement ||
+          typeof L ===
+            "undefined"
+        ) {
+          return;
         }
-
-
-        /*
-         * Prevent Leaflet from being initialized twice.
-         */
-        if (activeMap) {
-
-            try {
-                activeMap.remove();
-            } catch (_) {}
-
-            activeMap = null;
-        }
-
 
         const latitude =
-            Number(business.latitude);
+          Number(
+            business.latitude
+          );
 
         const longitude =
-            Number(business.longitude);
+          Number(
+            business.longitude
+          );
 
+        if (
+          !Number.isFinite(
+            latitude
+          ) ||
+          !Number.isFinite(
+            longitude
+          )
+        ) {
+          return;
+        }
 
-        console.log(
-            "NearAfrica: Map coordinates:",
-            {
-                latitude,
-                longitude
-            }
+        if (activeMap) {
+          activeMap.remove();
+          activeMap = null;
+        }
+
+        activeMap =
+          L.map(
+            mapElement
+          ).setView(
+            [
+              latitude,
+              longitude
+            ],
+            15
+          );
+
+        L.tileLayer(
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          {
+            attribution:
+              "&copy; OpenStreetMap contributors"
+          }
+        ).addTo(
+          activeMap
         );
 
-
-        if (
-            !Number.isFinite(latitude) ||
-            !Number.isFinite(longitude)
-        ) {
-
-            mapElement.innerHTML = `
-                <div class="map-message">
-                    📍 Exact map coordinates are not
-                    available for this business yet.
-                </div>
-            `;
-
-            return;
-        }
-
-
-        /*
-         * Basic geographic validation.
-         */
-        if (
-            latitude < -90 ||
-            latitude > 90 ||
-            longitude < -180 ||
-            longitude > 180
-        ) {
-
-            mapElement.innerHTML = `
-                <div class="map-message">
-                    📍 The business has invalid map coordinates.
-                </div>
-            `;
-
-            console.error(
-                "NearAfrica: Invalid coordinates:",
-                latitude,
-                longitude
-            );
-
-            return;
-        }
+        L.marker([
+          latitude,
+          longitude
+        ])
+          .addTo(activeMap)
+          .bindPopup(
+            escapeHtml(
+              business.business_name ||
+              business.name ||
+              "Business"
+            )
+          )
+          .openPopup();
+      }
 
 
-        /*
-         * Check Leaflet.
-         */
-        if (
-            typeof window.L === "undefined"
-        ) {
-
-            mapElement.innerHTML = `
-                <div class="map-message">
-                    Map service could not be loaded.
-                    Please refresh the page and try again.
-                </div>
-            `;
-
-            console.error(
-                "NearAfrica: Leaflet library was not loaded."
-            );
-
-            return;
-        }
-
-
-        try {
-
-            mapElement.innerHTML = "";
-
-
-            activeMap =
-                L.map(
-                    mapElement,
-                    {
-                        center: [
-                            latitude,
-                            longitude
-                        ],
-                        zoom: 15,
-                        scrollWheelZoom: true
-                    }
-                );
-
-
-            L.tileLayer(
-                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                {
-                    maxZoom: 19,
-                    attribution:
-                        '&copy; OpenStreetMap contributors'
-                }
-            ).addTo(activeMap);
-
-
-            const marker =
-                L.marker([
-                    latitude,
-                    longitude
-                ]).addTo(activeMap);
-
-
-            marker.bindPopup(
-                `<strong>${escapeHtml(
-                    business.business_name ||
-                    "Business"
-                )}</strong>`
-            );
-
-
-            marker.openPopup();
-
-
-            /*
-             * Leaflet sometimes needs this after
-             * being created inside dynamic HTML.
-             */
-            setTimeout(
-                function () {
-
-                    if (activeMap) {
-                        activeMap.invalidateSize();
-                    }
-
-                },
-                250
-            );
-
-
-            console.log(
-                "NearAfrica: Map initialized successfully."
-            );
-
-        } catch (error) {
-
-            console.error(
-                "NearAfrica: Map initialization error:",
-                error
-            );
-
-            activeMap = null;
-
-            mapElement.innerHTML = `
-                <div class="map-message">
-                    Unable to load the map right now.
-                </div>
-            `;
-        }
-    }
-
-
-    function setupClaimForm(
-        businessId
-    ) {
+      function setupClaimForm(
+        business
+      ) {
 
         const form =
-            document.getElementById(
-                "claimForm"
-            );
+          document.getElementById(
+            "claimForm"
+          );
 
         if (!form) {
-            return;
+          return;
         }
 
-        const message =
-            document.getElementById(
-                "claimMessage"
-            );
-
+        const status =
+          document.getElementById(
+            "claimStatus"
+          );
 
         form.addEventListener(
-            "submit",
-            async function (event) {
+          "submit",
+          async event => {
 
-                event.preventDefault();
+            event.preventDefault();
 
+            const name =
+              document.getElementById(
+                "claimName"
+              ).value.trim();
 
-                const submitButton =
-                    form.querySelector(
-                        'button[type="submit"]'
-                    );
+            const email =
+              document.getElementById(
+                "claimEmail"
+              ).value.trim();
 
-                submitButton.disabled = true;
+            const evidence =
+              document.getElementById(
+                "claimEvidence"
+              ).value.trim();
 
-                submitButton.textContent =
-                    "Submitting...";
+            if (
+              !name ||
+              !email ||
+              !evidence
+            ) {
+              status.className =
+                "status error";
 
-                message.className =
-                    "form-message";
+              status.textContent =
+                "Please complete all fields.";
 
-                message.textContent =
-                    "";
-
-
-                const formData =
-                    new FormData(form);
-
-
-                const payload = {
-
-                    business_id:
-                        businessId,
-
-                    claimant_name:
-                        String(
-                            formData.get(
-                                "claimant_name"
-                            ) || ""
-                        ).trim(),
-
-                    claimant_email:
-                        String(
-                            formData.get(
-                                "claimant_email"
-                            ) || ""
-                        ).trim(),
-
-                    claimant_phone:
-                        String(
-                            formData.get(
-                                "claimant_phone"
-                            ) || ""
-                        ).trim(),
-
-                    evidence_type:
-                        String(
-                            formData.get(
-                                "evidence_type"
-                            ) || ""
-                        ).trim(),
-
-                    evidence_details:
-                        String(
-                            formData.get(
-                                "evidence_details"
-                            ) || ""
-                        ).trim()
-                };
-
-
-                try {
-
-                    const response =
-                        await fetch(
-                            `${API_URL}/claims`,
-                            {
-                                method: "POST",
-
-                                headers: {
-                                    "Content-Type":
-                                        "application/json"
-                                },
-
-                                body:
-                                    JSON.stringify(
-                                        payload
-                                    )
-                            }
-                        );
-
-
-                    let result = {};
-
-                    try {
-
-                        result =
-                            await response.json();
-
-                    } catch (_) {
-
-                        result = {};
-                    }
-
-
-                    if (!response.ok) {
-
-                        throw new Error(
-                            result.message ||
-                            result.error ||
-                            "Claim submission failed."
-                        );
-                    }
-
-
-                    message.className =
-                        "form-message success";
-
-                    message.textContent =
-                        result.message ||
-                        "Your claim has been submitted successfully. NearAfrica will review it.";
-
-                    form.reset();
-
-                    submitButton.textContent =
-                        "Claim Submitted";
-
-
-                } catch (error) {
-
-                    console.error(
-                        "Claim submission error:",
-                        error
-                    );
-
-                    message.className =
-                        "form-message error";
-
-                    message.textContent =
-                        error.message ||
-                        "Unable to submit your claim right now.";
-
-                    submitButton.disabled =
-                        false;
-
-                    submitButton.textContent =
-                        "Submit Claim";
-                }
-
+              return;
             }
-        );
-    }
 
+            status.className =
+              "status info";
 
-    async function loadBusiness() {
-
-        const businessId =
-            getBusinessId();
-
-
-        if (!businessId) {
-
-            showNotFound(
-                "No business ID was provided."
-            );
-
-            return;
-        }
-
-
-        console.log(
-            "NearAfrica: Loading business:",
-            businessId
-        );
-
-
-        try {
-
-            const response =
-                await fetch(
-                    `${API_URL}/businesses/${encodeURIComponent(
-                        businessId
-                    )}`
-                );
-
-
-            let result = {};
+            status.textContent =
+              "Submitting claim...";
 
             try {
 
-                result =
-                    await response.json();
-
-            } catch (jsonError) {
-
-                console.error(
-                    "Business API JSON error:",
-                    jsonError
+              const response =
+                await fetch(
+                  `${API_URL}/businesses/${encodeURIComponent(
+                    business.id
+                  )}/claim`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type":
+                        "application/json"
+                    },
+                    body:
+                      JSON.stringify({
+                        claimant_name:
+                          name,
+                        claimant_email:
+                          email,
+                        evidence_type:
+                          "email",
+                        evidence_details:
+                          evidence
+                      })
+                  }
                 );
 
-                showNotFound(
-                    "The server returned an invalid response."
-                );
+              const result =
+                await response.json();
 
-                return;
-            }
-
-
-            console.log(
-                "NearAfrica: Business API response:",
-                result
-            );
-
-
-            if (
+              if (
                 !response.ok ||
-                result.status !== "ok" ||
-                !result.business
-            ) {
-
-                showNotFound(
-                    result.message ||
-                    result.error ||
-                    "This business could not be found."
+                result.status !==
+                  "ok"
+              ) {
+                throw new Error(
+                  result.message ||
+                  "Unable to submit claim."
                 );
+              }
 
-                return;
+              status.className =
+                "status success";
+
+              status.textContent =
+                result.message ||
+                "Claim submitted successfully.";
+
+              form.reset();
+
+            } catch (error) {
+
+              console.error(
+                "Claim submission failed:",
+                error
+              );
+
+              status.className =
+                "status error";
+
+              status.textContent =
+                "Unable to submit your claim. Please try again.";
             }
+          }
+        );
+      }
 
 
-            /*
-             * IMPORTANT:
-             *
-             * displayBusiness() handles map
-             * initialization.
-             *
-             * DO NOT call initializeMap()
-             * again here.
-             */
-            displayBusiness(
-                result.business,
-                result
+      async function loadBusiness() {
+
+        const businessId =
+          getBusinessId();
+
+        if (!businessId) {
+          showNotFound(
+            "No business ID was provided."
+          );
+
+          return;
+        }
+
+        try {
+
+          const response =
+            await fetch(
+              `${API_URL}/businesses/${encodeURIComponent(
+                businessId
+              )}`
             );
+
+          const result =
+            await response.json();
+
+          if (
+            !response.ok ||
+            result.status !==
+              "ok" ||
+            !result.business
+          ) {
+            showNotFound(
+              result.message ||
+              "This business could not be found."
+            );
+
+            return;
+          }
+
+          displayBusiness(
+            result.business,
+            result
+          );
 
         } catch (error) {
 
-            console.error(
-                "Business loading error:",
-                error
-            );
+          console.error(
+            "Business loading failed:",
+            error
+          );
 
-            showNotFound(
-                "Unable to connect to NearAfrica right now."
-            );
+          showNotFound(
+            "Unable to load this business right now."
+          );
         }
-    }
+      }
 
 
-    loadBusiness();
+      loadBusiness();
 
-})();
-</script>
+    })();
+  </script>
 
 </body>
 </html>
