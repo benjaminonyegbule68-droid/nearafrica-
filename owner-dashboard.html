@@ -908,6 +908,394 @@
 
     let ownerToken = null;
     let currentBusiness = null;
+        const hoursEditor =
+      document.getElementById(
+        "hoursEditor"
+      );
+
+    const hoursStatus =
+      document.getElementById(
+        "hoursStatus"
+      );
+
+    const saveHoursButton =
+      document.getElementById(
+        "saveHoursButton"
+      );
+
+
+    const DAYS_OF_WEEK = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ];
+
+
+    let ownerHours = [];
+
+
+    function createDefaultHours() {
+      return DAYS_OF_WEEK.map(
+        function (dayName, index) {
+          return {
+            day_of_week: index,
+            is_closed: 1,
+            is_24_hours: 0,
+            opening_time: null,
+            closing_time: null
+          };
+        }
+      );
+    }
+
+
+    function normalizeHours(
+      hours
+    ) {
+      const defaults =
+        createDefaultHours();
+
+      if (!Array.isArray(hours)) {
+        return defaults;
+      }
+
+      hours.forEach(
+        function (item) {
+          const day =
+            Number(
+              item.day_of_week
+            );
+
+          if (
+            !Number.isInteger(day) ||
+            day < 0 ||
+            day > 6
+          ) {
+            return;
+          }
+
+          defaults[day] = {
+            day_of_week: day,
+
+            is_closed:
+              Number(
+                item.is_closed || 0
+              ),
+
+            is_24_hours:
+              Number(
+                item.is_24_hours || 0
+              ),
+
+            opening_time:
+              item.opening_time ||
+              null,
+
+            closing_time:
+              item.closing_time ||
+              null
+          };
+        }
+      );
+
+      return defaults;
+    }
+
+
+    function renderHoursEditor(
+      hours
+    ) {
+      ownerHours =
+        normalizeHours(
+          hours
+        );
+
+      hoursEditor.innerHTML = "";
+
+      ownerHours.forEach(
+        function (
+          item,
+          index
+        ) {
+          const row =
+            document.createElement(
+              "div"
+            );
+
+          row.style.display =
+            "grid";
+
+          row.style.gridTemplateColumns =
+            "120px 1fr 120px 120px";
+
+          row.style.gap =
+            "10px";
+
+          row.style.alignItems =
+            "center";
+
+          row.style.marginBottom =
+            "12px";
+
+          row.style.padding =
+            "12px";
+
+          row.style.background =
+            "var(--bg-secondary)";
+
+          row.style.border =
+            "1px solid var(--border)";
+
+          row.style.borderRadius =
+            "9px";
+
+
+          const day =
+            document.createElement(
+              "div"
+            );
+
+          day.textContent =
+            DAYS_OF_WEEK[
+              index
+            ];
+
+          day.style.fontWeight =
+            "700";
+
+
+          const status =
+            document.createElement(
+              "select"
+            );
+
+          status.dataset.day =
+            String(index);
+
+          status.innerHTML = `
+            <option value="open">
+              Open
+            </option>
+
+            <option value="closed">
+              Closed
+            </option>
+
+            <option value="24">
+              24 Hours
+            </option>
+          `;
+
+
+          if (
+            Number(
+              item.is_closed
+            ) === 1
+          ) {
+            status.value =
+              "closed";
+          } else if (
+            Number(
+              item.is_24_hours
+            ) === 1
+          ) {
+            status.value =
+              "24";
+          } else {
+            status.value =
+              "open";
+          }
+
+
+          const opening =
+            document.createElement(
+              "input"
+            );
+
+          opening.type =
+            "time";
+
+          opening.dataset.day =
+            String(index);
+
+          opening.value =
+            item.opening_time ||
+            "";
+
+          opening.disabled =
+            status.value !==
+            "open";
+
+
+          const closing =
+            document.createElement(
+              "input"
+            );
+
+          closing.type =
+            "time";
+
+          closing.dataset.day =
+            String(index);
+
+          closing.value =
+            item.closing_time ||
+            "";
+
+          closing.disabled =
+            status.value !==
+            "open";
+
+
+          status.addEventListener(
+            "change",
+            function () {
+              const isOpen =
+                status.value ===
+                "open";
+
+              opening.disabled =
+                !isOpen;
+
+              closing.disabled =
+                !isOpen;
+            }
+          );
+
+
+          row.appendChild(
+            day
+          );
+
+          row.appendChild(
+            status
+          );
+
+          row.appendChild(
+            opening
+          );
+
+          row.appendChild(
+            closing
+          );
+
+          hoursEditor.appendChild(
+            row
+          );
+        }
+      );
+
+
+      const header =
+        document.createElement(
+          "div"
+        );
+
+      header.style.display =
+        "grid";
+
+      header.style.gridTemplateColumns =
+        "120px 1fr 120px 120px";
+
+      header.style.gap =
+        "10px";
+
+      header.style.marginBottom =
+        "8px";
+
+      header.style.color =
+        "var(--text-muted)";
+
+      header.style.fontSize =
+        "12px";
+
+      header.style.fontWeight =
+        "700";
+
+      header.innerHTML = `
+        <div>Day</div>
+        <div>Status</div>
+        <div>Opens</div>
+        <div>Closes</div>
+      `;
+
+      hoursEditor.insertBefore(
+        header,
+        hoursEditor.firstChild
+      );
+    }
+
+
+    async function loadOwnerHours() {
+      if (!ownerToken) {
+        return;
+      }
+
+      showStatus(
+        hoursStatus,
+        "Loading opening hours...",
+        "info"
+      );
+
+      try {
+        const response =
+          await fetch(
+            API_BASE +
+            "/owner/business/hours",
+            {
+              method: "GET",
+
+              headers: {
+                Authorization:
+                  "Bearer " +
+                  ownerToken
+              }
+            }
+          );
+
+        const result =
+          await response.json();
+
+        if (
+          !response.ok ||
+          result.status !== "ok"
+        ) {
+          throw new Error(
+            result.message ||
+            "Unable to load opening hours."
+          );
+        }
+
+        renderHoursEditor(
+          result.hours || []
+        );
+
+        hideStatus(
+          hoursStatus
+        );
+
+      } catch (error) {
+        console.error(
+          "Loading owner hours failed:",
+          error
+        );
+
+        renderHoursEditor(
+          []
+        );
+
+        showStatus(
+          hoursStatus,
+          error.message ||
+            "Unable to load opening hours.",
+          "error"
+        );
+      }
+    }
 
 
     const loginSection =
