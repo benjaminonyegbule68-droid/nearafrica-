@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Owner Dashboard | NearAfrica</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .owner-page {
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .owner-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .owner-header {
+      margin-bottom: 30px;
+    }
+
+    .owner-header h1 {
+      margin-bottom: 8px;
+    }
+
+    .owner-header p {
+      color: var(--text-secondary);
+    }
+
+    .owner-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: var(--radius-lg, 12px);
+      padding: 25px;
+      margin-bottom: 25px;
+    }
+
+    .owner-card h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    .owner-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .owner-field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .owner-field.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .owner-field label {
+      font-weight: 600;
+    }
+
+    .owner-field input,
+    .owner-field textarea,
+    .owner-field select {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .owner-field textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .owner-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .owner-status {
+      margin-top: 15px;
+      padding: 12px 15px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .owner-status.show {
+      display: block;
+    }
+
+    .owner-status.success {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .owner-status.error {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .owner-login {
+      max-width: 550px;
+      margin: 60px auto;
+    }
+
+    .owner-business-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .owner-stat {
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    .owner-stat-label {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+    }
+
+    .owner-stat-value {
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .owner-hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 700px) {
+      .owner-form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .owner-field.full-width {
+        grid-column: auto;
+      }
+
+      .owner-business-summary {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="owner-page">
+    <div class="owner-container">
+
+      <!-- LOGIN -->
+      <section id="loginSection" class="owner-card owner-login">
+
+        <div class="owner-header">
+          <h1>Business Owner Dashboard</h1>
+          <p>
+            Sign in to manage your NearAfrica business listing.
+          </p>
+        </div>
+
+        <form id="ownerLoginForm">
+
+          <div class="owner-field">
+            <label for="businessId">Business ID</label>
+
+            <input
+              type="text"
+              id="businessId"
+              name="business_id"
+              placeholder="Enter your business ID"
+              required
+            >
+          </div>
+
+          <br>
+
+          <div class="owner-field">
+            <label for="ownerEmail">Owner Email</label>
+
+            <input
+              type="email"
+              id="ownerEmail"
+              name="owner_email"
+              placeholder="Enter your business email"
+              required
+            >
+          </div>
+
+          <div class="owner-actions">
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+              id="loginButton"
+            >
+              Sign In
+            </button>
+
+          </div>
+
+        </form>
+
+        <div
+          id="loginStatus"
+          class="owner-status"
+        ></div>
+
+      </section>
+
+
+      <!-- DASHBOARD -->
+      <section
+        id="dashboardSection"
+        class="owner-hidden"
+      >
+
+        <div class="owner-header">
+
+          <h1>Owner Dashboard</h1>
+
+          <p>
+            Manage your NearAfrica business listing.
+          </p>
+
+          <div class="owner-actions">
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="publicProfileButton"
+            >
+              View Public Profile
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="logoutButton"
+            >
+              Logout
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- BUSINESS SUMMARY -->
+        <div class="owner-card">
+
+          <h2>Business Overview</h2>
+
+          <div class="owner-business-summary">
+
+            <div class="owner-stat">
+              <div class="owner-stat-label">
+                Business
+              </div>
+
+              <div
+                class="owner-stat-value"
+                id="summaryBusinessName"
+              >
+                —
+              </div>
+            </div>
+
+            <div class="owner-stat">
+              <div class="owner-stat-label">
+                Status
+              </div>
+
+              <div
+                class="owner-stat-value"
+                id="summaryStatus"
+              >
+                —
+              </div>
+            </div>
+
+            <div class="owner-stat">
+              <div class="owner-stat-label">
+                Verification
+              </div>
+
+              <div
+                class="owner-stat-value"
+                id="summaryVerification"
+              >
+                —
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- BUSINESS INFORMATION -->
+        <div class="owner-card">
+
+          <h2>Business Information</h2>
+
+          <form id="businessForm">
+
+            <div class="owner-form-grid">
+
+              <div class="owner-field">
+
+                <label for="businessName">
+                  Business Name
+                </label>
+
+                <input
+                  type="text"
+                  id="businessName"
+                  name="business_name"
+                >
+
+              </div>
+
+
+              <div class="owner-field">
+
+                <label for="category">
+                  Category
+                </label>
+
+                <input
+                  type="text"
+                  id="category"
+                  name="category"
+                >
+
+              </div>
+
+
+              <div class="owner-field">
+
+                <label for="country">
+                  Country
+                </label>
+
+                <input
+                  type="text"
+                  id="country"
+                  name="country"
+                >
+
+              </div>
+
+
+              <div class="owner-field">
+
+                <label for="state">
+                  State / Region
+                </label>
+
+                <input
+                  type="text"
+                  id="state"
+                  name="state"
+                >
+
+              </div>
+
+
+              <div class="owner-field">
+
+                <label for="city">
+                  City
+                </label>
+
+                <input
+                  type="text"
+                  id="city"
+                  name="city"
+                >
+
+              </div>
+
+
+              <div class="owner-field">
+
+                <label for="phone">
+                  Phone
+                </label>
+
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                >
+
+              </div>
+
+
+              <div class="owner-field">
+
+                <label for="whatsapp">
+                  WhatsApp
+                </label>
+
+                <input
+                  type="tel"
+                  id="whatsapp"
+                  name="whatsapp"
+                >
+
+              </div>
+
+
+              <div class="owner-field">
+
+                <label for="website">
+                  Website
+                </label>
+
+                <input
+                  type="url"
+                  id="website"
+                  name="website"
+                  placeholder="https://example.com"
+                >
+
+              </div>
+
+
+              <div class="owner-field full-width">
+
+                <label for="address">
+                  Address
+                </label>
+
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                >
+
+              </div>
+
+
+              <div class="owner-field full-width">
+
+                <label for="description">
+                  Description
+                </label>
+
+                <textarea
+                  id="description"
+                  name="description"
+                  placeholder="Describe your business..."
+                ></textarea>
+
+              </div>
+
+            </div>
+
+
+            <div class="owner-actions">
+
+              <button
+                type="submit"
+                class="btn btn-primary"
+                id="saveBusinessButton"
+              >
+                Save Changes
+              </button>
+
+            </div>
+
+          </form>
+
+          <div
+            id="businessStatus"
+            class="owner-status"
+          ></div>
+
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+
+  <script>
+
+    const API_BASE =
+      "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+
+
+    let ownerToken = null;
+    let ownerBusiness = null;
+
+
+    const loginSection =
+      document.getElementById("loginSection");
+
+    const dashboardSection =
+      document.getElementById("dashboardSection");
+
+
+    function showStatus(
+      element,
+      message,
+      type
+    ) {
+
+      element.textContent = message;
+
+      element.className =
+        "owner-status show " + type;
+
+    }
+
+
+    function hideStatus(element) {
+
+      element.textContent = "";
+
+      element.className =
+        "owner-status";
+
+    }
+
+
+    function setDashboardVisible(
+      visible
+    ) {
+
+      if (visible) {
+
+        loginSection.classList.add(
+          "owner-hidden"
+        );
+
+        dashboardSection.classList.remove(
+          "owner-hidden"
+        );
+
+      } else {
+
+        dashboardSection.classList.add(
+          "owner-hidden"
+        );
+
+        loginSection.classList.remove(
+          "owner-hidden"
+        );
+
+      }
+
+    }
+
+
+    function getAuthHeaders() {
+
+      return {
+        "Authorization":
+          "Bearer " + ownerToken,
+
+        "Content-Type":
+          "application/json"
+      };
+
+    }
+
+
+    function fillBusinessForm(
+      business
+    ) {
+
+      document.getElementById(
+        "businessName"
+      ).value =
+        business.business_name || "";
+
+      document.getElementById(
+        "category"
+      ).value =
+        business.category || "";
+
+      document.getElementById(
+        "country"
+      ).value =
+        business.country || "";
+
+      document.getElementById(
+        "state"
+      ).value =
+        business.state || "";
+
+      document.getElementById(
+        "city"
+      ).value =
+        business.city || "";
+
+      document.getElementById(
+        "phone"
+      ).value =
+        business.phone || "";
+
+      document.getElementById(
+        "whatsapp"
+      ).value =
+        business.whatsapp || "";
+
+      document.getElementById(
+        "website"
+      ).value =
+        business.website || "";
+
+      document.getElementById(
+        "address"
+      ).value =
+        business.address || "";
+
+      document.getElementById(
+        "description"
+      ).value =
+        business.description || "";
+
+
+      document.getElementById(
+        "summaryBusinessName"
+      ).textContent =
+        business.business_name || "—";
+
+
+      document.getElementById(
+        "summaryStatus"
+      ).textContent =
+        business.status || "—";
+
+
+      document.getElementById(
+        "summaryVerification"
+      ).textContent =
+        Number(business.verified) === 1
+          ? "Verified"
+          : "Not verified";
+
+
+      ownerBusiness = business;
+
+    }
+
+
+    async function loadOwnerBusiness() {
+
+      const response =
+        await fetch(
+          API_BASE + "/owner/business",
+          {
+            method: "GET",
+
+            headers:
+              getAuthHeaders()
+          }
+        );
+
+
+      const result =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          result.message ||
+          "Unable to load business."
+        );
+
+      }
+
+
+      if (
+        !result.business
+      ) {
+
+        throw new Error(
+          "Business information was not returned."
+        );
+
+      }
+
+
+      fillBusinessForm(
+        result.business
+      );
+
+    }
+
+
+    document
+      .getElementById(
+        "ownerLoginForm"
+      )
+      .addEventListener(
+        "submit",
+        async function(event) {
+
+          event.preventDefault();
+
+
+          const loginStatus =
+            document.getElementById(
+              "loginStatus"
+            );
+
+
+          const loginButton =
+            document.getElementById(
+              "loginButton"
+            );
+
+
+          const businessId =
+            document.getElementById(
+              "businessId"
+            ).value.trim();
+
+
+          const ownerEmail =
+            document.getElementById(
+              "ownerEmail"
+            ).value.trim();
+
+
+          hideStatus(
+            loginStatus
+          );
+
+
+          loginButton.disabled =
+            true;
+
+          loginButton.textContent =
+            "Signing In...";
+
+
+          try {
+
+            const response =
+              await fetch(
+                API_BASE +
+                "/owner/login",
+                {
+                  method: "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json"
+                  },
+
+                  body:
+                    JSON.stringify({
+                      business_id:
+                        businessId,
+
+                      owner_email:
+                        ownerEmail
+                    })
+                }
+              );
+
+
+            const result =
+              await response.json();
+
+
+            if (
+              !response.ok
+            ) {
+
+              throw new Error(
+                result.message ||
+                "Owner login failed."
+              );
+
+            }
+
+
+            if (
+              !result.token
+            ) {
+
+              throw new Error(
+                "Owner session was not created."
+              );
+
+            }
+
+
+            ownerToken =
+              result.token;
+
+
+            await loadOwnerBusiness();
+
+
+            setDashboardVisible(
+              true
+            );
+
+
+            hideStatus(
+              loginStatus
+            );
+
+          } catch (error) {
+
+            showStatus(
+              loginStatus,
+              error.message ||
+                "Unable to sign in.",
+              "error"
+            );
+
+          } finally {
+
+            loginButton.disabled =
+              false;
+
+            loginButton.textContent =
+              "Sign In";
+
+          }
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "businessForm"
+      )
+      .addEventListener(
+        "submit",
+        async function(event) {
+
+          event.preventDefault();
+
+
+          const status =
+            document.getElementById(
+              "businessStatus"
+            );
+
+
+          const saveButton =
+            document.getElementById(
+              "saveBusinessButton"
+            );
+
+
+          const payload = {
+
+            business_name:
+              document.getElementById(
+                "businessName"
+              ).value.trim(),
+
+            category:
+              document.getElementById(
+                "category"
+              ).value.trim(),
+
+            country:
+              document.getElementById(
+                "country"
+              ).value.trim(),
+
+            state:
+              document.getElementById(
+                "state"
+              ).value.trim(),
+
+            city:
+              document.getElementById(
+                "city"
+              ).value.trim(),
+
+            phone:
+              document.getElementById(
+                "phone"
+              ).value.trim(),
+
+            whatsapp:
+              document.getElementById(
+                "whatsapp"
+              ).value.trim(),
+
+            website:
+              document.getElementById(
+                "website"
+              ).value.trim(),
+
+            address:
+              document.getElementById(
+                "address"
+              ).value.trim(),
+
+            description:
+              document.getElementById(
+                "description"
+              ).value.trim()
+
+          };
+
+
+          saveButton.disabled =
+            true;
+
+          saveButton.textContent =
+            "Saving...";
+
+
+          hideStatus(
+            status
+          );
+
+
+          try {
+
+            const response =
+              await fetch(
+                API_BASE +
+                "/owner/business",
+                {
+                  method: "PATCH",
+
+                  headers:
+                    getAuthHeaders(),
+
+                  body:
+                    JSON.stringify(
+                      payload
+                    )
+                }
+              );
+
+
+            const result =
+              await response.json();
+
+
+            if (
+              !response.ok
+            ) {
+
+              throw new Error(
+                result.message ||
+                "Unable to save changes."
+              );
+
+            }
+
+
+            if (
+              result.business
+            ) {
+
+              fillBusinessForm(
+                result.business
+              );
+
+            } else {
+
+              await loadOwnerBusiness();
+
+            }
+
+
+            showStatus(
+              status,
+              "Business information updated successfully.",
+              "success"
+            );
+
+          } catch (error) {
+
+            showStatus(
+              status,
+              error.message ||
+                "Unable to save changes.",
+              "error"
+            );
+
+          } finally {
+
+            saveButton.disabled =
+              false;
+
+            saveButton.textContent =
+              "Save Changes";
+
+          }
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "publicProfileButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          if (
+            !ownerBusiness ||
+            !ownerBusiness.id
+          ) {
+
+            return;
+
+          }
+
+
+          window.location.href =
+            "business.html?id=" +
+            encodeURIComponent(
+              ownerBusiness.id
+            );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "logoutButton"
+      )
+      .addEventListener(
+        "click",
+        async function() {
+
+          try {
+
+            if (ownerToken) {
+
+              await fetch(
+                API_BASE +
+                "/owner/logout",
+                {
+                  method: "POST",
+
+                  headers:
+                    getAuthHeaders()
+                }
+              );
+
+            }
+
+          } catch (error) {
+
+            console.warn(
+              "Owner logout request failed."
+            );
+
+          }
+
+
+          ownerToken =
+            null;
+
+          ownerBusiness =
+            null;
+
+
+          document
+            .getElementById(
+              "ownerLoginForm"
+            )
+            .reset();
+
+
+          setDashboardVisible(
+            false
+          );
+
+        }
+      );
+
+  </script>
+
+</body>
+                  </html>
