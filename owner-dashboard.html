@@ -2618,6 +2618,505 @@
     uploadImageButton.addEventListener(
       "click",
       uploadOwnerImage
+    )
+
+        const addProductButton =
+      document.getElementById(
+        "addProductButton"
+      );
+
+    const productsStatus =
+      document.getElementById(
+        "productsStatus"
+      );
+
+    const productsList =
+      document.getElementById(
+        "productsList"
+      );
+
+
+    async function loadOwnerProducts() {
+
+      if (!ownerToken) {
+        return;
+      }
+
+      productsList.innerHTML =
+        '<div class="image-empty">Loading products and services...</div>';
+
+      try {
+
+        const response =
+          await fetch(
+            API_BASE +
+            "/owner/business/products",
+            {
+              method: "GET",
+
+              headers: {
+                Authorization:
+                  "Bearer " +
+                  ownerToken
+              }
+            }
+          );
+
+        const result =
+          await response.json();
+
+        if (
+          !response.ok ||
+          result.status !== "ok"
+        ) {
+          throw new Error(
+            result.message ||
+            "Unable to load products and services."
+          );
+        }
+
+        renderOwnerProducts(
+          result.products || []
+        );
+
+        hideStatus(
+          productsStatus
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Loading owner products failed:",
+          error
+        );
+
+        productsList.innerHTML =
+          '<div class="image-empty">Unable to load products and services.</div>';
+
+        showStatus(
+          productsStatus,
+          error.message ||
+            "Unable to load products and services.",
+          "error"
+        );
+      }
+    }
+
+
+    function renderOwnerProducts(
+      products
+    ) {
+
+      productsList.innerHTML = "";
+
+      if (!products.length) {
+
+        productsList.innerHTML =
+          '<div class="image-empty">No products or services have been added yet.</div>';
+
+        return;
+      }
+
+      products.forEach(
+        function (product) {
+
+          const card =
+            document.createElement(
+              "div"
+            );
+
+          card.style.background =
+            "var(--bg-secondary)";
+
+          card.style.border =
+            "1px solid var(--border)";
+
+          card.style.borderRadius =
+            "10px";
+
+          card.style.padding =
+            "18px";
+
+          card.style.marginBottom =
+            "12px";
+
+
+          const title =
+            document.createElement(
+              "h4"
+            );
+
+          title.textContent =
+            product.name ||
+            "Unnamed item";
+
+          title.style.margin =
+            "0 0 8px";
+
+
+          const type =
+            document.createElement(
+              "div"
+            );
+
+          type.textContent =
+            product.item_type ===
+            "service"
+              ? "Service"
+              : "Product";
+
+          type.style.color =
+            "var(--accent)";
+
+          type.style.fontSize =
+            "12px";
+
+          type.style.fontWeight =
+            "700";
+
+          type.style.textTransform =
+            "uppercase";
+
+          type.style.marginBottom =
+            "8px";
+
+
+          const description =
+            document.createElement(
+              "p"
+            );
+
+          description.textContent =
+            product.description ||
+            "No description provided.";
+
+          description.style.color =
+            "var(--text-secondary)";
+
+          description.style.margin =
+            "0 0 10px";
+
+
+          const price =
+            document.createElement(
+              "div"
+            );
+
+          if (
+            product.price !== null &&
+            product.price !== undefined &&
+            product.price !== ""
+          ) {
+
+            price.textContent =
+              (product.currency ||
+                "NGN") +
+              " " +
+              Number(
+                product.price
+              ).toLocaleString();
+
+          } else {
+
+            price.textContent =
+              "Price not specified";
+          }
+
+          price.style.marginBottom =
+            "10px";
+
+          price.style.fontWeight =
+            "700";
+
+
+          const availability =
+            document.createElement(
+              "div"
+            );
+
+          availability.textContent =
+            Number(
+              product.available
+            ) === 1
+              ? "Available"
+              : "Unavailable";
+
+          availability.style.color =
+            Number(
+              product.available
+            ) === 1
+              ? "var(--success)"
+              : "var(--danger)";
+
+          availability.style.fontSize =
+            "13px";
+
+
+          card.appendChild(
+            type
+          );
+
+          card.appendChild(
+            title
+          );
+
+          card.appendChild(
+            description
+          );
+
+          card.appendChild(
+            price
+          );
+
+          card.appendChild(
+            availability
+          );
+
+          productsList.appendChild(
+            card
+          );
+        }
+      );
+    }
+
+
+    async function addOwnerProduct() {
+
+      if (!ownerToken) {
+
+        showStatus(
+          productsStatus,
+          "Your owner session has expired. Please log in again.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const name =
+        document
+          .getElementById(
+            "productName"
+          )
+          .value
+          .trim();
+
+      const description =
+        document
+          .getElementById(
+            "productDescription"
+          )
+          .value
+          .trim();
+
+      const priceValue =
+        document
+          .getElementById(
+            "productPrice"
+          )
+          .value
+          .trim();
+
+      const currency =
+        document
+          .getElementById(
+            "productCurrency"
+          )
+          .value
+          .trim();
+
+      const category =
+        document
+          .getElementById(
+            "productCategory"
+          )
+          .value
+          .trim();
+
+      const itemType =
+        document
+          .getElementById(
+            "productType"
+          )
+          .value;
+
+      const available =
+        document
+          .getElementById(
+            "productAvailable"
+          )
+          .checked;
+
+
+      if (!name) {
+
+        showStatus(
+          productsStatus,
+          "Product or service name is required.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      let price = null;
+
+      if (priceValue !== "") {
+
+        price =
+          Number(
+            priceValue
+          );
+
+        if (
+          !Number.isFinite(price) ||
+          price < 0
+        ) {
+
+          showStatus(
+            productsStatus,
+            "Please enter a valid price.",
+            "error"
+          );
+
+          return;
+        }
+      }
+
+
+      addProductButton.disabled =
+        true;
+
+      addProductButton.textContent =
+        "Adding...";
+
+      hideStatus(
+        productsStatus
+      );
+
+
+      try {
+
+        const response =
+          await fetch(
+            API_BASE +
+            "/owner/business/products",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json",
+
+                Authorization:
+                  "Bearer " +
+                  ownerToken
+              },
+
+              body:
+                JSON.stringify({
+                  name,
+                  description:
+                    description ||
+                    null,
+                  price,
+                  currency:
+                    currency ||
+                    "NGN",
+                  category:
+                    category ||
+                    null,
+                  item_type:
+                    itemType,
+                  available:
+                    available
+                      ? 1
+                      : 0
+                })
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          result.status !== "ok"
+        ) {
+
+          throw new Error(
+            result.message ||
+            "Unable to add product or service."
+          );
+        }
+
+
+        document.getElementById(
+          "productName"
+        ).value = "";
+
+        document.getElementById(
+          "productDescription"
+        ).value = "";
+
+        document.getElementById(
+          "productPrice"
+        ).value = "";
+
+        document.getElementById(
+          "productCategory"
+        ).value = "";
+
+        document.getElementById(
+          "productType"
+        ).value = "product";
+
+        document.getElementById(
+          "productAvailable"
+        ).checked = true;
+
+
+        await loadOwnerProducts();
+
+
+        showStatus(
+          productsStatus,
+          "Product or service added successfully.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Adding owner product failed:",
+          error
+        );
+
+        showStatus(
+          productsStatus,
+          error.message ||
+            "Unable to add product or service.",
+          "error"
+        );
+
+      } finally {
+
+        addProductButton.disabled =
+          false;
+
+        addProductButton.textContent =
+          "Add Product / Service";
+      }
+    }
+
+
+    addProductButton.addEventListener(
+      "click",
+      addOwnerProduct
     );
 
 
