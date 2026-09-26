@@ -856,11 +856,127 @@
 
 
             <div class="feature-card">
-              <h3>Products &amp; Services</h3>
-              <p>
-                Add products or services that customers can view.
-              </p>
-            </div>
+  <h3>Products &amp; Services</h3>
+
+  <p>
+    Add products or services that customers can view.
+  </p>
+
+  <div
+    id="productsStatus"
+    class="status"
+  ></div>
+
+  <div
+    id="productsList"
+    style="margin-top: 18px;"
+  ></div>
+
+  <div
+    style="
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    "
+  >
+    <h4 style="margin-bottom: 14px;">
+      Add Product or Service
+    </h4>
+
+    <input
+      type="text"
+      id="productName"
+      placeholder="Product or service name"
+      maxlength="150"
+    />
+
+    <textarea
+      id="productDescription"
+      placeholder="Description"
+      maxlength="2000"
+      style="margin-top: 10px;"
+    ></textarea>
+
+    <div
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 10px;
+      "
+    >
+      <input
+        type="number"
+        id="productPrice"
+        placeholder="Price"
+        min="0"
+        step="0.01"
+      />
+
+      <input
+        type="text"
+        id="productCurrency"
+        value="NGN"
+        placeholder="Currency"
+        maxlength="10"
+      />
+    </div>
+
+    <input
+      type="text"
+      id="productCategory"
+      placeholder="Category (optional)"
+      maxlength="150"
+      style="margin-top: 10px;"
+    />
+
+    <select
+      id="productType"
+      style="margin-top: 10px;"
+    >
+      <option value="product">
+        Product
+      </option>
+
+      <option value="service">
+        Service
+      </option>
+    </select>
+
+    <div
+      style="
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      "
+    >
+      <input
+        type="checkbox"
+        id="productAvailable"
+        checked
+      />
+
+      <label for="productAvailable">
+        Currently available
+      </label>
+    </div>
+
+    <div
+      class="btn-row"
+      style="margin-top: 16px;"
+    >
+      <button
+        type="button"
+        id="addProductButton"
+        class="btn btn-primary"
+      >
+        Add Product / Service
+      </button>
+    </div>
+  </div>
+</div>
+            
 
 
             <div class="feature-card">
