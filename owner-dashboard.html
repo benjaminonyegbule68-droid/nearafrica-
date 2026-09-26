@@ -1296,6 +1296,152 @@
         );
       }
     }
+        async function saveOwnerHours() {
+      if (!ownerToken) {
+        showStatus(
+          hoursStatus,
+          "Your owner session has expired. Please log in again.",
+          "error"
+        );
+
+        return;
+      }
+
+      const hours = [];
+
+      for (
+        let day = 0;
+        day <= 6;
+        day++
+      ) {
+        const status =
+          hoursEditor.querySelector(
+            `select[data-day="${day}"]`
+          );
+
+        const opening =
+          hoursEditor.querySelector(
+            `input[data-day="${day}"][type="time"][data-field="opening"]`
+          );
+
+        const closing =
+          hoursEditor.querySelector(
+            `input[data-day="${day}"][type="time"][data-field="closing"]`
+          );
+
+        if (
+          !status ||
+          !opening ||
+          !closing
+        ) {
+          showStatus(
+            hoursStatus,
+            "Unable to prepare the opening hours schedule.",
+            "error"
+          );
+
+          return;
+        }
+
+        hours.push({
+          day_of_week: day,
+
+          is_closed:
+            status.value === "closed",
+
+          is_24_hours:
+            status.value === "24",
+
+          opening_time:
+            status.value === "open"
+              ? opening.value || null
+              : null,
+
+          closing_time:
+            status.value === "open"
+              ? closing.value || null
+              : null
+        });
+      }
+
+      saveHoursButton.disabled =
+        true;
+
+      saveHoursButton.textContent =
+        "Saving...";
+
+      hideStatus(
+        hoursStatus
+      );
+
+      try {
+        const response =
+          await fetch(
+            API_BASE +
+            "/owner/business/hours",
+            {
+              method: "PATCH",
+
+              headers: {
+                "Content-Type":
+                  "application/json",
+
+                Authorization:
+                  "Bearer " +
+                  ownerToken
+              },
+
+              body:
+                JSON.stringify({
+                  hours
+                })
+            }
+          );
+
+        const result =
+          await response.json();
+
+        if (
+          !response.ok ||
+          result.status !== "ok"
+        ) {
+          throw new Error(
+            result.message ||
+            "Unable to save opening hours."
+          );
+        }
+
+        renderHoursEditor(
+          result.hours || hours
+        );
+
+        showStatus(
+          hoursStatus,
+          "Opening hours updated successfully.",
+          "success"
+        );
+
+      } catch (error) {
+        console.error(
+          "Saving owner hours failed:",
+          error
+        );
+
+        showStatus(
+          hoursStatus,
+          error.message ||
+          "Unable to save opening hours.",
+          "error"
+        );
+
+      } finally {
+        saveHoursButton.disabled =
+          false;
+
+        saveHoursButton.textContent =
+          "Save Opening Hours";
+      }
+    }
 
 
     const loginSection =
