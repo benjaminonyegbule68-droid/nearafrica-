@@ -327,6 +327,52 @@
       word-break: break-word;
     }
 
+    /* Opening Hours */
+
+    .hours-list {
+      display: grid;
+      gap: 0;
+    }
+
+    .hours-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 15px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hours-row:last-child {
+      border-bottom: 0;
+    }
+
+    .hours-day {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .hours-time {
+      color: var(--text-muted);
+    }
+
+    .hours-closed {
+      color: var(--danger);
+    }
+
+    .hours-open {
+      color: var(--success);
+    }
+
+    .hours-today {
+      background: rgba(212, 175, 55, 0.08);
+      border-radius: 8px;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-left: -10px;
+      margin-right: -10px;
+    }
+
     .photos-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -577,6 +623,11 @@
       .product-price {
         white-space: normal;
       }
+
+      .hours-row {
+        grid-template-columns: 100px 1fr;
+        gap: 10px;
+      }
     }
   </style>
 
@@ -784,12 +835,14 @@
         content.innerHTML = `
           <div class="error-state">
             <h2>Business Not Found</h2>
+
             <p>
               ${escapeHtml(
                 message ||
                 "This business could not be found."
               )}
             </p>
+
             <a
               href="/"
               class="btn btn-primary"
@@ -947,6 +1000,435 @@
         `;
       }
 
+      /*
+       * Opening Hours
+       *
+       * This renderer accepts several common shapes so the
+       * frontend remains compatible with the Worker as the
+       * public hours endpoint is wired in.
+       */
+
+      function normalizeHours(hours) {
+
+        if (!hours) {
+          return null;
+        }
+
+        if (
+          Array.isArray(hours)
+        ) {
+          return hours;
+        }
+
+        if (
+          typeof hours === "object"
+        ) {
+          if (
+            Array.isArray(
+              hours.results
+            )
+          ) {
+            return hours.results;
+          }
+
+          if (
+            Array.isArray(
+              hours.hours
+            )
+          ) {
+            return hours.hours;
+          }
+
+          return hours;
+        }
+
+        return null;
+      }
+
+      function formatHoursValue(
+        value
+      ) {
+
+        if (
+          value === null ||
+          value === undefined ||
+          value === ""
+        ) {
+          return "Closed";
+        }
+
+        if (
+          typeof value === "string"
+        ) {
+          return value;
+        }
+
+        return String(value);
+      }
+
+      function getDayName(
+        value
+      ) {
+
+        if (!value) {
+          return "";
+        }
+
+        return String(value)
+          .trim()
+          .toLowerCase();
+      }
+
+      function renderHours(
+        hours
+      ) {
+
+        const normalized =
+          normalizeHours(
+            hours
+          );
+
+        if (
+          !normalized
+        ) {
+          return `
+            <div class="empty-state">
+              Opening hours are not available yet.
+            </div>
+          `;
+        }
+
+        const dayOrder = [
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday",
+          "saturday",
+          "sunday"
+        ];
+
+        const dayLabels = {
+          monday: "Monday",
+          tuesday: "Tuesday",
+          wednesday: "Wednesday",
+          thursday: "Thursday",
+          friday: "Friday",
+          saturday: "Saturday",
+          sunday: "Sunday"
+        };
+
+        const today =
+          new Date()
+            .toLocaleDateString(
+              "en-US",
+              {
+                weekday: "long"
+              }
+            )
+            .toLowerCase();
+
+        /*
+         * Array format:
+         * [
+         *   {
+         *     day: "monday",
+         *     open_time: "08:00",
+         *     close_time: "17:00",
+         *     closed: 0
+         *   }
+         * ]
+         */
+
+        if (
+          Array.isArray(
+            normalized
+          )
+        ) {
+
+          const byDay = {};
+
+          normalized.forEach(
+            item => {
+
+              if (
+                !item ||
+                typeof item !==
+                  "object"
+              ) {
+                return;
+              }
+
+              const day =
+                getDayName(
+                  item.day ||
+                  item.day_name ||
+                  item.weekday
+                );
+
+              if (day) {
+                byDay[day] =
+                  item;
+              }
+            }
+          );
+
+          return `
+            <div class="hours-list">
+
+              ${dayOrder
+                .map(day => {
+
+                  const item =
+                    byDay[day];
+
+                  if (!item) {
+                    return `
+                      <div
+                        class="hours-row ${
+                          today === day
+                            ? "hours-today"
+                            : ""
+                        }"
+                      >
+                        <div class="hours-day">
+                          ${dayLabels[day]}
+                        </div>
+
+                        <div class="hours-time hours-closed">
+                          Hours not available
+                        </div>
+                      </div>
+                    `;
+                  }
+
+                  const closed =
+                    Number(
+                      item.closed
+                    ) === 1 ||
+                    item.closed === true ||
+                    String(
+                      item.status ||
+                      ""
+                    ).toLowerCase() ===
+                      "closed";
+
+                  const open =
+                    item.open_time ||
+                    item.open ||
+                    item.opens_at;
+
+                  const close =
+                    item.close_time ||
+                    item.close ||
+                    item.closes_at;
+
+                  let display =
+                    "Closed";
+
+                  if (!closed) {
+
+                    if (
+                      open ||
+                      close
+                    ) {
+
+                      display =
+                        `${formatHoursValue(
+                          open
+                        )} – ${formatHoursValue(
+                          close
+                        )}`;
+
+                    } else if (
+                      item.hours
+                    ) {
+
+                      display =
+                        item.hours;
+
+                    } else {
+
+                      display =
+                        "Hours not available";
+
+                    }
+                  }
+
+                  return `
+                    <div
+                      class="hours-row ${
+                        today === day
+                          ? "hours-today"
+                          : ""
+                      }"
+                    >
+
+                      <div class="hours-day">
+                        ${dayLabels[day]}
+                      </div>
+
+                      <div
+                        class="hours-time ${
+                          closed
+                            ? "hours-closed"
+                            : "hours-open"
+                        }"
+                      >
+                        ${escapeHtml(
+                          display
+                        )}
+                      </div>
+
+                    </div>
+                  `;
+                })
+                .join("")}
+
+            </div>
+          `;
+        }
+
+        /*
+         * Object format:
+         *
+         * {
+         *   monday: {
+         *     open: "08:00",
+         *     close: "17:00"
+         *   }
+         * }
+         */
+
+        if (
+          typeof normalized ===
+            "object"
+        ) {
+
+          return `
+            <div class="hours-list">
+
+              ${dayOrder
+                .map(day => {
+
+                  const item =
+                    normalized[day];
+
+                  let display =
+                    "Closed";
+
+                  let closed =
+                    false;
+
+                  if (
+                    typeof item ===
+                      "string"
+                  ) {
+
+                    display =
+                      item;
+
+                    closed =
+                      item
+                        .toLowerCase()
+                        .includes(
+                          "closed"
+                        );
+
+                  } else if (
+                    item &&
+                    typeof item ===
+                      "object"
+                  ) {
+
+                    closed =
+                      Number(
+                        item.closed
+                      ) === 1 ||
+                      item.closed ===
+                        true;
+
+                    if (!closed) {
+
+                      const open =
+                        item.open_time ||
+                        item.open ||
+                        item.opens_at;
+
+                      const close =
+                        item.close_time ||
+                        item.close ||
+                        item.closes_at;
+
+                      if (
+                        open ||
+                        close
+                      ) {
+
+                        display =
+                          `${formatHoursValue(
+                            open
+                          )} – ${formatHoursValue(
+                            close
+                          )}`;
+
+                      } else if (
+                        item.hours
+                      ) {
+
+                        display =
+                          item.hours;
+
+                      } else {
+
+                        display =
+                          "Hours not available";
+
+                      }
+                    }
+                  }
+
+                  return `
+                    <div
+                      class="hours-row ${
+                        today === day
+                          ? "hours-today"
+                          : ""
+                      }"
+                    >
+
+                      <div class="hours-day">
+                        ${dayLabels[day]}
+                      </div>
+
+                      <div
+                        class="hours-time ${
+                          closed
+                            ? "hours-closed"
+                            : "hours-open"
+                        }"
+                      >
+                        ${escapeHtml(
+                          display
+                        )}
+                      </div>
+
+                    </div>
+                  `;
+                })
+                .join("")}
+
+            </div>
+          `;
+        }
+
+        return `
+          <div class="empty-state">
+            Opening hours are not available yet.
+          </div>
+        `;
+      }
+
       function displayBusiness(
         business,
         result
@@ -981,6 +1463,14 @@
           )
             ? result.products
             : [];
+
+        const hours =
+          result &&
+          (
+            result.hours ||
+            result.opening_hours ||
+            result.business_hours
+          );
 
         const location =
           formatLocation(
@@ -1319,6 +1809,7 @@
                     views
                   )}
                 </div>
+
                 <div class="stat-label">
                   Views
                 </div>
@@ -1330,6 +1821,7 @@
                     reviewCount
                   )}
                 </div>
+
                 <div class="stat-label">
                   Reviews
                 </div>
@@ -1341,6 +1833,7 @@
                     products.length
                   )}
                 </div>
+
                 <div class="stat-label">
                   Products &amp; Services
                 </div>
@@ -1355,7 +1848,10 @@
             <div>
 
               <section class="profile-card">
-                <h2>About</h2>
+
+                <h2>
+                  About
+                </h2>
 
                 <p>
                   ${
@@ -1366,6 +1862,7 @@
                       : "No business description has been provided yet."
                   }
                 </p>
+
               </section>
 
 
@@ -1384,7 +1881,22 @@
 
               <section class="profile-card">
 
-                <h2>Photos</h2>
+                <h2>
+                  Opening Hours
+                </h2>
+
+                ${renderHours(
+                  hours
+                )}
+
+              </section>
+
+
+              <section class="profile-card">
+
+                <h2>
+                  Photos
+                </h2>
 
                 ${photosHtml}
 
@@ -1393,7 +1905,9 @@
 
               <section class="profile-card">
 
-                <h2>Reviews</h2>
+                <h2>
+                  Reviews
+                </h2>
 
                 ${reviewsHtml}
 
@@ -1402,7 +1916,9 @@
 
               <section class="profile-card">
 
-                <h2>Location</h2>
+                <h2>
+                  Location
+                </h2>
 
                 ${
                   business.latitude !==
@@ -1446,15 +1962,18 @@
                     business.name
                       ? `
                         <div class="info-item">
+
                           <div class="info-label">
                             Business Name
                           </div>
+
                           <div class="info-value">
                             ${escapeHtml(
                               business.business_name ||
                               business.name
                             )}
                           </div>
+
                         </div>
                       `
                       : ""
@@ -1464,14 +1983,17 @@
                     category
                       ? `
                         <div class="info-item">
+
                           <div class="info-label">
                             Category
                           </div>
+
                           <div class="info-value">
                             ${escapeHtml(
                               category
                             )}
                           </div>
+
                         </div>
                       `
                       : ""
@@ -1481,14 +2003,17 @@
                     location
                       ? `
                         <div class="info-item">
+
                           <div class="info-label">
                             Address
                           </div>
+
                           <div class="info-value">
                             ${escapeHtml(
                               location
                             )}
                           </div>
+
                         </div>
                       `
                       : ""
@@ -1498,9 +2023,11 @@
                     phone
                       ? `
                         <div class="info-item">
+
                           <div class="info-label">
                             Phone
                           </div>
+
                           <div class="info-value">
                             ${escapeHtml(
                               phone
@@ -1508,6 +2035,7 @@
                           </div>
 
                           <div class="contact-actions">
+
                             <a
                               class="btn"
                               href="tel:${escapeHtml(
@@ -1516,7 +2044,9 @@
                             >
                               Call Us
                             </a>
+
                           </div>
+
                         </div>
                       `
                       : ""
@@ -1526,11 +2056,13 @@
                     whatsapp
                       ? `
                         <div class="info-item">
+
                           <div class="info-label">
                             WhatsApp
                           </div>
 
                           <div class="contact-actions">
+
                             <a
                               class="btn"
                               href="https://wa.me/${escapeHtml(
@@ -1541,7 +2073,9 @@
                             >
                               WhatsApp Us
                             </a>
+
                           </div>
+
                         </div>
                       `
                       : ""
@@ -1551,11 +2085,13 @@
                     email
                       ? `
                         <div class="info-item">
+
                           <div class="info-label">
                             Email
                           </div>
 
                           <div class="contact-actions">
+
                             <a
                               class="btn"
                               href="mailto:${escapeHtml(
@@ -1564,7 +2100,9 @@
                             >
                               Email Us
                             </a>
+
                           </div>
+
                         </div>
                       `
                       : ""
@@ -1574,11 +2112,13 @@
                     website
                       ? `
                         <div class="info-item">
+
                           <div class="info-label">
                             Website
                           </div>
 
                           <div class="contact-actions">
+
                             <a
                               class="btn"
                               href="${escapeHtml(
@@ -1589,7 +2129,9 @@
                             >
                               Visit Website
                             </a>
+
                           </div>
+
                         </div>
                       `
                       : ""
@@ -1606,7 +2148,9 @@
                   Number(
                     business.claimed
                   ) === 1
+
                     ? `
+
                       <div class="claim-box">
 
                         <h3>
@@ -1618,8 +2162,11 @@
                         </p>
 
                       </div>
+
                     `
+
                     : `
+
                       <div class="claim-box">
 
                         <h3>
@@ -1671,6 +2218,7 @@
                         ></div>
 
                       </div>
+
                     `
                 }
 
@@ -1815,6 +2363,7 @@
               !email ||
               !evidence
             ) {
+
               status.className =
                 "status error";
 
@@ -1839,18 +2388,23 @@
                   )}/claim`,
                   {
                     method: "POST",
+
                     headers: {
                       "Content-Type":
                         "application/json"
                     },
+
                     body:
                       JSON.stringify({
                         claimant_name:
                           name,
+
                         claimant_email:
                           email,
+
                         evidence_type:
                           "email",
+
                         evidence_details:
                           evidence
                       })
@@ -1865,6 +2419,7 @@
                 result.status !==
                   "ok"
               ) {
+
                 throw new Error(
                   result.message ||
                   "Unable to submit claim."
@@ -1904,6 +2459,7 @@
           getBusinessId();
 
         if (!businessId) {
+
           showNotFound(
             "No business ID was provided."
           );
@@ -1929,6 +2485,7 @@
               "ok" ||
             !result.business
           ) {
+
             showNotFound(
               result.message ||
               "This business could not be found."
