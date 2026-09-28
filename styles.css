@@ -148,8 +148,9 @@ button {
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 30px;
+    justify-content: flex-start;
+
+    gap: 50px;
 }
 
 
@@ -162,6 +163,8 @@ button {
 
     font-weight: 800;
     white-space: nowrap;
+
+    flex-shrink: 0;
 }
 
 .logo-img {
@@ -187,7 +190,11 @@ button {
 .nav-links {
     display: flex;
     align-items: center;
+
     gap: 28px;
+
+    margin-left: auto;
+    flex-shrink: 0;
 }
 
 .nav-links a {
@@ -198,6 +205,8 @@ button {
     font-weight: 600;
 
     padding: 8px 0;
+
+    white-space: nowrap;
 
     transition:
         color 0.2s ease,
@@ -577,10 +586,12 @@ button {
     font-size: 0.85rem;
 }
 
+
 /* ---------- OTHER CATEGORY CARD ---------- */
 
 .category-card-other {
     border-color: var(--border-gold);
+
     background:
         linear-gradient(
             145deg,
@@ -597,6 +608,7 @@ button {
 
 .category-card-other:hover {
     border-color: var(--accent);
+
     background:
         linear-gradient(
             145deg,
@@ -604,6 +616,7 @@ button {
             rgba(255, 255, 255, 0.025)
         );
 }
+
 
 /* =========================================================
    CTA
@@ -885,6 +898,10 @@ select:focus {
 
 @media (max-width: 900px) {
 
+    .header-inner {
+        gap: 20px;
+    }
+
     .nav-links {
         gap: 16px;
     }
@@ -930,7 +947,6 @@ select:focus {
     *::before,
     *::after {
         animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
@@ -982,4 +998,4 @@ select:focus {
 
 .business-card-image + .business-card-content {
     padding-top: 20px;
-}
+   }
