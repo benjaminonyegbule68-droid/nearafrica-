@@ -58,6 +58,12 @@
       cursor: pointer;
     }
 
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+      transform: none !important;
+    }
+
     .site-header {
       border-bottom: 1px solid var(--border);
       background: rgba(11, 11, 11, 0.96);
@@ -500,46 +506,130 @@
       border: 1px solid var(--border);
     }
 
+    /* Claim system */
+
     .claim-box {
-      padding: 17px;
+      padding: 20px;
       border: 1px solid var(--border);
-      border-radius: 11px;
-      background: var(--bg-secondary);
+      border-radius: 13px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(212, 175, 55, 0.05),
+          var(--bg-secondary)
+        );
     }
 
     .claim-box h3 {
       margin-top: 0;
       margin-bottom: 8px;
+      font-size: 18px;
     }
 
     .claim-box p {
       font-size: 13px;
+      color: var(--text-muted);
     }
 
-    .claim-form {
+    .claim-form,
+    .verification-form {
       display: grid;
-      gap: 10px;
-      margin-top: 15px;
+      gap: 11px;
+      margin-top: 16px;
     }
 
     .claim-form input,
-    .claim-form textarea {
+    .claim-form textarea,
+    .verification-form input {
       width: 100%;
       background: #0d0d0d;
       border: 1px solid var(--border);
       color: var(--text);
-      border-radius: 8px;
-      padding: 11px;
+      border-radius: 9px;
+      padding: 12px;
       outline: none;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
     .claim-form input:focus,
-    .claim-form textarea:focus {
+    .claim-form textarea:focus,
+    .verification-form input:focus {
       border-color: var(--gold);
+      box-shadow:
+        0 0 0 3px rgba(212, 175, 55, 0.08);
+    }
+
+    .verification-box {
+      display: none;
+    }
+
+    .verification-box.active {
+      display: block;
+    }
+
+    .verification-email {
+      color: var(--gold-light) !important;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .otp-input {
+      text-align: center;
+      font-size: 24px !important;
+      font-weight: 800;
+      letter-spacing: 8px;
+    }
+
+    .otp-input::placeholder {
+      letter-spacing: 5px;
+      color: #555;
+    }
+
+    .verification-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .verification-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 13px;
+    }
+
+    .verification-actions .btn {
+      flex: 1 1 150px;
+    }
+
+    .claim-success {
+      padding: 15px;
+      border: 1px solid rgba(129, 199, 132, 0.25);
+      border-radius: 10px;
+      background: rgba(129, 199, 132, 0.06);
+    }
+
+    .claim-success-title {
+      color: var(--success);
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .claim-error {
+      padding: 12px;
+      border: 1px solid rgba(229, 115, 115, 0.25);
+      border-radius: 9px;
+      background: rgba(229, 115, 115, 0.05);
     }
 
     .status {
-      margin-top: 10px;
+      margin-top: 11px;
       font-size: 13px;
     }
 
@@ -553,6 +643,16 @@
 
     .status.info {
       color: var(--text-muted);
+    }
+
+    .status.warning {
+      color: var(--gold-light);
+    }
+
+    .resend-note {
+      margin-top: 10px;
+      color: var(--text-muted);
+      font-size: 12px;
     }
 
     .contact-actions {
@@ -627,6 +727,19 @@
       .hours-row {
         grid-template-columns: 100px 1fr;
         gap: 10px;
+      }
+
+      .verification-actions {
+        flex-direction: column;
+      }
+
+      .verification-actions .btn {
+        width: 100%;
+      }
+
+      .otp-input {
+        font-size: 21px !important;
+        letter-spacing: 6px;
       }
     }
   </style>
@@ -2290,48 +2403,162 @@
 
                       <div class="claim-box">
 
-                        <h3>
-                          Claim This Business
-                        </h3>
+                        <div id="claimRequestSection">
 
-                        <p>
-                          Are you the owner or authorized representative of this business?
-                        </p>
+                          <h3>
+                            Claim This Business
+                          </h3>
 
-                        <form
-                          id="claimForm"
-                          class="claim-form"
+                          <p>
+                            Are you the owner or an authorized representative
+                            of this business? Submit a claim and verify access
+                            to the business email currently listed on NearAfrica.
+                          </p>
+
+                          <form
+                            id="claimForm"
+                            class="claim-form"
+                          >
+
+                            <input
+                              type="text"
+                              id="claimName"
+                              placeholder="Your name"
+                              autocomplete="name"
+                              required
+                            />
+
+                            <input
+                              type="email"
+                              id="claimEmail"
+                              placeholder="Your email"
+                              autocomplete="email"
+                              required
+                            />
+
+                            <textarea
+                              id="claimEvidence"
+                              rows="4"
+                              placeholder="Tell us why you are authorized to claim this business."
+                              required
+                            ></textarea>
+
+                            <button
+                              type="submit"
+                              class="btn btn-primary"
+                              id="claimSubmitButton"
+                            >
+                              Submit Claim
+                            </button>
+
+                          </form>
+
+                        </div>
+
+                        <div
+                          id="claimVerificationSection"
+                          class="verification-box"
                         >
 
-                          <input
-                            type="text"
-                            id="claimName"
-                            placeholder="Your name"
-                            required
-                          />
+                          <h3>
+                            Verify Ownership
+                          </h3>
 
-                          <input
-                            type="email"
-                            id="claimEmail"
-                            placeholder="Your email"
-                            required
-                          />
+                          <p>
+                            A 6-digit verification code will be sent to:
+                          </p>
 
-                          <textarea
-                            id="claimEvidence"
-                            rows="4"
-                            placeholder="Tell us why you are authorized to claim this business."
-                            required
-                          ></textarea>
+                          <p
+                            id="verificationEmail"
+                            class="verification-email"
+                          ></p>
 
-                          <button
-                            type="submit"
-                            class="btn btn-primary"
+                          <form
+                            id="verificationForm"
+                            class="verification-form"
                           >
-                            Submit Claim
-                          </button>
 
-                        </form>
+                            <input
+                              type="text"
+                              id="claimOtp"
+                              class="otp-input"
+                              inputmode="numeric"
+                              autocomplete="one-time-code"
+                              maxlength="6"
+                              pattern="[0-9]{6}"
+                              placeholder="000000"
+                              aria-label="6-digit verification code"
+                              required
+                            />
+
+                            <button
+                              type="submit"
+                              class="btn btn-primary"
+                              id="verifyOtpButton"
+                            >
+                              Verify Code
+                            </button>
+
+                          </form>
+
+                          <div class="verification-meta">
+
+                            <span>
+                              Code expires in
+                              <strong id="otpExpiry">
+                                10 minutes
+                              </strong>
+                            </span>
+
+                            <span>
+                              Maximum 5 attempts
+                            </span>
+
+                          </div>
+
+                          <div class="verification-actions">
+
+                            <button
+                              type="button"
+                              class="btn"
+                              id="resendOtpButton"
+                            >
+                              Resend Code
+                            </button>
+
+                          </div>
+
+                          <div
+                            id="verificationStatus"
+                            class="status"
+                          ></div>
+
+                          <div class="resend-note">
+                            If you don't receive the code, check your email
+                            address and spam folder before requesting another code.
+                          </div>
+
+                        </div>
+
+                        <div
+                          id="claimCompletedSection"
+                          class="verification-box"
+                        >
+
+                          <div class="claim-success">
+
+                            <div class="claim-success-title">
+                              ✓ Ownership Verified
+                            </div>
+
+                            <div>
+                              Your ownership verification was successful.
+                              Your claim is now awaiting NearAfrica admin approval.
+                            </div>
+
+                          </div>
+
+                        </div>
 
                         <div
                           id="claimStatus"
@@ -2451,10 +2678,328 @@
           return;
         }
 
-        const status =
+        const requestSection =
+          document.getElementById(
+            "claimRequestSection"
+          );
+
+        const verificationSection =
+          document.getElementById(
+            "claimVerificationSection"
+          );
+
+        const completedSection =
+          document.getElementById(
+            "claimCompletedSection"
+          );
+
+        const claimStatus =
           document.getElementById(
             "claimStatus"
           );
+
+        const verificationForm =
+          document.getElementById(
+            "verificationForm"
+          );
+
+        const verificationStatus =
+          document.getElementById(
+            "verificationStatus"
+          );
+
+        const verificationEmail =
+          document.getElementById(
+            "verificationEmail"
+          );
+
+        const otpInput =
+          document.getElementById(
+            "claimOtp"
+          );
+
+        const claimSubmitButton =
+          document.getElementById(
+            "claimSubmitButton"
+          );
+
+        const verifyOtpButton =
+          document.getElementById(
+            "verifyOtpButton"
+          );
+
+        const resendOtpButton =
+          document.getElementById(
+            "resendOtpButton"
+          );
+
+        const otpExpiry =
+          document.getElementById(
+            "otpExpiry"
+          );
+
+        let activeClaimId =
+          null;
+
+        let resendCooldownTimer =
+          null;
+
+        let resendCooldownSeconds =
+          0;
+
+        function setClaimStatus(
+          message,
+          type = "info"
+        ) {
+
+          if (!claimStatus) {
+            return;
+          }
+
+          claimStatus.className =
+            `status ${type}`;
+
+          claimStatus.textContent =
+            message || "";
+        }
+
+        function setVerificationStatus(
+          message,
+          type = "info"
+        ) {
+
+          if (!verificationStatus) {
+            return;
+          }
+
+          verificationStatus.className =
+            `status ${type}`;
+
+          verificationStatus.textContent =
+            message || "";
+        }
+
+        function setButtonLoading(
+          button,
+          loadingText,
+          normalText,
+          disabled
+        ) {
+
+          if (!button) {
+            return;
+          }
+
+          button.disabled =
+            Boolean(disabled);
+
+          button.textContent =
+            disabled
+              ? loadingText
+              : normalText;
+        }
+
+        function startResendCooldown(
+          seconds = 60
+        ) {
+
+          if (!resendOtpButton) {
+            return;
+          }
+
+          if (resendCooldownTimer) {
+            clearInterval(
+              resendCooldownTimer
+            );
+
+            resendCooldownTimer =
+              null;
+          }
+
+          resendCooldownSeconds =
+            Math.max(
+              0,
+              Number(seconds) || 0
+            );
+
+          if (
+            resendCooldownSeconds <=
+            0
+          ) {
+
+            resendOtpButton.disabled =
+              false;
+
+            resendOtpButton.textContent =
+              "Resend Code";
+
+            return;
+          }
+
+          resendOtpButton.disabled =
+            true;
+
+          resendOtpButton.textContent =
+            `Resend Code (${resendCooldownSeconds}s)`;
+
+          resendCooldownTimer =
+            setInterval(
+              () => {
+
+                resendCooldownSeconds--;
+
+                if (
+                  resendCooldownSeconds <=
+                  0
+                ) {
+
+                  clearInterval(
+                    resendCooldownTimer
+                  );
+
+                  resendCooldownTimer =
+                    null;
+
+                  resendOtpButton.disabled =
+                    false;
+
+                  resendOtpButton.textContent =
+                    "Resend Code";
+
+                  return;
+                }
+
+                resendOtpButton.textContent =
+                  `Resend Code (${resendCooldownSeconds}s)`;
+
+              },
+              1000
+            );
+        }
+
+        function showVerificationStep(
+          result
+        ) {
+
+          activeClaimId =
+            result.claim_id ||
+            null;
+
+          if (!activeClaimId) {
+
+            setClaimStatus(
+              "The claim was created, but no claim ID was returned. Please contact NearAfrica support.",
+              "error"
+            );
+
+            return;
+          }
+
+          if (
+            verificationEmail
+          ) {
+
+            verificationEmail.textContent =
+              result.verification_email ||
+              "the business email currently listed on NearAfrica";
+          }
+
+          if (
+            otpExpiry
+          ) {
+
+            const minutes =
+              Number(
+                result.expires_in_minutes
+              ) || 10;
+
+            otpExpiry.textContent =
+              `${minutes} minute${minutes === 1 ? "" : "s"}`;
+          }
+
+          if (
+            requestSection
+          ) {
+            requestSection.style.display =
+              "none";
+          }
+
+          if (
+            verificationSection
+          ) {
+
+            verificationSection.classList.add(
+              "active"
+            );
+          }
+
+          if (
+            completedSection
+          ) {
+
+            completedSection.classList.remove(
+              "active"
+            );
+          }
+
+          setClaimStatus(
+            result.message ||
+            "Your claim was created. Enter the verification code sent to the business email.",
+            "success"
+          );
+
+          setVerificationStatus(
+            "Enter the 6-digit verification code.",
+            "info"
+          );
+
+          if (otpInput) {
+            otpInput.value = "";
+            otpInput.focus();
+          }
+
+          startResendCooldown(
+            60
+          );
+        }
+
+        function showCompletedStep() {
+
+          if (
+            requestSection
+          ) {
+            requestSection.style.display =
+              "none";
+          }
+
+          if (
+            verificationSection
+          ) {
+
+            verificationSection.classList.remove(
+              "active"
+            );
+          }
+
+          if (
+            completedSection
+          ) {
+
+            completedSection.classList.add(
+              "active"
+            );
+          }
+
+          setClaimStatus(
+            "",
+            "success"
+          );
+
+          setVerificationStatus(
+            "",
+            "success"
+          );
+        }
 
         form.addEventListener(
           "submit",
@@ -2483,20 +3028,39 @@
               !evidence
             ) {
 
-              status.className =
-                "status error";
-
-              status.textContent =
-                "Please complete all fields.";
+              setClaimStatus(
+                "Please complete all fields.",
+                "error"
+              );
 
               return;
             }
 
-            status.className =
-              "status info";
+            if (
+              !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                email
+              )
+            ) {
 
-            status.textContent =
-              "Submitting claim...";
+              setClaimStatus(
+                "Please enter a valid email address.",
+                "error"
+              );
+
+              return;
+            }
+
+            setClaimStatus(
+              "Submitting claim...",
+              "info"
+            );
+
+            setButtonLoading(
+              claimSubmitButton,
+              "Submitting...",
+              "Submit Claim",
+              true
+            );
 
             try {
 
@@ -2530,8 +3094,24 @@
                   }
                 );
 
-              const result =
-                await response.json();
+              let result = {};
+
+              try {
+
+                result =
+                  await response.json();
+
+              } catch (
+                parseError
+              ) {
+
+                result = {
+                  status:
+                    "error",
+                  message:
+                    "The server returned an invalid response."
+                };
+              }
 
               if (
                 !response.ok ||
@@ -2545,14 +3125,9 @@
                 );
               }
 
-              status.className =
-                "status success";
-
-              status.textContent =
-                result.message ||
-                "Claim submitted successfully.";
-
-              form.reset();
+              showVerificationStep(
+                result
+              );
 
             } catch (error) {
 
@@ -2561,14 +3136,398 @@
                 error
               );
 
-              status.className =
-                "status error";
+              setClaimStatus(
+                error.message ||
+                "Unable to submit your claim. Please try again.",
+                "error"
+              );
 
-              status.textContent =
-                "Unable to submit your claim. Please try again.";
+            } finally {
+
+              setButtonLoading(
+                claimSubmitButton,
+                "Submitting...",
+                "Submit Claim",
+                false
+              );
             }
           }
         );
+
+        if (
+          verificationForm
+        ) {
+
+          verificationForm.addEventListener(
+            "submit",
+            async event => {
+
+              event.preventDefault();
+
+              if (
+                !activeClaimId
+              ) {
+
+                setVerificationStatus(
+                  "Your claim session is missing. Please submit the claim again.",
+                  "error"
+                );
+
+                return;
+              }
+
+              const otp =
+                otpInput
+                  ? otpInput.value
+                      .replace(
+                        /\D/g,
+                        ""
+                      )
+                      .slice(
+                        0,
+                        6
+                      )
+                  : "";
+
+              if (
+                !/^\d{6}$/.test(
+                  otp
+                )
+              ) {
+
+                setVerificationStatus(
+                  "Please enter the 6-digit verification code.",
+                  "error"
+                );
+
+                if (otpInput) {
+                  otpInput.focus();
+                }
+
+                return;
+              }
+
+              setVerificationStatus(
+                "Verifying code...",
+                "info"
+              );
+
+              setButtonLoading(
+                verifyOtpButton,
+                "Verifying...",
+                "Verify Code",
+                true
+              );
+
+              if (
+                resendOtpButton
+              ) {
+                resendOtpButton.disabled =
+                  true;
+              }
+
+              try {
+
+                const response =
+                  await fetch(
+                    `${API_URL}/claims/${encodeURIComponent(
+                      activeClaimId
+                    )}/verify`,
+                    {
+                      method: "POST",
+
+                      headers: {
+                        "Content-Type":
+                          "application/json"
+                      },
+
+                      body:
+                        JSON.stringify({
+                          otp:
+                            otp
+                        })
+                    }
+                  );
+
+                let result = {};
+
+                try {
+
+                  result =
+                    await response.json();
+
+                } catch (
+                  parseError
+                ) {
+
+                  result = {
+                    status:
+                      "error",
+                    message:
+                      "The server returned an invalid response."
+                  };
+                }
+
+                if (
+                  !response.ok ||
+                  result.status !==
+                    "ok"
+                ) {
+
+                  throw new Error(
+                    result.message ||
+                    "The verification code could not be verified."
+                  );
+                }
+
+                showCompletedStep();
+
+              } catch (error) {
+
+                console.error(
+                  "Claim verification failed:",
+                  error
+                );
+
+                setVerificationStatus(
+                  error.message ||
+                  "The verification code could not be verified.",
+                  "error"
+                );
+
+                if (
+                  resendCooldownSeconds <=
+                  0
+                ) {
+
+                  if (
+                    resendOtpButton
+                  ) {
+                    resendOtpButton.disabled =
+                      false;
+                  }
+                }
+
+              } finally {
+
+                setButtonLoading(
+                  verifyOtpButton,
+                  "Verifying...",
+                  "Verify Code",
+                  false
+                );
+              }
+            }
+          );
+        }
+
+        if (
+          otpInput
+        ) {
+
+          otpInput.addEventListener(
+            "input",
+            () => {
+
+              otpInput.value =
+                otpInput.value
+                  .replace(
+                    /\D/g,
+                    ""
+                  )
+                  .slice(
+                    0,
+                    6
+                  );
+            }
+          );
+        }
+
+        if (
+          resendOtpButton
+        ) {
+
+          resendOtpButton.addEventListener(
+            "click",
+            async () => {
+
+              if (
+                !activeClaimId
+              ) {
+
+                setVerificationStatus(
+                  "Your claim session is missing. Please submit the claim again.",
+                  "error"
+                );
+
+                return;
+              }
+
+              if (
+                resendCooldownSeconds >
+                0
+              ) {
+
+                return;
+              }
+
+              setVerificationStatus(
+                "Requesting a new verification code...",
+                "info"
+              );
+
+              setButtonLoading(
+                resendOtpButton,
+                "Sending...",
+                "Resend Code",
+                true
+              );
+
+              if (
+                verifyOtpButton
+              ) {
+                verifyOtpButton.disabled =
+                  true;
+              }
+
+              try {
+
+                const response =
+                  await fetch(
+                    `${API_URL}/claims/${encodeURIComponent(
+                      activeClaimId
+                    )}/resend`,
+                    {
+                      method: "POST",
+
+                      headers: {
+                        "Content-Type":
+                          "application/json"
+                      },
+
+                      body:
+                        JSON.stringify({})
+                    }
+                  );
+
+                let result = {};
+
+                try {
+
+                  result =
+                    await response.json();
+
+                } catch (
+                  parseError
+                ) {
+
+                  result = {
+                    status:
+                      "error",
+                    message:
+                      "The server returned an invalid response."
+                  };
+                }
+
+                if (
+                  !response.ok ||
+                  result.status !==
+                    "ok"
+                ) {
+
+                  throw new Error(
+                    result.message ||
+                    "Unable to resend the verification code."
+                  );
+                }
+
+                if (
+                  verificationEmail &&
+                  result.verification_email
+                ) {
+
+                  verificationEmail.textContent =
+                    result.verification_email;
+                }
+
+                if (
+                  otpExpiry
+                ) {
+
+                  const minutes =
+                    Number(
+                      result.expires_in_minutes
+                    ) || 10;
+
+                  otpExpiry.textContent =
+                    `${minutes} minute${minutes === 1 ? "" : "s"}`;
+                }
+
+                if (otpInput) {
+                  otpInput.value = "";
+                  otpInput.focus();
+                }
+
+                setVerificationStatus(
+                  result.message ||
+                  "A new verification code has been sent.",
+                  "success"
+                );
+
+                startResendCooldown(
+                  60
+                );
+
+              } catch (error) {
+
+                console.error(
+                  "Claim verification resend failed:",
+                  error
+                );
+
+                setVerificationStatus(
+                  error.message ||
+                  "Unable to resend the verification code.",
+                  "error"
+                );
+
+                if (
+                  resendCooldownSeconds <=
+                  0
+                ) {
+
+                  resendOtpButton.disabled =
+                    false;
+
+                  resendOtpButton.textContent =
+                    "Resend Code";
+                }
+
+              } finally {
+
+                if (
+                  verifyOtpButton
+                ) {
+
+                  verifyOtpButton.disabled =
+                    false;
+                }
+
+                if (
+                  resendCooldownSeconds <=
+                  0
+                ) {
+
+                  resendOtpButton.disabled =
+                    false;
+
+                  resendOtpButton.textContent =
+                    "Resend Code";
+                }
+              }
+            }
+          );
+        }
       }
 
       async function loadBusiness() {
@@ -2594,8 +3553,24 @@
               )}`
             );
 
-          const result =
-            await response.json();
+          let result = {};
+
+          try {
+
+            result =
+              await response.json();
+
+          } catch (
+            parseError
+          ) {
+
+            result = {
+              status:
+                "error",
+              message:
+                "The server returned an invalid response."
+            };
+          }
 
           if (
             !response.ok ||
