@@ -15,6 +15,28 @@
 
     <link rel="stylesheet" href="styles.css">
 
+    <!-- Header spacing fix -->
+    <style>
+        .site-header .header-inner {
+            gap: 2rem;
+        }
+
+        .site-header .nav-links {
+            flex: 1;
+            justify-content: flex-end;
+        }
+
+        @media (max-width: 900px) {
+            .site-header .header-inner {
+                gap: 1rem;
+            }
+
+            .site-header .nav-links {
+                flex: none;
+            }
+        }
+    </style>
+
     <!-- Leaflet Maps -->
     <link
         rel="stylesheet"
@@ -164,121 +186,121 @@
 
 
         <!-- CATEGORIES -->
-<section class="section">
-    <div class="container">
+        <section class="section">
+            <div class="container">
 
-        <div class="section-heading">
-            <span class="section-eyebrow">
-                EXPLORE
-            </span>
+                <div class="section-heading">
+                    <span class="section-eyebrow">
+                        EXPLORE
+                    </span>
 
-            <h2>
-                What are you looking for?
-            </h2>
+                    <h2>
+                        What are you looking for?
+                    </h2>
 
-            <p>
-                Explore businesses and services by category.
-            </p>
-        </div>
+                    <p>
+                        Explore businesses and services by category.
+                    </p>
+                </div>
 
-        <div class="categories-grid">
+                <div class="categories-grid">
 
-            <a
-                href="explore.html?category=restaurants"
-                class="category-card"
-            >
-                <span class="category-icon">🍽️</span>
-                <h3>Restaurants</h3>
-                <p>Find places to eat near you.</p>
-            </a>
+                    <a
+                        href="explore.html?category=restaurants"
+                        class="category-card"
+                    >
+                        <span class="category-icon">🍽️</span>
+                        <h3>Restaurants</h3>
+                        <p>Find places to eat near you.</p>
+                    </a>
 
-            <a
-                href="explore.html?category=beauty"
-                class="category-card"
-            >
-                <span class="category-icon">💇</span>
-                <h3>Beauty &amp; Hair</h3>
-                <p>Salons, barbers and beauty services.</p>
-            </a>
+                    <a
+                        href="explore.html?category=beauty"
+                        class="category-card"
+                    >
+                        <span class="category-icon">💇</span>
+                        <h3>Beauty &amp; Hair</h3>
+                        <p>Salons, barbers and beauty services.</p>
+                    </a>
 
-            <a
-                href="explore.html?category=hotels"
-                class="category-card"
-            >
-                <span class="category-icon">🏨</span>
-                <h3>Hotels</h3>
-                <p>Find places to stay.</p>
-            </a>
+                    <a
+                        href="explore.html?category=hotels"
+                        class="category-card"
+                    >
+                        <span class="category-icon">🏨</span>
+                        <h3>Hotels</h3>
+                        <p>Find places to stay.</p>
+                    </a>
 
-            <a
-                href="explore.html?category=shopping"
-                class="category-card"
-            >
-                <span class="category-icon">🛍️</span>
-                <h3>Shopping</h3>
-                <p>Discover shops and stores.</p>
-            </a>
+                    <a
+                        href="explore.html?category=shopping"
+                        class="category-card"
+                    >
+                        <span class="category-icon">🛍️</span>
+                        <h3>Shopping</h3>
+                        <p>Discover shops and stores.</p>
+                    </a>
 
-            <a
-                href="explore.html?category=health"
-                class="category-card"
-            >
-                <span class="category-icon">🏥</span>
-                <h3>Health</h3>
-                <p>Healthcare services near you.</p>
-            </a>
+                    <a
+                        href="explore.html?category=health"
+                        class="category-card"
+                    >
+                        <span class="category-icon">🏥</span>
+                        <h3>Health</h3>
+                        <p>Healthcare services near you.</p>
+                    </a>
 
-            <a
-                href="explore.html?category=professional"
-                class="category-card"
-            >
-                <span class="category-icon">💼</span>
-                <h3>Professional Services</h3>
-                <p>Find businesses and professionals.</p>
-            </a>
+                    <a
+                        href="explore.html?category=professional"
+                        class="category-card"
+                    >
+                        <span class="category-icon">💼</span>
+                        <h3>Professional Services</h3>
+                        <p>Find businesses and professionals.</p>
+                    </a>
 
-            <a
-                href="explore.html?category=education"
-                class="category-card"
-            >
-                <span class="category-icon">🎓</span>
-                <h3>Education</h3>
-                <p>Schools, tutors and learning services.</p>
-            </a>
+                    <a
+                        href="explore.html?category=education"
+                        class="category-card"
+                    >
+                        <span class="category-icon">🎓</span>
+                        <h3>Education</h3>
+                        <p>Schools, tutors and learning services.</p>
+                    </a>
 
-            <a
-                href="explore.html?category=automotive"
-                class="category-card"
-            >
-                <span class="category-icon">🚗</span>
-                <h3>Automotive</h3>
-                <p>Cars, repairs and automotive services.</p>
-            </a>
+                    <a
+                        href="explore.html?category=automotive"
+                        class="category-card"
+                    >
+                        <span class="category-icon">🚗</span>
+                        <h3>Automotive</h3>
+                        <p>Cars, repairs and automotive services.</p>
+                    </a>
 
-            <!-- NEW: GYMS & FITNESS -->
-            <a
-                href="explore.html?category=gyms-fitness"
-                class="category-card"
-            >
-                <span class="category-icon">🏋️</span>
-                <h3>Gyms &amp; Fitness</h3>
-                <p>Gyms, fitness centers and training.</p>
-            </a>
+                    <!-- GYMS & FITNESS -->
+                    <a
+                        href="explore.html?category=gyms-fitness"
+                        class="category-card"
+                    >
+                        <span class="category-icon">🏋️</span>
+                        <h3>Gyms &amp; Fitness</h3>
+                        <p>Gyms, fitness centers and training.</p>
+                    </a>
 
-            <!-- OTHER -->
-            <a
-                href="explore.html"
-                class="category-card category-card-other"
-            >
-                <span class="category-icon">＋</span>
-                <h3>Other…</h3>
-                <p>Explore all categories.</p>
-            </a>
+                    <!-- OTHER -->
+                    <a
+                        href="explore.html"
+                        class="category-card category-card-other"
+                    >
+                        <span class="category-icon">＋</span>
+                        <h3>Other…</h3>
+                        <p>Explore all categories.</p>
+                    </a>
 
-        </div>
+                </div>
 
-    </div>
-</section>
+            </div>
+        </section>
 
 
         <!-- BUSINESS OWNER CTA -->
@@ -407,51 +429,51 @@
 
 
             <!-- NEARAFRICA / CONTACT -->
-<div class="footer-col">
+            <div class="footer-col">
 
-    <h3>NearAfrica</h3>
+                <h3>NearAfrica</h3>
 
-    <a href="about.html">
-        About Us
-    </a>
+                <a href="about.html">
+                    About Us
+                </a>
 
-    <a href="contact.html">
-        Contact
-    </a>
+                <a href="contact.html">
+                    Contact
+                </a>
 
-    <a href="privacy.html">
-        Privacy Policy
-    </a>
+                <a href="privacy.html">
+                    Privacy Policy
+                </a>
 
-    <a href="terms.html">
-        Terms of Service
-    </a>
+                <a href="terms.html">
+                    Terms of Service
+                </a>
 
-    <a href="listing-policy.html">
-        Listing Policy
-    </a>
+                <a href="listing-policy.html">
+                    Listing Policy
+                </a>
 
-    <a href="claim-business.html">
-        Claim Business
-    </a>
+                <a href="claim-business.html">
+                    Claim Business
+                </a>
 
-    <a href="tel:09134827121">
-        📞 Call Us
-    </a>
+                <a href="tel:09134827121">
+                    📞 Call Us
+                </a>
 
-    <a
-        href="https://wa.me/2349134827121"
-        target="_blank"
-        rel="noopener noreferrer"
-    >
-        💬 WhatsApp Us
-    </a>
+                <a
+                    href="https://wa.me/2349134827121"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    💬 WhatsApp Us
+                </a>
 
-    <a href="mailto:contactnearafrica43@gmail.com">
-        📧 Email Us
-    </a>
+                <a href="mailto:contactnearafrica43@gmail.com">
+                    📧 Email Us
+                </a>
 
-</div>
+            </div>
 
         </div>
 
