@@ -2371,216 +2371,393 @@
 
 
     /* =========================================================
-       CLAIMS
-    ========================================================= */
+   CLAIMS
+========================================================= */
 
-    function renderClaims(
-        claims
+function renderClaims(
+    claims
+) {
+
+    if (
+        !claims.length
     ) {
 
-        if (
-            !claims.length
-        ) {
-
-            content.innerHTML = `
-                <div class="empty">
-                    No claims found.
-                </div>
-            `;
-
-            return;
-
-        }
-
-
-        const rows =
-            claims.map(
-                claim => {
-
-                    const status =
-                        String(
-                            claim.status ||
-                            "pending"
-                        ).toLowerCase();
-
-
-                    const claimId =
-                        claim.id ||
-                        claim.claim_id ||
-                        "";
-
-
-                    const businessId =
-                        claim.business_id ||
-                        "";
-
-
-                    const claimant =
-                        claim.claimant_name ||
-                        claim.name ||
-                        claim.claimant_email ||
-                        "—";
-
-
-                    return `
-
-                        <tr>
-
-                            <td>
-
-                                <strong>
-                                    ${escapeHtml(
-                                        claimant
-                                    )}
-                                </strong>
-
-                                <div
-                                    class="claim-id"
-                                    style="
-                                        margin-top:6px;
-                                    "
-                                >
-                                    ${escapeHtml(
-                                        claimId
-                                    )}
-                                </div>
-
-                            </td>
-
-
-                            <td>
-
-                                <div
-                                    class="business-id"
-                                >
-                                    ${escapeHtml(
-                                        businessId
-                                    )}
-                                </div>
-
-                                <div
-                                    style="
-                                        margin-top:8px;
-                                    "
-                                >
-
-                                    <a
-                                        href="business.html?id=${encodeURIComponent(
-                                            businessId
-                                        )}"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        style="
-                                            color:#d4af37;
-                                            text-decoration:none;
-                                            font-weight:700;
-                                        "
-                                    >
-                                        Open Business
-                                    </a>
-
-                                </div>
-
-                            </td>
-
-
-                            <td>
-
-                                ${escapeHtml(
-                                    claim.claimant_email ||
-                                    claim.email ||
-                                    "—"
-                                )}
-
-                            </td>
-
-
-                            <td>
-
-                                <span
-                                    class="status ${escapeAttribute(
-                                        status
-                                    )}"
-                                >
-                                    ${escapeHtml(
-                                        status
-                                    )}
-                                </span>
-
-                            </td>
-
-
-                            <td>
-
-                                <div
-                                    style="
-                                        max-width:300px;
-                                        white-space:normal;
-                                        line-height:1.5;
-                                    "
-                                >
-                                    ${escapeHtml(
-                                        claim.notes ||
-                                        claim.message ||
-                                        "—"
-                                    )}
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-                    `;
-
-                }
-            ).join("");
-
-
         content.innerHTML = `
-
-            <div class="table-wrap">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Claimant
-                            </th>
-
-                            <th>
-                                Business
-                            </th>
-
-                            <th>
-                                Email
-                            </th>
-
-                            <th>
-                                Status
-                            </th>
-
-                            <th>
-                                Notes
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-                        ${rows}
-                    </tbody>
-
-                </table>
-
+            <div class="empty">
+                No claims found.
             </div>
-
         `;
 
+        return;
+
     }
+
+
+    const rows =
+        claims.map(
+            claim => {
+
+                const status =
+                    String(
+                        claim.status ||
+                        "pending"
+                    ).toLowerCase();
+
+
+                const claimId =
+                    claim.id ||
+                    claim.claim_id ||
+                    "";
+
+
+                const businessId =
+                    claim.business_id ||
+                    claim.business?.id ||
+                    "";
+
+
+                const businessName =
+                    claim.business_name ||
+                    claim.business?.business_name ||
+                    claim.business?.name ||
+                    claim.business_name ||
+                    businessId ||
+                    "—";
+
+
+                const claimant =
+                    claim.claimant_name ||
+                    claim.name ||
+                    claim.claimant_email ||
+                    "—";
+
+
+                const claimantEmail =
+                    claim.claimant_email ||
+                    claim.email ||
+                    "—";
+
+
+                const notes =
+                    claim.reviewer_notes ||
+                    claim.admin_notes ||
+                    claim.notes ||
+                    claim.message ||
+                    claim.evidence_details ||
+                    "—";
+
+
+                const verified =
+                    status === "verified" ||
+                    Boolean(
+                        claim.verified
+                    ) ||
+                    Boolean(
+                        claim.email_verified
+                    );
+
+
+                return `
+
+                    <tr>
+
+                        <!-- CLAIMANT -->
+
+                        <td>
+
+                            <strong>
+                                ${escapeHtml(
+                                    claimant
+                                )}
+                            </strong>
+
+                            <div
+                                class="claim-id"
+                                style="
+                                    margin-top:6px;
+                                "
+                            >
+                                ${escapeHtml(
+                                    claimId
+                                )}
+                            </div>
+
+                        </td>
+
+
+                        <!-- BUSINESS -->
+
+                        <td>
+
+                            <strong>
+                                ${escapeHtml(
+                                    businessName
+                                )}
+                            </strong>
+
+                            ${
+                                businessId
+                                    ? `
+                                        <div
+                                            class="business-id"
+                                            style="
+                                                margin-top:6px;
+                                            "
+                                        >
+                                            ${escapeHtml(
+                                                businessId
+                                            )}
+                                        </div>
+
+                                        <div
+                                            style="
+                                                margin-top:8px;
+                                            "
+                                        >
+
+                                            <a
+                                                href="https://nearafrica.pages.dev/business.html?id=${encodeURIComponent(
+                                                    businessId
+                                                )}"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style="
+                                                    color:#d4af37;
+                                                    text-decoration:none;
+                                                    font-weight:700;
+                                                "
+                                            >
+                                                Open Business
+                                            </a>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                        </td>
+
+
+                        <!-- EMAIL -->
+
+                        <td>
+
+                            ${escapeHtml(
+                                claimantEmail
+                            )}
+
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            <span
+                                class="status ${escapeAttribute(
+                                    status
+                                )}"
+                            >
+                                ${escapeHtml(
+                                    status
+                                )}
+                            </span>
+
+                            ${
+                                verified
+                                    ? `
+                                        <div
+                                            style="
+                                                margin-top:6px;
+                                                font-size:12px;
+                                                opacity:.75;
+                                            "
+                                        >
+                                            Email verified
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                        </td>
+
+
+                        <!-- NOTES -->
+
+                        <td>
+
+                            <div
+                                style="
+                                    max-width:300px;
+                                    white-space:normal;
+                                    line-height:1.5;
+                                "
+                            >
+                                ${escapeHtml(
+                                    notes
+                                )}
+                            </div>
+
+                        </td>
+
+
+                        <!-- ACTIONS -->
+
+                        <td>
+
+                            ${
+                                status === "verified"
+                                    ? `
+
+                                        <div
+                                            style="
+                                                display:flex;
+                                                gap:8px;
+                                                flex-wrap:wrap;
+                                            "
+                                        >
+
+                                            <button
+                                                type="button"
+                                                class="claim-action"
+                                                data-claim-id="${escapeAttribute(
+                                                    claimId
+                                                )}"
+                                                data-action="approve"
+                                            >
+                                                Approve
+                                            </button>
+
+
+                                            <button
+                                                type="button"
+                                                class="claim-action"
+                                                data-claim-id="${escapeAttribute(
+                                                    claimId
+                                                )}"
+                                                data-action="reject"
+                                            >
+                                                Reject
+                                            </button>
+
+                                        </div>
+
+                                    `
+                                    : status === "pending"
+                                    ? `
+
+                                        <button
+                                            type="button"
+                                            class="claim-action"
+                                            data-claim-id="${escapeAttribute(
+                                                claimId
+                                            )}"
+                                            data-action="reject"
+                                        >
+                                            Reject
+                                        </button>
+
+                                    `
+                                    : `
+                                        —
+                                    `
+                            }
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        ).join("");
+
+
+    content.innerHTML = `
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Claimant
+                        </th>
+
+                        <th>
+                            Business
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Notes
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    ${rows}
+                </tbody>
+
+            </table>
+
+        </div>
+
+    `;
+
+
+    /*
+       Connect moderation buttons after
+       the table has been rendered.
+    */
+
+    content
+        .querySelectorAll(
+            ".claim-action"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const claimId =
+                            button.dataset.claimId;
+
+                        const action =
+                            button.dataset.action;
+
+
+                        moderateClaimFromAdmin(
+                            claimId,
+                            action,
+                            button
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+}
 
 
    /* =========================================================
