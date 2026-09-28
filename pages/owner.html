@@ -1964,11 +1964,13 @@ function showDashboard() {
         )
     );
 
-    showElement(
-        document.getElementById(
-            "ownerDashboard"
-        )
+    const dashboard = document.getElementById(
+        "ownerDashboard"
     );
+
+    if (dashboard) {
+        dashboard.style.display = "block";
+    }
 }
 
 
