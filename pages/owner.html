@@ -1,0 +1,4269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Owner Dashboard — NearAfrica</title>
+
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+        /* =========================================================
+           OWNER DASHBOARD
+           Page-specific styles only.
+           ========================================================= */
+
+        .owner-page {
+            min-height: 100vh;
+            background: var(--bg-primary);
+        }
+
+        .owner-container {
+            width: min(1200px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 40px 0 80px;
+        }
+
+        .owner-login-wrap {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px;
+        }
+
+        .owner-login-card {
+            width: min(520px, 100%);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 34px;
+            box-shadow: var(--shadow);
+        }
+
+        .owner-brand {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .owner-brand-mark {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            border: 1px solid var(--border-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 28px;
+            font-weight: 800;
+            box-shadow: var(--shadow-gold);
+        }
+
+        .owner-brand h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        .owner-brand p {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        .owner-form-group {
+            margin-bottom: 18px;
+        }
+
+        .owner-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .owner-form-group input,
+        .owner-form-group textarea,
+        .owner-form-group select {
+            width: 100%;
+            box-sizing: border-box;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            font: inherit;
+            outline: none;
+        }
+
+        .owner-form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .owner-form-group input:focus,
+        .owner-form-group textarea:focus,
+        .owner-form-group select:focus {
+            border-color: var(--accent);
+        }
+
+        .owner-form-group input[readonly] {
+            opacity: .75;
+            cursor: not-allowed;
+        }
+
+        .owner-help {
+            margin-top: 7px;
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .owner-warning {
+            margin-top: 12px;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            background: rgba(229, 169, 61, .08);
+            border: 1px solid rgba(229, 169, 61, .25);
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .owner-login-error {
+            display: none;
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            background: rgba(224, 82, 82, .10);
+            border: 1px solid rgba(224, 82, 82, .28);
+            color: #ff9b9b;
+            font-size: 14px;
+        }
+
+        .owner-login-button {
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .owner-dashboard {
+            display: none;
+        }
+
+        .owner-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .owner-header-title h1 {
+            margin: 0 0 7px;
+            font-size: clamp(26px, 4vw, 38px);
+        }
+
+        .owner-header-title p {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        .owner-header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .owner-status-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 26px;
+        }
+
+        .owner-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .owner-badge.gold {
+            border-color: var(--border-gold);
+            color: var(--accent);
+        }
+
+        .owner-badge.success {
+            border-color: rgba(53, 184, 107, .35);
+            color: #6ce39a;
+        }
+
+        .owner-layout {
+            display: grid;
+            grid-template-columns: 230px minmax(0, 1fr);
+            gap: 22px;
+            align-items: start;
+        }
+
+        .owner-sidebar {
+            position: sticky;
+            top: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 10px;
+        }
+
+        .owner-tab {
+            width: 100%;
+            text-align: left;
+            border: 0;
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 12px 13px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font: inherit;
+            margin-bottom: 3px;
+        }
+
+        .owner-tab:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .owner-tab.active {
+            background: rgba(212, 175, 55, .10);
+            color: var(--accent);
+            border: 1px solid var(--border-gold);
+        }
+
+        .owner-content {
+            min-width: 0;
+        }
+
+        .owner-panel {
+            display: none;
+        }
+
+        .owner-panel.active {
+            display: block;
+        }
+
+        .owner-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .owner-card-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            align-items: flex-start;
+            margin-bottom: 22px;
+        }
+
+        .owner-card-header h2,
+        .owner-card-header h3 {
+            margin: 0 0 5px;
+        }
+
+        .owner-card-header p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .owner-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .owner-grid .full {
+            grid-column: 1 / -1;
+        }
+
+        .owner-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .owner-message {
+            display: none;
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .owner-message.success {
+            display: block;
+            color: #79e6a1;
+            background: rgba(53, 184, 107, .09);
+            border: 1px solid rgba(53, 184, 107, .25);
+        }
+
+        .owner-message.error {
+            display: block;
+            color: #ff9b9b;
+            background: rgba(224, 82, 82, .09);
+            border: 1px solid rgba(224, 82, 82, .25);
+        }
+
+        .owner-message.info {
+            display: block;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid var(--border);
+        }
+
+        .owner-overview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .owner-stat {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+        }
+
+        .owner-stat-label {
+            color: var(--text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            margin-bottom: 9px;
+        }
+
+        .owner-stat-value {
+            color: var(--text-primary);
+            font-size: 21px;
+            font-weight: 800;
+            word-break: break-word;
+        }
+
+        .owner-stat-value.gold {
+            color: var(--accent);
+        }
+
+        .owner-hours {
+            display: grid;
+            gap: 10px;
+        }
+
+        .owner-hour-row {
+            display: grid;
+            grid-template-columns: 120px 90px 100px minmax(80px, 1fr) minmax(80px, 1fr);
+            gap: 10px;
+            align-items: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px;
+        }
+
+        .owner-day {
+            font-weight: 700;
+        }
+
+        .owner-check {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .owner-check input {
+            accent-color: var(--accent);
+        }
+
+        .owner-hour-row input[type="time"] {
+            width: 100%;
+            box-sizing: border-box;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .owner-images {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .owner-image-card {
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        .owner-image-preview {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: cover;
+            display: block;
+            background: #101010;
+        }
+
+        .owner-image-info {
+            padding: 12px;
+        }
+
+        .owner-image-type {
+            color: var(--accent);
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: .06em;
+        }
+
+        .owner-image-alt {
+            margin: 6px 0 10px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            min-height: 18px;
+        }
+
+        .owner-product-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .owner-product {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 15px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px;
+        }
+
+        .owner-product h3 {
+            margin: 0 0 7px;
+        }
+
+        .owner-product-description {
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.55;
+            margin-bottom: 10px;
+        }
+
+        .owner-product-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .owner-product-price {
+            color: var(--accent);
+            font-weight: 800;
+        }
+
+        .owner-product-actions {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .owner-empty {
+            padding: 35px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        .owner-loading {
+            padding: 50px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .owner-spinner {
+            width: 25px;
+            height: 25px;
+            border: 3px solid rgba(212, 175, 55, .2);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: ownerSpin .8s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes ownerSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .owner-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, .78);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .owner-modal.open {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .owner-modal-card {
+            width: min(650px, 100%);
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .owner-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .owner-modal-header h2 {
+            margin: 0;
+        }
+
+        .owner-close {
+            border: 0;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .owner-file {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px dashed var(--border-gold);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-radius: var(--radius-sm);
+        }
+
+        .owner-notice {
+            margin-bottom: 20px;
+            padding: 14px;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-md);
+            background: rgba(212, 175, 55, .06);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        .owner-mobile-tabs {
+            display: none;
+        }
+
+        @media (max-width: 900px) {
+            .owner-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .owner-sidebar {
+                display: none;
+            }
+
+            .owner-mobile-tabs {
+                display: flex;
+                gap: 7px;
+                overflow-x: auto;
+                padding-bottom: 5px;
+                margin-bottom: 20px;
+            }
+
+            .owner-mobile-tabs .owner-tab {
+                width: auto;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .owner-overview-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .owner-images {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .owner-hour-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .owner-day {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .owner-container {
+                width: min(100% - 20px, 1200px);
+                padding-top: 25px;
+            }
+
+            .owner-login-card,
+            .owner-card {
+                padding: 18px;
+            }
+
+            .owner-header {
+                flex-direction: column;
+            }
+
+            .owner-header-actions {
+                width: 100%;
+            }
+
+            .owner-header-actions button {
+                flex: 1;
+            }
+
+            .owner-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .owner-grid .full {
+                grid-column: auto;
+            }
+
+            .owner-overview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .owner-images {
+                grid-template-columns: 1fr;
+            }
+
+            .owner-product {
+                grid-template-columns: 1fr;
+            }
+
+            .owner-product-actions {
+                justify-content: flex-start;
+            }
+
+            .owner-hour-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="owner-page">
+
+    <!-- =========================================================
+         LOGIN
+         ========================================================= -->
+
+    <section id="ownerLoginView" class="owner-login-wrap">
+
+        <div class="owner-login-card">
+
+            <div class="owner-brand">
+                <div class="owner-brand-mark">N</div>
+
+                <h1>Owner Access</h1>
+
+                <p>
+                    Manage your verified NearAfrica business listing.
+                </p>
+            </div>
+
+            <div id="loginError" class="owner-login-error"></div>
+
+            <form id="ownerLoginForm">
+
+                <div class="owner-form-group">
+                    <label for="loginBusinessName">
+                        Business Name
+                    </label>
+
+                    <input
+                        id="loginBusinessName"
+                        name="business_name"
+                        type="text"
+                        autocomplete="organization"
+                        placeholder="Enter your business name"
+                        required
+                    >
+                </div>
+
+                <div class="owner-form-group">
+                    <label for="loginEmail">
+                        Owner Email
+                    </label>
+
+                    <input
+                        id="loginEmail"
+                        name="email"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="Enter the email used for your approved claim"
+                        required
+                    >
+
+                    <div class="owner-help">
+                        Use the same email address that was verified during your business claim.
+                    </div>
+                </div>
+
+                <button
+                    id="loginButton"
+                    class="btn btn-primary owner-login-button"
+                    type="submit"
+                >
+                    Access Dashboard
+                </button>
+
+            </form>
+
+            <div class="owner-warning">
+                Owner access is only available after your business claim has been
+                verified and approved by NearAfrica.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         DASHBOARD
+         ========================================================= -->
+
+    <section id="ownerDashboard" class="owner-dashboard">
+
+        <div class="owner-container">
+
+            <header class="owner-header">
+
+                <div class="owner-header-title">
+                    <h1 id="dashboardBusinessName">
+                        Owner Dashboard
+                    </h1>
+
+                    <p id="dashboardLocation">
+                        Manage your NearAfrica business listing.
+                    </p>
+                </div>
+
+                <div class="owner-header-actions">
+
+                    <a
+                        id="viewBusinessButton"
+                        class="btn btn-secondary"
+                        href="#"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        View Listing
+                    </a>
+
+                    <button
+                        id="logoutButton"
+                        class="btn btn-secondary"
+                        type="button"
+                    >
+                        Log Out
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- Status badges -->
+
+            <div class="owner-status-bar">
+
+                <span id="claimedBadge" class="owner-badge">
+                    Claim status
+                </span>
+
+                <span id="verifiedBadge" class="owner-badge">
+                    Verification status
+                </span>
+
+                <span class="owner-badge gold">
+                    Owner Access
+                </span>
+
+            </div>
+
+
+            <!-- Mobile tabs -->
+
+            <div id="mobileTabs" class="owner-mobile-tabs"></div>
+
+
+            <div class="owner-layout">
+
+                <!-- Sidebar -->
+
+                <aside class="owner-sidebar">
+
+                    <button
+                        class="owner-tab active"
+                        data-panel="overview"
+                        type="button"
+                    >
+                        Overview
+                    </button>
+
+                    <button
+                        class="owner-tab"
+                        data-panel="business"
+                        type="button"
+                    >
+                        Business Details
+                    </button>
+
+                    <button
+                        class="owner-tab"
+                        data-panel="hours"
+                        type="button"
+                    >
+                        Opening Hours
+                    </button>
+
+                    <button
+                        class="owner-tab"
+                        data-panel="images"
+                        type="button"
+                    >
+                        Images
+                    </button>
+
+                    <button
+                        class="owner-tab"
+                        data-panel="products"
+                        type="button"
+                    >
+                        Products & Services
+                    </button>
+
+                </aside>
+
+
+                <!-- Main content -->
+
+                <main class="owner-content">
+
+                    <div
+                        id="dashboardMessage"
+                        class="owner-message"
+                    ></div>
+
+
+                    <!-- =================================================
+                         OVERVIEW
+                         ================================================= -->
+
+                    <section
+                        id="panel-overview"
+                        class="owner-panel active"
+                    >
+
+                        <div class="owner-card">
+
+                            <div class="owner-card-header">
+                                <div>
+                                    <h2>Welcome back</h2>
+                                    <p>
+                                        Here's a quick look at your business listing.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="owner-overview-grid">
+
+                                <div class="owner-stat">
+                                    <div class="owner-stat-label">
+                                        Business
+                                    </div>
+
+                                    <div
+                                        id="overviewBusiness"
+                                        class="owner-stat-value"
+                                    >
+                                        —
+                                    </div>
+                                </div>
+
+                                <div class="owner-stat">
+                                    <div class="owner-stat-label">
+                                        Category
+                                    </div>
+
+                                    <div
+                                        id="overviewCategory"
+                                        class="owner-stat-value"
+                                    >
+                                        —
+                                    </div>
+                                </div>
+
+                                <div class="owner-stat">
+                                    <div class="owner-stat-label">
+                                        Location
+                                    </div>
+
+                                    <div
+                                        id="overviewLocation"
+                                        class="owner-stat-value"
+                                    >
+                                        —
+                                    </div>
+                                </div>
+
+                                <div class="owner-stat">
+                                    <div class="owner-stat-label">
+                                        Products / Services
+                                    </div>
+
+                                    <div
+                                        id="overviewProducts"
+                                        class="owner-stat-value gold"
+                                    >
+                                        0
+                                    </div>
+                                </div>
+
+                                <div class="owner-stat">
+                                    <div class="owner-stat-label">
+                                        Images
+                                    </div>
+
+                                    <div
+                                        id="overviewImages"
+                                        class="owner-stat-value gold"
+                                    >
+                                        0
+                                    </div>
+                                </div>
+
+                                <div class="owner-stat">
+                                    <div class="owner-stat-label">
+                                        Owner Status
+                                    </div>
+
+                                    <div
+                                        id="overviewStatus"
+                                        class="owner-stat-value"
+                                    >
+                                        —
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="owner-card">
+
+                            <div class="owner-card-header">
+                                <div>
+                                    <h2>Owner access</h2>
+                                    <p>
+                                        Your dashboard is connected to the verified owner session.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="owner-notice">
+                                Changes made here update your NearAfrica business
+                                listing directly. Your owner session is controlled
+                                by the NearAfrica API, not by this page.
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =================================================
+                         BUSINESS DETAILS
+                         ================================================= -->
+
+                    <section
+                        id="panel-business"
+                        class="owner-panel"
+                    >
+
+                        <div class="owner-card">
+
+                            <div class="owner-card-header">
+                                <div>
+                                    <h2>Business Details</h2>
+                                    <p>
+                                        Keep your public business information accurate.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <form id="businessForm">
+
+                                <div class="owner-grid">
+
+                                    <div class="owner-form-group">
+                                        <label for="businessName">
+                                            Business Name
+                                        </label>
+
+                                        <input
+                                            id="businessName"
+                                            type="text"
+                                            required
+                                        >
+                                    </div>
+
+                                    <div class="owner-form-group">
+                                        <label for="businessCategory">
+                                            Category
+                                        </label>
+
+                                        <input
+                                            id="businessCategory"
+                                            type="text"
+                                            placeholder="e.g. Fashion"
+                                        >
+                                    </div>
+
+                                    <div class="owner-form-group">
+                                        <label for="businessCountry">
+                                            Country
+                                        </label>
+
+                                        <input
+                                            id="businessCountry"
+                                            type="text"
+                                        >
+                                    </div>
+
+                                    <div class="owner-form-group">
+                                        <label for="businessState">
+                                            State / Region
+                                        </label>
+
+                                        <input
+                                            id="businessState"
+                                            type="text"
+                                        >
+                                    </div>
+
+                                    <div class="owner-form-group">
+                                        <label for="businessCity">
+                                            City
+                                        </label>
+
+                                        <input
+                                            id="businessCity"
+                                            type="text"
+                                        >
+                                    </div>
+
+                                    <div class="owner-form-group">
+                                        <label for="businessPhone">
+                                            Phone
+                                        </label>
+
+                                        <input
+                                            id="businessPhone"
+                                            type="tel"
+                                        >
+                                    </div>
+
+                                    <div class="owner-form-group">
+                                        <label for="businessWhatsApp">
+                                            WhatsApp
+                                        </label>
+
+                                        <input
+                                            id="businessWhatsApp"
+                                            type="tel"
+                                        >
+                                    </div>
+
+                                    <div class="owner-form-group">
+                                        <label for="businessEmail">
+                                            Business Email
+                                        </label>
+
+                                        <input
+                                            id="businessEmail"
+                                            type="email"
+                                            readonly
+                                        >
+
+                                        <div class="owner-help">
+                                            This is tied to your approved owner verification.
+                                        </div>
+                                    </div>
+
+                                    <div class="owner-form-group full">
+                                        <label for="businessAddress">
+                                            Address
+                                        </label>
+
+                                        <input
+                                            id="businessAddress"
+                                            type="text"
+                                        >
+                                    </div>
+
+                                    <div class="owner-form-group">
+                                        <label for="businessWebsite">
+                                            Website
+                                        </label>
+
+                                        <input
+                                            id="businessWebsite"
+                                            type="url"
+                                            placeholder="https://example.com"
+                                        >
+                                    </div>
+
+                                    <div class="owner-form-group">
+                                        <label for="businessHours">
+                                            Hours Text
+                                        </label>
+
+                                        <input
+                                            id="businessHours"
+                                            type="text"
+                                            placeholder="Mon–Sat 8:00 AM–6:00 PM"
+                                        >
+                                    </div>
+
+                                    <div class="owner-form-group full">
+                                        <label for="businessDescription">
+                                            Description
+                                        </label>
+
+                                        <textarea
+                                            id="businessDescription"
+                                            placeholder="Tell customers about your business..."
+                                        ></textarea>
+                                    </div>
+
+                                    <div class="owner-form-group">
+                                        <label for="businessLatitude">
+                                            Latitude
+                                        </label>
+
+                                        <input
+                                            id="businessLatitude"
+                                            type="number"
+                                            step="any"
+                                        >
+                                    </div>
+
+                                    <div class="owner-form-group">
+                                        <label for="businessLongitude">
+                                            Longitude
+                                        </label>
+
+                                        <input
+                                            id="businessLongitude"
+                                            type="number"
+                                            step="any"
+                                        >
+                                    </div>
+
+                                </div>
+
+                                <div class="owner-actions">
+
+                                    <button
+                                        class="btn btn-primary"
+                                        type="submit"
+                                    >
+                                        Save Business Details
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =================================================
+                         HOURS
+                         ================================================= -->
+
+                    <section
+                        id="panel-hours"
+                        class="owner-panel"
+                    >
+
+                        <div class="owner-card">
+
+                            <div class="owner-card-header">
+                                <div>
+                                    <h2>Opening Hours</h2>
+                                    <p>
+                                        Set your opening, closing, closed, or 24-hour status.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div
+                                id="hoursList"
+                                class="owner-hours"
+                            ></div>
+
+                            <div class="owner-actions">
+
+                                <button
+                                    id="saveHoursButton"
+                                    class="btn btn-primary"
+                                    type="button"
+                                >
+                                    Save Opening Hours
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =================================================
+                         IMAGES
+                         ================================================= -->
+
+                    <section
+                        id="panel-images"
+                        class="owner-panel"
+                    >
+
+                        <div class="owner-card">
+
+                            <div class="owner-card-header">
+                                <div>
+                                    <h2>Business Images</h2>
+                                    <p>
+                                        Upload and manage your public business images.
+                                    </p>
+                                </div>
+
+                                <button
+                                    id="openImageModalButton"
+                                    class="btn btn-primary"
+                                    type="button"
+                                >
+                                    Upload Image
+                                </button>
+
+                            </div>
+
+                            <div
+                                id="imagesList"
+                                class="owner-images"
+                            ></div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =================================================
+                         PRODUCTS
+                         ================================================= -->
+
+                    <section
+                        id="panel-products"
+                        class="owner-panel"
+                    >
+
+                        <div class="owner-card">
+
+                            <div class="owner-card-header">
+
+                                <div>
+                                    <h2>Products & Services</h2>
+                                    <p>
+                                        Manage what customers can see on your listing.
+                                    </p>
+                                </div>
+
+                                <button
+                                    id="openProductModalButton"
+                                    class="btn btn-primary"
+                                    type="button"
+                                >
+                                    Add Product / Service
+                                </button>
+
+                            </div>
+
+                            <div
+                                id="productsList"
+                                class="owner-product-list"
+                            ></div>
+
+                        </div>
+
+                    </section>
+
+                </main>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- =============================================================
+     IMAGE MODAL
+     ============================================================= -->
+
+<div
+    id="imageModal"
+    class="owner-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="imageModalTitle"
+>
+
+    <div class="owner-modal-card">
+
+        <div class="owner-modal-header">
+
+            <div>
+                <h2 id="imageModalTitle">
+                    Upload Business Image
+                </h2>
+            </div>
+
+            <button
+                class="owner-close"
+                type="button"
+                data-close-modal="imageModal"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div
+            id="imageModalMessage"
+            class="owner-message"
+        ></div>
+
+        <form id="imageForm">
+
+            <div class="owner-form-group">
+
+                <label for="imageFile">
+                    Image
+                </label>
+
+                <input
+                    id="imageFile"
+                    class="owner-file"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    required
+                >
+
+                <div class="owner-help">
+                    JPG, PNG, WEBP, or GIF. Maximum size: 10MB.
+                </div>
+
+            </div>
+
+            <div class="owner-form-group">
+
+                <label for="imageType">
+                    Image Type
+                </label>
+
+                <select id="imageType">
+
+                    <option value="gallery">
+                        Gallery
+                    </option>
+
+                    <option value="cover">
+                        Cover
+                    </option>
+
+                    <option value="logo">
+                        Logo
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="owner-form-group">
+
+                <label for="imageAlt">
+                    Alt Text
+                </label>
+
+                <input
+                    id="imageAlt"
+                    type="text"
+                    maxlength="250"
+                    placeholder="Describe this image"
+                >
+
+            </div>
+
+            <div class="owner-actions">
+
+                <button
+                    class="btn btn-primary"
+                    type="submit"
+                >
+                    Upload Image
+                </button>
+
+                <button
+                    class="btn btn-secondary"
+                    type="button"
+                    data-close-modal="imageModal"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =============================================================
+     PRODUCT MODAL
+     ============================================================= -->
+
+<div
+    id="productModal"
+    class="owner-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="productModalTitle"
+>
+
+    <div class="owner-modal-card">
+
+        <div class="owner-modal-header">
+
+            <div>
+                <h2 id="productModalTitle">
+                    Add Product / Service
+                </h2>
+            </div>
+
+            <button
+                class="owner-close"
+                type="button"
+                data-close-modal="productModal"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div
+            id="productModalMessage"
+            class="owner-message"
+        ></div>
+
+        <form id="productForm">
+
+            <input
+                id="productId"
+                type="hidden"
+            >
+
+            <div class="owner-grid">
+
+                <div class="owner-form-group full">
+
+                    <label for="productName">
+                        Name
+                    </label>
+
+                    <input
+                        id="productName"
+                        type="text"
+                        required
+                    >
+
+                </div>
+
+                <div class="owner-form-group">
+
+                    <label for="productType">
+                        Type
+                    </label>
+
+                    <select id="productType">
+
+                        <option value="product">
+                            Product
+                        </option>
+
+                        <option value="service">
+                            Service
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="owner-form-group">
+
+                    <label for="productCategory">
+                        Category
+                    </label>
+
+                    <input
+                        id="productCategory"
+                        type="text"
+                        placeholder="e.g. Shoes"
+                    >
+
+                </div>
+
+                <div class="owner-form-group">
+
+                    <label for="productPrice">
+                        Price
+                    </label>
+
+                    <input
+                        id="productPrice"
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder="Optional"
+                    >
+
+                </div>
+
+                <div class="owner-form-group">
+
+                    <label for="productCurrency">
+                        Currency
+                    </label>
+
+                    <input
+                        id="productCurrency"
+                        type="text"
+                        value="NGN"
+                        maxlength="10"
+                    >
+
+                </div>
+
+                <div class="owner-form-group full">
+
+                    <label for="productImageUrl">
+                        Image URL
+                    </label>
+
+                    <input
+                        id="productImageUrl"
+                        type="url"
+                        placeholder="Optional image URL"
+                    >
+
+                </div>
+
+                <div class="owner-form-group full">
+
+                    <label for="productDescription">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="productDescription"
+                        placeholder="Describe this product or service..."
+                    ></textarea>
+
+                </div>
+
+                <div class="owner-form-group">
+
+                    <label for="productSortOrder">
+                        Sort Order
+                    </label>
+
+                    <input
+                        id="productSortOrder"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value="0"
+                    >
+
+                </div>
+
+                <div class="owner-form-group">
+
+                    <label class="owner-check" style="margin-top: 30px;">
+                        <input
+                            id="productAvailable"
+                            type="checkbox"
+                            checked
+                        >
+
+                        Available
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="owner-actions">
+
+                <button
+                    id="productSubmitButton"
+                    class="btn btn-primary"
+                    type="submit"
+                >
+                    Create Product
+                </button>
+
+                <button
+                    class="btn btn-secondary"
+                    type="button"
+                    data-close-modal="productModal"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+/* ================================================================
+   NEARAFRICA OWNER DASHBOARD
+   ================================================================ */
+
+const API_BASE =
+    "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+
+const OWNER_TOKEN_KEY =
+    "nearafrica_owner_token";
+
+let ownerToken =
+    localStorage.getItem(
+        OWNER_TOKEN_KEY
+    );
+
+let ownerBusiness =
+    null;
+
+let ownerProducts =
+    [];
+
+let ownerImages =
+    [];
+
+let ownerHours =
+    [];
+
+let editingProductId =
+    null;
+
+
+/* ================================================================
+   BASIC HELPERS
+   ================================================================ */
+
+function escapeHTML(value) {
+    return String(
+        value === null ||
+        value === undefined
+            ? ""
+            : value
+    )
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function showElement(element) {
+    if (element) {
+        element.style.display = "";
+    }
+}
+
+
+function hideElement(element) {
+    if (element) {
+        element.style.display = "none";
+    }
+}
+
+
+function setMessage(
+    element,
+    message,
+    type = "info"
+) {
+    if (!element) {
+        return;
+    }
+
+    element.className =
+        "owner-message " +
+        type;
+
+    element.textContent =
+        message;
+}
+
+
+function clearMessage(element) {
+    if (!element) {
+        return;
+    }
+
+    element.className =
+        "owner-message";
+
+    element.textContent =
+        "";
+}
+
+
+function formatPrice(
+    price,
+    currency
+) {
+    if (
+        price === null ||
+        price === undefined ||
+        price === ""
+    ) {
+        return "Price on request";
+    }
+
+    const numeric =
+        Number(price);
+
+    if (!Number.isFinite(numeric)) {
+        return "Price on request";
+    }
+
+    return (
+        escapeHTML(
+            currency || "NGN"
+        ) +
+        " " +
+        numeric.toLocaleString()
+    );
+}
+
+
+function getBusinessLocation(
+    business
+) {
+    return [
+        business.city,
+        business.state,
+        business.country
+    ]
+        .filter(Boolean)
+        .join(", ");
+}
+
+
+/* ================================================================
+   API
+   ================================================================ */
+
+async function api(
+    path,
+    options = {}
+) {
+    const headers = {
+        ...(options.headers || {})
+    };
+
+    if (
+        options.body &&
+        !(options.body instanceof FormData)
+    ) {
+        headers["Content-Type"] =
+            "application/json";
+    }
+
+    if (ownerToken) {
+        headers["Authorization"] =
+            "Bearer " +
+            ownerToken;
+    }
+
+    const response =
+        await fetch(
+            API_BASE + path,
+            {
+                ...options,
+                headers
+            }
+        );
+
+    let data = null;
+
+    try {
+        data =
+            await response.json();
+    } catch {
+        data = {
+            status: "error",
+            message:
+                "The server returned an invalid response."
+        };
+    }
+
+    if (
+        response.status === 401 &&
+        path !== "/owner/login"
+    ) {
+        clearOwnerSession();
+
+        throw new Error(
+            data.message ||
+            "Your owner session has expired. Please log in again."
+        );
+    }
+
+    if (!response.ok) {
+        throw new Error(
+            data.message ||
+            "Request failed."
+        );
+    }
+
+    return data;
+}
+
+
+/* ================================================================
+   SESSION
+   ================================================================ */
+
+function saveOwnerSession(
+    token
+) {
+    ownerToken =
+        token;
+
+    localStorage.setItem(
+        OWNER_TOKEN_KEY,
+        token
+    );
+}
+
+
+function clearOwnerSession() {
+    ownerToken =
+        null;
+
+    localStorage.removeItem(
+        OWNER_TOKEN_KEY
+    );
+}
+
+
+function showLogin() {
+    hideElement(
+        document.getElementById(
+            "ownerDashboard"
+        )
+    );
+
+    showElement(
+        document.getElementById(
+            "ownerLoginView"
+        )
+    );
+}
+
+
+function showDashboard() {
+    hideElement(
+        document.getElementById(
+            "ownerLoginView"
+        )
+    );
+
+    showElement(
+        document.getElementById(
+            "ownerDashboard"
+        )
+    );
+}
+
+
+/* ================================================================
+   LOGIN
+   ================================================================ */
+
+document
+    .getElementById(
+        "ownerLoginForm"
+    )
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const button =
+                document.getElementById(
+                    "loginButton"
+                );
+
+            const errorBox =
+                document.getElementById(
+                    "loginError"
+                );
+
+            clearMessage(
+                errorBox
+            );
+
+            const businessName =
+                document
+                    .getElementById(
+                        "loginBusinessName"
+                    )
+                    .value
+                    .trim();
+
+            const email =
+                document
+                    .getElementById(
+                        "loginEmail"
+                    )
+                    .value
+                    .trim();
+
+            if (
+                !businessName ||
+                !email
+            ) {
+                errorBox.style.display =
+                    "block";
+
+                errorBox.textContent =
+                    "Business name and owner email are required.";
+
+                return;
+            }
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                "Checking access...";
+
+            try {
+
+                const data =
+                    await api(
+                        "/owner/login",
+                        {
+                            method:
+                                "POST",
+
+                            body:
+                                JSON.stringify({
+                                    business_name:
+                                        businessName,
+
+                                    email:
+                                        email
+                                })
+                        }
+                    );
+
+                if (
+                    !data.token
+                ) {
+                    throw new Error(
+                        "The server did not return an owner session."
+                    );
+                }
+
+                saveOwnerSession(
+                    data.token
+                );
+
+                await loadDashboard();
+
+            } catch (error) {
+
+                errorBox.style.display =
+                    "block";
+
+                errorBox.textContent =
+                    error.message ||
+                    "Unable to sign in.";
+
+                clearOwnerSession();
+
+            } finally {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    "Access Dashboard";
+
+            }
+        }
+    );
+
+
+/* ================================================================
+   LOGOUT
+   ================================================================ */
+
+document
+    .getElementById(
+        "logoutButton"
+    )
+    .addEventListener(
+        "click",
+        async function() {
+
+            try {
+
+                await api(
+                    "/owner/logout",
+                    {
+                        method:
+                            "POST"
+                    }
+                );
+
+            } catch {
+                /*
+                 * Even if the server logout fails,
+                 * remove the local token.
+                 */
+            }
+
+            clearOwnerSession();
+
+            ownerBusiness =
+                null;
+
+            ownerProducts =
+                [];
+
+            ownerImages =
+                [];
+
+            ownerHours =
+                [];
+
+            showLogin();
+
+            document
+                .getElementById(
+                    "ownerLoginForm"
+                )
+                .reset();
+
+            window.scrollTo(
+                0,
+                0
+            );
+        }
+    );
+
+
+/* ================================================================
+   LOAD DASHBOARD
+   ================================================================ */
+
+async function loadDashboard() {
+
+    if (!ownerToken) {
+        showLogin();
+        return;
+    }
+
+    showDashboard();
+
+    try {
+
+        const businessData =
+            await api(
+                "/owner/business"
+            );
+
+        ownerBusiness =
+            businessData.business;
+
+        renderBusiness();
+
+        await Promise.all([
+            loadHours(),
+            loadImages(),
+            loadProducts()
+        ]);
+
+        renderOverview();
+
+    } catch (error) {
+
+        showDashboard();
+
+        setMessage(
+            document.getElementById(
+                "dashboardMessage"
+            ),
+            error.message ||
+                "Unable to load your dashboard.",
+            "error"
+        );
+
+        if (!ownerToken) {
+            showLogin();
+        }
+    }
+}
+
+
+/* ================================================================
+   BUSINESS
+   ================================================================ */
+
+function renderBusiness() {
+
+    if (!ownerBusiness) {
+        return;
+    }
+
+    const business =
+        ownerBusiness;
+
+    document.getElementById(
+        "dashboardBusinessName"
+    ).textContent =
+        business.business_name ||
+        "Owner Dashboard";
+
+    document.getElementById(
+        "dashboardLocation"
+    ).textContent =
+        getBusinessLocation(
+            business
+        ) ||
+        "Manage your NearAfrica business listing.";
+
+    document.getElementById(
+        "businessName"
+    ).value =
+        business.business_name ||
+        "";
+
+    document.getElementById(
+        "businessCategory"
+    ).value =
+        business.category ||
+        "";
+
+    document.getElementById(
+        "businessCountry"
+    ).value =
+        business.country ||
+        "";
+
+    document.getElementById(
+        "businessState"
+    ).value =
+        business.state ||
+        "";
+
+    document.getElementById(
+        "businessCity"
+    ).value =
+        business.city ||
+        "";
+
+    document.getElementById(
+        "businessPhone"
+    ).value =
+        business.phone ||
+        "";
+
+    document.getElementById(
+        "businessWhatsApp"
+    ).value =
+        business.whatsapp ||
+        "";
+
+    document.getElementById(
+        "businessEmail"
+    ).value =
+        business.email ||
+        "";
+
+    document.getElementById(
+        "businessAddress"
+    ).value =
+        business.address ||
+        "";
+
+    document.getElementById(
+        "businessWebsite"
+    ).value =
+        business.website ||
+        "";
+
+    document.getElementById(
+        "businessHours"
+    ).value =
+        business.hours ||
+        "";
+
+    document.getElementById(
+        "businessDescription"
+    ).value =
+        business.description ||
+        "";
+
+    document.getElementById(
+        "businessLatitude"
+    ).value =
+        business.latitude ??
+        "";
+
+    document.getElementById(
+        "businessLongitude"
+    ).value =
+        business.longitude ??
+        "";
+
+    const claimed =
+        Number(
+            business.claimed
+        ) === 1 ||
+        business.claimed === true;
+
+    const verified =
+        Number(
+            business.verified
+        ) === 1 ||
+        business.verified === true;
+
+    const claimedBadge =
+        document.getElementById(
+            "claimedBadge"
+        );
+
+    const verifiedBadge =
+        document.getElementById(
+            "verifiedBadge"
+        );
+
+    claimedBadge.textContent =
+        claimed
+            ? "✓ Claimed"
+            : "Claimed status unavailable";
+
+    claimedBadge.className =
+        claimed
+            ? "owner-badge success"
+            : "owner-badge";
+
+    verifiedBadge.textContent =
+        verified
+            ? "✓ Verified"
+            : "Verification status unavailable";
+
+    verifiedBadge.className =
+        verified
+            ? "owner-badge success"
+            : "owner-badge";
+
+    document.getElementById(
+        "overviewStatus"
+    ).textContent =
+        verified
+            ? "Verified owner"
+            : claimed
+                ? "Claimed"
+                : "Active";
+
+    /*
+     * Open public business page.
+     *
+     * The exact route used by your existing frontend is:
+     * /pages/business.html?id=BUSINESS_ID
+     */
+    if (business.id) {
+
+        const viewButton =
+            document.getElementById(
+                "viewBusinessButton"
+            );
+
+        viewButton.href =
+            "./business.html?id=" +
+            encodeURIComponent(
+                business.id
+            );
+    }
+}
+
+
+/* ================================================================
+   SAVE BUSINESS
+   ================================================================ */
+
+document
+    .getElementById(
+        "businessForm"
+    )
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const button =
+                this.querySelector(
+                    "button[type='submit']"
+                );
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                "Saving...";
+
+            clearMessage(
+                document.getElementById(
+                    "dashboardMessage"
+                )
+            );
+
+            const payload = {
+                business_name:
+                    document
+                        .getElementById(
+                            "businessName"
+                        )
+                        .value
+                        .trim(),
+
+                category:
+                    document
+                        .getElementById(
+                            "businessCategory"
+                        )
+                        .value
+                        .trim(),
+
+                country:
+                    document
+                        .getElementById(
+                            "businessCountry"
+                        )
+                        .value
+                        .trim(),
+
+                state:
+                    document
+                        .getElementById(
+                            "businessState"
+                        )
+                        .value
+                        .trim(),
+
+                city:
+                    document
+                        .getElementById(
+                            "businessCity"
+                        )
+                        .value
+                        .trim(),
+
+                address:
+                    document
+                        .getElementById(
+                            "businessAddress"
+                        )
+                        .value
+                        .trim(),
+
+                phone:
+                    document
+                        .getElementById(
+                            "businessPhone"
+                        )
+                        .value
+                        .trim(),
+
+                whatsapp:
+                    document
+                        .getElementById(
+                            "businessWhatsApp"
+                        )
+                        .value
+                        .trim(),
+
+                website:
+                    document
+                        .getElementById(
+                            "businessWebsite"
+                        )
+                        .value
+                        .trim(),
+
+                hours:
+                    document
+                        .getElementById(
+                            "businessHours"
+                        )
+                        .value
+                        .trim(),
+
+                description:
+                    document
+                        .getElementById(
+                            "businessDescription"
+                        )
+                        .value
+                        .trim(),
+
+                latitude:
+                    document
+                        .getElementById(
+                            "businessLatitude"
+                        )
+                        .value
+                        .trim(),
+
+                longitude:
+                    document
+                        .getElementById(
+                            "businessLongitude"
+                        )
+                        .value
+                        .trim()
+            };
+
+            try {
+
+                const data =
+                    await api(
+                        "/owner/business",
+                        {
+                            method:
+                                "PATCH",
+
+                            body:
+                                JSON.stringify(
+                                    payload
+                                )
+                        }
+                    );
+
+                ownerBusiness =
+                    data.business;
+
+                renderBusiness();
+                renderOverview();
+
+                setMessage(
+                    document.getElementById(
+                        "dashboardMessage"
+                    ),
+                    data.message ||
+                        "Business details saved successfully.",
+                    "success"
+                );
+
+            } catch (error) {
+
+                setMessage(
+                    document.getElementById(
+                        "dashboardMessage"
+                    ),
+                    error.message ||
+                        "Unable to save business details.",
+                    "error"
+                );
+
+            } finally {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    "Save Business Details";
+
+            }
+        }
+    );
+
+
+/* ================================================================
+   HOURS
+   ================================================================ */
+
+const DAYS = [
+    {
+        number: 0,
+        name: "Sunday"
+    },
+    {
+        number: 1,
+        name: "Monday"
+    },
+    {
+        number: 2,
+        name: "Tuesday"
+    },
+    {
+        number: 3,
+        name: "Wednesday"
+    },
+    {
+        number: 4,
+        name: "Thursday"
+    },
+    {
+        number: 5,
+        name: "Friday"
+    },
+    {
+        number: 6,
+        name: "Saturday"
+    }
+];
+
+
+async function loadHours() {
+
+    const container =
+        document.getElementById(
+            "hoursList"
+        );
+
+    container.innerHTML =
+        `
+            <div class="owner-loading">
+                <div class="owner-spinner"></div>
+                Loading opening hours...
+            </div>
+        `;
+
+    try {
+
+        const data =
+            await api(
+                "/owner/business/hours"
+            );
+
+        ownerHours =
+            data.hours ||
+            [];
+
+        renderHours();
+
+    } catch (error) {
+
+        container.innerHTML =
+            `
+                <div class="owner-empty">
+                    ${escapeHTML(
+                        error.message ||
+                        "Unable to load opening hours."
+                    )}
+                </div>
+            `;
+    }
+}
+
+
+function renderHours() {
+
+    const container =
+        document.getElementById(
+            "hoursList"
+        );
+
+    const existing =
+        new Map();
+
+    ownerHours.forEach(
+        function(hour) {
+            existing.set(
+                Number(
+                    hour.day_of_week
+                ),
+                hour
+            );
+        }
+    );
+
+    container.innerHTML =
+        DAYS.map(
+            function(day) {
+
+                const hour =
+                    existing.get(
+                        day.number
+                    ) || {};
+
+                const closed =
+                    Number(
+                        hour.is_closed
+                    ) === 1;
+
+                const twentyFour =
+                    Number(
+                        hour.is_24_hours
+                    ) === 1;
+
+                return `
+                    <div
+                        class="owner-hour-row"
+                        data-day="${day.number}"
+                    >
+
+                        <div class="owner-day">
+                            ${day.name}
+                        </div>
+
+                        <label class="owner-check">
+                            <input
+                                type="checkbox"
+                                class="hour-closed"
+                                ${closed ? "checked" : ""}
+                            >
+                            Closed
+                        </label>
+
+                        <label class="owner-check">
+                            <input
+                                type="checkbox"
+                                class="hour-24"
+                                ${twentyFour ? "checked" : ""}
+                            >
+                            24 Hours
+                        </label>
+
+                        <input
+                            type="time"
+                            class="hour-open"
+                            value="${
+                                escapeHTML(
+                                    hour.opening_time || ""
+                                )
+                            }"
+                        >
+
+                        <input
+                            type="time"
+                            class="hour-close"
+                            value="${
+                                escapeHTML(
+                                    hour.closing_time || ""
+                                )
+                            }"
+                        >
+
+                    </div>
+                `;
+            }
+        )
+        .join("");
+
+    syncHourInputs();
+}
+
+
+function syncHourInputs() {
+
+    document
+        .querySelectorAll(
+            ".owner-hour-row"
+        )
+        .forEach(
+            function(row) {
+
+                const closed =
+                    row.querySelector(
+                        ".hour-closed"
+                    );
+
+                const twentyFour =
+                    row.querySelector(
+                        ".hour-24"
+                    );
+
+                const open =
+                    row.querySelector(
+                        ".hour-open"
+                    );
+
+                const close =
+                    row.querySelector(
+                        ".hour-close"
+                    );
+
+                function update() {
+
+                    if (
+                        closed.checked ||
+                        twentyFour.checked
+                    ) {
+                        open.disabled =
+                            true;
+
+                        close.disabled =
+                            true;
+                    } else {
+                        open.disabled =
+                            false;
+
+                        close.disabled =
+                            false;
+                    }
+
+                    if (
+                        closed.checked &&
+                        twentyFour.checked
+                    ) {
+                        twentyFour.checked =
+                            false;
+                    }
+                }
+
+                closed.addEventListener(
+                    "change",
+                    function() {
+
+                        if (
+                            closed.checked
+                        ) {
+                            twentyFour.checked =
+                                false;
+                        }
+
+                        update();
+                    }
+                );
+
+                twentyFour.addEventListener(
+                    "change",
+                    function() {
+
+                        if (
+                            twentyFour.checked
+                        ) {
+                            closed.checked =
+                                false;
+                        }
+
+                        update();
+                    }
+                );
+
+                update();
+            }
+        );
+}
+
+
+document
+    .getElementById(
+        "saveHoursButton"
+    )
+    .addEventListener(
+        "click",
+        async function() {
+
+            const button =
+                this;
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                "Saving...";
+
+            const rows =
+                document.querySelectorAll(
+                    ".owner-hour-row"
+                );
+
+            const hours =
+                Array.from(
+                    rows
+                ).map(
+                    function(row) {
+
+                        const day =
+                            Number(
+                                row.dataset.day
+                            );
+
+                        const closed =
+                            row.querySelector(
+                                ".hour-closed"
+                            ).checked;
+
+                        const twentyFour =
+                            row.querySelector(
+                                ".hour-24"
+                            ).checked;
+
+                        const opening =
+                            row.querySelector(
+                                ".hour-open"
+                            ).value;
+
+                        const closing =
+                            row.querySelector(
+                                ".hour-close"
+                            ).value;
+
+                        return {
+                            day_of_week:
+                                day,
+
+                            is_closed:
+                                closed,
+
+                            is_24_hours:
+                                twentyFour,
+
+                            opening_time:
+                                closed ||
+                                twentyFour
+                                    ? null
+                                    : (
+                                        opening ||
+                                        null
+                                    ),
+
+                            closing_time:
+                                closed ||
+                                twentyFour
+                                    ? null
+                                    : (
+                                        closing ||
+                                        null
+                                    )
+                        };
+                    }
+                );
+
+            try {
+
+                const data =
+                    await api(
+                        "/owner/business/hours",
+                        {
+                            method:
+                                "PUT",
+
+                            body:
+                                JSON.stringify({
+                                    hours
+                                })
+                        }
+                    );
+
+                ownerHours =
+                    data.hours ||
+                    hours;
+
+                renderHours();
+
+                setMessage(
+                    document.getElementById(
+                        "dashboardMessage"
+                    ),
+                    data.message ||
+                        "Opening hours saved successfully.",
+                    "success"
+                );
+
+            } catch (error) {
+
+                setMessage(
+                    document.getElementById(
+                        "dashboardMessage"
+                    ),
+                    error.message ||
+                        "Unable to save opening hours.",
+                    "error"
+                );
+
+            } finally {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    "Save Opening Hours";
+
+            }
+        }
+    );
+
+
+/* ================================================================
+   IMAGES
+   ================================================================ */
+
+async function loadImages() {
+
+    const container =
+        document.getElementById(
+            "imagesList"
+        );
+
+    container.innerHTML =
+        `
+            <div class="owner-loading">
+                <div class="owner-spinner"></div>
+                Loading images...
+            </div>
+        `;
+
+    try {
+
+        const data =
+            await api(
+                "/owner/business/images"
+            );
+
+        ownerImages =
+            data.images ||
+            [];
+
+        renderImages();
+
+    } catch (error) {
+
+        container.innerHTML =
+            `
+                <div class="owner-empty">
+                    ${escapeHTML(
+                        error.message ||
+                        "Unable to load images."
+                    )}
+                </div>
+            `;
+    }
+}
+
+
+function renderImages() {
+
+    const container =
+        document.getElementById(
+            "imagesList"
+        );
+
+    if (!ownerImages.length) {
+
+        container.innerHTML =
+            `
+                <div class="owner-empty" style="grid-column:1/-1;">
+                    No business images have been uploaded yet.
+                </div>
+            `;
+
+        return;
+    }
+
+    container.innerHTML =
+        ownerImages.map(
+            function(image) {
+
+                return `
+                    <article
+                        class="owner-image-card"
+                    >
+
+                        <img
+                            class="owner-image-preview"
+                            src="${escapeHTML(
+                                image.image_url
+                            )}"
+                            alt="${escapeHTML(
+                                image.alt_text ||
+                                ownerBusiness.business_name ||
+                                "Business image"
+                            )}"
+                        >
+
+                        <div class="owner-image-info">
+
+                            <div class="owner-image-type">
+                                ${escapeHTML(
+                                    image.image_type ||
+                                    "gallery"
+                                )}
+                            </div>
+
+                            <div class="owner-image-alt">
+                                ${
+                                    escapeHTML(
+                                        image.alt_text ||
+                                        "No alt text"
+                                    )
+                                }
+                            </div>
+
+                            <button
+                                class="btn btn-secondary"
+                                type="button"
+                                onclick="deleteImage('${escapeHTML(
+                                    image.id
+                                )}')"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </article>
+                `;
+            }
+        )
+        .join("");
+}
+
+
+document
+    .getElementById(
+        "openImageModalButton"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            clearMessage(
+                document.getElementById(
+                    "imageModalMessage"
+                )
+            );
+
+            document
+                .getElementById(
+                    "imageForm"
+                )
+                .reset();
+
+            document
+                .getElementById(
+                    "imageModal"
+                )
+                .classList.add(
+                    "open"
+                );
+        }
+    );
+
+
+document
+    .getElementById(
+        "imageForm"
+    )
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const file =
+                document
+                    .getElementById(
+                        "imageFile"
+                    )
+                    .files[0];
+
+            if (!file) {
+                setMessage(
+                    document.getElementById(
+                        "imageModalMessage"
+                    ),
+                    "Please select an image.",
+                    "error"
+                );
+
+                return;
+            }
+
+            if (
+                file.size >
+                10 * 1024 * 1024
+            ) {
+                setMessage(
+                    document.getElementById(
+                        "imageModalMessage"
+                    ),
+                    "The image must not exceed 10MB.",
+                    "error"
+                );
+
+                return;
+            }
+
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
+                setMessage(
+                    document.getElementById(
+                        "imageModalMessage"
+                    ),
+                    "Please select a valid image file.",
+                    "error"
+                );
+
+                return;
+            }
+
+            const button =
+                this.querySelector(
+                    "button[type='submit']"
+                );
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                "Uploading...";
+
+            const formData =
+                new FormData();
+
+            formData.append(
+                "image",
+                file
+            );
+
+            formData.append(
+                "image_type",
+                document
+                    .getElementById(
+                        "imageType"
+                    )
+                    .value
+            );
+
+            formData.append(
+                "alt_text",
+                document
+                    .getElementById(
+                        "imageAlt"
+                    )
+                    .value
+                    .trim()
+            );
+
+            try {
+
+                const data =
+                    await api(
+                        "/owner/business/images",
+                        {
+                            method:
+                                "POST",
+
+                            body:
+                                formData
+                        }
+                    );
+
+                closeModal(
+                    "imageModal"
+                );
+
+                await loadImages();
+
+                renderOverview();
+
+                setMessage(
+                    document.getElementById(
+                        "dashboardMessage"
+                    ),
+                    data.message ||
+                        "Image uploaded successfully.",
+                    "success"
+                );
+
+            } catch (error) {
+
+                setMessage(
+                    document.getElementById(
+                        "imageModalMessage"
+                    ),
+                    error.message ||
+                        "Unable to upload image.",
+                    "error"
+                );
+
+            } finally {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    "Upload Image";
+
+            }
+        }
+    );
+
+
+async function deleteImage(
+    imageId
+) {
+
+    const confirmed =
+        window.confirm(
+            "Delete this business image?"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const data =
+            await api(
+                "/owner/business/images/" +
+                encodeURIComponent(
+                    imageId
+                ),
+                {
+                    method:
+                        "DELETE"
+                }
+            );
+
+        await loadImages();
+
+        renderOverview();
+
+        setMessage(
+            document.getElementById(
+                "dashboardMessage"
+            ),
+            data.message ||
+                "Image deleted successfully.",
+            "success"
+        );
+
+    } catch (error) {
+
+        setMessage(
+            document.getElementById(
+                "dashboardMessage"
+            ),
+            error.message ||
+                "Unable to delete image.",
+            "error"
+        );
+    }
+}
+
+
+/* ================================================================
+   PRODUCTS
+   ================================================================ */
+
+async function loadProducts() {
+
+    const container =
+        document.getElementById(
+            "productsList"
+        );
+
+    container.innerHTML =
+        `
+            <div class="owner-loading">
+                <div class="owner-spinner"></div>
+                Loading products and services...
+            </div>
+        `;
+
+    try {
+
+        const data =
+            await api(
+                "/owner/business/products"
+            );
+
+        ownerProducts =
+            data.products ||
+            [];
+
+        renderProducts();
+
+    } catch (error) {
+
+        container.innerHTML =
+            `
+                <div class="owner-empty">
+                    ${escapeHTML(
+                        error.message ||
+                        "Unable to load products."
+                    )}
+                </div>
+            `;
+    }
+}
+
+
+function renderProducts() {
+
+    const container =
+        document.getElementById(
+            "productsList"
+        );
+
+    if (!ownerProducts.length) {
+
+        container.innerHTML =
+            `
+                <div class="owner-empty">
+                    You haven't added any products or services yet.
+                </div>
+            `;
+
+        return;
+    }
+
+    container.innerHTML =
+        ownerProducts.map(
+            function(product) {
+
+                const available =
+                    Number(
+                        product.available
+                    ) !== 0;
+
+                return `
+                    <article
+                        class="owner-product"
+                    >
+
+                        <div>
+
+                            <h3>
+                                ${escapeHTML(
+                                    product.name ||
+                                    "Unnamed"
+                                )}
+                            </h3>
+
+                            <div class="owner-product-description">
+                                ${
+                                    escapeHTML(
+                                        product.description ||
+                                        "No description provided."
+                                    )
+                                }
+                            </div>
+
+                            <div class="owner-product-meta">
+
+                                <span class="owner-badge gold">
+                                    ${escapeHTML(
+                                        product.item_type ||
+                                        "product"
+                                    )}
+                                </span>
+
+                                ${
+                                    product.category
+                                        ? `
+                                            <span class="owner-badge">
+                                                ${escapeHTML(
+                                                    product.category
+                                                )}
+                                            </span>
+                                        `
+                                        : ""
+                                }
+
+                                <span
+                                    class="owner-badge ${
+                                        available
+                                            ? "success"
+                                            : ""
+                                    }"
+                                >
+                                    ${
+                                        available
+                                            ? "Available"
+                                            : "Unavailable"
+                                    }
+                                </span>
+
+                                <span class="owner-product-price">
+                                    ${formatPrice(
+                                        product.price,
+                                        product.currency
+                                    )}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="owner-product-actions">
+
+                            <button
+                                class="btn btn-secondary"
+                                type="button"
+                                onclick="editProduct('${escapeHTML(
+                                    product.id
+                                )}')"
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                class="btn btn-secondary"
+                                type="button"
+                                onclick="deleteProduct('${escapeHTML(
+                                    product.id
+                                )}')"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </article>
+                `;
+            }
+        )
+        .join("");
+}
+
+
+/* ================================================================
+   PRODUCT MODAL
+   ================================================================ */
+
+document
+    .getElementById(
+        "openProductModalButton"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            openCreateProductModal();
+
+        }
+    );
+
+
+function openCreateProductModal() {
+
+    editingProductId =
+        null;
+
+    document.getElementById(
+        "productModalTitle"
+    ).textContent =
+        "Add Product / Service";
+
+    document.getElementById(
+        "productSubmitButton"
+    ).textContent =
+        "Create Product";
+
+    document
+        .getElementById(
+            "productForm"
+        )
+        .reset();
+
+    document.getElementById(
+        "productId"
+    ).value =
+        "";
+
+    document.getElementById(
+        "productCurrency"
+    ).value =
+        "NGN";
+
+    document.getElementById(
+        "productAvailable"
+    ).checked =
+        true;
+
+    document.getElementById(
+        "productSortOrder"
+    ).value =
+        "0";
+
+    clearMessage(
+        document.getElementById(
+            "productModalMessage"
+        )
+    );
+
+    document
+        .getElementById(
+            "productModal"
+        )
+        .classList.add(
+            "open"
+        );
+}
+
+
+function editProduct(
+    productId
+) {
+
+    const product =
+        ownerProducts.find(
+            function(item) {
+                return String(
+                    item.id
+                ) === String(
+                    productId
+                );
+            }
+        );
+
+    if (!product) {
+        return;
+    }
+
+    editingProductId =
+        productId;
+
+    document.getElementById(
+        "productModalTitle"
+    ).textContent =
+        "Edit Product / Service";
+
+    document.getElementById(
+        "productSubmitButton"
+    ).textContent =
+        "Save Changes";
+
+    document.getElementById(
+        "productId"
+    ).value =
+        product.id;
+
+    document.getElementById(
+        "productName"
+    ).value =
+        product.name ||
+        "";
+
+    document.getElementById(
+        "productType"
+    ).value =
+        product.item_type ||
+        "product";
+
+    document.getElementById(
+        "productCategory"
+    ).value =
+        product.category ||
+        "";
+
+    document.getElementById(
+        "productPrice"
+    ).value =
+        product.price === null ||
+        product.price === undefined
+            ? ""
+            : product.price;
+
+    document.getElementById(
+        "productCurrency"
+    ).value =
+        product.currency ||
+        "NGN";
+
+    document.getElementById(
+        "productImageUrl"
+    ).value =
+        product.image_url ||
+        "";
+
+    document.getElementById(
+        "productDescription"
+    ).value =
+        product.description ||
+        "";
+
+    document.getElementById(
+        "productSortOrder"
+    ).value =
+        product.sort_order ||
+        0;
+
+    document.getElementById(
+        "productAvailable"
+    ).checked =
+        Number(
+            product.available
+        ) !== 0;
+
+    clearMessage(
+        document.getElementById(
+            "productModalMessage"
+        )
+    );
+
+    document
+        .getElementById(
+            "productModal"
+        )
+        .classList.add(
+            "open"
+        );
+}
+
+
+document
+    .getElementById(
+        "productForm"
+    )
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const button =
+                document.getElementById(
+                    "productSubmitButton"
+                );
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                editingProductId
+                    ? "Saving..."
+                    : "Creating...";
+
+            const priceValue =
+                document
+                    .getElementById(
+                        "productPrice"
+                    )
+                    .value
+                    .trim();
+
+            const payload = {
+                name:
+                    document
+                        .getElementById(
+                            "productName"
+                        )
+                        .value
+                        .trim(),
+
+                description:
+                    document
+                        .getElementById(
+                            "productDescription"
+                        )
+                        .value
+                        .trim(),
+
+                price:
+                    priceValue === ""
+                        ? null
+                        : Number(
+                            priceValue
+                        ),
+
+                currency:
+                    document
+                        .getElementById(
+                            "productCurrency"
+                        )
+                        .value
+                        .trim()
+                        .toUpperCase(),
+
+                image_url:
+                    document
+                        .getElementById(
+                            "productImageUrl"
+                        )
+                        .value
+                        .trim(),
+
+                category:
+                    document
+                        .getElementById(
+                            "productCategory"
+                        )
+                        .value
+                        .trim(),
+
+                item_type:
+                    document
+                        .getElementById(
+                            "productType"
+                        )
+                        .value,
+
+                available:
+                    document
+                        .getElementById(
+                            "productAvailable"
+                        )
+                        .checked,
+
+                sort_order:
+                    Number(
+                        document
+                            .getElementById(
+                                "productSortOrder"
+                            )
+                            .value
+                    ) || 0
+            };
+
+            try {
+
+                let data;
+
+                if (
+                    editingProductId
+                ) {
+
+                    data =
+                        await api(
+                            "/owner/business/products/" +
+                            encodeURIComponent(
+                                editingProductId
+                            ),
+                            {
+                                method:
+                                    "PATCH",
+
+                                body:
+                                    JSON.stringify(
+                                        payload
+                                    )
+                            }
+                        );
+
+                } else {
+
+                    data =
+                        await api(
+                            "/owner/business/products",
+                            {
+                                method:
+                                    "POST",
+
+                                body:
+                                    JSON.stringify(
+                                        payload
+                                    )
+                            }
+                        );
+                }
+
+                closeModal(
+                    "productModal"
+                );
+
+                await loadProducts();
+
+                renderOverview();
+
+                setMessage(
+                    document.getElementById(
+                        "dashboardMessage"
+                    ),
+                    data.message ||
+                        "Product saved successfully.",
+                    "success"
+                );
+
+            } catch (error) {
+
+                setMessage(
+                    document.getElementById(
+                        "productModalMessage"
+                    ),
+                    error.message ||
+                        "Unable to save product.",
+                    "error"
+                );
+
+            } finally {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    editingProductId
+                        ? "Save Changes"
+                        : "Create Product";
+            }
+        }
+    );
+
+
+async function deleteProduct(
+    productId
+) {
+
+    const product =
+        ownerProducts.find(
+            function(item) {
+                return String(
+                    item.id
+                ) === String(
+                    productId
+                );
+            }
+        );
+
+    const name =
+        product &&
+        product.name
+            ? product.name
+            : "this product";
+
+    const confirmed =
+        window.confirm(
+            `Delete "${name}"? This cannot be undone.`
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const data =
+            await api(
+                "/owner/business/products/" +
+                encodeURIComponent(
+                    productId
+                ),
+                {
+                    method:
+                        "DELETE"
+                }
+            );
+
+        await loadProducts();
+
+        renderOverview();
+
+        setMessage(
+            document.getElementById(
+                "dashboardMessage"
+            ),
+            data.message ||
+                "Product deleted successfully.",
+            "success"
+        );
+
+    } catch (error) {
+
+        setMessage(
+            document.getElementById(
+                "dashboardMessage"
+            ),
+            error.message ||
+                "Unable to delete product.",
+            "error"
+        );
+    }
+}
+
+
+/* ================================================================
+   OVERVIEW
+   ================================================================ */
+
+function renderOverview() {
+
+    if (!ownerBusiness) {
+        return;
+    }
+
+    document.getElementById(
+        "overviewBusiness"
+    ).textContent =
+        ownerBusiness.business_name ||
+        "—";
+
+    document.getElementById(
+        "overviewCategory"
+    ).textContent =
+        ownerBusiness.category ||
+        "—";
+
+    document.getElementById(
+        "overviewLocation"
+    ).textContent =
+        getBusinessLocation(
+            ownerBusiness
+        ) ||
+        "—";
+
+    document.getElementById(
+        "overviewProducts"
+    ).textContent =
+        ownerProducts.length;
+
+    document.getElementById(
+        "overviewImages"
+    ).textContent =
+        ownerImages.length;
+}
+
+
+/* ================================================================
+   TABS
+   ================================================================ */
+
+function switchPanel(
+    panelName
+) {
+
+    document
+        .querySelectorAll(
+            ".owner-tab"
+        )
+        .forEach(
+            function(tab) {
+
+                tab.classList.toggle(
+                    "active",
+                    tab.dataset.panel ===
+                        panelName
+                );
+            }
+        );
+
+    document
+        .querySelectorAll(
+            ".owner-panel"
+        )
+        .forEach(
+            function(panel) {
+
+                panel.classList.toggle(
+                    "active",
+                    panel.id ===
+                        "panel-" +
+                        panelName
+                );
+            }
+        );
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+document
+    .querySelectorAll(
+        ".owner-sidebar .owner-tab"
+    )
+    .forEach(
+        function(tab) {
+
+            tab.addEventListener(
+                "click",
+                function() {
+
+                    switchPanel(
+                        tab.dataset.panel
+                    );
+
+                }
+            );
+        }
+    );
+
+
+/* ================================================================
+   MOBILE TABS
+   ================================================================ */
+
+function buildMobileTabs() {
+
+    const container =
+        document.getElementById(
+            "mobileTabs"
+        );
+
+    const tabs =
+        [
+            ["overview", "Overview"],
+            ["business", "Business"],
+            ["hours", "Hours"],
+            ["images", "Images"],
+            ["products", "Products"]
+        ];
+
+    container.innerHTML =
+        tabs.map(
+            function(item) {
+
+                return `
+                    <button
+                        class="owner-tab ${
+                            item[0] === "overview"
+                                ? "active"
+                                : ""
+                        }"
+                        data-panel="${item[0]}"
+                        type="button"
+                    >
+                        ${item[1]}
+                    </button>
+                `;
+            }
+        )
+        .join("");
+
+    container
+        .querySelectorAll(
+            ".owner-tab"
+        )
+        .forEach(
+            function(tab) {
+
+                tab.addEventListener(
+                    "click",
+                    function() {
+
+                        switchPanel(
+                            tab.dataset.panel
+                        );
+
+                    }
+                );
+            }
+        );
+}
+
+
+buildMobileTabs();
+
+
+/* ================================================================
+   MODALS
+   ================================================================ */
+
+function closeModal(
+    modalId
+) {
+
+    document
+        .getElementById(
+            modalId
+        )
+        .classList.remove(
+            "open"
+        );
+}
+
+
+document
+    .querySelectorAll(
+        "[data-close-modal]"
+    )
+    .forEach(
+        function(button) {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    closeModal(
+                        button.dataset.closeModal
+                    );
+
+                }
+            );
+        }
+    );
+
+
+document
+    .querySelectorAll(
+        ".owner-modal"
+    )
+    .forEach(
+        function(modal) {
+
+            modal.addEventListener(
+                "click",
+                function(event) {
+
+                    if (
+                        event.target ===
+                        modal
+                    ) {
+                        modal.classList.remove(
+                            "open"
+                        );
+                    }
+
+                }
+            );
+        }
+    );
+
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            document
+                .querySelectorAll(
+                    ".owner-modal.open"
+                )
+                .forEach(
+                    function(modal) {
+
+                        modal.classList.remove(
+                            "open"
+                        );
+                    }
+                );
+        }
+    }
+);
+
+
+/* ================================================================
+   INITIALIZATION
+   ================================================================ */
+
+(async function initOwnerPage() {
+
+    if (!ownerToken) {
+        showLogin();
+        return;
+    }
+
+    showDashboard();
+
+    const loadingMessage =
+        document.getElementById(
+            "dashboardMessage"
+        );
+
+    setMessage(
+        loadingMessage,
+        "Loading your owner dashboard...",
+        "info"
+    );
+
+    await loadDashboard();
+
+    clearMessage(
+        loadingMessage
+    );
+
+})();
+</script>
+
+</body>
+</html>
