@@ -2417,9 +2417,7 @@ function renderClaims(
 
 
                 const businessName =
-                    claim.business_name ||
                     claim.business?.business_name ||
-                    claim.business?.name ||
                     claim.business_name ||
                     businessId ||
                     "—";
@@ -2495,20 +2493,21 @@ function renderClaims(
                                 )}
                             </strong>
 
+                            <div
+                                class="business-id"
+                                style="
+                                    margin-top:6px;
+                                "
+                            >
+                                ${escapeHtml(
+                                    businessId
+                                )}
+                            </div>
+
+
                             ${
                                 businessId
                                     ? `
-                                        <div
-                                            class="business-id"
-                                            style="
-                                                margin-top:6px;
-                                            "
-                                        >
-                                            ${escapeHtml(
-                                                businessId
-                                            )}
-                                        </div>
-
                                         <div
                                             style="
                                                 margin-top:8px;
@@ -2562,6 +2561,7 @@ function renderClaims(
                                     status
                                 )}
                             </span>
+
 
                             ${
                                 verified
@@ -2722,11 +2722,6 @@ function renderClaims(
     `;
 
 
-    /*
-       Connect moderation buttons after
-       the table has been rendered.
-    */
-
     content
         .querySelectorAll(
             ".claim-action"
@@ -2758,7 +2753,6 @@ function renderClaims(
         );
 
 }
-
 
    /* =========================================================
    SUBMISSIONS
