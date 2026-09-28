@@ -333,8 +333,6 @@
       word-break: break-word;
     }
 
-    /* Opening Hours */
-
     .hours-list {
       display: grid;
       gap: 0;
@@ -505,8 +503,6 @@
       overflow: hidden;
       border: 1px solid var(--border);
     }
-
-    /* Claim system */
 
     .claim-box {
       padding: 20px;
@@ -1113,29 +1109,6 @@
         `;
       }
 
-      /*
-       * Opening Hours
-       *
-       * Supports the actual Worker/D1 format:
-       *
-       * {
-       *   day_of_week: 0,
-       *   is_closed: 1,
-       *   is_24_hours: 0,
-       *   opening_time: null,
-       *   closing_time: null
-       * }
-       *
-       * day_of_week:
-       * 0 = Sunday
-       * 1 = Monday
-       * 2 = Tuesday
-       * 3 = Wednesday
-       * 4 = Thursday
-       * 5 = Friday
-       * 6 = Saturday
-       */
-
       function normalizeHours(hours) {
 
         if (!hours) {
@@ -1271,13 +1244,6 @@
             )
             .toLowerCase();
 
-        /*
-         * Array format.
-         *
-         * This is the format returned by the
-         * Worker/D1 opening-hours system.
-         */
-
         if (
           Array.isArray(
             normalized
@@ -1299,11 +1265,6 @@
 
               let day = "";
 
-              /*
-               * Actual D1 format:
-               *
-               * day_of_week = 0..6
-               */
               if (
                 item.day_of_week !==
                   undefined &&
@@ -1332,10 +1293,6 @@
                 }
               }
 
-              /*
-               * Compatibility with possible
-               * string-based formats.
-               */
               if (!day) {
 
                 day =
@@ -1507,10 +1464,6 @@
             </div>
           `;
         }
-
-        /*
-         * Object format compatibility.
-         */
 
         if (
           typeof normalized ===
@@ -3530,6 +3483,17 @@
         }
       }
 
+      /*
+       * Load the public business profile.
+       *
+       * The API is requested with:
+       * 1. cache: "no-store"
+       * 2. Cache-Control / Pragma headers
+       * 3. A unique query parameter
+       *
+       * This prevents an older cached GET response from
+       * hiding changes recently made through the owner dashboard.
+       */
       async function loadBusiness() {
 
         const businessId =
@@ -3546,11 +3510,27 @@
 
         try {
 
+          const apiUrl =
+            `${API_URL}/businesses/${encodeURIComponent(
+              businessId
+            )}?_=${Date.now()}`;
+
           const response =
             await fetch(
-              `${API_URL}/businesses/${encodeURIComponent(
-                businessId
-              )}`
+              apiUrl,
+              {
+                method: "GET",
+
+                cache: "no-store",
+
+                headers: {
+                  "Cache-Control":
+                    "no-cache",
+
+                  "Pragma":
+                    "no-cache"
+                }
+              }
             );
 
           let result = {};
@@ -3564,9 +3544,15 @@
             parseError
           ) {
 
+            console.error(
+              "Business API returned invalid JSON:",
+              parseError
+            );
+
             result = {
               status:
                 "error",
+
               message:
                 "The server returned an invalid response."
             };
@@ -3578,6 +3564,11 @@
               "ok" ||
             !result.business
           ) {
+
+            console.error(
+              "Business API error:",
+              result
+            );
 
             showNotFound(
               result.message ||
