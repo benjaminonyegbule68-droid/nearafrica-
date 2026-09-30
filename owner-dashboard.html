@@ -1402,25 +1402,20 @@
       in again every time the page is refreshed.
     */
 
-
     const API_BASE =
       "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
-
 
     const OWNER_TOKEN_STORAGE_KEY =
       "nearafrica_owner_token";
 
-
     let ownerToken = null;
     let currentBusiness = null;
-
 
     /*
       ============================================================
       DOM ELEMENTS
       ============================================================
     */
-
 
     const loginSection =
       document.getElementById("loginSection");
@@ -1464,7 +1459,6 @@
     const imageGallery =
       document.getElementById("imageGallery");
 
-
     /*
       ANALYTICS ELEMENTS
     */
@@ -1487,7 +1481,6 @@
     const refreshAnalyticsButton =
       document.getElementById("refreshAnalyticsButton");
 
-
     /*
       OPENING HOURS ELEMENTS
     */
@@ -1500,7 +1493,6 @@
 
     const saveHoursButton =
       document.getElementById("saveHoursButton");
-
 
     /*
       PRODUCTS ELEMENTS
@@ -1521,13 +1513,11 @@
         "productsList"
       );
 
-
     /*
       ============================================================
       GENERAL UI HELPERS
       ============================================================
     */
-
 
     function showStatus(
       element,
@@ -1539,16 +1529,12 @@
         return;
       }
 
-
       element.textContent =
         message;
 
-
       element.className =
         "status show " + type;
-
     }
-
 
     function hideStatus(element) {
 
@@ -1556,12 +1542,9 @@
         return;
       }
 
-
       element.textContent = "";
       element.className = "status";
-
     }
-
 
     function setDashboardValue(
       id,
@@ -1571,17 +1554,13 @@
       const element =
         document.getElementById(id);
 
-
       if (!element) {
         return;
       }
 
-
       element.textContent =
         value || "—";
-
     }
-
 
     /*
       ============================================================
@@ -1589,13 +1568,11 @@
       ============================================================
     */
 
-
     function saveOwnerToken(token) {
 
       if (!token) {
         return;
       }
-
 
       try {
 
@@ -1615,7 +1592,6 @@
 
     }
 
-
     function getStoredOwnerToken() {
 
       try {
@@ -1632,11 +1608,8 @@
         );
 
         return null;
-
       }
-
     }
-
 
     function clearStoredOwnerToken() {
 
@@ -1654,17 +1627,7 @@
         );
 
       }
-
     }
-
-
-    /*
-      Called when the API tells us the owner session is no longer
-      valid.
-
-      We intentionally clear the token here because a 401 means
-      the frontend should not continue using the current session.
-    */
 
     function handleOwnerUnauthorized() {
 
@@ -1675,29 +1638,18 @@
 
       resetDashboard();
 
-
       showStatus(
         loginStatus,
         "Your owner session has expired. Please log in again.",
         "error"
       );
-
     }
-
 
     /*
       ============================================================
       CENTRAL OWNER API REQUEST HELPER
       ============================================================
-
-      Every authenticated owner request goes through this helper.
-
-      Benefits:
-      - Automatically adds Authorization header
-      - Handles 401 consistently
-      - Reduces repeated authentication code
     */
-
 
     async function ownerFetch(
       path,
@@ -1709,30 +1661,24 @@
         throw new Error(
           "Owner session is missing."
         );
-
       }
-
 
       const requestOptions = {
         ...options
       };
-
 
       const headers =
         new Headers(
           options.headers || {}
         );
 
-
       headers.set(
         "Authorization",
         "Bearer " + ownerToken
       );
 
-
       requestOptions.headers =
         headers;
-
 
       const response =
         await fetch(
@@ -1740,25 +1686,19 @@
           requestOptions
         );
 
-
       if (
         response.status === 401
       ) {
 
         handleOwnerUnauthorized();
 
-
         throw new Error(
           "Your owner session has expired. Please log in again."
         );
-
       }
 
-
       return response;
-
     }
-
 
     /*
       ============================================================
@@ -1766,21 +1706,17 @@
       ============================================================
     */
 
-
     async function restoreOwnerSession() {
 
       const storedToken =
         getStoredOwnerToken();
 
-
       if (!storedToken) {
         return false;
       }
 
-
       ownerToken =
         storedToken;
-
 
       showStatus(
         loginStatus,
@@ -1788,26 +1724,13 @@
         "info"
       );
 
-
       loginButton.disabled = true;
       loginButton.textContent =
         "Restoring...";
 
-
       try {
 
-        /*
-          First request validates the stored token.
-          We do this before showing the dashboard.
-        */
-
         await loadOwnerBusiness();
-
-
-        /*
-          The token is valid, so load the remaining
-          owner dashboard data.
-        */
 
         await Promise.all([
           loadOwnerImages(),
@@ -1815,7 +1738,6 @@
           loadOwnerProducts(),
           loadOwnerAnalytics()
         ]);
-
 
         loginSection.classList.add(
           "hidden"
@@ -1825,14 +1747,11 @@
           "hidden"
         );
 
-
         hideStatus(
           loginStatus
         );
 
-
         return true;
-
 
       } catch(error) {
 
@@ -1841,22 +1760,13 @@
           error
         );
 
-
-        /*
-          ownerFetch already handles a real 401.
-          For any other failure we also avoid leaving
-          the dashboard in a half-authenticated state.
-        */
-
         if (ownerToken) {
 
           clearStoredOwnerToken();
 
           ownerToken = null;
           currentBusiness = null;
-
         }
-
 
         dashboardSection.classList.add(
           "hidden"
@@ -1865,7 +1775,6 @@
         loginSection.classList.remove(
           "hidden"
         );
-
 
         if (
           error &&
@@ -1885,30 +1794,23 @@
             "Unable to restore your owner session. Please log in again.",
             "error"
           );
-
         }
 
-
         return false;
-
 
       } finally {
 
         loginButton.disabled = false;
         loginButton.textContent =
           "Login";
-
       }
-
     }
-
 
     /*
       ============================================================
       OPENING HOURS
       ============================================================
     */
-
 
     const DAYS_OF_WEEK = [
       "Sunday",
@@ -1920,9 +1822,7 @@
       "Saturday"
     ];
 
-
     let ownerHours = [];
-
 
     function createDefaultHours() {
 
@@ -1936,30 +1836,24 @@
             opening_time: null,
             closing_time: null
           };
-
         }
       );
-
     }
-
 
     function normalizeHours(hours) {
 
       const defaults =
         createDefaultHours();
 
-
       if (!Array.isArray(hours)) {
         return defaults;
       }
-
 
       hours.forEach(
         function(item) {
 
           const day =
             Number(item.day_of_week);
-
 
           if (
             !Number.isInteger(day) ||
@@ -1968,7 +1862,6 @@
           ) {
             return;
           }
-
 
           defaults[day] = {
 
@@ -1985,26 +1878,19 @@
 
             closing_time:
               item.closing_time || null
-
           };
-
         }
       );
 
-
       return defaults;
-
     }
-
 
     function renderHoursEditor(hours) {
 
       ownerHours =
         normalizeHours(hours);
 
-
       hoursEditor.innerHTML = "";
-
 
       const header =
         document.createElement("div");
@@ -2021,7 +1907,6 @@
 
       hoursEditor.appendChild(header);
 
-
       ownerHours.forEach(
         function(item, index) {
 
@@ -2031,7 +1916,6 @@
           row.className =
             "hours-row";
 
-
           const day =
             document.createElement("div");
 
@@ -2040,7 +1924,6 @@
 
           day.textContent =
             DAYS_OF_WEEK[index];
-
 
           const status =
             document.createElement("select");
@@ -2053,7 +1936,6 @@
             <option value="closed">Closed</option>
             <option value="24">24 Hours</option>
           `;
-
 
           if (
             Number(item.is_closed) === 1
@@ -2070,9 +1952,7 @@
           } else {
 
             status.value = "open";
-
           }
-
 
           const opening =
             document.createElement("input");
@@ -2087,7 +1967,6 @@
           opening.disabled =
             status.value !== "open";
 
-
           const closing =
             document.createElement("input");
 
@@ -2101,7 +1980,6 @@
           closing.disabled =
             status.value !== "open";
 
-
           status.addEventListener(
             "change",
             function() {
@@ -2114,24 +1992,18 @@
 
               closing.disabled =
                 !isOpen;
-
             }
           );
-
 
           row.appendChild(day);
           row.appendChild(status);
           row.appendChild(opening);
           row.appendChild(closing);
 
-
           hoursEditor.appendChild(row);
-
         }
       );
-
     }
-
 
     async function loadOwnerHours() {
 
@@ -2139,13 +2011,11 @@
         return;
       }
 
-
       showStatus(
         hoursStatus,
         "Loading opening hours...",
         "info"
       );
-
 
       try {
 
@@ -2157,10 +2027,8 @@
             }
           );
 
-
         const result =
           await response.json();
-
 
         if (
           !response.ok ||
@@ -2171,19 +2039,15 @@
             result.message ||
             "Unable to load opening hours."
           );
-
         }
-
 
         renderHoursEditor(
           result.hours || []
         );
 
-
         hideStatus(
           hoursStatus
         );
-
 
       } catch(error) {
 
@@ -2192,9 +2056,7 @@
           error
         );
 
-
         renderHoursEditor([]);
-
 
         showStatus(
           hoursStatus,
@@ -2202,11 +2064,8 @@
             "Unable to load opening hours.",
           "error"
         );
-
       }
-
     }
-
 
     async function saveOwnerHours() {
 
@@ -2219,12 +2078,9 @@
         );
 
         return;
-
       }
 
-
       const hours = [];
-
 
       for (
         let day = 0;
@@ -2237,18 +2093,15 @@
             `select[data-day="${day}"]`
           );
 
-
         const opening =
           hoursEditor.querySelector(
             `input[data-day="${day}"][data-field="opening"]`
           );
 
-
         const closing =
           hoursEditor.querySelector(
             `input[data-day="${day}"][data-field="closing"]`
           );
-
 
         if (
           !status ||
@@ -2263,9 +2116,7 @@
           );
 
           return;
-
         }
-
 
         hours.push({
 
@@ -2286,21 +2137,16 @@
             status.value === "open"
               ? closing.value || null
               : null
-
         });
-
       }
-
 
       saveHoursButton.disabled = true;
       saveHoursButton.textContent =
         "Saving...";
 
-
       hideStatus(
         hoursStatus
       );
-
 
       try {
 
@@ -2322,10 +2168,8 @@
             }
           );
 
-
         const result =
           await response.json();
-
 
         if (
           !response.ok ||
@@ -2336,21 +2180,17 @@
             result.message ||
             "Unable to save opening hours."
           );
-
         }
-
 
         renderHoursEditor(
           result.hours || hours
         );
-
 
         showStatus(
           hoursStatus,
           "Opening hours updated successfully.",
           "success"
         );
-
 
       } catch(error) {
 
@@ -2359,7 +2199,6 @@
           error
         );
 
-
         showStatus(
           hoursStatus,
           error.message ||
@@ -2367,17 +2206,13 @@
           "error"
         );
 
-
       } finally {
 
         saveHoursButton.disabled = false;
         saveHoursButton.textContent =
           "Save Opening Hours";
-
       }
-
     }
-
 
     /*
       ============================================================
@@ -2385,18 +2220,15 @@
       ============================================================
     */
 
-
     async function loadOwnerAnalytics() {
 
       if (!ownerToken) {
         return;
       }
 
-
       hideStatus(
         analyticsStatus
       );
-
 
       try {
 
@@ -2408,10 +2240,8 @@
             }
           );
 
-
         const result =
           await response.json();
-
 
         if (
           !response.ok ||
@@ -2422,53 +2252,42 @@
             result.message ||
             "Unable to load analytics."
           );
-
         }
-
 
         const analytics =
           result.analytics || {};
-
 
         const totalViews =
           Number(
             analytics.total_views || 0
           );
 
-
         const viewsToday =
           Number(
             analytics.views_today || 0
           );
-
 
         const viewsLast7Days =
           Number(
             analytics.views_last_7_days || 0
           );
 
-
         const viewsLast30Days =
           Number(
             analytics.views_last_30_days || 0
           );
 
-
         analyticsTotalViews.textContent =
           totalViews.toLocaleString();
-
 
         analyticsToday.textContent =
           viewsToday.toLocaleString();
 
-
         analytics7Days.textContent =
           viewsLast7Days.toLocaleString();
 
-
         analytics30Days.textContent =
           viewsLast30Days.toLocaleString();
-
 
       } catch(error) {
 
@@ -2477,7 +2296,6 @@
           error
         );
 
-
         analyticsTotalViews.textContent =
           "—";
 
@@ -2490,18 +2308,14 @@
         analytics30Days.textContent =
           "—";
 
-
         showStatus(
           analyticsStatus,
           error.message ||
             "Unable to load analytics.",
           "error"
         );
-
       }
-
     }
-
 
     /*
       ============================================================
@@ -2509,11 +2323,9 @@
       ============================================================
     */
 
-
     async function loginOwner(event) {
 
       event.preventDefault();
-
 
       const businessName =
         document
@@ -2521,13 +2333,11 @@
           .value
           .trim();
 
-
       const ownerEmail =
         document
           .getElementById("ownerEmail")
           .value
           .trim();
-
 
       if (!businessName) {
 
@@ -2538,9 +2348,7 @@
         );
 
         return;
-
       }
-
 
       if (!ownerEmail) {
 
@@ -2551,19 +2359,15 @@
         );
 
         return;
-
       }
-
 
       hideStatus(
         loginStatus
       );
 
-
       loginButton.disabled = true;
       loginButton.textContent =
         "Signing In...";
-
 
       try {
 
@@ -2589,10 +2393,8 @@
             }
           );
 
-
         const result =
           await response.json();
-
 
         if (
           !response.ok ||
@@ -2603,44 +2405,23 @@
             result.message ||
             "Unable to sign in."
           );
-
         }
-
 
         ownerToken =
           result.token;
-
 
         if (!ownerToken) {
 
           throw new Error(
             "Owner session was not created."
           );
-
         }
-
-
-        /*
-          Persist the backend's owner token so the
-          dashboard survives page refreshes.
-        */
 
         saveOwnerToken(
           ownerToken
         );
 
-
-        /*
-          Load the business first so the dashboard
-          is not shown until authentication succeeds.
-        */
-
         await loadOwnerBusiness();
-
-
-        /*
-          Load the remaining dashboard data.
-        */
 
         await Promise.all([
           loadOwnerImages(),
@@ -2648,7 +2429,6 @@
           loadOwnerProducts(),
           loadOwnerAnalytics()
         ]);
-
 
         loginSection.classList.add(
           "hidden"
@@ -2658,7 +2438,6 @@
           "hidden"
         );
 
-
       } catch(error) {
 
         console.error(
@@ -2666,17 +2445,10 @@
           error
         );
 
-
-        /*
-          If login/loading fails, do not leave a
-          potentially unusable token behind.
-        */
-
         clearStoredOwnerToken();
 
         ownerToken = null;
         currentBusiness = null;
-
 
         showStatus(
           loginStatus,
@@ -2685,24 +2457,19 @@
           "error"
         );
 
-
       } finally {
 
         loginButton.disabled = false;
         loginButton.textContent =
           "Login";
-
       }
-
     }
-
 
     /*
       ============================================================
       LOAD OWNER BUSINESS
       ============================================================
     */
-
 
     async function loadOwnerBusiness() {
 
@@ -2711,9 +2478,7 @@
         throw new Error(
           "Owner session is missing."
         );
-
       }
-
 
       const response =
         await ownerFetch(
@@ -2723,10 +2488,8 @@
           }
         );
 
-
       const result =
         await response.json();
-
 
       if (
         !response.ok ||
@@ -2737,20 +2500,15 @@
           result.message ||
           "Unable to load your business."
         );
-
       }
-
 
       currentBusiness =
         result.business;
 
-
       renderBusiness(
         currentBusiness
       );
-
     }
-
 
     function renderBusiness(
       business
@@ -2760,42 +2518,35 @@
         return;
       }
 
-
       setDashboardValue(
         "displayBusinessName",
         business.business_name
       );
-
 
       setDashboardValue(
         "displayCategory",
         business.category
       );
 
-
       setDashboardValue(
         "displayCountry",
         business.country
       );
-
 
       setDashboardValue(
         "displayState",
         business.state
       );
 
-
       setDashboardValue(
         "displayCity",
         business.city
       );
 
-
       setDashboardValue(
         "displayPhone",
         business.phone
       );
-
 
       document.getElementById(
         "businessTitle"
@@ -2803,39 +2554,32 @@
         business.business_name ||
         "Business Profile";
 
-
       document.getElementById(
         "whatsapp"
       ).value =
         business.whatsapp || "";
-
 
       document.getElementById(
         "website"
       ).value =
         business.website || "";
 
-
       document.getElementById(
         "address"
       ).value =
         business.address || "";
 
-
       document.getElementById(
         "description"
       ).value =
         business.description || "";
-
     }
-
 
     /*
       ============================================================
       SAVE BUSINESS
       ============================================================
     */
-
 
     async function saveBusiness() {
 
@@ -2848,9 +2592,7 @@
         );
 
         return;
-
       }
-
 
       const payload = {
 
@@ -2877,19 +2619,15 @@
             .getElementById("description")
             .value
             .trim()
-
       };
-
 
       saveButton.disabled = true;
       saveButton.textContent =
         "Saving...";
 
-
       hideStatus(
         dashboardStatus
       );
-
 
       try {
 
@@ -2911,10 +2649,8 @@
             }
           );
 
-
         const result =
           await response.json();
-
 
         if (
           !response.ok ||
@@ -2925,15 +2661,12 @@
             result.message ||
             "Unable to save changes."
           );
-
         }
-
 
         if (result.business) {
 
           currentBusiness =
             result.business;
-
 
           renderBusiness(
             currentBusiness
@@ -2942,16 +2675,13 @@
         } else {
 
           await loadOwnerBusiness();
-
         }
-
 
         showStatus(
           dashboardStatus,
           "Business profile updated successfully.",
           "success"
         );
-
 
       } catch(error) {
 
@@ -2960,7 +2690,6 @@
           error
         );
 
-
         showStatus(
           dashboardStatus,
           error.message ||
@@ -2968,17 +2697,13 @@
           "error"
         );
 
-
       } finally {
 
         saveButton.disabled = false;
         saveButton.textContent =
           "Save Changes";
-
       }
-
     }
-
 
     /*
       ============================================================
@@ -2986,17 +2711,14 @@
       ============================================================
     */
 
-
     async function loadOwnerImages() {
 
       if (!ownerToken) {
         return;
       }
 
-
       imageGallery.innerHTML =
         '<div class="image-empty">Loading photos...</div>';
-
 
       try {
 
@@ -3008,10 +2730,8 @@
             }
           );
 
-
         const result =
           await response.json();
-
 
         if (
           !response.ok ||
@@ -3022,14 +2742,11 @@
             result.message ||
             "Unable to load business photos."
           );
-
         }
-
 
         renderImages(
           result.images || []
         );
-
 
       } catch(error) {
 
@@ -3038,10 +2755,8 @@
           error
         );
 
-
         imageGallery.innerHTML =
           '<div class="image-empty">Unable to load business photos.</div>';
-
 
         showStatus(
           imageStatus,
@@ -3049,11 +2764,8 @@
             "Unable to load business photos.",
           "error"
         );
-
       }
-
     }
-
 
     function renderImages(
       images
@@ -3061,16 +2773,13 @@
 
       imageGallery.innerHTML = "";
 
-
       if (!images.length) {
 
         imageGallery.innerHTML =
           '<div class="image-empty">No business photos have been uploaded yet.</div>';
 
         return;
-
       }
-
 
       images.forEach(
         function(image) {
@@ -3080,7 +2789,6 @@
 
           card.className =
             "image-card";
-
 
           const preview =
             document.createElement("img");
@@ -3099,13 +2807,11 @@
           preview.loading =
             "lazy";
 
-
           const body =
             document.createElement("div");
 
           body.className =
             "image-card-body";
-
 
           const type =
             document.createElement("div");
@@ -3117,7 +2823,6 @@
             image.image_type ||
             "gallery";
 
-
           const url =
             document.createElement("div");
 
@@ -3127,7 +2832,6 @@
           url.textContent =
             image.image_url ||
             "Image URL unavailable";
-
 
           const deleteButton =
             document.createElement("button");
@@ -3141,7 +2845,6 @@
           deleteButton.textContent =
             "Delete";
 
-
           deleteButton.addEventListener(
             "click",
             function() {
@@ -3149,10 +2852,8 @@
               deleteOwnerImage(
                 image.id
               );
-
             }
           );
-
 
           body.appendChild(type);
           body.appendChild(url);
@@ -3162,12 +2863,9 @@
           card.appendChild(body);
 
           imageGallery.appendChild(card);
-
         }
       );
-
     }
-
 
     async function uploadOwnerImage() {
 
@@ -3180,14 +2878,11 @@
         );
 
         return;
-
       }
-
 
       const file =
         businessImage.files &&
         businessImage.files[0];
-
 
       if (!file) {
 
@@ -3198,9 +2893,7 @@
         );
 
         return;
-
       }
-
 
       const allowedTypes = [
         "image/jpeg",
@@ -3208,7 +2901,6 @@
         "image/webp",
         "image/gif"
       ];
-
 
       if (
         !allowedTypes.includes(
@@ -3223,9 +2915,7 @@
         );
 
         return;
-
       }
-
 
       if (
         file.size >
@@ -3239,35 +2929,28 @@
         );
 
         return;
-
       }
-
 
       const formData =
         new FormData();
-
 
       formData.append(
         "image",
         file
       );
 
-
       formData.append(
         "image_type",
         imageType.value
       );
 
-
       uploadImageButton.disabled = true;
       uploadImageButton.textContent =
         "Uploading...";
 
-
       hideStatus(
         imageStatus
       );
-
 
       try {
 
@@ -3276,16 +2959,13 @@
             "/owner/business/images",
             {
               method: "POST",
-
               body:
                 formData
             }
           );
 
-
         const result =
           await response.json();
-
 
         if (
           !response.ok ||
@@ -3296,22 +2976,17 @@
             result.message ||
             "Unable to upload the image."
           );
-
         }
-
 
         businessImage.value = "";
 
-
         await loadOwnerImages();
-
 
         showStatus(
           imageStatus,
           "Photo uploaded successfully.",
           "success"
         );
-
 
       } catch(error) {
 
@@ -3320,7 +2995,6 @@
           error
         );
 
-
         showStatus(
           imageStatus,
           error.message ||
@@ -3328,18 +3002,14 @@
           "error"
         );
 
-
       } finally {
 
         uploadImageButton.disabled = false;
 
         uploadImageButton.textContent =
           "Upload Photo";
-
       }
-
     }
-
 
     async function deleteOwnerImage(
       imageId
@@ -3354,9 +3024,7 @@
         );
 
         return;
-
       }
-
 
       if (!imageId) {
 
@@ -3367,20 +3035,16 @@
         );
 
         return;
-
       }
-
 
       const confirmed =
         window.confirm(
           "Delete this business photo?"
         );
 
-
       if (!confirmed) {
         return;
       }
-
 
       try {
 
@@ -3389,7 +3053,6 @@
           "Deleting photo...",
           "info"
         );
-
 
         const response =
           await ownerFetch(
@@ -3402,10 +3065,8 @@
             }
           );
 
-
         const result =
           await response.json();
-
 
         if (
           !response.ok ||
@@ -3416,19 +3077,15 @@
             result.message ||
             "Unable to delete the image."
           );
-
         }
 
-
         await loadOwnerImages();
-
 
         showStatus(
           imageStatus,
           "Photo deleted successfully.",
           "success"
         );
-
 
       } catch(error) {
 
@@ -3437,18 +3094,14 @@
           error
         );
 
-
         showStatus(
           imageStatus,
           error.message ||
             "Unable to delete the image.",
           "error"
         );
-
       }
-
     }
-
 
     /*
       ============================================================
@@ -3456,17 +3109,14 @@
       ============================================================
     */
 
-
     async function loadOwnerProducts() {
 
       if (!ownerToken) {
         return;
       }
 
-
       productsList.innerHTML =
         '<div class="image-empty">Loading products and services...</div>';
-
 
       try {
 
@@ -3478,10 +3128,8 @@
             }
           );
 
-
         const result =
           await response.json();
-
 
         if (
           !response.ok ||
@@ -3492,19 +3140,15 @@
             result.message ||
             "Unable to load products and services."
           );
-
         }
-
 
         renderOwnerProducts(
           result.products || []
         );
 
-
         hideStatus(
           productsStatus
         );
-
 
       } catch(error) {
 
@@ -3513,10 +3157,8 @@
           error
         );
 
-
         productsList.innerHTML =
           '<div class="image-empty">Unable to load products and services.</div>';
-
 
         showStatus(
           productsStatus,
@@ -3524,11 +3166,8 @@
             "Unable to load products and services.",
           "error"
         );
-
       }
-
     }
-
 
     function renderOwnerProducts(
       products
@@ -3536,16 +3175,13 @@
 
       productsList.innerHTML = "";
 
-
       if (!products.length) {
 
         productsList.innerHTML =
           '<div class="image-empty">No products or services have been added yet.</div>';
 
         return;
-
       }
-
 
       products.forEach(
         function(product) {
@@ -3556,7 +3192,6 @@
           card.className =
             "product-card";
 
-
           const title =
             document.createElement("h4");
 
@@ -3566,7 +3201,6 @@
 
           title.style.margin =
             "0 0 8px";
-
 
           const type =
             document.createElement("div");
@@ -3591,7 +3225,6 @@
           type.style.marginBottom =
             "8px";
 
-
           const description =
             document.createElement("p");
 
@@ -3605,10 +3238,8 @@
           description.style.margin =
             "0 0 10px";
 
-
           const price =
             document.createElement("div");
-
 
           if (
             product.price !== null &&
@@ -3630,9 +3261,7 @@
 
             price.textContent =
               "Price not specified";
-
           }
-
 
           price.style.marginBottom =
             "10px";
@@ -3640,16 +3269,13 @@
           price.style.fontWeight =
             "700";
 
-
           const availability =
             document.createElement("div");
-
 
           availability.textContent =
             Number(product.available) === 1
               ? "Available"
               : "Unavailable";
-
 
           availability.style.color =
             Number(product.available) === 1
@@ -3659,21 +3285,16 @@
           availability.style.fontSize =
             "13px";
 
-
           card.appendChild(type);
           card.appendChild(title);
           card.appendChild(description);
           card.appendChild(price);
           card.appendChild(availability);
 
-
           productsList.appendChild(card);
-
         }
       );
-
     }
-
 
     async function addOwnerProduct() {
 
@@ -3686,9 +3307,7 @@
         );
 
         return;
-
       }
-
 
       const name =
         document
@@ -3696,13 +3315,11 @@
           .value
           .trim();
 
-
       const description =
         document
           .getElementById("productDescription")
           .value
           .trim();
-
 
       const priceValue =
         document
@@ -3710,13 +3327,11 @@
           .value
           .trim();
 
-
       const currency =
         document
           .getElementById("productCurrency")
           .value
           .trim();
-
 
       const category =
         document
@@ -3724,18 +3339,15 @@
           .value
           .trim();
 
-
       const itemType =
         document
           .getElementById("productType")
           .value;
 
-
       const available =
         document
           .getElementById("productAvailable")
           .checked;
-
 
       if (!name) {
 
@@ -3746,18 +3358,14 @@
         );
 
         return;
-
       }
 
-
       let price = null;
-
 
       if (priceValue !== "") {
 
         price =
           Number(priceValue);
-
 
         if (
           !Number.isFinite(price) ||
@@ -3771,22 +3379,17 @@
           );
 
           return;
-
         }
-
       }
-
 
       addProductButton.disabled = true;
 
       addProductButton.textContent =
         "Adding...";
 
-
       hideStatus(
         productsStatus
       );
-
 
       try {
 
@@ -3825,15 +3428,12 @@
 
                   available:
                     available ? 1 : 0
-
                 })
             }
           );
 
-
         const result =
           await response.json();
-
 
         if (
           !response.ok ||
@@ -3844,51 +3444,41 @@
             result.message ||
             "Unable to add product or service."
           );
-
         }
-
 
         document.getElementById(
           "productName"
         ).value = "";
 
-
         document.getElementById(
           "productDescription"
         ).value = "";
-
 
         document.getElementById(
           "productPrice"
         ).value = "";
 
-
         document.getElementById(
           "productCategory"
         ).value = "";
-
 
         document.getElementById(
           "productType"
         ).value =
           "product";
 
-
         document.getElementById(
           "productAvailable"
         ).checked =
           true;
 
-
         await loadOwnerProducts();
-
 
         showStatus(
           productsStatus,
           "Product or service added successfully.",
           "success"
         );
-
 
       } catch(error) {
 
@@ -3897,7 +3487,6 @@
           error
         );
 
-
         showStatus(
           productsStatus,
           error.message ||
@@ -3905,20 +3494,15 @@
           "error"
         );
 
-
       } finally {
 
         addProductButton.disabled =
           false;
 
-
         addProductButton.textContent =
           "Add Product / Service";
-
       }
-
     }
-
 
     /*
       ============================================================
@@ -3926,21 +3510,12 @@
       ============================================================
     */
 
-
     async function logoutOwner() {
 
       const tokenAtLogout =
         ownerToken;
 
-
-      /*
-        Clear the locally stored credential immediately.
-        This ensures that even if the API logout request
-        fails, the browser will not restore the old session.
-      */
-
       clearStoredOwnerToken();
-
 
       if (!tokenAtLogout) {
 
@@ -3950,17 +3525,9 @@
         resetDashboard();
 
         return;
-
       }
 
-
       try {
-
-        /*
-          Use the existing token directly for logout.
-          We do not rely on ownerFetch here because the
-          session is intentionally being destroyed.
-        */
 
         await fetch(
           API_BASE + "/owner/logout",
@@ -3974,13 +3541,11 @@
           }
         );
 
-
       } catch(error) {
 
         console.warn(
           "Owner logout request failed."
         );
-
 
       } finally {
 
@@ -3988,11 +3553,8 @@
         currentBusiness = null;
 
         resetDashboard();
-
       }
-
     }
-
 
     /*
       ============================================================
@@ -4009,29 +3571,23 @@
       before calling this function.
     */
 
-
     function resetDashboard() {
 
       dashboardSection.classList.add(
         "hidden"
       );
 
-
       loginSection.classList.remove(
         "hidden"
       );
 
-
       loginForm.reset();
 
-
       businessImage.value = "";
-
 
       imageGallery.innerHTML = "";
       hoursEditor.innerHTML = "";
       productsList.innerHTML = "";
-
 
       analyticsTotalViews.textContent =
         "—";
@@ -4044,7 +3600,6 @@
 
       analytics30Days.textContent =
         "—";
-
 
       hideStatus(
         loginStatus
@@ -4069,16 +3624,13 @@
       hideStatus(
         analyticsStatus
       );
-
     }
-
 
     /*
       ============================================================
       PUBLIC PROFILE
       ============================================================
     */
-
 
     publicProfileButton.addEventListener(
       "click",
@@ -4091,16 +3643,22 @@
           return;
         }
 
+        /*
+          IMPORTANT:
+          The public business profile is located at
+          /pages/business.html.
+
+          Use an absolute root-relative path so this works
+          regardless of where the owner dashboard itself lives.
+        */
 
         window.location.href =
-          "business.html?id=" +
+          "/pages/business.html?id=" +
           encodeURIComponent(
             currentBusiness.id
           );
-
       }
     );
-
 
     /*
       ============================================================
@@ -4108,48 +3666,40 @@
       ============================================================
     */
 
-
     loginForm.addEventListener(
       "submit",
       loginOwner
     );
-
 
     saveButton.addEventListener(
       "click",
       saveBusiness
     );
 
-
     saveHoursButton.addEventListener(
       "click",
       saveOwnerHours
     );
-
 
     uploadImageButton.addEventListener(
       "click",
       uploadOwnerImage
     );
 
-
     refreshAnalyticsButton.addEventListener(
       "click",
       loadOwnerAnalytics
     );
-
 
     addProductButton.addEventListener(
       "click",
       addOwnerProduct
     );
 
-
     logoutButton.addEventListener(
       "click",
       logoutOwner
     );
-
 
     /*
       ============================================================
@@ -4167,9 +3717,7 @@
       - Login form is hidden.
     */
 
-
     restoreOwnerSession();
-
 
   </script>
 
