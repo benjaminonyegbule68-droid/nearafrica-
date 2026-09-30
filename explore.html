@@ -16,7 +16,6 @@
   >
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-
   <link
     rel="preconnect"
     href="https://fonts.gstatic.com"
@@ -29,49 +28,23 @@
   >
 
   <link rel="icon" href="logo.png">
+  <link rel="stylesheet" href="styles.css">
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    /* =====================================================
+       EXPLORE PAGE
+    ===================================================== */
 
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: "Inter", Arial, sans-serif;
+    .explore-page {
       background: #f7f7f5;
-      color: #171717;
-      line-height: 1.5;
-    }
-
-    button,
-    input,
-    select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    button:disabled {
-      cursor: not-allowed;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
+      min-height: 100vh;
     }
 
     /* =====================================================
        HEADER
     ===================================================== */
 
-    header {
+    .explore-header {
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -80,69 +53,62 @@
       border-bottom: 1px solid #e8e8e8;
     }
 
-    .nav {
+    .explore-nav {
       width: min(1200px, calc(100% - 32px));
-      margin: auto;
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 21px;
-      font-weight: 800;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .brand-mark {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: #111;
-      color: #d4af37;
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-
-    nav.main-nav {
+      min-height: 68px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       gap: 22px;
-      font-size: 14px;
-      font-weight: 600;
     }
 
-    nav.main-nav a {
-      color: #555;
-      transition: 0.2s ease;
-    }
-
-    nav.main-nav a:hover,
-    nav.main-nav a.active {
+    .explore-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      flex-shrink: 0;
+      font-weight: 800;
+      font-size: 20px;
       color: #111;
     }
 
-    .language-control {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      margin-left: auto;
-      flex-shrink: 0;
+    .explore-brand img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      display: block;
     }
 
-    .language-control select {
+    .explore-main-nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-left: auto;
+    }
+
+    .explore-main-nav a {
+      color: #555;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .explore-main-nav a:hover,
+    .explore-main-nav a.active {
+      color: #111;
+    }
+
+    .explore-language {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .explore-language select {
       height: 38px;
       border: 1px solid #ddd;
       border-radius: 8px;
-      background: white;
+      background: #fff;
       color: #222;
       padding: 0 9px;
       font-size: 12px;
@@ -150,46 +116,38 @@
       outline: none;
     }
 
-    .language-control select:focus {
-      border-color: #d4af37;
-    }
-
-    .mobile-menu-button {
+    .explore-mobile-button {
       display: none;
       width: 40px;
       height: 40px;
       border: 1px solid #ddd;
       border-radius: 8px;
-      background: white;
+      background: #fff;
       color: #111;
       font-size: 20px;
     }
 
-    .mobile-nav {
+    .explore-mobile-nav {
       display: none;
       border-top: 1px solid #eee;
-      background: white;
-      padding: 10px 16px 16px;
+      background: #fff;
+      padding: 8px 16px 14px;
     }
 
-    .mobile-nav.open {
+    .explore-mobile-nav.open {
       display: block;
     }
 
-    .mobile-nav a {
+    .explore-mobile-nav a {
       display: block;
       padding: 12px 8px;
+      border-bottom: 1px solid #f0f0f0;
       color: #555;
       font-size: 14px;
       font-weight: 600;
-      border-bottom: 1px solid #f0f0f0;
     }
 
-    .mobile-nav a:last-child {
-      border-bottom: none;
-    }
-
-    .mobile-nav a.active {
+    .explore-mobile-nav a.active {
       color: #111;
     }
 
@@ -197,115 +155,125 @@
        HERO
     ===================================================== */
 
-    .hero {
-      background: #111;
-      color: white;
-      padding: 56px 16px 48px;
+    .explore-hero {
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(212, 175, 55, 0.14),
+          transparent 35%
+        ),
+        #0d0d0d;
+      color: #fff;
+      padding: 64px 16px 58px;
     }
 
-    .hero-inner {
+    .explore-hero-inner {
       width: min(1200px, 100%);
-      margin: auto;
+      margin: 0 auto;
     }
 
-    .hero h1 {
-      font-size: clamp(32px, 5vw, 52px);
-      line-height: 1.05;
+    .explore-eyebrow {
+      color: #d4af37;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
       margin-bottom: 12px;
-      letter-spacing: -1.5px;
     }
 
-    .hero p {
-      max-width: 700px;
+    .explore-hero h1 {
+      font-size: clamp(34px, 6vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -1.8px;
+      margin-bottom: 14px;
+    }
+
+    .explore-hero p {
+      max-width: 750px;
       color: #cfcfcf;
       font-size: 16px;
     }
 
-    .search-area {
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    .explore-search {
+      max-width: 950px;
       margin-top: 28px;
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       gap: 10px;
-      max-width: 850px;
     }
 
-    .search-box {
-      position: relative;
-    }
-
-    .search-box input {
+    .explore-search input {
       width: 100%;
-      height: 54px;
-      border: 1px solid #3c3c3c;
+      height: 56px;
+      border: 1px solid #3b3b3b;
       border-radius: 10px;
-      background: #1d1d1d;
-      color: white;
+      background: #1b1b1b;
+      color: #fff;
       padding: 0 18px;
       outline: none;
     }
 
-    .search-box input::placeholder {
+    .explore-search input::placeholder {
       color: #999;
     }
 
-    .search-box input:focus {
+    .explore-search input:focus {
       border-color: #d4af37;
     }
 
-    .search-button {
-      height: 54px;
-      padding: 0 24px;
+    .explore-search button {
+      height: 56px;
+      padding: 0 28px;
       border: none;
       border-radius: 10px;
       background: #d4af37;
       color: #111;
-      font-weight: 700;
+      font-weight: 800;
     }
 
-    .search-button:hover {
+    .explore-search button:hover {
       background: #e2c35c;
     }
 
-    .location-bar {
-      max-width: 850px;
+    .explore-location-bar {
+      max-width: 950px;
       margin-top: 12px;
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 9px;
     }
 
-    .location-button {
+    .explore-location-button {
       border: 1px solid #444;
-      background: #1d1d1d;
-      color: white;
       border-radius: 9px;
+      background: #1b1b1b;
+      color: #fff;
       padding: 10px 15px;
       font-size: 13px;
       font-weight: 700;
-      transition: 0.2s ease;
     }
 
-    .location-button:hover {
+    .explore-location-button:hover,
+    .explore-location-button.active {
       border-color: #d4af37;
       color: #d4af37;
     }
 
-    .location-button.active {
-      border-color: #d4af37;
-      color: #d4af37;
-    }
-
-    .location-status {
-      color: #bdbdbd;
+    .explore-location-status {
+      color: #aaa;
       font-size: 13px;
     }
 
-    .location-status.success {
+    .explore-location-status.success {
       color: #d4af37;
     }
 
-    .location-status.error {
+    .explore-location-status.error {
       color: #ff9b9b;
     }
 
@@ -313,28 +281,175 @@
        MAIN
     ===================================================== */
 
-    main {
+    .explore-main {
       width: min(1200px, calc(100% - 32px));
-      margin: 32px auto 80px;
+      margin: 0 auto;
+      padding: 38px 0 80px;
     }
 
     /* =====================================================
-       FILTERS
+       SECTION HEADERS
+    ===================================================== */
+
+    .explore-section {
+      margin-bottom: 42px;
+    }
+
+    .explore-section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    .explore-section-heading h2 {
+      font-size: 25px;
+      line-height: 1.15;
+      color: #111;
+    }
+
+    .explore-section-heading p {
+      margin-top: 6px;
+      color: #777;
+      font-size: 14px;
+    }
+
+    .explore-section-link {
+      color: #947719;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .explore-section-link:hover {
+      color: #111;
+    }
+
+    /* =====================================================
+       CATEGORY BROWSE
+    ===================================================== */
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .category-card {
+      min-height: 112px;
+      padding: 16px 12px;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      background: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .category-card:hover {
+      transform: translateY(-3px);
+      border-color: #d4af37;
+      background: #181818;
+    }
+
+    .category-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin-bottom: 9px;
+      background: #1d1d1d;
+      color: #d4af37;
+      font-size: 20px;
+    }
+
+    .category-name {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    /* =====================================================
+       AREA BROWSE
+    ===================================================== */
+
+    .area-panel {
+      background: #111;
+      border-radius: 16px;
+      padding: 24px;
+      color: #fff;
+    }
+
+    .area-panel-heading {
+      margin-bottom: 18px;
+    }
+
+    .area-panel-heading h3 {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .area-panel-heading p {
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    .area-controls {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .area-control label {
+      display: block;
+      margin-bottom: 6px;
+      color: #aaa;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .area-control select {
+      width: 100%;
+      height: 46px;
+      border: 1px solid #3b3b3b;
+      border-radius: 8px;
+      background: #1b1b1b;
+      color: #fff;
+      padding: 0 12px;
+      outline: none;
+    }
+
+    .area-control select:focus {
+      border-color: #d4af37;
+    }
+
+    /* =====================================================
+       FILTER PANEL
     ===================================================== */
 
     .filter-panel {
-      background: white;
+      background: #fff;
       border: 1px solid #e5e5e5;
       border-radius: 14px;
       padding: 18px;
-      margin-bottom: 28px;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+      margin-bottom: 26px;
     }
 
     .filter-title {
-      font-size: 14px;
-      font-weight: 700;
       margin-bottom: 14px;
+      color: #111;
+      font-size: 14px;
+      font-weight: 800;
     }
 
     .filters {
@@ -345,10 +460,10 @@
 
     .filter-group label {
       display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: #666;
       margin-bottom: 6px;
+      color: #666;
+      font-size: 12px;
+      font-weight: 700;
     }
 
     .filter-group select {
@@ -356,34 +471,37 @@
       height: 44px;
       border: 1px solid #ddd;
       border-radius: 8px;
-      background: white;
+      background: #fff;
+      color: #222;
       padding: 0 12px;
       outline: none;
     }
 
     .filter-group select:focus {
-      border-color: #c49f25;
+      border-color: #d4af37;
     }
 
     /* =====================================================
-       RESULTS
+       RESULTS HEADER
     ===================================================== */
 
     .results-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 16px;
       margin-bottom: 18px;
     }
 
-    .results-header h2 {
-      font-size: 22px;
+    .results-title h2 {
+      font-size: 24px;
+      color: #111;
     }
 
     .result-count {
+      margin-top: 4px;
       color: #777;
-      font-size: 14px;
+      font-size: 13px;
     }
 
     .nearby-indicator {
@@ -391,12 +509,12 @@
       align-items: center;
       gap: 7px;
       padding: 8px 11px;
-      background: #faf5df;
       border: 1px solid #eadba5;
       border-radius: 8px;
+      background: #faf5df;
       color: #705a13;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .nearby-indicator.visible {
@@ -409,15 +527,15 @@
 
     .status {
       display: none;
-      padding: 16px;
+      padding: 15px;
+      margin-bottom: 18px;
       border-radius: 10px;
-      margin-bottom: 20px;
       font-size: 14px;
     }
 
     .status.loading {
       display: block;
-      background: #f0f0f0;
+      background: #eee;
       color: #555;
     }
 
@@ -446,8 +564,8 @@
     }
 
     .business-card {
-      background: white;
-      border: 1px solid #e5e5e5;
+      background: #fff;
+      border: 1px solid #e4e4e4;
       border-radius: 14px;
       overflow: hidden;
       transition:
@@ -458,26 +576,32 @@
 
     .business-card:hover {
       transform: translateY(-3px);
-      border-color: #d5d5d5;
+      border-color: #d4af37;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
     }
 
     .business-image {
       height: 190px;
-      background: linear-gradient(135deg, #181818, #333);
+      background:
+        linear-gradient(
+          135deg,
+          #111,
+          #2a2a2a
+        );
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
       color: #d4af37;
       font-size: 36px;
       font-weight: 800;
-      overflow: hidden;
     }
 
     .business-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
 
     .business-content {
@@ -486,66 +610,68 @@
 
     .business-category {
       display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      color: #947719;
-      background: #faf5df;
+      margin-bottom: 9px;
       padding: 5px 8px;
       border-radius: 5px;
-      margin-bottom: 10px;
+      background: #faf5df;
+      color: #947719;
+      font-size: 11px;
+      font-weight: 800;
     }
 
     .business-name {
+      margin-bottom: 6px;
+      color: #111;
       font-size: 18px;
       font-weight: 800;
-      margin-bottom: 7px;
     }
 
     .business-location {
+      margin-bottom: 11px;
       color: #666;
       font-size: 13px;
-      margin-bottom: 12px;
     }
 
     .business-description {
+      display: -webkit-box;
+      overflow: hidden;
+      margin-bottom: 14px;
       color: #555;
       font-size: 13px;
-      display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
-      overflow: hidden;
-      margin-bottom: 15px;
     }
 
     .business-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 7px;
+      gap: 6px;
       margin-bottom: 15px;
     }
 
     .badge {
-      font-size: 11px;
       padding: 4px 7px;
       border-radius: 5px;
       background: #f1f1f1;
       color: #555;
+      font-size: 10px;
+      font-weight: 700;
     }
 
-    .verified {
+    .badge.verified {
       background: #edf8ee;
       color: #23752d;
     }
 
-    .claimed {
+    .badge.claimed {
       background: #eef4ff;
       color: #315d9d;
     }
 
-    .distance-badge {
+    .badge.distance-badge {
       background: #faf5df;
       color: #705a13;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .business-actions {
@@ -555,23 +681,24 @@
 
     .business-action {
       flex: 1;
-      text-align: center;
       padding: 9px 10px;
-      border-radius: 7px;
-      font-size: 12px;
-      font-weight: 700;
       border: 1px solid #ddd;
-      background: white;
+      border-radius: 7px;
+      background: #fff;
+      color: #222;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 800;
     }
 
     .business-action.primary {
-      background: #111;
-      color: white;
       border-color: #111;
+      background: #111;
+      color: #fff;
     }
 
     .business-action:hover {
-      opacity: 0.85;
+      opacity: 0.82;
     }
 
     /* =====================================================
@@ -580,11 +707,11 @@
 
     .empty-state {
       display: none;
-      text-align: center;
-      background: white;
+      padding: 60px 20px;
       border: 1px solid #e5e5e5;
       border-radius: 14px;
-      padding: 60px 20px;
+      background: #fff;
+      text-align: center;
     }
 
     .empty-state.visible {
@@ -592,12 +719,13 @@
     }
 
     .empty-icon {
+      margin-bottom: 14px;
       font-size: 42px;
-      margin-bottom: 15px;
     }
 
     .empty-state h3 {
-      margin-bottom: 8px;
+      margin-bottom: 7px;
+      color: #111;
     }
 
     .empty-state p {
@@ -611,31 +739,32 @@
 
     .pagination {
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 34px;
+      gap: 7px;
+      margin-top: 32px;
     }
 
     .pagination button {
       min-width: 40px;
       height: 40px;
-      padding: 0 12px;
+      padding: 0 11px;
       border: 1px solid #ddd;
-      background: white;
       border-radius: 7px;
-      font-weight: 600;
-    }
-
-    .pagination button:hover:not(:disabled) {
-      border-color: #111;
+      background: #fff;
+      color: #222;
+      font-weight: 700;
     }
 
     .pagination button.active {
-      background: #111;
-      color: white;
       border-color: #111;
+      background: #111;
+      color: #fff;
+    }
+
+    .pagination button:hover:not(:disabled) {
+      border-color: #d4af37;
     }
 
     .pagination button:disabled {
@@ -643,26 +772,85 @@
     }
 
     /* =====================================================
+       OWNER CTA
+    ===================================================== */
+
+    .owner-cta {
+      margin-top: 50px;
+      padding: 38px 25px;
+      border-radius: 16px;
+      background: #111;
+      color: #fff;
+      text-align: center;
+    }
+
+    .owner-cta h2 {
+      margin-bottom: 9px;
+      font-size: 28px;
+    }
+
+    .owner-cta p {
+      max-width: 650px;
+      margin: 0 auto 20px;
+      color: #bdbdbd;
+      font-size: 14px;
+    }
+
+    .owner-cta-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .owner-cta-actions a {
+      display: inline-block;
+      padding: 11px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .owner-primary {
+      background: #d4af37;
+      color: #111;
+    }
+
+    .owner-secondary {
+      border: 1px solid #555;
+      color: #fff;
+    }
+
+    /* =====================================================
        FOOTER
     ===================================================== */
 
-    footer {
+    .explore-footer {
       border-top: 1px solid #e5e5e5;
-      background: white;
+      background: #fff;
       padding: 35px 16px;
     }
 
-    .footer-inner {
+    .explore-footer-inner {
       width: min(1200px, 100%);
-      margin: auto;
+      margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 20px;
     }
 
-    .footer-brand {
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       font-weight: 800;
+    }
+
+    .footer-logo img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
     }
 
     .footer-copy {
@@ -674,15 +862,12 @@
        RTL
     ===================================================== */
 
-    html[dir="rtl"] body {
-      text-align: right;
-    }
-
-    html[dir="rtl"] .brand {
+    html[dir="rtl"] .explore-brand {
       flex-direction: row-reverse;
     }
 
-    html[dir="rtl"] .location-bar,
+    html[dir="rtl"] .explore-main-nav,
+    html[dir="rtl"] .explore-location-bar,
     html[dir="rtl"] .business-actions,
     html[dir="rtl"] .business-meta {
       direction: rtl;
@@ -692,46 +877,76 @@
        RESPONSIVE
     ===================================================== */
 
-    @media (max-width: 1000px) {
-
-      .filters {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    @media (max-width: 1050px) {
+      .category-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
       }
 
       .business-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      nav.main-nav {
+      .explore-main-nav {
         gap: 13px;
       }
-
     }
 
-    @media (max-width: 750px) {
-
-      .nav {
-        min-height: 62px;
-      }
-
-      nav.main-nav {
+    @media (max-width: 800px) {
+      .explore-main-nav {
         display: none;
       }
 
-      .mobile-menu-button {
+      .explore-mobile-button {
         display: block;
-      }
-
-      .language-control {
         margin-left: auto;
       }
 
-      .hero {
-        padding-top: 40px;
+      .explore-language {
+        margin-left: auto;
       }
 
-      .search-area {
+      .area-controls {
         grid-template-columns: 1fr;
+      }
+
+      .filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .category-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .explore-nav {
+        min-height: 62px;
+        width: min(100% - 20px, 1200px);
+      }
+
+      .explore-brand {
+        font-size: 18px;
+      }
+
+      .explore-brand img {
+        width: 34px;
+        height: 34px;
+      }
+
+      .explore-hero {
+        padding: 46px 16px 44px;
+      }
+
+      .explore-search {
+        grid-template-columns: 1fr;
+      }
+
+      .explore-search button {
+        width: 100%;
+      }
+
+      .category-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .filters {
@@ -740,85 +955,67 @@
 
       .business-grid {
         grid-template-columns: 1fr;
+      }
+
+      .explore-section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 7px;
       }
 
       .results-header {
         align-items: flex-start;
         flex-direction: column;
-        gap: 8px;
       }
 
-      .location-bar {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .footer-inner {
+      .explore-footer-inner {
         flex-direction: column;
         align-items: flex-start;
       }
-
     }
 
-    @media (max-width: 450px) {
-
-      .nav {
-        width: min(100% - 20px, 1200px);
-        gap: 8px;
+    @media (max-width: 400px) {
+      .category-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
       }
 
-      .brand {
-        font-size: 18px;
+      .category-card {
+        min-height: 100px;
       }
 
-      .brand-mark {
-        width: 32px;
-        height: 32px;
-      }
-
-      .language-control select {
-        max-width: 105px;
-      }
-
-      main {
+      .explore-main {
         width: min(100% - 20px, 1200px);
       }
-
     }
   </style>
 </head>
 
-<body>
+<body class="explore-page">
 
   <!-- =====================================================
        HEADER
   ====================================================== -->
 
-  <header>
+  <header class="explore-header">
 
-    <div class="nav">
+    <div class="explore-nav">
 
       <a
         href="index.html"
-        class="brand"
+        class="explore-brand"
       >
-
-        <span class="brand-mark">
-          N
-        </span>
-
-        <span>
-          NearAfrica
-        </span>
-
+        <img
+          src="logo.png"
+          alt="NearAfrica"
+        >
+        <span>NearAfrica</span>
       </a>
 
-
       <nav
-        class="main-nav"
+        class="explore-main-nav"
         aria-label="Main navigation"
       >
-
         <a
           href="index.html"
           data-i18n="nav.home"
@@ -854,50 +1051,27 @@
         >
           Contact
         </a>
-
       </nav>
 
-
-      <div class="language-control">
-
-        <span aria-hidden="true">
-          🌐
-        </span>
+      <div class="explore-language">
+        <span aria-hidden="true">🌐</span>
 
         <select
           id="languageSelector"
           data-language-selector
           aria-label="Language"
         >
-
-          <option value="en">
-            English
-          </option>
-
-          <option value="fr">
-            Français
-          </option>
-
-          <option value="ar">
-            العربية
-          </option>
-
-          <option value="pt">
-            Português
-          </option>
-
-          <option value="sw">
-            Kiswahili
-          </option>
-
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="ar">العربية</option>
+          <option value="pt">Português</option>
+          <option value="sw">Kiswahili</option>
         </select>
-
       </div>
-
 
       <button
         id="mobileMenuButton"
-        class="mobile-menu-button"
+        class="explore-mobile-button"
         type="button"
         aria-label="Open menu"
         aria-expanded="false"
@@ -907,16 +1081,12 @@
 
     </div>
 
-
-    <div
+    <nav
       id="mobileNav"
-      class="mobile-nav"
+      class="explore-mobile-nav"
+      aria-label="Mobile navigation"
     >
-
-      <a
-        href="index.html"
-        data-i18n="nav.home"
-      >
+      <a href="index.html" data-i18n="nav.home">
         Home
       </a>
 
@@ -948,19 +1118,22 @@
       >
         Contact
       </a>
-
-    </div>
+    </nav>
 
   </header>
 
 
   <!-- =====================================================
-       HERO
+       HERO / SEARCH
   ====================================================== -->
 
-  <section class="hero">
+  <section class="explore-hero">
 
-    <div class="hero-inner">
+    <div class="explore-hero-inner">
+
+      <div class="explore-eyebrow">
+        NEARAFRICA
+      </div>
 
       <h1 data-i18n="explore.title">
         Explore Businesses
@@ -968,30 +1141,22 @@
 
       <p data-i18n="explore.subtitle">
         Discover businesses, services, shops, restaurants,
-        hotels and more. Search by name, category,
-        location, or use your current location to find
-        nearby businesses.
+        hotels and more. Search by name, category or
+        location, or find businesses near you.
       </p>
 
+      <div class="explore-search">
 
-      <div class="search-area">
-
-        <div class="search-box">
-
-          <input
-            id="searchInput"
-            type="search"
-            data-i18n-placeholder="search.searchPlaceholder"
-            placeholder="Search businesses, services or locations..."
-            autocomplete="off"
-          >
-
-        </div>
-
+        <input
+          id="searchInput"
+          type="search"
+          autocomplete="off"
+          placeholder="Search businesses, services or locations..."
+          data-i18n-placeholder="search.searchPlaceholder"
+        >
 
         <button
           id="searchButton"
-          class="search-button"
           type="button"
           data-i18n="search.search"
         >
@@ -1000,22 +1165,20 @@
 
       </div>
 
-
-      <div class="location-bar">
+      <div class="explore-location-bar">
 
         <button
           id="useLocationButton"
-          class="location-button"
+          class="explore-location-button"
           type="button"
           data-i18n="search.useMyLocation"
         >
           📍 Use My Location
         </button>
 
-
         <button
           id="clearLocationButton"
-          class="location-button"
+          class="explore-location-button"
           type="button"
           hidden
           data-i18n="explore.clearLocation"
@@ -1023,10 +1186,9 @@
           Clear Location
         </button>
 
-
         <span
           id="locationStatus"
-          class="location-status"
+          class="explore-location-status"
           aria-live="polite"
           data-i18n="search.locationUnavailable"
         >
@@ -1044,162 +1206,1020 @@
        MAIN
   ====================================================== -->
 
-  <main>
+  <main class="explore-main">
 
-    <!-- FILTERS -->
 
-    <section class="filter-panel">
+    <!-- ===================================================
+         BROWSE CATEGORIES
+    ==================================================== -->
 
-      <div
-        class="filter-title"
-        data-i18n="explore.filters"
-      >
-        Filter businesses
+    <section class="explore-section">
+
+      <div class="explore-section-heading">
+
+        <div>
+          <h2 data-i18n="explore.category">
+            Browse by Category
+          </h2>
+
+          <p>
+            Find businesses by what they offer.
+          </p>
+        </div>
+
+        <a
+          href="#business-results"
+          class="explore-section-link"
+        >
+          View all businesses →
+        </a>
+
       </div>
 
 
-      <div class="filters">
+      <div class="category-grid">
 
-        <!-- CATEGORY -->
-
-        <div class="filter-group">
-
-          <label
-            for="categoryFilter"
-            data-i18n="explore.category"
+        <a
+          href="explore.html?category=Restaurants%20%26%20Food"
+          class="category-card"
+        >
+          <span class="category-icon">🍽️</span>
+          <span
+            class="category-name"
+            data-i18n="categories.restaurants"
           >
-            Category
-          </label>
+            Restaurants & Food
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Hotels%20%26%20Accommodation"
+          class="category-card"
+        >
+          <span class="category-icon">🏨</span>
+          <span
+            class="category-name"
+            data-i18n="categories.hotels"
+          >
+            Hotels & Accommodation
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Beauty%20%26%20Spa"
+          class="category-card"
+        >
+          <span class="category-icon">💆</span>
+          <span
+            class="category-name"
+            data-i18n="categories.beauty"
+          >
+            Beauty & Spa
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Health%20%26%20Medical"
+          class="category-card"
+        >
+          <span class="category-icon">🏥</span>
+          <span
+            class="category-name"
+            data-i18n="categories.health"
+          >
+            Health & Medical
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Shopping%20%26%20Retail"
+          class="category-card"
+        >
+          <span class="category-icon">🛍️</span>
+          <span
+            class="category-name"
+            data-i18n="categories.shopping"
+          >
+            Shopping & Retail
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Supermarkets"
+          class="category-card"
+        >
+          <span class="category-icon">🛒</span>
+          <span
+            class="category-name"
+            data-i18n="categories.supermarkets"
+          >
+            Supermarkets
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Banks%20%26%20Finance"
+          class="category-card"
+        >
+          <span class="category-icon">🏦</span>
+          <span
+            class="category-name"
+            data-i18n="categories.banks"
+          >
+            Banks & Finance
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Professional%20Services"
+          class="category-card"
+        >
+          <span class="category-icon">💼</span>
+          <span
+            class="category-name"
+            data-i18n="categories.professional"
+          >
+            Professional Services
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Education"
+          class="category-card"
+        >
+          <span class="category-icon">🎓</span>
+          <span
+            class="category-name"
+            data-i18n="categories.education"
+          >
+            Education
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Real%20Estate"
+          class="category-card"
+        >
+          <span class="category-icon">🏠</span>
+          <span
+            class="category-name"
+            data-i18n="categories.realEstate"
+          >
+            Real Estate
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Automotive"
+          class="category-card"
+        >
+          <span class="category-icon">🚗</span>
+          <span
+            class="category-name"
+            data-i18n="categories.automotive"
+          >
+            Automotive
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Travel%20%26%20Tourism"
+          class="category-card"
+        >
+          <span class="category-icon">✈️</span>
+          <span
+            class="category-name"
+            data-i18n="categories.travel"
+          >
+            Travel & Tourism
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Logistics%20%26%20Delivery"
+          class="category-card"
+        >
+          <span class="category-icon">🚚</span>
+          <span
+            class="category-name"
+            data-i18n="categories.logistics"
+          >
+            Logistics & Delivery
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Technology"
+          class="category-card"
+        >
+          <span class="category-icon">💻</span>
+          <span
+            class="category-name"
+            data-i18n="categories.technology"
+          >
+            Technology
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Entertainment"
+          class="category-card"
+        >
+          <span class="category-icon">🎬</span>
+          <span
+            class="category-name"
+            data-i18n="categories.entertainment"
+          >
+            Entertainment
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Gyms%20%26%20Fitness"
+          class="category-card"
+        >
+          <span class="category-icon">🏋️</span>
+          <span
+            class="category-name"
+            data-i18n="categories.gyms"
+          >
+            Gyms & Fitness
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Fitness%20%26%20Sports"
+          class="category-card"
+        >
+          <span class="category-icon">⚽</span>
+          <span
+            class="category-name"
+            data-i18n="categories.fitness"
+          >
+            Fitness & Sports
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Construction%20%26%20Home%20Services"
+          class="category-card"
+        >
+          <span class="category-icon">🔨</span>
+          <span
+            class="category-name"
+            data-i18n="categories.construction"
+          >
+            Construction & Home Services
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Fashion"
+          class="category-card"
+        >
+          <span class="category-icon">👗</span>
+          <span
+            class="category-name"
+            data-i18n="categories.fashion"
+          >
+            Fashion
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Agriculture"
+          class="category-card"
+        >
+          <span class="category-icon">🌱</span>
+          <span
+            class="category-name"
+            data-i18n="categories.agriculture"
+          >
+            Agriculture
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Religious%20Organizations"
+          class="category-card"
+        >
+          <span class="category-icon">⛪</span>
+          <span
+            class="category-name"
+            data-i18n="categories.religious"
+          >
+            Religious Organizations
+          </span>
+        </a>
+
+        <a
+          href="explore.html?category=Government%20%26%20Public%20Services"
+          class="category-card"
+        >
+          <span class="category-icon">🏛️</span>
+          <span
+            class="category-name"
+            data-i18n="categories.government"
+          >
+            Government & Public Services
+          </span>
+        </a>
+
+      </div>
+
+    </section>
 
 
-          <select id="categoryFilter">
+    <!-- ===================================================
+         BROWSE BY AREA
+    ==================================================== -->
 
-            <option
-              value=""
-              data-i18n="explore.allCategories"
+    <section class="explore-section">
+
+      <div class="explore-section-heading">
+
+        <div>
+          <h2>
+            Browse by Area
+          </h2>
+
+          <p>
+            Start broad with a country, state, or city.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="area-panel">
+
+        <div class="area-panel-heading">
+
+          <h3>
+            Find businesses where you need them
+          </h3>
+
+          <p>
+            Choose a location or use your current location
+            for nearby discovery.
+          </p>
+
+        </div>
+
+
+        <div class="area-controls">
+
+          <div class="area-control">
+
+            <label for="countryFilter">
+              Country
+            </label>
+
+            <select id="countryFilter">
+
+              <option value="">
+                All countries
+              </option>
+
+              <option value="Nigeria">
+                Nigeria
+              </option>
+
+              <option value="Ghana">
+                Ghana
+              </option>
+
+              <option value="South Africa">
+                South Africa
+              </option>
+
+              <option value="Kenya">
+                Kenya
+              </option>
+
+              <option value="Uganda">
+                Uganda
+              </option>
+
+              <option value="Tanzania">
+                Tanzania
+              </option>
+
+              <option value="Rwanda">
+                Rwanda
+              </option>
+
+              <option value="Egypt">
+                Egypt
+              </option>
+
+              <option value="Morocco">
+                Morocco
+              </option>
+
+              <option value="Ethiopia">
+                Ethiopia
+              </option>
+
+              <option value="Senegal">
+                Senegal
+              </option>
+
+              <option value="Cameroon">
+                Cameroon
+              </option>
+
+              <option value="Zambia">
+                Zambia
+              </option>
+
+              <option value="Zimbabwe">
+                Zimbabwe
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="area-control">
+
+            <label for="stateFilter">
+              State / Region
+            </label>
+
+            <select id="stateFilter">
+
+              <option value="">
+                All states / regions
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="area-control">
+
+            <label for="cityFilter">
+              City / Area
+            </label>
+
+            <select id="cityFilter">
+
+              <option value="">
+                All cities / areas
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         FILTERS
+    ==================================================== -->
+
+    <section class="explore-section">
+
+      <div class="filter-panel">
+
+        <div
+          class="filter-title"
+          data-i18n="explore.filters"
+        >
+          Filter businesses
+        </div>
+
+
+        <div class="filters">
+
+          <div class="filter-group">
+
+            <label
+              for="categoryFilter"
+              data-i18n="explore.category"
             >
-              All categories
-            </option>
+              Category
+            </label>
 
-            <option
-              value="Restaurants & Food"
-              data-i18n="categories.restaurants"
-            >
-              Restaurants & Food
-            </option>
+            <select id="categoryFilter">
 
-            <option
-              value="Hotels & Accommodation"
-              data-i18n="categories.hotels"
-            >
-              Hotels & Accommodation
-            </option>
+              <option
+                value=""
+                data-i18n="explore.allCategories"
+              >
+                All categories
+              </option>
 
-            <option
-              value="Beauty & Spa"
-              data-i18n="categories.beauty"
-            >
-              Beauty & Spa
-            </option>
+              <option value="Restaurants & Food">
+                Restaurants & Food
+              </option>
 
-            <option
-              value="Health & Medical"
-              data-i18n="categories.health"
-            >
-              Health & Medical
-            </option>
+              <option value="Hotels & Accommodation">
+                Hotels & Accommodation
+              </option>
 
-            <option
-              value="Shopping & Retail"
-              data-i18n="categories.shopping"
-            >
-              Shopping & Retail
-            </option>
+              <option value="Beauty & Spa">
+                Beauty & Spa
+              </option>
 
-            <option
-              value="Supermarkets"
-              data-i18n="categories.supermarkets"
-            >
-              Supermarkets
-            </option>
+              <option value="Health & Medical">
+                Health & Medical
+              </option>
 
-            <option
-              value="Banks & Finance"
-              data-i18n="categories.banks"
-            >
-              Banks & Finance
-            </option>
+              <option value="Shopping & Retail">
+                Shopping & Retail
+              </option>
 
-            <option
-              value="Professional Services"
-              data-i18n="categories.professional"
-            >
-              Professional Services
-            </option>
+              <option value="Supermarkets">
+                Supermarkets
+              </option>
 
-            <option
-              value="Education"
-              data-i18n="categories.education"
-            >
-              Education
-            </option>
+              <option value="Banks & Finance">
+                Banks & Finance
+              </option>
 
-            <option
-              value="Real Estate"
-              data-i18n="categories.realEstate"
-            >
-              Real Estate
-            </option>
+              <option value="Professional Services">
+                Professional Services
+              </option>
 
-            <option
-              value="Automotive"
-              data-i18n="categories.automotive"
-            >
-              Automotive
-            </option>
+              <option value="Education">
+                Education
+              </option>
 
-            <option
-              value="Travel & Tourism"
-              data-i18n="categories.travel"
-            >
-              Travel & Tourism
-            </option>
+              <option value="Real Estate">
+                Real Estate
+              </option>
 
-            <option
-              value="Logistics & Delivery"
-              data-i18n="categories.logistics"
-            >
-              Logistics & Delivery
-            </option>
+              <option value="Automotive">
+                Automotive
+              </option>
 
-            <option
-              value="Technology"
-              data-i18n="categories.technology"
-            >
-              Technology
-            </option>
+              <option value="Travel & Tourism">
+                Travel & Tourism
+              </option>
 
-            <option
-              value="Entertainment"
-              data-i18n="categories.entertainment"
-            >
-              Entertainment
-            </option>
+              <option value="Logistics & Delivery">
+                Logistics & Delivery
+              </option>
 
-            <option
-              value="Gyms & Fitness"
-              data-i18n="categories.gyms"
-            >
-              Gyms & Fitness
-            </option>
+              <option value="Technology">
+                Technology
+              </option>
 
-            <option
-              value="Fitness & Sports"
-              data-i18n="categories.fitness"
-            >
-              Fitness & Sports
-            </option>
+              <option value="Entertainment">
+                Entertainment
+              </option>
 
-            <option
-              value="Construction & Home Services"
-              data-i18n="categories.con
+              <option value="Gyms & Fitness">
+                Gyms & Fitness
+              </option>
+
+              <option value="Fitness & Sports">
+                Fitness & Sports
+              </option>
+
+              <option value="Construction & Home Services">
+                Construction & Home Services
+              </option>
+
+              <option value="Fashion">
+                Fashion
+              </option>
+
+              <option value="Agriculture">
+                Agriculture
+              </option>
+
+              <option value="Religious Organizations">
+                Religious Organizations
+              </option>
+
+              <option value="Government & Public Services">
+                Government & Public Services
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="filter-group">
+
+            <label for="countryFilterSecondary">
+              Country
+            </label>
+
+            <select id="countryFilterSecondary">
+
+              <option value="">
+                All countries
+              </option>
+
+              <option value="Nigeria">
+                Nigeria
+              </option>
+
+              <option value="Ghana">
+                Ghana
+              </option>
+
+              <option value="South Africa">
+                South Africa
+              </option>
+
+              <option value="Kenya">
+                Kenya
+              </option>
+
+              <option value="Uganda">
+                Uganda
+              </option>
+
+              <option value="Tanzania">
+                Tanzania
+              </option>
+
+              <option value="Rwanda">
+                Rwanda
+              </option>
+
+              <option value="Egypt">
+                Egypt
+              </option>
+
+              <option value="Morocco">
+                Morocco
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="filter-group">
+
+            <label for="sortFilter">
+              Sort by
+            </label>
+
+            <select id="sortFilter">
+
+              <option value="default">
+                Recommended
+              </option>
+
+              <option value="nearest">
+                Nearest first
+              </option>
+
+              <option value="name">
+                Name
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="filter-group">
+
+            <label for="radiusFilter">
+              Nearby radius
+            </label>
+
+            <select id="radiusFilter">
+
+              <option value="5">
+                5 km
+              </option>
+
+              <option value="10">
+                10 km
+              </option>
+
+              <option value="25" selected>
+                25 km
+              </option>
+
+              <option value="50">
+                50 km
+              </option>
+
+              <option value="100">
+                100 km
+              </option>
+
+              <option value="250">
+                250 km
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         BUSINESS RESULTS
+    ==================================================== -->
+
+    <section
+      id="business-results"
+      class="explore-section"
+    >
+
+      <div class="results-header">
+
+        <div class="results-title">
+
+          <h2>
+            Businesses
+          </h2>
+
+          <div
+            id="resultCount"
+            class="result-count"
+          >
+            Discover businesses near you.
+          </div>
+
+        </div>
+
+
+        <div
+          id="nearbyIndicator"
+          class="nearby-indicator"
+        >
+          📍 Nearby businesses
+        </div>
+
+      </div>
+
+
+      <div
+        id="status"
+        class="status"
+        aria-live="polite"
+      ></div>
+
+
+      <div
+        id="business-list"
+        class="business-grid"
+      >
+      </div>
+
+
+      <div
+        id="empty-state"
+        class="empty-state"
+      >
+
+        <div class="empty-icon">
+          🔎
+        </div>
+
+        <h3>
+          No businesses found
+        </h3>
+
+        <p>
+          Try a different search, category, or location.
+        </p>
+
+      </div>
+
+
+      <div
+        id="pagination"
+        class="pagination"
+        aria-label="Business pages"
+      >
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         BUSINESS OWNER CTA
+    ==================================================== -->
+
+    <section class="owner-cta">
+
+      <h2>
+        Own a business?
+      </h2>
+
+      <p>
+        Add your business to NearAfrica or claim an existing
+        listing so customers can discover and connect with you.
+      </p>
+
+      <div class="owner-cta-actions">
+
+        <a
+          href="list-business.html"
+          class="owner-primary"
+          data-i18n="nav.listBusiness"
+        >
+          List Your Business
+        </a>
+
+        <a
+          href="claim-business.html"
+          class="owner-secondary"
+          data-i18n="nav.claimBusiness"
+        >
+          Claim Business
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
+  <footer class="explore-footer">
+
+    <div class="explore-footer-inner">
+
+      <div class="footer-logo">
+
+        <img
+          src="logo.png"
+          alt="NearAfrica"
+        >
+
+        <span>
+          NearAfrica
+        </span>
+
+      </div>
+
+      <div class="footer-copy">
+        © 2026 NearAfrica. Find Great Businesses Near You.
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =====================================================
+       SCRIPTS
+  ====================================================== -->
+
+  <script src="js/config.js"></script>
+  <script src="js/translations.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/app.js"></script>
+
+
+  <!-- =====================================================
+       EXPLORE PAGE HELPERS
+  ====================================================== -->
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+      /*
+       * Mobile navigation
+       */
+
+      const mobileButton =
+        document.getElementById("mobileMenuButton");
+
+      const mobileNav =
+        document.getElementById("mobileNav");
+
+      if (mobileButton && mobileNav) {
+
+        mobileButton.addEventListener("click", function () {
+
+          const isOpen =
+            mobileNav.classList.toggle("open");
+
+          mobileButton.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+          );
+
+        });
+
+      }
+
+
+      /*
+       * Keep the two country selectors synchronized.
+       */
+
+      const countryFilter =
+        document.getElementById("countryFilter");
+
+      const countryFilterSecondary =
+        document.getElementById(
+          "countryFilterSecondary"
+        );
+
+      if (
+        countryFilter &&
+        countryFilterSecondary
+      ) {
+
+        countryFilter.addEventListener(
+          "change",
+          function () {
+
+            countryFilterSecondary.value =
+              countryFilter.value;
+
+          }
+        );
+
+        countryFilterSecondary.addEventListener(
+          "change",
+          function () {
+
+            countryFilter.value =
+              countryFilterSecondary.value;
+
+          }
+        );
+
+      }
+
+
+      /*
+       * Category cards send the category through the URL.
+       * app.js can then use the URL when loading results.
+       */
+
+      const params =
+        new URLSearchParams(window.location.search);
+
+      const category =
+        params.get("category");
+
+      const search =
+        params.get("search");
+
+      const location =
+        params.get("location");
+
+      const searchInput =
+        document.getElementById("searchInput");
+
+      const categoryFilter =
+        document.getElementById("categoryFilter");
+
+      if (searchInput && search) {
+        searchInput.value = search;
+      }
+
+      if (categoryFilter && category) {
+        categoryFilter.value = category;
+      }
+
+      /*
+       * If a location was supplied in the URL,
+       * put it into the search field when no search
+       * term is already present.
+       */
+
+      if (
+        searchInput &&
+        location &&
+        !searchInput.value
+      ) {
+        searchInput.value = location;
+      }
+
+    });
+  </script>
+
+</body>
+          </html>
