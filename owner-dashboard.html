@@ -1385,13 +1385,112 @@
 
   <script>
 
+    /*
+      ============================================================
+      NEARAFRICA OWNER DASHBOARD
+      ============================================================
+
+      Session persistence:
+      - Backend owner session: 30 days
+      - Frontend token storage: localStorage
+      - Session automatically restored on page reload
+      - 401 responses automatically clear the stored session
+
+      IMPORTANT:
+      The token is an authentication credential. This dashboard
+      stores it in localStorage so the owner does not have to log
+      in again every time the page is refreshed.
+    */
+
+
     const API_BASE =
       "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+
+
+    const OWNER_TOKEN_STORAGE_KEY =
+      "nearafrica_owner_token";
 
 
     let ownerToken = null;
     let currentBusiness = null;
 
+
+    /*
+      ============================================================
+      DOM ELEMENTS
+      ============================================================
+    */
+
+
+    const loginSection =
+      document.getElementById("loginSection");
+
+    const dashboardSection =
+      document.getElementById("dashboardSection");
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const loginStatus =
+      document.getElementById("loginStatus");
+
+    const dashboardStatus =
+      document.getElementById("dashboardStatus");
+
+    const saveButton =
+      document.getElementById("saveButton");
+
+    const publicProfileButton =
+      document.getElementById("publicProfileButton");
+
+    const logoutButton =
+      document.getElementById("logoutButton");
+
+    const businessImage =
+      document.getElementById("businessImage");
+
+    const imageType =
+      document.getElementById("imageType");
+
+    const uploadImageButton =
+      document.getElementById("uploadImageButton");
+
+    const imageStatus =
+      document.getElementById("imageStatus");
+
+    const imageGallery =
+      document.getElementById("imageGallery");
+
+
+    /*
+      ANALYTICS ELEMENTS
+    */
+
+    const analyticsStatus =
+      document.getElementById("analyticsStatus");
+
+    const analyticsTotalViews =
+      document.getElementById("analyticsTotalViews");
+
+    const analyticsToday =
+      document.getElementById("analyticsToday");
+
+    const analytics7Days =
+      document.getElementById("analytics7Days");
+
+    const analytics30Days =
+      document.getElementById("analytics30Days");
+
+    const refreshAnalyticsButton =
+      document.getElementById("refreshAnalyticsButton");
+
+
+    /*
+      OPENING HOURS ELEMENTS
+    */
 
     const hoursEditor =
       document.getElementById("hoursEditor");
@@ -1401,6 +1500,414 @@
 
     const saveHoursButton =
       document.getElementById("saveHoursButton");
+
+
+    /*
+      PRODUCTS ELEMENTS
+    */
+
+    const addProductButton =
+      document.getElementById(
+        "addProductButton"
+      );
+
+    const productsStatus =
+      document.getElementById(
+        "productsStatus"
+      );
+
+    const productsList =
+      document.getElementById(
+        "productsList"
+      );
+
+
+    /*
+      ============================================================
+      GENERAL UI HELPERS
+      ============================================================
+    */
+
+
+    function showStatus(
+      element,
+      message,
+      type
+    ) {
+
+      if (!element) {
+        return;
+      }
+
+
+      element.textContent =
+        message;
+
+
+      element.className =
+        "status show " + type;
+
+    }
+
+
+    function hideStatus(element) {
+
+      if (!element) {
+        return;
+      }
+
+
+      element.textContent = "";
+      element.className = "status";
+
+    }
+
+
+    function setDashboardValue(
+      id,
+      value
+    ) {
+
+      const element =
+        document.getElementById(id);
+
+
+      if (!element) {
+        return;
+      }
+
+
+      element.textContent =
+        value || "—";
+
+    }
+
+
+    /*
+      ============================================================
+      OWNER SESSION MANAGEMENT
+      ============================================================
+    */
+
+
+    function saveOwnerToken(token) {
+
+      if (!token) {
+        return;
+      }
+
+
+      try {
+
+        localStorage.setItem(
+          OWNER_TOKEN_STORAGE_KEY,
+          token
+        );
+
+      } catch(error) {
+
+        console.warn(
+          "Unable to persist owner session:",
+          error
+        );
+
+      }
+
+    }
+
+
+    function getStoredOwnerToken() {
+
+      try {
+
+        return localStorage.getItem(
+          OWNER_TOKEN_STORAGE_KEY
+        );
+
+      } catch(error) {
+
+        console.warn(
+          "Unable to read stored owner session:",
+          error
+        );
+
+        return null;
+
+      }
+
+    }
+
+
+    function clearStoredOwnerToken() {
+
+      try {
+
+        localStorage.removeItem(
+          OWNER_TOKEN_STORAGE_KEY
+        );
+
+      } catch(error) {
+
+        console.warn(
+          "Unable to clear stored owner session:",
+          error
+        );
+
+      }
+
+    }
+
+
+    /*
+      Called when the API tells us the owner session is no longer
+      valid.
+
+      We intentionally clear the token here because a 401 means
+      the frontend should not continue using the current session.
+    */
+
+    function handleOwnerUnauthorized() {
+
+      clearStoredOwnerToken();
+
+      ownerToken = null;
+      currentBusiness = null;
+
+      resetDashboard();
+
+
+      showStatus(
+        loginStatus,
+        "Your owner session has expired. Please log in again.",
+        "error"
+      );
+
+    }
+
+
+    /*
+      ============================================================
+      CENTRAL OWNER API REQUEST HELPER
+      ============================================================
+
+      Every authenticated owner request goes through this helper.
+
+      Benefits:
+      - Automatically adds Authorization header
+      - Handles 401 consistently
+      - Reduces repeated authentication code
+    */
+
+
+    async function ownerFetch(
+      path,
+      options = {}
+    ) {
+
+      if (!ownerToken) {
+
+        throw new Error(
+          "Owner session is missing."
+        );
+
+      }
+
+
+      const requestOptions = {
+        ...options
+      };
+
+
+      const headers =
+        new Headers(
+          options.headers || {}
+        );
+
+
+      headers.set(
+        "Authorization",
+        "Bearer " + ownerToken
+      );
+
+
+      requestOptions.headers =
+        headers;
+
+
+      const response =
+        await fetch(
+          API_BASE + path,
+          requestOptions
+        );
+
+
+      if (
+        response.status === 401
+      ) {
+
+        handleOwnerUnauthorized();
+
+
+        throw new Error(
+          "Your owner session has expired. Please log in again."
+        );
+
+      }
+
+
+      return response;
+
+    }
+
+
+    /*
+      ============================================================
+      RESTORE OWNER SESSION
+      ============================================================
+    */
+
+
+    async function restoreOwnerSession() {
+
+      const storedToken =
+        getStoredOwnerToken();
+
+
+      if (!storedToken) {
+        return false;
+      }
+
+
+      ownerToken =
+        storedToken;
+
+
+      showStatus(
+        loginStatus,
+        "Restoring your owner session...",
+        "info"
+      );
+
+
+      loginButton.disabled = true;
+      loginButton.textContent =
+        "Restoring...";
+
+
+      try {
+
+        /*
+          First request validates the stored token.
+          We do this before showing the dashboard.
+        */
+
+        await loadOwnerBusiness();
+
+
+        /*
+          The token is valid, so load the remaining
+          owner dashboard data.
+        */
+
+        await Promise.all([
+          loadOwnerImages(),
+          loadOwnerHours(),
+          loadOwnerProducts(),
+          loadOwnerAnalytics()
+        ]);
+
+
+        loginSection.classList.add(
+          "hidden"
+        );
+
+        dashboardSection.classList.remove(
+          "hidden"
+        );
+
+
+        hideStatus(
+          loginStatus
+        );
+
+
+        return true;
+
+
+      } catch(error) {
+
+        console.error(
+          "Owner session restoration failed:",
+          error
+        );
+
+
+        /*
+          ownerFetch already handles a real 401.
+          For any other failure we also avoid leaving
+          the dashboard in a half-authenticated state.
+        */
+
+        if (ownerToken) {
+
+          clearStoredOwnerToken();
+
+          ownerToken = null;
+          currentBusiness = null;
+
+        }
+
+
+        dashboardSection.classList.add(
+          "hidden"
+        );
+
+        loginSection.classList.remove(
+          "hidden"
+        );
+
+
+        if (
+          error &&
+          error.message
+        ) {
+
+          showStatus(
+            loginStatus,
+            error.message,
+            "error"
+          );
+
+        } else {
+
+          showStatus(
+            loginStatus,
+            "Unable to restore your owner session. Please log in again.",
+            "error"
+          );
+
+        }
+
+
+        return false;
+
+
+      } finally {
+
+        loginButton.disabled = false;
+        loginButton.textContent =
+          "Login";
+
+      }
+
+    }
+
+
+    /*
+      ============================================================
+      OPENING HOURS
+      ============================================================
+    */
 
 
     const DAYS_OF_WEEK = [
@@ -1548,11 +2055,15 @@
           `;
 
 
-          if (Number(item.is_closed) === 1) {
+          if (
+            Number(item.is_closed) === 1
+          ) {
 
             status.value = "closed";
 
-          } else if (Number(item.is_24_hours) === 1) {
+          } else if (
+            Number(item.is_24_hours) === 1
+          ) {
 
             status.value = "24";
 
@@ -1567,20 +2078,28 @@
             document.createElement("input");
 
           opening.type = "time";
-          opening.dataset.day = String(index);
-          opening.dataset.field = "opening";
-          opening.value = item.opening_time || "";
-          opening.disabled = status.value !== "open";
+          opening.dataset.day =
+            String(index);
+          opening.dataset.field =
+            "opening";
+          opening.value =
+            item.opening_time || "";
+          opening.disabled =
+            status.value !== "open";
 
 
           const closing =
             document.createElement("input");
 
           closing.type = "time";
-          closing.dataset.day = String(index);
-          closing.dataset.field = "closing";
-          closing.value = item.closing_time || "";
-          closing.disabled = status.value !== "open";
+          closing.dataset.day =
+            String(index);
+          closing.dataset.field =
+            "closing";
+          closing.value =
+            item.closing_time || "";
+          closing.disabled =
+            status.value !== "open";
 
 
           status.addEventListener(
@@ -1631,15 +2150,10 @@
       try {
 
         const response =
-          await fetch(
-            API_BASE + "/owner/business/hours",
+          await ownerFetch(
+            "/owner/business/hours",
             {
-              method: "GET",
-
-              headers: {
-                Authorization:
-                  "Bearer " + ownerToken
-              }
+              method: "GET"
             }
           );
 
@@ -1666,7 +2180,9 @@
         );
 
 
-        hideStatus(hoursStatus);
+        hideStatus(
+          hoursStatus
+        );
 
 
       } catch(error) {
@@ -1734,7 +2250,11 @@
           );
 
 
-        if (!status || !opening || !closing) {
+        if (
+          !status ||
+          !opening ||
+          !closing
+        ) {
 
           showStatus(
             hoursStatus,
@@ -1773,30 +2293,32 @@
 
 
       saveHoursButton.disabled = true;
-      saveHoursButton.textContent = "Saving...";
+      saveHoursButton.textContent =
+        "Saving...";
 
 
-      hideStatus(hoursStatus);
+      hideStatus(
+        hoursStatus
+      );
 
 
       try {
 
         const response =
-          await fetch(
-            API_BASE + "/owner/business/hours",
+          await ownerFetch(
+            "/owner/business/hours",
             {
               method: "PATCH",
 
               headers: {
                 "Content-Type":
-                  "application/json",
-
-                Authorization:
-                  "Bearer " + ownerToken
+                  "application/json"
               },
 
               body:
-                JSON.stringify({ hours })
+                JSON.stringify({
+                  hours
+                })
             }
           );
 
@@ -1857,108 +2379,12 @@
     }
 
 
-    const loginSection =
-      document.getElementById("loginSection");
-
-    const dashboardSection =
-      document.getElementById("dashboardSection");
-
-    const loginForm =
-      document.getElementById("loginForm");
-
-    const loginButton =
-      document.getElementById("loginButton");
-
-    const loginStatus =
-      document.getElementById("loginStatus");
-
-    const dashboardStatus =
-      document.getElementById("dashboardStatus");
-
-    const saveButton =
-      document.getElementById("saveButton");
-
-    const publicProfileButton =
-      document.getElementById("publicProfileButton");
-
-    const logoutButton =
-      document.getElementById("logoutButton");
-
-    const businessImage =
-      document.getElementById("businessImage");
-
-    const imageType =
-      document.getElementById("imageType");
-
-    const uploadImageButton =
-      document.getElementById("uploadImageButton");
-
-    const imageStatus =
-      document.getElementById("imageStatus");
-
-    const imageGallery =
-      document.getElementById("imageGallery");
-
-
-    /* ANALYTICS ELEMENTS */
-
-    const analyticsStatus =
-      document.getElementById("analyticsStatus");
-
-    const analyticsTotalViews =
-      document.getElementById("analyticsTotalViews");
-
-    const analyticsToday =
-      document.getElementById("analyticsToday");
-
-    const analytics7Days =
-      document.getElementById("analytics7Days");
-
-    const analytics30Days =
-      document.getElementById("analytics30Days");
-
-    const refreshAnalyticsButton =
-      document.getElementById("refreshAnalyticsButton");
-
-
-    function showStatus(element, message, type) {
-
-      element.textContent = message;
-
-      element.className =
-        "status show " + type;
-
-    }
-
-
-    function hideStatus(element) {
-
-      element.textContent = "";
-      element.className = "status";
-
-    }
-
-
-    function setDashboardValue(id, value) {
-
-      const element =
-        document.getElementById(id);
-
-
-      if (!element) {
-        return;
-      }
-
-
-      element.textContent =
-        value || "—";
-
-    }
-
-
     /*
+      ============================================================
       OWNER ANALYTICS
+      ============================================================
     */
+
 
     async function loadOwnerAnalytics() {
 
@@ -1975,16 +2401,10 @@
       try {
 
         const response =
-          await fetch(
-            API_BASE +
+          await ownerFetch(
             "/owner/business/analytics",
             {
-              method: "GET",
-
-              headers: {
-                Authorization:
-                  "Bearer " + ownerToken
-              }
+              method: "GET"
             }
           );
 
@@ -2015,15 +2435,18 @@
             analytics.total_views || 0
           );
 
+
         const viewsToday =
           Number(
             analytics.views_today || 0
           );
 
+
         const viewsLast7Days =
           Number(
             analytics.views_last_7_days || 0
           );
+
 
         const viewsLast30Days =
           Number(
@@ -2080,6 +2503,13 @@
     }
 
 
+    /*
+      ============================================================
+      OWNER LOGIN
+      ============================================================
+    */
+
+
     async function loginOwner(event) {
 
       event.preventDefault();
@@ -2125,11 +2555,14 @@
       }
 
 
-      hideStatus(loginStatus);
+      hideStatus(
+        loginStatus
+      );
 
 
       loginButton.disabled = true;
-      loginButton.textContent = "Signing In...";
+      loginButton.textContent =
+        "Signing In...";
 
 
       try {
@@ -2187,15 +2620,43 @@
         }
 
 
+        /*
+          Persist the backend's owner token so the
+          dashboard survives page refreshes.
+        */
+
+        saveOwnerToken(
+          ownerToken
+        );
+
+
+        /*
+          Load the business first so the dashboard
+          is not shown until authentication succeeds.
+        */
+
         await loadOwnerBusiness();
-        await loadOwnerImages();
-        await loadOwnerHours();
-        await loadOwnerProducts();
-        await loadOwnerAnalytics();
 
 
-        loginSection.classList.add("hidden");
-        dashboardSection.classList.remove("hidden");
+        /*
+          Load the remaining dashboard data.
+        */
+
+        await Promise.all([
+          loadOwnerImages(),
+          loadOwnerHours(),
+          loadOwnerProducts(),
+          loadOwnerAnalytics()
+        ]);
+
+
+        loginSection.classList.add(
+          "hidden"
+        );
+
+        dashboardSection.classList.remove(
+          "hidden"
+        );
 
 
       } catch(error) {
@@ -2204,6 +2665,17 @@
           "Owner login failed:",
           error
         );
+
+
+        /*
+          If login/loading fails, do not leave a
+          potentially unusable token behind.
+        */
+
+        clearStoredOwnerToken();
+
+        ownerToken = null;
+        currentBusiness = null;
 
 
         showStatus(
@@ -2217,11 +2689,19 @@
       } finally {
 
         loginButton.disabled = false;
-        loginButton.textContent = "Login";
+        loginButton.textContent =
+          "Login";
 
       }
 
     }
+
+
+    /*
+      ============================================================
+      LOAD OWNER BUSINESS
+      ============================================================
+    */
 
 
     async function loadOwnerBusiness() {
@@ -2236,15 +2716,10 @@
 
 
       const response =
-        await fetch(
-          API_BASE + "/owner/business",
+        await ownerFetch(
+          "/owner/business",
           {
-            method: "GET",
-
-            headers: {
-              Authorization:
-                "Bearer " + ownerToken
-            }
+            method: "GET"
           }
         );
 
@@ -2277,32 +2752,44 @@
     }
 
 
-    function renderBusiness(business) {
+    function renderBusiness(
+      business
+    ) {
+
+      if (!business) {
+        return;
+      }
+
 
       setDashboardValue(
         "displayBusinessName",
         business.business_name
       );
 
+
       setDashboardValue(
         "displayCategory",
         business.category
       );
+
 
       setDashboardValue(
         "displayCountry",
         business.country
       );
 
+
       setDashboardValue(
         "displayState",
         business.state
       );
 
+
       setDashboardValue(
         "displayCity",
         business.city
       );
+
 
       setDashboardValue(
         "displayPhone",
@@ -2341,6 +2828,13 @@
         business.description || "";
 
     }
+
+
+    /*
+      ============================================================
+      SAVE BUSINESS
+      ============================================================
+    */
 
 
     async function saveBusiness() {
@@ -2388,30 +2882,32 @@
 
 
       saveButton.disabled = true;
-      saveButton.textContent = "Saving...";
+      saveButton.textContent =
+        "Saving...";
 
 
-      hideStatus(dashboardStatus);
+      hideStatus(
+        dashboardStatus
+      );
 
 
       try {
 
         const response =
-          await fetch(
-            API_BASE + "/owner/business",
+          await ownerFetch(
+            "/owner/business",
             {
               method: "PATCH",
 
               headers: {
                 "Content-Type":
-                  "application/json",
-
-                Authorization:
-                  "Bearer " + ownerToken
+                  "application/json"
               },
 
               body:
-                JSON.stringify(payload)
+                JSON.stringify(
+                  payload
+                )
             }
           );
 
@@ -2437,6 +2933,7 @@
 
           currentBusiness =
             result.business;
+
 
           renderBusiness(
             currentBusiness
@@ -2483,6 +2980,13 @@
     }
 
 
+    /*
+      ============================================================
+      OWNER IMAGES
+      ============================================================
+    */
+
+
     async function loadOwnerImages() {
 
       if (!ownerToken) {
@@ -2497,16 +3001,10 @@
       try {
 
         const response =
-          await fetch(
-            API_BASE +
+          await ownerFetch(
             "/owner/business/images",
             {
-              method: "GET",
-
-              headers: {
-                Authorization:
-                  "Bearer " + ownerToken
-              }
+              method: "GET"
             }
           );
 
@@ -2557,7 +3055,9 @@
     }
 
 
-    function renderImages(images) {
+    function renderImages(
+      images
+    ) {
 
       imageGallery.innerHTML = "";
 
@@ -2578,7 +3078,8 @@
           const card =
             document.createElement("div");
 
-          card.className = "image-card";
+          card.className =
+            "image-card";
 
 
           const preview =
@@ -2613,7 +3114,8 @@
             "image-type";
 
           type.textContent =
-            image.image_type || "gallery";
+            image.image_type ||
+            "gallery";
 
 
           const url =
@@ -2758,25 +3260,22 @@
 
 
       uploadImageButton.disabled = true;
-      uploadImageButton.textContent = "Uploading...";
+      uploadImageButton.textContent =
+        "Uploading...";
 
 
-      hideStatus(imageStatus);
+      hideStatus(
+        imageStatus
+      );
 
 
       try {
 
         const response =
-          await fetch(
-            API_BASE +
+          await ownerFetch(
             "/owner/business/images",
             {
               method: "POST",
-
-              headers: {
-                Authorization:
-                  "Bearer " + ownerToken
-              },
 
               body:
                 formData
@@ -2802,6 +3301,7 @@
 
 
         businessImage.value = "";
+
 
         await loadOwnerImages();
 
@@ -2832,6 +3332,7 @@
       } finally {
 
         uploadImageButton.disabled = false;
+
         uploadImageButton.textContent =
           "Upload Photo";
 
@@ -2840,7 +3341,9 @@
     }
 
 
-    async function deleteOwnerImage(imageId) {
+    async function deleteOwnerImage(
+      imageId
+    ) {
 
       if (!ownerToken) {
 
@@ -2889,17 +3392,13 @@
 
 
         const response =
-          await fetch(
-            API_BASE +
+          await ownerFetch(
             "/owner/business/images/" +
-            encodeURIComponent(imageId),
+            encodeURIComponent(
+              imageId
+            ),
             {
-              method: "DELETE",
-
-              headers: {
-                Authorization:
-                  "Bearer " + ownerToken
-              }
+              method: "DELETE"
             }
           );
 
@@ -2951,155 +3450,11 @@
     }
 
 
-    async function logoutOwner() {
-
-      if (!ownerToken) {
-
-        resetDashboard();
-
-        return;
-
-      }
-
-
-      try {
-
-        await fetch(
-          API_BASE + "/owner/logout",
-          {
-            method: "POST",
-
-            headers: {
-              Authorization:
-                "Bearer " + ownerToken
-            }
-          }
-        );
-
-      } catch(error) {
-
-        console.warn(
-          "Owner logout request failed."
-        );
-
-      } finally {
-
-        ownerToken = null;
-        currentBusiness = null;
-
-        resetDashboard();
-
-      }
-
-    }
-
-
-    function resetDashboard() {
-
-      dashboardSection.classList.add(
-        "hidden"
-      );
-
-      loginSection.classList.remove(
-        "hidden"
-      );
-
-
-      loginForm.reset();
-
-
-      businessImage.value = "";
-
-
-      imageGallery.innerHTML = "";
-      hoursEditor.innerHTML = "";
-      productsList.innerHTML = "";
-
-
-      analyticsTotalViews.textContent = "—";
-      analyticsToday.textContent = "—";
-      analytics7Days.textContent = "—";
-      analytics30Days.textContent = "—";
-
-
-      hideStatus(loginStatus);
-      hideStatus(dashboardStatus);
-      hideStatus(imageStatus);
-      hideStatus(hoursStatus);
-      hideStatus(productsStatus);
-      hideStatus(analyticsStatus);
-
-    }
-
-
-    publicProfileButton.addEventListener(
-      "click",
-      function() {
-
-        if (
-          !currentBusiness ||
-          !currentBusiness.id
-        ) {
-          return;
-        }
-
-
-        window.location.href =
-          "business.html?id=" +
-          encodeURIComponent(
-            currentBusiness.id
-          );
-
-      }
-    );
-
-
-    loginForm.addEventListener(
-      "submit",
-      loginOwner
-    );
-
-
-    saveButton.addEventListener(
-      "click",
-      saveBusiness
-    );
-
-
-    saveHoursButton.addEventListener(
-      "click",
-      saveOwnerHours
-    );
-
-
-    uploadImageButton.addEventListener(
-      "click",
-      uploadOwnerImage
-    );
-
-
-    refreshAnalyticsButton.addEventListener(
-      "click",
-      loadOwnerAnalytics
-    );
-
-
-    const addProductButton =
-      document.getElementById(
-        "addProductButton"
-      );
-
-
-    const productsStatus =
-      document.getElementById(
-        "productsStatus"
-      );
-
-
-    const productsList =
-      document.getElementById(
-        "productsList"
-      );
+    /*
+      ============================================================
+      OWNER PRODUCTS
+      ============================================================
+    */
 
 
     async function loadOwnerProducts() {
@@ -3116,16 +3471,10 @@
       try {
 
         const response =
-          await fetch(
-            API_BASE +
+          await ownerFetch(
             "/owner/business/products",
             {
-              method: "GET",
-
-              headers: {
-                Authorization:
-                  "Bearer " + ownerToken
-              }
+              method: "GET"
             }
           );
 
@@ -3152,7 +3501,9 @@
         );
 
 
-        hideStatus(productsStatus);
+        hideStatus(
+          productsStatus
+        );
 
 
       } catch(error) {
@@ -3179,7 +3530,9 @@
     }
 
 
-    function renderOwnerProducts(products) {
+    function renderOwnerProducts(
+      products
+    ) {
 
       productsList.innerHTML = "";
 
@@ -3425,27 +3778,27 @@
 
 
       addProductButton.disabled = true;
-      addProductButton.textContent = "Adding...";
+
+      addProductButton.textContent =
+        "Adding...";
 
 
-      hideStatus(productsStatus);
+      hideStatus(
+        productsStatus
+      );
 
 
       try {
 
         const response =
-          await fetch(
-            API_BASE +
+          await ownerFetch(
             "/owner/business/products",
             {
               method: "POST",
 
               headers: {
                 "Content-Type":
-                  "application/json",
-
-                Authorization:
-                  "Bearer " + ownerToken
+                  "application/json"
               },
 
               body:
@@ -3517,12 +3870,14 @@
 
         document.getElementById(
           "productType"
-        ).value = "product";
+        ).value =
+          "product";
 
 
         document.getElementById(
           "productAvailable"
-        ).checked = true;
+        ).checked =
+          true;
 
 
         await loadOwnerProducts();
@@ -3553,7 +3908,9 @@
 
       } finally {
 
-        addProductButton.disabled = false;
+        addProductButton.disabled =
+          false;
+
 
         addProductButton.textContent =
           "Add Product / Service";
@@ -3561,6 +3918,225 @@
       }
 
     }
+
+
+    /*
+      ============================================================
+      LOGOUT
+      ============================================================
+    */
+
+
+    async function logoutOwner() {
+
+      const tokenAtLogout =
+        ownerToken;
+
+
+      /*
+        Clear the locally stored credential immediately.
+        This ensures that even if the API logout request
+        fails, the browser will not restore the old session.
+      */
+
+      clearStoredOwnerToken();
+
+
+      if (!tokenAtLogout) {
+
+        ownerToken = null;
+        currentBusiness = null;
+
+        resetDashboard();
+
+        return;
+
+      }
+
+
+      try {
+
+        /*
+          Use the existing token directly for logout.
+          We do not rely on ownerFetch here because the
+          session is intentionally being destroyed.
+        */
+
+        await fetch(
+          API_BASE + "/owner/logout",
+          {
+            method: "POST",
+
+            headers: {
+              Authorization:
+                "Bearer " + tokenAtLogout
+            }
+          }
+        );
+
+
+      } catch(error) {
+
+        console.warn(
+          "Owner logout request failed."
+        );
+
+
+      } finally {
+
+        ownerToken = null;
+        currentBusiness = null;
+
+        resetDashboard();
+
+      }
+
+    }
+
+
+    /*
+      ============================================================
+      RESET DASHBOARD
+      ============================================================
+
+      Important:
+      This function does NOT automatically clear localStorage.
+
+      That allows normal UI resets to happen without accidentally
+      destroying a valid persisted session.
+
+      Explicit logout and unauthorized responses clear the token
+      before calling this function.
+    */
+
+
+    function resetDashboard() {
+
+      dashboardSection.classList.add(
+        "hidden"
+      );
+
+
+      loginSection.classList.remove(
+        "hidden"
+      );
+
+
+      loginForm.reset();
+
+
+      businessImage.value = "";
+
+
+      imageGallery.innerHTML = "";
+      hoursEditor.innerHTML = "";
+      productsList.innerHTML = "";
+
+
+      analyticsTotalViews.textContent =
+        "—";
+
+      analyticsToday.textContent =
+        "—";
+
+      analytics7Days.textContent =
+        "—";
+
+      analytics30Days.textContent =
+        "—";
+
+
+      hideStatus(
+        loginStatus
+      );
+
+      hideStatus(
+        dashboardStatus
+      );
+
+      hideStatus(
+        imageStatus
+      );
+
+      hideStatus(
+        hoursStatus
+      );
+
+      hideStatus(
+        productsStatus
+      );
+
+      hideStatus(
+        analyticsStatus
+      );
+
+    }
+
+
+    /*
+      ============================================================
+      PUBLIC PROFILE
+      ============================================================
+    */
+
+
+    publicProfileButton.addEventListener(
+      "click",
+      function() {
+
+        if (
+          !currentBusiness ||
+          !currentBusiness.id
+        ) {
+          return;
+        }
+
+
+        window.location.href =
+          "business.html?id=" +
+          encodeURIComponent(
+            currentBusiness.id
+          );
+
+      }
+    );
+
+
+    /*
+      ============================================================
+      EVENT LISTENERS
+      ============================================================
+    */
+
+
+    loginForm.addEventListener(
+      "submit",
+      loginOwner
+    );
+
+
+    saveButton.addEventListener(
+      "click",
+      saveBusiness
+    );
+
+
+    saveHoursButton.addEventListener(
+      "click",
+      saveOwnerHours
+    );
+
+
+    uploadImageButton.addEventListener(
+      "click",
+      uploadOwnerImage
+    );
+
+
+    refreshAnalyticsButton.addEventListener(
+      "click",
+      loadOwnerAnalytics
+    );
 
 
     addProductButton.addEventListener(
@@ -3573,6 +4149,27 @@
       "click",
       logoutOwner
     );
+
+
+    /*
+      ============================================================
+      PAGE STARTUP
+      ============================================================
+
+      Try to restore a previously authenticated owner session.
+
+      If no token exists:
+      - Login form remains visible.
+
+      If a valid token exists:
+      - Business is loaded.
+      - Dashboard data is loaded.
+      - Login form is hidden.
+    */
+
+
+    restoreOwnerSession();
+
 
   </script>
 
