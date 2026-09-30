@@ -54,6 +54,7 @@
       color: #171717;
     }
 
+
     /* =====================================================
        HEADER
        ===================================================== */
@@ -82,6 +83,8 @@
       gap: 18px;
     }
 
+    /* REAL NEARAFRICA LOGO */
+
     .home-logo {
       display: inline-flex;
       align-items: center;
@@ -96,18 +99,17 @@
       flex-shrink: 0;
     }
 
-    .home-logo-mark {
-      width: 35px;
-      height: 35px;
+    .home-logo img {
+      width: 38px;
+      height: 38px;
 
-      display: grid;
-      place-items: center;
+      object-fit: contain;
 
-      border-radius: 50%;
+      display: block;
+    }
 
-      background: #111;
-      color: #d4af37;
-
+    .home-logo-text {
+      color: #111;
       font-weight: 800;
     }
 
@@ -212,6 +214,7 @@
       color: #111;
     }
 
+
     /* =====================================================
        HERO
        ===================================================== */
@@ -276,6 +279,7 @@
       font-size: 17px;
       line-height: 1.75;
     }
+
 
     /* =====================================================
        SEARCH
@@ -413,42 +417,80 @@
       color: #ff9999;
     }
 
+
     /* =====================================================
-       COUNTRY STRIP
+       MOVING COUNTRY FLAGS
        ===================================================== */
 
     .country-strip {
       overflow: hidden;
 
-      border-top: 1px solid #222;
-      border-bottom: 1px solid #222;
+      border-top: 1px solid #292929;
+      border-bottom: 1px solid #292929;
 
-      background: #0c0c0c;
+      background: #0b0b0b;
+
+      position: relative;
+    }
+
+    .country-track {
+      display: flex;
+      width: max-content;
+
+      animation: countryMarquee 38s linear infinite;
+
+      will-change: transform;
     }
 
     .country-list {
-      width: min(1200px, calc(100% - 30px));
-
-      margin: 0 auto;
-
-      padding: 15px 0;
-
       display: flex;
-      justify-content: center;
+      align-items: center;
 
-      flex-wrap: wrap;
+      gap: 30px;
 
-      gap: 17px;
+      padding: 15px 15px;
 
-      color: #999;
+      white-space: nowrap;
+
+      color: #aaa;
 
       font-size: 12px;
       font-weight: 600;
     }
 
     .country-list span {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 6px;
+
       white-space: nowrap;
     }
+
+    .country-list span::after {
+      content: "•";
+
+      margin-left: 24px;
+
+      color: #d4af37;
+    }
+
+    @keyframes countryMarquee {
+
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+
+    }
+
+    .country-strip:hover .country-track {
+      animation-play-state: paused;
+    }
+
 
     /* =====================================================
        GENERAL SECTIONS
@@ -482,9 +524,34 @@
       line-height: 1.7;
     }
 
+
     /* =====================================================
-       CATEGORY GRID
+       CATEGORY SECTION
+       BLACK + GOLD
        ===================================================== */
+
+    .categories-section {
+      background: #0d0d0d;
+      color: #fff;
+
+      width: 100%;
+    }
+
+    .categories-section-inner {
+      width: min(1150px, calc(100% - 32px));
+
+      margin: 0 auto;
+
+      padding: 75px 0;
+    }
+
+    .categories-section .home-section-heading h2 {
+      color: #fff;
+    }
+
+    .categories-section .home-section-heading p {
+      color: #999;
+    }
 
     .category-grid {
       display: grid;
@@ -502,10 +569,17 @@
 
       padding: 22px;
 
-      border: 1px solid #e5e5e5;
+      border: 1px solid #292929;
       border-radius: 12px;
 
-      background: #fff;
+      background:
+        linear-gradient(
+          145deg,
+          #181818,
+          #101010
+        );
+
+      color: #fff;
 
       transition: 0.2s ease;
     }
@@ -516,8 +590,8 @@
       border-color: #d4af37;
 
       box-shadow:
-        0 10px 25px
-        rgba(0,0,0,0.06);
+        0 10px 30px
+        rgba(212,175,55,0.10);
     }
 
     .category-icon {
@@ -527,7 +601,9 @@
     }
 
     .category-card h3 {
-      margin: 0 0 5px;
+      margin: 0 0 7px;
+
+      color: #fff;
 
       font-size: 15px;
     }
@@ -535,10 +611,12 @@
     .category-card p {
       margin: 0;
 
-      color: #777;
+      color: #999;
 
       font-size: 12px;
+      line-height: 1.5;
     }
+
 
     /* =====================================================
        OWNER CTA
@@ -620,6 +698,7 @@
       opacity: 0.9;
     }
 
+
     /* =====================================================
        WEBSITE SERVICES
        ===================================================== */
@@ -645,10 +724,14 @@
       color: #fff;
 
       overflow: hidden;
+
+      border: 1px solid #292929;
     }
 
     .website-card h2 {
       margin: 0 0 12px;
+
+      color: #fff;
 
       font-size: clamp(28px, 4vw, 40px);
     }
@@ -728,7 +811,15 @@
 
       font-size: 13px;
       font-weight: 800;
+
+      transition: 0.2s ease;
     }
+
+    .website-action:hover {
+      background: #e2c35c;
+      transform: translateY(-1px);
+    }
+
 
     /* =====================================================
        ABOUT
@@ -809,6 +900,7 @@
       border-color: #d4af37;
     }
 
+
     /* =====================================================
        FOOTER
        ===================================================== */
@@ -840,8 +932,20 @@
     }
 
     .footer-brand {
+      display: flex;
+      align-items: center;
+
+      gap: 9px;
+
       font-size: 20px;
       font-weight: 800;
+    }
+
+    .footer-brand img {
+      width: 34px;
+      height: 34px;
+
+      object-fit: contain;
     }
 
     .footer-description {
@@ -897,6 +1001,7 @@
       font-size: 12px;
     }
 
+
     /* =====================================================
        RTL
        ===================================================== */
@@ -916,6 +1021,7 @@
     html[dir="rtl"] .owner-actions {
       justify-content: flex-start;
     }
+
 
     /* =====================================================
        RESPONSIVE
@@ -952,6 +1058,7 @@
       }
 
     }
+
 
     @media (max-width: 760px) {
 
@@ -996,7 +1103,12 @@
         flex-direction: column;
       }
 
+      .country-track {
+        animation-duration: 30s;
+      }
+
     }
+
 
     @media (max-width: 480px) {
 
@@ -1008,9 +1120,9 @@
         font-size: 18px;
       }
 
-      .home-logo-mark {
-        width: 32px;
-        height: 32px;
+      .home-logo img {
+        width: 33px;
+        height: 33px;
       }
 
       .home-language select {
@@ -1018,6 +1130,10 @@
       }
 
       .home-section {
+        width: min(100% - 20px, 1150px);
+      }
+
+      .categories-section-inner {
         width: min(100% - 20px, 1150px);
       }
 
@@ -1031,6 +1147,10 @@
 
       .owner-inner {
         width: min(100% - 20px, 1150px);
+      }
+
+      .country-list {
+        gap: 22px;
       }
 
     }
@@ -1057,9 +1177,14 @@
         aria-label="NearAfrica Home"
       >
 
-        <span class="home-logo-mark">N</span>
+        <img
+          src="logo.png"
+          alt="NearAfrica"
+        >
 
-        <span>NearAfrica</span>
+        <span class="home-logo-text">
+          NearAfrica
+        </span>
 
       </a>
 
@@ -1323,31 +1448,61 @@
 
 
     <!-- ===================================================
-         COUNTRY STRIP
+         MOVING COUNTRY FLAGS
          =================================================== -->
 
     <section
       class="country-strip"
-      aria-label="Countries"
+      aria-label="African countries"
     >
 
-      <div class="country-list">
+      <div class="country-track">
 
-        <span>🇳🇬 Nigeria</span>
-        <span>🇬🇭 Ghana</span>
-        <span>🇿🇦 South Africa</span>
-        <span>🇰🇪 Kenya</span>
-        <span>🇺🇬 Uganda</span>
-        <span>🇹🇿 Tanzania</span>
-        <span>🇷🇼 Rwanda</span>
-        <span>🇪🇬 Egypt</span>
-        <span>🇲🇦 Morocco</span>
-        <span>🇪🇹 Ethiopia</span>
-        <span>🇸🇳 Senegal</span>
-        <span>🇨🇲 Cameroon</span>
-        <span>🇨🇮 Côte d'Ivoire</span>
-        <span>🇿🇲 Zambia</span>
-        <span>🇿🇼 Zimbabwe</span>
+        <div class="country-list">
+
+          <span>🇳🇬 Nigeria</span>
+          <span>🇬🇭 Ghana</span>
+          <span>🇿🇦 South Africa</span>
+          <span>🇰🇪 Kenya</span>
+          <span>🇺🇬 Uganda</span>
+          <span>🇹🇿 Tanzania</span>
+          <span>🇷🇼 Rwanda</span>
+          <span>🇪🇬 Egypt</span>
+          <span>🇲🇦 Morocco</span>
+          <span>🇪🇹 Ethiopia</span>
+          <span>🇸🇳 Senegal</span>
+          <span>🇨🇲 Cameroon</span>
+          <span>🇨🇮 Côte d'Ivoire</span>
+          <span>🇿🇲 Zambia</span>
+          <span>🇿🇼 Zimbabwe</span>
+
+        </div>
+
+
+        <!-- DUPLICATE SET FOR SEAMLESS LOOP -->
+
+        <div
+          class="country-list"
+          aria-hidden="true"
+        >
+
+          <span>🇳🇬 Nigeria</span>
+          <span>🇬🇭 Ghana</span>
+          <span>🇿🇦 South Africa</span>
+          <span>🇰🇪 Kenya</span>
+          <span>🇺🇬 Uganda</span>
+          <span>🇹🇿 Tanzania</span>
+          <span>🇷🇼 Rwanda</span>
+          <span>🇪🇬 Egypt</span>
+          <span>🇲🇦 Morocco</span>
+          <span>🇪🇹 Ethiopia</span>
+          <span>🇸🇳 Senegal</span>
+          <span>🇨🇲 Cameroon</span>
+          <span>🇨🇮 Côte d'Ivoire</span>
+          <span>🇿🇲 Zambia</span>
+          <span>🇿🇼 Zimbabwe</span>
+
+        </div>
 
       </div>
 
@@ -1358,216 +1513,244 @@
          CATEGORIES
          =================================================== -->
 
-    <section class="home-section">
+    <section class="categories-section">
 
-      <div class="home-section-heading">
+      <div class="categories-section-inner">
 
-        <h2>
-          Explore Categories
-        </h2>
+        <div class="home-section-heading">
 
-        <p>
-          Find the businesses and services you need,
-          organized into easy-to-browse categories.
-        </p>
+          <h2>
+            Explore Categories
+          </h2>
 
-      </div>
+          <p>
+            Find the businesses and services you need,
+            organized into easy-to-browse categories.
+          </p>
 
+        </div>
 
-      <div class="category-grid">
 
+        <div class="category-grid">
 
-        <a
-          class="category-card"
-          href="explore.html?category=Restaurants%20%26%20Food"
-        >
 
-          <div class="category-icon">🍽️</div>
+          <a
+            class="category-card"
+            href="explore.html?category=Restaurants%20%26%20Food"
+          >
 
-          <h3 data-i18n="categories.restaurants">
-            Restaurants & Food
-          </h3>
+            <div class="category-icon">🍽️</div>
 
-          <p>Food, restaurants and dining.</p>
+            <h3 data-i18n="categories.restaurants">
+              Restaurants & Food
+            </h3>
 
-        </a>
+            <p>
+              Food, restaurants and dining.
+            </p>
 
+          </a>
 
-        <a
-          class="category-card"
-          href="explore.html?category=Hotels%20%26%20Accommodation"
-        >
 
-          <div class="category-icon">🏨</div>
+          <a
+            class="category-card"
+            href="explore.html?category=Hotels%20%26%20Accommodation"
+          >
 
-          <h3 data-i18n="categories.hotels">
-            Hotels & Accommodation
-          </h3>
+            <div class="category-icon">🏨</div>
 
-          <p>Hotels, lodges and places to stay.</p>
+            <h3 data-i18n="categories.hotels">
+              Hotels & Accommodation
+            </h3>
 
-        </a>
+            <p>
+              Hotels, lodges and places to stay.
+            </p>
 
+          </a>
 
-        <a
-          class="category-card"
-          href="explore.html?category=Beauty%20%26%20Spa"
-        >
 
-          <div class="category-icon">💆</div>
+          <a
+            class="category-card"
+            href="explore.html?category=Beauty%20%26%20Spa"
+          >
 
-          <h3 data-i18n="categories.beauty">
-            Beauty & Spa
-          </h3>
+            <div class="category-icon">💆</div>
 
-          <p>Salons, spas and beauty services.</p>
+            <h3 data-i18n="categories.beauty">
+              Beauty & Spa
+            </h3>
 
-        </a>
+            <p>
+              Salons, spas and beauty services.
+            </p>
 
+          </a>
 
-        <a
-          class="category-card"
-          href="explore.html?category=Health%20%26%20Medical"
-        >
 
-          <div class="category-icon">🏥</div>
+          <a
+            class="category-card"
+            href="explore.html?category=Health%20%26%20Medical"
+          >
 
-          <h3 data-i18n="categories.health">
-            Health & Medical
-          </h3>
+            <div class="category-icon">🏥</div>
 
-          <p>Healthcare and medical services.</p>
+            <h3 data-i18n="categories.health">
+              Health & Medical
+            </h3>
 
-        </a>
+            <p>
+              Healthcare and medical services.
+            </p>
 
+          </a>
 
-        <a
-          class="category-card"
-          href="explore.html?category=Shopping%20%26%20Retail"
-        >
 
-          <div class="category-icon">🛍️</div>
+          <a
+            class="category-card"
+            href="explore.html?category=Shopping%20%26%20Retail"
+          >
 
-          <h3 data-i18n="categories.shopping">
-            Shopping & Retail
-          </h3>
+            <div class="category-icon">🛍️</div>
 
-          <p>Shops, stores and retail businesses.</p>
+            <h3 data-i18n="categories.shopping">
+              Shopping & Retail
+            </h3>
 
-        </a>
+            <p>
+              Shops, stores and retail businesses.
+            </p>
 
+          </a>
 
-        <a
-          class="category-card"
-          href="explore.html?category=Supermarkets"
-        >
 
-          <div class="category-icon">🛒</div>
+          <a
+            class="category-card"
+            href="explore.html?category=Supermarkets"
+          >
 
-          <h3 data-i18n="categories.supermarkets">
-            Supermarkets
-          </h3>
+            <div class="category-icon">🛒</div>
 
-          <p>Supermarkets and everyday shopping.</p>
+            <h3 data-i18n="categories.supermarkets">
+              Supermarkets
+            </h3>
 
-        </a>
+            <p>
+              Supermarkets and everyday shopping.
+            </p>
 
+          </a>
 
-        <a
-          class="category-card"
-          href="explore.html?category=Professional%20Services"
-        >
 
-          <div class="category-icon">💼</div>
+          <a
+            class="category-card"
+            href="explore.html?category=Professional%20Services"
+          >
 
-          <h3 data-i18n="categories.professional">
-            Professional Services
-          </h3>
+            <div class="category-icon">💼</div>
 
-          <p>Businesses and professional services.</p>
+            <h3 data-i18n="categories.professional">
+              Professional Services
+            </h3>
 
-        </a>
+            <p>
+              Businesses and professional services.
+            </p>
 
+          </a>
 
-        <a
-          class="category-card"
-          href="explore.html?category=Education"
-        >
 
-          <div class="category-icon">🎓</div>
+          <a
+            class="category-card"
+            href="explore.html?category=Education"
+          >
 
-          <h3 data-i18n="categories.education">
-            Education
-          </h3>
+            <div class="category-icon">🎓</div>
 
-          <p>Schools, training and education.</p>
+            <h3 data-i18n="categories.education">
+              Education
+            </h3>
 
-        </a>
+            <p>
+              Schools, training and education.
+            </p>
 
+          </a>
 
-        <a
-          class="category-card"
-          href="explore.html?category=Real%20Estate"
-        >
 
-          <div class="category-icon">🏠</div>
+          <a
+            class="category-card"
+            href="explore.html?category=Real%20Estate"
+          >
 
-          <h3 data-i18n="categories.realEstate">
-            Real Estate
-          </h3>
+            <div class="category-icon">🏠</div>
 
-          <p>Property and real estate services.</p>
+            <h3 data-i18n="categories.realEstate">
+              Real Estate
+            </h3>
 
-        </a>
+            <p>
+              Property and real estate services.
+            </p>
 
+          </a>
 
-        <a
-          class="category-card"
-          href="explore.html?category=Automotive"
-        >
 
-          <div class="category-icon">🚗</div>
+          <a
+            class="category-card"
+            href="explore.html?category=Automotive"
+          >
 
-          <h3 data-i18n="categories.automotive">
-            Automotive
-          </h3>
+            <div class="category-icon">🚗</div>
 
-          <p>Cars, repairs and automotive services.</p>
+            <h3 data-i18n="categories.automotive">
+              Automotive
+            </h3>
 
-        </a>
+            <p>
+              Cars, repairs and automotive services.
+            </p>
 
+          </a>
 
-        <a
-          class="category-card"
-          href="explore.html?category=Travel%20%26%20Tourism"
-        >
 
-          <div class="category-icon">✈️</div>
+          <a
+            class="category-card"
+            href="explore.html?category=Travel%20%26%20Tourism"
+          >
 
-          <h3 data-i18n="categories.travel">
-            Travel & Tourism
-          </h3>
+            <div class="category-icon">✈️</div>
 
-          <p>Travel businesses and tourism.</p>
+            <h3 data-i18n="categories.travel">
+              Travel & Tourism
+            </h3>
 
-        </a>
+            <p>
+              Travel businesses and tourism.
+            </p>
 
+          </a>
 
-        <a
-          class="category-card"
-          href="explore.html?category=Technology"
-        >
 
-          <div class="category-icon">💻</div>
+          <a
+            class="category-card"
+            href="explore.html?category=Technology"
+          >
 
-          <h3 data-i18n="categories.technology">
-            Technology
-          </h3>
+            <div class="category-icon">💻</div>
 
-          <p>Technology companies and services.</p>
+            <h3 data-i18n="categories.technology">
+              Technology
+            </h3>
 
-        </a>
+            <p>
+              Technology companies and services.
+            </p>
 
+          </a>
+
+
+        </div>
 
       </div>
 
@@ -1634,13 +1817,14 @@
         <div>
 
           <h2>
-            Need a Website for Your Business?
+            Need a Website?
           </h2>
 
           <p>
-            We also build professional, mobile-friendly
-            websites for small businesses and growing
-            brands.
+            Want a professional website for your
+            business? We design and build modern,
+            mobile-friendly websites for small
+            businesses, brands and entrepreneurs.
           </p>
 
 
@@ -1668,9 +1852,8 @@
           <a
             href="contact.html"
             class="website-action"
-            data-i18n="contact.businessAction"
           >
-            Get a Website
+            Order a Website
           </a>
 
         </div>
@@ -1796,7 +1979,16 @@
         <div>
 
           <div class="footer-brand">
-            NearAfrica
+
+            <img
+              src="logo.png"
+              alt="NearAfrica"
+            >
+
+            <span>
+              NearAfrica
+            </span>
+
           </div>
 
           <p class="footer-description">
