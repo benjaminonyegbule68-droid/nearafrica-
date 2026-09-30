@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
 
@@ -29,11 +29,6 @@
   >
 
   <style>
-
-    /* =========================================================
-       RESET
-       ========================================================= */
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -61,37 +56,31 @@
       cursor: pointer;
     }
 
+    button:disabled {
+      cursor: not-allowed;
+    }
+
     a {
       color: inherit;
       text-decoration: none;
     }
 
-
-    /* =========================================================
-       HEADER
-       ========================================================= */
-
     header {
       position: sticky;
       top: 0;
       z-index: 1000;
-
       background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(12px);
-
       border-bottom: 1px solid #e8e8e8;
     }
 
     .nav {
       width: min(1200px, calc(100% - 32px));
       margin: auto;
-
       min-height: 72px;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       gap: 20px;
     }
 
@@ -99,33 +88,27 @@
       display: flex;
       align-items: center;
       gap: 10px;
-
       font-size: 21px;
       font-weight: 800;
-
       white-space: nowrap;
     }
 
     .brand-mark {
       width: 36px;
       height: 36px;
-
       border-radius: 50%;
-
       display: grid;
       place-items: center;
-
       background: #111;
       color: #d4af37;
-
       font-weight: 800;
+      flex-shrink: 0;
     }
 
     nav {
       display: flex;
       align-items: center;
       gap: 22px;
-
       font-size: 14px;
       font-weight: 600;
     }
@@ -143,9 +126,7 @@
     .nav-button {
       background: #111;
       color: white;
-
       padding: 10px 16px;
-
       border-radius: 8px;
     }
 
@@ -154,15 +135,32 @@
       color: white;
     }
 
+    .language-control {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-left: 4px;
+    }
 
-    /* =========================================================
-       HERO
-       ========================================================= */
+    .language-control select {
+      height: 38px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      color: #222;
+      padding: 0 9px;
+      font-size: 12px;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .language-control select:focus {
+      border-color: #d4af37;
+    }
 
     .hero {
       background: #111;
       color: white;
-
       padding: 56px 16px 48px;
     }
 
@@ -184,19 +182,11 @@
       font-size: 16px;
     }
 
-
-    /* =========================================================
-       SEARCH
-       ========================================================= */
-
     .search-area {
       margin-top: 28px;
-
       display: grid;
       grid-template-columns: 1fr auto;
-
       gap: 10px;
-
       max-width: 850px;
     }
 
@@ -206,17 +196,12 @@
 
     .search-box input {
       width: 100%;
-
       height: 54px;
-
       border: 1px solid #3c3c3c;
       border-radius: 10px;
-
       background: #1d1d1d;
       color: white;
-
       padding: 0 18px;
-
       outline: none;
     }
 
@@ -230,15 +215,11 @@
 
     .search-button {
       height: 54px;
-
       padding: 0 24px;
-
       border: none;
       border-radius: 10px;
-
       background: #d4af37;
       color: #111;
-
       font-weight: 700;
     }
 
@@ -246,36 +227,23 @@
       background: #e2c35c;
     }
 
-
-    /* =========================================================
-       LOCATION BAR
-       ========================================================= */
-
     .location-bar {
       max-width: 850px;
-
       margin-top: 12px;
-
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-
       gap: 10px;
     }
 
     .location-button {
       border: 1px solid #444;
-
       background: #1d1d1d;
       color: white;
-
       border-radius: 9px;
-
       padding: 10px 15px;
-
       font-size: 13px;
       font-weight: 700;
-
       transition: 0.2s ease;
     }
 
@@ -302,74 +270,47 @@
       color: #ff9b9b;
     }
 
-
-    /* =========================================================
-       MAIN
-       ========================================================= */
-
     main {
       width: min(1200px, calc(100% - 32px));
       margin: 32px auto 80px;
     }
 
-
-    /* =========================================================
-       FILTER BAR
-       ========================================================= */
-
     .filter-panel {
       background: white;
-
       border: 1px solid #e5e5e5;
       border-radius: 14px;
-
       padding: 18px;
-
       margin-bottom: 28px;
-
-      box-shadow:
-        0 4px 18px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
     }
 
     .filter-title {
       font-size: 14px;
       font-weight: 700;
-
       margin-bottom: 14px;
     }
 
     .filters {
       display: grid;
-
-      grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
     }
 
     .filter-group label {
       display: block;
-
       font-size: 12px;
       font-weight: 600;
-
       color: #666;
-
       margin-bottom: 6px;
     }
 
     .filter-group select {
       width: 100%;
-
       height: 44px;
-
       border: 1px solid #ddd;
       border-radius: 8px;
-
       background: white;
-
       padding: 0 12px;
-
       outline: none;
     }
 
@@ -377,19 +318,11 @@
       border-color: #c49f25;
     }
 
-
-    /* =========================================================
-       RESULTS HEADER
-       ========================================================= */
-
     .results-header {
       display: flex;
-
       align-items: center;
       justify-content: space-between;
-
       gap: 20px;
-
       margin-bottom: 18px;
     }
 
@@ -404,20 +337,13 @@
 
     .nearby-indicator {
       display: none;
-
       align-items: center;
       gap: 7px;
-
       padding: 8px 11px;
-
       background: #faf5df;
-
       border: 1px solid #eadba5;
-
       border-radius: 8px;
-
       color: #705a13;
-
       font-size: 12px;
       font-weight: 700;
     }
@@ -426,78 +352,45 @@
       display: inline-flex;
     }
 
-
-    /* =========================================================
-       STATUS
-       ========================================================= */
-
     .status {
       display: none;
-
       padding: 16px;
-
       border-radius: 10px;
-
       margin-bottom: 20px;
-
       font-size: 14px;
     }
 
     .status.loading {
       display: block;
-
       background: #f0f0f0;
       color: #555;
     }
 
     .status.error {
       display: block;
-
       background: #fff1f1;
-
       border: 1px solid #ffd2d2;
-
       color: #a10000;
     }
 
     .status.info {
       display: block;
-
       background: #faf5df;
-
       border: 1px solid #eadba5;
-
       color: #705a13;
     }
 
-
-    /* =========================================================
-       BUSINESS GRID
-       ========================================================= */
-
     .business-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 20px;
     }
 
-
-    /* =========================================================
-       BUSINESS CARD
-       ========================================================= */
-
     .business-card {
       background: white;
-
       border: 1px solid #e5e5e5;
-
       border-radius: 14px;
-
       overflow: hidden;
-
       transition:
         transform 0.2s ease,
         box-shadow 0.2s ease,
@@ -506,40 +399,25 @@
 
     .business-card:hover {
       transform: translateY(-3px);
-
       border-color: #d5d5d5;
-
-      box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
     }
 
     .business-image {
       height: 190px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #181818,
-          #333
-        );
-
+      background: linear-gradient(135deg, #181818, #333);
       display: flex;
-
       align-items: center;
       justify-content: center;
-
       color: #d4af37;
-
       font-size: 36px;
       font-weight: 800;
-
       overflow: hidden;
     }
 
     .business-image img {
       width: 100%;
       height: 100%;
-
       object-fit: cover;
     }
 
@@ -549,116 +427,87 @@
 
     .business-category {
       display: inline-block;
-
       font-size: 11px;
       font-weight: 700;
-
       color: #947719;
-
       background: #faf5df;
-
       padding: 5px 8px;
-
       border-radius: 5px;
-
       margin-bottom: 10px;
     }
 
     .business-name {
       font-size: 18px;
       font-weight: 800;
-
       margin-bottom: 7px;
     }
 
     .business-location {
       color: #666;
-
       font-size: 13px;
-
       margin-bottom: 12px;
     }
 
     .business-description {
       color: #555;
-
       font-size: 13px;
-
       display: -webkit-box;
-
       -webkit-line-clamp: 3;
-
       -webkit-box-orient: vertical;
-
       overflow: hidden;
-
       margin-bottom: 15px;
     }
 
     .business-meta {
       display: flex;
-
       flex-wrap: wrap;
-
       gap: 7px;
-
       margin-bottom: 15px;
     }
 
     .badge {
       font-size: 11px;
-
       padding: 4px 7px;
-
       border-radius: 5px;
-
       background: #f1f1f1;
-
       color: #555;
     }
 
     .verified {
       background: #edf8ee;
-
       color: #23752d;
+    }
+
+    .claimed {
+      background: #eef4ff;
+      color: #315d9d;
     }
 
     .distance-badge {
       background: #faf5df;
-
       color: #705a13;
-
       font-weight: 700;
     }
 
     .business-actions {
       display: flex;
-
       gap: 8px;
     }
 
     .business-action {
       flex: 1;
-
       text-align: center;
-
       padding: 9px 10px;
-
       border-radius: 7px;
-
       font-size: 12px;
       font-weight: 700;
-
       border: 1px solid #ddd;
-
       background: white;
     }
 
     .business-action.primary {
       background: #111;
-
       color: white;
-
       border-color: #111;
     }
 
@@ -666,22 +515,12 @@
       opacity: 0.85;
     }
 
-
-    /* =========================================================
-       EMPTY STATE
-       ========================================================= */
-
     .empty-state {
       display: none;
-
       text-align: center;
-
       background: white;
-
       border: 1px solid #e5e5e5;
-
       border-radius: 14px;
-
       padding: 60px 20px;
     }
 
@@ -691,7 +530,6 @@
 
     .empty-icon {
       font-size: 42px;
-
       margin-bottom: 15px;
     }
 
@@ -701,41 +539,25 @@
 
     .empty-state p {
       color: #777;
-
       font-size: 14px;
     }
 
-
-    /* =========================================================
-       PAGINATION
-       ========================================================= */
-
     .pagination {
       display: flex;
-
       align-items: center;
       justify-content: center;
-
       flex-wrap: wrap;
-
       gap: 8px;
-
       margin-top: 34px;
     }
 
     .pagination button {
       min-width: 40px;
-
       height: 40px;
-
       padding: 0 12px;
-
       border: 1px solid #ddd;
-
       background: white;
-
       border-radius: 7px;
-
       font-weight: 600;
     }
 
@@ -745,42 +567,26 @@
 
     .pagination button.active {
       background: #111;
-
       color: white;
-
       border-color: #111;
     }
 
     .pagination button:disabled {
       opacity: 0.45;
-
-      cursor: not-allowed;
     }
-
-
-    /* =========================================================
-       FOOTER
-       ========================================================= */
 
     footer {
       border-top: 1px solid #e5e5e5;
-
       background: white;
-
       padding: 35px 16px;
     }
 
     .footer-inner {
       width: min(1200px, 100%);
-
       margin: auto;
-
       display: flex;
-
       justify-content: space-between;
-
       align-items: center;
-
       gap: 20px;
     }
 
@@ -790,38 +596,34 @@
 
     .footer-copy {
       color: #777;
-
       font-size: 13px;
     }
 
-
-    /* =========================================================
-       RESPONSIVE
-       ========================================================= */
-
-    @media (max-width: 900px) {
+    @media (max-width: 1000px) {
+      .filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
 
       .business-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .filters {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
+      nav {
+        gap: 13px;
       }
-
     }
 
-
-    @media (max-width: 650px) {
-
+    @media (max-width: 750px) {
       .nav {
         min-height: 62px;
       }
 
       nav {
         display: none;
+      }
+
+      .language-control {
+        margin-left: auto;
       }
 
       .hero {
@@ -842,103 +644,143 @@
 
       .results-header {
         align-items: flex-start;
-
         flex-direction: column;
-
         gap: 8px;
       }
 
       .location-bar {
         align-items: flex-start;
-
         flex-direction: column;
       }
 
       .footer-inner {
         flex-direction: column;
-
         align-items: flex-start;
       }
-
     }
 
+    @media (max-width: 450px) {
+      .nav {
+        width: min(100% - 20px, 1200px);
+      }
+
+      .brand {
+        font-size: 18px;
+      }
+
+      .brand-mark {
+        width: 32px;
+        height: 32px;
+      }
+
+      .language-control select {
+        max-width: 105px;
+      }
+
+      main {
+        width: min(100% - 20px, 1200px);
+      }
+    }
+
+    html[dir="rtl"] body {
+      text-align: right;
+    }
+
+    html[dir="rtl"] .brand {
+      flex-direction: row-reverse;
+    }
+
+    html[dir="rtl"] .location-bar,
+    html[dir="rtl"] .business-actions {
+      direction: rtl;
+    }
+
+    html[dir="rtl"] .business-meta {
+      direction: rtl;
+    }
   </style>
 </head>
 
-
 <body>
 
-
-  <!-- =======================================================
-       HEADER
-       ======================================================= -->
-
+  <!-- HEADER -->
   <header>
-
     <div class="nav">
 
       <a href="index.html" class="brand">
-
-        <span class="brand-mark">
-          N
-        </span>
-
-        <span>
-          NearAfrica
-        </span>
-
+        <span class="brand-mark">N</span>
+        <span>NearAfrica</span>
       </a>
 
+      <nav aria-label="Main navigation">
 
-      <nav>
-
-        <a href="index.html">
+        <a
+          href="index.html"
+          data-i18n="nav.home"
+        >
           Home
         </a>
 
         <a
           href="explore.html"
           class="active"
+          data-i18n="nav.explore"
         >
           Explore
         </a>
 
-        <a href="list-business.html">
+        <a
+          href="list-business.html"
+          data-i18n="nav.listBusiness"
+        >
           List Your Business
         </a>
 
-        <a href="claim-business.html">
+        <a
+          href="claim-business.html"
+          data-i18n="nav.claimBusiness"
+        >
           Claim Business
         </a>
 
       </nav>
 
-    </div>
+      <div class="language-control">
+        <span aria-hidden="true">🌐</span>
 
+        <select
+          id="languageSelector"
+          data-language-selector
+          aria-label="Language"
+        >
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="ar">العربية</option>
+          <option value="pt">Português</option>
+          <option value="sw">Kiswahili</option>
+        </select>
+      </div>
+
+    </div>
   </header>
 
 
-  <!-- =======================================================
-       HERO
-       ======================================================= -->
-
+  <!-- HERO -->
   <section class="hero">
 
     <div class="hero-inner">
 
-      <h1>
+      <h1 data-i18n="explore.title">
         Explore Businesses
       </h1>
 
-      <p>
+      <p data-i18n="explore.subtitle">
         Discover businesses, services, shops, restaurants,
         hotels and more. Search by name, category,
         location, or use your current location to find
         nearby businesses.
       </p>
 
-
-      <!-- SEARCH -->
 
       <div class="search-area">
 
@@ -947,6 +789,7 @@
           <input
             id="searchInput"
             type="search"
+            data-i18n-placeholder="search.searchPlaceholder"
             placeholder="Search businesses, services or locations..."
             autocomplete="off"
           >
@@ -957,6 +800,7 @@
           id="searchButton"
           class="search-button"
           type="button"
+          data-i18n="search.search"
         >
           Search
         </button>
@@ -964,14 +808,13 @@
       </div>
 
 
-      <!-- LOCATION -->
-
       <div class="location-bar">
 
         <button
           id="useLocationButton"
           class="location-button"
           type="button"
+          data-i18n="search.useMyLocation"
         >
           📍 Use My Location
         </button>
@@ -981,6 +824,7 @@
           class="location-button"
           type="button"
           hidden
+          data-i18n="explore.clearLocation"
         >
           Clear Location
         </button>
@@ -989,6 +833,7 @@
           id="locationStatus"
           class="location-status"
           aria-live="polite"
+          data-i18n="search.locationUnavailable"
         >
           Search by area or use your current location.
         </span>
@@ -1000,130 +845,129 @@
   </section>
 
 
-  <!-- =======================================================
-       MAIN
-       ======================================================= -->
-
+  <!-- MAIN -->
   <main>
 
-
-    <!-- =====================================================
-         FILTERS
-         ===================================================== -->
-
+    <!-- FILTERS -->
     <section class="filter-panel">
 
-      <div class="filter-title">
+      <div
+        class="filter-title"
+        data-i18n="explore.filters"
+      >
         Filter businesses
       </div>
 
-
       <div class="filters">
 
-
         <!-- CATEGORY -->
-
         <div class="filter-group">
 
-          <label for="categoryFilter">
+          <label
+            for="categoryFilter"
+            data-i18n="explore.category"
+          >
             Category
           </label>
 
           <select id="categoryFilter">
 
-            <option value="">
+            <option
+              value=""
+              data-i18n="explore.allCategories"
+            >
               All categories
             </option>
 
-            <option value="Restaurants & Food">
+            <option value="Restaurants & Food" data-i18n="categories.restaurants">
               Restaurants & Food
             </option>
 
-            <option value="Hotels & Accommodation">
+            <option value="Hotels & Accommodation" data-i18n="categories.hotels">
               Hotels & Accommodation
             </option>
 
-            <option value="Beauty & Spa">
+            <option value="Beauty & Spa" data-i18n="categories.beauty">
               Beauty & Spa
             </option>
 
-            <option value="Health & Medical">
+            <option value="Health & Medical" data-i18n="categories.health">
               Health & Medical
             </option>
 
-            <option value="Shopping & Retail">
+            <option value="Shopping & Retail" data-i18n="categories.shopping">
               Shopping & Retail
             </option>
 
-            <option value="Supermarkets">
+            <option value="Supermarkets" data-i18n="categories.supermarkets">
               Supermarkets
             </option>
 
-            <option value="Banks & Finance">
+            <option value="Banks & Finance" data-i18n="categories.banks">
               Banks & Finance
             </option>
 
-            <option value="Professional Services">
+            <option value="Professional Services" data-i18n="categories.professional">
               Professional Services
             </option>
 
-            <option value="Education">
+            <option value="Education" data-i18n="categories.education">
               Education
             </option>
 
-            <option value="Real Estate">
+            <option value="Real Estate" data-i18n="categories.realEstate">
               Real Estate
             </option>
 
-            <option value="Automotive">
+            <option value="Automotive" data-i18n="categories.automotive">
               Automotive
             </option>
 
-            <option value="Travel & Tourism">
+            <option value="Travel & Tourism" data-i18n="categories.travel">
               Travel & Tourism
             </option>
 
-            <option value="Logistics & Delivery">
+            <option value="Logistics & Delivery" data-i18n="categories.logistics">
               Logistics & Delivery
             </option>
 
-            <option value="Technology">
+            <option value="Technology" data-i18n="categories.technology">
               Technology
             </option>
 
-            <option value="Entertainment">
+            <option value="Entertainment" data-i18n="categories.entertainment">
               Entertainment
             </option>
 
-            <option value="Gyms & Fitness">
+            <option value="Gyms & Fitness" data-i18n="categories.gyms">
               Gyms & Fitness
             </option>
 
-            <option value="Fitness & Sports">
+            <option value="Fitness & Sports" data-i18n="categories.fitness">
               Fitness & Sports
             </option>
 
-            <option value="Construction & Home Services">
+            <option value="Construction & Home Services" data-i18n="categories.construction">
               Construction & Home Services
             </option>
 
-            <option value="Fashion">
+            <option value="Fashion" data-i18n="categories.fashion">
               Fashion
             </option>
 
-            <option value="Agriculture">
+            <option value="Agriculture" data-i18n="categories.agriculture">
               Agriculture
             </option>
 
-            <option value="Religious Organizations">
+            <option value="Religious Organizations" data-i18n="categories.religious">
               Religious Organizations
             </option>
 
-            <option value="Government & Public Services">
+            <option value="Government & Public Services" data-i18n="categories.government">
               Government & Public Services
             </option>
 
-            <option value="Other">
+            <option value="Other" data-i18n="categories.other">
               Other
             </option>
 
@@ -1133,16 +977,21 @@
 
 
         <!-- STATE -->
-
         <div class="filter-group">
 
-          <label for="stateFilter">
+          <label
+            for="stateFilter"
+            data-i18n="explore.state"
+          >
             State
           </label>
 
           <select id="stateFilter">
 
-            <option value="">
+            <option
+              value=""
+              data-i18n="explore.allStates"
+            >
               All states
             </option>
 
@@ -1190,28 +1039,33 @@
 
 
         <!-- RATING -->
-
         <div class="filter-group">
 
-          <label for="ratingFilter">
+          <label
+            for="ratingFilter"
+            data-i18n="explore.rating"
+          >
             Rating
           </label>
 
           <select id="ratingFilter">
 
-            <option value="">
+            <option
+              value=""
+              data-i18n="explore.anyRating"
+            >
               Any rating
             </option>
 
-            <option value="4">
+            <option value="4" data-i18n="explore.fourPlus">
               4+ stars
             </option>
 
-            <option value="3">
+            <option value="3" data-i18n="explore.threePlus">
               3+ stars
             </option>
 
-            <option value="2">
+            <option value="2" data-i18n="explore.twoPlus">
               2+ stars
             </option>
 
@@ -1221,20 +1075,28 @@
 
 
         <!-- VERIFIED -->
-
         <div class="filter-group">
 
-          <label for="verifiedFilter">
+          <label
+            for="verifiedFilter"
+            data-i18n="explore.verifiedOnly"
+          >
             Verification
           </label>
 
           <select id="verifiedFilter">
 
-            <option value="">
+            <option
+              value=""
+              data-i18n="explore.allBusinesses"
+            >
               All businesses
             </option>
 
-            <option value="1">
+            <option
+              value="1"
+              data-i18n="explore.verified"
+            >
               Verified only
             </option>
 
@@ -1247,42 +1109,39 @@
     </section>
 
 
-    <!-- =====================================================
-         RESULTS HEADER
-         ===================================================== -->
-
+    <!-- RESULTS HEADER -->
     <div class="results-header">
 
       <div>
 
-        <h2 id="resultsTitle">
+        <h2 id="resultsTitle" data-i18n="explore.businesses">
           Businesses
         </h2>
 
         <div
           id="resultCount"
           class="result-count"
+          aria-live="polite"
         >
           Loading businesses...
         </div>
 
       </div>
 
-
       <div
         id="nearbyIndicator"
         class="nearby-indicator"
       >
-        📍 Sorted by distance
+        📍
+        <span data-i18n="explore.businessesFoundNearby">
+          Sorted by distance
+        </span>
       </div>
 
     </div>
 
 
-    <!-- =====================================================
-         STATUS
-         ===================================================== -->
-
+    <!-- STATUS -->
     <div
       id="statusMessage"
       class="status"
@@ -1290,10 +1149,7 @@
     ></div>
 
 
-    <!-- =====================================================
-         BUSINESS GRID
-         ===================================================== -->
-
+    <!-- BUSINESS GRID -->
     <section
       id="businessGrid"
       class="business-grid"
@@ -1301,10 +1157,7 @@
     ></section>
 
 
-    <!-- =====================================================
-         EMPTY STATE
-         ===================================================== -->
-
+    <!-- EMPTY -->
     <section
       id="emptyState"
       class="empty-state"
@@ -1314,1443 +1167,22 @@
         🔎
       </div>
 
-      <h3>
+      <h3 data-i18n="explore.noBusinesses">
         No businesses found
       </h3>
 
-      <p id="emptyStateText">
+      <p
+        id="emptyStateText"
+        data-i18n="explore.noBusinessesNearby"
+      >
         Try changing your search or filters.
       </p>
 
     </section>
 
 
-    <!-- =====================================================
-         PAGINATION
-         ===================================================== -->
-
+    <!-- PAGINATION -->
     <div
       id="pagination"
       class="pagination"
-    ></div>
-
-  </main>
-
-
-  <!-- =======================================================
-       FOOTER
-       ======================================================= -->
-
-  <footer>
-
-    <div class="footer-inner">
-
-      <div class="footer-brand">
-        NearAfrica
-      </div>
-
-      <div class="footer-copy">
-        Discover businesses across Africa.
-      </div>
-
-    </div>
-
-  </footer>
-
-
-  <!-- =======================================================
-       CONFIGURATION
-       ======================================================= -->
-
-  <script src="js/config.js"></script>
-
-
-  <!-- =======================================================
-       EXPLORE APPLICATION
-       ======================================================= -->
-
-  <script>
-
-    (() => {
-
-      "use strict";
-
-
-      /* =====================================================
-         CONFIGURATION
-         ===================================================== */
-
-      const DEFAULT_API =
-        "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
-
-
-      const apiBase =
-        window.NearAfricaConfig &&
-        window.NearAfricaConfig.api &&
-        window.NearAfricaConfig.api.baseUrl
-
-          ? window.NearAfricaConfig.api.baseUrl.replace(
-              /\/+$/,
-              ""
-            )
-
-          : DEFAULT_API;
-
-
-      const API_URL =
-        `${apiBase}/businesses`;
-
-
-      /* =====================================================
-         CONSTANTS
-         ===================================================== */
-
-      const LOCATION_STORAGE_KEY =
-        "nearafrica_user_location";
-
-
-      const DEFAULT_RADIUS_KM = 25;
-
-
-      const BUSINESSES_PER_PAGE = 20;
-
-
-      /* =====================================================
-         STATE
-         ===================================================== */
-
-      let allBusinesses = [];
-
-      let filteredBusinesses = [];
-
-      let currentPage = 1;
-
-      let userLocation = null;
-
-      let locationMode = false;
-
-
-      /* =====================================================
-         DOM
-         ===================================================== */
-
-      const businessGrid =
-        document.getElementById(
-          "businessGrid"
-        );
-
-
-      const emptyState =
-        document.getElementById(
-          "emptyState"
-        );
-
-
-      const emptyStateText =
-        document.getElementById(
-          "emptyStateText"
-        );
-
-
-      const statusMessage =
-        document.getElementById(
-          "statusMessage"
-        );
-
-
-      const resultCount =
-        document.getElementById(
-          "resultCount"
-        );
-
-
-      const resultsTitle =
-        document.getElementById(
-          "resultsTitle"
-        );
-
-
-      const pagination =
-        document.getElementById(
-          "pagination"
-        );
-
-
-      const searchInput =
-        document.getElementById(
-          "searchInput"
-        );
-
-
-      const searchButton =
-        document.getElementById(
-          "searchButton"
-        );
-
-
-      const categoryFilter =
-        document.getElementById(
-          "categoryFilter"
-        );
-
-
-      const stateFilter =
-        document.getElementById(
-          "stateFilter"
-        );
-
-
-      const ratingFilter =
-        document.getElementById(
-          "ratingFilter"
-        );
-
-
-      const verifiedFilter =
-        document.getElementById(
-          "verifiedFilter"
-        );
-
-
-      const useLocationButton =
-        document.getElementById(
-          "useLocationButton"
-        );
-
-
-      const clearLocationButton =
-        document.getElementById(
-          "clearLocationButton"
-        );
-
-
-      const locationStatus =
-        document.getElementById(
-          "locationStatus"
-        );
-
-
-      const nearbyIndicator =
-        document.getElementById(
-          "nearbyIndicator"
-        );
-
-
-      /* =====================================================
-         STATUS HELPERS
-         ===================================================== */
-
-      function showLoading(message) {
-
-        statusMessage.className =
-          "status loading";
-
-        statusMessage.textContent =
-          message ||
-          "Loading businesses...";
-
-      }
-
-
-      function hideStatus() {
-
-        statusMessage.className =
-          "status";
-
-        statusMessage.textContent =
-          "";
-
-      }
-
-
-      function showError(message) {
-
-        statusMessage.className =
-          "status error";
-
-        statusMessage.textContent =
-          message;
-
-      }
-
-
-      function showInfo(message) {
-
-        statusMessage.className =
-          "status info";
-
-        statusMessage.textContent =
-          message;
-
-      }
-
-
-      /* =====================================================
-         ESCAPE HTML
-         ===================================================== */
-
-      function escapeHTML(value) {
-
-        return String(value ?? "")
-
-          .replace(
-            /&/g,
-            "&amp;"
-          )
-
-          .replace(
-            /</g,
-            "&lt;"
-          )
-
-          .replace(
-            />/g,
-            "&gt;"
-          )
-
-          .replace(
-            /"/g,
-            "&quot;"
-          )
-
-          .replace(
-            /'/g,
-            "&#039;"
-          );
-
-      }
-
-
-      /* =====================================================
-         CATEGORY NORMALIZATION
-         ===================================================== */
-
-      function normalizeCategory(value) {
-
-        const category =
-          String(value || "")
-
-            .trim()
-
-            .toLowerCase()
-
-            .replace(
-              /[_-]+/g,
-              " "
-            )
-
-            .replace(
-              /\s+/g,
-              " "
-            );
-
-
-        const categoryMap = {
-
-          "restaurants food":
-            "Restaurants & Food",
-
-          "restaurant food":
-            "Restaurants & Food",
-
-          "restaurants and food":
-            "Restaurants & Food",
-
-          "restaurant":
-            "Restaurants & Food",
-
-          "restaurants":
-            "Restaurants & Food",
-
-          "food":
-            "Restaurants & Food",
-
-
-          "hotels accommodation":
-            "Hotels & Accommodation",
-
-          "hotel accommodation":
-            "Hotels & Accommodation",
-
-          "hotels":
-            "Hotels & Accommodation",
-
-          "hotel":
-            "Hotels & Accommodation",
-
-          "accommodation":
-            "Hotels & Accommodation",
-
-
-          "beauty spa":
-            "Beauty & Spa",
-
-          "beauty and spa":
-            "Beauty & Spa",
-
-          "spa":
-            "Beauty & Spa",
-
-          "beauty":
-            "Beauty & Spa",
-
-          "beauty salon":
-            "Beauty & Spa",
-
-          "salon":
-            "Beauty & Spa",
-
-
-          "health medical":
-            "Health & Medical",
-
-          "health and medical":
-            "Health & Medical",
-
-          "health":
-            "Health & Medical",
-
-          "medical":
-            "Health & Medical",
-
-          "hospital":
-            "Health & Medical",
-
-          "hospitals":
-            "Health & Medical",
-
-          "clinic":
-            "Health & Medical",
-
-          "clinics":
-            "Health & Medical",
-
-          "pharmacy":
-            "Health & Medical",
-
-          "pharmacies":
-            "Health & Medical",
-
-
-          "shopping retail":
-            "Shopping & Retail",
-
-          "shopping and retail":
-            "Shopping & Retail",
-
-          "shopping":
-            "Shopping & Retail",
-
-          "retail":
-            "Shopping & Retail",
-
-
-          "supermarket":
-            "Supermarkets",
-
-          "supermarkets":
-            "Supermarkets",
-
-
-          "banks finance":
-            "Banks & Finance",
-
-          "banks and finance":
-            "Banks & Finance",
-
-          "bank":
-            "Banks & Finance",
-
-          "banks":
-            "Banks & Finance",
-
-          "finance":
-            "Banks & Finance",
-
-
-          "professional services":
-            "Professional Services",
-
-          "professional service":
-            "Professional Services",
-
-          "business services":
-            "Professional Services",
-
-          "consulting":
-            "Professional Services",
-
-
-          "education":
-            "Education",
-
-          "school":
-            "Education",
-
-          "schools":
-            "Education",
-
-          "university":
-            "Education",
-
-          "universities":
-            "Education",
-
-
-          "real estate":
-            "Real Estate",
-
-          "realestate":
-            "Real Estate",
-
-          "property":
-            "Real Estate",
-
-          "properties":
-            "Real Estate",
-
-
-          "automotive":
-            "Automotive",
-
-          "automotive services":
-            "Automotive",
-
-          "auto":
-            "Automotive",
-
-          "car":
-            "Automotive",
-
-          "cars":
-            "Automotive",
-
-          "car services":
-            "Automotive",
-
-
-          "travel tourism":
-            "Travel & Tourism",
-
-          "travel and tourism":
-            "Travel & Tourism",
-
-          "travel":
-            "Travel & Tourism",
-
-          "tourism":
-            "Travel & Tourism",
-
-
-          "logistics delivery":
-            "Logistics & Delivery",
-
-          "logistics and delivery":
-            "Logistics & Delivery",
-
-          "logistics":
-            "Logistics & Delivery",
-
-          "delivery":
-            "Logistics & Delivery",
-
-
-          "technology":
-            "Technology",
-
-          "tech":
-            "Technology",
-
-          "technology services":
-            "Technology",
-
-          "software":
-            "Technology",
-
-          "it":
-            "Technology",
-
-
-          "entertainment":
-            "Entertainment",
-
-          "media":
-            "Entertainment",
-
-          "events":
-            "Entertainment",
-
-
-          "gyms fitness":
-            "Gyms & Fitness",
-
-          "gyms and fitness":
-            "Gyms & Fitness",
-
-          "gym":
-            "Gyms & Fitness",
-
-          "gyms":
-            "Gyms & Fitness",
-
-          "fitness center":
-            "Gyms & Fitness",
-
-          "fitness centers":
-            "Gyms & Fitness",
-
-          "fitness centre":
-            "Gyms & Fitness",
-
-          "fitness centres":
-            "Gyms & Fitness",
-
-          "gymnasium":
-            "Gyms & Fitness",
-
-          "gymnasiums":
-            "Gyms & Fitness",
-
-
-          "fitness sports":
-            "Fitness & Sports",
-
-          "fitness and sports":
-            "Fitness & Sports",
-
-          "fitness":
-            "Fitness & Sports",
-
-          "sports":
-            "Fitness & Sports",
-
-
-          "construction home services":
-            "Construction & Home Services",
-
-          "construction and home services":
-            "Construction & Home Services",
-
-          "construction":
-            "Construction & Home Services",
-
-          "home services":
-            "Construction & Home Services",
-
-          "home service":
-            "Construction & Home Services",
-
-
-          "fashion":
-            "Fashion",
-
-          "clothing":
-            "Fashion",
-
-          "clothes":
-            "Fashion",
-
-
-          "agriculture":
-            "Agriculture",
-
-          "farming":
-            "Agriculture",
-
-          "farm":
-            "Agriculture",
-
-
-          "religious organizations":
-            "Religious Organizations",
-
-          "religious organization":
-            "Religious Organizations",
-
-          "religious":
-            "Religious Organizations",
-
-          "church":
-            "Religious Organizations",
-
-          "mosque":
-            "Religious Organizations",
-
-
-          "government public services":
-            "Government & Public Services",
-
-          "government and public services":
-            "Government & Public Services",
-
-          "government":
-            "Government & Public Services",
-
-          "public services":
-            "Government & Public Services",
-
-
-          "other":
-            "Other"
-
-        };
-
-
-        return (
-          categoryMap[category] ||
-          String(value || "").trim()
-        );
-
-      }
-
-
-      /* =====================================================
-         DISTANCE
-         Haversine calculation
-         ===================================================== */
-
-      function calculateDistanceKm(
-        latitude1,
-        longitude1,
-        latitude2,
-        longitude2
-      ) {
-
-        const lat1 =
-          Number(latitude1);
-
-        const lon1 =
-          Number(longitude1);
-
-        const lat2 =
-          Number(latitude2);
-
-        const lon2 =
-          Number(longitude2);
-
-
-        if (
-          !Number.isFinite(lat1) ||
-          !Number.isFinite(lon1) ||
-          !Number.isFinite(lat2) ||
-          !Number.isFinite(lon2)
-        ) {
-
-          return null;
-
-        }
-
-
-        const earthRadiusKm =
-          6371;
-
-
-        const latitudeDifference =
-          (
-            (lat2 - lat1) *
-            Math.PI
-          ) / 180;
-
-
-        const longitudeDifference =
-          (
-            (lon2 - lon1) *
-            Math.PI
-          ) / 180;
-
-
-        const a =
-          Math.sin(
-            latitudeDifference / 2
-          ) ** 2 +
-
-          Math.cos(
-            lat1 * Math.PI / 180
-          ) *
-
-          Math.cos(
-            lat2 * Math.PI / 180
-          ) *
-
-          Math.sin(
-            longitudeDifference / 2
-          ) ** 2;
-
-
-        const c =
-          2 *
-          Math.atan2(
-            Math.sqrt(a),
-            Math.sqrt(1 - a)
-          );
-
-
-        return earthRadiusKm * c;
-
-      }
-
-
-      /* =====================================================
-         FORMAT DISTANCE
-         ===================================================== */
-
-      function formatDistance(
-        distanceKm
-      ) {
-
-        if (
-          !Number.isFinite(
-            Number(distanceKm)
-          )
-        ) {
-
-          return "";
-
-        }
-
-
-        const distance =
-          Number(distanceKm);
-
-
-        if (distance < 1) {
-
-          const meters =
-            Math.round(
-              distance * 1000
-            );
-
-
-          return `${meters} m away`;
-
-        }
-
-
-        return `${distance.toFixed(1)} km away`;
-
-      }
-
-
-      /* =====================================================
-         LOCATION STORAGE
-         ===================================================== */
-
-      function saveUserLocation(
-        location
-      ) {
-
-        try {
-
-          sessionStorage.setItem(
-            LOCATION_STORAGE_KEY,
-            JSON.stringify(location)
-          );
-
-        } catch (error) {
-
-          console.warn(
-            "NearAfrica: Could not save temporary location.",
-            error
-          );
-
-        }
-
-      }
-
-
-      function getStoredUserLocation() {
-
-        try {
-
-          const stored =
-            sessionStorage.getItem(
-              LOCATION_STORAGE_KEY
-            );
-
-
-          if (!stored) {
-
-            return null;
-
-          }
-
-
-          const parsed =
-            JSON.parse(stored);
-
-
-          if (
-            !parsed ||
-            !Number.isFinite(
-              Number(parsed.latitude)
-            ) ||
-            !Number.isFinite(
-              Number(parsed.longitude)
-            )
-          ) {
-
-            return null;
-
-          }
-
-
-          return {
-
-            latitude:
-              Number(parsed.latitude),
-
-            longitude:
-              Number(parsed.longitude)
-
-          };
-
-        } catch (error) {
-
-          return null;
-
-        }
-
-      }
-
-
-      function clearStoredUserLocation() {
-
-        try {
-
-          sessionStorage.removeItem(
-            LOCATION_STORAGE_KEY
-          );
-
-        } catch (error) {
-
-          console.warn(
-            "NearAfrica: Could not clear location.",
-            error
-          );
-
-        }
-
-      }
-
-
-      /* =====================================================
-         LOCATION UI
-         ===================================================== */
-
-      function updateLocationUI() {
-
-        if (locationMode && userLocation) {
-
-          useLocationButton.classList.add(
-            "active"
-          );
-
-
-          clearLocationButton.hidden =
-            false;
-
-
-          locationStatus.className =
-            "location-status success";
-
-
-          locationStatus.textContent =
-            "Using your current location.";
-
-
-          nearbyIndicator.classList.add(
-            "visible"
-          );
-
-        } else {
-
-          useLocationButton.classList.remove(
-            "active"
-          );
-
-
-          clearLocationButton.hidden =
-            true;
-
-
-          locationStatus.className =
-            "location-status";
-
-
-          locationStatus.textContent =
-            "Search by area or use your current location.";
-
-
-          nearbyIndicator.classList.remove(
-            "visible"
-          );
-
-        }
-
-      }
-
-
-      /* =====================================================
-         REQUEST LOCATION
-         ===================================================== */
-
-      function requestUserLocation() {
-
-        if (
-          !navigator.geolocation
-        ) {
-
-          locationStatus.className =
-            "location-status error";
-
-
-          locationStatus.textContent =
-            "Location is not supported by this browser.";
-
-
-          return;
-
-        }
-
-
-        locationStatus.className =
-          "location-status";
-
-
-        locationStatus.textContent =
-          "Requesting your location...";
-
-
-        useLocationButton.disabled =
-          true;
-
-
-        navigator.geolocation.getCurrentPosition(
-
-          position => {
-
-            const latitude =
-              Number(
-                position.coords.latitude
-              );
-
-
-            const longitude =
-              Number(
-                position.coords.longitude
-              );
-
-
-            if (
-              !Number.isFinite(latitude) ||
-              !Number.isFinite(longitude)
-            ) {
-
-              locationStatus.className =
-                "location-status error";
-
-
-              locationStatus.textContent =
-                "Your location could not be determined.";
-
-
-              useLocationButton.disabled =
-                false;
-
-
-              return;
-
-            }
-
-
-            userLocation = {
-
-              latitude,
-              longitude
-
-            };
-
-
-            locationMode = true;
-
-
-            /*
-             * Temporary browser session only.
-             *
-             * NearAfrica does not send this
-             * precise location to the API.
-             */
-
-            saveUserLocation(
-              userLocation
-            );
-
-
-            useLocationButton.disabled =
-              false;
-
-
-            updateLocationUI();
-
-
-            applyFilters();
-
-          },
-
-          error => {
-
-            useLocationButton.disabled =
-              false;
-
-
-            locationMode =
-              false;
-
-
-            const errorMessages = {
-
-              1:
-                "Location access was denied. You can still search by city or area.",
-
-              2:
-                "Your location could not be determined. Try again or search by area.",
-
-              3:
-                "Location request timed out. Try again."
-
-            };
-
-
-            locationStatus.className =
-              "location-status error";
-
-
-            locationStatus.textContent =
-              errorMessages[
-                error.code
-              ] ||
-              "Unable to determine your location.";
-
-
-            updateLocationUI();
-
-          },
-
-          {
-
-            enableHighAccuracy: true,
-
-            timeout: 12000,
-
-            maximumAge: 300000
-
-          }
-
-        );
-
-      }
-
-
-      /* =====================================================
-         CLEAR LOCATION
-         ===================================================== */
-
-      function clearUserLocation() {
-
-        userLocation = null;
-
-        locationMode = false;
-
-
-        clearStoredUserLocation();
-
-
-        updateLocationUI();
-
-
-        applyFilters();
-
-      }
-
-
-      /* =====================================================
-         GET LOCATION FROM BUSINESS
-         ===================================================== */
-
-      function getBusinessCoordinates(
-        business
-      ) {
-
-        const latitude =
-          Number(
-            business.latitude
-          );
-
-
-        const longitude =
-          Number(
-            business.longitude
-          );
-
-
-        if (
-          !Number.isFinite(latitude) ||
-          !Number.isFinite(longitude)
-        ) {
-
-          return null;
-
-        }
-
-
-        return {
-
-          latitude,
-          longitude
-
-        };
-
-      }
-
-
-      /* =====================================================
-         ADD DISTANCE
-         ===================================================== */
-
-      function addDistances(
-        businesses
-      ) {
-
-        if (
-          !locationMode ||
-          !userLocation
-        ) {
-
-          return businesses.map(
-            business => ({
-              ...business,
-              distanceKm: null
-            })
-          );
-
-        }
-
-
-        return businesses.map(
-          business => {
-
-            const coordinates =
-              getBusinessCoordinates(
-                business
-              );
-
-
-            if (!coordinates) {
-
-              return {
-
-                ...business,
-
-                distanceKm: null
-
-              };
-
-            }
-
-
-            const distanceKm =
-              calculateDistanceKm(
-
-                userLocation.latitude,
-
-                userLocation.longitude,
-
-                coordinates.latitude,
-
-                coordinates.longitude
-
-              );
-
-
-            return {
-
-              ...business,
-
-              distanceKm
-
-            };
-
-          }
-        );
-
-      }
-
-
-      /* =====================================================
-         BUSINESS LOCATION
-         ===================================================== */
-
-      function getLocation(
-        business
-      ) {
-
-        const parts = [
-
-          business.city,
-
-          business.state,
-
-          business.country
-
-        ].filter(Boolean);
-
-
-        return parts.length
-
-          ? parts.join(", ")
-
-          : "Location not provided";
-
-      }
-
-
-      /* =====================================================
-         BUSINESS INITIAL
-         ===================================================== */
-
-      function getInitial(
-        business
-      ) {
-
-        const name =
-          business.business_name ||
-          business.name ||
-          "Business";
-
-
-        return name
-
-          .trim()
-
-          .charAt(0)
-
-          .toUpperCase();
-
-      }
-
-
-      /* =====================================================
-         BUSINESS CARD
-         ===================================================== */
-
-      function createBusinessCard(
-        business
-      ) {
-
-        const name =
-          escapeHTML(
-            business.business_name ||
-            business.name ||
-            "Unnamed Business"
-          );
-
-
-        const category =
-          escapeHTML(
-            normalizeCategory(
-              business.category ||
-              "Other"
-            )
-          );
-
-
-        const location =
-          escapeHTML(
-            getLocation(
-              business
-            )
-          );
-
-
-        const description =
-          escapeHTML(
-            business.description ||
-            "Business information is currently being updated."
-          );
-
-
-        const initial =
-          escapeHTML(
-            getInitial(
-              business
-            )
-          );
-
-
-        const verified =
-          business.verified === true ||
-          business.verified === 1 ||
-          business.verified === "1" ||
-          business.verified === "true";
-
-
-        const image =
-          business.image_url ||
-          business.imageUrl ||
-          "";
-
-
-        const slug =
-          business.slug ||
-          business.id;
-
-
-        const profileUrl =
-          `business.html?id=${encodeURIComponent(
-            slug
-          )}`;
-
-
-        const distance =
-          formatDistance(
-            business.distanceKm
-          );
-
-
-        let imageHTML;
-
-
-        if (image) {
-
-          imageHTML = `
-
-            <img
-              src="${escapeHTML(image)}"
-              alt="${name}"
-              loading="lazy"
-              onerror="this.parentElement.innerHTML='<span>${initial}</span>'"
-            >
-
-          `;
-
-        } else {
-
-          imageHTML = `
-            <span>${initial}</span>
-          `;
-
-        }
-
-
-        return `
-
-          <article
-            class="business-card"
-          >
-
-            <div class="business-image">
-              ${imageHTML}
-            </div>
-
-
-           
+    ></div
