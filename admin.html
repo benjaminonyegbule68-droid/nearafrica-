@@ -1910,6 +1910,19 @@
             }
 
 
+            if (
+                resource === "discoveries"
+            ) {
+
+                renderDiscoveries(
+                    records
+                );
+
+                return;
+
+            }
+
+
             renderGeneric(
                 records,
                 resource
@@ -2292,6 +2305,481 @@
 
                             <th>
                                 Owner
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        ${rows}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================================================
+       DISCOVERY MODERATION
+    ========================================================= */
+
+    async function moderateDiscoveryFromAdmin(
+        discoveryId,
+        action,
+        button
+    ) {
+
+        if (!discoveryId) {
+
+            alert(
+                "This discovery does not have a valid ID."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            action !== "approve" &&
+            action !== "reject"
+        ) {
+
+            return;
+
+        }
+
+
+        const confirmed =
+            confirm(
+                action === "approve"
+                    ? "Approve this discovery?"
+                    : "Reject this discovery?"
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        const actionButtons =
+            document.querySelectorAll(
+                `.discovery-action[data-discovery-id="${CSS.escape(
+                    String(discoveryId)
+                )}"]`
+            );
+
+
+        actionButtons.forEach(
+            item => {
+
+                item.disabled =
+                    true;
+
+            }
+        );
+
+
+        if (button) {
+
+            button.textContent =
+                action === "approve"
+                    ? "Approving..."
+                    : "Rejecting...";
+
+        }
+
+
+        try {
+
+            const response =
+                await apiRequest(
+                    `/admin/discovery/${encodeURIComponent(
+                        discoveryId
+                    )}/${action}`,
+                    {
+                        method:
+                            "POST"
+                    }
+                );
+
+
+            alert(
+                response.message ||
+                (
+                    action === "approve"
+                        ? "Discovery approved successfully."
+                        : "Discovery rejected successfully."
+                )
+            );
+
+
+            await loadResource(
+                "discoveries"
+            );
+
+
+        } catch (error) {
+
+            actionButtons.forEach(
+                item => {
+
+                    item.disabled =
+                        false;
+
+                }
+            );
+
+
+            if (button) {
+
+                button.textContent =
+                    action === "approve"
+                        ? "Approve"
+                        : "Reject";
+
+            }
+
+
+            alert(
+                error.message ||
+                "Unable to update discovery."
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       RENDER DISCOVERIES
+    ========================================================= */
+
+    function renderDiscoveries(
+        discoveries
+    ) {
+
+        if (
+            !Array.isArray(
+                discoveries
+            ) ||
+            !discoveries.length
+        ) {
+
+            content.innerHTML = `
+                <div class="empty">
+                    No discoveries found.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const rows =
+            discoveries.map(
+                discovery => {
+
+                    const discoveryId =
+                        discovery.id ||
+                        discovery.discovery_id ||
+                        "";
+
+
+                    const title =
+                        discovery.title ||
+                        discovery.name ||
+                        "Untitled discovery";
+
+
+                    const description =
+                        discovery.description ||
+                        "—";
+
+
+                    const category =
+                        discovery.category ||
+                        "—";
+
+
+                    const country =
+                        discovery.country ||
+                        "—";
+
+
+                    const state =
+                        discovery.state ||
+                        "—";
+
+
+                    const city =
+                        discovery.city ||
+                        "—";
+
+
+                    const sourceUrl =
+                        discovery.url ||
+                        discovery.source_url ||
+                        "";
+
+
+                    const status =
+                        String(
+                            discovery.status ||
+                            "pending"
+                        )
+                            .trim()
+                            .toLowerCase();
+
+
+                    const isPending =
+                        ![
+                            "approved",
+                            "rejected"
+                        ].includes(
+                            status
+                        );
+
+
+                    const actions =
+                        isPending &&
+                        discoveryId
+                            ? `
+                                <div
+                                    class="actions"
+                                >
+
+                                    <button
+                                        type="button"
+                                        class="action-btn primary discovery-action"
+                                        data-discovery-id="${escapeAttribute(
+                                            String(
+                                                discoveryId
+                                            )
+                                        )}"
+                                        onclick="moderateDiscoveryFromAdmin(
+                                            '${escapeAttribute(
+                                                String(
+                                                    discoveryId
+                                                )
+                                            )}',
+                                            'approve',
+                                            this
+                                        )"
+                                    >
+                                        Approve
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="action-btn dismiss discovery-action"
+                                        data-discovery-id="${escapeAttribute(
+                                            String(
+                                                discoveryId
+                                            )
+                                        )}"
+                                        onclick="moderateDiscoveryFromAdmin(
+                                            '${escapeAttribute(
+                                                String(
+                                                    discoveryId
+                                                )
+                                            )}',
+                                            'reject',
+                                            this
+                                        )"
+                                    >
+                                        Reject
+                                    </button>
+
+                                </div>
+                            `
+                            : `
+                                <span class="muted">
+                                    No actions
+                                </span>
+                            `;
+
+
+                    const location =
+                        [
+                            city,
+                            state,
+                            country
+                        ]
+                            .filter(
+                                value =>
+                                    value &&
+                                    value !== "—"
+                            )
+                            .join(
+                                ", "
+                            ) ||
+                        "—";
+
+
+                    return `
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        title
+                                    )}
+                                </strong>
+
+                                <div
+                                    class="business-id"
+                                    style="
+                                        margin-top:6px;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        discoveryId
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                ${escapeHtml(
+                                    category
+                                )}
+
+                            </td>
+
+
+                            <td>
+
+                                ${escapeHtml(
+                                    location
+                                )}
+
+                            </td>
+
+
+                            <td>
+
+                                <div
+                                    style="
+                                        max-width:300px;
+                                        white-space:normal;
+                                        line-height:1.5;
+                                        color:#aaa;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        description
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <span>
+                                    ${escapeHtml(
+                                        status
+                                    )}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                ${
+                                    sourceUrl
+                                        ? `
+                                            <a
+                                                href="${escapeAttribute(
+                                                    sourceUrl
+                                                )}"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style="
+                                                    color:#d4af37;
+                                                    text-decoration:none;
+                                                    font-weight:700;
+                                                "
+                                            >
+                                                Open Source
+                                            </a>
+                                        `
+                                        : `
+                                            <span class="muted">
+                                                —
+                                            </span>
+                                        `
+                                }
+
+                            </td>
+
+
+                            <td>
+
+                                ${actions}
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            ).join("");
+
+
+        content.innerHTML = `
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Discovery
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Location
+                            </th>
+
+                            <th>
+                                Description
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Source
                             </th>
 
                             <th>
