@@ -3,9 +3,7 @@
  * ===================================
  * Interface translations for the NearAfrica platform.
  *
- * This file contains NON-SECRET frontend text only.
- *
- * Language codes:
+ * Languages:
  * en = English
  * fr = French
  * ar = Arabic
@@ -21,13 +19,11 @@ const NearAfricaTranslations = {
 
   en: {
 
-    // Site
     siteName: "NearAfrica",
     tagline: "Find Great Businesses Near You.",
     description:
       "Discover trusted businesses, services, shops and places across Africa.",
 
-    // Navigation
     nav: {
       home: "Home",
       explore: "Explore",
@@ -38,7 +34,6 @@ const NearAfricaTranslations = {
       contact: "Contact"
     },
 
-    // Search
     search: {
       title: "Discover Africa. Start Local.",
       whatLookingFor: "What are you looking for?",
@@ -58,7 +53,6 @@ const NearAfricaTranslations = {
         "Location services are not supported by this browser."
     },
 
-    // Explore
     explore: {
       title: "Explore Businesses",
       subtitle:
@@ -90,7 +84,6 @@ const NearAfricaTranslations = {
       next: "Next"
     },
 
-    // Categories
     categories: {
       restaurants: "Restaurants & Food",
       hotels: "Hotels & Accommodation",
@@ -117,7 +110,6 @@ const NearAfricaTranslations = {
       other: "Other"
     },
 
-    // Business
     business: {
       verified: "Verified",
       unverified: "Unverified",
@@ -144,7 +136,6 @@ const NearAfricaTranslations = {
       closingSoon: "Closing soon"
     },
 
-    // Business owner
     owner: {
       listBusiness: "List Your Business",
       claimBusiness: "Claim Your Business",
@@ -154,7 +145,6 @@ const NearAfricaTranslations = {
       businessAnalytics: "Business Analytics"
     },
 
-    // Reviews
     reviews: {
       title: "Reviews",
       writeReview: "Write a Review",
@@ -166,7 +156,6 @@ const NearAfricaTranslations = {
       reviewSubmitted: "Your review has been submitted."
     },
 
-    // Help Wanted
     helpWanted: {
       title: "Help Wanted",
       subtitle:
@@ -179,7 +168,6 @@ const NearAfricaTranslations = {
       description: "Description"
     },
 
-    // Account
     account: {
       login: "Login",
       logout: "Logout",
@@ -191,7 +179,6 @@ const NearAfricaTranslations = {
       notifications: "Notifications"
     },
 
-    // Payments
     payments: {
       free: "Free",
       pro: "NearAfrica Pro",
@@ -204,7 +191,41 @@ const NearAfricaTranslations = {
       subscriptionActive: "Your subscription is active."
     },
 
-    // General actions
+    contact: {
+      title: "Contact NearAfrica",
+      subtitle:
+        "Have a question, need support, want to list a business, or need to report an issue? We're here to help.",
+      emailTitle: "Email Us",
+      emailDescription:
+        "For general questions, support, partnerships, listings and corrections.",
+      emailAction: "Send Email",
+      businessTitle: "Business Support",
+      businessDescription:
+        "Need help with a business listing, claiming a business, or correcting information?",
+      businessAction: "List or Claim a Business",
+      supportTitle: "Platform Support",
+      supportDescription:
+        "Contact us about website issues, reports, suggestions or other NearAfrica matters.",
+      supportAction: "Contact Support",
+      formTitle: "Send Us a Message",
+      name: "Your Name",
+      email: "Your Email",
+      subject: "Subject",
+      message: "Message",
+      namePlaceholder: "Enter your name",
+      emailPlaceholder: "Enter your email address",
+      subjectPlaceholder: "What is your message about?",
+      messagePlaceholder: "Write your message here...",
+      sendMessage: "Send Message",
+      formNote:
+        "Your email application will open so you can send your message.",
+      success:
+        "Your email application should now be open.",
+      validation:
+        "Please complete all required fields before sending.",
+      backHome: "Back to Home"
+    },
+
     actions: {
       save: "Save",
       cancel: "Cancel",
@@ -222,7 +243,6 @@ const NearAfricaTranslations = {
       retry: "Try Again"
     },
 
-    // Legal
     legal: {
       privacy: "Privacy Policy",
       terms: "Terms of Service",
@@ -231,14 +251,12 @@ const NearAfricaTranslations = {
       reviewGuidelines: "Review Guidelines"
     },
 
-    // Footer
     footer: {
       copyright: "© 2026 NearAfrica. All rights reserved.",
       discover: "Discover businesses across Africa.",
       contactUs: "Contact Us"
     },
 
-    // Errors
     errors: {
       somethingWentWrong:
         "Something went wrong. Please try again.",
@@ -428,6 +446,41 @@ const NearAfricaTranslations = {
       paymentSuccessful: "Paiement réussi.",
       paymentFailed: "Échec du paiement.",
       subscriptionActive: "Votre abonnement est actif."
+    },
+
+    contact: {
+      title: "Contacter NearAfrica",
+      subtitle:
+        "Vous avez une question, besoin d'aide, souhaitez ajouter une entreprise ou signaler un problème ? Nous sommes là pour vous aider.",
+      emailTitle: "Envoyez-nous un e-mail",
+      emailDescription:
+        "Pour les questions générales, l'assistance, les partenariats, les annonces et les corrections.",
+      emailAction: "Envoyer un e-mail",
+      businessTitle: "Assistance aux entreprises",
+      businessDescription:
+        "Besoin d'aide concernant une fiche d'entreprise, une revendication ou une correction d'informations ?",
+      businessAction: "Ajouter ou revendiquer une entreprise",
+      supportTitle: "Assistance de la plateforme",
+      supportDescription:
+        "Contactez-nous concernant les problèmes du site, les signalements, les suggestions ou d'autres questions NearAfrica.",
+      supportAction: "Contacter l'assistance",
+      formTitle: "Envoyez-nous un message",
+      name: "Votre nom",
+      email: "Votre e-mail",
+      subject: "Objet",
+      message: "Message",
+      namePlaceholder: "Entrez votre nom",
+      emailPlaceholder: "Entrez votre adresse e-mail",
+      subjectPlaceholder: "Quel est le sujet de votre message ?",
+      messagePlaceholder: "Écrivez votre message ici...",
+      sendMessage: "Envoyer le message",
+      formNote:
+        "Votre application e-mail s'ouvrira afin que vous puissiez envoyer votre message.",
+      success:
+        "Votre application e-mail devrait maintenant être ouverte.",
+      validation:
+        "Veuillez remplir tous les champs obligatoires avant l'envoi.",
+      backHome: "Retour à l'accueil"
     },
 
     actions: {
@@ -652,6 +705,41 @@ const NearAfricaTranslations = {
       subscriptionActive: "اشتراكك نشط."
     },
 
+    contact: {
+      title: "اتصل بـ NearAfrica",
+      subtitle:
+        "هل لديك سؤال أو تحتاج إلى دعم أو تريد إضافة نشاط تجاري أو الإبلاغ عن مشكلة؟ نحن هنا لمساعدتك.",
+      emailTitle: "راسلنا عبر البريد الإلكتروني",
+      emailDescription:
+        "للأسئلة العامة والدعم والشراكات والقوائم وتصحيح المعلومات.",
+      emailAction: "إرسال بريد إلكتروني",
+      businessTitle: "دعم أصحاب الأعمال",
+      businessDescription:
+        "هل تحتاج إلى مساعدة بشأن قائمة تجارية أو المطالبة بنشاط تجاري أو تصحيح معلومات؟",
+      businessAction: "إضافة أو المطالبة بنشاط تجاري",
+      supportTitle: "دعم المنصة",
+      supportDescription:
+        "تواصل معنا بشأن مشكلات الموقع أو البلاغات أو الاقتراحات أو أي أمور أخرى تخص NearAfrica.",
+      supportAction: "التواصل مع الدعم",
+      formTitle: "أرسل لنا رسالة",
+      name: "اسمك",
+      email: "بريدك الإلكتروني",
+      subject: "الموضوع",
+      message: "الرسالة",
+      namePlaceholder: "أدخل اسمك",
+      emailPlaceholder: "أدخل عنوان بريدك الإلكتروني",
+      subjectPlaceholder: "ما موضوع رسالتك؟",
+      messagePlaceholder: "اكتب رسالتك هنا...",
+      sendMessage: "إرسال الرسالة",
+      formNote:
+        "سيتم فتح تطبيق البريد الإلكتروني حتى تتمكن من إرسال رسالتك.",
+      success:
+        "من المفترض أن يكون تطبيق البريد الإلكتروني قد تم فتحه الآن.",
+      validation:
+        "يرجى إكمال جميع الحقول المطلوبة قبل الإرسال.",
+      backHome: "العودة إلى الرئيسية"
+    },
+
     actions: {
       save: "حفظ",
       cancel: "إلغاء",
@@ -872,6 +960,41 @@ const NearAfricaTranslations = {
       paymentSuccessful: "Pagamento realizado com sucesso.",
       paymentFailed: "Falha no pagamento.",
       subscriptionActive: "Sua assinatura está ativa."
+    },
+
+    contact: {
+      title: "Entre em contato com a NearAfrica",
+      subtitle:
+        "Tem uma pergunta, precisa de suporte, quer cadastrar uma empresa ou deseja relatar um problema? Estamos aqui para ajudar.",
+      emailTitle: "Envie um e-mail",
+      emailDescription:
+        "Para perguntas gerais, suporte, parcerias, anúncios e correções.",
+      emailAction: "Enviar e-mail",
+      businessTitle: "Suporte para empresas",
+      businessDescription:
+        "Precisa de ajuda com uma página de empresa, reivindicação ou correção de informações?",
+      businessAction: "Cadastrar ou reivindicar uma empresa",
+      supportTitle: "Suporte da plataforma",
+      supportDescription:
+        "Entre em contato sobre problemas no site, denúncias, sugestões ou outras questões relacionadas à NearAfrica.",
+      supportAction: "Contatar suporte",
+      formTitle: "Envie uma mensagem",
+      name: "Seu nome",
+      email: "Seu e-mail",
+      subject: "Assunto",
+      message: "Mensagem",
+      namePlaceholder: "Digite seu nome",
+      emailPlaceholder: "Digite seu endereço de e-mail",
+      subjectPlaceholder: "Sobre o que é sua mensagem?",
+      messagePlaceholder: "Escreva sua mensagem aqui...",
+      sendMessage: "Enviar mensagem",
+      formNote:
+        "Seu aplicativo de e-mail será aberto para que você possa enviar sua mensagem.",
+      success:
+        "Seu aplicativo de e-mail deve estar aberto agora.",
+      validation:
+        "Preencha todos os campos obrigatórios antes de enviar.",
+      backHome: "Voltar ao início"
     },
 
     actions: {
@@ -1096,6 +1219,41 @@ const NearAfricaTranslations = {
       subscriptionActive: "Usajili wako unatumika."
     },
 
+    contact: {
+      title: "Wasiliana na NearAfrica",
+      subtitle:
+        "Una swali, unahitaji msaada, unataka kuorodhesha biashara au kuripoti tatizo? Tuko hapa kukusaidia.",
+      emailTitle: "Tutumie Barua Pepe",
+      emailDescription:
+        "Kwa maswali ya jumla, msaada, ushirikiano, matangazo na marekebisho.",
+      emailAction: "Tuma Barua Pepe",
+      businessTitle: "Msaada wa Biashara",
+      businessDescription:
+        "Unahitaji msaada kuhusu orodha ya biashara, kudai biashara au kurekebisha taarifa?",
+      businessAction: "Orodhesha au Dai Biashara",
+      supportTitle: "Msaada wa Jukwaa",
+      supportDescription:
+        "Wasiliana nasi kuhusu matatizo ya tovuti, ripoti, mapendekezo au mambo mengine ya NearAfrica.",
+      supportAction: "Wasiliana na Msaada",
+      formTitle: "Tutumie Ujumbe",
+      name: "Jina Lako",
+      email: "Barua Pepe Yako",
+      subject: "Mada",
+      message: "Ujumbe",
+      namePlaceholder: "Ingiza jina lako",
+      emailPlaceholder: "Ingiza anwani yako ya barua pepe",
+      subjectPlaceholder: "Ujumbe wako unahusu nini?",
+      messagePlaceholder: "Andika ujumbe wako hapa...",
+      sendMessage: "Tuma Ujumbe",
+      formNote:
+        "Programu yako ya barua pepe itafunguliwa ili uweze kutuma ujumbe wako.",
+      success:
+        "Programu yako ya barua pepe inapaswa kuwa imefunguliwa sasa.",
+      validation:
+        "Tafadhali jaza sehemu zote zinazohitajika kabla ya kutuma.",
+      backHome: "Rudi Nyumbani"
+    },
+
     actions: {
       save: "Hifadhi",
       cancel: "Ghairi",
@@ -1160,4 +1318,4 @@ if (
   module.exports
 ) {
   module.exports = NearAfricaTranslations;
-      }
+        }
