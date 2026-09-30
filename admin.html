@@ -633,6 +633,47 @@
         }
 
         /* =====================================================
+           CLAIM ACTIONS
+        ===================================================== */
+
+        .claim-action {
+            padding: 7px 10px;
+
+            border-radius: 6px;
+
+            background: transparent;
+            color: #ccc;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
+
+            cursor: pointer;
+        }
+
+        .claim-action:hover {
+            border-color: #d4af37;
+            color: #d4af37;
+        }
+
+        .claim-action[data-action="approve"] {
+            color: #4ade80;
+            border-color: rgba(74,222,128,0.3);
+            background: rgba(74,222,128,0.05);
+        }
+
+        .claim-action[data-action="reject"] {
+            color: #f87171;
+            border-color: rgba(248,113,113,0.3);
+            background: rgba(248,113,113,0.05);
+        }
+
+        .claim-action:disabled {
+            opacity: 0.55;
+            cursor: wait;
+        }
+
+        /* =====================================================
            REPORT MODERATION
         ===================================================== */
 
@@ -1210,23 +1251,32 @@
 
     function getHeaders() {
 
-        const headers = {
+        /*
+         * IMPORTANT:
+         *
+         * The Worker expects:
+         *
+         *     x-admin-api-key
+         *
+         * Header names are case-insensitive,
+         * so this correctly matches it.
+         *
+         * The old dashboard used:
+         *
+         *     X-Admin-Key
+         *
+         * which is a DIFFERENT header name.
+         */
+
+        return {
 
             "Accept":
                 "application/json",
 
-            "X-Admin-Key":
+            "X-Admin-API-Key":
                 adminKey
 
         };
-
-
-        /*
-         * Only send Content-Type when a request
-         * actually has a body.
-         */
-
-        return headers;
 
     }
 
@@ -1313,6 +1363,8 @@
 
             const error =
                 new Error(
+                    data?.error ||
+                    data?.message ||
                     "Admin authentication failed."
                 );
 
@@ -1355,8 +1407,11 @@
     ) {
 
         /*
-         * The current Worker uses
-         * /admin/discovery (singular).
+         * Current Worker uses:
+         *
+         *     /admin/discovery
+         *
+         * for the discovery admin endpoint.
          */
 
         if (
@@ -1369,11 +1424,6 @@
 
         }
 
-
-        /*
-         * Keep the existing Help Wanted
-         * resource name for compatibility.
-         */
 
         return (
             `/admin/${resource}?limit=100`
@@ -1407,12 +1457,6 @@
             }
 
 
-            /*
-             * IMPORTANT:
-             * previousKey is declared outside
-             * the try block so catch() can use it.
-             */
-
             const previousKey =
                 adminKey;
 
@@ -1435,11 +1479,8 @@
             try {
 
                 /*
-                 * Authenticate using the lightweight
-                 * admin root endpoint.
-                 *
-                 * This prevents /admin/stats from
-                 * deciding whether the key is valid.
+                 * Authenticate against the lightweight
+                 * admin endpoint first.
                  */
 
                 await apiRequest(
@@ -1463,10 +1504,6 @@
                     "";
 
 
-                /*
-                 * Stats are deliberately non-blocking.
-                 */
-
                 await loadStats();
 
 
@@ -1477,19 +1514,9 @@
 
             } catch (error) {
 
-                /*
-                 * Restore the previous key
-                 * when authentication fails.
-                 */
-
                 adminKey =
                     previousKey;
 
-
-                /*
-                 * Only present authentication
-                 * errors as invalid-key errors.
-                 */
 
                 if (
                     error.status === 401 ||
@@ -1559,112 +1586,38 @@
         data
     ) {
 
-        if (
-            Array.isArray(
-                data?.businesses
-            )
+        const possibleCollections = [
+
+            "businesses",
+            "submissions",
+            "claims",
+            "reviews",
+            "reports",
+            "help_wanted",
+            "subscriptions",
+            "discoveries",
+            "discovery",
+            "results"
+
+        ];
+
+
+        for (
+            const collection
+            of possibleCollections
         ) {
 
-            return data.businesses;
+            if (
+                Array.isArray(
+                    data?.[collection]
+                )
+            ) {
 
-        }
+                return data[
+                    collection
+                ];
 
-
-        if (
-            Array.isArray(
-                data?.submissions
-            )
-        ) {
-
-            return data.submissions;
-
-        }
-
-
-        if (
-            Array.isArray(
-                data?.claims
-            )
-        ) {
-
-            return data.claims;
-
-        }
-
-
-        if (
-            Array.isArray(
-                data?.reviews
-            )
-        ) {
-
-            return data.reviews;
-
-        }
-
-
-        if (
-            Array.isArray(
-                data?.reports
-            )
-        ) {
-
-            return data.reports;
-
-        }
-
-
-        if (
-            Array.isArray(
-                data?.help_wanted
-            )
-        ) {
-
-            return data.help_wanted;
-
-        }
-
-
-        if (
-            Array.isArray(
-                data?.subscriptions
-            )
-        ) {
-
-            return data.subscriptions;
-
-        }
-
-
-        if (
-            Array.isArray(
-                data?.discoveries
-            )
-        ) {
-
-            return data.discoveries;
-
-        }
-
-
-        if (
-            Array.isArray(
-                data?.discovery
-            )
-        ) {
-
-            return data.discovery;
-
-        }
-
-
-        if (
-            Array.isArray(
-                data?.results
-            )
-        ) {
-
-            return data.results;
+            }
 
         }
 
@@ -1744,12 +1697,6 @@
 
 
         } catch (error) {
-
-            /*
-             * Stats are informational only.
-             * A broken stats endpoint must not
-             * prevent the dashboard from opening.
-             */
 
             console.warn(
                 "NearAfrica admin stats unavailable:",
@@ -2091,6 +2038,7 @@
 
                     const owner =
                         business.owner_id ||
+                        business.owner_email ||
                         "—";
 
 
@@ -2169,11 +2117,9 @@
 
 
                             <td>
-
                                 ${escapeHtml(
                                     category
                                 )}
-
                             </td>
 
 
@@ -2452,7 +2398,7 @@
         const noteInput =
             document.querySelector(
                 `.report-note[data-report-id="${CSS.escape(
-                    reportId
+                    String(reportId)
                 )}"]`
             );
 
@@ -2485,7 +2431,7 @@
         const actionButtons =
             document.querySelectorAll(
                 `.report-action[data-report-id="${CSS.escape(
-                    reportId
+                    String(reportId)
                 )}"]`
             );
 
@@ -2503,7 +2449,7 @@
         const messageElement =
             document.querySelector(
                 `.report-action-message[data-report-id="${CSS.escape(
-                    reportId
+                    String(reportId)
                 )}"]`
             );
 
@@ -2665,7 +2611,7 @@
                         businessId
                             ? `
                                 <a
-                                    href="business.html?id=${encodeURIComponent(
+                                    href="https://nearafrica.pages.dev/pages/business.html?id=${encodeURIComponent(
                                         businessId
                                     )}"
                                     target="_blank"
@@ -2980,6 +2926,188 @@
 
 
     /* =========================================================
+       CLAIM MODERATION
+    ========================================================= */
+
+    async function moderateClaimFromAdmin(
+        claimId,
+        action,
+        button
+    ) {
+
+        if (!claimId) {
+
+            alert(
+                "This claim does not have a valid ID."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            action !== "approve" &&
+            action !== "reject"
+        ) {
+
+            return;
+
+        }
+
+
+        const confirmed =
+            confirm(
+                action === "approve"
+                    ? "Approve this ownership claim?"
+                    : "Reject this ownership claim?"
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        const buttons =
+            document.querySelectorAll(
+                `.claim-action[data-claim-id="${CSS.escape(
+                    String(claimId)
+                )}"]`
+            );
+
+
+        buttons.forEach(
+            item => {
+
+                item.disabled =
+                    true;
+
+            }
+        );
+
+
+        if (button) {
+
+            button.textContent =
+                action === "approve"
+                    ? "Approving..."
+                    : "Rejecting...";
+
+        }
+
+
+        try {
+
+            let reason = "";
+
+
+            if (
+                action === "reject"
+            ) {
+
+                reason =
+                    prompt(
+                        "Optional reason for rejecting this claim:"
+                    );
+
+
+                if (
+                    reason === null
+                ) {
+
+                    buttons.forEach(
+                        item => {
+                            item.disabled =
+                                false;
+                        }
+                    );
+
+                    return;
+
+                }
+
+
+                reason =
+                    reason.trim();
+
+            }
+
+
+            const response =
+                await apiRequest(
+                    `/admin/claims/${encodeURIComponent(
+                        String(claimId)
+                    )}/${action}`,
+                    {
+                        method: "POST",
+
+                        body:
+                            JSON.stringify(
+                                action === "reject"
+                                    ? {
+                                        reason:
+                                            reason
+                                    }
+                                    : {}
+                            )
+                    }
+                );
+
+
+            alert(
+                response.message ||
+                (
+                    action === "approve"
+                        ? "Claim approved successfully."
+                        : "Claim rejected successfully."
+                )
+            );
+
+
+            await loadStats();
+
+
+            await loadResource(
+                "claims"
+            );
+
+
+        } catch (error) {
+
+            buttons.forEach(
+                item => {
+
+                    item.disabled =
+                        false;
+
+                }
+            );
+
+
+            if (button) {
+
+                button.textContent =
+                    action === "approve"
+                        ? "Approve"
+                        : "Reject";
+
+            }
+
+
+            alert(
+                error.message ||
+                "Unable to update claim."
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
        CLAIMS
     ========================================================= */
 
@@ -3120,7 +3248,7 @@
                                             >
 
                                                 <a
-                                                    href="https://nearafrica.pages.dev/business.html?id=${encodeURIComponent(
+                                                    href="https://nearafrica.pages.dev/pages/business.html?id=${encodeURIComponent(
                                                         businessId
                                                     )}"
                                                     target="_blank"
@@ -3353,7 +3481,7 @@
 
 
     /* =========================================================
-       SUBMISSIONS
+       SUBMISSION MODERATION
     ========================================================= */
 
     async function moderateSubmissionFromAdmin(
@@ -3403,6 +3531,7 @@
                     "Why are you rejecting this submission? (Optional)"
                 );
 
+
             if (
                 reason === null
             ) {
@@ -3410,6 +3539,7 @@
                 return;
 
             }
+
 
             reason =
                 reason.trim();
@@ -3939,8 +4069,8 @@
         try {
 
             /*
-             * Validate saved key against
-             * /admin, not /admin/stats.
+             * Validate the saved key against
+             * the admin root endpoint.
              */
 
             await apiRequest(
@@ -3954,11 +4084,6 @@
             adminApp.style.display =
                 "block";
 
-
-            /*
-             * Stats cannot lock the user
-             * out anymore.
-             */
 
             await loadStats();
 
@@ -3975,11 +4100,6 @@
                 error
             );
 
-
-            /*
-             * Only discard the saved key
-             * when authentication failed.
-             */
 
             if (
                 error.status === 401 ||
@@ -4004,8 +4124,8 @@
             } else {
 
                 /*
-                 * Keep the dashboard available
-                 * for non-authentication errors.
+                 * Keep dashboard visible for
+                 * non-authentication failures.
                  */
 
                 loginScreen.style.display =
