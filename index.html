@@ -8,19 +8,17 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Explore Businesses | NearAfrica</title>
+  <title data-i18n="explore.title">Explore Businesses | NearAfrica</title>
 
   <meta
     name="description"
     content="Discover businesses, services, shops, restaurants, hotels and more across Nigeria with NearAfrica."
+    data-i18n-content="explore.metaDescription"
   >
 
   <link rel="icon" type="image/png" href="logo.png">
 
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
 
   <link
     rel="preconnect"
@@ -34,10 +32,6 @@
   >
 
   <style>
-
-    /* =========================================================
-       RESET
-       ========================================================= */
 
     * {
       box-sizing: border-box;
@@ -56,6 +50,10 @@
       line-height: 1.5;
     }
 
+    body[dir="rtl"] {
+      text-align: right;
+    }
+
     button,
     input,
     select {
@@ -70,7 +68,6 @@
       color: inherit;
       text-decoration: none;
     }
-
 
     /* =========================================================
        HEADER
@@ -154,11 +151,30 @@
       border-radius: 8px;
     }
 
-    .nav-button:hover {
-      background: #292929;
-      color: white;
+    /* =========================================================
+       LANGUAGE SELECTOR
+       ========================================================= */
+
+    .language-selector {
+      height: 38px;
+
+      padding: 0 10px;
+
+      border: 1px solid #ddd;
+      border-radius: 8px;
+
+      background: white;
+      color: #222;
+
+      font-size: 13px;
+      font-weight: 600;
+
+      outline: none;
     }
 
+    .language-selector:focus {
+      border-color: #d4af37;
+    }
 
     /* =========================================================
        HERO
@@ -188,7 +204,6 @@
       color: #cfcfcf;
       font-size: 16px;
     }
-
 
     /* =========================================================
        SEARCH
@@ -250,7 +265,6 @@
     .search-button:hover {
       background: #e2c35c;
     }
-
 
     /* =========================================================
        LOCATION CONTROLS
@@ -322,9 +336,7 @@
 
     .location-message {
       margin: 0;
-
       color: #bdbdbd;
-
       font-size: 13px;
     }
 
@@ -336,7 +348,6 @@
       color: #ff9b9b;
     }
 
-
     /* =========================================================
        MAIN
        ========================================================= */
@@ -345,7 +356,6 @@
       width: min(1200px, calc(100% - 32px));
       margin: 32px auto 80px;
     }
-
 
     /* =========================================================
        FILTER BAR
@@ -410,7 +420,6 @@
       border-color: #c49f25;
     }
 
-
     /* =========================================================
        RESULTS HEADER
        ========================================================= */
@@ -450,7 +459,6 @@
       display: block;
     }
 
-
     /* =========================================================
        STATUS
        ========================================================= */
@@ -483,7 +491,6 @@
       color: #a10000;
     }
 
-
     /* =========================================================
        BUSINESS GRID
        ========================================================= */
@@ -496,7 +503,6 @@
 
       gap: 20px;
     }
-
 
     /* =========================================================
        BUSINESS CARD
@@ -683,7 +689,6 @@
       opacity: 0.85;
     }
 
-
     /* =========================================================
        EMPTY STATE
        ========================================================= */
@@ -720,7 +725,6 @@
       color: #777;
       font-size: 14px;
     }
-
 
     /* =========================================================
        PAGINATION
@@ -769,7 +773,6 @@
       cursor: not-allowed;
     }
 
-
     /* =========================================================
        FOOTER
        ========================================================= */
@@ -803,10 +806,39 @@
       font-size: 13px;
     }
 
+    /* =========================================================
+       RTL
+       ========================================================= */
+
+    html[dir="rtl"] .business-location,
+    html[dir="rtl"] .business-distance {
+      direction: rtl;
+    }
+
+    html[dir="rtl"] .location-controls {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+
+    html[dir="rtl"] .search-area {
+      direction: rtl;
+    }
 
     /* =========================================================
        RESPONSIVE
        ========================================================= */
+
+    @media (max-width: 1000px) {
+
+      .nav {
+        flex-wrap: wrap;
+      }
+
+      nav {
+        gap: 14px;
+      }
+
+    }
 
     @media (max-width: 900px) {
 
@@ -822,7 +854,6 @@
 
     }
 
-
     @media (max-width: 650px) {
 
       .nav {
@@ -831,6 +862,10 @@
 
       nav {
         display: none;
+      }
+
+      .language-selector {
+        margin-left: auto;
       }
 
       .hero {
@@ -874,7 +909,6 @@
   </style>
 </head>
 
-
 <body>
 
   <!-- =======================================================
@@ -897,25 +931,38 @@
 
       </a>
 
-
       <nav>
 
-        <a href="index.html">
+        <a
+          href="index.html"
+          data-i18n="nav.home"
+        >
           Home
         </a>
 
         <a
           href="explore.html"
           class="active"
+          data-i18n="nav.explore"
         >
           Explore
         </a>
 
-        <a href="list-business.html">
+        <a
+          href="list-business.html"
+          data-i18n="nav.listBusiness"
+        >
           List Your Business
         </a>
 
       </nav>
+
+      <select
+        id="languageSelector"
+        class="language-selector"
+        data-language-selector
+        aria-label="Language"
+      ></select>
 
     </div>
 
@@ -930,17 +977,14 @@
 
     <div class="hero-inner">
 
-      <h1>
+      <h1 data-i18n="explore.title">
         Explore Businesses
       </h1>
 
-      <p>
+      <p data-i18n="explore.subtitle">
         Discover businesses, services, shops, restaurants,
         hotels and more across Nigeria.
       </p>
-
-
-      <!-- SEARCH -->
 
       <div class="search-area">
 
@@ -949,6 +993,7 @@
           <input
             id="searchInput"
             type="search"
+            data-i18n-placeholder="search.searchPlaceholder"
             placeholder="Search businesses, services or locations..."
             autocomplete="off"
           >
@@ -959,6 +1004,7 @@
           id="searchButton"
           class="search-button"
           type="button"
+          data-i18n="search.search"
         >
           Search
         </button>
@@ -974,6 +1020,7 @@
           id="exploreUseLocation"
           class="location-button"
           type="button"
+          data-i18n="search.useMyLocation"
         >
           📍 Use My Location
         </button>
@@ -982,6 +1029,7 @@
           id="clearLocationButton"
           class="clear-location-button"
           type="button"
+          data-i18n="explore.clearLocation"
         >
           Clear Location
         </button>
@@ -1005,124 +1053,195 @@
 
   <main>
 
-
-    <!-- =====================================================
-         FILTERS
-         ===================================================== -->
-
     <section class="filter-panel">
 
-      <div class="filter-title">
+      <div
+        class="filter-title"
+        data-i18n="explore.filters"
+      >
         Filter businesses
       </div>
 
-
       <div class="filters">
-
 
         <!-- CATEGORY -->
 
         <div class="filter-group">
 
-          <label for="categoryFilter">
+          <label
+            for="categoryFilter"
+            data-i18n="explore.category"
+          >
             Category
           </label>
 
           <select id="categoryFilter">
 
-            <option value="">
+            <option
+              value=""
+              data-i18n="explore.allCategories"
+            >
               All categories
             </option>
 
-            <option value="Restaurants & Food">
+            <option
+              value="Restaurants & Food"
+              data-i18n="categories.restaurants"
+            >
               Restaurants & Food
             </option>
 
-            <option value="Hotels & Accommodation">
+            <option
+              value="Hotels & Accommodation"
+              data-i18n="categories.hotels"
+            >
               Hotels & Accommodation
             </option>
 
-            <option value="Beauty & Spa">
+            <option
+              value="Beauty & Spa"
+              data-i18n="categories.beauty"
+            >
               Beauty & Spa
             </option>
 
-            <option value="Health & Medical">
+            <option
+              value="Health & Medical"
+              data-i18n="categories.health"
+            >
               Health & Medical
             </option>
 
-            <option value="Shopping & Retail">
+            <option
+              value="Shopping & Retail"
+              data-i18n="categories.shopping"
+            >
               Shopping & Retail
             </option>
 
-            <option value="Supermarkets">
+            <option
+              value="Supermarkets"
+              data-i18n="categories.supermarkets"
+            >
               Supermarkets
             </option>
 
-            <option value="Banks & Finance">
+            <option
+              value="Banks & Finance"
+              data-i18n="categories.banks"
+            >
               Banks & Finance
             </option>
 
-            <option value="Professional Services">
+            <option
+              value="Professional Services"
+              data-i18n="categories.professional"
+            >
               Professional Services
             </option>
 
-            <option value="Education">
+            <option
+              value="Education"
+              data-i18n="categories.education"
+            >
               Education
             </option>
 
-            <option value="Real Estate">
+            <option
+              value="Real Estate"
+              data-i18n="categories.realEstate"
+            >
               Real Estate
             </option>
 
-            <option value="Automotive">
+            <option
+              value="Automotive"
+              data-i18n="categories.automotive"
+            >
               Automotive
             </option>
 
-            <option value="Travel & Tourism">
+            <option
+              value="Travel & Tourism"
+              data-i18n="categories.travel"
+            >
               Travel & Tourism
             </option>
 
-            <option value="Logistics & Delivery">
+            <option
+              value="Logistics & Delivery"
+              data-i18n="categories.logistics"
+            >
               Logistics & Delivery
             </option>
 
-            <option value="Technology">
+            <option
+              value="Technology"
+              data-i18n="categories.technology"
+            >
               Technology
             </option>
 
-            <option value="Entertainment">
+            <option
+              value="Entertainment"
+              data-i18n="categories.entertainment"
+            >
               Entertainment
             </option>
 
-            <option value="Gyms & Fitness">
+            <option
+              value="Gyms & Fitness"
+              data-i18n="categories.gyms"
+            >
               Gyms & Fitness
             </option>
 
-            <option value="Fitness & Sports">
+            <option
+              value="Fitness & Sports"
+              data-i18n="categories.fitness"
+            >
               Fitness & Sports
             </option>
 
-            <option value="Construction & Home Services">
+            <option
+              value="Construction & Home Services"
+              data-i18n="categories.construction"
+            >
               Construction & Home Services
             </option>
 
-            <option value="Fashion">
+            <option
+              value="Fashion"
+              data-i18n="categories.fashion"
+            >
               Fashion
             </option>
 
-            <option value="Agriculture">
+            <option
+              value="Agriculture"
+              data-i18n="categories.agriculture"
+            >
               Agriculture
             </option>
 
-            <option value="Religious Organizations">
+            <option
+              value="Religious Organizations"
+              data-i18n="categories.religious"
+            >
               Religious Organizations
             </option>
 
-            <option value="Government & Public Services">
+            <option
+              value="Government & Public Services"
+              data-i18n="categories.government"
+            >
               Government & Public Services
             </option>
 
-            <option value="Other">
+            <option
+              value="Other"
+              data-i18n="categories.other"
+            >
               Other
             </option>
 
@@ -1135,13 +1254,19 @@
 
         <div class="filter-group">
 
-          <label for="stateFilter">
+          <label
+            for="stateFilter"
+            data-i18n="explore.state"
+          >
             State
           </label>
 
           <select id="stateFilter">
 
-            <option value="">
+            <option
+              value=""
+              data-i18n="explore.allStates"
+            >
               All states
             </option>
 
@@ -1192,25 +1317,40 @@
 
         <div class="filter-group">
 
-          <label for="ratingFilter">
+          <label
+            for="ratingFilter"
+            data-i18n="explore.rating"
+          >
             Rating
           </label>
 
           <select id="ratingFilter">
 
-            <option value="">
+            <option
+              value=""
+              data-i18n="explore.anyRating"
+            >
               Any rating
             </option>
 
-            <option value="4">
+            <option
+              value="4"
+              data-i18n="explore.fourPlus"
+            >
               4+ stars
             </option>
 
-            <option value="3">
+            <option
+              value="3"
+              data-i18n="explore.threePlus"
+            >
               3+ stars
             </option>
 
-            <option value="2">
+            <option
+              value="2"
+              data-i18n="explore.twoPlus"
+            >
               2+ stars
             </option>
 
@@ -1223,17 +1363,26 @@
 
         <div class="filter-group">
 
-          <label for="verifiedFilter">
+          <label
+            for="verifiedFilter"
+            data-i18n="explore.verifiedOnly"
+          >
             Verification
           </label>
 
           <select id="verifiedFilter">
 
-            <option value="">
+            <option
+              value=""
+              data-i18n="explore.allBusinesses"
+            >
               All businesses
             </option>
 
-            <option value="1">
+            <option
+              value="1"
+              data-i18n="explore.verified"
+            >
               Verified only
             </option>
 
@@ -1246,15 +1395,16 @@
     </section>
 
 
-    <!-- =====================================================
-         RESULTS HEADER
-         ===================================================== -->
+    <!-- RESULTS HEADER -->
 
     <div class="results-header">
 
       <div>
 
-        <h2 id="resultsTitle">
+        <h2
+          id="resultsTitle"
+          data-i18n="explore.businesses"
+        >
           Businesses
         </h2>
 
@@ -1268,6 +1418,7 @@
         <div
           id="nearbyIndicator"
           class="nearby-indicator"
+          data-i18n="explore.businessesNearYou"
         >
           📍 Showing businesses nearest to your location
         </div>
@@ -1277,19 +1428,16 @@
     </div>
 
 
-    <!-- =====================================================
-         STATUS
-         ===================================================== -->
+    <!-- STATUS -->
 
     <div
       id="statusMessage"
       class="status"
+      aria-live="polite"
     ></div>
 
 
-    <!-- =====================================================
-         BUSINESS GRID
-         ===================================================== -->
+    <!-- BUSINESS GRID -->
 
     <section
       id="businessGrid"
@@ -1298,9 +1446,7 @@
     ></section>
 
 
-    <!-- =====================================================
-         EMPTY STATE
-         ===================================================== -->
+    <!-- EMPTY -->
 
     <section
       id="emptyState"
@@ -1311,20 +1457,18 @@
         🔎
       </div>
 
-      <h3>
+      <h3 data-i18n="explore.noBusinesses">
         No businesses found
       </h3>
 
-      <p>
+      <p data-i18n="explore.noBusinessesNearby">
         Try changing your search or filters.
       </p>
 
     </section>
 
 
-    <!-- =====================================================
-         PAGINATION
-         ===================================================== -->
+    <!-- PAGINATION -->
 
     <div
       id="pagination"
@@ -1342,11 +1486,17 @@
 
     <div class="footer-inner">
 
-      <div class="footer-brand">
+      <div
+        class="footer-brand"
+        data-i18n="siteName"
+      >
         NearAfrica
       </div>
 
-      <div class="footer-copy">
+      <div
+        class="footer-copy"
+        data-i18n="footer.discover"
+      >
         Discover businesses across Africa.
       </div>
 
@@ -1356,10 +1506,22 @@
 
 
   <!-- =======================================================
-       CONFIGURATION
+       NEARAFRICA CONFIG
        ======================================================= -->
 
   <script src="config.js"></script>
+
+  <!-- =======================================================
+       TRANSLATIONS
+       ======================================================= -->
+
+  <script src="js/translations.js"></script>
+
+  <!-- =======================================================
+       I18N ENGINE
+       ======================================================= -->
+
+  <script src="js/i18n.js"></script>
 
 
   <!-- =======================================================
@@ -1383,13 +1545,8 @@
       const LOCATION_STORAGE_KEY =
         "nearafrica_user_location";
 
-      /*
-       * Default nearby search radius.
-       *
-       * The location is calculated locally in the browser.
-       * Precise GPS coordinates are NOT added to the URL.
-       */
-      const DEFAULT_NEARBY_RADIUS_KM = 25;
+      const DEFAULT_NEARBY_RADIUS_KM =
+        25;
 
 
       const apiBase =
@@ -1479,7 +1636,33 @@
 
 
       /* =====================================================
-         STATUS HELPERS
+         TRANSLATION HELPER
+         ===================================================== */
+
+      function t(
+        key,
+        fallback
+      ) {
+
+        if (
+          window.NearAfricaI18n &&
+          typeof window.NearAfricaI18n.translate === "function"
+        ) {
+
+          return window.NearAfricaI18n.translate(
+            key,
+            fallback
+          );
+
+        }
+
+        return fallback || key;
+
+      }
+
+
+      /* =====================================================
+         STATUS
          ===================================================== */
 
       function showLoading() {
@@ -1488,7 +1671,10 @@
           "status loading";
 
         statusMessage.textContent =
-          "Loading businesses...";
+          t(
+            "actions.loading",
+            "Loading..."
+          );
 
       }
 
@@ -1599,7 +1785,10 @@
       }
 
 
-      function saveUserLocation(latitude, longitude) {
+      function saveUserLocation(
+        latitude,
+        longitude
+      ) {
 
         try {
 
@@ -1673,21 +1862,31 @@
         }
 
 
-        if (nearbyMode && userLocation) {
+        if (
+          nearbyMode &&
+          userLocation
+        ) {
 
           exploreUseLocation.classList.add(
             "active"
           );
 
           exploreUseLocation.textContent =
-            "📍 Location Active";
+            "📍 " +
+            t(
+              "search.usingYourLocation",
+              "Location Active"
+            );
 
           clearLocationButton.classList.add(
             "visible"
           );
 
           setLocationMessage(
-            `Showing businesses within ${DEFAULT_NEARBY_RADIUS_KM} km, nearest first.`,
+            t(
+              "explore.nearbyRadius",
+              `Showing businesses within ${DEFAULT_NEARBY_RADIUS_KM} km, nearest first.`
+            ),
             "success"
           );
 
@@ -1696,7 +1895,10 @@
           );
 
           resultsTitle.textContent =
-            "Businesses Near You";
+            t(
+              "explore.businessesNearYou",
+              "Businesses Near You"
+            );
 
         } else {
 
@@ -1705,7 +1907,11 @@
           );
 
           exploreUseLocation.textContent =
-            "📍 Use My Location";
+            "📍 " +
+            t(
+              "search.useMyLocation",
+              "Use My Location"
+            );
 
           clearLocationButton.classList.remove(
             "visible"
@@ -1716,7 +1922,10 @@
           );
 
           resultsTitle.textContent =
-            "Businesses";
+            t(
+              "explore.businesses",
+              "Businesses"
+            );
 
         }
 
@@ -1736,7 +1945,10 @@
 
               reject(
                 new Error(
-                  "Geolocation is not supported by this browser."
+                  t(
+                    "search.locationNotSupported",
+                    "Location is not supported by this browser."
+                  )
                 )
               );
 
@@ -1767,7 +1979,10 @@
 
                   reject(
                     new Error(
-                      "Your browser returned an invalid location."
+                      t(
+                        "search.locationUnavailable",
+                        "Your browser returned an invalid location."
+                      )
                     )
                   );
 
@@ -1787,7 +2002,10 @@
               error => {
 
                 let message =
-                  "We couldn't access your location.";
+                  t(
+                    "search.locationError",
+                    "We couldn't access your location."
+                  );
 
 
                 if (
@@ -1796,7 +2014,10 @@
                 ) {
 
                   message =
-                    "Location permission was denied. Please allow location access in your browser settings.";
+                    t(
+                      "search.locationAccessDenied",
+                      "Location permission was denied."
+                    );
 
                 } else if (
                   error.code ===
@@ -1804,7 +2025,10 @@
                 ) {
 
                   message =
-                    "Your location is currently unavailable.";
+                    t(
+                      "search.locationUnavailable",
+                      "Your location is currently unavailable."
+                    );
 
                 } else if (
                   error.code ===
@@ -1812,7 +2036,10 @@
                 ) {
 
                   message =
-                    "Location request timed out. Please try again.";
+                    t(
+                      "search.locationError",
+                      "Location request timed out. Please try again."
+                    );
 
                 }
 
@@ -1849,7 +2076,10 @@
         }
 
 
-        if (nearbyMode && userLocation) {
+        if (
+          nearbyMode &&
+          userLocation
+        ) {
 
           return;
 
@@ -1860,10 +2090,17 @@
           true;
 
         exploreUseLocation.textContent =
-          "📍 Finding you...";
+          "📍 " +
+          t(
+            "search.usingYourLocation",
+            "Finding you..."
+          );
 
         setLocationMessage(
-          "Requesting your location..."
+          t(
+            "actions.loading",
+            "Requesting your location..."
+          )
         );
 
 
@@ -1879,18 +2116,15 @@
           nearbyMode =
             true;
 
+          requestedLocation =
+            "";
+
 
           saveUserLocation(
             location.latitude,
             location.longitude
           );
 
-
-          /*
-           * Keep GPS coordinates out of the URL.
-           *
-           * Only the nearby=1 flag is used.
-           */
 
           const url =
             new URL(
@@ -1935,7 +2169,10 @@
 
           setLocationMessage(
             error.message ||
-            "Unable to determine your location.",
+            t(
+              "search.locationError",
+              "Unable to determine your location."
+            ),
             "error"
           );
 
@@ -1980,6 +2217,10 @@
           "nearby"
         );
 
+        url.searchParams.delete(
+          "location"
+        );
+
         window.history.replaceState(
           {},
           "",
@@ -1990,7 +2231,10 @@
         updateLocationUI();
 
         setLocationMessage(
-          "Location search cleared."
+          t(
+            "explore.clearLocation",
+            "Location search cleared."
+          )
         );
 
 
@@ -2000,7 +2244,7 @@
 
 
       /* =====================================================
-         DISTANCE CALCULATION
+         DISTANCE
          ===================================================== */
 
       function calculateDistanceKm(
@@ -2038,34 +2282,22 @@
         const earthRadiusKm =
           6371;
 
-
-        const degreesToRadians =
+        const radians =
           Math.PI / 180;
 
-
         const dLat =
-          (lat2 - lat1) *
-          degreesToRadians;
-
+          (lat2 - lat1) * radians;
 
         const dLon =
-          (lon2 - lon1) *
-          degreesToRadians;
+          (lon2 - lon1) * radians;
 
 
         const a =
           Math.sin(dLat / 2) *
           Math.sin(dLat / 2) +
 
-          Math.cos(
-            lat1 *
-            degreesToRadians
-          ) *
-
-          Math.cos(
-            lat2 *
-            degreesToRadians
-          ) *
+          Math.cos(lat1 * radians) *
+          Math.cos(lat2 * radians) *
 
           Math.sin(dLon / 2) *
           Math.sin(dLon / 2);
@@ -2084,10 +2316,6 @@
       }
 
 
-      /* =====================================================
-         FORMAT DISTANCE
-         ===================================================== */
-
       function formatDistance(
         distanceKm
       ) {
@@ -2103,26 +2331,22 @@
 
         if (distanceKm < 1) {
 
-          return `${Math.round(distanceKm * 1000)} m away`;
+          return `${Math.round(distanceKm * 1000)} m ${t("explore.away", "away")}`;
 
         }
 
 
         if (distanceKm < 10) {
 
-          return `${distanceKm.toFixed(1)} km away`;
+          return `${distanceKm.toFixed(1)} km ${t("explore.away", "away")}`;
 
         }
 
 
-        return `${Math.round(distanceKm)} km away`;
+        return `${Math.round(distanceKm)} km ${t("explore.away", "away")}`;
 
       }
 
-
-      /* =====================================================
-         ADD DISTANCES
-         ===================================================== */
 
       function addDistances(
         businesses
@@ -2177,10 +2401,6 @@
       }
 
 
-      /* =====================================================
-         SORT BY DISTANCE
-         ===================================================== */
-
       function sortByDistance(
         businesses
       ) {
@@ -2213,7 +2433,7 @@
 
 
       /* =====================================================
-         FORMAT LOCATION
+         LOCATION
          ===================================================== */
 
       function getLocation(
@@ -2229,14 +2449,13 @@
 
         return parts.length
           ? parts.join(", ")
-          : "Location not provided";
+          : t(
+              "business.address",
+              "Location not provided"
+            );
 
       }
 
-
-      /* =====================================================
-         GET INITIAL
-         ===================================================== */
 
       function getInitial(
         business
@@ -2268,14 +2487,20 @@
           escapeHTML(
             business.business_name ||
             business.name ||
-            "Unnamed Business"
+            t(
+              "explore.noBusinesses",
+              "Unnamed Business"
+            )
           );
 
 
         const category =
           escapeHTML(
             business.category ||
-            "Other"
+            t(
+              "categories.other",
+              "Other"
+            )
           );
 
 
@@ -2288,7 +2513,10 @@
         const description =
           escapeHTML(
             business.description ||
-            "Business information is currently being updated."
+            t(
+              "business.about",
+              "Business information is currently being updated."
+            )
           );
 
 
@@ -2369,7 +2597,12 @@
 
             distanceHTML = `
               <div class="business-distance unavailable">
-                📍 Distance unavailable
+                📍 ${escapeHTML(
+                  t(
+                    "explore.distanceUnavailable",
+                    "Distance unavailable"
+                  )
+                )}
               </div>
             `;
 
@@ -2386,31 +2619,25 @@
               ${imageHTML}
             </div>
 
-
             <div class="business-content">
 
               <div class="business-category">
                 ${category}
               </div>
 
-
               <h3 class="business-name">
                 ${name}
               </h3>
-
 
               <div class="business-location">
                 📍 ${location}
               </div>
 
-
               ${distanceHTML}
-
 
               <p class="business-description">
                 ${description}
               </p>
-
 
               <div class="business-meta">
 
@@ -2418,23 +2645,31 @@
                   verified
                     ? `
                       <span class="badge verified">
-                        ✓ Verified
+                        ✓ ${escapeHTML(
+                          t(
+                            "business.verified",
+                            "Verified"
+                          )
+                        )}
                       </span>
                     `
                     : ""
                 }
-
 
                 ${
                   business.phone
                     ? `
                       <span class="badge">
-                        Phone available
+                        ${escapeHTML(
+                          t(
+                            "business.phone",
+                            "Phone available"
+                          )
+                        )}
                       </span>
                     `
                     : ""
                 }
-
 
                 ${
                   business.whatsapp
@@ -2446,12 +2681,16 @@
                     : ""
                 }
 
-
                 ${
                   business.website
                     ? `
                       <span class="badge">
-                        Website
+                        ${escapeHTML(
+                          t(
+                            "business.website",
+                            "Website"
+                          )
+                        )}
                       </span>
                     `
                     : ""
@@ -2459,14 +2698,18 @@
 
               </div>
 
-
               <div class="business-actions">
 
                 <a
                   class="business-action primary"
                   href="${profileUrl}"
                 >
-                  View Business
+                  ${escapeHTML(
+                    t(
+                      "business.viewBusiness",
+                      "View Business"
+                    )
+                  )}
                 </a>
 
               </div>
@@ -2481,7 +2724,7 @@
 
 
       /* =====================================================
-         RENDER BUSINESSES
+         RENDER
          ===================================================== */
 
       function renderBusinesses() {
@@ -2499,8 +2742,14 @@
 
           resultCount.textContent =
             nearbyMode
-              ? "0 businesses found nearby"
-              : "0 businesses found";
+              ? `0 ${t(
+                  "explore.businessesFoundNearby",
+                  "businesses found nearby"
+                )}`
+              : `0 ${t(
+                  "explore.businessesFound",
+                  "businesses found"
+                )}`;
 
 
           emptyState.classList.add(
@@ -2542,10 +2791,22 @@
             .join("");
 
 
+        const businessWord =
+          total === 1
+            ? "business"
+            : "businesses";
+
+
         resultCount.textContent =
           nearbyMode
-            ? `${total} business${total === 1 ? "" : "es"} found nearby`
-            : `${total} business${total === 1 ? "" : "es"} found`;
+            ? `${total} ${t(
+                "explore.businessesFoundNearby",
+                `${businessWord} found nearby`
+              )}`
+            : `${total} ${t(
+                "explore.businessesFound",
+                `${businessWord} found`
+              )}`;
 
 
         renderPagination();
@@ -2585,7 +2846,10 @@
 
 
         previous.textContent =
-          "Previous";
+          t(
+            "explore.previous",
+            "Previous"
+          );
 
 
         previous.disabled =
@@ -2604,7 +2868,6 @@
 
               renderBusinesses();
 
-
               window.scrollTo({
                 top: 300,
                 behavior: "smooth"
@@ -2621,13 +2884,8 @@
         );
 
 
-        /*
-         * Avoid rendering hundreds of
-         * pagination buttons if the
-         * directory grows.
-         */
-
-        const maxVisiblePages = 7;
+        const maxVisiblePages =
+          7;
 
 
         let startPage =
@@ -2696,9 +2954,7 @@
               currentPage =
                 page;
 
-
               renderBusinesses();
-
 
               window.scrollTo({
                 top: 300,
@@ -2723,7 +2979,10 @@
 
 
         next.textContent =
-          "Next";
+          t(
+            "explore.next",
+            "Next"
+          );
 
 
         next.disabled =
@@ -2742,9 +3001,7 @@
 
               currentPage++;
 
-
               renderBusinesses();
-
 
               window.scrollTo({
                 top: 300,
@@ -2803,7 +3060,6 @@
           "food":
             "Restaurants & Food",
 
-
           "hotels accommodation":
             "Hotels & Accommodation",
 
@@ -2818,7 +3074,6 @@
 
           "accommodation":
             "Hotels & Accommodation",
-
 
           "beauty spa":
             "Beauty & Spa",
@@ -2837,7 +3092,6 @@
 
           "salon":
             "Beauty & Spa",
-
 
           "health medical":
             "Health & Medical",
@@ -2869,7 +3123,6 @@
           "pharmacies":
             "Health & Medical",
 
-
           "shopping retail":
             "Shopping & Retail",
 
@@ -2882,13 +3135,11 @@
           "retail":
             "Shopping & Retail",
 
-
           "supermarket":
             "Supermarkets",
 
           "supermarkets":
             "Supermarkets",
-
 
           "banks finance":
             "Banks & Finance",
@@ -2905,7 +3156,6 @@
           "finance":
             "Banks & Finance",
 
-
           "professional services":
             "Professional Services",
 
@@ -2917,7 +3167,6 @@
 
           "consulting":
             "Professional Services",
-
 
           "education":
             "Education",
@@ -2934,7 +3183,6 @@
           "universities":
             "Education",
 
-
           "real estate":
             "Real Estate",
 
@@ -2946,7 +3194,6 @@
 
           "properties":
             "Real Estate",
-
 
           "automotive":
             "Automotive",
@@ -2966,7 +3213,6 @@
           "car services":
             "Automotive",
 
-
           "travel tourism":
             "Travel & Tourism",
 
@@ -2979,7 +3225,6 @@
           "tourism":
             "Travel & Tourism",
 
-
           "logistics delivery":
             "Logistics & Delivery",
 
@@ -2991,7 +3236,6 @@
 
           "delivery":
             "Logistics & Delivery",
-
 
           "technology":
             "Technology",
@@ -3008,7 +3252,6 @@
           "it":
             "Technology",
 
-
           "entertainment":
             "Entertainment",
 
@@ -3017,7 +3260,6 @@
 
           "events":
             "Entertainment",
-
 
           "gyms fitness":
             "Gyms & Fitness",
@@ -3049,7 +3291,6 @@
           "gymnasiums":
             "Gyms & Fitness",
 
-
           "fitness sports":
             "Fitness & Sports",
 
@@ -3061,7 +3302,6 @@
 
           "sports":
             "Fitness & Sports",
-
 
           "construction home services":
             "Construction & Home Services",
@@ -3078,7 +3318,6 @@
           "home service":
             "Construction & Home Services",
 
-
           "fashion":
             "Fashion",
 
@@ -3088,7 +3327,6 @@
           "clothes":
             "Fashion",
 
-
           "agriculture":
             "Agriculture",
 
@@ -3097,7 +3335,6 @@
 
           "farm":
             "Agriculture",
-
 
           "religious organizations":
             "Religious Organizations",
@@ -3114,7 +3351,6 @@
           "mosque":
             "Religious Organizations",
 
-
           "government public services":
             "Government & Public Services",
 
@@ -3126,7 +3362,6 @@
 
           "public services":
             "Government & Public Services",
-
 
           "other":
             "Other"
@@ -3143,7 +3378,7 @@
 
 
       /* =====================================================
-         SEARCH TEXT
+         LOCATION TEXT MATCH
          ===================================================== */
 
       function businessMatchesLocation(
@@ -3159,15 +3394,10 @@
         const searchable = [
 
           business.city,
-
           business.state,
-
           business.country,
-
           business.address,
-
           business.business_name,
-
           business.name
 
         ]
@@ -3229,37 +3459,21 @@
           allBusinesses.filter(
             business => {
 
-
-              /* =============================================
-                 SEARCH
-                 ============================================= */
-
               if (search) {
 
                 const searchable = [
 
                   business.business_name,
-
                   business.name,
-
                   business.category,
-
                   business.description,
-
                   business.city,
-
                   business.state,
-
                   business.country,
-
                   business.address,
-
                   business.subcategory,
-
                   business.phone,
-
                   business.whatsapp,
-
                   business.email
 
                 ]
@@ -3281,24 +3495,6 @@
               }
 
 
-              /* =============================================
-                 LOCATION TEXT
-                 ============================================= */
-
-              /*
-               * Precise-location mode takes
-               * priority over text location.
-               *
-               * This means:
-               *
-               * Use My Location
-               * +
-               * "restaurant"
-               *
-               * searches restaurants around
-               * the user's actual coordinates.
-               */
-
               if (
                 !nearbyMode &&
                 requestedLocation
@@ -3317,10 +3513,6 @@
 
               }
 
-
-              /* =============================================
-                 CATEGORY
-                 ============================================= */
 
               if (category) {
 
@@ -3342,10 +3534,6 @@
               }
 
 
-              /* =============================================
-                 STATE
-                 ============================================= */
-
               if (state) {
 
                 const businessState =
@@ -3366,10 +3554,6 @@
 
               }
 
-
-              /* =============================================
-                 RATING
-                 ============================================= */
 
               if (
                 rating !== null
@@ -3395,10 +3579,6 @@
 
               }
 
-
-              /* =============================================
-                 VERIFIED
-                 ============================================= */
 
               if (
                 verifiedOnly
@@ -3427,30 +3607,11 @@
           );
 
 
-        /*
-         * Add distances only when
-         * precise-location mode is active.
-         */
-
         results =
           addDistances(
             results
           );
 
-
-        /*
-         * In nearby mode:
-         *
-         * 1. Businesses with coordinates
-         *    are calculated.
-         * 2. Businesses outside the
-         *    default radius are removed.
-         * 3. Remaining businesses are
-         *    sorted nearest first.
-         * 4. Businesses without
-         *    coordinates are kept at
-         *    the bottom.
-         */
 
         if (
           nearbyMode &&
@@ -3492,37 +3653,16 @@
         filteredBusinesses =
           results;
 
-
         currentPage =
           1;
 
-
         renderBusinesses();
-
-
-        console.log(
-          "NearAfrica: Filters applied.",
-          {
-            search,
-            requestedLocation,
-            category,
-            state,
-            rating,
-            verifiedOnly,
-            nearbyMode,
-            userLocation,
-            totalBusinesses:
-              allBusinesses.length,
-            filteredBusinesses:
-              filteredBusinesses.length
-          }
-        );
 
       }
 
 
       /* =====================================================
-         READ URL PARAMETERS
+         URL PARAMETERS
          ===================================================== */
 
       function initializeFromURL() {
@@ -3536,14 +3676,11 @@
         const search =
           params.get("search");
 
-
         const location =
           params.get("location");
 
-
         const category =
           params.get("category");
-
 
         const nearby =
           params.get("nearby");
@@ -3566,19 +3703,6 @@
 
         }
 
-
-        /*
-         * Homepage category cards use
-         * short category names such as:
-         *
-         * restaurants
-         * beauty
-         * hotels
-         * shopping
-         *
-         * Convert them into the actual
-         * NearAfrica category values.
-         */
 
         if (category) {
 
@@ -3603,9 +3727,7 @@
             );
 
 
-          if (
-            matchingOption
-          ) {
+          if (matchingOption) {
 
             categoryFilter.value =
               matchingOption.value;
@@ -3614,13 +3736,6 @@
 
         }
 
-
-        /*
-         * Only activate precise
-         * location mode when the
-         * homepage explicitly sent
-         * nearby=1.
-         */
 
         if (
           nearby === "1"
@@ -3644,7 +3759,10 @@
           } else {
 
             setLocationMessage(
-              "Your previous location is no longer available. Tap Use My Location to enable nearby search."
+              t(
+                "search.locationUnavailable",
+                "Your previous location is no longer available. Tap Use My Location to enable nearby search."
+              )
             );
 
           }
@@ -3700,12 +3818,6 @@
             await response.json();
 
 
-          console.log(
-            "NearAfrica API response:",
-            data
-          );
-
-
           if (!data) {
 
             throw new Error(
@@ -3756,32 +3868,7 @@
 
           hideStatus();
 
-
           applyFilters();
-
-
-          console.log(
-            "NearAfrica: Loaded " +
-            allBusinesses.length +
-            " businesses."
-          );
-
-
-          const categories =
-            [
-              ...new Set(
-                allBusinesses.map(
-                  business =>
-                    business.category
-                )
-              )
-            ];
-
-
-          console.log(
-            "NearAfrica: Categories returned by API:",
-            categories
-          );
 
 
         } catch (error) {
@@ -3800,36 +3887,50 @@
 
 
           if (businessGrid) {
-
-            businessGrid.innerHTML =
-              "";
-
+            businessGrid.innerHTML = "";
           }
-
 
           if (pagination) {
-
-            pagination.innerHTML =
-              "";
-
+            pagination.innerHTML = "";
           }
-
 
           if (resultCount) {
 
             resultCount.textContent =
-              "Unable to load businesses";
+              t(
+                "errors.unableToLoad",
+                "Unable to load businesses"
+              );
 
           }
 
 
           showError(
-            "We couldn't load businesses right now. Please try again in a moment."
+            t(
+              "errors.unableToLoad",
+              "We couldn't load businesses right now. Please try again in a moment."
+            )
           );
 
         }
 
       }
+
+
+      /* =====================================================
+         LANGUAGE CHANGE
+         ===================================================== */
+
+      window.addEventListener(
+        "nearafrica:languagechange",
+        () => {
+
+          updateLocationUI();
+
+          applyFilters();
+
+        }
+      );
 
 
       /* =====================================================
