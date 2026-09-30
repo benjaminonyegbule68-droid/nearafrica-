@@ -1,20 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Contact NearAfrica</title>
+    <title data-i18n="nav.contact">Contact NearAfrica</title>
+
     <meta
         name="description"
         content="Contact NearAfrica for questions, business listings, corrections, partnerships, and support."
     >
 
-    <link rel="icon" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
     <link rel="stylesheet" href="styles.css">
 
     <style>
-        /* Contact page */
+        /* =========================================================
+           CONTACT PAGE
+           ========================================================= */
+
+        .contact-page {
+            min-height: 70vh;
+        }
+
         .contact-hero {
             padding: 70px 20px 45px;
             text-align: center;
@@ -37,6 +45,7 @@
             gap: 24px;
             max-width: 1000px;
             margin: 0 auto;
+            padding: 0 20px;
         }
 
         .contact-card {
@@ -54,19 +63,910 @@
         .contact-card p {
             color: #b8b8b8;
             line-height: 1.7;
+            margin-bottom: 10px;
         }
 
         .contact-card a {
             color: #d4af37;
             text-decoration: none;
+            word-break: break-word;
         }
 
         .contact-card a:hover {
             text-decoration: underline;
         }
 
+        .contact-icon {
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #1c1c1c;
+            color: #d4af37;
+            font-size: 20px;
+            margin-bottom: 18px;
+        }
+
         .contact-form {
             max-width: 800px;
             margin: 50px auto 0;
             padding: 30px;
-           
+            border-radius: 14px;
+            background: #111;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .contact-form h2 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .contact-form > p {
+            color: #b8b8b8;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            margin-bottom: 7px;
+            color: #ddd;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #1b1b1b;
+            color: white;
+            padding: 12px 14px;
+            outline: none;
+        }
+
+        .form-group input {
+            height: 46px;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #d4af37;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #777;
+        }
+
+        .contact-submit {
+            margin-top: 20px;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 22px;
+            background: #d4af37;
+            color: #111;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .contact-submit:hover {
+            background: #e2c35c;
+        }
+
+        .contact-note {
+            margin-top: 12px;
+            color: #888;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .contact-direct {
+            text-align: center;
+            margin: 35px auto 0;
+            max-width: 800px;
+            padding: 0 20px;
+            color: #999;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /* =========================================================
+           LANGUAGE SELECTOR
+           ========================================================= */
+
+        .contact-language-selector {
+            height: 38px;
+            padding: 0 10px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #111;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+        }
+
+        .contact-language-selector:focus {
+            border-color: #d4af37;
+        }
+
+        /* =========================================================
+           CONTACT NAV
+           ========================================================= */
+
+        .contact-header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .contact-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .contact-nav a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .contact-nav a:hover {
+            color: #d4af37;
+        }
+
+        /* =========================================================
+           RTL
+           ========================================================= */
+
+        html[dir="rtl"] .contact-card,
+        html[dir="rtl"] .contact-form {
+            text-align: right;
+        }
+
+        html[dir="rtl"] .contact-submit {
+            text-align: center;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 800px) {
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .contact-hero {
+                padding: 50px 20px 35px;
+            }
+
+            .contact-form {
+                margin-left: 20px;
+                margin-right: 20px;
+                padding: 22px;
+            }
+
+            .contact-grid {
+                padding: 0 20px;
+            }
+
+            .contact-header-inner {
+                gap: 10px;
+            }
+
+            .contact-nav {
+                display: none;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         HEADER
+         ========================================================= -->
+
+    <header class="site-header">
+
+        <div class="container header-inner contact-header-inner">
+
+            <a href="index.html" class="logo">
+
+                <img
+                    src="logo.png"
+                    alt="NearAfrica"
+                    class="logo-img"
+                >
+
+                <span
+                    class="logo-text"
+                    data-i18n="siteName"
+                >
+                    NearAfrica
+                </span>
+
+            </a>
+
+            <nav
+                class="nav-links contact-nav"
+                aria-label="Main navigation"
+            >
+
+                <a
+                    href="index.html"
+                    data-i18n="nav.home"
+                >
+                    Home
+                </a>
+
+                <a
+                    href="explore.html"
+                    data-i18n="nav.explore"
+                >
+                    Explore
+                </a>
+
+                <a
+                    href="list-business.html"
+                    data-i18n="nav.listBusiness"
+                >
+                    List Your Business
+                </a>
+
+                <a
+                    href="claim-business.html"
+                    data-i18n="nav.claimBusiness"
+                >
+                    Claim Business
+                </a>
+
+                <a
+                    href="contact.html"
+                    class="active"
+                    data-i18n="nav.contact"
+                >
+                    Contact
+                </a>
+
+            </nav>
+
+            <select
+                id="languageSelector"
+                class="contact-language-selector"
+                data-language-selector
+                aria-label="Language"
+            ></select>
+
+            <button
+                id="mobileMenuToggle"
+                class="mobile-menu-toggle"
+                type="button"
+                aria-label="Open menu"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+
+        </div>
+
+        <nav
+            id="mobileNav"
+            class="mobile-nav"
+            aria-label="Mobile navigation"
+        >
+
+            <a
+                href="index.html"
+                data-i18n="nav.home"
+            >
+                Home
+            </a>
+
+            <a
+                href="explore.html"
+                data-i18n="nav.explore"
+            >
+                Explore
+            </a>
+
+            <a
+                href="list-business.html"
+                data-i18n="nav.listBusiness"
+            >
+                List Your Business
+            </a>
+
+            <a
+                href="claim-business.html"
+                data-i18n="nav.claimBusiness"
+            >
+                Claim Business
+            </a>
+
+            <a
+                href="contact.html"
+                data-i18n="nav.contact"
+            >
+                Contact
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================================================
+         MAIN
+         ========================================================= -->
+
+    <main class="contact-page">
+
+        <section class="contact-hero">
+
+            <h1 data-i18n="nav.contact">
+                Contact NearAfrica
+            </h1>
+
+            <p data-i18n="contact.subtitle">
+                Have a question, need support, want to correct a
+                business listing, or want to discuss a partnership?
+                Get in touch with the NearAfrica team.
+            </p>
+
+        </section>
+
+
+        <!-- =====================================================
+             CONTACT OPTIONS
+             ===================================================== -->
+
+        <section class="contact-grid">
+
+            <!-- EMAIL -->
+
+            <article class="contact-card">
+
+                <div class="contact-icon">
+                    ✉
+                </div>
+
+                <h2 data-i18n="contact.emailTitle">
+                    Email
+                </h2>
+
+                <p data-i18n="contact.emailDescription">
+                    Send us an email for general questions,
+                    support, corrections, or business-related
+                    requests.
+                </p>
+
+                <a href="mailto:contactnearafrica43@gmail.com">
+                    contactnearafrica43@gmail.com
+                </a>
+
+            </article>
+
+
+            <!-- WHATSAPP -->
+
+            <article class="contact-card">
+
+                <div class="contact-icon">
+                    💬
+                </div>
+
+                <h2 data-i18n="contact.whatsappTitle">
+                    WhatsApp
+                </h2>
+
+                <p data-i18n="contact.whatsappDescription">
+                    Contact NearAfrica through WhatsApp for
+                    direct assistance and general inquiries.
+                </p>
+
+                <a
+                    href="https://wa.me/2348133236954"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <span data-i18n="contact.openWhatsApp">
+                        Open WhatsApp
+                    </span>
+                </a>
+
+            </article>
+
+
+            <!-- BUSINESS LISTING -->
+
+            <article class="contact-card">
+
+                <div class="contact-icon">
+                    🏢
+                </div>
+
+                <h2 data-i18n="contact.listingTitle">
+                    Business Listing
+                </h2>
+
+                <p data-i18n="contact.listingDescription">
+                    Want to add your business to NearAfrica?
+                    Submit your business through our listing
+                    form.
+                </p>
+
+                <a
+                    href="list-business.html"
+                    data-i18n="contact.listBusiness"
+                >
+                    List Your Business
+                </a>
+
+            </article>
+
+
+            <!-- CORRECTIONS -->
+
+            <article class="contact-card">
+
+                <div class="contact-icon">
+                    ✓
+                </div>
+
+                <h2 data-i18n="contact.correctionTitle">
+                    Listing Correction
+                </h2>
+
+                <p data-i18n="contact.correctionDescription">
+                    Found incorrect information on a business
+                    listing? Contact us so the information can
+                    be reviewed.
+                </p>
+
+                <a
+                    href="mailto:contactnearafrica43@gmail.com?subject=NearAfrica%20Listing%20Correction"
+                    data-i18n="contact.reportCorrection"
+                >
+                    Report a Correction
+                </a>
+
+            </article>
+
+        </section>
+
+
+        <!-- =====================================================
+             CONTACT FORM
+             ===================================================== -->
+
+        <section class="contact-form">
+
+            <h2 data-i18n="contact.formTitle">
+                Send Us a Message
+            </h2>
+
+            <p data-i18n="contact.formDescription">
+                Fill out the form below. Your email application
+                will open so you can send the message directly
+                to NearAfrica.
+            </p>
+
+            <form id="contactForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label
+                            for="contactName"
+                            data-i18n="contact.name"
+                        >
+                            Name
+                        </label>
+
+                        <input
+                            id="contactName"
+                            name="name"
+                            type="text"
+                            required
+                            autocomplete="name"
+                            data-i18n-placeholder="contact.namePlaceholder"
+                            placeholder="Your name"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label
+                            for="contactEmail"
+                            data-i18n="contact.email"
+                        >
+                            Email
+                        </label>
+
+                        <input
+                            id="contactEmail"
+                            name="email"
+                            type="email"
+                            required
+                            autocomplete="email"
+                            data-i18n-placeholder="contact.emailPlaceholder"
+                            placeholder="Your email address"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label
+                            for="contactSubject"
+                            data-i18n="contact.subject"
+                        >
+                            Subject
+                        </label>
+
+                        <input
+                            id="contactSubject"
+                            name="subject"
+                            type="text"
+                            required
+                            data-i18n-placeholder="contact.subjectPlaceholder"
+                            placeholder="What is your message about?"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label
+                            for="contactMessage"
+                            data-i18n="contact.message"
+                        >
+                            Message
+                        </label>
+
+                        <textarea
+                            id="contactMessage"
+                            name="message"
+                            required
+                            data-i18n-placeholder="contact.messagePlaceholder"
+                            placeholder="Write your message here..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="contact-submit"
+                    data-i18n="contact.sendMessage"
+                >
+                    Send Message
+                </button>
+
+                <p
+                    class="contact-note"
+                    data-i18n="contact.formNote"
+                >
+                    Selecting Send Message will open your email
+                    application with the message prepared for
+                    contactnearafrica43@gmail.com.
+                </p>
+
+            </form>
+
+        </section>
+
+
+        <p
+            class="contact-direct"
+            data-i18n="contact.directNote"
+        >
+            For business listings, claims, corrections, and
+            support requests, please provide enough information
+            for the NearAfrica team to identify the relevant
+            business or request.
+        </p>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+
+    <footer>
+
+        <div class="container footer-inner">
+
+            <div>
+
+                <strong data-i18n="siteName">
+                    NearAfrica
+                </strong>
+
+                <p
+                    class="footer-copy"
+                    data-i18n="footer.discover"
+                >
+                    Discover businesses across Africa.
+                </p>
+
+            </div>
+
+            <div class="footer-links">
+
+                <a
+                    href="contact.html"
+                    data-i18n="nav.contact"
+                >
+                    Contact
+                </a>
+
+                <a
+                    href="privacy.html"
+                    data-i18n="legal.privacy"
+                >
+                    Privacy
+                </a>
+
+                <a
+                    href="terms.html"
+                    data-i18n="legal.terms"
+                >
+                    Terms
+                </a>
+
+                <a
+                    href="listing-policy.html"
+                    data-i18n="legal.listingPolicy"
+                >
+                    Listing Policy
+                </a>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================================
+         CONFIG
+         ========================================================= -->
+
+    <script src="config.js"></script>
+
+    <!-- =========================================================
+         TRANSLATIONS
+         ========================================================= -->
+
+    <script src="js/translations.js"></script>
+
+    <!-- =========================================================
+         I18N ENGINE
+         ========================================================= -->
+
+    <script src="js/i18n.js"></script>
+
+
+    <!-- =========================================================
+         MOBILE MENU + CONTACT FORM
+         ========================================================= -->
+
+    <script>
+
+        (() => {
+
+            "use strict";
+
+
+            /* =================================================
+               MOBILE MENU
+               ================================================= */
+
+            const mobileMenuToggle =
+                document.getElementById(
+                    "mobileMenuToggle"
+                );
+
+            const mobileNav =
+                document.getElementById(
+                    "mobileNav"
+                );
+
+
+            if (
+                mobileMenuToggle &&
+                mobileNav
+            ) {
+
+                mobileMenuToggle.addEventListener(
+                    "click",
+                    () => {
+
+                        const isOpen =
+                            mobileNav.classList.toggle(
+                                "open"
+                            );
+
+                        mobileMenuToggle.setAttribute(
+                            "aria-expanded",
+                            String(isOpen)
+                        );
+
+                    }
+                );
+
+
+                mobileNav
+                    .querySelectorAll("a")
+                    .forEach(link => {
+
+                        link.addEventListener(
+                            "click",
+                            () => {
+
+                                mobileNav.classList.remove(
+                                    "open"
+                                );
+
+                                mobileMenuToggle.setAttribute(
+                                    "aria-expanded",
+                                    "false"
+                                );
+
+                            }
+                        );
+
+                    });
+
+            }
+
+
+            /* =================================================
+               CONTACT FORM
+               ================================================= */
+
+            const contactForm =
+                document.getElementById(
+                    "contactForm"
+                );
+
+
+            if (contactForm) {
+
+                contactForm.addEventListener(
+                    "submit",
+                    event => {
+
+                        event.preventDefault();
+
+
+                        const name =
+                            document
+                                .getElementById(
+                                    "contactName"
+                                )
+                                .value
+                                .trim();
+
+
+                        const email =
+                            document
+                                .getElementById(
+                                    "contactEmail"
+                                )
+                                .value
+                                .trim();
+
+
+                        const subject =
+                            document
+                                .getElementById(
+                                    "contactSubject"
+                                )
+                                .value
+                                .trim();
+
+
+                        const message =
+                            document
+                                .getElementById(
+                                    "contactMessage"
+                                )
+                                .value
+                                .trim();
+
+
+                        if (
+                            !name ||
+                            !email ||
+                            !subject ||
+                            !message
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        const emailSubject =
+                            encodeURIComponent(
+                                `[NearAfrica Contact] ${subject}`
+                            );
+
+
+                        const emailBody =
+                            encodeURIComponent(
+                                `Name: ${name}\n` +
+                                `Email: ${email}\n\n` +
+                                `Message:\n${message}`
+                            );
+
+
+                        const mailto =
+                            `mailto:contactnearafrica43@gmail.com` +
+                            `?subject=${emailSubject}` +
+                            `&body=${emailBody}`;
+
+
+                        window.location.href =
+                            mailto;
+
+                    }
+                );
+
+            }
+
+        })();
+
+    </script>
+
+</body>
+    </html>
