@@ -1,13 +1,14 @@
 // =========================================================
 // NearAfrica App
-// Connected to real NearAfrica API
-// Location-aware discovery foundation
+// Connected to the real NearAfrica API
+// Homepage + Explore + Location-aware discovery
 // =========================================================
 
 const App = {
   userLocation: null,
   currentResults: [],
   mapVisible: true,
+  initialized: false,
 
   // ---------------------------------------------------------
   // CONFIGURATION
@@ -15,26 +16,46 @@ const App = {
 
   locationStorageKey: "nearafrica_user_location",
 
-  defaultNearbyRadiusKm: 25,
+  getNearbyRadiusKm() {
+    const configured =
+      window.NearAfricaConfig &&
+      window.NearAfricaConfig.maps &&
+      Number(
+        window.NearAfricaConfig.maps.defaultRadiusKm
+      );
+
+    if (
+      Number.isFinite(configured) &&
+      configured > 0
+    ) {
+      return configured;
+    }
+
+    return 25;
+  },
 
   // ---------------------------------------------------------
   // API
   // ---------------------------------------------------------
 
   getApiUrl() {
-    if (
+    const configured =
       window.NearAfricaConfig &&
       window.NearAfricaConfig.api &&
-      window.NearAfricaConfig.api.baseUrl
-    ) {
-      return window.NearAfricaConfig.api.baseUrl.replace(/\/$/, "");
+      window.NearAfricaConfig.api.baseUrl;
+
+    if (!configured) {
+      return "";
     }
 
-    return "";
+    return String(configured)
+      .trim()
+      .replace(/\/+$/, "");
   },
 
   async fetchBusinesses(params = {}) {
-    const baseUrl = this.getApiUrl();
+    const baseUrl =
+      this.getApiUrl();
 
     if (!baseUrl) {
       throw new Error(
@@ -42,9 +63,10 @@ const App = {
       );
     }
 
-    const url = new URL(
-      `${baseUrl}/businesses`
-    );
+    const url =
+      new URL(
+        `${baseUrl}/businesses`
+      );
 
     Object.entries(params).forEach(
       ([key, value]) => {
@@ -55,7 +77,7 @@ const App = {
         ) {
           url.searchParams.set(
             key,
-            value
+            String(value)
           );
         }
       }
@@ -63,33 +85,69 @@ const App = {
 
     const response =
       await fetch(
-        url.toString()
+        url.toString(),
+        {
+          method: "GET",
+          headers: {
+            Accept:
+              "application/json"
+          }
+        }
       );
+
+    let data = null;
+
+    try {
+      data =
+        await response.json();
+    } catch (error) {
+      throw new Error(
+        `NearAfrica API returned an invalid response (${response.status}).`
+      );
+    }
 
     if (!response.ok) {
       throw new Error(
+        data?.message ||
+        data?.error ||
         `API request failed: ${response.status}`
       );
     }
 
-    const data =
-      await response.json();
+    /*
+     * The Worker may return:
+     *
+     * { businesses: [...] }
+     *
+     * or:
+     *
+     * { data: { businesses: [...] } }
+     *
+     * or:
+     *
+     * { results: [...] }
+     */
 
-    if (
-      data.status !== "ok" &&
-      data.success !== true
-    ) {
-      throw new Error(
-        data.message ||
-        "Unable to load businesses."
-      );
-    }
+    const businesses =
+      Array.isArray(
+        data?.businesses
+      )
+        ? data.businesses
+        : Array.isArray(
+            data?.data?.businesses
+          )
+          ? data.data.businesses
+          : Array.isArray(
+              data?.results
+            )
+            ? data.results
+            : Array.isArray(
+                data?.data?.results
+              )
+              ? data.data.results
+              : [];
 
-    return Array.isArray(
-      data.businesses
-    )
-      ? data.businesses
-      : [];
+    return businesses;
   },
 
   // ---------------------------------------------------------
@@ -110,27 +168,35 @@ const App = {
       const location =
         JSON.parse(stored);
 
+      const latitude =
+        Number(
+          location?.latitude
+        );
+
+      const longitude =
+        Number(
+          location?.longitude
+        );
+
       if (
-        !location ||
-        !Number.isFinite(
-          Number(location.latitude)
-        ) ||
-        !Number.isFinite(
-          Number(location.longitude)
-        )
+        !Number.isFinite(latitude) ||
+        !Number.isFinite(longitude)
       ) {
+        sessionStorage.removeItem(
+          this.locationStorageKey
+        );
+
         return null;
       }
 
       return {
-        latitude:
-          Number(location.latitude),
-
-        longitude:
-          Number(location.longitude),
-
+        latitude,
+        longitude,
         timestamp:
-          Number(location.timestamp || Date.now())
+          Number(
+            location?.timestamp ||
+            Date.now()
+          )
       };
 
     } catch (error) {
@@ -147,12 +213,29 @@ const App = {
     latitude,
     longitude
   ) {
+    const cleanLatitude =
+      Number(latitude);
+
+    const cleanLongitude =
+      Number(longitude);
+
+    if (
+      !Number.isFinite(
+        cleanLatitude
+      ) ||
+      !Number.isFinite(
+        cleanLongitude
+      )
+    ) {
+      return null;
+    }
+
     const location = {
       latitude:
-        Number(latitude),
+        cleanLatitude,
 
       longitude:
-        Number(longitude),
+        cleanLongitude,
 
       timestamp:
         Date.now()
@@ -177,7 +260,8 @@ const App = {
   },
 
   clearUserLocation() {
-    this.userLocation = null;
+    this.userLocation =
+      null;
 
     try {
       sessionStorage.removeItem(
@@ -189,6 +273,16 @@ const App = {
         error
       );
     }
+
+    this.setLocationButtonState(
+      false,
+      false
+    );
+
+    this.setLocationMessage(
+      "",
+      ""
+    );
   },
 
   // ---------------------------------------------------------
@@ -197,7 +291,7 @@ const App = {
 
   async requestUserLocation() {
     if (
-      !("geolocation" in navigator)
+      !navigator.geolocation
     ) {
       throw new Error(
         "Location services are not supported by this browser."
@@ -210,12 +304,12 @@ const App = {
           (position) => {
             const latitude =
               Number(
-                position.coords.latitude
+                position?.coords?.latitude
               );
 
             const longitude =
               Number(
-                position.coords.longitude
+                position?.coords?.longitude
               );
 
             if (
@@ -241,6 +335,16 @@ const App = {
                 longitude
               );
 
+            if (!location) {
+              reject(
+                new Error(
+                  "Your location could not be saved."
+                )
+              );
+
+              return;
+            }
+
             resolve(location);
           },
 
@@ -249,19 +353,19 @@ const App = {
               "Unable to determine your location.";
 
             if (
-              error.code ===
+              error?.code ===
               error.PERMISSION_DENIED
             ) {
               message =
                 "Location access was denied. You can still search by city or area.";
             } else if (
-              error.code ===
+              error?.code ===
               error.POSITION_UNAVAILABLE
             ) {
               message =
                 "Your location could not be determined. Try again or search by area.";
             } else if (
-              error.code ===
+              error?.code ===
               error.TIMEOUT
             ) {
               message =
@@ -274,11 +378,14 @@ const App = {
           },
 
           {
-            enableHighAccuracy: true,
+            enableHighAccuracy:
+              true,
 
-            timeout: 10000,
+            timeout:
+              10000,
 
-            maximumAge: 300000
+            maximumAge:
+              300000
           }
         );
       }
@@ -306,7 +413,7 @@ const App = {
     elements.forEach(
       (element) => {
         element.textContent =
-          message;
+          message || "";
 
         element.classList.remove(
           "success",
@@ -340,11 +447,15 @@ const App = {
     buttons.forEach(
       (button) => {
         if (loading) {
+          if (
+            !button.dataset.originalText
+          ) {
+            button.dataset.originalText =
+              button.textContent;
+          }
+
           button.disabled =
             true;
-
-          button.dataset.originalText =
-            button.textContent;
 
           button.textContent =
             "📍 Finding You...";
@@ -392,16 +503,6 @@ const App = {
         "success"
       );
 
-      console.log(
-        "NearAfrica: User location enabled.",
-        {
-          latitude:
-            location.latitude,
-          longitude:
-            location.longitude
-        }
-      );
-
       return location;
 
     } catch (error) {
@@ -411,7 +512,7 @@ const App = {
       );
 
       this.setLocationMessage(
-        error.message ||
+        error?.message ||
         "Unable to determine your location.",
         "error"
       );
@@ -426,7 +527,7 @@ const App = {
   },
 
   // ---------------------------------------------------------
-  // DISTANCE CALCULATION
+  // DISTANCE
   // ---------------------------------------------------------
 
   calculateDistanceKm(
@@ -435,6 +536,21 @@ const App = {
     latitude2,
     longitude2
   ) {
+    if (
+      window.NearAfricaUtils &&
+      typeof
+        window.NearAfricaUtils
+          .calculateDistance ===
+        "function"
+    ) {
+      return window.NearAfricaUtils.calculateDistance(
+        Number(latitude1),
+        Number(longitude1),
+        Number(latitude2),
+        Number(longitude2)
+      );
+    }
+
     const lat1 =
       Number(latitude1);
 
@@ -459,38 +575,30 @@ const App = {
     const earthRadiusKm =
       6371;
 
-    const degreesToRadians =
+    const radians =
       Math.PI / 180;
 
     const deltaLatitude =
       (lat2 - lat1) *
-      degreesToRadians;
+      radians;
 
     const deltaLongitude =
       (lon2 - lon1) *
-      degreesToRadians;
+      radians;
 
     const a =
       Math.sin(
         deltaLatitude / 2
-      ) *
-        Math.sin(
-          deltaLatitude / 2
-        ) +
+      ) ** 2 +
       Math.cos(
-        lat1 *
-          degreesToRadians
+        lat1 * radians
       ) *
         Math.cos(
-          lat2 *
-            degreesToRadians
+          lat2 * radians
         ) *
         Math.sin(
           deltaLongitude / 2
-        ) *
-        Math.sin(
-          deltaLongitude / 2
-        );
+        ) ** 2;
 
     const c =
       2 *
@@ -508,30 +616,43 @@ const App = {
     distanceKm
   ) {
     if (
-      !Number.isFinite(
-        Number(distanceKm)
-      )
+      window.NearAfricaUtils &&
+      typeof
+        window.NearAfricaUtils
+          .formatDistance ===
+        "function"
     ) {
-      return "";
+      return window.NearAfricaUtils.formatDistance(
+        distanceKm
+      );
     }
 
     const distance =
       Number(distanceKm);
 
-    if (distance < 1) {
-      const meters =
-        Math.round(
-          distance * 1000
-        );
+    if (
+      !Number.isFinite(
+        distance
+      )
+    ) {
+      return "";
+    }
 
-      return `${meters} m away`;
+    if (distance < 1) {
+      return `${Math.round(
+        distance * 1000
+      )} m away`;
     }
 
     if (distance < 10) {
-      return `${distance.toFixed(1)} km away`;
+      return `${distance.toFixed(
+        1
+      )} km away`;
     }
 
-    return `${Math.round(distance)} km away`;
+    return `${Math.round(
+      distance
+    )} km away`;
   },
 
   addDistancesToBusinesses(
@@ -583,31 +704,45 @@ const App = {
       ...businesses
     ].sort(
       (a, b) => {
-        const distanceA =
-          Number.isFinite(
-            Number(a.distanceKm)
-          )
-            ? Number(
-                a.distanceKm
-              )
-            : Infinity;
+        const aDistance =
+          Number(a.distanceKm);
 
-        const distanceB =
+        const bDistance =
+          Number(b.distanceKm);
+
+        const aHasDistance =
           Number.isFinite(
-            Number(b.distanceKm)
-          )
-            ? Number(
-                b.distanceKm
-              )
-            : Infinity;
+            aDistance
+          );
+
+        const bHasDistance =
+          Number.isFinite(
+            bDistance
+          );
 
         if (
-          distanceA !==
-          distanceB
+          aHasDistance &&
+          !bHasDistance
+        ) {
+          return -1;
+        }
+
+        if (
+          !aHasDistance &&
+          bHasDistance
+        ) {
+          return 1;
+        }
+
+        if (
+          aHasDistance &&
+          bHasDistance &&
+          aDistance !==
+            bDistance
         ) {
           return (
-            distanceA -
-            distanceB
+            aDistance -
+            bDistance
           );
         }
 
@@ -623,17 +758,17 @@ const App = {
   },
 
   // ---------------------------------------------------------
-  // NORMALIZE API BUSINESS
+  // NORMALIZE BUSINESS
   // ---------------------------------------------------------
 
   normalizeBusiness(
-    business
+    business = {}
   ) {
     const imageFromArray =
       Array.isArray(
         business.images
       ) &&
-      business.images.length
+      business.images.length > 0
         ? (
             business.images[0]
               ?.image_url ||
@@ -665,9 +800,19 @@ const App = {
           )
         : null;
 
+    const verifiedValue =
+      business.verified;
+
+    const featuredValue =
+      business.featured;
+
     return {
+      ...business,
+
       id:
-        business.id || "",
+        business.id ||
+        business.business_id ||
+        "",
 
       name:
         business.business_name ||
@@ -675,65 +820,95 @@ const App = {
         "Unnamed Business",
 
       category:
-        business.category || "",
+        business.category ||
+        "",
 
       country:
-        business.country || "",
+        business.country ||
+        "",
 
       state:
-        business.state || "",
+        business.state ||
+        "",
 
       city:
-        business.city || "",
+        business.city ||
+        "",
 
       address:
-        business.address || "",
+        business.address ||
+        "",
 
       phone:
-        business.phone || "",
+        business.phone ||
+        "",
 
       whatsapp:
-        business.whatsapp || "",
+        business.whatsapp ||
+        "",
 
       website:
-        business.website || "",
+        business.website ||
+        business.website_url ||
+        "",
 
       description:
-        business.description || "",
+        business.description ||
+        "",
 
       email:
-        business.email || "",
+        business.email ||
+        "",
 
-      latitude,
+      latitude:
+        Number.isFinite(
+          latitude
+        )
+          ? latitude
+          : null,
 
-      longitude,
+      longitude:
+        Number.isFinite(
+          longitude
+        )
+          ? longitude
+          : null,
 
       verified:
-        Boolean(
-          business.verified
-        ),
+        verifiedValue === true ||
+        verifiedValue === 1 ||
+        verifiedValue === "1" ||
+        verifiedValue === "true",
 
       featured:
-        Boolean(
-          business.featured
-        ),
+        featuredValue === true ||
+        featuredValue === 1 ||
+        featuredValue === "1" ||
+        featuredValue === "true",
 
       rating:
-        typeof business.rating ===
-        "number"
-          ? business.rating
+        Number.isFinite(
+          Number(
+            business.rating
+          )
+        )
+          ? Number(
+              business.rating
+            )
           : null,
 
       reviewCount:
         Number(
           business.review_count ||
+          business.reviewCount ||
           0
         ),
 
       imageUrl:
         business.image_url ||
         business.imageUrl ||
-        imageFromArray,
+        imageFromArray ||
+        "",
 
       images:
         Array.isArray(
@@ -744,6 +919,7 @@ const App = {
 
       openingHours:
         business.opening_hours ||
+        business.openingHours ||
         null,
 
       services:
@@ -779,7 +955,7 @@ const App = {
   },
 
   // ---------------------------------------------------------
-  // HTML HELPERS
+  // HTML ESCAPING
   // ---------------------------------------------------------
 
   escapeHtml(value) {
@@ -791,7 +967,7 @@ const App = {
         "function"
     ) {
       return window.NearAfricaUtils.escapeHtml(
-        value || ""
+        value ?? ""
       );
     }
 
@@ -814,11 +990,12 @@ const App = {
   // ---------------------------------------------------------
 
   renderBusinessImage(
-    biz
+    business
   ) {
-    const businessInitial =
+    const initial =
       String(
-        biz.name || "B"
+        business.name ||
+        "B"
       )
         .trim()
         .charAt(0)
@@ -827,60 +1004,50 @@ const App = {
 
     const imageUrl =
       String(
-        biz.imageUrl || ""
+        business.imageUrl ||
+        ""
       ).trim();
+
+    const name =
+      this.escapeHtml(
+        business.name
+      );
 
     if (!imageUrl) {
       return `
         <div
           class="business-card-image"
-          aria-label="${this.escapeHtml(
-            biz.name
-          )}"
+          aria-label="${name}"
         >
-
           <div
             class="business-card-image-fallback"
             aria-hidden="true"
           >
             ${this.escapeHtml(
-              businessInitial
+              initial
             )}
           </div>
-
         </div>
       `;
     }
 
-    const safeImageUrl =
-      this.escapeHtml(
-        imageUrl
-      );
-
-    const safeBusinessName =
-      this.escapeHtml(
-        biz.name
-      );
-
     return `
       <div
         class="business-card-image"
-        aria-label="${safeBusinessName}"
+        aria-label="${name}"
       >
-
         <img
-          src="${safeImageUrl}"
-          alt="${safeBusinessName}"
+          src="${this.escapeHtml(
+            imageUrl
+          )}"
+          alt="${name}"
           loading="lazy"
-
           onerror="
             this.style.display='none';
-
             const fallback =
               this.parentElement.querySelector(
                 '.business-card-image-fallback'
               );
-
             if (fallback) {
               fallback.style.display='flex';
             }
@@ -893,10 +1060,9 @@ const App = {
           style="display:none;"
         >
           ${this.escapeHtml(
-            businessInitial
+            initial
           )}
         </div>
-
       </div>
     `;
   },
@@ -906,10 +1072,10 @@ const App = {
   // ---------------------------------------------------------
 
   renderBusinessCard(
-    biz
+    business
   ) {
     const verifiedBadge =
-      biz.verified
+      business.verified
         ? `
           <span class="verified-badge">
             ✓ Verified
@@ -918,7 +1084,7 @@ const App = {
         : "";
 
     const featuredBadge =
-      biz.featured
+      business.featured
         ? `
           <span class="featured-badge">
             Featured
@@ -927,11 +1093,16 @@ const App = {
         : "";
 
     const ratingHtml =
-      typeof biz.rating ===
-      "number"
+      Number.isFinite(
+        Number(
+          business.rating
+        )
+      )
         ? `
           <span>
-            ★ ${biz.rating.toFixed(1)}
+            ★ ${Number(
+              business.rating
+            ).toFixed(1)}
           </span>
         `
         : "";
@@ -939,15 +1110,15 @@ const App = {
     const distanceHtml =
       Number.isFinite(
         Number(
-          biz.distanceKm
+          business.distanceKm
         )
       )
         ? `
           <span class="business-distance">
             📍 ${this.escapeHtml(
-              biz.distanceText ||
+              business.distanceText ||
               this.formatDistance(
-                biz.distanceKm
+                business.distanceKm
               )
             )}
           </span>
@@ -955,11 +1126,11 @@ const App = {
         : "";
 
     const phoneHtml =
-      biz.phone
+      business.phone
         ? `
           <a
             href="tel:${this.escapeHtml(
-              biz.phone
+              business.phone
             )}"
           >
             Call
@@ -969,51 +1140,75 @@ const App = {
 
     const whatsappNumber =
       String(
-        biz.whatsapp || ""
+        business.whatsapp ||
+        ""
       ).replace(
         /[^0-9]/g,
         ""
       );
 
     const whatsappHtml =
-      biz.whatsapp &&
       whatsappNumber
         ? `
           <a
             href="https://wa.me/${whatsappNumber}"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
           >
             WhatsApp
           </a>
         `
         : "";
 
-    const websiteHtml =
-      biz.website
-        ? `
-          <a
-            href="${this.escapeHtml(
-              biz.website
-            )}"
-            target="_blank"
-            rel="noopener"
-          >
-            Website
-          </a>
-        `
-        : "";
+    let websiteHtml = "";
+
+    if (business.website) {
+      let websiteUrl =
+        String(
+          business.website
+        ).trim();
+
+      if (
+        websiteUrl &&
+        !/^https?:\/\//i.test(
+          websiteUrl
+        )
+      ) {
+        websiteUrl =
+          `https://${websiteUrl}`;
+      }
+
+      websiteHtml =
+        websiteUrl
+          ? `
+            <a
+              href="${this.escapeHtml(
+                websiteUrl
+              )}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Website
+            </a>
+          `
+          : "";
+    }
+
+    const locationParts = [
+      business.city,
+      business.state
+    ].filter(Boolean);
 
     return `
       <article
         class="business-card"
         data-business-id="${this.escapeHtml(
-          biz.id
+          business.id
         )}"
       >
 
         ${this.renderBusinessImage(
-          biz
+          business
         )}
 
         <div class="business-card-content">
@@ -1021,43 +1216,38 @@ const App = {
           <div class="business-card-header">
 
             <div>
-
               <h3>
                 ${this.escapeHtml(
-                  biz.name
+                  business.name
                 )}
               </h3>
 
               ${
-                biz.category
+                business.category
                   ? `
                     <p class="business-category">
                       ${this.escapeHtml(
-                        biz.category
+                        business.category
                       )}
                     </p>
                   `
                   : ""
               }
-
             </div>
 
             <div class="business-badges">
-
               ${featuredBadge}
-
               ${verifiedBadge}
-
             </div>
 
           </div>
 
           ${
-            biz.description
+            business.description
               ? `
                 <p class="business-description">
                   ${this.escapeHtml(
-                    biz.description
+                    business.description
                   )}
                 </p>
               `
@@ -1067,11 +1257,11 @@ const App = {
           <div class="business-meta">
 
             ${
-              biz.address
+              business.address
                 ? `
                   <span>
                     📍 ${this.escapeHtml(
-                      biz.address
+                      business.address
                     )}
                   </span>
                 `
@@ -1079,21 +1269,13 @@ const App = {
             }
 
             ${
-              biz.city ||
-              biz.state
+              locationParts.length
                 ? `
                   <span>
                     ${this.escapeHtml(
-                      biz.city
-                    )}
-                    ${
-                      biz.city &&
-                      biz.state
-                        ? ", "
-                        : ""
-                    }
-                    ${this.escapeHtml(
-                      biz.state
+                      locationParts.join(
+                        ", "
+                      )
                     )}
                   </span>
                 `
@@ -1108,13 +1290,19 @@ const App = {
 
           <div class="business-actions">
 
-            <a
-              href="business.html?id=${encodeURIComponent(
-                biz.id
-              )}"
-            >
-              View Details
-            </a>
+            ${
+              business.id
+                ? `
+                  <a
+                    href="business.html?id=${encodeURIComponent(
+                      business.id
+                    )}"
+                  >
+                    View Details
+                  </a>
+                `
+                : ""
+            }
 
             ${phoneHtml}
 
@@ -1134,6 +1322,36 @@ const App = {
   // CATEGORIES
   // ---------------------------------------------------------
 
+  getCategories() {
+    const fromConfig =
+      window.NearAfricaConfig &&
+      Array.isArray(
+        window.NearAfricaConfig
+          .categories
+      )
+        ? window.NearAfricaConfig
+            .categories
+        : [];
+
+    if (
+      fromConfig.length
+    ) {
+      return fromConfig;
+    }
+
+    const fromData =
+      window.NearAfricaData &&
+      Array.isArray(
+        window.NearAfricaData
+          .categories
+      )
+        ? window.NearAfricaData
+            .categories
+        : [];
+
+    return fromData;
+  },
+
   renderCategories() {
     const categoryFilter =
       document.getElementById(
@@ -1145,14 +1363,7 @@ const App = {
     }
 
     const categories =
-      window.NearAfricaData &&
-      Array.isArray(
-        window.NearAfricaData
-          .categories
-      )
-        ? window.NearAfricaData
-            .categories
-        : [];
+      this.getCategories();
 
     categoryFilter.innerHTML =
       `<option value="">All Categories</option>` +
@@ -1200,6 +1411,9 @@ const App = {
     }
 
     if (
+      !Array.isArray(
+        businesses
+      ) ||
       !businesses.length
     ) {
       businessList.innerHTML =
@@ -1238,6 +1452,20 @@ const App = {
         String(
           businesses.length
         );
+    }
+  },
+
+  // ---------------------------------------------------------
+  // URL HELPERS
+  // ---------------------------------------------------------
+
+  getUrlParams() {
+    try {
+      return new URLSearchParams(
+        window.location.search
+      );
+    } catch (error) {
+      return new URLSearchParams();
     }
   },
 
@@ -1283,11 +1511,10 @@ const App = {
     }
 
     /*
-     * If the user has explicitly
-     * enabled precise location,
-     * Explore will use it instead
-     * of treating "current location"
-     * as a text search.
+     * Precise browser location
+     * takes priority over typed
+     * location when the user has
+     * explicitly enabled it.
      */
 
     if (this.userLocation) {
@@ -1314,7 +1541,7 @@ const App = {
   },
 
   // ---------------------------------------------------------
-  // SEARCH
+  // SEARCH FORM
   // ---------------------------------------------------------
 
   async performSearch(
@@ -1323,14 +1550,6 @@ const App = {
     if (event) {
       event.preventDefault();
     }
-
-    /*
-     * Homepage uses:
-     * #searchForm
-     *
-     * Explore/search pages may use:
-     * #search-form
-     */
 
     const homepageForm =
       document.getElementById(
@@ -1378,6 +1597,11 @@ const App = {
         "empty-state"
       );
 
+    const errorState =
+      document.getElementById(
+        "error-state"
+      );
+
     const businessList =
       document.getElementById(
         "business-list"
@@ -1393,25 +1617,87 @@ const App = {
         "results-title"
       );
 
+    if (!businessList) {
+      return;
+    }
+
+    /*
+     * Read URL parameters.
+     *
+     * This allows homepage searches
+     * such as:
+     *
+     * explore.html?search=hotel
+     *
+     * and:
+     *
+     * explore.html?search=hotel&nearby=1
+     */
+
+    const urlParams =
+      this.getUrlParams();
+
+    const urlSearch =
+      urlParams.get(
+        "search"
+      ) || "";
+
+    const urlLocation =
+      urlParams.get(
+        "location"
+      ) || "";
+
+    const urlCategory =
+      urlParams.get(
+        "category"
+      ) || "";
+
+    if (
+      queryInput &&
+      !queryInput.value &&
+      urlSearch
+    ) {
+      queryInput.value =
+        urlSearch;
+    }
+
+    if (
+      locationInput &&
+      !locationInput.value &&
+      urlLocation
+    ) {
+      locationInput.value =
+        urlLocation;
+    }
+
+    if (
+      categoryFilter &&
+      !categoryFilter.value &&
+      urlCategory
+    ) {
+      categoryFilter.value =
+        urlCategory;
+    }
+
     const query =
       queryInput
         ? queryInput.value.trim()
-        : "";
+        : urlSearch.trim();
 
     const location =
       locationInput
         ? locationInput.value.trim()
-        : "";
+        : urlLocation.trim();
 
     const category =
       categoryFilter
         ? categoryFilter.value
-        : "";
+        : urlCategory;
 
-    const errorMessage =
-      document.getElementById(
-        "error-state"
-      );
+    const nearby =
+      urlParams.get(
+        "nearby"
+      ) === "1";
 
     try {
       if (loadingState) {
@@ -1424,9 +1710,14 @@ const App = {
           true;
       }
 
-      if (errorMessage) {
-        errorMessage.hidden =
+      if (errorState) {
+        errorState.hidden =
           true;
+      }
+
+      if (resultsTitle) {
+        resultsTitle.textContent =
+          "Loading businesses...";
       }
 
       if (businessList) {
@@ -1435,6 +1726,16 @@ const App = {
       }
 
       const params = {};
+
+      /*
+       * The API gets the normal
+       * textual filters.
+       *
+       * Precise location is handled
+       * locally so we don't need to
+       * send the user's exact GPS
+       * coordinates just to search.
+       */
 
       if (query) {
         params.search =
@@ -1465,7 +1766,7 @@ const App = {
         );
 
       // -----------------------------------------------------
-      // Client-side search fallback
+      // Client-side text fallback
       // -----------------------------------------------------
 
       if (query) {
@@ -1496,7 +1797,7 @@ const App = {
       }
 
       // -----------------------------------------------------
-      // Location text filter
+      // Client-side location fallback
       // -----------------------------------------------------
 
       if (location) {
@@ -1524,7 +1825,7 @@ const App = {
       }
 
       // -----------------------------------------------------
-      // Category filter
+      // Client-side category fallback
       // -----------------------------------------------------
 
       if (category) {
@@ -1537,23 +1838,19 @@ const App = {
               String(
                 business.category ||
                 ""
-              ).toLowerCase() ===
+              )
+                .toLowerCase()
+                .trim() ===
               categoryText
-          );
+                .trim()
+        );
       }
 
       // -----------------------------------------------------
-      // Apply precise location
+      // PRECISE LOCATION SEARCH
       // -----------------------------------------------------
 
-      const nearby =
-        new URLSearchParams(
-          window.location.search
-        ).get("nearby");
-
-      if (
-        nearby === "1"
-      ) {
+      if (nearby) {
         const storedLocation =
           this.getStoredUserLocation();
 
@@ -1568,31 +1865,40 @@ const App = {
             );
 
           /*
-           * Only businesses with
-           * usable coordinates can
-           * be distance-ranked.
+           * IMPORTANT:
            *
-           * Businesses without
-           * coordinates remain at
-           * the bottom.
-           */
-
-          businesses =
-            this.sortByDistance(
-              businesses
-            );
-
-          /*
-           * Default nearby radius.
+           * A business without latitude/
+           * longitude cannot honestly be
+           * described as being within the
+           * nearby radius.
+           *
+           * Therefore nearby mode only
+           * keeps businesses with a valid
+           * calculated distance.
            */
 
           businesses =
             businesses.filter(
               (business) =>
-                business.distanceKm ===
-                  null ||
-                business.distanceKm <=
-                  this.defaultNearbyRadiusKm
+                Number.isFinite(
+                  Number(
+                    business.distanceKm
+                  )
+                )
+            );
+
+          businesses =
+            businesses.filter(
+              (business) =>
+                Number(
+                  business.distanceKm
+                ) <=
+                this.getNearbyRadiusKm()
+            );
+
+          businesses =
+            this.sortByDistance(
+              businesses
             );
 
           if (resultsTitle) {
@@ -1602,19 +1908,27 @@ const App = {
                 : "Businesses Near You";
           }
 
-        } else if (
-          resultsTitle
-        ) {
-          resultsTitle.textContent =
-            query
-              ? `Search results for "${query}"`
-              : "Businesses";
+        } else {
+          /*
+           * If the user reached
+           * nearby mode without a
+           * stored location, don't
+           * pretend we know where
+           * they are.
+           */
+
+          if (resultsTitle) {
+            resultsTitle.textContent =
+              query
+                ? `Search results for "${query}"`
+                : "Businesses";
+          }
         }
 
       } else {
         /*
-         * Normal searches are
-         * alphabetically sorted.
+         * Normal searches use
+         * alphabetical order.
          */
 
         businesses.sort(
@@ -1643,11 +1957,26 @@ const App = {
         businesses
       );
 
+      /*
+       * Keep count correct even
+       * when there are zero results.
+       */
+
+      if (resultsCount) {
+        resultsCount.textContent =
+          String(
+            businesses.length
+          );
+      }
+
     } catch (error) {
       console.error(
         "NearAfrica business loading error:",
         error
       );
+
+      this.currentResults =
+        [];
 
       if (businessList) {
         businessList.innerHTML =
@@ -1669,11 +1998,24 @@ const App = {
           "Unable to load businesses";
       }
 
-      if (errorMessage) {
-        errorMessage.hidden =
+      if (errorState) {
+        errorState.hidden =
           false;
-      }
 
+        /*
+         * Don't overwrite an
+         * existing designed error
+         * message unless necessary.
+         */
+
+        if (
+          !errorState.textContent.trim()
+        ) {
+          errorState.textContent =
+            error?.message ||
+            "Unable to load businesses.";
+        }
+      }
     } finally {
       if (loadingState) {
         loadingState.hidden =
@@ -1713,7 +2055,13 @@ const App = {
         "use-location"
       );
 
-    if (locationButton) {
+    if (
+      locationButton &&
+      !locationButton.dataset.nearAfricaBound
+    ) {
+      locationButton.dataset.nearAfricaBound =
+        "true";
+
       locationButton.addEventListener(
         "click",
         () =>
@@ -1723,42 +2071,10 @@ const App = {
   },
 
   // ---------------------------------------------------------
-  // INITIALIZATION
+  // SEARCH PAGE INITIALIZATION
   // ---------------------------------------------------------
 
-  init() {
-    console.log(
-      "NearAfrica App initialized."
-    );
-
-    this.renderCategories();
-
-    this.initLocation();
-
-    /*
-     * Homepage search form
-     */
-
-    const homepageForm =
-      document.getElementById(
-        "searchForm"
-      );
-
-    if (homepageForm) {
-      homepageForm.addEventListener(
-        "submit",
-        (event) =>
-          this.performSearch(
-            event
-          )
-      );
-    }
-
-    /*
-     * Existing search-page
-     * form.
-     */
-
+  initSearchPage() {
     const searchForm =
       document.getElementById(
         "search-form"
@@ -1766,9 +2082,11 @@ const App = {
 
     if (
       searchForm &&
-      searchForm !==
-        homepageForm
+      !searchForm.dataset.nearAfricaBound
     ) {
+      searchForm.dataset.nearAfricaBound =
+        "true";
+
       searchForm.addEventListener(
         "submit",
         (event) =>
@@ -1779,13 +2097,137 @@ const App = {
     }
 
     /*
-     * Only run the existing
-     * search-page renderer when
-     * its results container exists.
+     * Category/location changes
+     * can optionally refresh results
+     * when those controls exist.
+     */
+
+    const categoryFilter =
+      document.getElementById(
+        "category-filter"
+      );
+
+    const locationInput =
+      document.getElementById(
+        "location-input"
+      );
+
+    if (
+      categoryFilter &&
+      !categoryFilter.dataset.nearAfricaBound
+    ) {
+      categoryFilter.dataset.nearAfricaBound =
+        "true";
+
+      categoryFilter.addEventListener(
+        "change",
+        () =>
+          this.runSearchPage()
+      );
+    }
+
+    if (
+      locationInput &&
+      !locationInput.dataset.nearAfricaBound
+    ) {
+      locationInput.dataset.nearAfricaBound =
+        "true";
+
+      locationInput.addEventListener(
+        "change",
+        () =>
+          this.runSearchPage()
+      );
+    }
+  },
+
+  // ---------------------------------------------------------
+  // HOMEPAGE INITIALIZATION
+  // ---------------------------------------------------------
+
+  initHomepage() {
+    const homepageForm =
+      document.getElementById(
+        "searchForm"
+      );
+
+    if (
+      homepageForm &&
+      !homepageForm.dataset.nearAfricaBound
+    ) {
+      homepageForm.dataset.nearAfricaBound =
+        "true";
+
+      homepageForm.addEventListener(
+        "submit",
+        (event) =>
+          this.handleHomepageSearch(
+            event
+          )
+      );
+    }
+  },
+
+  // ---------------------------------------------------------
+  // INITIALIZATION
+  // ---------------------------------------------------------
+
+  init() {
+    if (this.initialized) {
+      return;
+    }
+
+    this.initialized =
+      true;
+
+    console.log(
+      "NearAfrica App initialized."
+    );
+
+    try {
+      this.renderCategories();
+    } catch (error) {
+      console.error(
+        "NearAfrica category initialization error:",
+        error
+      );
+    }
+
+    try {
+      this.initLocation();
+    } catch (error) {
+      console.error(
+        "NearAfrica location initialization error:",
+        error
+      );
+    }
+
+    try {
+      this.initHomepage();
+    } catch (error) {
+      console.error(
+        "NearAfrica homepage initialization error:",
+        error
+      );
+    }
+
+    try {
+      this.initSearchPage();
+    } catch (error) {
+      console.error(
+        "NearAfrica search-page initialization error:",
+        error
+      );
+    }
+
+    /*
+     * Only the Explore/search page
+     * should automatically request
+     * businesses.
      *
-     * This prevents the homepage
-     * from making an unnecessary
-     * /businesses request.
+     * The homepage should remain
+     * lightweight and should not
+     * make an unnecessary API call.
      */
 
     if (
@@ -1799,19 +2241,27 @@ const App = {
 };
 
 // ---------------------------------------------------------
-// Make App globally available
+// GLOBAL EXPORT
 // ---------------------------------------------------------
 
 window.NearAfricaApp =
   App;
 
 // ---------------------------------------------------------
-// Start application
+// START
 // ---------------------------------------------------------
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-    App.init();
-  }
-);
+if (
+  document.readyState ===
+  "loading"
+) {
+  document.addEventListener(
+    "DOMContentLoaded",
+    () => App.init(),
+    {
+      once: true
+    }
+  );
+} else {
+  App.init();
+      }
