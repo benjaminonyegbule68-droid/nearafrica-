@@ -241,6 +241,11 @@
             background: #e4c45a;
         }
 
+        .login-btn:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
         .login-error {
             margin-top: 15px;
             color: #f87171;
@@ -788,6 +793,7 @@
             <button
                 type="submit"
                 class="login-btn"
+                id="loginBtn"
             >
                 Sign In
             </button>
@@ -1126,6 +1132,11 @@
             "loginError"
         );
 
+    const loginBtn =
+        document.getElementById(
+            "loginBtn"
+        );
+
     const logoutBtn =
         document.getElementById(
             "logoutBtn"
@@ -1199,18 +1210,23 @@
 
     function getHeaders() {
 
-        return {
+        const headers = {
 
             "Accept":
-                "application/json",
-
-            "Content-Type":
                 "application/json",
 
             "X-Admin-Key":
                 adminKey
 
         };
+
+
+        /*
+         * Only send Content-Type when a request
+         * actually has a body.
+         */
+
+        return headers;
 
     }
 
@@ -1224,18 +1240,56 @@
         options = {}
     ) {
 
-        const response =
-            await fetch(
-                API_BASE + path,
-                {
-                    ...options,
+        const requestOptions = {
+            ...options,
 
-                    headers: {
-                        ...getHeaders(),
-                        ...(options.headers || {})
-                    }
-                }
-            );
+            headers: {
+                ...getHeaders(),
+                ...(options.headers || {})
+            }
+        };
+
+
+        if (
+            options.body !== undefined &&
+            options.body !== null &&
+            !requestOptions.headers["Content-Type"]
+        ) {
+
+            requestOptions.headers[
+                "Content-Type"
+            ] =
+                "application/json";
+
+        }
+
+
+        let response;
+
+        try {
+
+            response =
+                await fetch(
+                    API_BASE + path,
+                    requestOptions
+                );
+
+        } catch (error) {
+
+            const networkError =
+                new Error(
+                    "Unable to connect to the NearAfrica API."
+                );
+
+            networkError.status =
+                0;
+
+            networkError.cause =
+                error;
+
+            throw networkError;
+
+        }
 
 
         let data = null;
@@ -1257,25 +1311,73 @@
             response.status === 403
         ) {
 
-            throw new Error(
-                "Admin authentication failed."
-            );
+            const error =
+                new Error(
+                    "Admin authentication failed."
+                );
+
+            error.status =
+                response.status;
+
+            throw error;
 
         }
 
 
         if (!response.ok) {
 
-            throw new Error(
-                data?.error ||
-                data?.message ||
-                `Request failed with HTTP ${response.status}`
-            );
+            const error =
+                new Error(
+                    data?.error ||
+                    data?.message ||
+                    `Request failed with HTTP ${response.status}`
+                );
+
+            error.status =
+                response.status;
+
+            throw error;
 
         }
 
 
         return data;
+
+    }
+
+
+    /* =========================================================
+       ADMIN ENDPOINT MAPPING
+    ========================================================= */
+
+    function getAdminResourcePath(
+        resource
+    ) {
+
+        /*
+         * The current Worker uses
+         * /admin/discovery (singular).
+         */
+
+        if (
+            resource === "discoveries"
+        ) {
+
+            return (
+                "/admin/discovery?limit=100"
+            );
+
+        }
+
+
+        /*
+         * Keep the existing Help Wanted
+         * resource name for compatibility.
+         */
+
+        return (
+            `/admin/${resource}?limit=100`
+        );
 
     }
 
@@ -1289,6 +1391,7 @@
         async event => {
 
             event.preventDefault();
+
 
             const key =
                 adminKeyInput.value.trim();
@@ -1304,20 +1407,44 @@
             }
 
 
+            /*
+             * IMPORTANT:
+             * previousKey is declared outside
+             * the try block so catch() can use it.
+             */
+
+            const previousKey =
+                adminKey;
+
+
+            adminKey =
+                key;
+
+
+            loginBtn.disabled =
+                true;
+
+            loginBtn.textContent =
+                "Checking...";
+
+
             loginError.textContent =
                 "Checking admin access...";
 
 
             try {
 
-                const previousKey =
-                    adminKey;
+                /*
+                 * Authenticate using the lightweight
+                 * admin root endpoint.
+                 *
+                 * This prevents /admin/stats from
+                 * deciding whether the key is valid.
+                 */
 
-                adminKey =
-                    key;
-
-
-                await loadStats();
+                await apiRequest(
+                    "/admin"
+                );
 
 
                 sessionStorage.setItem(
@@ -1336,6 +1463,13 @@
                     "";
 
 
+                /*
+                 * Stats are deliberately non-blocking.
+                 */
+
+                await loadStats();
+
+
                 await loadResource(
                     currentResource
                 );
@@ -1343,13 +1477,43 @@
 
             } catch (error) {
 
+                /*
+                 * Restore the previous key
+                 * when authentication fails.
+                 */
+
                 adminKey =
                     previousKey;
 
 
-                loginError.textContent =
-                    error.message ||
-                    "Invalid admin key.";
+                /*
+                 * Only present authentication
+                 * errors as invalid-key errors.
+                 */
+
+                if (
+                    error.status === 401 ||
+                    error.status === 403
+                ) {
+
+                    loginError.textContent =
+                        "Invalid admin API key.";
+
+                } else {
+
+                    loginError.textContent =
+                        error.message ||
+                        "Unable to sign in.";
+
+                }
+
+            } finally {
+
+                loginBtn.disabled =
+                    false;
+
+                loginBtn.textContent =
+                    "Sign In";
 
             }
 
@@ -1405,6 +1569,7 @@
 
         }
 
+
         if (
             Array.isArray(
                 data?.submissions
@@ -1414,6 +1579,7 @@
             return data.submissions;
 
         }
+
 
         if (
             Array.isArray(
@@ -1425,6 +1591,7 @@
 
         }
 
+
         if (
             Array.isArray(
                 data?.reviews
@@ -1434,6 +1601,7 @@
             return data.reviews;
 
         }
+
 
         if (
             Array.isArray(
@@ -1445,6 +1613,7 @@
 
         }
 
+
         if (
             Array.isArray(
                 data?.help_wanted
@@ -1454,6 +1623,7 @@
             return data.help_wanted;
 
         }
+
 
         if (
             Array.isArray(
@@ -1465,6 +1635,7 @@
 
         }
 
+
         if (
             Array.isArray(
                 data?.discoveries
@@ -1475,6 +1646,18 @@
 
         }
 
+
+        if (
+            Array.isArray(
+                data?.discovery
+            )
+        ) {
+
+            return data.discovery;
+
+        }
+
+
         if (
             Array.isArray(
                 data?.results
@@ -1484,6 +1667,7 @@
             return data.results;
 
         }
+
 
         return [];
 
@@ -1496,64 +1680,114 @@
 
     async function loadStats() {
 
-        const data =
-            await apiRequest(
-                "/admin/stats"
+        try {
+
+            const data =
+                await apiRequest(
+                    "/admin/stats"
+                );
+
+
+            const stats =
+                data?.stats ||
+                data?.statistics ||
+                data ||
+                {};
+
+
+            document.getElementById(
+                "statBusinesses"
+            ).textContent =
+                stats.businesses ??
+                stats.business_count ??
+                "—";
+
+
+            document.getElementById(
+                "statSubmissions"
+            ).textContent =
+                stats.submissions ??
+                stats.submission_count ??
+                "—";
+
+
+            document.getElementById(
+                "statClaims"
+            ).textContent =
+                stats.claims ??
+                stats.claim_count ??
+                "—";
+
+
+            document.getElementById(
+                "statReviews"
+            ).textContent =
+                stats.reviews ??
+                stats.review_count ??
+                "—";
+
+
+            document.getElementById(
+                "statReports"
+            ).textContent =
+                stats.reports ??
+                stats.report_count ??
+                "—";
+
+
+            document.getElementById(
+                "statHelpWanted"
+            ).textContent =
+                stats.help_wanted ??
+                stats.help_wanted_count ??
+                "—";
+
+
+        } catch (error) {
+
+            /*
+             * Stats are informational only.
+             * A broken stats endpoint must not
+             * prevent the dashboard from opening.
+             */
+
+            console.warn(
+                "NearAfrica admin stats unavailable:",
+                error
             );
 
 
-        const stats =
-            data.stats ||
-            data.statistics ||
-            data;
+            document.getElementById(
+                "statBusinesses"
+            ).textContent =
+                "—";
 
+            document.getElementById(
+                "statSubmissions"
+            ).textContent =
+                "—";
 
-        document.getElementById(
-            "statBusinesses"
-        ).textContent =
-            stats.businesses ??
-            stats.business_count ??
-            0;
+            document.getElementById(
+                "statClaims"
+            ).textContent =
+                "—";
 
+            document.getElementById(
+                "statReviews"
+            ).textContent =
+                "—";
 
-        document.getElementById(
-            "statSubmissions"
-        ).textContent =
-            stats.submissions ??
-            stats.submission_count ??
-            0;
+            document.getElementById(
+                "statReports"
+            ).textContent =
+                "—";
 
+            document.getElementById(
+                "statHelpWanted"
+            ).textContent =
+                "—";
 
-        document.getElementById(
-            "statClaims"
-        ).textContent =
-            stats.claims ??
-            stats.claim_count ??
-            0;
-
-
-        document.getElementById(
-            "statReviews"
-        ).textContent =
-            stats.reviews ??
-            stats.review_count ??
-            0;
-
-
-        document.getElementById(
-            "statReports"
-        ).textContent =
-            stats.reports ??
-            stats.report_count ??
-            0;
-
-
-        document.getElementById(
-            "statHelpWanted"
-        ).textContent =
-            stats.help_wanted ??
-            stats.help_wanted_count ??
-            0;
+        }
 
     }
 
@@ -1600,7 +1834,9 @@
 
             const data =
                 await apiRequest(
-                    `/admin/${resource}?limit=100`
+                    getAdminResourcePath(
+                        resource
+                    )
                 );
 
 
@@ -1684,7 +1920,8 @@
                         "
                     >
                         ${escapeHtml(
-                            error.message
+                            error.message ||
+                            "Unknown error."
                         )}
                     </div>
 
@@ -2313,6 +2550,7 @@
 
 
             await loadStats();
+
 
             await loadResource(
                 "reports"
@@ -3700,7 +3938,14 @@
 
         try {
 
-            await loadStats();
+            /*
+             * Validate saved key against
+             * /admin, not /admin/stats.
+             */
+
+            await apiRequest(
+                "/admin"
+            );
 
 
             loginScreen.style.display =
@@ -3708,6 +3953,14 @@
 
             adminApp.style.display =
                 "block";
+
+
+            /*
+             * Stats cannot lock the user
+             * out anymore.
+             */
+
+            await loadStats();
 
 
             await loadResource(
@@ -3723,18 +3976,50 @@
             );
 
 
-            sessionStorage.removeItem(
-                "nearafrica_admin_key"
-            );
+            /*
+             * Only discard the saved key
+             * when authentication failed.
+             */
 
-            adminKey = "";
+            if (
+                error.status === 401 ||
+                error.status === 403
+            ) {
+
+                sessionStorage.removeItem(
+                    "nearafrica_admin_key"
+                );
+
+                adminKey = "";
+
+                loginScreen.style.display =
+                    "flex";
+
+                adminApp.style.display =
+                    "none";
+
+                loginError.textContent =
+                    "Your saved admin key is no longer valid.";
+
+            } else {
+
+                /*
+                 * Keep the dashboard available
+                 * for non-authentication errors.
+                 */
+
+                loginScreen.style.display =
+                    "none";
+
+                adminApp.style.display =
+                    "block";
 
 
-            loginScreen.style.display =
-                "flex";
+                await loadResource(
+                    currentResource
+                );
 
-            adminApp.style.display =
-                "none";
+            }
 
         }
 
