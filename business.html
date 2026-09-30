@@ -3484,10 +3484,10 @@
       }
 
       /*
-       * Record a public profile view.
+       * Record one public business-profile view.
        *
-       * This is intentionally separate from the business GET request.
-       * If view tracking fails, the public profile must still load normally.
+       * This is deliberately separate from the business GET request.
+       * If analytics tracking fails, the visitor can still use the page.
        */
       async function recordBusinessView(
         businessId
@@ -3536,11 +3536,10 @@
           } catch (
             parseError
           ) {
-
             /*
-             * The tracking request has already been
-             * sent successfully, so an invalid/empty
-             * response does not affect the profile.
+             * The request itself succeeded.
+             * An invalid response body does not
+             * affect the visitor's profile.
              */
           }
 
@@ -3559,8 +3558,8 @@
         } catch (error) {
 
           /*
-           * Never prevent a visitor from seeing a
-           * business profile because analytics failed.
+           * Analytics must never prevent a visitor
+           * from viewing the business profile.
            */
           console.warn(
             "Business view tracking failed:",
@@ -3572,12 +3571,9 @@
       /*
        * Load the public business profile.
        *
-       * The API is requested with:
-       * 1. cache: "no-store"
-       * 2. A unique query parameter
-       *
-       * This prevents an older cached GET response from
-       * hiding changes recently made through the owner dashboard.
+       * cache: "no-store" plus a timestamp query parameter
+       * prevents an older cached GET response from hiding
+       * recent owner-dashboard changes.
        */
       async function loadBusiness() {
 
@@ -3605,7 +3601,6 @@
               apiUrl,
               {
                 method: "GET",
-
                 cache: "no-store"
               }
             );
@@ -3656,8 +3651,9 @@
           }
 
           /*
-           * Render the profile first so the visitor
-           * never has to wait for analytics tracking.
+           * Render the business first.
+           * The visitor does not need to wait for
+           * analytics tracking.
            */
           displayBusiness(
             result.business,
@@ -3665,10 +3661,15 @@
           );
 
           /*
-           * Record this public profile visit.
-           * Failure here does not break the profile.
+           * Record the successful public profile visit.
+           *
+           * We intentionally do not use the original
+           * URL identifier here when the API gives us
+           * the real business ID. This ensures that
+           * business_views always stores the canonical
+           * business ID.
            */
-          await recordBusinessView(
+          recordBusinessView(
             result.business.id ||
             businessId
           );
