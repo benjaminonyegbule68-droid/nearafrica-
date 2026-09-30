@@ -3484,12 +3484,97 @@
       }
 
       /*
+       * Record a public profile view.
+       *
+       * This is intentionally separate from the business GET request.
+       * If view tracking fails, the public profile must still load normally.
+       */
+      async function recordBusinessView(
+        businessId
+      ) {
+
+        if (!businessId) {
+          return;
+        }
+
+        try {
+
+          const response =
+            await fetch(
+              `${API_URL}/businesses/${encodeURIComponent(
+                businessId
+              )}/view`,
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                cache: "no-store"
+              }
+            );
+
+          if (!response.ok) {
+
+            console.warn(
+              "Business view tracking returned HTTP",
+              response.status
+            );
+
+            return;
+          }
+
+          let result = {};
+
+          try {
+
+            result =
+              await response.json();
+
+          } catch (
+            parseError
+          ) {
+
+            /*
+             * The tracking request has already been
+             * sent successfully, so an invalid/empty
+             * response does not affect the profile.
+             */
+          }
+
+          if (
+            result &&
+            result.status &&
+            result.status !== "ok"
+          ) {
+
+            console.warn(
+              "Business view tracking response:",
+              result
+            );
+          }
+
+        } catch (error) {
+
+          /*
+           * Never prevent a visitor from seeing a
+           * business profile because analytics failed.
+           */
+          console.warn(
+            "Business view tracking failed:",
+            error
+          );
+        }
+      }
+
+      /*
        * Load the public business profile.
        *
        * The API is requested with:
        * 1. cache: "no-store"
-       * 2. Cache-Control / Pragma headers
-       * 3. A unique query parameter
+       * 2. A unique query parameter
        *
        * This prevents an older cached GET response from
        * hiding changes recently made through the owner dashboard.
@@ -3521,7 +3606,7 @@
               {
                 method: "GET",
 
-                cache: "no-store",
+                cache: "no-store"
               }
             );
 
@@ -3570,9 +3655,22 @@
             return;
           }
 
+          /*
+           * Render the profile first so the visitor
+           * never has to wait for analytics tracking.
+           */
           displayBusiness(
             result.business,
             result
+          );
+
+          /*
+           * Record this public profile visit.
+           * Failure here does not break the profile.
+           */
+          await recordBusinessView(
+            result.business.id ||
+            businessId
           );
 
         } catch (error) {
