@@ -28,6 +28,8 @@
     rel="stylesheet"
   >
 
+  <link rel="icon" href="logo.png">
+
   <style>
     * {
       box-sizing: border-box;
@@ -65,11 +67,15 @@
       text-decoration: none;
     }
 
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
     header {
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: rgba(255, 255, 255, 0.96);
+      background: rgba(255, 255, 255, 0.97);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid #e8e8e8;
     }
@@ -91,6 +97,7 @@
       font-size: 21px;
       font-weight: 800;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .brand-mark {
@@ -105,7 +112,7 @@
       flex-shrink: 0;
     }
 
-    nav {
+    nav.main-nav {
       display: flex;
       align-items: center;
       gap: 22px;
@@ -113,33 +120,22 @@
       font-weight: 600;
     }
 
-    nav a {
+    nav.main-nav a {
       color: #555;
       transition: 0.2s ease;
     }
 
-    nav a:hover,
-    nav a.active {
+    nav.main-nav a:hover,
+    nav.main-nav a.active {
       color: #111;
-    }
-
-    .nav-button {
-      background: #111;
-      color: white;
-      padding: 10px 16px;
-      border-radius: 8px;
-    }
-
-    .nav-button:hover {
-      background: #292929;
-      color: white;
     }
 
     .language-control {
       display: flex;
       align-items: center;
       gap: 7px;
-      margin-left: 4px;
+      margin-left: auto;
+      flex-shrink: 0;
     }
 
     .language-control select {
@@ -157,6 +153,49 @@
     .language-control select:focus {
       border-color: #d4af37;
     }
+
+    .mobile-menu-button {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      color: #111;
+      font-size: 20px;
+    }
+
+    .mobile-nav {
+      display: none;
+      border-top: 1px solid #eee;
+      background: white;
+      padding: 10px 16px 16px;
+    }
+
+    .mobile-nav.open {
+      display: block;
+    }
+
+    .mobile-nav a {
+      display: block;
+      padding: 12px 8px;
+      color: #555;
+      font-size: 14px;
+      font-weight: 600;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .mobile-nav a:last-child {
+      border-bottom: none;
+    }
+
+    .mobile-nav a.active {
+      color: #111;
+    }
+
+    /* =====================================================
+       HERO
+    ===================================================== */
 
     .hero {
       background: #111;
@@ -270,10 +309,18 @@
       color: #ff9b9b;
     }
 
+    /* =====================================================
+       MAIN
+    ===================================================== */
+
     main {
       width: min(1200px, calc(100% - 32px));
       margin: 32px auto 80px;
     }
+
+    /* =====================================================
+       FILTERS
+    ===================================================== */
 
     .filter-panel {
       background: white;
@@ -318,6 +365,10 @@
       border-color: #c49f25;
     }
 
+    /* =====================================================
+       RESULTS
+    ===================================================== */
+
     .results-header {
       display: flex;
       align-items: center;
@@ -352,6 +403,10 @@
       display: inline-flex;
     }
 
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
     .status {
       display: none;
       padding: 16px;
@@ -379,6 +434,10 @@
       border: 1px solid #eadba5;
       color: #705a13;
     }
+
+    /* =====================================================
+       BUSINESS GRID
+    ===================================================== */
 
     .business-grid {
       display: grid;
@@ -515,6 +574,10 @@
       opacity: 0.85;
     }
 
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
+
     .empty-state {
       display: none;
       text-align: center;
@@ -541,6 +604,10 @@
       color: #777;
       font-size: 14px;
     }
+
+    /* =====================================================
+       PAGINATION
+    ===================================================== */
 
     .pagination {
       display: flex;
@@ -575,6 +642,10 @@
       opacity: 0.45;
     }
 
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+
     footer {
       border-top: 1px solid #e5e5e5;
       background: white;
@@ -599,7 +670,30 @@
       font-size: 13px;
     }
 
+    /* =====================================================
+       RTL
+    ===================================================== */
+
+    html[dir="rtl"] body {
+      text-align: right;
+    }
+
+    html[dir="rtl"] .brand {
+      flex-direction: row-reverse;
+    }
+
+    html[dir="rtl"] .location-bar,
+    html[dir="rtl"] .business-actions,
+    html[dir="rtl"] .business-meta {
+      direction: rtl;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
     @media (max-width: 1000px) {
+
       .filters {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -608,18 +702,24 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      nav {
+      nav.main-nav {
         gap: 13px;
       }
+
     }
 
     @media (max-width: 750px) {
+
       .nav {
         min-height: 62px;
       }
 
-      nav {
+      nav.main-nav {
         display: none;
+      }
+
+      .mobile-menu-button {
+        display: block;
       }
 
       .language-control {
@@ -657,11 +757,14 @@
         flex-direction: column;
         align-items: flex-start;
       }
+
     }
 
     @media (max-width: 450px) {
+
       .nav {
         width: min(100% - 20px, 1200px);
+        gap: 8px;
       }
 
       .brand {
@@ -680,39 +783,41 @@
       main {
         width: min(100% - 20px, 1200px);
       }
-    }
 
-    html[dir="rtl"] body {
-      text-align: right;
-    }
-
-    html[dir="rtl"] .brand {
-      flex-direction: row-reverse;
-    }
-
-    html[dir="rtl"] .location-bar,
-    html[dir="rtl"] .business-actions {
-      direction: rtl;
-    }
-
-    html[dir="rtl"] .business-meta {
-      direction: rtl;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- HEADER -->
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
   <header>
+
     <div class="nav">
 
-      <a href="index.html" class="brand">
-        <span class="brand-mark">N</span>
-        <span>NearAfrica</span>
+      <a
+        href="index.html"
+        class="brand"
+      >
+
+        <span class="brand-mark">
+          N
+        </span>
+
+        <span>
+          NearAfrica
+        </span>
+
       </a>
 
-      <nav aria-label="Main navigation">
+
+      <nav
+        class="main-nav"
+        aria-label="Main navigation"
+      >
 
         <a
           href="index.html"
@@ -743,29 +848,116 @@
           Claim Business
         </a>
 
+        <a
+          href="contact.html"
+          data-i18n="nav.contact"
+        >
+          Contact
+        </a>
+
       </nav>
 
+
       <div class="language-control">
-        <span aria-hidden="true">🌐</span>
+
+        <span aria-hidden="true">
+          🌐
+        </span>
 
         <select
           id="languageSelector"
           data-language-selector
           aria-label="Language"
         >
-          <option value="en">English</option>
-          <option value="fr">Français</option>
-          <option value="ar">العربية</option>
-          <option value="pt">Português</option>
-          <option value="sw">Kiswahili</option>
+
+          <option value="en">
+            English
+          </option>
+
+          <option value="fr">
+            Français
+          </option>
+
+          <option value="ar">
+            العربية
+          </option>
+
+          <option value="pt">
+            Português
+          </option>
+
+          <option value="sw">
+            Kiswahili
+          </option>
+
         </select>
+
       </div>
 
+
+      <button
+        id="mobileMenuButton"
+        class="mobile-menu-button"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+
     </div>
+
+
+    <div
+      id="mobileNav"
+      class="mobile-nav"
+    >
+
+      <a
+        href="index.html"
+        data-i18n="nav.home"
+      >
+        Home
+      </a>
+
+      <a
+        href="explore.html"
+        class="active"
+        data-i18n="nav.explore"
+      >
+        Explore
+      </a>
+
+      <a
+        href="list-business.html"
+        data-i18n="nav.listBusiness"
+      >
+        List Your Business
+      </a>
+
+      <a
+        href="claim-business.html"
+        data-i18n="nav.claimBusiness"
+      >
+        Claim Business
+      </a>
+
+      <a
+        href="contact.html"
+        data-i18n="nav.contact"
+      >
+        Contact
+      </a>
+
+    </div>
+
   </header>
 
 
-  <!-- HERO -->
+  <!-- =====================================================
+       HERO
+  ====================================================== -->
+
   <section class="hero">
 
     <div class="hero-inner">
@@ -796,6 +988,7 @@
 
         </div>
 
+
         <button
           id="searchButton"
           class="search-button"
@@ -819,6 +1012,7 @@
           📍 Use My Location
         </button>
 
+
         <button
           id="clearLocationButton"
           class="location-button"
@@ -828,6 +1022,7 @@
         >
           Clear Location
         </button>
+
 
         <span
           id="locationStatus"
@@ -845,10 +1040,14 @@
   </section>
 
 
-  <!-- MAIN -->
+  <!-- =====================================================
+       MAIN
+  ====================================================== -->
+
   <main>
 
     <!-- FILTERS -->
+
     <section class="filter-panel">
 
       <div
@@ -858,9 +1057,11 @@
         Filter businesses
       </div>
 
+
       <div class="filters">
 
         <!-- CATEGORY -->
+
         <div class="filter-group">
 
           <label
@@ -869,6 +1070,7 @@
           >
             Category
           </label>
+
 
           <select id="categoryFilter">
 
@@ -879,310 +1081,125 @@
               All categories
             </option>
 
-            <option value="Restaurants & Food" data-i18n="categories.restaurants">
+            <option
+              value="Restaurants & Food"
+              data-i18n="categories.restaurants"
+            >
               Restaurants & Food
             </option>
 
-            <option value="Hotels & Accommodation" data-i18n="categories.hotels">
+            <option
+              value="Hotels & Accommodation"
+              data-i18n="categories.hotels"
+            >
               Hotels & Accommodation
             </option>
 
-            <option value="Beauty & Spa" data-i18n="categories.beauty">
+            <option
+              value="Beauty & Spa"
+              data-i18n="categories.beauty"
+            >
               Beauty & Spa
             </option>
 
-            <option value="Health & Medical" data-i18n="categories.health">
+            <option
+              value="Health & Medical"
+              data-i18n="categories.health"
+            >
               Health & Medical
             </option>
 
-            <option value="Shopping & Retail" data-i18n="categories.shopping">
+            <option
+              value="Shopping & Retail"
+              data-i18n="categories.shopping"
+            >
               Shopping & Retail
             </option>
 
-            <option value="Supermarkets" data-i18n="categories.supermarkets">
+            <option
+              value="Supermarkets"
+              data-i18n="categories.supermarkets"
+            >
               Supermarkets
             </option>
 
-            <option value="Banks & Finance" data-i18n="categories.banks">
+            <option
+              value="Banks & Finance"
+              data-i18n="categories.banks"
+            >
               Banks & Finance
             </option>
 
-            <option value="Professional Services" data-i18n="categories.professional">
+            <option
+              value="Professional Services"
+              data-i18n="categories.professional"
+            >
               Professional Services
             </option>
 
-            <option value="Education" data-i18n="categories.education">
+            <option
+              value="Education"
+              data-i18n="categories.education"
+            >
               Education
             </option>
 
-            <option value="Real Estate" data-i18n="categories.realEstate">
+            <option
+              value="Real Estate"
+              data-i18n="categories.realEstate"
+            >
               Real Estate
             </option>
 
-            <option value="Automotive" data-i18n="categories.automotive">
+            <option
+              value="Automotive"
+              data-i18n="categories.automotive"
+            >
               Automotive
             </option>
 
-            <option value="Travel & Tourism" data-i18n="categories.travel">
+            <option
+              value="Travel & Tourism"
+              data-i18n="categories.travel"
+            >
               Travel & Tourism
             </option>
 
-            <option value="Logistics & Delivery" data-i18n="categories.logistics">
+            <option
+              value="Logistics & Delivery"
+              data-i18n="categories.logistics"
+            >
               Logistics & Delivery
             </option>
 
-            <option value="Technology" data-i18n="categories.technology">
+            <option
+              value="Technology"
+              data-i18n="categories.technology"
+            >
               Technology
             </option>
 
-            <option value="Entertainment" data-i18n="categories.entertainment">
+            <option
+              value="Entertainment"
+              data-i18n="categories.entertainment"
+            >
               Entertainment
             </option>
 
-            <option value="Gyms & Fitness" data-i18n="categories.gyms">
+            <option
+              value="Gyms & Fitness"
+              data-i18n="categories.gyms"
+            >
               Gyms & Fitness
             </option>
 
-            <option value="Fitness & Sports" data-i18n="categories.fitness">
+            <option
+              value="Fitness & Sports"
+              data-i18n="categories.fitness"
+            >
               Fitness & Sports
             </option>
 
-            <option value="Construction & Home Services" data-i18n="categories.construction">
-              Construction & Home Services
-            </option>
-
-            <option value="Fashion" data-i18n="categories.fashion">
-              Fashion
-            </option>
-
-            <option value="Agriculture" data-i18n="categories.agriculture">
-              Agriculture
-            </option>
-
-            <option value="Religious Organizations" data-i18n="categories.religious">
-              Religious Organizations
-            </option>
-
-            <option value="Government & Public Services" data-i18n="categories.government">
-              Government & Public Services
-            </option>
-
-            <option value="Other" data-i18n="categories.other">
-              Other
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <!-- STATE -->
-        <div class="filter-group">
-
-          <label
-            for="stateFilter"
-            data-i18n="explore.state"
-          >
-            State
-          </label>
-
-          <select id="stateFilter">
-
             <option
-              value=""
-              data-i18n="explore.allStates"
-            >
-              All states
-            </option>
-
-            <option>Abia</option>
-            <option>Adamawa</option>
-            <option>Akwa Ibom</option>
-            <option>Anambra</option>
-            <option>Bauchi</option>
-            <option>Bayelsa</option>
-            <option>Benue</option>
-            <option>Borno</option>
-            <option>Cross River</option>
-            <option>Delta</option>
-            <option>Ebonyi</option>
-            <option>Edo</option>
-            <option>Ekiti</option>
-            <option>Enugu</option>
-            <option>Gombe</option>
-            <option>Imo</option>
-            <option>Jigawa</option>
-            <option>Kaduna</option>
-            <option>Kano</option>
-            <option>Katsina</option>
-            <option>Kebbi</option>
-            <option>Kogi</option>
-            <option>Kwara</option>
-            <option>Lagos</option>
-            <option>Nasarawa</option>
-            <option>Niger</option>
-            <option>Ogun</option>
-            <option>Ondo</option>
-            <option>Osun</option>
-            <option>Oyo</option>
-            <option>Plateau</option>
-            <option>Rivers</option>
-            <option>Sokoto</option>
-            <option>Taraba</option>
-            <option>Yobe</option>
-            <option>Zamfara</option>
-            <option>Federal Capital Territory</option>
-
-          </select>
-
-        </div>
-
-
-        <!-- RATING -->
-        <div class="filter-group">
-
-          <label
-            for="ratingFilter"
-            data-i18n="explore.rating"
-          >
-            Rating
-          </label>
-
-          <select id="ratingFilter">
-
-            <option
-              value=""
-              data-i18n="explore.anyRating"
-            >
-              Any rating
-            </option>
-
-            <option value="4" data-i18n="explore.fourPlus">
-              4+ stars
-            </option>
-
-            <option value="3" data-i18n="explore.threePlus">
-              3+ stars
-            </option>
-
-            <option value="2" data-i18n="explore.twoPlus">
-              2+ stars
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <!-- VERIFIED -->
-        <div class="filter-group">
-
-          <label
-            for="verifiedFilter"
-            data-i18n="explore.verifiedOnly"
-          >
-            Verification
-          </label>
-
-          <select id="verifiedFilter">
-
-            <option
-              value=""
-              data-i18n="explore.allBusinesses"
-            >
-              All businesses
-            </option>
-
-            <option
-              value="1"
-              data-i18n="explore.verified"
-            >
-              Verified only
-            </option>
-
-          </select>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- RESULTS HEADER -->
-    <div class="results-header">
-
-      <div>
-
-        <h2 id="resultsTitle" data-i18n="explore.businesses">
-          Businesses
-        </h2>
-
-        <div
-          id="resultCount"
-          class="result-count"
-          aria-live="polite"
-        >
-          Loading businesses...
-        </div>
-
-      </div>
-
-      <div
-        id="nearbyIndicator"
-        class="nearby-indicator"
-      >
-        📍
-        <span data-i18n="explore.businessesFoundNearby">
-          Sorted by distance
-        </span>
-      </div>
-
-    </div>
-
-
-    <!-- STATUS -->
-    <div
-      id="statusMessage"
-      class="status"
-      aria-live="polite"
-    ></div>
-
-
-    <!-- BUSINESS GRID -->
-    <section
-      id="businessGrid"
-      class="business-grid"
-      aria-live="polite"
-    ></section>
-
-
-    <!-- EMPTY -->
-    <section
-      id="emptyState"
-      class="empty-state"
-    >
-
-      <div class="empty-icon">
-        🔎
-      </div>
-
-      <h3 data-i18n="explore.noBusinesses">
-        No businesses found
-      </h3>
-
-      <p
-        id="emptyStateText"
-        data-i18n="explore.noBusinessesNearby"
-      >
-        Try changing your search or filters.
-      </p>
-
-    </section>
-
-
-    <!-- PAGINATION -->
-    <div
-      id="pagination"
-      class="pagination"
-    ></div
+              value="Construction & Home Services"
+              data-i18n="categories.con
