@@ -20,6 +20,67 @@
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     >
+
+    <!-- Navigation Styles -->
+    <style>
+        .mobile-menu-toggle {
+            display: none;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: inherit;
+            padding: 9px 11px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+
+        .mobile-nav {
+            display: none;
+        }
+
+        .mobile-nav a {
+            display: block;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .site-header .header-inner {
+                position: relative;
+            }
+
+            .site-header .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: auto;
+            }
+
+            .mobile-nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 12px 20px 18px;
+                background: inherit;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+            }
+
+            .mobile-nav.open {
+                display: block;
+            }
+
+            .mobile-nav a {
+                padding: 12px 4px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -38,13 +99,41 @@
                 <span class="logo-text">NearAfrica</span>
             </a>
 
-            <nav class="nav-links">
+            <!-- DESKTOP NAVIGATION -->
+            <nav class="nav-links" aria-label="Main navigation">
                 <a href="index.html" class="active">Home</a>
                 <a href="explore.html">Explore</a>
                 <a href="list-business.html">List Your Business</a>
+                <a href="claim-business.html">Claim Business</a>
+                <a href="about.html">About</a>
             </nav>
 
+            <!-- MOBILE MENU BUTTON -->
+            <button
+                type="button"
+                class="mobile-menu-toggle"
+                id="mobileMenuToggle"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+                aria-controls="mobileNav"
+            >
+                ☰
+            </button>
+
         </div>
+
+        <!-- MOBILE NAVIGATION -->
+        <nav
+            class="mobile-nav"
+            id="mobileNav"
+            aria-label="Mobile navigation"
+        >
+            <a href="index.html" class="active">Home</a>
+            <a href="explore.html">Explore</a>
+            <a href="list-business.html">List Your Business</a>
+            <a href="claim-business.html">Claim Business</a>
+            <a href="about.html">About</a>
+        </nav>
     </header>
 
 
@@ -255,7 +344,6 @@
                         <p>Cars, repairs and automotive services.</p>
                     </a>
 
-                    <!-- GYMS & FITNESS -->
                     <a
                         href="explore.html?category=gyms-fitness"
                         class="category-card"
@@ -265,7 +353,6 @@
                         <p>Gyms, fitness centers and training.</p>
                     </a>
 
-                    <!-- OTHER -->
                     <a
                         href="explore.html"
                         class="category-card category-card-other"
@@ -517,11 +604,62 @@
     </footer>
 
 
-    <!-- JAVASCRIPT -->
+    <!-- MOBILE NAVIGATION SCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
 
+            const toggle = document.getElementById("mobileMenuToggle");
+            const mobileNav = document.getElementById("mobileNav");
+
+            if (!toggle || !mobileNav) return;
+
+            toggle.addEventListener("click", function () {
+
+                const isOpen = mobileNav.classList.toggle("open");
+
+                toggle.setAttribute(
+                    "aria-expanded",
+                    isOpen ? "true" : "false"
+                );
+
+                toggle.setAttribute(
+                    "aria-label",
+                    isOpen
+                        ? "Close navigation menu"
+                        : "Open navigation menu"
+                );
+
+                toggle.textContent = isOpen ? "✕" : "☰";
+            });
+
+            mobileNav.querySelectorAll("a").forEach(function (link) {
+
+                link.addEventListener("click", function () {
+
+                    mobileNav.classList.remove("open");
+
+                    toggle.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                    toggle.setAttribute(
+                        "aria-label",
+                        "Open navigation menu"
+                    );
+
+                    toggle.textContent = "☰";
+                });
+
+            });
+
+        });
+    </script>
+
+
+    <!-- JAVASCRIPT -->
     <script src="js/config.js"></script>
 
-    <!-- Use this only if businesses.js is inside the data folder -->
     <script src="data/businesses.js"></script>
 
     <script src="js/utils.js"></script>
@@ -535,4 +673,4 @@
     </script>
 
 </body>
-                        </html>
+    </html>
