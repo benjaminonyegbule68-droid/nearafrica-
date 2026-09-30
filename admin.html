@@ -1213,12 +1213,19 @@
         const headers = {
 
             "Accept":
-                "application/json",
-
-            "X-Admin-Key":
-                adminKey
+                "application/json"
 
         };
+
+
+        if (adminKey) {
+
+            headers[
+                "Authorization"
+            ] =
+                `Bearer ${adminKey}`;
+
+        }
 
 
         /*
