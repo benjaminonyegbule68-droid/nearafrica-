@@ -1451,45 +1451,37 @@
     }
 
 
-    function getAuthHeaders(
-        includeAuth = true
+function getAuthHeaders(
+    includeAuth = true
+) {
+
+    const headers = {
+        "Accept":
+            "application/json"
+    };
+
+
+    if (
+        includeAuth &&
+        adminKey
     ) {
 
-        const headers = {
-            "Accept":
-                "application/json"
-        };
+        headers[
+            "Authorization"
+        ] =
+            `Bearer ${adminKey}`;
 
-
-        /*
-         * IMPORTANT:
-         *
-         * The current Worker accepts
-         * Authorization: Bearer <admin key>
-         * and X-Admin-Key.
-         *
-         * We deliberately use Authorization here
-         * because it is already allowed by the
-         * Worker's CORS configuration.
-         */
-
-        if (
-            includeAuth &&
-            adminKey
-        ) {
-
-            headers[
-                "Authorization"
-            ] =
-                `Bearer ${adminKey}`;
-
-        }
-
-
-        return headers;
+        headers[
+            "X-Admin-API-Key"
+        ] =
+            adminKey;
 
     }
 
+
+    return headers;
+
+}
 
     /* =========================================================
        API REQUEST
