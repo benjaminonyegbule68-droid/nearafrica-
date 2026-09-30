@@ -1010,23 +1010,80 @@ const NearAfricaConfig = {
 
 
   // =========================================================
-  // LANGUAGES
+  // LANGUAGES / INTERNATIONALIZATION
   // =========================================================
+  //
+  // This controls the NearAfrica multilingual system.
+  //
+  // Actual translations will live in a separate
+  // translations.js file. This section only controls
+  // language behavior and availability.
+  //
 
   languages: {
 
     enabled: true,
 
+    // Default language for visitors.
     default: "en",
 
+    // Languages available to the translation system.
     supported: [
-      "en"
+      "en",
+      "fr",
+      "ar",
+      "pt",
+      "sw"
     ],
 
+    // Names displayed in the language selector.
+    names: {
+
+      en: "English",
+
+      fr: "Français",
+
+      ar: "العربية",
+
+      pt: "Português",
+
+      sw: "Kiswahili"
+    },
+
+    // Text direction for each language.
+    direction: {
+
+      en: "ltr",
+
+      fr: "ltr",
+
+      ar: "rtl",
+
+      pt: "ltr",
+
+      sw: "ltr"
+    },
+
+    // Detect the visitor's browser language.
+    detectBrowserLanguage: true,
+
+    // Remember the language selected by the visitor.
+    persistSelection: true,
+
+    // Storage key used by the frontend.
+    storageKey: "nearafrica_language",
+
+    // Translation dictionary version.
+    translationVersion: "1.0",
+
+    // Languages planned for future expansion.
     future: [
-      "fr",
-      "sw",
-      "ar"
+      "es",
+      "de",
+      "it",
+      "ha",
+      "yo",
+      "ig"
     ]
   },
 
@@ -1133,7 +1190,7 @@ const NearAfricaConfig = {
 
     notifications: true,
 
-    multilingual: false,
+    multilingual: true,
 
     darkMode: true
   }
@@ -1159,4 +1216,4 @@ if (
   module.exports
 ) {
   module.exports = NearAfricaConfig;
-}
+      }
