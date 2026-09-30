@@ -450,10 +450,46 @@
       overflow-wrap: anywhere;
     }
 
+    /* ANALYTICS */
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+      min-width: 0;
+    }
+
+    .analytics-stat {
+      min-width: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 14px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .analytics-value {
+      color: var(--accent);
+      font-size: 28px;
+      line-height: 1.1;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .analytics-label {
+      margin-top: 8px;
+      color: var(--text-muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.4;
+    }
+
     /*
       OPENING HOURS
-      The layout is controlled here instead of using
-      fixed-width JavaScript columns.
     */
 
     .hours-header,
@@ -558,6 +594,10 @@
         grid-template-columns: 1fr;
       }
 
+      .analytics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .hero h1 {
         font-size: 31px;
       }
@@ -645,11 +685,21 @@
         grid-template-columns: 1fr;
       }
 
+      .analytics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .analytics-stat {
+        padding: 16px 10px;
+      }
+
+      .analytics-value {
+        font-size: 24px;
+      }
+
       /*
-        PHONE OPENING HOURS:
-        Each day becomes a vertical card.
-        This completely prevents the schedule from
-        extending outside its background.
+        PHONE OPENING HOURS
       */
 
       .hours-header {
@@ -717,6 +767,18 @@
 
       .nav-links a {
         font-size: 12px;
+      }
+
+      .analytics-grid {
+        gap: 8px;
+      }
+
+      .analytics-value {
+        font-size: 21px;
+      }
+
+      .analytics-label {
+        font-size: 10px;
       }
     }
   </style>
@@ -1185,28 +1247,127 @@
 
             </div>
 
-            <div class="feature-card">
+            <!-- ANALYTICS -->
+
+            <div
+              class="feature-card"
+              style="grid-column: 1 / -1;"
+            >
+
               <h3>Analytics</h3>
 
               <p>
-                View business profile activity and customer engagement.
+                See how many people are viewing your business profile.
               </p>
+
+              <div
+                id="analyticsStatus"
+                class="status"
+              ></div>
+
+              <div class="analytics-grid">
+
+                <div class="analytics-stat">
+
+                  <div
+                    id="analyticsTotalViews"
+                    class="analytics-value"
+                  >
+                    —
+                  </div>
+
+                  <div class="analytics-label">
+                    Total Views
+                  </div>
+
+                </div>
+
+                <div class="analytics-stat">
+
+                  <div
+                    id="analyticsToday"
+                    class="analytics-value"
+                  >
+                    —
+                  </div>
+
+                  <div class="analytics-label">
+                    Today
+                  </div>
+
+                </div>
+
+                <div class="analytics-stat">
+
+                  <div
+                    id="analytics7Days"
+                    class="analytics-value"
+                  >
+                    —
+                  </div>
+
+                  <div class="analytics-label">
+                    Last 7 Days
+                  </div>
+
+                </div>
+
+                <div class="analytics-stat">
+
+                  <div
+                    id="analytics30Days"
+                    class="analytics-value"
+                  >
+                    —
+                  </div>
+
+                  <div class="analytics-label">
+                    Last 30 Days
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div
+                class="btn-row"
+                style="margin-top: 16px;"
+              >
+
+                <button
+                  type="button"
+                  id="refreshAnalyticsButton"
+                  class="btn btn-secondary"
+                >
+                  Refresh Analytics
+                </button>
+
+              </div>
+
             </div>
 
+            <!-- REVIEWS -->
+
             <div class="feature-card">
+
               <h3>Reviews</h3>
 
               <p>
                 View and manage customer reviews when owner tools are enabled.
               </p>
+
             </div>
 
+            <!-- OFFERS & EVENTS -->
+
             <div class="feature-card">
+
               <h3>Offers &amp; Events</h3>
 
               <p>
                 Future tools for promoting offers and business events.
               </p>
+
             </div>
 
           </div>
@@ -1337,11 +1498,6 @@
 
       hoursEditor.innerHTML = "";
 
-
-      /*
-        Desktop/tablet header.
-        Hidden automatically on small phones.
-      */
 
       const header =
         document.createElement("div");
@@ -1744,6 +1900,27 @@
       document.getElementById("imageGallery");
 
 
+    /* ANALYTICS ELEMENTS */
+
+    const analyticsStatus =
+      document.getElementById("analyticsStatus");
+
+    const analyticsTotalViews =
+      document.getElementById("analyticsTotalViews");
+
+    const analyticsToday =
+      document.getElementById("analyticsToday");
+
+    const analytics7Days =
+      document.getElementById("analytics7Days");
+
+    const analytics30Days =
+      document.getElementById("analytics30Days");
+
+    const refreshAnalyticsButton =
+      document.getElementById("refreshAnalyticsButton");
+
+
     function showStatus(element, message, type) {
 
       element.textContent = message;
@@ -1775,6 +1952,130 @@
 
       element.textContent =
         value || "—";
+
+    }
+
+
+    /*
+      OWNER ANALYTICS
+    */
+
+    async function loadOwnerAnalytics() {
+
+      if (!ownerToken) {
+        return;
+      }
+
+
+      hideStatus(
+        analyticsStatus
+      );
+
+
+      try {
+
+        const response =
+          await fetch(
+            API_BASE +
+            "/owner/business/analytics",
+            {
+              method: "GET",
+
+              headers: {
+                Authorization:
+                  "Bearer " + ownerToken
+              }
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          result.status !== "ok"
+        ) {
+
+          throw new Error(
+            result.message ||
+            "Unable to load analytics."
+          );
+
+        }
+
+
+        const analytics =
+          result.analytics || {};
+
+
+        const totalViews =
+          Number(
+            analytics.total_views || 0
+          );
+
+        const viewsToday =
+          Number(
+            analytics.views_today || 0
+          );
+
+        const viewsLast7Days =
+          Number(
+            analytics.views_last_7_days || 0
+          );
+
+        const viewsLast30Days =
+          Number(
+            analytics.views_last_30_days || 0
+          );
+
+
+        analyticsTotalViews.textContent =
+          totalViews.toLocaleString();
+
+
+        analyticsToday.textContent =
+          viewsToday.toLocaleString();
+
+
+        analytics7Days.textContent =
+          viewsLast7Days.toLocaleString();
+
+
+        analytics30Days.textContent =
+          viewsLast30Days.toLocaleString();
+
+
+      } catch(error) {
+
+        console.error(
+          "Loading owner analytics failed:",
+          error
+        );
+
+
+        analyticsTotalViews.textContent =
+          "—";
+
+        analyticsToday.textContent =
+          "—";
+
+        analytics7Days.textContent =
+          "—";
+
+        analytics30Days.textContent =
+          "—";
+
+
+        showStatus(
+          analyticsStatus,
+          error.message ||
+            "Unable to load analytics.",
+          "error"
+        );
+
+      }
 
     }
 
@@ -1890,6 +2191,7 @@
         await loadOwnerImages();
         await loadOwnerHours();
         await loadOwnerProducts();
+        await loadOwnerAnalytics();
 
 
         loginSection.classList.add("hidden");
@@ -2714,11 +3016,18 @@
       productsList.innerHTML = "";
 
 
+      analyticsTotalViews.textContent = "—";
+      analyticsToday.textContent = "—";
+      analytics7Days.textContent = "—";
+      analytics30Days.textContent = "—";
+
+
       hideStatus(loginStatus);
       hideStatus(dashboardStatus);
       hideStatus(imageStatus);
       hideStatus(hoursStatus);
       hideStatus(productsStatus);
+      hideStatus(analyticsStatus);
 
     }
 
@@ -2766,6 +3075,12 @@
     uploadImageButton.addEventListener(
       "click",
       uploadOwnerImage
+    );
+
+
+    refreshAnalyticsButton.addEventListener(
+      "click",
+      loadOwnerAnalytics
     );
 
 
@@ -3262,4 +3577,4 @@
   </script>
 
 </body>
-  </html>
+</html>
