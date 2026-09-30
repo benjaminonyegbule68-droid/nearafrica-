@@ -9,16 +9,11 @@
     <link rel="stylesheet" href="../styles.css">
 
     <style>
-        /* =========================================================
-           OWNER DASHBOARD
-           Page-specific styles only.
-           ========================================================= */
-
         .owner-page {
-    min-height: 100vh;
-    background: var(--bg-primary);
-    color: var(--text-primary);
-}
+            min-height: 100vh;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
 
         .owner-container {
             width: min(1200px, calc(100% - 32px));
@@ -653,7 +648,8 @@
                 width: 100%;
             }
 
-            .owner-header-actions button {
+            .owner-header-actions button,
+            .owner-header-actions a {
                 flex: 1;
             }
 
@@ -691,10 +687,6 @@
 <body>
 
 <div class="owner-page">
-
-    <!-- =========================================================
-         LOGIN
-         ========================================================= -->
 
     <section id="ownerLoginView" class="owner-login-wrap">
 
@@ -768,10 +760,6 @@
     </section>
 
 
-    <!-- =========================================================
-         DASHBOARD
-         ========================================================= -->
-
     <section id="ownerDashboard" class="owner-dashboard">
 
         <div class="owner-container">
@@ -813,8 +801,6 @@
             </header>
 
 
-            <!-- Status badges -->
-
             <div class="owner-status-bar">
 
                 <span id="claimedBadge" class="owner-badge">
@@ -832,14 +818,10 @@
             </div>
 
 
-            <!-- Mobile tabs -->
-
             <div id="mobileTabs" class="owner-mobile-tabs"></div>
 
 
             <div class="owner-layout">
-
-                <!-- Sidebar -->
 
                 <aside class="owner-sidebar">
 
@@ -886,8 +868,6 @@
                 </aside>
 
 
-                <!-- Main content -->
-
                 <main class="owner-content">
 
                     <div
@@ -895,10 +875,6 @@
                         class="owner-message"
                     ></div>
 
-
-                    <!-- =================================================
-                         OVERVIEW
-                         ================================================= -->
 
                     <section
                         id="panel-overview"
@@ -1022,10 +998,6 @@
 
                     </section>
 
-
-                    <!-- =================================================
-                         BUSINESS DETAILS
-                         ================================================= -->
 
                     <section
                         id="panel-business"
@@ -1232,10 +1204,6 @@
                     </section>
 
 
-                    <!-- =================================================
-                         HOURS
-                         ================================================= -->
-
                     <section
                         id="panel-hours"
                         class="owner-panel"
@@ -1274,10 +1242,6 @@
                     </section>
 
 
-                    <!-- =================================================
-                         IMAGES
-                         ================================================= -->
-
                     <section
                         id="panel-images"
                         class="owner-panel"
@@ -1312,10 +1276,6 @@
 
                     </section>
 
-
-                    <!-- =================================================
-                         PRODUCTS
-                         ================================================= -->
 
                     <section
                         id="panel-products"
@@ -1362,10 +1322,6 @@
 
 </div>
 
-
-<!-- =============================================================
-     IMAGE MODAL
-     ============================================================= -->
 
 <div
     id="imageModal"
@@ -1487,10 +1443,6 @@
 
 </div>
 
-
-<!-- =============================================================
-     PRODUCT MODAL
-     ============================================================= -->
 
 <div
     id="productModal"
@@ -1701,10 +1653,6 @@
 
 
 <script>
-/* ================================================================
-   NEARAFRICA OWNER DASHBOARD
-   ================================================================ */
-
 const API_BASE =
     "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
@@ -1731,10 +1679,6 @@ let ownerHours =
 let editingProductId =
     null;
 
-
-/* ================================================================
-   BASIC HELPERS
-   ================================================================ */
 
 function escapeHTML(value) {
     return String(
@@ -1838,10 +1782,6 @@ function getBusinessLocation(
 }
 
 
-/* ================================================================
-   API
-   ================================================================ */
-
 async function api(
     path,
     options = {}
@@ -1909,10 +1849,6 @@ async function api(
 }
 
 
-/* ================================================================
-   SESSION
-   ================================================================ */
-
 function saveOwnerSession(
     token
 ) {
@@ -1949,7 +1885,10 @@ function showLogin() {
         )
     );
 
-    const loginWrap = document.querySelector(".owner-login-wrap");
+    const loginWrap =
+        document.querySelector(
+            ".owner-login-wrap"
+        );
 
     if (loginWrap) {
         loginWrap.style.display = "";
@@ -1964,19 +1903,17 @@ function showDashboard() {
         )
     );
 
-    const dashboard = document.getElementById(
-        "ownerDashboard"
-    );
+    const dashboard =
+        document.getElementById(
+            "ownerDashboard"
+        );
 
     if (dashboard) {
-        dashboard.style.display = "block";
+        dashboard.style.display =
+            "block";
     }
 }
 
-
-/* ================================================================
-   LOGIN
-   ================================================================ */
 
 document
     .getElementById(
@@ -1998,9 +1935,11 @@ document
                     "loginError"
                 );
 
-            clearMessage(
-                errorBox
-            );
+            errorBox.style.display =
+                "none";
+
+            errorBox.textContent =
+                "";
 
             const businessName =
                 document
@@ -2089,15 +2028,10 @@ document
 
                 button.textContent =
                     "Access Dashboard";
-
             }
         }
     );
 
-
-/* ================================================================
-   LOGOUT
-   ================================================================ */
 
 document
     .getElementById(
@@ -2118,10 +2052,7 @@ document
                 );
 
             } catch {
-                /*
-                 * Even if the server logout fails,
-                 * remove the local token.
-                 */
+                /* Local session is cleared below. */
             }
 
             clearOwnerSession();
@@ -2153,10 +2084,6 @@ document
         }
     );
 
-
-/* ================================================================
-   LOAD DASHBOARD
-   ================================================================ */
 
 async function loadDashboard() {
 
@@ -2206,10 +2133,6 @@ async function loadDashboard() {
     }
 }
 
-
-/* ================================================================
-   BUSINESS
-   ================================================================ */
 
 function renderBusiness() {
 
@@ -2370,10 +2293,12 @@ function renderBusiness() {
                 : "Active";
 
     /*
-     * Open public business page.
+     * IMPORTANT:
+     * owner.html is inside /pages/
+     * but business.html is at the site root.
      *
-     * The exact route used by your existing frontend is:
-     * /pages/business.html?id=BUSINESS_ID
+     * Correct:
+     * /business.html?id=BUSINESS_ID
      */
     if (business.id) {
 
@@ -2383,17 +2308,13 @@ function renderBusiness() {
             );
 
         viewButton.href =
-            "./business.html?id=" +
+            "/business.html?id=" +
             encodeURIComponent(
                 business.id
             );
     }
 }
 
-
-/* ================================================================
-   SAVE BUSINESS
-   ================================================================ */
 
 document
     .getElementById(
@@ -2577,15 +2498,10 @@ document
 
                 button.textContent =
                     "Save Business Details";
-
             }
         }
     );
 
-
-/* ================================================================
-   HOURS
-   ================================================================ */
 
 const DAYS = [
     {
@@ -2986,15 +2902,10 @@ document
 
                 button.textContent =
                     "Save Opening Hours";
-
             }
         }
     );
 
-
-/* ================================================================
-   IMAGES
-   ================================================================ */
 
 async function loadImages() {
 
@@ -3295,7 +3206,6 @@ document
 
                 button.textContent =
                     "Upload Image";
-
             }
         }
     );
@@ -3354,10 +3264,6 @@ async function deleteImage(
     }
 }
 
-
-/* ================================================================
-   PRODUCTS
-   ================================================================ */
 
 async function loadProducts() {
 
@@ -3531,10 +3437,6 @@ function renderProducts() {
 }
 
 
-/* ================================================================
-   PRODUCT MODAL
-   ================================================================ */
-
 document
     .getElementById(
         "openProductModalButton"
@@ -3542,9 +3444,7 @@ document
     .addEventListener(
         "click",
         function() {
-
             openCreateProductModal();
-
         }
     );
 
@@ -3975,10 +3875,6 @@ async function deleteProduct(
 }
 
 
-/* ================================================================
-   OVERVIEW
-   ================================================================ */
-
 function renderOverview() {
 
     if (!ownerBusiness) {
@@ -4016,10 +3912,6 @@ function renderOverview() {
         ownerImages.length;
 }
 
-
-/* ================================================================
-   TABS
-   ================================================================ */
 
 function switchPanel(
     panelName
@@ -4084,10 +3976,6 @@ document
     );
 
 
-/* ================================================================
-   MOBILE TABS
-   ================================================================ */
-
 function buildMobileTabs() {
 
     const container =
@@ -4149,10 +4037,6 @@ function buildMobileTabs() {
 
 buildMobileTabs();
 
-
-/* ================================================================
-   MODALS
-   ================================================================ */
 
 function closeModal(
     modalId
@@ -4240,10 +4124,6 @@ document.addEventListener(
     }
 );
 
-
-/* ================================================================
-   INITIALIZATION
-   ================================================================ */
 
 (async function initOwnerPage() {
 
