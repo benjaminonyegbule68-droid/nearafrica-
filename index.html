@@ -2,7 +2,6 @@
 <html lang="en" dir="ltr">
 
 <head>
-
   <meta charset="UTF-8">
 
   <meta
@@ -10,13 +9,11 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title data-i18n="siteName">
-    NearAfrica — Discover Businesses Near You
-  </title>
+  <title>NearAfrica — Discover Businesses Near You</title>
 
   <meta
     name="description"
-    content="Discover businesses, services, shops and opportunities near you across Africa. Start with Nigeria."
+    content="Discover businesses, services, shops, restaurants, hotels and opportunities near you across Africa."
   >
 
   <link
@@ -25,11 +22,14 @@
     href="logo.png"
   >
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
 
   <link
     rel="preconnect"
-    href="https://fonts.gstatic.com"
+    href="https://fonts.googleapis.com"
     crossorigin
   >
 
@@ -62,14 +62,17 @@
       position: sticky;
       top: 0;
       z-index: 1000;
+
       background: rgba(255,255,255,0.97);
       backdrop-filter: blur(12px);
+
       border-bottom: 1px solid #e8e8e8;
     }
 
     .home-header-inner {
       width: min(1200px, calc(100% - 32px));
       min-height: 64px;
+
       margin: 0 auto;
 
       display: flex;
@@ -85,6 +88,7 @@
       gap: 9px;
 
       color: #111;
+
       font-size: 20px;
       font-weight: 800;
 
@@ -100,6 +104,7 @@
       place-items: center;
 
       border-radius: 50%;
+
       background: #111;
       color: #d4af37;
 
@@ -109,7 +114,8 @@
     .home-nav {
       display: flex;
       align-items: center;
-      gap: 20px;
+
+      gap: 18px;
 
       font-size: 13px;
       font-weight: 600;
@@ -128,6 +134,7 @@
     .home-language {
       display: flex;
       align-items: center;
+
       gap: 6px;
 
       flex-shrink: 0;
@@ -136,13 +143,13 @@
     .home-language select {
       height: 36px;
 
+      padding: 0 8px;
+
       border: 1px solid #ddd;
       border-radius: 8px;
 
       background: #fff;
       color: #222;
-
-      padding: 0 8px;
 
       font-size: 12px;
       font-weight: 600;
@@ -174,6 +181,7 @@
       display: none;
 
       border-top: 1px solid #eee;
+
       background: #fff;
 
       padding: 8px 16px 14px;
@@ -245,6 +253,7 @@
 
     .home-hero h1 {
       max-width: 900px;
+
       margin: 0 auto 18px;
 
       font-size: clamp(38px, 7vw, 72px);
@@ -253,12 +262,13 @@
       letter-spacing: -2.5px;
     }
 
-    .home-hero h1 span {
+    .home-hero h1 .gold {
       color: #d4af37;
     }
 
     .home-hero p {
       max-width: 740px;
+
       margin: 0 auto;
 
       color: #bcbcbc;
@@ -273,6 +283,7 @@
 
     .home-search-wrapper {
       width: min(950px, 100%);
+
       margin: 38px auto 0;
     }
 
@@ -315,6 +326,8 @@
       color: #fff;
 
       outline: none;
+
+      box-sizing: border-box;
     }
 
     .home-search-field input::placeholder {
@@ -339,6 +352,8 @@
       color: #111;
 
       font-weight: 800;
+
+      cursor: pointer;
 
       transition: 0.2s ease;
     }
@@ -372,6 +387,8 @@
 
       font-size: 13px;
       font-weight: 700;
+
+      cursor: pointer;
 
       transition: 0.2s ease;
     }
@@ -411,12 +428,14 @@
 
     .country-list {
       width: min(1200px, calc(100% - 30px));
+
       margin: 0 auto;
 
       padding: 15px 0;
 
       display: flex;
       justify-content: center;
+
       flex-wrap: wrap;
 
       gap: 17px;
@@ -437,6 +456,7 @@
 
     .home-section {
       width: min(1150px, calc(100% - 32px));
+
       margin: 0 auto;
 
       padding: 75px 0;
@@ -531,6 +551,7 @@
 
     .owner-inner {
       width: min(1150px, calc(100% - 32px));
+
       margin: 0 auto;
 
       padding: 70px 0;
@@ -564,6 +585,7 @@
 
     .owner-actions {
       display: flex;
+
       justify-content: flex-end;
 
       gap: 10px;
@@ -589,6 +611,7 @@
 
     .owner-button.secondary {
       border: 1px solid #444;
+
       background: #181818;
       color: #fff;
     }
@@ -598,7 +621,7 @@
     }
 
     /* =====================================================
-       WEBSITE SERVICES CTA
+       WEBSITE SERVICES
        ===================================================== */
 
     .website-section {
@@ -799,6 +822,7 @@
 
     .home-footer-inner {
       width: min(1150px, calc(100% - 32px));
+
       margin: 0 auto;
 
       padding: 45px 0 25px;
@@ -863,6 +887,7 @@
       border-top: 1px solid #292929;
 
       display: flex;
+
       justify-content: space-between;
 
       gap: 20px;
@@ -904,7 +929,7 @@
       }
 
       .home-nav {
-        gap: 12px;
+        gap: 10px;
       }
 
       .owner-inner,
@@ -1017,6 +1042,7 @@
 
 <body class="home-page">
 
+
   <!-- =====================================================
        HEADER
        ===================================================== -->
@@ -1028,15 +1054,12 @@
       <a
         href="index.html"
         class="home-logo"
+        aria-label="NearAfrica Home"
       >
 
-        <span class="home-logo-mark">
-          N
-        </span>
+        <span class="home-logo-mark">N</span>
 
-        <span>
-          NearAfrica
-        </span>
+        <span>NearAfrica</span>
 
       </a>
 
@@ -1094,9 +1117,7 @@
 
       <div class="home-language">
 
-        <span aria-hidden="true">
-          🌐
-        </span>
+        <span aria-hidden="true">🌐</span>
 
         <select
           id="languageSelector"
@@ -1104,25 +1125,11 @@
           aria-label="Language"
         >
 
-          <option value="en">
-            English
-          </option>
-
-          <option value="fr">
-            Français
-          </option>
-
-          <option value="ar">
-            العربية
-          </option>
-
-          <option value="pt">
-            Português
-          </option>
-
-          <option value="sw">
-            Kiswahili
-          </option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="ar">العربية</option>
+          <option value="pt">Português</option>
+          <option value="sw">Kiswahili</option>
 
         </select>
 
@@ -1200,591 +1207,580 @@
        HERO
        ===================================================== -->
 
-  <section class="home-hero">
+  <main>
 
-    <div class="home-hero-inner">
+    <section class="home-hero">
 
-      <span
-        class="home-eyebrow"
-        data-i18n="home.eyebrow"
-      >
-        DISCOVER AFRICA. START LOCAL.
-      </span>
+      <div class="home-hero-inner">
 
-
-      <h1 data-i18n="home.title">
-        Find Great Businesses
-        <span>Near You.</span>
-      </h1>
+        <span class="home-eyebrow">
+          DISCOVER AFRICA. START LOCAL.
+        </span>
 
 
-      <p data-i18n="home.subtitle">
-        Discover businesses, services, shops,
-        restaurants, hotels and opportunities near you
-        across Africa.
-      </p>
+        <h1>
+          Find Great Businesses
+          <span class="gold">Near You.</span>
+        </h1>
 
 
-      <!-- SEARCH FORM -->
+        <p>
+          Discover businesses, services, shops,
+          restaurants, hotels and opportunities near
+          you across Africa.
+        </p>
 
-      <div class="home-search-wrapper">
 
-        <form
-          id="searchForm"
-          class="home-search"
-        >
+        <div class="home-search-wrapper">
 
-          <div class="home-search-field">
+          <form
+            id="searchForm"
+            class="home-search"
+            action="explore.html"
+            method="get"
+          >
 
-            <label
-              for="search"
-              data-i18n="search.whatLookingFor"
+            <div class="home-search-field">
+
+              <label
+                for="search"
+                data-i18n="search.whatLookingFor"
+              >
+                What are you looking for?
+              </label>
+
+              <input
+                id="search"
+                name="search"
+                type="text"
+                data-i18n-placeholder="search.searchPlaceholder"
+                placeholder="e.g. barber, hotel, restaurant..."
+                autocomplete="off"
+              >
+
+            </div>
+
+
+            <div class="home-search-field">
+
+              <label
+                for="location"
+                data-i18n="search.location"
+              >
+                Location
+              </label>
+
+              <input
+                id="location"
+                name="location"
+                type="text"
+                data-i18n-placeholder="search.locationPlaceholder"
+                placeholder="e.g. Aba, Lagos, Abuja..."
+                autocomplete="off"
+              >
+
+            </div>
+
+
+            <button
+              type="submit"
+              class="home-search-button"
+              data-i18n="search.search"
             >
-              What are you looking for?
-            </label>
+              Search
+            </button>
 
-            <input
-              id="search"
-              name="search"
-              type="text"
-              data-i18n-placeholder="search.searchPlaceholder"
-              placeholder="e.g. barber, hotel, restaurant..."
-              autocomplete="off"
+          </form>
+
+
+          <div class="home-location">
+
+            <button
+              id="useLocation"
+              class="home-location-button"
+              type="button"
+              data-i18n="search.useMyLocation"
             >
+              📍 Use My Location
+            </button>
+
+
+            <span
+              id="locationMessage"
+              class="home-location-message"
+              aria-live="polite"
+            >
+              Search by area or use your current location.
+            </span>
 
           </div>
-
-
-          <div class="home-search-field">
-
-            <label
-              for="location"
-              data-i18n="search.location"
-            >
-              Location
-            </label>
-
-            <input
-              id="location"
-              name="location"
-              type="text"
-              data-i18n-placeholder="search.locationPlaceholder"
-              placeholder="e.g. Aba, Lagos, Abuja..."
-              autocomplete="off"
-            >
-
-          </div>
-
-
-          <button
-            type="submit"
-            class="home-search-button"
-            data-i18n="search.search"
-          >
-            Search
-          </button>
-
-        </form>
-
-
-        <!-- LOCATION -->
-
-        <div class="home-location">
-
-          <button
-            id="useLocation"
-            class="home-location-button"
-            type="button"
-            data-i18n="search.useMyLocation"
-          >
-            📍 Use My Location
-          </button>
-
-
-          <span
-            id="locationMessage"
-            class="home-location-message"
-            aria-live="polite"
-            data-i18n="search.locationUnavailable"
-          >
-            Search by area or use your current location.
-          </span>
 
         </div>
 
       </div>
 
-    </div>
+    </section>
 
-  </section>
 
+    <!-- ===================================================
+         COUNTRY STRIP
+         =================================================== -->
 
-  <!-- =====================================================
-       COUNTRY STRIP
-       ===================================================== -->
+    <section
+      class="country-strip"
+      aria-label="Countries"
+    >
 
-  <section
-    class="country-strip"
-    aria-label="Countries"
-  >
+      <div class="country-list">
 
-    <div class="country-list">
+        <span>🇳🇬 Nigeria</span>
+        <span>🇬🇭 Ghana</span>
+        <span>🇿🇦 South Africa</span>
+        <span>🇰🇪 Kenya</span>
+        <span>🇺🇬 Uganda</span>
+        <span>🇹🇿 Tanzania</span>
+        <span>🇷🇼 Rwanda</span>
+        <span>🇪🇬 Egypt</span>
+        <span>🇲🇦 Morocco</span>
+        <span>🇪🇹 Ethiopia</span>
+        <span>🇸🇳 Senegal</span>
+        <span>🇨🇲 Cameroon</span>
+        <span>🇨🇮 Côte d'Ivoire</span>
+        <span>🇿🇲 Zambia</span>
+        <span>🇿🇼 Zimbabwe</span>
 
-      <span>🇳🇬 Nigeria</span>
-      <span>🇬🇭 Ghana</span>
-      <span>🇿🇦 South Africa</span>
-      <span>🇰🇪 Kenya</span>
-      <span>🇺🇬 Uganda</span>
-      <span>🇹🇿 Tanzania</span>
-      <span>🇷🇼 Rwanda</span>
-      <span>🇪🇬 Egypt</span>
-      <span>🇲🇦 Morocco</span>
-      <span>🇪🇹 Ethiopia</span>
-      <span>🇸🇳 Senegal</span>
-      <span>🇨🇲 Cameroon</span>
-      <span>🇨🇮 Côte d'Ivoire</span>
-      <span>🇿🇲 Zambia</span>
-      <span>🇿🇼 Zimbabwe</span>
+      </div>
 
-    </div>
+    </section>
 
-  </section>
 
+    <!-- ===================================================
+         CATEGORIES
+         =================================================== -->
 
-  <!-- =====================================================
-       CATEGORIES
-       ===================================================== -->
+    <section class="home-section">
 
-  <section class="home-section">
+      <div class="home-section-heading">
 
-    <div class="home-section-heading">
-
-      <h2 data-i18n="home.categoriesTitle">
-        Explore Categories
-      </h2>
-
-      <p data-i18n="home.categoriesSubtitle">
-        Find the businesses and services you need,
-        organized into easy-to-browse categories.
-      </p>
-
-    </div>
-
-
-    <div class="category-grid">
-
-      <a
-        class="category-card"
-        href="explore.html?category=Restaurants%20%26%20Food"
-      >
-        <div class="category-icon">🍽️</div>
-
-        <h3 data-i18n="categories.restaurants">
-          Restaurants & Food
-        </h3>
-
-        <p>
-          Food, restaurants and dining.
-        </p>
-      </a>
-
-
-      <a
-        class="category-card"
-        href="explore.html?category=Hotels%20%26%20Accommodation"
-      >
-        <div class="category-icon">🏨</div>
-
-        <h3 data-i18n="categories.hotels">
-          Hotels & Accommodation
-        </h3>
-
-        <p>
-          Hotels, lodges and places to stay.
-        </p>
-      </a>
-
-
-      <a
-        class="category-card"
-        href="explore.html?category=Beauty%20%26%20Spa"
-      >
-        <div class="category-icon">💆</div>
-
-        <h3 data-i18n="categories.beauty">
-          Beauty & Spa
-        </h3>
-
-        <p>
-          Salons, spas and beauty services.
-        </p>
-      </a>
-
-
-      <a
-        class="category-card"
-        href="explore.html?category=Health%20%26%20Medical"
-      >
-        <div class="category-icon">🏥</div>
-
-        <h3 data-i18n="categories.health">
-          Health & Medical
-        </h3>
-
-        <p>
-          Healthcare and medical services.
-        </p>
-      </a>
-
-
-      <a
-        class="category-card"
-        href="explore.html?category=Shopping%20%26%20Retail"
-      >
-        <div class="category-icon">🛍️</div>
-
-        <h3 data-i18n="categories.shopping">
-          Shopping & Retail
-        </h3>
-
-        <p>
-          Shops, stores and retail businesses.
-        </p>
-      </a>
-
-
-      <a
-        class="category-card"
-        href="explore.html?category=Supermarkets"
-      >
-        <div class="category-icon">🛒</div>
-
-        <h3 data-i18n="categories.supermarkets">
-          Supermarkets
-        </h3>
-
-        <p>
-          Supermarkets and everyday shopping.
-        </p>
-      </a>
-
-
-      <a
-        class="category-card"
-        href="explore.html?category=Professional%20Services"
-      >
-        <div class="category-icon">💼</div>
-
-        <h3 data-i18n="categories.professional">
-          Professional Services
-        </h3>
-
-        <p>
-          Businesses and professional services.
-        </p>
-      </a>
-
-
-      <a
-        class="category-card"
-        href="explore.html?category=Education"
-      >
-        <div class="category-icon">🎓</div>
-
-        <h3 data-i18n="categories.education">
-          Education
-        </h3>
-
-        <p>
-          Schools, training and education.
-        </p>
-      </a>
-
-
-      <a
-        class="category-card"
-        href="explore.html?category=Real%20Estate"
-      >
-        <div class="category-icon">🏠</div>
-
-        <h3 data-i18n="categories.realEstate">
-          Real Estate
-        </h3>
-
-        <p>
-          Property and real estate services.
-        </p>
-      </a>
-
-
-      <a
-        class="category-card"
-        href="explore.html?category=Automotive"
-      >
-        <div class="category-icon">🚗</div>
-
-        <h3 data-i18n="categories.automotive">
-          Automotive
-        </h3>
-
-        <p>
-          Cars, repairs and automotive services.
-        </p>
-      </a>
-
-
-      <a
-        class="category-card"
-        href="explore.html?category=Travel%20%26%20Tourism"
-      >
-        <div class="category-icon">✈️</div>
-
-        <h3 data-i18n="categories.travel">
-          Travel & Tourism
-        </h3>
-
-        <p>
-          Travel businesses and tourism.
-        </p>
-      </a>
-
-
-      <a
-        class="category-card"
-        href="explore.html?category=Technology"
-      >
-        <div class="category-icon">💻</div>
-
-        <h3 data-i18n="categories.technology">
-          Technology
-        </h3>
-
-        <p>
-          Technology companies and services.
-        </p>
-      </a>
-
-    </div>
-
-  </section>
-
-
-  <!-- =====================================================
-       BUSINESS OWNER CTA
-       ===================================================== -->
-
-  <section class="owner-section">
-
-    <div class="owner-inner">
-
-      <div class="owner-content">
-
-        <h2 data-i18n="home.ownerTitle">
-          Own a Business?
+        <h2>
+          Explore Categories
         </h2>
 
-        <p data-i18n="home.ownerSubtitle">
-          Get your business discovered by people
-          searching for products and services near
-          them. Add your business to NearAfrica or
-          claim an existing listing.
+        <p>
+          Find the businesses and services you need,
+          organized into easy-to-browse categories.
         </p>
 
       </div>
 
 
-      <div class="owner-actions">
+      <div class="category-grid">
+
 
         <a
-          href="list-business.html"
-          class="owner-button primary"
-          data-i18n="home.listBusiness"
+          class="category-card"
+          href="explore.html?category=Restaurants%20%26%20Food"
         >
-          List Your Business
+
+          <div class="category-icon">🍽️</div>
+
+          <h3 data-i18n="categories.restaurants">
+            Restaurants & Food
+          </h3>
+
+          <p>Food, restaurants and dining.</p>
+
         </a>
 
+
         <a
-          href="claim-business.html"
-          class="owner-button secondary"
-          data-i18n="home.claimBusiness"
+          class="category-card"
+          href="explore.html?category=Hotels%20%26%20Accommodation"
         >
-          Claim Business
+
+          <div class="category-icon">🏨</div>
+
+          <h3 data-i18n="categories.hotels">
+            Hotels & Accommodation
+          </h3>
+
+          <p>Hotels, lodges and places to stay.</p>
+
         </a>
+
+
+        <a
+          class="category-card"
+          href="explore.html?category=Beauty%20%26%20Spa"
+        >
+
+          <div class="category-icon">💆</div>
+
+          <h3 data-i18n="categories.beauty">
+            Beauty & Spa
+          </h3>
+
+          <p>Salons, spas and beauty services.</p>
+
+        </a>
+
+
+        <a
+          class="category-card"
+          href="explore.html?category=Health%20%26%20Medical"
+        >
+
+          <div class="category-icon">🏥</div>
+
+          <h3 data-i18n="categories.health">
+            Health & Medical
+          </h3>
+
+          <p>Healthcare and medical services.</p>
+
+        </a>
+
+
+        <a
+          class="category-card"
+          href="explore.html?category=Shopping%20%26%20Retail"
+        >
+
+          <div class="category-icon">🛍️</div>
+
+          <h3 data-i18n="categories.shopping">
+            Shopping & Retail
+          </h3>
+
+          <p>Shops, stores and retail businesses.</p>
+
+        </a>
+
+
+        <a
+          class="category-card"
+          href="explore.html?category=Supermarkets"
+        >
+
+          <div class="category-icon">🛒</div>
+
+          <h3 data-i18n="categories.supermarkets">
+            Supermarkets
+          </h3>
+
+          <p>Supermarkets and everyday shopping.</p>
+
+        </a>
+
+
+        <a
+          class="category-card"
+          href="explore.html?category=Professional%20Services"
+        >
+
+          <div class="category-icon">💼</div>
+
+          <h3 data-i18n="categories.professional">
+            Professional Services
+          </h3>
+
+          <p>Businesses and professional services.</p>
+
+        </a>
+
+
+        <a
+          class="category-card"
+          href="explore.html?category=Education"
+        >
+
+          <div class="category-icon">🎓</div>
+
+          <h3 data-i18n="categories.education">
+            Education
+          </h3>
+
+          <p>Schools, training and education.</p>
+
+        </a>
+
+
+        <a
+          class="category-card"
+          href="explore.html?category=Real%20Estate"
+        >
+
+          <div class="category-icon">🏠</div>
+
+          <h3 data-i18n="categories.realEstate">
+            Real Estate
+          </h3>
+
+          <p>Property and real estate services.</p>
+
+        </a>
+
+
+        <a
+          class="category-card"
+          href="explore.html?category=Automotive"
+        >
+
+          <div class="category-icon">🚗</div>
+
+          <h3 data-i18n="categories.automotive">
+            Automotive
+          </h3>
+
+          <p>Cars, repairs and automotive services.</p>
+
+        </a>
+
+
+        <a
+          class="category-card"
+          href="explore.html?category=Travel%20%26%20Tourism"
+        >
+
+          <div class="category-icon">✈️</div>
+
+          <h3 data-i18n="categories.travel">
+            Travel & Tourism
+          </h3>
+
+          <p>Travel businesses and tourism.</p>
+
+        </a>
+
+
+        <a
+          class="category-card"
+          href="explore.html?category=Technology"
+        >
+
+          <div class="category-icon">💻</div>
+
+          <h3 data-i18n="categories.technology">
+            Technology
+          </h3>
+
+          <p>Technology companies and services.</p>
+
+        </a>
+
 
       </div>
 
-    </div>
-
-  </section>
+    </section>
 
 
-  <!-- =====================================================
-       WEBSITE SERVICES
-       ===================================================== -->
+    <!-- ===================================================
+         BUSINESS OWNER
+         =================================================== -->
 
-  <section class="home-section website-section">
+    <section class="owner-section">
 
-    <div class="website-card">
+      <div class="owner-inner">
 
-      <div>
+        <div class="owner-content">
 
-        <h2 data-i18n="home.websiteTitle">
-          Need a Website for Your Business?
-        </h2>
+          <h2>
+            Own a Business?
+          </h2>
 
-        <p data-i18n="home.websiteSubtitle">
-          We also build professional, mobile-friendly
-          websites for small businesses and growing
-          brands.
-        </p>
-
-
-        <div class="website-points">
-
-          <div
-            class="website-point"
-            data-i18n="home.websitePointOne"
-          >
-            📱 Mobile responsive
-          </div>
-
-          <div
-            class="website-point"
-            data-i18n="home.websitePointTwo"
-          >
-            ⚡ Fast loading
-          </div>
-
-          <div
-            class="website-point"
-            data-i18n="home.websitePointThree"
-          >
-            🎨 Professional design
-          </div>
-
-          <div
-            class="website-point"
-            data-i18n="home.websitePointFour"
-          >
-            📈 Built to grow
-          </div>
+          <p>
+            Get your business discovered by people
+            searching for products and services near
+            them. Add your business to NearAfrica or
+            claim an existing listing.
+          </p>
 
         </div>
 
 
-        <a
-          href="contact.html"
-          class="website-action"
-          data-i18n="home.websiteAction"
+        <div class="owner-actions">
+
+          <a
+            href="list-business.html"
+            class="owner-button primary"
+            data-i18n="nav.listBusiness"
+          >
+            List Your Business
+          </a>
+
+          <a
+            href="claim-business.html"
+            class="owner-button secondary"
+            data-i18n="nav.claimBusiness"
+          >
+            Claim Business
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         WEBSITE SERVICES
+         =================================================== -->
+
+    <section class="home-section website-section">
+
+      <div class="website-card">
+
+        <div>
+
+          <h2>
+            Need a Website for Your Business?
+          </h2>
+
+          <p>
+            We also build professional, mobile-friendly
+            websites for small businesses and growing
+            brands.
+          </p>
+
+
+          <div class="website-points">
+
+            <div class="website-point">
+              📱 Mobile responsive
+            </div>
+
+            <div class="website-point">
+              ⚡ Fast loading
+            </div>
+
+            <div class="website-point">
+              🎨 Professional design
+            </div>
+
+            <div class="website-point">
+              📈 Built to grow
+            </div>
+
+          </div>
+
+
+          <a
+            href="contact.html"
+            class="website-action"
+            data-i18n="contact.businessAction"
+          >
+            Get a Website
+          </a>
+
+        </div>
+
+
+        <div
+          class="website-visual"
+          aria-hidden="true"
         >
-          Get a Website
-        </a>
+          &lt;/&gt;
+        </div>
 
       </div>
 
+    </section>
 
-      <div
-        class="website-visual"
-        aria-hidden="true"
-      >
-        &lt;/&gt;
+
+    <!-- ===================================================
+         ABOUT
+         =================================================== -->
+
+    <section
+      class="home-section about-section"
+      id="about"
+    >
+
+      <div class="about-grid">
+
+        <div
+          class="about-mark"
+          aria-hidden="true"
+        >
+          N
+        </div>
+
+
+        <div class="about-copy">
+
+          <h2>
+            About NearAfrica
+          </h2>
+
+          <p>
+            NearAfrica is a business discovery platform
+            designed to help people find businesses,
+            services and opportunities around them.
+          </p>
+
+          <p>
+            We are starting with Nigeria and building
+            toward a broader African discovery platform.
+          </p>
+
+
+          <a
+            href="explore.html"
+            class="about-button"
+            data-i18n="nav.explore"
+          >
+            Start Exploring
+          </a>
+
+        </div>
+
       </div>
 
-    </div>
-
-  </section>
+    </section>
 
 
-  <!-- =====================================================
-       ABOUT
-       ===================================================== -->
+    <!-- ===================================================
+         FINAL CTA
+         =================================================== -->
 
-  <section
-    class="home-section about-section"
-    id="about"
-  >
+    <section class="home-hero">
 
-    <div class="about-grid">
+      <div class="home-hero-inner">
 
-      <div class="about-mark">
-        N
-      </div>
+        <span class="home-eyebrow">
+          YOUR NEXT DISCOVERY IS HERE
+        </span>
 
 
-      <div class="about-copy">
-
-        <h2 data-i18n="home.aboutTitle">
-          About NearAfrica
+        <h2
+          style="
+            max-width:800px;
+            margin:0 auto 16px;
+            font-size:clamp(30px,5vw,52px);
+            line-height:1.08;
+            letter-spacing:-1.5px;
+          "
+        >
+          Start discovering businesses near you.
         </h2>
 
-        <p data-i18n="home.aboutText">
-          NearAfrica is a business discovery platform
-          designed to help people find businesses,
-          services and opportunities around them.
-        </p>
 
-        <p data-i18n="home.aboutTextTwo">
-          We are starting with Nigeria and building
-          toward a broader African discovery platform.
-        </p>
-
-
-        <a
-          href="explore.html"
-          class="about-button"
-          data-i18n="home.startExploring"
+        <p
+          style="
+            margin:0 auto;
+            max-width:680px;
+          "
         >
-          Start Exploring
-        </a>
+          Search by business, service or location
+          and discover what is around you.
+        </p>
 
       </div>
 
-    </div>
+    </section>
 
-  </section>
-
-
-  <!-- =====================================================
-       START CTA
-       ===================================================== -->
-
-  <section class="home-hero">
-
-    <div class="home-hero-inner">
-
-      <span
-        class="home-eyebrow"
-        data-i18n="home.startEyebrow"
-      >
-        YOUR NEXT DISCOVERY IS HERE
-      </span>
-
-
-      <h2
-        style="
-          max-width:800px;
-          margin:0 auto 16px;
-          font-size:clamp(30px,5vw,52px);
-          line-height:1.08;
-          letter-spacing:-1.5px;
-        "
-        data-i18n="home.startTitle"
-      >
-        Start discovering businesses near you.
-      </h2>
-
-
-      <p
-        style="margin:0 auto;max-width:680px;"
-        data-i18n="home.startText"
-      >
-        Search by business, service or location and
-        discover what is around you.
-      </p>
-
-    </div>
-
-  </section>
+  </main>
 
 
   <!-- =====================================================
@@ -1803,10 +1799,7 @@
             NearAfrica
           </div>
 
-          <p
-            class="footer-description"
-            data-i18n="footer.tagline"
-          >
+          <p class="footer-description">
             Find Great Businesses Near You.
           </p>
 
@@ -1815,9 +1808,7 @@
 
         <div class="footer-column">
 
-          <h3>
-            NearAfrica
-          </h3>
+          <h3>NearAfrica</h3>
 
           <a
             href="index.html"
@@ -1852,9 +1843,7 @@
 
         <div class="footer-column">
 
-          <h3>
-            Information
-          </h3>
+          <h3>Information</h3>
 
           <a
             href="#about"
@@ -1931,7 +1920,7 @@
 
 
   <!-- =====================================================
-       SMALL HOME-PAGE MOBILE MENU FALLBACK
+       MOBILE MENU
        ===================================================== -->
 
   <script>
@@ -1950,33 +1939,33 @@
             "mobileNav"
           );
 
-
-        if (
-          !toggle ||
-          !mobileNav
-        ) {
+        if (!toggle || !mobileNav) {
           return;
         }
-
 
         toggle.addEventListener(
           "click",
           function () {
 
-            const open =
+            const isOpen =
               mobileNav.classList.toggle(
                 "open"
               );
 
-
             toggle.setAttribute(
               "aria-expanded",
-              String(open)
+              String(isOpen)
             );
 
+            toggle.setAttribute(
+              "aria-label",
+              isOpen
+                ? "Close menu"
+                : "Open menu"
+            );
 
             toggle.textContent =
-              open
+              isOpen
                 ? "✕"
                 : "☰";
 
@@ -2002,6 +1991,11 @@
                     "false"
                   );
 
+                  toggle.setAttribute(
+                    "aria-label",
+                    "Open menu"
+                  );
+
                   toggle.textContent =
                     "☰";
 
@@ -2017,4 +2011,5 @@
   </script>
 
 </body>
+
   </html>
