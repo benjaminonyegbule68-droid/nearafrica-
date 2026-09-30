@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -23,10 +25,7 @@
     href="logo.png"
   >
 
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
 
   <link
     rel="preconnect"
@@ -45,34 +44,212 @@
   >
 
   <style>
+
     /* =====================================================
        HOME PAGE
        ===================================================== */
 
+    .home-page {
+      background: #f7f7f5;
+      color: #171717;
+    }
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    .home-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .home-header-inner {
+      width: min(1200px, calc(100% - 32px));
+      min-height: 64px;
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 18px;
+    }
+
+    .home-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+
+      color: #111;
+      font-size: 20px;
+      font-weight: 800;
+
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .home-logo-mark {
+      width: 35px;
+      height: 35px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+      background: #111;
+      color: #d4af37;
+
+      font-weight: 800;
+    }
+
+    .home-nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .home-nav a {
+      color: #555;
+      transition: 0.2s ease;
+    }
+
+    .home-nav a:hover,
+    .home-nav a.active {
+      color: #111;
+    }
+
+    .home-language {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      flex-shrink: 0;
+    }
+
+    .home-language select {
+      height: 36px;
+
+      border: 1px solid #ddd;
+      border-radius: 8px;
+
+      background: #fff;
+      color: #222;
+
+      padding: 0 8px;
+
+      font-size: 12px;
+      font-weight: 600;
+
+      outline: none;
+    }
+
+    .home-language select:focus {
+      border-color: #d4af37;
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+
+      width: 40px;
+      height: 40px;
+
+      border: 1px solid #ddd;
+      border-radius: 8px;
+
+      background: #fff;
+      color: #111;
+
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .home-mobile-nav {
+      display: none;
+
+      border-top: 1px solid #eee;
+      background: #fff;
+
+      padding: 8px 16px 14px;
+    }
+
+    .home-mobile-nav.open {
+      display: block;
+    }
+
+    .home-mobile-nav a {
+      display: block;
+
+      padding: 11px 8px;
+
+      border-bottom: 1px solid #f0f0f0;
+
+      color: #555;
+
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .home-mobile-nav a:last-child {
+      border-bottom: 0;
+    }
+
+    .home-mobile-nav a.active {
+      color: #111;
+    }
+
+    /* =====================================================
+       HERO
+       ===================================================== */
+
     .home-hero {
-      padding: 75px 20px 55px;
+      padding: 75px 20px 60px;
+
+      background:
+        radial-gradient(
+          circle at 20% 15%,
+          rgba(212,175,55,0.08),
+          transparent 28%
+        ),
+        #111;
+
+      color: #fff;
+
       text-align: center;
     }
 
     .home-hero-inner {
-      max-width: 950px;
+      width: min(1000px, 100%);
       margin: 0 auto;
     }
 
     .home-eyebrow {
       display: inline-block;
+
       margin-bottom: 18px;
+
       color: #d4af37;
+
       font-size: 12px;
       font-weight: 800;
+
       letter-spacing: 2px;
       text-transform: uppercase;
     }
 
     .home-hero h1 {
-      margin: 0 0 18px;
+      max-width: 900px;
+      margin: 0 auto 18px;
+
       font-size: clamp(38px, 7vw, 72px);
       line-height: 1.02;
+
       letter-spacing: -2.5px;
     }
 
@@ -81,9 +258,11 @@
     }
 
     .home-hero p {
-      max-width: 720px;
+      max-width: 740px;
       margin: 0 auto;
-      color: #aaa;
+
+      color: #bcbcbc;
+
       font-size: 17px;
       line-height: 1.75;
     }
@@ -93,13 +272,18 @@
        ===================================================== */
 
     .home-search-wrapper {
-      max-width: 950px;
+      width: min(950px, 100%);
       margin: 38px auto 0;
     }
 
     .home-search {
       display: grid;
-      grid-template-columns: 1fr 1fr auto;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr)
+        auto;
+
       gap: 10px;
     }
 
@@ -109,8 +293,11 @@
 
     .home-search-field label {
       display: block;
+
       margin: 0 0 7px 3px;
+
       color: #999;
+
       font-size: 12px;
       font-weight: 700;
     }
@@ -118,11 +305,15 @@
     .home-search-field input {
       width: 100%;
       height: 54px;
+
       padding: 0 16px;
+
       border: 1px solid #333;
       border-radius: 10px;
+
       background: #181818;
       color: #fff;
+
       outline: none;
     }
 
@@ -136,49 +327,64 @@
 
     .home-search-button {
       align-self: end;
+
       height: 54px;
-      padding: 0 25px;
+
+      padding: 0 26px;
+
       border: 0;
       border-radius: 10px;
+
       background: #d4af37;
       color: #111;
+
       font-weight: 800;
+
+      transition: 0.2s ease;
     }
 
     .home-search-button:hover {
       background: #e2c35c;
     }
 
-    /* =====================================================
-       LOCATION
-       ===================================================== */
-
     .home-location {
       display: flex;
       align-items: center;
       justify-content: center;
+
       flex-wrap: wrap;
+
       gap: 10px;
+
       margin-top: 14px;
     }
 
-    .home-location button {
+    .home-location-button {
       min-height: 42px;
+
       padding: 9px 16px;
+
       border: 1px solid #444;
       border-radius: 9px;
+
       background: #181818;
       color: #fff;
+
+      font-size: 13px;
       font-weight: 700;
+
+      transition: 0.2s ease;
     }
 
-    .home-location button:hover {
+    .home-location-button:hover,
+    .home-location-button.active {
       border-color: #d4af37;
       color: #d4af37;
     }
 
     .home-location-message {
       color: #aaa;
+
       font-size: 13px;
     }
 
@@ -196,22 +402,27 @@
 
     .country-strip {
       overflow: hidden;
+
       border-top: 1px solid #222;
       border-bottom: 1px solid #222;
+
       background: #0c0c0c;
     }
 
     .country-list {
       width: min(1200px, calc(100% - 30px));
       margin: 0 auto;
-      padding: 16px 0;
+
+      padding: 15px 0;
 
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 18px;
+
+      gap: 17px;
 
       color: #999;
+
       font-size: 12px;
       font-weight: 600;
     }
@@ -221,12 +432,13 @@
     }
 
     /* =====================================================
-       SECTIONS
+       GENERAL SECTIONS
        ===================================================== */
 
     .home-section {
       width: min(1150px, calc(100% - 32px));
       margin: 0 auto;
+
       padding: 75px 0;
     }
 
@@ -236,54 +448,75 @@
 
     .home-section-heading h2 {
       margin: 0 0 9px;
+
       font-size: clamp(28px, 4vw, 40px);
+
       letter-spacing: -1px;
     }
 
     .home-section-heading p {
-      max-width: 650px;
+      max-width: 680px;
+
       color: #777;
+
       line-height: 1.7;
     }
 
     /* =====================================================
-       CATEGORIES
+       CATEGORY GRID
        ===================================================== */
 
     .category-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
       gap: 14px;
     }
 
     .category-card {
       display: block;
+
+      min-height: 145px;
+
       padding: 22px;
+
       border: 1px solid #e5e5e5;
       border-radius: 12px;
+
       background: #fff;
+
       transition: 0.2s ease;
     }
 
     .category-card:hover {
       transform: translateY(-3px);
+
       border-color: #d4af37;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+
+      box-shadow:
+        0 10px 25px
+        rgba(0,0,0,0.06);
     }
 
     .category-icon {
       margin-bottom: 12px;
+
       font-size: 25px;
     }
 
     .category-card h3 {
       margin: 0 0 5px;
+
       font-size: 15px;
     }
 
     .category-card p {
       margin: 0;
+
       color: #777;
+
       font-size: 12px;
     }
 
@@ -299,32 +532,1489 @@
     .owner-inner {
       width: min(1150px, calc(100% - 32px));
       margin: 0 auto;
+
       padding: 70px 0;
 
       display: grid;
-      grid-template-columns: 1.3fr 0.7fr;
+
+      grid-template-columns:
+        minmax(0, 1.3fr)
+        minmax(280px, 0.7fr);
+
       gap: 45px;
+
       align-items: center;
     }
 
     .owner-content h2 {
       margin: 0 0 14px;
+
       font-size: clamp(28px, 4vw, 42px);
+
+      letter-spacing: -1px;
     }
 
     .owner-content p {
       max-width: 650px;
+
       color: #bbb;
+
       line-height: 1.75;
     }
 
     .owner-actions {
       display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
       justify-content: flex-end;
+
+      gap: 10px;
+
+      flex-wrap: wrap;
     }
 
     .owner-button {
       display: inline-block;
+
       padding: 13px 18px;
+
+      border-radius: 9px;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .owner-button.primary {
+      background: #d4af37;
+      color: #111;
+    }
+
+    .owner-button.secondary {
+      border: 1px solid #444;
+      background: #181818;
+      color: #fff;
+    }
+
+    .owner-button:hover {
+      opacity: 0.9;
+    }
+
+    /* =====================================================
+       WEBSITE SERVICES CTA
+       ===================================================== */
+
+    .website-section {
+      background: #f7f7f5;
+    }
+
+    .website-card {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(280px, 0.8fr);
+
+      gap: 35px;
+
+      padding: 42px;
+
+      border-radius: 16px;
+
+      background: #161616;
+      color: #fff;
+
+      overflow: hidden;
+    }
+
+    .website-card h2 {
+      margin: 0 0 12px;
+
+      font-size: clamp(28px, 4vw, 40px);
+    }
+
+    .website-card p {
+      max-width: 650px;
+
+      color: #bbb;
+
+      line-height: 1.75;
+    }
+
+    .website-points {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 12px;
+
+      margin-top: 24px;
+    }
+
+    .website-point {
+      padding: 14px;
+
+      border: 1px solid #303030;
+      border-radius: 10px;
+
+      background: #1e1e1e;
+
+      color: #ddd;
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .website-visual {
+      min-height: 250px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid #303030;
+      border-radius: 14px;
+
+      background:
+        radial-gradient(
+          circle at 30% 25%,
+          rgba(212,175,55,0.16),
+          transparent 30%
+        ),
+        linear-gradient(
+          135deg,
+          #202020,
+          #111
+        );
+
+      color: #d4af37;
+
+      font-size: 64px;
+      font-weight: 800;
+    }
+
+    .website-action {
+      display: inline-block;
+
+      margin-top: 25px;
+
+      padding: 13px 20px;
+
+      border-radius: 9px;
+
+      background: #d4af37;
+      color: #111;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    /* =====================================================
+       ABOUT
+       ===================================================== */
+
+    .about-section {
+      background: #fff;
+    }
+
+    .about-grid {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 0.8fr)
+        minmax(0, 1.2fr);
+
+      gap: 45px;
+
+      align-items: center;
+    }
+
+    .about-mark {
+      min-height: 280px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 16px;
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(212,175,55,0.15),
+          transparent 55%
+        ),
+        #111;
+
+      color: #d4af37;
+
+      font-size: 90px;
+      font-weight: 800;
+    }
+
+    .about-copy h2 {
+      margin: 0 0 14px;
+
+      font-size: clamp(28px, 4vw, 40px);
+
+      letter-spacing: -1px;
+    }
+
+    .about-copy p {
+      margin-bottom: 14px;
+
+      color: #666;
+
+      line-height: 1.8;
+    }
+
+    .about-button {
+      display: inline-block;
+
+      margin-top: 8px;
+
+      padding: 12px 18px;
+
+      border: 1px solid #ddd;
+      border-radius: 9px;
+
+      background: #fff;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .about-button:hover {
+      border-color: #d4af37;
+    }
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    .home-footer {
+      border-top: 1px solid #e5e5e5;
+
+      background: #111;
+      color: #fff;
+    }
+
+    .home-footer-inner {
+      width: min(1150px, calc(100% - 32px));
+      margin: 0 auto;
+
+      padding: 45px 0 25px;
+    }
+
+    .footer-top {
+      display: grid;
+
+      grid-template-columns:
+        1.2fr 1fr 1fr;
+
+      gap: 30px;
+
+      padding-bottom: 30px;
+    }
+
+    .footer-brand {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .footer-description {
+      max-width: 360px;
+
+      margin-top: 10px;
+
+      color: #aaa;
+
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .footer-column h3 {
+      margin: 0 0 12px;
+
+      color: #d4af37;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .footer-column a {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: #aaa;
+
+      font-size: 13px;
+    }
+
+    .footer-column a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      padding-top: 20px;
+
+      border-top: 1px solid #292929;
+
+      display: flex;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      color: #777;
+
+      font-size: 12px;
+    }
+
+    /* =====================================================
+       RTL
+       ===================================================== */
+
+    html[dir="rtl"] body {
+      text-align: right;
+    }
+
+    html[dir="rtl"] .home-logo {
+      flex-direction: row-reverse;
+    }
+
+    html[dir="rtl"] .home-search-field {
+      text-align: right;
+    }
+
+    html[dir="rtl"] .owner-actions {
+      justify-content: flex-start;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 1000px) {
+
+      .category-grid {
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
+      }
+
+      .home-nav {
+        gap: 12px;
+      }
+
+      .owner-inner,
+      .website-card,
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .owner-actions {
+        justify-content: flex-start;
+      }
+
+      .about-mark {
+        min-height: 220px;
+      }
+
+      .footer-top {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+    }
+
+    @media (max-width: 760px) {
+
+      .home-header-inner {
+        min-height: 62px;
+      }
+
+      .home-nav {
+        display: none;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .home-language {
+        margin-left: auto;
+      }
+
+      .home-search {
+        grid-template-columns: 1fr;
+      }
+
+      .home-search-button {
+        width: 100%;
+      }
+
+      .category-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .website-points {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+      }
+
+    }
+
+    @media (max-width: 480px) {
+
+      .home-header-inner {
+        width: min(100% - 20px, 1200px);
+      }
+
+      .home-logo {
+        font-size: 18px;
+      }
+
+      .home-logo-mark {
+        width: 32px;
+        height: 32px;
+      }
+
+      .home-language select {
+        max-width: 105px;
+      }
+
+      .home-section {
+        width: min(100% - 20px, 1150px);
+      }
+
+      .category-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .website-card {
+        padding: 26px;
+      }
+
+      .owner-inner {
+        width: min(100% - 20px, 1150px);
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body class="home-page">
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header class="home-header">
+
+    <div class="home-header-inner">
+
+      <a
+        href="index.html"
+        class="home-logo"
+      >
+
+        <span class="home-logo-mark">
+          N
+        </span>
+
+        <span>
+          NearAfrica
+        </span>
+
+      </a>
+
+
+      <nav
+        class="home-nav"
+        aria-label="Main navigation"
+      >
+
+        <a
+          href="index.html"
+          class="active"
+          data-i18n="nav.home"
+        >
+          Home
+        </a>
+
+        <a
+          href="explore.html"
+          data-i18n="nav.explore"
+        >
+          Explore
+        </a>
+
+        <a
+          href="list-business.html"
+          data-i18n="nav.listBusiness"
+        >
+          List Your Business
+        </a>
+
+        <a
+          href="claim-business.html"
+          data-i18n="nav.claimBusiness"
+        >
+          Claim Business
+        </a>
+
+        <a
+          href="#about"
+          data-i18n="nav.about"
+        >
+          About
+        </a>
+
+        <a
+          href="contact.html"
+          data-i18n="nav.contact"
+        >
+          Contact
+        </a>
+
+      </nav>
+
+
+      <div class="home-language">
+
+        <span aria-hidden="true">
+          🌐
+        </span>
+
+        <select
+          id="languageSelector"
+          data-language-selector
+          aria-label="Language"
+        >
+
+          <option value="en">
+            English
+          </option>
+
+          <option value="fr">
+            Français
+          </option>
+
+          <option value="ar">
+            العربية
+          </option>
+
+          <option value="pt">
+            Português
+          </option>
+
+          <option value="sw">
+            Kiswahili
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        id="mobileMenuToggle"
+        class="mobile-menu-toggle"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+
+    </div>
+
+
+    <nav
+      id="mobileNav"
+      class="home-mobile-nav"
+      aria-label="Mobile navigation"
+    >
+
+      <a
+        href="index.html"
+        class="active"
+        data-i18n="nav.home"
+      >
+        Home
+      </a>
+
+      <a
+        href="explore.html"
+        data-i18n="nav.explore"
+      >
+        Explore
+      </a>
+
+      <a
+        href="list-business.html"
+        data-i18n="nav.listBusiness"
+      >
+        List Your Business
+      </a>
+
+      <a
+        href="claim-business.html"
+        data-i18n="nav.claimBusiness"
+      >
+        Claim Business
+      </a>
+
+      <a
+        href="#about"
+        data-i18n="nav.about"
+      >
+        About
+      </a>
+
+      <a
+        href="contact.html"
+        data-i18n="nav.contact"
+      >
+        Contact
+      </a>
+
+    </nav>
+
+  </header>
+
+
+  <!-- =====================================================
+       HERO
+       ===================================================== -->
+
+  <section class="home-hero">
+
+    <div class="home-hero-inner">
+
+      <span
+        class="home-eyebrow"
+        data-i18n="home.eyebrow"
+      >
+        DISCOVER AFRICA. START LOCAL.
+      </span>
+
+
+      <h1 data-i18n="home.title">
+        Find Great Businesses
+        <span>Near You.</span>
+      </h1>
+
+
+      <p data-i18n="home.subtitle">
+        Discover businesses, services, shops,
+        restaurants, hotels and opportunities near you
+        across Africa.
+      </p>
+
+
+      <!-- SEARCH FORM -->
+
+      <div class="home-search-wrapper">
+
+        <form
+          id="searchForm"
+          class="home-search"
+        >
+
+          <div class="home-search-field">
+
+            <label
+              for="search"
+              data-i18n="search.whatLookingFor"
+            >
+              What are you looking for?
+            </label>
+
+            <input
+              id="search"
+              name="search"
+              type="text"
+              data-i18n-placeholder="search.searchPlaceholder"
+              placeholder="e.g. barber, hotel, restaurant..."
+              autocomplete="off"
+            >
+
+          </div>
+
+
+          <div class="home-search-field">
+
+            <label
+              for="location"
+              data-i18n="search.location"
+            >
+              Location
+            </label>
+
+            <input
+              id="location"
+              name="location"
+              type="text"
+              data-i18n-placeholder="search.locationPlaceholder"
+              placeholder="e.g. Aba, Lagos, Abuja..."
+              autocomplete="off"
+            >
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="home-search-button"
+            data-i18n="search.search"
+          >
+            Search
+          </button>
+
+        </form>
+
+
+        <!-- LOCATION -->
+
+        <div class="home-location">
+
+          <button
+            id="useLocation"
+            class="home-location-button"
+            type="button"
+            data-i18n="search.useMyLocation"
+          >
+            📍 Use My Location
+          </button>
+
+
+          <span
+            id="locationMessage"
+            class="home-location-message"
+            aria-live="polite"
+            data-i18n="search.locationUnavailable"
+          >
+            Search by area or use your current location.
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       COUNTRY STRIP
+       ===================================================== -->
+
+  <section
+    class="country-strip"
+    aria-label="Countries"
+  >
+
+    <div class="country-list">
+
+      <span>🇳🇬 Nigeria</span>
+      <span>🇬🇭 Ghana</span>
+      <span>🇿🇦 South Africa</span>
+      <span>🇰🇪 Kenya</span>
+      <span>🇺🇬 Uganda</span>
+      <span>🇹🇿 Tanzania</span>
+      <span>🇷🇼 Rwanda</span>
+      <span>🇪🇬 Egypt</span>
+      <span>🇲🇦 Morocco</span>
+      <span>🇪🇹 Ethiopia</span>
+      <span>🇸🇳 Senegal</span>
+      <span>🇨🇲 Cameroon</span>
+      <span>🇨🇮 Côte d'Ivoire</span>
+      <span>🇿🇲 Zambia</span>
+      <span>🇿🇼 Zimbabwe</span>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       CATEGORIES
+       ===================================================== -->
+
+  <section class="home-section">
+
+    <div class="home-section-heading">
+
+      <h2 data-i18n="home.categoriesTitle">
+        Explore Categories
+      </h2>
+
+      <p data-i18n="home.categoriesSubtitle">
+        Find the businesses and services you need,
+        organized into easy-to-browse categories.
+      </p>
+
+    </div>
+
+
+    <div class="category-grid">
+
+      <a
+        class="category-card"
+        href="explore.html?category=Restaurants%20%26%20Food"
+      >
+        <div class="category-icon">🍽️</div>
+
+        <h3 data-i18n="categories.restaurants">
+          Restaurants & Food
+        </h3>
+
+        <p>
+          Food, restaurants and dining.
+        </p>
+      </a>
+
+
+      <a
+        class="category-card"
+        href="explore.html?category=Hotels%20%26%20Accommodation"
+      >
+        <div class="category-icon">🏨</div>
+
+        <h3 data-i18n="categories.hotels">
+          Hotels & Accommodation
+        </h3>
+
+        <p>
+          Hotels, lodges and places to stay.
+        </p>
+      </a>
+
+
+      <a
+        class="category-card"
+        href="explore.html?category=Beauty%20%26%20Spa"
+      >
+        <div class="category-icon">💆</div>
+
+        <h3 data-i18n="categories.beauty">
+          Beauty & Spa
+        </h3>
+
+        <p>
+          Salons, spas and beauty services.
+        </p>
+      </a>
+
+
+      <a
+        class="category-card"
+        href="explore.html?category=Health%20%26%20Medical"
+      >
+        <div class="category-icon">🏥</div>
+
+        <h3 data-i18n="categories.health">
+          Health & Medical
+        </h3>
+
+        <p>
+          Healthcare and medical services.
+        </p>
+      </a>
+
+
+      <a
+        class="category-card"
+        href="explore.html?category=Shopping%20%26%20Retail"
+      >
+        <div class="category-icon">🛍️</div>
+
+        <h3 data-i18n="categories.shopping">
+          Shopping & Retail
+        </h3>
+
+        <p>
+          Shops, stores and retail businesses.
+        </p>
+      </a>
+
+
+      <a
+        class="category-card"
+        href="explore.html?category=Supermarkets"
+      >
+        <div class="category-icon">🛒</div>
+
+        <h3 data-i18n="categories.supermarkets">
+          Supermarkets
+        </h3>
+
+        <p>
+          Supermarkets and everyday shopping.
+        </p>
+      </a>
+
+
+      <a
+        class="category-card"
+        href="explore.html?category=Professional%20Services"
+      >
+        <div class="category-icon">💼</div>
+
+        <h3 data-i18n="categories.professional">
+          Professional Services
+        </h3>
+
+        <p>
+          Businesses and professional services.
+        </p>
+      </a>
+
+
+      <a
+        class="category-card"
+        href="explore.html?category=Education"
+      >
+        <div class="category-icon">🎓</div>
+
+        <h3 data-i18n="categories.education">
+          Education
+        </h3>
+
+        <p>
+          Schools, training and education.
+        </p>
+      </a>
+
+
+      <a
+        class="category-card"
+        href="explore.html?category=Real%20Estate"
+      >
+        <div class="category-icon">🏠</div>
+
+        <h3 data-i18n="categories.realEstate">
+          Real Estate
+        </h3>
+
+        <p>
+          Property and real estate services.
+        </p>
+      </a>
+
+
+      <a
+        class="category-card"
+        href="explore.html?category=Automotive"
+      >
+        <div class="category-icon">🚗</div>
+
+        <h3 data-i18n="categories.automotive">
+          Automotive
+        </h3>
+
+        <p>
+          Cars, repairs and automotive services.
+        </p>
+      </a>
+
+
+      <a
+        class="category-card"
+        href="explore.html?category=Travel%20%26%20Tourism"
+      >
+        <div class="category-icon">✈️</div>
+
+        <h3 data-i18n="categories.travel">
+          Travel & Tourism
+        </h3>
+
+        <p>
+          Travel businesses and tourism.
+        </p>
+      </a>
+
+
+      <a
+        class="category-card"
+        href="explore.html?category=Technology"
+      >
+        <div class="category-icon">💻</div>
+
+        <h3 data-i18n="categories.technology">
+          Technology
+        </h3>
+
+        <p>
+          Technology companies and services.
+        </p>
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       BUSINESS OWNER CTA
+       ===================================================== -->
+
+  <section class="owner-section">
+
+    <div class="owner-inner">
+
+      <div class="owner-content">
+
+        <h2 data-i18n="home.ownerTitle">
+          Own a Business?
+        </h2>
+
+        <p data-i18n="home.ownerSubtitle">
+          Get your business discovered by people
+          searching for products and services near
+          them. Add your business to NearAfrica or
+          claim an existing listing.
+        </p>
+
+      </div>
+
+
+      <div class="owner-actions">
+
+        <a
+          href="list-business.html"
+          class="owner-button primary"
+          data-i18n="home.listBusiness"
+        >
+          List Your Business
+        </a>
+
+        <a
+          href="claim-business.html"
+          class="owner-button secondary"
+          data-i18n="home.claimBusiness"
+        >
+          Claim Business
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       WEBSITE SERVICES
+       ===================================================== -->
+
+  <section class="home-section website-section">
+
+    <div class="website-card">
+
+      <div>
+
+        <h2 data-i18n="home.websiteTitle">
+          Need a Website for Your Business?
+        </h2>
+
+        <p data-i18n="home.websiteSubtitle">
+          We also build professional, mobile-friendly
+          websites for small businesses and growing
+          brands.
+        </p>
+
+
+        <div class="website-points">
+
+          <div
+            class="website-point"
+            data-i18n="home.websitePointOne"
+          >
+            📱 Mobile responsive
+          </div>
+
+          <div
+            class="website-point"
+            data-i18n="home.websitePointTwo"
+          >
+            ⚡ Fast loading
+          </div>
+
+          <div
+            class="website-point"
+            data-i18n="home.websitePointThree"
+          >
+            🎨 Professional design
+          </div>
+
+          <div
+            class="website-point"
+            data-i18n="home.websitePointFour"
+          >
+            📈 Built to grow
+          </div>
+
+        </div>
+
+
+        <a
+          href="contact.html"
+          class="website-action"
+          data-i18n="home.websiteAction"
+        >
+          Get a Website
+        </a>
+
+      </div>
+
+
+      <div
+        class="website-visual"
+        aria-hidden="true"
+      >
+        &lt;/&gt;
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       ABOUT
+       ===================================================== -->
+
+  <section
+    class="home-section about-section"
+    id="about"
+  >
+
+    <div class="about-grid">
+
+      <div class="about-mark">
+        N
+      </div>
+
+
+      <div class="about-copy">
+
+        <h2 data-i18n="home.aboutTitle">
+          About NearAfrica
+        </h2>
+
+        <p data-i18n="home.aboutText">
+          NearAfrica is a business discovery platform
+          designed to help people find businesses,
+          services and opportunities around them.
+        </p>
+
+        <p data-i18n="home.aboutTextTwo">
+          We are starting with Nigeria and building
+          toward a broader African discovery platform.
+        </p>
+
+
+        <a
+          href="explore.html"
+          class="about-button"
+          data-i18n="home.startExploring"
+        >
+          Start Exploring
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       START CTA
+       ===================================================== -->
+
+  <section class="home-hero">
+
+    <div class="home-hero-inner">
+
+      <span
+        class="home-eyebrow"
+        data-i18n="home.startEyebrow"
+      >
+        YOUR NEXT DISCOVERY IS HERE
+      </span>
+
+
+      <h2
+        style="
+          max-width:800px;
+          margin:0 auto 16px;
+          font-size:clamp(30px,5vw,52px);
+          line-height:1.08;
+          letter-spacing:-1.5px;
+        "
+        data-i18n="home.startTitle"
+      >
+        Start discovering businesses near you.
+      </h2>
+
+
+      <p
+        style="margin:0 auto;max-width:680px;"
+        data-i18n="home.startText"
+      >
+        Search by business, service or location and
+        discover what is around you.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+
+  <footer class="home-footer">
+
+    <div class="home-footer-inner">
+
+      <div class="footer-top">
+
+        <div>
+
+          <div class="footer-brand">
+            NearAfrica
+          </div>
+
+          <p
+            class="footer-description"
+            data-i18n="footer.tagline"
+          >
+            Find Great Businesses Near You.
+          </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+          <h3>
+            NearAfrica
+          </h3>
+
+          <a
+            href="index.html"
+            data-i18n="nav.home"
+          >
+            Home
+          </a>
+
+          <a
+            href="explore.html"
+            data-i18n="nav.explore"
+          >
+            Explore
+          </a>
+
+          <a
+            href="list-business.html"
+            data-i18n="nav.listBusiness"
+          >
+            List Your Business
+          </a>
+
+          <a
+            href="claim-business.html"
+            data-i18n="nav.claimBusiness"
+          >
+            Claim Business
+          </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+          <h3>
+            Information
+          </h3>
+
+          <a
+            href="#about"
+            data-i18n="nav.about"
+          >
+            About
+          </a>
+
+          <a
+            href="contact.html"
+            data-i18n="nav.contact"
+          >
+            Contact
+          </a>
+
+          <a
+            href="privacy.html"
+            data-i18n="footer.privacy"
+          >
+            Privacy Policy
+          </a>
+
+          <a
+            href="terms.html"
+            data-i18n="footer.terms"
+          >
+            Terms of Service
+          </a>
+
+          <a
+            href="listing-policy.html"
+            data-i18n="footer.listingPolicy"
+          >
+            Listing Policy
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <div class="footer-bottom">
+
+        <span>
+          © 2026 NearAfrica
+        </span>
+
+        <span>
+          Find Great Businesses Near You.
+        </span>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
+
+  <script src="js/config.js"></script>
+
+  <script src="js/translations.js"></script>
+
+  <script src="js/i18n.js"></script>
+
+  <script src="js/utils.js"></script>
+
+  <script src="js/map.js"></script>
+
+  <script src="js/app.js"></script>
+
+
+  <!-- =====================================================
+       SMALL HOME-PAGE MOBILE MENU FALLBACK
+       ===================================================== -->
+
+  <script>
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function () {
+
+        const toggle =
+          document.getElementById(
+            "mobileMenuToggle"
+          );
+
+        const mobileNav =
+          document.getElementById(
+            "mobileNav"
+          );
+
+
+        if (
+          !toggle ||
+          !mobileNav
+        ) {
+          return;
+        }
+
+
+        toggle.addEventListener(
+          "click",
+          function () {
+
+            const open =
+              mobileNav.classList.toggle(
+                "open"
+              );
+
+
+            toggle.setAttribute(
+              "aria-expanded",
+              String(open)
+            );
+
+
+            toggle.textContent =
+              open
+                ? "✕"
+                : "☰";
+
+          }
+        );
+
+
+        mobileNav
+          .querySelectorAll("a")
+          .forEach(
+            function (link) {
+
+              link.addEventListener(
+                "click",
+                function () {
+
+                  mobileNav.classList.remove(
+                    "open"
+                  );
+
+                  toggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                  );
+
+                  toggle.textContent =
+                    "☰";
+
+                }
+              );
+
+            }
+          );
+
+      }
+    );
+
+  </script>
+
+</body>
+  </html>
