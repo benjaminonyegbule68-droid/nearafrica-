@@ -19,7 +19,12 @@
  * - URL parameter compatibility
  * - Mobile-safe initialization
  *
- * No fake business data is generated here.
+ * IMPORTANT:
+ * - No fake businesses are generated.
+ * - The API remains the source of truth.
+ * - Homepage search redirects to Explore.
+ * - Explore only initializes its business engine when
+ *   the Explore results container exists.
  * ============================================================
  */
 
@@ -27,11 +32,10 @@
   "use strict";
 
   /* ==========================================================
-     CONFIGURATION
+     APPLICATION STATE
   ========================================================== */
 
   const App = {
-
     initialized: false,
 
     allBusinesses: [],
@@ -52,8 +56,9 @@
 
     locationLoading: false,
 
-    lastError: null
+    lastError: null,
 
+    homepageInitialized: false
   };
 
 
@@ -68,13 +73,11 @@
 
   function getElement() {
     for (let i = 0; i < arguments.length; i++) {
-
       const element = $(arguments[i]);
 
       if (element) {
         return element;
       }
-
     }
 
     return null;
@@ -82,18 +85,15 @@
 
 
   /* ==========================================================
-     CONFIG HELPERS
+     CONFIGURATION
   ========================================================== */
 
   function getConfig() {
-
     return window.NearAfricaConfig || {};
-
   }
 
 
   function getApiBaseUrl() {
-
     const config = getConfig();
 
     const base =
@@ -103,12 +103,10 @@
         : "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
     return String(base).replace(/\/+$/, "");
-
   }
 
 
   function getEndpoint(name, fallback) {
-
     const config = getConfig();
 
     if (
@@ -116,27 +114,22 @@
       config.api.endpoints &&
       config.api.endpoints[name]
     ) {
-
       return String(
         config.api.endpoints[name]
       ).replace(/^\/+/, "");
-
     }
 
-    return fallback.replace(/^\/+/, "");
-
+    return String(fallback || "")
+      .replace(/^\/+/, "");
   }
 
 
   function buildApiUrl(path) {
-
     if (
       typeof path === "string" &&
       /^https?:\/\//i.test(path)
     ) {
-
       return path;
-
     }
 
     return (
@@ -144,77 +137,76 @@
       "/" +
       String(path || "").replace(/^\/+/, "")
     );
-
   }
 
 
   /* ==========================================================
-     TEXT / DATA HELPERS
+     TEXT / VALUE HELPERS
   ========================================================== */
 
   function cleanText(value, fallback) {
-
     if (
       value === null ||
       value === undefined
     ) {
-
       return fallback || "";
-
     }
 
-    const text =
-      String(value).trim();
+    const text = String(value).trim();
 
-    return text ||
-      (fallback || "");
-
+    return text || (fallback || "");
   }
 
 
   function toNumber(value) {
-
     if (
       value === null ||
       value === undefined ||
       value === ""
     ) {
-
       return null;
-
     }
 
-    const number =
-      Number(value);
+    const number = Number(value);
 
     return Number.isFinite(number)
       ? number
       : null;
-
   }
 
 
   function normalizeBoolean(value) {
-
     if (
       value === true ||
       value === 1 ||
       value === "1" ||
-      value === "true"
+      value === "true" ||
+      value === "TRUE"
     ) {
-
       return true;
-
     }
 
     return false;
-
   }
 
 
-  function normalizeBusiness(raw) {
+  function normalizeSearchText(value) {
+    return cleanText(value)
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+  }
 
-    if (!raw || typeof raw !== "object") {
+
+  /* ==========================================================
+     BUSINESS NORMALIZATION
+  ========================================================== */
+
+  function normalizeBusiness(raw) {
+    if (
+      !raw ||
+      typeof raw !== "object"
+    ) {
       return null;
     }
 
@@ -232,8 +224,8 @@
     business.business_name =
       cleanText(
         raw.business_name ||
-        raw.name ||
-        raw.businessName,
+        raw.businessName ||
+        raw.name,
         "Unnamed business"
       );
 
@@ -307,30 +299,63 @@
 
     business.latitude =
       toNumber(
-        raw.latitude ||
+        raw.latitude ??
         raw.lat
       );
 
     business.longitude =
       toNumber(
-        raw.longitude ||
-        raw.lng ||
+        raw.longitude ??
+        raw.lng ??
         raw.lon
+      );
+
+    /*
+     * Prefer the business logo when available,
+     * then the normal image.
+     */
+    business.logo_url =
+      cleanText(
+        raw.logo_url ||
+        raw.logo ||
+        raw.logoUrl
       );
 
     business.image_url =
       cleanText(
         raw.image_url ||
         raw.imageUrl ||
-        raw.logo_url ||
-        raw.logo
+        raw.image ||
+        business.logo_url
       );
 
-    business.logo_url =
-      cleanText(
-        raw.logo_url ||
-        raw.logo
-      );
+    /*
+     * Some API responses may include an images array.
+     */
+    if (
+      !business.image_url &&
+      Array.isArray(raw.images) &&
+      raw.images.length
+    ) {
+      const firstImage = raw.images[0];
+
+      if (
+        typeof firstImage === "string"
+      ) {
+        business.image_url =
+          firstImage;
+      } else if (
+        firstImage &&
+        typeof firstImage === "object"
+      ) {
+        business.image_url =
+          cleanText(
+            firstImage.image_url ||
+            firstImage.imageUrl ||
+            firstImage.url
+          );
+      }
+    }
 
     business.slug =
       cleanText(
@@ -357,13 +382,28 @@
         raw.views
       ) || 0;
 
-    return business;
+    business.rating =
+      toNumber(
+        raw.rating ||
+        raw.average_rating ||
+        raw.averageRating
+      );
 
+    business.review_count =
+      toNumber(
+        raw.review_count ||
+        raw.reviewCount ||
+        raw.reviews_count
+      ) || 0;
+
+    business.distance =
+      null;
+
+    return business;
   }
 
 
   function normalizeBusinesses(items) {
-
     if (!Array.isArray(items)) {
       return [];
     }
@@ -371,16 +411,14 @@
     return items
       .map(normalizeBusiness)
       .filter(Boolean);
-
   }
 
 
   /* ==========================================================
-     API RESPONSE HELPERS
+     API RESPONSE EXTRACTION
   ========================================================== */
 
   function extractBusinesses(payload) {
-
     if (!payload) {
       return [];
     }
@@ -390,62 +428,79 @@
     }
 
     if (
-      payload.businesses &&
       Array.isArray(payload.businesses)
     ) {
-
       return payload.businesses;
+    }
 
+    if (
+      Array.isArray(payload.results)
+    ) {
+      return payload.results;
     }
 
     if (
       payload.data &&
       Array.isArray(payload.data)
     ) {
-
       return payload.data;
-
     }
 
     if (
       payload.data &&
       Array.isArray(payload.data.businesses)
     ) {
-
       return payload.data.businesses;
-
-    }
-
-    if (
-      payload.data &&
-      payload.data.data &&
-      Array.isArray(payload.data.data.businesses)
-    ) {
-
-      return payload.data.data.businesses;
-
-    }
-
-    if (
-      payload.results &&
-      Array.isArray(payload.results)
-    ) {
-
-      return payload.results;
-
     }
 
     if (
       payload.data &&
       Array.isArray(payload.data.results)
     ) {
-
       return payload.data.results;
+    }
 
+    if (
+      payload.data &&
+      payload.data.data &&
+      Array.isArray(
+        payload.data.data.businesses
+      )
+    ) {
+      return payload.data.data.businesses;
+    }
+
+    if (
+      payload.data &&
+      payload.data.data &&
+      Array.isArray(
+        payload.data.data.results
+      )
+    ) {
+      return payload.data.data.results;
     }
 
     return [];
+  }
 
+
+  function extractApiMessage(payload) {
+    if (!payload) {
+      return "";
+    }
+
+    return cleanText(
+      payload.message ||
+      payload.error ||
+      (
+        payload.data &&
+        payload.data.message
+      ) ||
+      (
+        payload.data &&
+        payload.data.error
+      )
+    );
   }
 
 
@@ -454,7 +509,6 @@
   ========================================================== */
 
   async function fetchBusinesses() {
-
     if (App.apiLoading) {
       return App.allBusinesses;
     }
@@ -467,7 +521,6 @@
     );
 
     try {
-
       const endpoint =
         getEndpoint(
           "businesses",
@@ -482,9 +535,12 @@
           url,
           {
             method: "GET",
+
             headers: {
-              Accept: "application/json"
+              Accept:
+                "application/json"
             },
+
             cache: "no-store"
           }
         );
@@ -499,31 +555,44 @@
       }
 
       if (!response.ok) {
-
-        const message =
-          payload &&
-          (
-            payload.message ||
-            payload.error
-          )
-            ? (
-                payload.message ||
-                payload.error
-              )
-            : "Unable to load businesses.";
+        const apiMessage =
+          extractApiMessage(
+            payload
+          );
 
         throw new Error(
-          message +
-          " (" +
-          response.status +
-          ")"
+          apiMessage ||
+          (
+            "Unable to load businesses " +
+            "(HTTP " +
+            response.status +
+            ")."
+          )
         );
+      }
 
+      /*
+       * A JSON response with status:error should
+       * also be treated as an API failure even if
+       * the HTTP status happens to be 200.
+       */
+      if (
+        payload &&
+        payload.status === "error"
+      ) {
+        throw new Error(
+          extractApiMessage(
+            payload
+          ) ||
+          "The NearAfrica API returned an error."
+        );
       }
 
       const businesses =
         normalizeBusinesses(
-          extractBusinesses(payload)
+          extractBusinesses(
+            payload
+          )
         );
 
       App.allBusinesses =
@@ -535,7 +604,6 @@
       return businesses;
 
     } catch (error) {
-
       console.error(
         "NearAfrica business loading error:",
         error
@@ -544,97 +612,89 @@
       App.lastError =
         error;
 
-      App.allBusinesses = [];
+      App.allBusinesses =
+        [];
 
       throw error;
 
     } finally {
-
-      App.apiLoading = false;
-
+      App.apiLoading =
+        false;
     }
-
   }
 
 
   /* ==========================================================
-     SEARCH / FILTER VALUE HELPERS
+     SEARCH / FILTER VALUES
   ========================================================== */
 
   function getSearchValue() {
-
     const input =
       $("searchInput");
 
     return input
       ? cleanText(input.value)
       : "";
-
   }
 
 
   function getCategoryValue() {
-
     const select =
       $("categoryFilter");
 
     return select
       ? cleanText(select.value)
       : "";
-
   }
 
 
   function getCountryValue() {
-
     const select =
       $("countryFilter");
 
     return select
-      ? cleanText(select.value, "Nigeria")
+      ? cleanText(
+          select.value,
+          "Nigeria"
+        )
       : "Nigeria";
-
   }
 
 
   function getStateValue() {
-
     const select =
       $("stateFilter");
 
     return select
       ? cleanText(select.value)
       : "";
-
   }
 
 
   function getCityValue() {
-
     const select =
       $("cityFilter");
 
     return select
       ? cleanText(select.value)
       : "";
-
   }
 
 
   function getSortValue() {
-
     const select =
       $("sortFilter");
 
     return select
-      ? cleanText(select.value, "default")
+      ? cleanText(
+          select.value,
+          "default"
+        )
       : "default";
-
   }
 
 
   function getRadiusValue() {
-
     const select =
       $("radiusFilter");
 
@@ -646,34 +706,25 @@
     return Number.isFinite(value)
       ? value
       : 25;
-
   }
 
 
   /* ==========================================================
-     STRING MATCHING
+     SEARCH MATCHING
   ========================================================== */
-
-  function normalizeSearchText(value) {
-
-    return cleanText(value)
-      .toLowerCase()
-      .replace(/\s+/g, " ");
-
-  }
-
 
   function businessMatchesSearch(
     business,
     search
   ) {
-
     if (!search) {
       return true;
     }
 
     const query =
-      normalizeSearchText(search);
+      normalizeSearchText(
+        search
+      );
 
     const fields = [
       business.business_name,
@@ -686,13 +737,13 @@
       business.description
     ];
 
-    return fields.some(function (field) {
-
-      return normalizeSearchText(field)
-        .includes(query);
-
-    });
-
+    return fields.some(
+      function (field) {
+        return normalizeSearchText(
+          field
+        ).includes(query);
+      }
+    );
   }
 
 
@@ -700,7 +751,6 @@
     businessValue,
     selectedValue
   ) {
-
     if (!selectedValue) {
       return true;
     }
@@ -713,7 +763,6 @@
         selectedValue
       )
     );
-
   }
 
 
@@ -727,7 +776,6 @@
     latitude2,
     longitude2
   ) {
-
     const lat1 =
       Number(latitude1);
 
@@ -746,38 +794,34 @@
       !Number.isFinite(lat2) ||
       !Number.isFinite(lon2)
     ) {
-
       return null;
-
     }
 
     const earthRadiusKm =
       6371;
 
-    const degreesToRadians =
+    const radians =
       Math.PI / 180;
 
     const deltaLat =
       (lat2 - lat1) *
-      degreesToRadians;
+      radians;
 
     const deltaLon =
       (lon2 - lon1) *
-      degreesToRadians;
+      radians;
 
     const a =
       Math.sin(deltaLat / 2) *
-        Math.sin(deltaLat / 2) +
+      Math.sin(deltaLat / 2) +
       Math.cos(
-        lat1 *
-        degreesToRadians
+        lat1 * radians
       ) *
-        Math.cos(
-          lat2 *
-          degreesToRadians
-        ) *
-        Math.sin(deltaLon / 2) *
-        Math.sin(deltaLon / 2);
+      Math.cos(
+        lat2 * radians
+      ) *
+      Math.sin(deltaLon / 2) *
+      Math.sin(deltaLon / 2);
 
     const c =
       2 *
@@ -787,32 +831,25 @@
       );
 
     return earthRadiusKm * c;
-
   }
 
 
   function addDistances(
     businesses
   ) {
-
     if (!App.userLocation) {
-
       return businesses.map(
         function (business) {
-
           return {
             ...business,
             distance: null
           };
-
         }
       );
-
     }
 
     return businesses.map(
       function (business) {
-
         const distance =
           calculateDistanceKm(
             App.userLocation.latitude,
@@ -825,15 +862,14 @@
           ...business,
           distance
         };
-
       }
     );
-
   }
 
 
-  function formatDistance(distance) {
-
+  function formatDistance(
+    distance
+  ) {
     if (
       distance === null ||
       distance === undefined ||
@@ -841,32 +877,32 @@
         Number(distance)
       )
     ) {
-
       return "";
-
     }
 
     const value =
       Number(distance);
 
     if (value < 1) {
-
-      return Math.round(
-        value * 1000
-      ) + " m away";
-
+      return (
+        Math.round(
+          value * 1000
+        ) +
+        " m away"
+      );
     }
 
     if (value < 10) {
-
-      return value.toFixed(1) +
-        " km away";
-
+      return (
+        value.toFixed(1) +
+        " km away"
+      );
     }
 
-    return Math.round(value) +
-      " km away";
-
+    return (
+      Math.round(value) +
+      " km away"
+    );
   }
 
 
@@ -875,7 +911,6 @@
   ========================================================== */
 
   function filterBusinesses() {
-
     const search =
       getSearchValue();
 
@@ -894,6 +929,7 @@
     let businesses =
       App.allBusinesses.slice();
 
+
     /*
      * Country
      */
@@ -901,12 +937,10 @@
     businesses =
       businesses.filter(
         function (business) {
-
           return valuesMatch(
             business.country,
             country
           );
-
         }
       );
 
@@ -918,12 +952,10 @@
     businesses =
       businesses.filter(
         function (business) {
-
           return businessMatchesSearch(
             business,
             search
           );
-
         }
       );
 
@@ -935,12 +967,10 @@
     businesses =
       businesses.filter(
         function (business) {
-
           return valuesMatch(
             business.category,
             category
           );
-
         }
       );
 
@@ -952,12 +982,10 @@
     businesses =
       businesses.filter(
         function (business) {
-
           return valuesMatch(
             business.state,
             state
           );
-
         }
       );
 
@@ -969,18 +997,16 @@
     businesses =
       businesses.filter(
         function (business) {
-
           return valuesMatch(
             business.city,
             city
           );
-
         }
       );
 
 
     /*
-     * Add user distance.
+     * Distances
      */
 
     businesses =
@@ -990,29 +1016,22 @@
 
 
     /*
-     * Nearby mode.
-     *
-     * Businesses without coordinates are excluded
-     * when the user explicitly searches nearby.
+     * Nearby mode
      */
 
     if (App.nearbyMode) {
-
       const radiusKm =
         getRadiusValue();
 
       businesses =
         businesses.filter(
           function (business) {
-
             return (
               business.distance !== null &&
               business.distance <= radiusKm
             );
-
           }
         );
-
     }
 
 
@@ -1027,96 +1046,118 @@
       sort === "nearest" ||
       App.nearbyMode
     ) {
-
       businesses.sort(
         function (a, b) {
-
           const distanceA =
             a.distance === null
-              ? Number.POSITIVE_INFINITY
+              ? Infinity
               : a.distance;
 
           const distanceB =
             b.distance === null
-              ? Number.POSITIVE_INFINITY
+              ? Infinity
               : b.distance;
 
           if (
             distanceA !==
             distanceB
           ) {
-
             return (
               distanceA -
               distanceB
             );
-
           }
 
-          return (
-            a.business_name.localeCompare(
-              b.business_name
-            )
+          return a.business_name.localeCompare(
+            b.business_name
           );
-
         }
       );
 
     } else if (
       sort === "name"
     ) {
-
       businesses.sort(
         function (a, b) {
+          return a.business_name.localeCompare(
+            b.business_name
+          );
+        }
+      );
+
+    } else if (
+      sort === "rating"
+    ) {
+      businesses.sort(
+        function (a, b) {
+          const ratingA =
+            a.rating === null
+              ? -1
+              : a.rating;
+
+          const ratingB =
+            b.rating === null
+              ? -1
+              : b.rating;
+
+          if (
+            ratingA !==
+            ratingB
+          ) {
+            return (
+              ratingB -
+              ratingA
+            );
+          }
 
           return a.business_name.localeCompare(
             b.business_name
           );
-
         }
       );
 
     } else {
-
       /*
-       * Recommended:
-       * Featured first, then verified,
-       * then name.
+       * Default:
+       * Featured → Verified → Claimed → Name
        */
 
       businesses.sort(
         function (a, b) {
-
           if (
             a.featured !==
             b.featured
           ) {
-
             return a.featured
               ? -1
               : 1;
-
           }
 
           if (
             a.verified !==
             b.verified
           ) {
-
             return a.verified
               ? -1
               : 1;
+          }
 
+          if (
+            a.claimed !==
+            b.claimed
+          ) {
+            return a.claimed
+              ? -1
+              : 1;
           }
 
           return a.business_name.localeCompare(
             b.business_name
           );
-
         }
       );
-
     }
+
 
     App.filteredBusinesses =
       businesses;
@@ -1134,23 +1175,19 @@
       App.currentPage >
       App.totalPages
     ) {
-
       App.currentPage =
         App.totalPages;
-
     }
 
     renderResults();
-
   }
 
 
   /* ==========================================================
-     RESULTS RENDERING
+     RESULTS
   ========================================================== */
 
   function renderResults() {
-
     const list =
       $("business-list");
 
@@ -1187,7 +1224,6 @@
     list.innerHTML = "";
 
     if (count) {
-
       count.textContent =
         businesses.length +
         (
@@ -1195,59 +1231,40 @@
             ? " business found"
             : " businesses found"
         );
-
     }
-
 
     updateNearbyIndicator();
 
-
     if (!businesses.length) {
-
       if (emptyState) {
-
         emptyState.classList.add(
           "visible"
         );
-
       }
 
-      hideStatus();
-
       renderPagination();
-
       return;
-
     }
 
-
     if (emptyState) {
-
       emptyState.classList.remove(
         "visible"
       );
-
     }
-
 
     hideStatus();
 
-
     pageItems.forEach(
       function (business) {
-
         list.appendChild(
           createBusinessCard(
             business
           )
         );
-
       }
     );
 
-
     renderPagination();
-
   }
 
 
@@ -1258,7 +1275,6 @@
   function createBusinessCard(
     business
   ) {
-
     const card =
       document.createElement(
         "article"
@@ -1275,31 +1291,55 @@
 
 
     const image =
-      business.image_url ||
-      business.logo_url;
+      cleanText(
+        business.logo_url ||
+        business.image_url
+      );
 
 
-    const imageHtml =
-      image
-        ? `
-          <img
-            src="${escapeHtml(image)}"
-            alt="${escapeHtml(
+    let imageHtml = "";
+
+    if (image) {
+      imageHtml = `
+        <img
+          src="${escapeHtml(image)}"
+          alt="${escapeHtml(
+            business.business_name
+          )}"
+          loading="lazy"
+          onerror="
+            this.style.display='none';
+            if(this.nextElementSibling){
+              this.nextElementSibling.style.display='flex';
+            }
+          "
+        >
+        <span
+          class="business-image-fallback"
+          aria-hidden="true"
+          style="display:none;"
+        >
+          ${escapeHtml(
+            getBusinessInitial(
               business.business_name
-            )}"
-            loading="lazy"
-            onerror="this.style.display='none';"
-          >
-        `
-        : `
-          <span aria-hidden="true">
-            ${escapeHtml(
-              getBusinessInitial(
-                business.business_name
-              )
-            )}
-          </span>
-        `;
+            )
+          )}
+        </span>
+      `;
+    } else {
+      imageHtml = `
+        <span
+          class="business-image-fallback"
+          aria-hidden="true"
+        >
+          ${escapeHtml(
+            getBusinessInitial(
+              business.business_name
+            )
+          )}
+        </span>
+      `;
+    }
 
 
     const verifiedBadge =
@@ -1337,11 +1377,25 @@
         : "";
 
 
-    const locationParts =
-      [
-        business.city,
-        business.state
-      ].filter(Boolean);
+    const ratingBadge =
+      business.rating !== null &&
+      business.rating !== undefined
+        ? `
+          <span class="badge rating-badge">
+            ★ ${escapeHtml(
+              Number(
+                business.rating
+              ).toFixed(1)
+            )}
+          </span>
+        `
+        : "";
+
+
+    const locationParts = [
+      business.city,
+      business.state
+    ].filter(Boolean);
 
 
     const location =
@@ -1356,7 +1410,6 @@
 
 
     card.innerHTML = `
-
       <div class="business-image">
         ${imageHtml}
       </div>
@@ -1390,13 +1443,16 @@
         <div class="business-meta">
           ${verifiedBadge}
           ${claimedBadge}
+          ${ratingBadge}
           ${distanceBadge}
         </div>
 
         <div class="business-actions">
 
           <a
-            href="${escapeHtml(detailUrl)}"
+            href="${escapeHtml(
+              detailUrl
+            )}"
             class="business-action primary"
           >
             View Business
@@ -1420,16 +1476,15 @@
         </div>
 
       </div>
-
     `;
 
     return card;
-
   }
 
 
-  function getBusinessInitial(name) {
-
+  function getBusinessInitial(
+    name
+  ) {
     const text =
       cleanText(
         name,
@@ -1439,38 +1494,31 @@
     return text
       .charAt(0)
       .toUpperCase();
-
   }
 
 
   function buildBusinessUrl(
     business
   ) {
-
     if (business.slug) {
-
       return (
         "business.html?slug=" +
         encodeURIComponent(
           business.slug
         )
       );
-
     }
 
     if (business.id) {
-
       return (
         "business.html?id=" +
         encodeURIComponent(
           business.id
         )
       );
-
     }
 
     return "explore.html";
-
   }
 
 
@@ -1479,17 +1527,27 @@
   ========================================================== */
 
   function escapeHtml(value) {
-
-    const text =
-      cleanText(value);
-
-    return text
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-
+    return cleanText(value)
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
   }
 
 
@@ -1498,7 +1556,6 @@
   ========================================================== */
 
   function renderPagination() {
-
     const pagination =
       $("pagination");
 
@@ -1511,9 +1568,7 @@
     if (
       App.totalPages <= 1
     ) {
-
       return;
-
     }
 
 
@@ -1528,25 +1583,26 @@
     previous.textContent =
       "←";
 
+    previous.setAttribute(
+      "aria-label",
+      "Previous page"
+    );
+
     previous.disabled =
       App.currentPage <= 1;
 
     previous.addEventListener(
       "click",
       function () {
-
         if (
           App.currentPage > 1
         ) {
-
           App.currentPage--;
 
           renderResults();
 
           scrollToResults();
-
         }
-
       }
     );
 
@@ -1581,7 +1637,6 @@
       1 <
       maxButtons
     ) {
-
       startPage =
         Math.max(
           1,
@@ -1589,7 +1644,6 @@
           maxButtons +
           1
         );
-
     }
 
 
@@ -1598,7 +1652,6 @@
       page <= endPage;
       page++
     ) {
-
       const button =
         document.createElement(
           "button"
@@ -1610,35 +1663,41 @@
       button.textContent =
         String(page);
 
+      button.setAttribute(
+        "aria-label",
+        "Page " +
+        page
+      );
+
       if (
         page ===
         App.currentPage
       ) {
-
         button.classList.add(
           "active"
         );
 
+        button.setAttribute(
+          "aria-current",
+          "page"
+        );
       }
 
       button.addEventListener(
         "click",
         function () {
-
           App.currentPage =
             page;
 
           renderResults();
 
           scrollToResults();
-
         }
       );
 
       pagination.appendChild(
         button
       );
-
     }
 
 
@@ -1653,6 +1712,11 @@
     next.textContent =
       "→";
 
+    next.setAttribute(
+      "aria-label",
+      "Next page"
+    );
+
     next.disabled =
       App.currentPage >=
       App.totalPages;
@@ -1660,32 +1724,26 @@
     next.addEventListener(
       "click",
       function () {
-
         if (
           App.currentPage <
           App.totalPages
         ) {
-
           App.currentPage++;
 
           renderResults();
 
           scrollToResults();
-
         }
-
       }
     );
 
     pagination.appendChild(
       next
     );
-
   }
 
 
   function scrollToResults() {
-
     const section =
       $("business-results");
 
@@ -1703,7 +1761,6 @@
         ),
       behavior: "smooth"
     });
-
   }
 
 
@@ -1715,74 +1772,63 @@
     type,
     message
   ) {
-
-    const status =
-      getElement(
-        "statusMessage",
-        "status"
-      );
-
-    const legacy =
-      $("status");
-
-    if (!status) {
-      return;
-    }
-
-    status.className =
-      "status " +
-      cleanText(type);
-
-    status.textContent =
-      cleanText(message);
-
-    if (
-      legacy &&
-      legacy !== status
-    ) {
-
-      legacy.className =
-        status.className;
-
-      legacy.textContent =
-        status.textContent;
-
-    }
-
-  }
-
-
-  function hideStatus() {
-
-    const status =
+    const primary =
       $("statusMessage");
 
     const legacy =
       $("status");
 
-    if (status) {
+    const text =
+      cleanText(message);
 
-      status.className =
-        "status";
+    if (primary) {
+      primary.className =
+        "status " +
+        cleanText(type);
 
-      status.textContent =
-        "";
-
+      primary.textContent =
+        text;
     }
 
     if (
       legacy &&
-      legacy !== status
+      legacy !== primary
     ) {
+      legacy.className =
+        "status " +
+        cleanText(type);
 
+      legacy.textContent =
+        text;
+    }
+  }
+
+
+  function hideStatus() {
+    const primary =
+      $("statusMessage");
+
+    const legacy =
+      $("status");
+
+    if (primary) {
+      primary.className =
+        "status";
+
+      primary.textContent =
+        "";
+    }
+
+    if (
+      legacy &&
+      legacy !== primary
+    ) {
       legacy.className =
         "status";
 
       legacy.textContent =
         "";
-
     }
-
   }
 
 
@@ -1793,31 +1839,43 @@
   function showEmptyState(
     message
   ) {
+    const emptyStates = [
+      $("emptyState"),
+      $("empty-state")
+    ].filter(Boolean);
 
-    const empty =
-      $("emptyState");
+    emptyStates.forEach(
+      function (empty) {
+        const paragraph =
+          empty.querySelector("p");
 
-    if (!empty) {
-      return;
-    }
+        if (paragraph) {
+          paragraph.textContent =
+            message ||
+            "Try a different search, category, state, city, or location.";
+        }
 
-    const paragraph =
-      empty.querySelector(
-        "p"
-      );
-
-    if (paragraph) {
-
-      paragraph.textContent =
-        message ||
-        "Try a different search, category, state, city, or location.";
-
-    }
-
-    empty.classList.add(
-      "visible"
+        empty.classList.add(
+          "visible"
+        );
+      }
     );
+  }
 
+
+  function hideEmptyState() {
+    const emptyStates = [
+      $("emptyState"),
+      $("empty-state")
+    ].filter(Boolean);
+
+    emptyStates.forEach(
+      function (empty) {
+        empty.classList.remove(
+          "visible"
+        );
+      }
+    );
   }
 
 
@@ -1826,7 +1884,6 @@
   ========================================================== */
 
   function updateNearbyIndicator() {
-
     const indicator =
       $("nearbyIndicator");
 
@@ -1838,22 +1895,20 @@
       App.nearbyMode &&
       App.userLocation
     ) {
-
       indicator.classList.add(
         "visible"
       );
 
       indicator.textContent =
         "📍 Nearby businesses";
-
     } else {
-
       indicator.classList.remove(
         "visible"
       );
 
+      indicator.textContent =
+        "";
     }
-
   }
 
 
@@ -1865,7 +1920,6 @@
     message,
     type
   ) {
-
     const element =
       $("locationStatus");
 
@@ -1880,47 +1934,36 @@
       "explore-location-status";
 
     if (type) {
-
       element.classList.add(
         type
       );
-
     }
-
   }
 
 
   function updateLocationButtons() {
-
     const useButton =
       $("useLocationButton");
 
     const clearButton =
       $("clearLocationButton");
 
-    if (useButton) {
 
+    if (useButton) {
       useButton.disabled =
         App.locationLoading;
 
-      if (
+      useButton.textContent =
         App.locationLoading
-      ) {
-
-        useButton.textContent =
-          "📍 Finding you...";
-
-      }
-
+          ? "📍 Finding you..."
+          : "📍 Use My Location";
     }
+
 
     if (clearButton) {
-
       clearButton.hidden =
         !App.userLocation;
-
     }
-
   }
 
 
@@ -1929,14 +1972,11 @@
   ========================================================== */
 
   function getBrowserLocation() {
-
     return new Promise(
       function (resolve, reject) {
-
         if (
           !navigator.geolocation
         ) {
-
           reject(
             new Error(
               "Location services are not supported by this browser."
@@ -1944,13 +1984,11 @@
           );
 
           return;
-
         }
 
 
         navigator.geolocation.getCurrentPosition(
           function (position) {
-
             const latitude =
               Number(
                 position.coords.latitude
@@ -1962,10 +2000,13 @@
               );
 
             if (
-              !Number.isFinite(latitude) ||
-              !Number.isFinite(longitude)
+              !Number.isFinite(
+                latitude
+              ) ||
+              !Number.isFinite(
+                longitude
+              )
             ) {
-
               reject(
                 new Error(
                   "Your location could not be determined."
@@ -1973,21 +2014,20 @@
               );
 
               return;
-
             }
 
             resolve({
               latitude,
               longitude,
+
               accuracy:
                 Number(
                   position.coords.accuracy
                 ) || null
             });
-
           },
-          function (error) {
 
+          function (error) {
             let message =
               "Unable to get your location.";
 
@@ -1995,7 +2035,6 @@
               error &&
               error.code === 1
             ) {
-
               message =
                 "Location permission was denied.";
 
@@ -2003,7 +2042,6 @@
               error &&
               error.code === 2
             ) {
-
               message =
                 "Your location could not be determined.";
 
@@ -2011,38 +2049,31 @@
               error &&
               error.code === 3
             ) {
-
               message =
                 "Location request timed out.";
-
             }
 
             reject(
               new Error(message)
             );
-
           },
+
           {
             enableHighAccuracy: true,
             timeout: 15000,
             maximumAge: 300000
           }
         );
-
       }
     );
-
   }
 
 
   async function enableNearbyLocation() {
-
     if (
       App.locationLoading
     ) {
-
       return;
-
     }
 
     App.locationLoading =
@@ -2059,32 +2090,28 @@
     );
 
     try {
-
       const location =
         await getBrowserLocation();
 
       App.userLocation =
         location;
 
-      /*
-       * Store only in sessionStorage.
-       * This disappears when the browsing session ends.
-       */
 
       try {
-
         sessionStorage.setItem(
           "nearafrica_user_location",
           JSON.stringify({
             latitude:
               location.latitude,
+
             longitude:
               location.longitude
           })
         );
-
       } catch (storageError) {
-        /* Storage is optional. */
+        /*
+         * Session storage is optional.
+         */
       }
 
 
@@ -2098,10 +2125,11 @@
       App.currentPage =
         1;
 
+      syncUrlFromFilters();
+
       filterBusinesses();
 
     } catch (error) {
-
       console.error(
         "NearAfrica location error:",
         error
@@ -2124,32 +2152,15 @@
       filterBusinesses();
 
     } finally {
-
       App.locationLoading =
         false;
 
       updateLocationButtons();
-
-      const useButton =
-        $("useLocationButton");
-
-      if (
-        useButton &&
-        !App.locationLoading
-      ) {
-
-        useButton.textContent =
-          "📍 Use My Location";
-
-      }
-
     }
-
   }
 
 
   function clearNearbyLocation() {
-
     App.userLocation =
       null;
 
@@ -2157,13 +2168,13 @@
       false;
 
     try {
-
       sessionStorage.removeItem(
         "nearafrica_user_location"
       );
-
     } catch (error) {
-      /* Ignore storage errors. */
+      /*
+       * Ignore storage errors.
+       */
     }
 
     updateLocationStatus(
@@ -2173,15 +2184,17 @@
 
     updateLocationButtons();
 
-    filterBusinesses();
+    App.currentPage =
+      1;
 
+    syncUrlFromFilters();
+
+    filterBusinesses();
   }
 
 
   function restoreStoredLocation() {
-
     try {
-
       const raw =
         sessionStorage.getItem(
           "nearafrica_user_location"
@@ -2208,9 +2221,7 @@
         !Number.isFinite(latitude) ||
         !Number.isFinite(longitude)
       ) {
-
         return false;
-
       }
 
       App.userLocation = {
@@ -2221,11 +2232,8 @@
       return true;
 
     } catch (error) {
-
       return false;
-
     }
-
   }
 
 
@@ -2234,14 +2242,12 @@
   ========================================================== */
 
   function readUrlParameters() {
-
     const params =
       new URLSearchParams(
         window.location.search
       );
 
     return {
-
       search:
         cleanText(
           params.get("q") ||
@@ -2277,18 +2283,23 @@
         Number(
           params.get("radius")
         ) || null
-
     };
-
   }
 
 
   function syncUrlFromFilters() {
+    if (
+      !window.history ||
+      !window.history.replaceState
+    ) {
+      return;
+    }
 
     const url =
       new URL(
         window.location.href
       );
+
 
     const search =
       getSearchValue();
@@ -2305,83 +2316,68 @@
     const city =
       getCityValue();
 
-    if (search) {
 
+    if (search) {
       url.searchParams.set(
         "search",
         search
       );
-
     } else {
-
       url.searchParams.delete(
         "search"
       );
-
     }
 
-    if (category) {
 
+    if (category) {
       url.searchParams.set(
         "category",
         category
       );
-
     } else {
-
       url.searchParams.delete(
         "category"
       );
-
     }
 
-    if (country) {
 
+    if (country) {
       url.searchParams.set(
         "country",
         country
       );
-
     } else {
-
       url.searchParams.delete(
         "country"
       );
-
     }
 
-    if (state) {
 
+    if (state) {
       url.searchParams.set(
         "state",
         state
       );
-
     } else {
-
       url.searchParams.delete(
         "state"
       );
-
     }
 
-    if (city) {
 
+    if (city) {
       url.searchParams.set(
         "city",
         city
       );
-
     } else {
-
       url.searchParams.delete(
         "city"
       );
-
     }
 
-    if (App.nearbyMode) {
 
+    if (App.nearbyMode) {
       url.searchParams.set(
         "nearby",
         "1"
@@ -2393,9 +2389,7 @@
           getRadiusValue()
         )
       );
-
     } else {
-
       url.searchParams.delete(
         "nearby"
       );
@@ -2403,24 +2397,22 @@
       url.searchParams.delete(
         "radius"
       );
-
     }
+
 
     window.history.replaceState(
       {},
       "",
       url.toString()
     );
-
   }
 
 
   /* ==========================================================
-     APPLY URL PARAMETERS TO UI
+     APPLY URL PARAMETERS
   ========================================================== */
 
   function applyUrlParameters() {
-
     const params =
       readUrlParameters();
 
@@ -2432,10 +2424,8 @@
       searchInput &&
       params.search
     ) {
-
       searchInput.value =
         params.search;
-
     }
 
 
@@ -2446,32 +2436,26 @@
       categoryFilter &&
       params.category
     ) {
-
-      /*
-       * Only set the option if it exists.
-       */
-
       const optionExists =
         Array.from(
           categoryFilter.options
         ).some(
           function (option) {
-
             return (
-              option.value ===
-              params.category
+              normalizeSearchText(
+                option.value
+              ) ===
+              normalizeSearchText(
+                params.category
+              )
             );
-
           }
         );
 
       if (optionExists) {
-
         categoryFilter.value =
           params.category;
-
       }
-
     }
 
 
@@ -2481,18 +2465,15 @@
     const countryFilterSecondary =
       $("countryFilterSecondary");
 
-    if (countryFilter) {
 
+    if (countryFilter) {
       countryFilter.value =
         "Nigeria";
-
     }
 
     if (countryFilterSecondary) {
-
       countryFilterSecondary.value =
         "Nigeria";
-
     }
 
 
@@ -2507,32 +2488,30 @@
       stateFilter &&
       params.state
     ) {
-
       const stateExists =
         Array.from(
           stateFilter.options
         ).some(
           function (option) {
-
             return (
-              option.value ===
-              params.state
+              normalizeSearchText(
+                option.value
+              ) ===
+              normalizeSearchText(
+                params.state
+              )
             );
-
           }
         );
 
       if (stateExists) {
-
         stateFilter.value =
           params.state;
 
         populateCitiesForState(
           params.state
         );
-
       }
-
     }
 
 
@@ -2540,28 +2519,26 @@
       cityFilter &&
       params.city
     ) {
-
       const cityExists =
         Array.from(
           cityFilter.options
         ).some(
           function (option) {
-
             return (
-              option.value ===
-              params.city
+              normalizeSearchText(
+                option.value
+              ) ===
+              normalizeSearchText(
+                params.city
+              )
             );
-
           }
         );
 
       if (cityExists) {
-
         cityFilter.value =
           params.city;
-
       }
-
     }
 
 
@@ -2572,51 +2549,40 @@
       radiusFilter &&
       params.radius
     ) {
-
       const radiusExists =
         Array.from(
           radiusFilter.options
         ).some(
           function (option) {
-
             return (
               Number(option.value) ===
               Number(params.radius)
             );
-
           }
         );
 
       if (radiusExists) {
-
         radiusFilter.value =
           String(
             params.radius
           );
-
       }
-
     }
 
 
     if (params.nearby) {
-
       App.nearbyMode =
         true;
 
       restoreStoredLocation();
 
       if (App.userLocation) {
-
         updateLocationStatus(
           "Using your current location.",
           "success"
         );
-
       }
-
     }
-
   }
 
 
@@ -2625,7 +2591,6 @@
   ========================================================== */
 
   function populateStates() {
-
     const stateFilter =
       $("stateFilter");
 
@@ -2637,11 +2602,9 @@
       window.NearAfricaNigeriaLocations ||
       {};
 
-    /*
-     * Preserve the first "All states / FCT" option.
-     */
 
     stateFilter.innerHTML = "";
+
 
     const all =
       document.createElement(
@@ -2661,34 +2624,38 @@
 
     Object.keys(
       locations
-    ).forEach(
-      function (state) {
-
-        const option =
-          document.createElement(
-            "option"
+    )
+      .sort(
+        function (a, b) {
+          return a.localeCompare(
+            b
           );
+        }
+      )
+      .forEach(
+        function (state) {
+          const option =
+            document.createElement(
+              "option"
+            );
 
-        option.value =
-          state;
+          option.value =
+            state;
 
-        option.textContent =
-          state;
+          option.textContent =
+            state;
 
-        stateFilter.appendChild(
-          option
-        );
-
-      }
-    );
-
+          stateFilter.appendChild(
+            option
+          );
+        }
+      );
   }
 
 
   function populateCitiesForState(
     state
   ) {
-
     const cityFilter =
       $("cityFilter");
 
@@ -2700,7 +2667,6 @@
 
 
     if (!state) {
-
       const option =
         document.createElement(
           "option"
@@ -2720,7 +2686,6 @@
         true;
 
       return;
-
     }
 
 
@@ -2748,12 +2713,34 @@
       "All cities / areas";
 
     cityFilter.appendChild(
-      all
-    );
+      all );
+
+
+    const existing =
+      new Set();
 
 
     cities.forEach(
       function (city) {
+        const value =
+          cleanText(city);
+
+        if (!value) {
+          return;
+        }
+
+        const key =
+          normalizeSearchText(
+            value
+          );
+
+        if (
+          existing.has(key)
+        ) {
+          return;
+        }
+
+        existing.add(key);
 
         const option =
           document.createElement(
@@ -2761,109 +2748,83 @@
           );
 
         option.value =
-          city;
+          value;
 
         option.textContent =
-          city;
+          value;
 
         cityFilter.appendChild(
           option
         );
-
       }
     );
 
 
     /*
-     * Also add cities found in the real API
-     * for this state, without duplicates.
-     *
-     * This allows the location list to grow as
-     * NearAfrica's real database grows.
+     * Add real API cities that are not already
+     * present in the base Nigeria location list.
      */
-
-    const existing =
-      new Set(
-        cities.map(
-          function (city) {
-
-            return normalizeSearchText(
-              city
-            );
-
-          }
-        )
-      );
-
 
     App.allBusinesses
       .filter(
         function (business) {
-
           return valuesMatch(
             business.state,
             state
           );
-
         }
       )
       .map(
         function (business) {
-
           return cleanText(
             business.city
           );
-
         }
       )
       .filter(Boolean)
       .forEach(
         function (city) {
-
           const key =
             normalizeSearchText(
               city
             );
 
           if (
-            !existing.has(key)
+            existing.has(key)
           ) {
-
-            existing.add(key);
-
-            const option =
-              document.createElement(
-                "option"
-              );
-
-            option.value =
-              city;
-
-            option.textContent =
-              city;
-
-            cityFilter.appendChild(
-              option
-            );
-
+            return;
           }
 
+          existing.add(key);
+
+          const option =
+            document.createElement(
+              "option"
+            );
+
+          option.value =
+            city;
+
+          option.textContent =
+            city;
+
+          cityFilter.appendChild(
+            option
+          );
         }
       );
 
 
     cityFilter.disabled =
       false;
-
   }
 
 
   /* ==========================================================
-     EVENT HANDLERS
+     EXPLORE SEARCH
   ========================================================== */
 
   function setupSearch() {
-
     const searchButton =
       $("searchButton");
 
@@ -2872,11 +2833,9 @@
 
 
     if (searchButton) {
-
       searchButton.addEventListener(
         "click",
         function () {
-
           App.currentPage =
             1;
 
@@ -2885,24 +2844,19 @@
           filterBusinesses();
 
           scrollToResults();
-
         }
       );
-
     }
 
 
     if (searchInput) {
-
       searchInput.addEventListener(
         "keydown",
         function (event) {
-
           if (
             event.key ===
             "Enter"
           ) {
-
             event.preventDefault();
 
             App.currentPage =
@@ -2913,50 +2867,41 @@
             filterBusinesses();
 
             scrollToResults();
-
           }
-
         }
       );
 
-      /*
-       * Live filtering while typing,
-       * with a small debounce.
-       */
 
       let timer = null;
 
       searchInput.addEventListener(
         "input",
         function () {
-
           clearTimeout(timer);
 
           timer =
             setTimeout(
               function () {
-
                 App.currentPage =
                   1;
 
                 syncUrlFromFilters();
 
                 filterBusinesses();
-
               },
               250
             );
-
         }
       );
-
     }
-
   }
 
 
-  function setupFilters() {
+  /* ==========================================================
+     FILTER EVENTS
+  ========================================================== */
 
+  function setupFilters() {
     const categoryFilter =
       $("categoryFilter");
 
@@ -2980,44 +2925,35 @@
 
 
     if (categoryFilter) {
-
       categoryFilter.addEventListener(
         "change",
         function () {
-
           App.currentPage =
             1;
 
           syncUrlFromFilters();
 
           filterBusinesses();
-
         }
       );
-
     }
 
 
     if (countryFilter) {
-
       countryFilter.addEventListener(
         "change",
         function () {
-
           /*
-           * NearAfrica is Nigeria-first for now.
+           * Nigeria-first launch.
            */
-
           countryFilter.value =
             "Nigeria";
 
           if (
             countryFilterSecondary
           ) {
-
             countryFilterSecondary.value =
               "Nigeria";
-
           }
 
           App.currentPage =
@@ -3026,31 +2962,23 @@
           syncUrlFromFilters();
 
           filterBusinesses();
-
         }
       );
-
     }
 
 
     if (
       countryFilterSecondary
     ) {
-
       countryFilterSecondary.addEventListener(
         "change",
         function () {
-
           countryFilterSecondary.value =
             "Nigeria";
 
-          if (
-            countryFilter
-          ) {
-
+          if (countryFilter) {
             countryFilter.value =
               "Nigeria";
-
           }
 
           App.currentPage =
@@ -3059,32 +2987,22 @@
           syncUrlFromFilters();
 
           filterBusinesses();
-
         }
       );
-
     }
 
 
     if (stateFilter) {
-
       stateFilter.addEventListener(
         "change",
         function () {
-
           populateCitiesForState(
             stateFilter.value
           );
 
-          /*
-           * Reset city whenever state changes.
-           */
-
           if (cityFilter) {
-
             cityFilter.value =
               "";
-
           }
 
           App.currentPage =
@@ -3093,78 +3011,66 @@
           syncUrlFromFilters();
 
           filterBusinesses();
-
         }
       );
-
     }
 
 
     if (cityFilter) {
-
       cityFilter.addEventListener(
         "change",
         function () {
-
           App.currentPage =
             1;
 
           syncUrlFromFilters();
 
           filterBusinesses();
-
         }
       );
-
     }
 
 
     if (sortFilter) {
-
       sortFilter.addEventListener(
         "change",
         function () {
-
           App.currentPage =
             1;
 
-          filterBusinesses();
+          syncUrlFromFilters();
 
+          filterBusinesses();
         }
       );
-
     }
 
 
     if (radiusFilter) {
-
       radiusFilter.addEventListener(
         "change",
         function () {
-
           if (
             App.nearbyMode
           ) {
-
             App.currentPage =
               1;
 
             syncUrlFromFilters();
 
             filterBusinesses();
-
           }
-
         }
       );
-
     }
-
   }
 
 
-  function setupLocationButtons() {
+  /* ==========================================================
+     LOCATION BUTTONS
+  ========================================================== */
 
+  function setupLocationButtons() {
     const useButton =
       $("useLocationButton");
 
@@ -3173,32 +3079,23 @@
 
 
     if (useButton) {
-
       useButton.addEventListener(
         "click",
         function () {
-
           enableNearbyLocation();
-
         }
       );
-
     }
 
 
     if (clearButton) {
-
       clearButton.addEventListener(
         "click",
         function () {
-
           clearNearbyLocation();
-
         }
       );
-
     }
-
   }
 
 
@@ -3207,11 +3104,19 @@
   ========================================================== */
 
   function setupLocationChangeEvent() {
+    if (
+      window.__nearAfricaLocationListener
+    ) {
+      return;
+    }
+
+    window.__nearAfricaLocationListener =
+      true;
+
 
     window.addEventListener(
       "nearafrica:locationchange",
       function (event) {
-
         const detail =
           event &&
           event.detail
@@ -3230,14 +3135,12 @@
           stateFilter &&
           detail.state !== undefined
         ) {
-
           stateFilter.value =
             detail.state || "";
 
           populateCitiesForState(
             detail.state || ""
           );
-
         }
 
 
@@ -3245,7 +3148,6 @@
           cityFilter &&
           detail.city !== undefined
         ) {
-
           const city =
             detail.city || "";
 
@@ -3254,22 +3156,21 @@
               cityFilter.options
             ).some(
               function (option) {
-
                 return (
-                  option.value ===
-                  city
+                  normalizeSearchText(
+                    option.value
+                  ) ===
+                  normalizeSearchText(
+                    city
+                  )
                 );
-
               }
             );
 
           if (exists) {
-
             cityFilter.value =
               city;
-
           }
-
         }
 
 
@@ -3279,19 +3180,16 @@
         syncUrlFromFilters();
 
         filterBusinesses();
-
       }
     );
-
   }
 
 
   /* ==========================================================
-     MOBILE NAV
+     MOBILE NAVIGATION
   ========================================================== */
 
   function setupMobileNavigation() {
-
     const button =
       $("mobileMenuButton");
 
@@ -3302,24 +3200,15 @@
       !button ||
       !nav
     ) {
-
       return;
-
     }
 
-
-    /*
-     * Avoid duplicate listeners if the HTML
-     * already initialized this element.
-     */
 
     if (
       button.dataset.naMobileReady ===
       "1"
     ) {
-
       return;
-
     }
 
     button.dataset.naMobileReady =
@@ -3329,7 +3218,6 @@
     button.addEventListener(
       "click",
       function () {
-
         const open =
           nav.classList.toggle(
             "open"
@@ -3339,7 +3227,6 @@
           "aria-expanded",
           String(open)
         );
-
       }
     );
 
@@ -3348,11 +3235,9 @@
       .querySelectorAll("a")
       .forEach(
         function (link) {
-
           link.addEventListener(
             "click",
             function () {
-
               nav.classList.remove(
                 "open"
               );
@@ -3361,44 +3246,243 @@
                 "aria-expanded",
                 "false"
               );
-
             }
           );
-
         }
       );
-
   }
 
 
   /* ==========================================================
-     LOAD / INITIALIZE
+     HOMEPAGE SEARCH
+  ========================================================== */
+
+  function setupHomepageSearch() {
+    if (
+      App.homepageInitialized
+    ) {
+      return;
+    }
+
+    const form =
+      $("searchForm");
+
+    const searchInput =
+      $("search");
+
+    const locationInput =
+      $("location");
+
+    const useLocationButton =
+      $("useLocation");
+
+    const message =
+      $("locationMessage");
+
+
+    /*
+     * If none of the homepage elements exist,
+     * this is not the homepage.
+     */
+    if (
+      !form &&
+      !searchInput &&
+      !locationInput
+    ) {
+      return;
+    }
+
+
+    App.homepageInitialized =
+      true;
+
+
+    function redirectToExplore() {
+      const params =
+        new URLSearchParams();
+
+
+      const search =
+        searchInput
+          ? cleanText(
+              searchInput.value
+            )
+          : "";
+
+
+      const location =
+        locationInput
+          ? cleanText(
+              locationInput.value
+            )
+          : "";
+
+
+      if (search) {
+        params.set(
+          "search",
+          search
+        );
+      }
+
+
+      /*
+       * Homepage location is intentionally treated
+       * as a search term unless it can be mapped
+       * directly to a known Nigeria location.
+       */
+      if (location) {
+        params.set(
+          "city",
+          location
+        );
+      }
+
+
+      const query =
+        params.toString();
+
+
+      window.location.href =
+        "explore.html" +
+        (
+          query
+            ? "?" + query
+            : ""
+        );
+    }
+
+
+    if (form) {
+      form.addEventListener(
+        "submit",
+        function (event) {
+          event.preventDefault();
+
+          redirectToExplore();
+        }
+      );
+    }
+
+
+    /*
+     * Some homepage versions use a button
+     * instead of a normal form submit.
+     */
+    if (
+      searchInput &&
+      !form
+    ) {
+      searchInput.addEventListener(
+        "keydown",
+        function (event) {
+          if (
+            event.key ===
+            "Enter"
+          ) {
+            event.preventDefault();
+
+            redirectToExplore();
+          }
+        }
+      );
+    }
+
+
+    if (useLocationButton) {
+      useLocationButton.addEventListener(
+        "click",
+        async function () {
+          if (
+            message
+          ) {
+            message.textContent =
+              "Requesting your location...";
+          }
+
+          try {
+            const location =
+              await getBrowserLocation();
+
+            /*
+             * Do not expose raw coordinates in
+             * the homepage UI.
+             */
+            try {
+              sessionStorage.setItem(
+                "nearafrica_user_location",
+                JSON.stringify({
+                  latitude:
+                    location.latitude,
+
+                  longitude:
+                    location.longitude
+                })
+              );
+            } catch (storageError) {
+              /* Optional storage. */
+            }
+
+
+            if (
+              message
+            ) {
+              message.textContent =
+                "Location detected. You can now search nearby.";
+            }
+
+
+            const exploreUrl =
+              new URL(
+                "explore.html",
+                window.location.href
+              );
+
+            exploreUrl.searchParams.set(
+              "nearby",
+              "1"
+            );
+
+            exploreUrl.searchParams.set(
+              "radius",
+              "25"
+            );
+
+            window.location.href =
+              exploreUrl.toString();
+
+          } catch (error) {
+            if (message) {
+              message.textContent =
+                error.message ||
+                "Unable to use your location.";
+            }
+          }
+        }
+      );
+    }
+  }
+
+
+  /* ==========================================================
+     EXPLORE INITIALIZATION
   ========================================================== */
 
   async function initializeExplorePage() {
-
-    /*
-     * Only initialize business discovery when
-     * the Explore results container exists.
-     *
-     * This prevents app.js from unnecessarily
-     * loading the API on the homepage.
-     */
-
     const businessList =
       $("business-list");
 
+    /*
+     * Homepage and other pages do not need the
+     * Explore engine.
+     */
     if (!businessList) {
-
       return;
-
     }
 
 
     if (App.initialized) {
-
       return;
-
     }
 
     App.initialized =
@@ -3406,32 +3490,26 @@
 
 
     try {
-
       /*
-       * Build the Nigeria state list first.
+       * State list first.
        */
-
       populateStates();
 
 
       /*
-       * Apply URL values after states exist.
+       * URL parameters after states exist.
        */
-
       applyUrlParameters();
 
 
       /*
-       * Restore location if the URL requests nearby.
+       * Restore nearby location.
        */
-
       if (
         App.nearbyMode &&
         !App.userLocation
       ) {
-
         restoreStoredLocation();
-
       }
 
 
@@ -3449,20 +3527,16 @@
       /*
        * Load real businesses.
        */
-
       await fetchBusinesses();
 
 
       /*
-       * Rebuild city options using actual API
-       * locations in addition to the base dataset.
+       * Rebuild cities using real API data.
        */
-
       const state =
         getStateValue();
 
       if (state) {
-
         const selectedCity =
           getCityValue();
 
@@ -3477,44 +3551,38 @@
           cityFilter &&
           selectedCity
         ) {
-
           const exists =
             Array.from(
               cityFilter.options
             ).some(
               function (option) {
-
                 return (
-                  option.value ===
-                  selectedCity
+                  normalizeSearchText(
+                    option.value
+                  ) ===
+                  normalizeSearchText(
+                    selectedCity
+                  )
                 );
-
               }
             );
 
           if (exists) {
-
             cityFilter.value =
               selectedCity;
-
           }
-
         }
-
       }
 
 
       /*
-       * If nearby was requested but we do not
-       * have a saved location, don't silently
-       * pretend it is active.
+       * Nearby was requested but there is no
+       * stored location.
        */
-
       if (
         App.nearbyMode &&
         !App.userLocation
       ) {
-
         App.nearbyMode =
           false;
 
@@ -3522,7 +3590,6 @@
           "Use My Location to find businesses near you.",
           ""
         );
-
       }
 
 
@@ -3532,38 +3599,50 @@
 
 
     } catch (error) {
-
       console.error(
         "NearAfrica Explore initialization failed:",
         error
       );
 
+
+      /*
+       * Keep the page usable even if the API
+       * is temporarily unavailable.
+       */
       setStatus(
         "error",
         error.message ||
-        "Unable to load businesses."
+        "Unable to load businesses right now."
       );
+
 
       showEmptyState(
-        "Unable to load businesses right now. Please try again."
+        "Businesses could not be loaded right now. Please try again later."
       );
 
+
+      const count =
+        $("resultCount");
+
+      if (count) {
+        count.textContent =
+          "Businesses unavailable";
+      }
+
+
       updateLocationButtons();
-
     }
-
   }
 
 
   /* ==========================================================
-     PUBLIC API
+     PUBLIC NEARAFRICA API
   ========================================================== */
 
   window.NearAfricaApp = {
 
     getState:
       function () {
-
         return {
           allBusinesses:
             App.allBusinesses.slice(),
@@ -3581,41 +3660,53 @@
             App.currentPage,
 
           totalPages:
-            App.totalPages
-        };
+            App.totalPages,
 
+          apiLoading:
+            App.apiLoading,
+
+          lastError:
+            App.lastError
+        };
       },
+
 
     refresh:
       async function () {
-
         await fetchBusinesses();
 
-        filterBusinesses();
+        App.currentPage =
+          1;
 
+        filterBusinesses();
       },
+
 
     search:
       function () {
-
         App.currentPage =
           1;
 
         syncUrlFromFilters();
 
         filterBusinesses();
-
       },
+
 
     useLocation:
       enableNearbyLocation,
 
+
     clearLocation:
       clearNearbyLocation,
 
-    filter:
-      filterBusinesses
 
+    filter:
+      filterBusinesses,
+
+
+    getBusinessUrl:
+      buildBusinessUrl
   };
 
 
@@ -3623,20 +3714,33 @@
      DOM READY
   ========================================================== */
 
+  function initialize() {
+    /*
+     * Homepage search is independent of the API.
+     */
+    setupHomepageSearch();
+
+    /*
+     * Explore initializes only when its results
+     * container is present.
+     */
+    initializeExplorePage();
+  }
+
+
   if (
     document.readyState ===
     "loading"
   ) {
-
     document.addEventListener(
       "DOMContentLoaded",
-      initializeExplorePage
+      initialize,
+      {
+        once: true
+      }
     );
-
   } else {
-
-    initializeExplorePage();
-
+    initialize();
   }
 
 })();
