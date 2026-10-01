@@ -1,3942 +1,2687 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Business Profile | NearAfrica</title>
-
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  >
-
-  <style>
-    :root {
-      --bg:#0b0b0b;
-      --bg-secondary:#121212;
-      --card:#151515;
-      --card-hover:#1b1b1b;
-      --border:#292929;
-      --gold:#d4af37;
-      --gold-light:#e3c55b;
-      --text:#f4f4f4;
-      --text-muted:#a6a6a6;
-      --danger:#e57373;
-      --success:#81c784;
-      --warning:#e6c45c;
-    }
-
-    * {
-      box-sizing:border-box;
-    }
-
-    html {
-      scroll-behavior:smooth;
-    }
-
-    body {
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
-      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      line-height:1.6;
-    }
-
-    a {
-      color:inherit;
-      text-decoration:none;
-    }
-
-    button,
-    input,
-    textarea,
-    select {
-      font:inherit;
-    }
-
-    button {
-      cursor:pointer;
-    }
-
-    button:disabled {
-      cursor:not-allowed;
-      opacity:.6;
-      transform:none!important;
-    }
-
-    .site-header {
-      border-bottom:1px solid var(--border);
-      background:rgba(11,11,11,.96);
-      position:sticky;
-      top:0;
-      z-index:1000;
-      backdrop-filter:blur(10px);
-    }
-
-    .header-inner {
-      max-width:1200px;
-      margin:auto;
-      padding:13px 22px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-    }
-
-    /* NearAfrica brand */
-    .brand {
-      display:inline-flex;
-      align-items:center;
-      gap:9px;
-      font-size:21px;
-      font-weight:800;
-      letter-spacing:.3px;
-      flex-shrink:0;
-    }
-
-    .brand-logo {
-      width:38px;
-      height:38px;
-      object-fit:contain;
-      display:block;
-    }
-
-    .brand-text {
-      color:var(--text);
-    }
-
-    .brand-text span {
-      color:var(--gold);
-    }
-
-    .nav {
-      display:flex;
-      align-items:center;
-      gap:22px;
-      color:var(--text-muted);
-      font-size:14px;
-    }
-
-    .nav a:hover {
-      color:var(--text);
-    }
-
-    .profile-container {
-      max-width:1200px;
-      margin:auto;
-      padding:34px 22px 60px;
-    }
-
-    .loading,
-    .error-state {
-      border:1px solid var(--border);
-      background:var(--card);
-      border-radius:14px;
-      padding:28px;
-      text-align:center;
-      color:var(--text-muted);
-    }
-
-    .error-state h2 {
-      color:var(--text);
-      margin-top:0;
-    }
-
-    .profile-header {
-      background:linear-gradient(
-        135deg,
-        rgba(212,175,55,.12),
-        rgba(21,21,21,.95)
-      );
-      border:1px solid var(--border);
-      border-radius:18px;
-      padding:30px;
-      margin-bottom:20px;
-    }
-
-    .profile-header-main {
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:25px;
-    }
-
-    .business-title-wrap {
-      display:flex;
-      gap:18px;
-      align-items:flex-start;
-      min-width:0;
-    }
-
-    .business-logo,
-    .business-placeholder {
-      width:76px;
-      height:76px;
-      border-radius:16px;
-      flex-shrink:0;
-    }
-
-    .business-logo {
-      object-fit:cover;
-      border:1px solid var(--border);
-      background:var(--bg-secondary);
-    }
-
-    .business-placeholder {
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:#202020;
-      border:1px solid var(--border);
-      color:var(--gold);
-      font-size:30px;
-      font-weight:800;
-    }
-
-    .profile-header h1 {
-      margin:0 0 8px;
-      font-size:34px;
-      line-height:1.15;
-      overflow-wrap:anywhere;
-    }
-
-    .business-category {
-      color:var(--gold-light);
-      font-size:14px;
-      margin-bottom:7px;
-    }
-
-    .business-location {
-      color:var(--text-muted);
-      font-size:14px;
-    }
-
-    .badge-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:13px;
-    }
-
-    .badge {
-      display:inline-flex;
-      align-items:center;
-      gap:5px;
-      border:1px solid var(--border);
-      border-radius:999px;
-      padding:5px 10px;
-      font-size:12px;
-      color:var(--text-muted);
-      background:rgba(255,255,255,.02);
-    }
-
-    .badge.gold {
-      color:var(--gold-light);
-      border-color:rgba(212,175,55,.35);
-    }
-
-    .header-actions {
-      display:flex;
-      flex-wrap:wrap;
-      gap:9px;
-      justify-content:flex-end;
-    }
-
-    .btn {
-      border:1px solid var(--border);
-      background:var(--bg-secondary);
-      color:var(--text);
-      border-radius:9px;
-      padding:10px 14px;
-      transition:
-        background .2s,
-        border-color .2s,
-        transform .2s;
-    }
-
-    .btn:hover {
-      background:var(--card-hover);
-      border-color:#3a3a3a;
-      transform:translateY(-1px);
-    }
-
-    .btn-primary {
-      background:var(--gold);
-      color:#111;
-      border-color:var(--gold);
-      font-weight:700;
-    }
-
-    .btn-primary:hover {
-      background:var(--gold-light);
-      border-color:var(--gold-light);
-    }
-
-    .btn-danger {
-      color:#ffaaaa;
-    }
-
-    .btn-favorite.active {
-      color:var(--gold-light);
-      border-color:rgba(212,175,55,.55);
-      background:rgba(212,175,55,.08);
-    }
-
-    .stats {
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-      margin-top:25px;
-    }
-
-    .stat {
-      padding:15px;
-      border:1px solid var(--border);
-      border-radius:11px;
-      background:rgba(0,0,0,.18);
-    }
-
-    .stat-value {
-      font-size:20px;
-      font-weight:800;
-    }
-
-    .stat-label {
-      color:var(--text-muted);
-      font-size:12px;
-      margin-top:2px;
-    }
-
-    .profile-grid {
-      display:grid;
-      grid-template-columns:1.5fr 1fr;
-      gap:20px;
-    }
-
-    .profile-card {
-      border:1px solid var(--border);
-      background:var(--card);
-      border-radius:15px;
-      padding:23px;
-      margin-bottom:20px;
-    }
-
-    .profile-card h2 {
-      margin:0 0 15px;
-      font-size:19px;
-    }
-
-    .profile-card p {
-      color:var(--text-muted);
-      margin-top:0;
-    }
-
-    .info-list {
-      display:grid;
-      gap:13px;
-    }
-
-    .info-item {
-      padding-bottom:13px;
-      border-bottom:1px solid var(--border);
-    }
-
-    .info-item:last-child {
-      padding-bottom:0;
-      border-bottom:0;
-    }
-
-    .info-label {
-      font-size:12px;
-      color:var(--text-muted);
-      margin-bottom:3px;
-    }
-
-    .info-value {
-      word-break:break-word;
-    }
-
-    .hours-list {
-      display:grid;
-      gap:0;
-    }
-
-    .hours-row {
-      display:grid;
-      grid-template-columns:120px 1fr;
-      gap:15px;
-      align-items:center;
-      padding:12px 0;
-      border-bottom:1px solid var(--border);
-    }
-
-    .hours-row:last-child {
-      border-bottom:0;
-    }
-
-    .hours-day {
-      font-weight:700;
-    }
-
-    .hours-time {
-      color:var(--text-muted);
-    }
-
-    .hours-closed {
-      color:var(--danger);
-    }
-
-    .hours-open {
-      color:var(--success);
-    }
-
-    .hours-today {
-      background:rgba(212,175,55,.08);
-      border-radius:8px;
-      padding-left:10px;
-      padding-right:10px;
-      margin-left:-10px;
-      margin-right:-10px;
-    }
-
-    .photos-grid {
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-    }
-
-    .photo {
-      width:100%;
-      aspect-ratio:1;
-      object-fit:cover;
-      border-radius:10px;
-      border:1px solid var(--border);
-      background:var(--bg-secondary);
-      cursor:pointer;
-    }
-
-    .review {
-      padding:16px 0;
-      border-bottom:1px solid var(--border);
-    }
-
-    .review:last-child {
-      border-bottom:0;
-    }
-
-    .review-top {
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-    }
-
-    .review-name {
-      font-weight:700;
-    }
-
-    .review-date {
-      color:var(--text-muted);
-      font-size:12px;
-    }
-
-    .stars {
-      color:var(--gold);
-      letter-spacing:2px;
-      margin:5px 0;
-    }
-
-    .review-comment {
-      color:var(--text-muted);
-      margin:0;
-      white-space:pre-wrap;
-    }
-
-    .products-list {
-      display:grid;
-      gap:12px;
-    }
-
-    .product-card {
-      border:1px solid var(--border);
-      background:var(--bg-secondary);
-      border-radius:12px;
-      padding:17px;
-    }
-
-    .product-top {
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:15px;
-    }
-
-    .product-name {
-      margin:0;
-      font-size:17px;
-    }
-
-    .product-type {
-      color:var(--text-muted);
-      font-size:12px;
-      margin-top:3px;
-    }
-
-    .product-price {
-      color:var(--gold-light);
-      font-weight:800;
-      white-space:nowrap;
-    }
-
-    .product-description {
-      color:var(--text-muted);
-      margin:10px 0 0;
-    }
-
-    .product-meta {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:12px;
-    }
-
-    .product-meta span {
-      border:1px solid var(--border);
-      border-radius:999px;
-      padding:4px 9px;
-      font-size:11px;
-      color:var(--text-muted);
-    }
-
-    .product-unavailable {
-      color:#e6a6a6!important;
-    }
-
-    .empty-state {
-      padding:16px;
-      border:1px dashed var(--border);
-      border-radius:10px;
-      color:var(--text-muted);
-      text-align:center;
-    }
-
-    .map {
-      width:100%;
-      height:340px;
-      border-radius:12px;
-      overflow:hidden;
-      border:1px solid var(--border);
-    }
-
-    .claim-box {
-      padding:20px;
-      border:1px solid var(--border);
-      border-radius:13px;
-      background:linear-gradient(
-        145deg,
-        rgba(212,175,55,.05),
-        var(--bg-secondary)
-      );
-    }
-
-    .claim-box h3 {
-      margin-top:0;
-      margin-bottom:8px;
-      font-size:18px;
-    }
-
-    .claim-box p {
-      font-size:13px;
-      color:var(--text-muted);
-    }
-
-    .claim-form,
-    .verification-form,
-    .modal-form {
-      display:grid;
-      gap:11px;
-      margin-top:16px;
-    }
-
-    .claim-form input,
-    .claim-form textarea,
-    .verification-form input,
-    .modal-form input,
-    .modal-form textarea,
-    .modal-form select {
-      width:100%;
-      background:#0d0d0d;
-      border:1px solid var(--border);
-      color:var(--text);
-      border-radius:9px;
-      padding:12px;
-      outline:none;
-    }
-
-    .claim-form input:focus,
-    .claim-form textarea:focus,
-    .verification-form input:focus,
-    .modal-form input:focus,
-    .modal-form textarea:focus,
-    .modal-form select:focus {
-      border-color:var(--gold);
-      box-shadow:0 0 0 3px rgba(212,175,55,.08);
-    }
-
-    .modal-form textarea {
-      min-height:110px;
-      resize:vertical;
-    }
-
-    .verification-box {
-      display:none;
-    }
-
-    .verification-box.active {
-      display:block;
-    }
-
-    .verification-email {
-      color:var(--gold-light)!important;
-      font-weight:700;
-      word-break:break-word;
-    }
-
-    .otp-input {
-      text-align:center;
-      font-size:24px!important;
-      font-weight:800;
-      letter-spacing:8px;
-    }
-
-    .verification-meta {
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:space-between;
-      gap:8px;
-      margin-top:10px;
-      font-size:12px;
-      color:var(--text-muted);
-    }
-
-    .verification-actions {
-      display:flex;
-      flex-wrap:wrap;
-      gap:9px;
-      margin-top:13px;
-    }
-
-    .verification-actions .btn {
-      flex:1 1 150px;
-    }
-
-    .claim-success {
-      padding:15px;
-      border:1px solid rgba(129,199,132,.25);
-      border-radius:10px;
-      background:rgba(129,199,132,.06);
-    }
-
-    .claim-success-title {
-      color:var(--success);
-      font-weight:800;
-      margin-bottom:5px;
-    }
-
-    .status {
-      margin-top:11px;
-      font-size:13px;
-    }
-
-    .status.error {
-      color:var(--danger);
-    }
-
-    .status.success {
-      color:var(--success);
-    }
-
-    .status.info {
-      color:var(--text-muted);
-    }
-
-    .status.warning {
-      color:var(--gold-light);
-    }
-
-    .contact-actions {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:10px;
-    }
-
-    .contact-actions a {
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    /* Modal */
-    .modal-backdrop {
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.78);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      z-index:3000;
-      backdrop-filter:blur(5px);
-    }
-
-    .modal-backdrop.active {
-      display:flex;
-    }
-
-    .modal {
-      width:min(560px,100%);
-      max-height:90vh;
-      overflow:auto;
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:16px;
-      box-shadow:0 25px 80px rgba(0,0,0,.55);
-    }
-
-    .modal-header {
-      padding:19px 21px;
-      border-bottom:1px solid var(--border);
-      display:flex;
-      justify-content:space-between;
-      gap:15px;
-      align-items:center;
-    }
-
-    .modal-header h2 {
-      margin:0;
-      font-size:20px;
-    }
-
-    .modal-close {
-      width:36px;
-      height:36px;
-      border:1px solid var(--border);
-      background:var(--bg-secondary);
-      color:var(--text);
-      border-radius:9px;
-      font-size:20px;
-    }
-
-    .modal-body {
-      padding:21px;
-    }
-
-    .modal-actions {
-      display:flex;
-      flex-wrap:wrap;
-      gap:9px;
-      margin-top:16px;
-    }
-
-    .modal-actions .btn {
-      flex:1 1 150px;
-    }
-
-    .small-note {
-      font-size:12px;
-      color:var(--text-muted);
-    }
-
-    @media (max-width:850px) {
-      .profile-grid {
-        grid-template-columns:1fr;
-      }
-
-      .profile-header-main {
-        flex-direction:column;
-      }
-
-      .header-actions {
-        justify-content:flex-start;
-      }
-    }
-
-    @media (max-width:620px) {
-      .profile-container {
-        padding:20px 14px 45px;
-      }
-
-      .header-inner {
-        padding:10px 14px;
-      }
-
-      .nav {
-        gap:10px;
-        font-size:12px;
-      }
-
-      .brand {
-        font-size:18px;
-      }
-
-      .brand-logo {
-        width:32px;
-        height:32px;
-      }
-
-      .profile-header {
-        padding:21px;
-      }
-
-      .business-title-wrap {
-        flex-direction:column;
-      }
-
-      .profile-header h1 {
-        font-size:27px;
-      }
-
-      .stats {
-        grid-template-columns:1fr;
-      }
-
-      .photos-grid {
-        grid-template-columns:repeat(2,1fr);
-      }
-
-      .product-top {
-        flex-direction:column;
-      }
-
-      .product-price {
-        white-space:normal;
-      }
-
-      .hours-row {
-        grid-template-columns:100px 1fr;
-        gap:10px;
-      }
-
-      .verification-actions {
-        flex-direction:column;
-      }
-
-      .verification-actions .btn {
-        width:100%;
-      }
-
-      .otp-input {
-        font-size:21px!important;
-        letter-spacing:6px;
-      }
-
-      .business-logo,
-      .business-placeholder {
-        width:68px;
-        height:68px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Business Profile | NearAfrica</title>
+
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<style>
+:root{
+  --bg:#080808;
+  --bg2:#101010;
+  --card:#151515;
+  --card2:#1b1b1b;
+  --gold:#d4af37;
+  --gold2:#f0c75e;
+  --white:#f5f5f5;
+  --muted:#a7a7a7;
+  --border:#292929;
+  --danger:#d9534f;
+  --success:#39b96a;
+  --shadow:0 18px 50px rgba(0,0,0,.35);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(212,175,55,.08),
+      transparent 32%
+    ),
+    var(--bg);
+  color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
+  line-height:1.6;
+}
+
+a{
+  color:inherit;
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+button:disabled{
+  cursor:not-allowed;
+  opacity:.65;
+}
+
+.container{
+  width:min(1180px,92%);
+  margin:0 auto;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(8,8,8,.95);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+}
+
+.header-inner{
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.logo{
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:.2px;
+  white-space:nowrap;
+}
+
+.logo-mark{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  color:#111;
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold2),
+      var(--gold)
+    );
+  font-weight:900;
+}
+
+.logo span{
+  color:var(--gold2);
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  gap:22px;
+}
+
+.nav a{
+  text-decoration:none;
+  color:#d7d7d7;
+  font-size:14px;
+  transition:.2s;
+}
+
+.nav a:hover{
+  color:var(--gold2);
+}
+
+.mobile-menu{
+  display:none;
+  background:none;
+  border:1px solid var(--border);
+  color:white;
+  border-radius:8px;
+  padding:8px 11px;
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page{
+  padding:40px 0 80px;
+}
+
+#statusMessage{
+  display:none;
+  padding:14px 16px;
+  border-radius:10px;
+  margin-bottom:22px;
+  border:1px solid var(--border);
+  background:var(--card);
+}
+
+.loading{
+  min-height:60vh;
+  display:grid;
+  place-items:center;
+  text-align:center;
+}
+
+.spinner{
+  width:42px;
+  height:42px;
+  border:3px solid #333;
+  border-top-color:var(--gold);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:0 auto 15px;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* =========================================================
+   PROFILE HERO
+========================================================= */
+
+.profile-hero{
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--border);
+  border-radius:22px;
+  background:
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(212,175,55,.16),
+      transparent 28%
+    ),
+    linear-gradient(145deg,#171717,#0e0e0e);
+  box-shadow:var(--shadow);
+  padding:30px;
+  margin-bottom:25px;
+}
+
+.profile-top{
+  display:flex;
+  align-items:flex-start;
+  gap:24px;
+}
+
+.business-logo{
+  width:130px;
+  height:130px;
+  flex:0 0 130px;
+  border-radius:18px;
+  overflow:hidden;
+  background:#222;
+  border:1px solid #333;
+  display:grid;
+  place-items:center;
+  color:var(--gold2);
+  font-size:40px;
+  font-weight:800;
+  text-align:center;
+}
+
+.business-logo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.profile-main{
+  flex:1;
+  min-width:0;
+}
+
+.profile-main h1{
+  margin:0 0 7px;
+  font-size:clamp(30px,5vw,48px);
+  line-height:1.1;
+}
+
+.meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  color:var(--muted);
+  margin:8px 0 14px;
+}
+
+.badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:12px 0;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  background:#202020;
+  border:1px solid #333;
+}
+
+.badge.gold{
+  color:#111;
+  background:var(--gold2);
+  border-color:var(--gold2);
+}
+
+.badge.green{
+  color:#a9f0c4;
+  border-color:#285b3d;
+  background:#122319;
+}
+
+.badge.red{
+  color:#ffb4b1;
+  border-color:#65312f;
+  background:#241211;
+}
+
+.profile-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:20px;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn{
+  border:1px solid #363636;
+  background:#202020;
+  color:#eee;
+  padding:10px 15px;
+  border-radius:9px;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  transition:.2s;
+}
+
+.btn:hover{
+  border-color:var(--gold);
+  color:var(--gold2);
+}
+
+.btn-primary{
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold2),
+      var(--gold)
+    );
+  color:#111;
+  border-color:var(--gold2);
+  font-weight:800;
+}
+
+.btn-primary:hover{
+  color:#111;
+  transform:translateY(-1px);
+}
+
+.btn-danger{
+  border-color:#65312f;
+  color:#ffb7b4;
+  background:#211212;
+}
+
+.btn-danger:hover{
+  border-color:#a74642;
+  color:#fff;
+}
+
+.favorite-button.active{
+  color:#111;
+  background:var(--gold2);
+  border-color:var(--gold2);
+}
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:24px;
+}
+
+.stat{
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:15px;
+  text-align:center;
+}
+
+.stat strong{
+  display:block;
+  font-size:24px;
+  color:var(--gold2);
+}
+
+.stat span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.profile-grid{
+  display:grid;
+  grid-template-columns:minmax(0,2fr) minmax(280px,1fr);
+  gap:22px;
+}
+
+.profile-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:22px;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.profile-card h2{
+  margin:0 0 18px;
+  color:var(--gold2);
+  font-size:22px;
+}
+
+.profile-card h3{
+  color:#eee;
+}
+
+.description{
+  color:#ccc;
+  white-space:pre-line;
+}
+
+.info-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.info-item{
+  padding:15px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:#111;
+}
+
+.info-label{
+  color:#888;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.6px;
+  margin-bottom:5px;
+}
+
+.info-value{
+  color:#eee;
+  word-break:break-word;
+}
+
+.contact-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:10px;
+}
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+
+.product{
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  background:#101010;
+}
+
+.product img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  display:block;
+}
+
+.product-body{
+  padding:15px;
+}
+
+.product-body h3{
+  margin:0 0 6px;
+  color:#eee;
+}
+
+.product-body p{
+  color:#aaa;
+  margin:0 0 10px;
+}
+
+.price{
+  color:var(--gold2);
+  font-weight:800;
+}
+
+/* =========================================================
+   HOURS
+========================================================= */
+
+.hours{
+  display:grid;
+  gap:7px;
+}
+
+.hours-row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  padding:10px 12px;
+  border-radius:8px;
+  background:#111;
+  border:1px solid #202020;
+}
+
+.hours-day{
+  color:#ddd;
+  font-weight:600;
+}
+
+.hours-time{
+  color:#aaa;
+  text-align:right;
+}
+
+/* =========================================================
+   PHOTOS
+========================================================= */
+
+.photo-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+}
+
+.photo-grid img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:10px;
+  border:1px solid var(--border);
+  cursor:pointer;
+  display:block;
+}
+
+/* =========================================================
+   REVIEWS
+========================================================= */
+
+.review-list{
+  display:grid;
+  gap:13px;
+}
+
+.review{
+  padding:15px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:#101010;
+}
+
+.review-header{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.review-name{
+  font-weight:700;
+}
+
+.review-rating{
+  color:var(--gold2);
+  white-space:nowrap;
+}
+
+.review-comment{
+  color:#bbb;
+  margin-top:8px;
+  white-space:pre-line;
+}
+
+.review-date{
+  color:#666;
+  font-size:12px;
+  margin-top:8px;
+}
+
+/* =========================================================
+   MAP
+========================================================= */
+
+#businessMap{
+  height:350px;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid var(--border);
+}
+
+/* =========================================================
+   CLAIM
+========================================================= */
+
+.claim-box{
+  background:#101010;
+  border:1px solid #2c2c2c;
+  border-radius:12px;
+  padding:20px;
+}
+
+.claim-form,
+.verification-form{
+  display:grid;
+  gap:11px;
+}
+
+.claim-form input,
+.claim-form textarea,
+.verification-form input,
+.modal input,
+.modal textarea,
+.modal select{
+  width:100%;
+  background:#090909;
+  color:#eee;
+  border:1px solid #333;
+  border-radius:8px;
+  padding:12px;
+  outline:none;
+}
+
+.claim-form input:focus,
+.claim-form textarea:focus,
+.verification-form input:focus,
+.modal input:focus,
+.modal textarea:focus,
+.modal select:focus{
+  border-color:var(--gold);
+}
+
+.verification-box{
+  display:none;
+  margin-top:16px;
+}
+
+.verification-box.active{
+  display:block;
+}
+
+.verification-email{
+  color:var(--gold2);
+  font-weight:700;
+  word-break:break-word;
+}
+
+.otp-input{
+  text-align:center;
+  letter-spacing:7px;
+  font-size:24px;
+}
+
+.verification-meta{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+  color:#888;
+  font-size:13px;
+}
+
+.verification-actions{
+  margin-top:12px;
+}
+
+.small-note{
+  color:#666;
+  font-size:12px;
+  margin-top:12px;
+}
+
+.claim-success{
+  padding:16px;
+  border:1px solid #285b3d;
+  background:#101e15;
+  border-radius:10px;
+  color:#b8eac9;
+}
+
+.claim-success-title{
+  color:#70dd98;
+  font-weight:800;
+  margin-bottom:5px;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status{
+  margin-top:12px;
+  padding:10px 12px;
+  border-radius:8px;
+  display:none;
+}
+
+.status:not(:empty){
+  display:block;
+}
+
+.status.info{
+  color:#bbb;
+  background:#171717;
+  border:1px solid #2c2c2c;
+}
+
+.status.success{
+  color:#9ee8b9;
+  background:#102016;
+  border:1px solid #285b3d;
+}
+
+.status.error{
+  color:#ffb1ad;
+  background:#241211;
+  border:1px solid #65312f;
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:3000;
+  background:rgba(0,0,0,.75);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal-overlay.active{
+  display:flex;
+}
+
+.modal{
+  width:min(560px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#151515;
+  border:1px solid #333;
+  border-radius:16px;
+  padding:23px;
+  box-shadow:0 25px 80px rgba(0,0,0,.6);
+}
+
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.modal-header h2{
+  margin:0;
+  color:var(--gold2);
+}
+
+.close-modal{
+  border:0;
+  background:none;
+  color:#aaa;
+  font-size:25px;
+}
+
+.modal form{
+  display:grid;
+  gap:11px;
+}
+
+.modal textarea{
+  min-height:130px;
+  resize:vertical;
+}
+
+/* =========================================================
+   EMPTY / NOT FOUND
+========================================================= */
+
+.empty{
+  padding:45px 20px;
+  text-align:center;
+  color:#888;
+}
+
+.empty h2{
+  color:#ddd;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+  border-top:1px solid var(--border);
+  padding:28px 0;
+  color:#777;
+  text-align:center;
+}
+
+footer a{
+  color:var(--gold2);
+  text-decoration:none;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:850px){
+
+  .nav{
+    display:none;
+    position:absolute;
+    top:72px;
+    left:0;
+    right:0;
+    padding:15px;
+    background:#0c0c0c;
+    border-bottom:1px solid var(--border);
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .nav.open{
+    display:flex;
+  }
+
+  .mobile-menu{
+    display:block;
+  }
+
+  .profile-grid{
+    grid-template-columns:1fr;
+  }
+
+  .profile-top{
+    flex-direction:column;
+  }
+
+  .business-logo{
+    width:105px;
+    height:105px;
+    flex-basis:105px;
+  }
+
+  .info-grid{
+    grid-template-columns:1fr;
+  }
+
+  .product-grid{
+    grid-template-columns:1fr;
+  }
+
+  .photo-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:550px){
+
+  .page{
+    padding-top:22px;
+  }
+
+  .profile-hero{
+    padding:20px;
+    border-radius:15px;
+  }
+
+  .profile-card{
+    padding:18px;
+  }
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .photo-grid img{
+    height:145px;
+  }
+
+  #businessMap{
+    height:280px;
+  }
+}
+</style>
 </head>
 
-<body class="business-page">
+<body>
 
-  <header class="site-header">
-    <div class="header-inner">
+<header class="site-header">
+  <div class="container header-inner">
 
-      <!--
-        business.html is inside /pages/.
-        Therefore ../logo.png points to the root logo.
-      -->
-      <a href="/pages/index.html" class="brand" aria-label="NearAfrica home">
-        <img
-          src="../logo.png"
-          class="brand-logo"
-          alt="NearAfrica"
-          onerror="this.style.display='none';"
-        >
+    <a class="logo" href="/pages/index.html">
+      <div class="logo-mark">NA</div>
+      Near<span>Africa</span>
+    </a>
 
-        <span class="brand-text">
-          Near<span>Africa</span>
-        </span>
+    <nav class="nav" id="mainNav">
+      <a href="/pages/index.html">Home</a>
+      <a href="/pages/search.html">Explore</a>
+      <a href="/pages/list-business.html">List Your Business</a>
+      <a href="/pages/claim-business.html">Claim Business</a>
+    </nav>
+
+    <button
+      class="mobile-menu"
+      id="mobileMenuButton"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
+
+  </div>
+</header>
+
+<main class="page">
+
+  <div class="container">
+
+    <div id="statusMessage"></div>
+
+    <div id="loadingState" class="loading">
+
+      <div>
+
+        <div class="spinner"></div>
+
+        <div>
+          Loading business profile...
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="notFoundState" class="empty hidden">
+
+      <h2>
+        Business Not Found
+      </h2>
+
+      <p id="notFoundMessage">
+        This business could not be loaded.
+      </p>
+
+      <a
+        class="btn btn-primary"
+        href="/pages/search.html"
+      >
+        Back to Explore
       </a>
 
-      <nav class="nav" aria-label="Main navigation">
-        <a href="/pages/index.html">Home</a>
-        <a href="/pages/search.html">Explore</a>
-        <a href="/pages/list-business.html">List Your Business</a>
-      </nav>
-
-    </div>
-  </header>
-
-  <main class="profile-container">
-
-    <div id="businessContent">
-      <div class="loading">
-        Loading business...
-      </div>
     </div>
 
-  </main>
+    <div
+      id="businessContent"
+      class="hidden"
+    ></div>
 
-  <!-- ACTION MODAL -->
-  <div
-    id="actionModal"
-    class="modal-backdrop"
-    aria-hidden="true"
-  >
-    <div class="modal">
-
-      <div class="modal-header">
-        <h2 id="modalTitle">
-          NearAfrica
-        </h2>
-
-        <button
-          type="button"
-          class="modal-close"
-          id="modalClose"
-          aria-label="Close"
-        >
-          ×
-        </button>
-      </div>
-
-      <div
-        id="modalBody"
-        class="modal-body"
-      ></div>
-
-    </div>
   </div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</main>
 
-  <script>
-  (() => {
+<footer>
 
-    "use strict";
+  <div class="container">
 
-    const API_URL =
-      "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+    <div>
+      © <span id="year"></span> NearAfrica.
+      Find Great Businesses Near You.
+    </div>
 
-    const content =
-      document.getElementById("businessContent");
+  </div>
 
-    const modal =
-      document.getElementById("actionModal");
+</footer>
 
-    const modalTitle =
-      document.getElementById("modalTitle");
+<!-- ========================================================
+     MODAL
+======================================================== -->
 
-    const modalBody =
-      document.getElementById("modalBody");
+<div
+  class="modal-overlay"
+  id="modalOverlay"
+  aria-hidden="true"
+>
 
-    const modalClose =
-      document.getElementById("modalClose");
+  <div class="modal">
 
-    let activeMap = null;
-    let currentBusiness = null;
-    let currentResult = null;
+    <div class="modal-header">
 
-    let activeClaimId = null;
-    let resendCooldownTimer = null;
-    let resendCooldownSeconds = 0;
+      <h2 id="modalTitle">
+        Action
+      </h2>
 
-    /* --------------------------------------------------
-       IDENTIFIER
-    -------------------------------------------------- */
+      <button
+        class="close-modal"
+        id="closeModal"
+        type="button"
+        aria-label="Close"
+      >
+        ×
+      </button>
 
-    function getIdentifier() {
+    </div>
 
-      const params =
-        new URLSearchParams(window.location.search);
+    <div id="modalBody"></div>
 
-      return (
-        params.get("id") ||
-        params.get("business_id") ||
-        params.get("slug")
+  </div>
+
+</div>
+
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+></script>
+
+<script>
+(() => {
+
+"use strict";
+
+/* =========================================================
+   CONFIG
+========================================================= */
+
+const API_URL =
+  "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+
+const OWNER_TOKEN_KEY =
+  "nearafrica_owner_token";
+
+const VISITOR_KEY =
+  "nearafrica_visitor_key";
+
+let activeMap = null;
+let activeBusiness = null;
+let activeClaimId = null;
+let resendCooldownSeconds = 0;
+let resendCooldownTimer = null;
+
+/* =========================================================
+   BASIC HELPERS
+========================================================= */
+
+function escapeHtml(value){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+    return "";
+  }
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function escapeAttribute(value){
+  return escapeHtml(value);
+}
+
+function clean(value){
+  return String(value ?? "").trim();
+}
+
+function normalizeUrl(url){
+
+  const value =
+    clean(url);
+
+  if(!value){
+    return "";
+  }
+
+  if(
+    /^https?:\/\//i.test(value)
+  ){
+    return value;
+  }
+
+  return "https://" + value;
+}
+
+function formatNumber(value){
+
+  const number =
+    Number(value);
+
+  if(
+    !Number.isFinite(number)
+  ){
+    return "0";
+  }
+
+  return number.toLocaleString();
+}
+
+function stars(rating){
+
+  const value =
+    Math.max(
+      0,
+      Math.min(
+        5,
+        Math.round(
+          Number(rating) || 0
+        )
+      )
+    );
+
+  return (
+    "★".repeat(value) +
+    "☆".repeat(5 - value)
+  );
+}
+
+function getVisitorKey(){
+
+  try{
+
+    let key =
+      localStorage.getItem(
+        VISITOR_KEY
+      );
+
+    if(!key){
+
+      key =
+        "visitor_" +
+        cryptoRandom();
+
+      localStorage.setItem(
+        VISITOR_KEY,
+        key
       );
     }
 
-    /* --------------------------------------------------
-       SECURITY / HTML
-    -------------------------------------------------- */
+    return key;
 
-    function escapeHtml(value) {
+  }catch(error){
 
-      const div =
-        document.createElement("div");
+    return (
+      "visitor_" +
+      cryptoRandom()
+    );
+  }
+}
 
-      div.textContent =
-        value === null ||
-        value === undefined
-          ? ""
-          : String(value);
+function cryptoRandom(){
 
-      return div.innerHTML;
-    }
+  if(
+    window.crypto &&
+    typeof window.crypto.randomUUID ===
+      "function"
+  ){
+    return window.crypto.randomUUID();
+  }
 
-    /* --------------------------------------------------
-       GENERAL FORMATTERS
-    -------------------------------------------------- */
+  return (
+    Date.now().toString(36) +
+    Math.random()
+      .toString(36)
+      .slice(2)
+  );
+}
 
-    function normalizeCategory(category) {
+/* =========================================================
+   API
+========================================================= */
 
-      if (!category) return "";
+async function apiRequest(
+  path,
+  options = {}
+){
 
-      return String(category)
-        .replace(/[-_]/g, " ")
-        .replace(/\b\w/g, c => c.toUpperCase());
-    }
+  const headers = {
+    "Content-Type":
+      "application/json",
+    ...(options.headers || {})
+  };
 
-    function formatLocation(business) {
+  let response;
 
-      return [
-        business.address,
-        business.city,
-        business.state,
-        business.country
-      ]
-        .filter(Boolean)
-        .join(", ");
-    }
+  try{
 
-    function formatDate(value) {
-
-      if (!value) return "";
-
-      const date =
-        new Date(value);
-
-      if (Number.isNaN(date.getTime())) {
-        return String(value);
-      }
-
-      return date.toLocaleDateString(
-        undefined,
+    response =
+      await fetch(
+        API_URL + path,
         {
-          year:"numeric",
-          month:"short",
-          day:"numeric"
+          ...options,
+          headers,
+          cache:
+            options.cache ||
+            "no-store"
         }
       );
+
+  }catch(error){
+
+    throw new Error(
+      "Unable to connect to NearAfrica right now. Please check your internet connection and try again."
+    );
+  }
+
+  let data = null;
+
+  try{
+
+    data =
+      await response.json();
+
+  }catch(_){
+
+    data = null;
+  }
+
+  if(!response.ok){
+
+    throw new Error(
+      data?.message ||
+      data?.error ||
+      `Request failed (${response.status})`
+    );
+  }
+
+  if(
+    data &&
+    data.status === "error"
+  ){
+
+    throw new Error(
+      data.message ||
+      "Request failed."
+    );
+  }
+
+  return data || {};
+}
+
+/* =========================================================
+   URL / IDENTIFIER
+========================================================= */
+
+function getIdentifier(){
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  return (
+    params.get("id") ||
+    params.get("business_id") ||
+    params.get("slug") ||
+    ""
+  ).trim();
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function showStatus(
+  message,
+  type = "info"
+){
+
+  const element =
+    document.getElementById(
+      "statusMessage"
+    );
+
+  if(!element){
+    return;
+  }
+
+  element.style.display =
+    message
+      ? "block"
+      : "none";
+
+  element.textContent =
+    message || "";
+
+  element.style.color =
+    type === "error"
+      ? "#ffb1ad"
+      : type === "success"
+        ? "#9ee8b9"
+        : "#ccc";
+
+  element.style.borderColor =
+    type === "error"
+      ? "#65312f"
+      : type === "success"
+        ? "#285b3d"
+        : "#292929";
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+const modalOverlay =
+  document.getElementById(
+    "modalOverlay"
+  );
+
+const modalTitle =
+  document.getElementById(
+    "modalTitle"
+  );
+
+const modalBody =
+  document.getElementById(
+    "modalBody"
+  );
+
+function openModal(
+  title,
+  html
+){
+
+  modalTitle.textContent =
+    title;
+
+  modalBody.innerHTML =
+    html;
+
+  modalOverlay.classList.add(
+    "active"
+  );
+
+  modalOverlay.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.style.overflow =
+    "hidden";
+}
+
+function closeModal(){
+
+  modalOverlay.classList.remove(
+    "active"
+  );
+
+  modalOverlay.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  modalBody.innerHTML = "";
+
+  document.body.style.overflow =
+    "";
+}
+
+document
+  .getElementById("closeModal")
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+modalOverlay.addEventListener(
+  "click",
+  event => {
+
+    if(
+      event.target ===
+      modalOverlay
+    ){
+
+      closeModal();
     }
-
-    function renderStars(rating) {
-
-      const numeric =
-        Number(rating);
-
-      if (!Number.isFinite(numeric)) {
-        return "";
-      }
-
-      const rounded =
-        Math.max(
-          0,
-          Math.min(
-            5,
-            Math.round(numeric)
-          )
-        );
-
-      return (
-        "★".repeat(rounded) +
-        "☆".repeat(5 - rounded)
-      );
-    }
-
-    function cleanWhatsAppNumber(value) {
-
-      if (!value) return "";
-
-      return String(value)
-        .replace(/[^\d]/g, "");
-    }
-
-    function normalizeWebsite(value) {
-
-      if (!value) return "";
-
-      const trimmed =
-        String(value).trim();
-
-      if (/^https?:\/\//i.test(trimmed)) {
-        return trimmed;
-      }
-
-      return "https://" + trimmed;
-    }
-
-    /* --------------------------------------------------
-       ERROR STATE
-    -------------------------------------------------- */
-
-    function showNotFound(message) {
-
-      content.innerHTML = `
-        <div class="error-state">
-
-          <h2>Business Not Found</h2>
-
-          <p>
-            ${escapeHtml(
-              message ||
-              "This business could not be found."
-            )}
-          </p>
-
-          <a
-            href="/pages/index.html"
-            class="btn btn-primary"
-          >
-            Back to NearAfrica
-          </a>
-
-        </div>
-      `;
-    }
-
-    /* --------------------------------------------------
-       API
-    -------------------------------------------------- */
-
-    async function apiRequest(
-      path,
-      options = {}
-    ) {
-
-      const response =
-        await fetch(
-          `${API_URL}${path}`,
-          {
-            ...options,
-
-            headers: {
-              ...(options.body
-                ? {
-                    "Content-Type":
-                      "application/json"
-                  }
-                : {}),
-
-              ...(options.headers || {})
-            },
-
-            cache:
-              options.cache ||
-              "no-store"
-          }
-        );
-
-      let data = {};
-
-      const text =
-        await response.text();
-
-      if (text) {
-
-        try {
-
-          data =
-            JSON.parse(text);
-
-        } catch {
-
-          data = {
-            status:"error",
-            message:
-              "The server returned an invalid response."
-          };
-        }
-      }
-
-      if (!response.ok) {
-
-        const error =
-          new Error(
-            data.message ||
-            `Request failed with HTTP ${response.status}.`
-          );
-
-        error.status =
-          response.status;
-
-        error.data = data;
-
-        throw error;
-      }
-
-      if (
-        data &&
-        data.status &&
-        data.status !== "ok"
-      ) {
-
-        const error =
-          new Error(
-            data.message ||
-            "The server rejected the request."
-          );
-
-        error.status =
-          response.status;
-
-        error.data = data;
-
-        throw error;
-      }
-
-      return data;
-    }
-
-    /* --------------------------------------------------
-       PRODUCTS
-    -------------------------------------------------- */
-
-    function formatProductPrice(product) {
-
-      if (
-        product.price === null ||
-        product.price === undefined ||
-        product.price === ""
-      ) {
-        return "Price not specified";
-      }
-
-      const price =
-        Number(product.price);
-
-      if (!Number.isFinite(price)) {
-        return "Price not specified";
-      }
-
-      return (
-        (product.currency || "NGN") +
-        " " +
-        price.toLocaleString(
-          undefined,
-          {
-            minimumFractionDigits:0,
-            maximumFractionDigits:2
-          }
-        )
-      );
-    }
-
-    function renderProducts(products) {
-
-      if (
-        !Array.isArray(products) ||
-        products.length === 0
-      ) {
-
-        return `
-          <div class="empty-state">
-            No products or services have been added yet.
-          </div>
-        `;
-      }
-
-      return `
-        <div class="products-list">
-
-          ${products.map(product => {
-
-            const type =
-              product.item_type === "service"
-                ? "Service"
-                : "Product";
-
-            const available =
-              Number(product.available) === 1 ||
-              product.available === true;
-
-            return `
-              <div class="product-card">
-
-                <div class="product-top">
-
-                  <div>
-
-                    <h3 class="product-name">
-                      ${escapeHtml(
-                        product.name ||
-                        "Unnamed item"
-                      )}
-                    </h3>
-
-                    <div class="product-type">
-                      ${escapeHtml(type)}
-                    </div>
-
-                  </div>
-
-                  <div class="product-price">
-                    ${escapeHtml(
-                      formatProductPrice(product)
-                    )}
-                  </div>
-
-                </div>
-
-                <p class="product-description">
-                  ${escapeHtml(
-                    product.description ||
-                    "No description provided."
-                  )}
-                </p>
-
-                <div class="product-meta">
-
-                  ${
-                    product.category
-                      ? `
-                        <span>
-                          Category:
-                          ${escapeHtml(
-                            product.category
-                          )}
-                        </span>
-                      `
-                      : ""
-                  }
-
-                  <span
-                    class="${
-                      available
-                        ? ""
-                        : "product-unavailable"
-                    }"
-                  >
-                    ${
-                      available
-                        ? "Available"
-                        : "Currently unavailable"
-                    }
-                  </span>
-
-                </div>
-
-              </div>
-            `;
-
-          }).join("")}
-
-        </div>
-      `;
-    }
-
-    /* --------------------------------------------------
-       HOURS
-    -------------------------------------------------- */
-
-    function normalizeHours(hours) {
-
-      if (!hours) return null;
-
-      if (Array.isArray(hours)) {
-        return hours;
-      }
-
-      if (typeof hours === "object") {
-
-        if (Array.isArray(hours.results)) {
-          return hours.results;
-        }
-
-        if (Array.isArray(hours.hours)) {
-          return hours.hours;
-        }
-
-        return hours;
-      }
-
-      return null;
-    }
-
-    function formatHoursValue(value) {
-
-      if (
-        value === null ||
-        value === undefined ||
-        value === ""
-      ) {
-        return "Not specified";
-      }
-
-      return String(value);
-    }
-
-    function getDayName(value) {
-
-      if (
-        value === null ||
-        value === undefined ||
-        value === ""
-      ) {
-        return "";
-      }
-
-      return String(value)
-        .trim()
-        .toLowerCase();
-    }
-
-    function renderHours(hours) {
-
-      const normalized =
-        normalizeHours(hours);
-
-      if (!normalized) {
-
-        return `
-          <div class="empty-state">
-            Opening hours are not available yet.
-          </div>
-        `;
-      }
-
-      const dayOrder = [
-        "monday",
-        "tuesday",
-        "wednesday",
-        "thursday",
-        "friday",
-        "saturday",
-        "sunday"
-      ];
-
-      const labels = {
-        monday:"Monday",
-        tuesday:"Tuesday",
-        wednesday:"Wednesday",
-        thursday:"Thursday",
-        friday:"Friday",
-        saturday:"Saturday",
-        sunday:"Sunday"
-      };
-
-      const sundayFirst = [
-        "sunday",
-        "monday",
-        "tuesday",
-        "wednesday",
-        "thursday",
-        "friday",
-        "saturday"
-      ];
-
-      const today =
-        new Date()
-          .toLocaleDateString(
-            "en-US",
-            {
-              weekday:"long"
-            }
-          )
-          .toLowerCase();
-
-      if (Array.isArray(normalized)) {
-
-        const byDay = {};
-
-        normalized.forEach(item => {
-
-          if (
-            !item ||
-            typeof item !== "object"
-          ) {
-            return;
-          }
-
-          let day = "";
-
-          if (
-            item.day_of_week !== undefined &&
-            item.day_of_week !== null &&
-            item.day_of_week !== ""
-          ) {
-
-            const numeric =
-              Number(item.day_of_week);
-
-            if (
-              Number.isInteger(numeric) &&
-              numeric >= 0 &&
-              numeric <= 6
-            ) {
-              day =
-                sundayFirst[numeric];
-            }
-          }
-
-          if (!day) {
-
-            day =
-              getDayName(
-                item.day ||
-                item.day_name ||
-                item.weekday
-              );
-          }
-
-          if (day) {
-            byDay[day] = item;
-          }
-        });
-
-        return `
-          <div class="hours-list">
-
-            ${dayOrder.map(day => {
-
-              const item =
-                byDay[day];
-
-              if (!item) {
-
-                return `
-                  <div
-                    class="hours-row ${
-                      today === day
-                        ? "hours-today"
-                        : ""
-                    }"
-                  >
-
-                    <div class="hours-day">
-                      ${labels[day]}
-                    </div>
-
-                    <div class="hours-time hours-closed">
-                      Hours not available
-                    </div>
-
-                  </div>
-                `;
-              }
-
-              const closed =
-                Number(item.is_closed) === 1 ||
-                item.is_closed === true ||
-                Number(item.closed) === 1 ||
-                item.closed === true ||
-                String(
-                  item.status || ""
-                ).toLowerCase() === "closed";
-
-              const is24 =
-                Number(item.is_24_hours) === 1 ||
-                item.is_24_hours === true ||
-                String(
-                  item.status || ""
-                ).toLowerCase() === "24";
-
-              const opening =
-                item.opening_time ||
-                item.open_time ||
-                item.open ||
-                item.opens_at;
-
-              const closing =
-                item.closing_time ||
-                item.close_time ||
-                item.close ||
-                item.closes_at;
-
-              let display = "Closed";
-              let className = "hours-closed";
-
-              if (is24) {
-
-                display = "24 Hours";
-                className = "hours-open";
-
-              } else if (!closed) {
-
-                if (opening || closing) {
-
-                  display =
-                    `${formatHoursValue(opening)} – ${formatHoursValue(closing)}`;
-
-                  className =
-                    "hours-open";
-
-                } else if (item.hours) {
-
-                  display =
-                    item.hours;
-
-                  className =
-                    "hours-open";
-
-                } else {
-
-                  display =
-                    "Hours not available";
-                }
-              }
-
-              return `
-                <div
-                  class="hours-row ${
-                    today === day
-                      ? "hours-today"
-                      : ""
-                  }"
-                >
-
-                  <div class="hours-day">
-                    ${labels[day]}
-                  </div>
-
-                  <div
-                    class="hours-time ${className}"
-                  >
-                    ${escapeHtml(display)}
-                  </div>
-
-                </div>
-              `;
-
-            }).join("")}
-
-          </div>
-        `;
-      }
-
-      if (typeof normalized === "object") {
-
-        return `
-          <div class="hours-list">
-
-            ${dayOrder.map(day => {
-
-              const item =
-                normalized[day];
-
-              let display = "Closed";
-              let closed = false;
-
-              if (typeof item === "string") {
-
-                display = item;
-
-                closed =
-                  item
-                    .toLowerCase()
-                    .includes("closed");
-
-              } else if (
-                item &&
-                typeof item === "object"
-              ) {
-
-                closed =
-                  Number(
-                    item.is_closed ??
-                    item.closed ??
-                    0
-                  ) === 1 ||
-                  item.is_closed === true ||
-                  item.closed === true;
-
-                const is24 =
-                  Number(
-                    item.is_24_hours ??
-                    0
-                  ) === 1 ||
-                  item.is_24_hours === true;
-
-                if (is24) {
-
-                  display =
-                    "24 Hours";
-
-                } else if (!closed) {
-
-                  const opening =
-                    item.opening_time ||
-                    item.open_time ||
-                    item.open ||
-                    item.opens_at;
-
-                  const closing =
-                    item.closing_time ||
-                    item.close_time ||
-                    item.close ||
-                    item.closes_at;
-
-                  if (opening || closing) {
-
-                    display =
-                      `${formatHoursValue(opening)} – ${formatHoursValue(closing)}`;
-
-                  } else if (item.hours) {
-
-                    display =
-                      item.hours;
-
-                  } else {
-
-                    display =
-                      "Hours not available";
-                  }
-                }
-              }
-
-              return `
-                <div
-                  class="hours-row ${
-                    today === day
-                      ? "hours-today"
-                      : ""
-                  }"
-                >
-
-                  <div class="hours-day">
-                    ${labels[day]}
-                  </div>
-
-                  <div
-                    class="hours-time ${
-                      closed
-                        ? "hours-closed"
-                        : "hours-open"
-                    }"
-                  >
-                    ${escapeHtml(display)}
-                  </div>
-
-                </div>
-              `;
-
-            }).join("")}
-
-          </div>
-        `;
-      }
-
-      return `
-        <div class="empty-state">
-          Opening hours are not available yet.
-        </div>
-      `;
-    }
-
-    /* --------------------------------------------------
-       FAVORITES
-       Browser-side save so this feature works even
-       without requiring a new API payload.
-    -------------------------------------------------- */
-
-    function getFavoriteKey() {
-
-      if (!currentBusiness) {
-        return "";
-      }
-
-      return String(
-        currentBusiness.id ||
-        currentBusiness.slug ||
-        ""
-      );
-    }
-
-    function isFavorite() {
-
-      const key =
-        getFavoriteKey();
-
-      if (!key) return false;
-
-      try {
-
-        const favorites =
-          JSON.parse(
-            localStorage.getItem(
-              "nearafrica_favorites"
-            ) || "[]"
-          );
-
-        return (
-          Array.isArray(favorites) &&
-          favorites
-            .map(String)
-            .includes(key)
-        );
-
-      } catch {
-
-        return false;
-      }
-    }
-
-    function toggleFavorite() {
-
-      const key =
-        getFavoriteKey();
-
-      if (!key) return;
-
-      try {
-
-        let favorites =
-          JSON.parse(
-            localStorage.getItem(
-              "nearafrica_favorites"
-            ) || "[]"
-          );
-
-        if (!Array.isArray(favorites)) {
-          favorites = [];
-        }
-
-        favorites =
-          favorites.map(String);
-
-        const index =
-          favorites.indexOf(key);
-
-        const nowFavorite =
-          index === -1;
-
-        if (nowFavorite) {
-
-          favorites.push(key);
-
-        } else {
-
-          favorites.splice(
-            index,
-            1
-          );
-        }
-
-        localStorage.setItem(
-          "nearafrica_favorites",
-          JSON.stringify(favorites)
-        );
-
-        updateFavoriteButtons();
-
-      } catch (error) {
-
-        console.warn(
-          "Favorite storage failed:",
-          error
-        );
-      }
-    }
-
-    function updateFavoriteButtons() {
-
-      const favorite =
-        isFavorite();
-
-      document
-        .querySelectorAll(
-          ".favorite-button"
-        )
-        .forEach(button => {
-
-          button.classList.toggle(
-            "active",
-            favorite
-          );
-
-          button.textContent =
-            favorite
-              ? "♥ Favorited"
-              : "♡ Favorite";
-
-          button.setAttribute(
-            "aria-pressed",
-            favorite
-              ? "true"
-              : "false"
-          );
-        });
-    }
-
-    /* --------------------------------------------------
-       MODALS
-    -------------------------------------------------- */
-
-    function openModal(
-      title,
-      html
-    ) {
-
-      modalTitle.textContent =
-        title;
-
-      modalBody.innerHTML =
-        html;
-
-      modal.classList.add(
+  }
+);
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key === "Escape" &&
+      modalOverlay.classList.contains(
         "active"
-      );
+      )
+    ){
 
-      modal.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-      document.body.style.overflow =
-        "hidden";
+      closeModal();
     }
+  }
+);
 
-    function closeModal() {
+/* =========================================================
+   FAVORITES
+========================================================= */
 
-      modal.classList.remove(
-        "active"
+function updateFavoriteButtons(){
+
+  document
+    .querySelectorAll(
+      ".favorite-button"
+    )
+    .forEach(button => {
+
+      const active =
+        button.dataset.favorite ===
+        "true";
+
+      button.classList.toggle(
+        "active",
+        active
       );
 
-      modal.setAttribute(
-        "aria-hidden",
-        "true"
+      button.textContent =
+        active
+          ? "★ Saved"
+          : "☆ Save";
+    });
+}
+
+async function loadFavoriteStatus(){
+
+  if(!activeBusiness?.id){
+    return;
+  }
+
+  try{
+
+    const result =
+      await apiRequest(
+        `/businesses/${encodeURIComponent(
+          activeBusiness.id
+        )}/favorites`,
+        {
+          method:"GET"
+        }
       );
 
-      document.body.style.overflow =
-        "";
-    }
+    const favorited =
+      result.favorited === true;
 
-    modalClose.addEventListener(
-      "click",
-      closeModal
+    document
+      .querySelectorAll(
+        ".favorite-button"
+      )
+      .forEach(button => {
+
+        button.dataset.favorite =
+          String(favorited);
+      });
+
+    updateFavoriteButtons();
+
+  }catch(error){
+
+    console.warn(
+      "Favorite status unavailable:",
+      error
+    );
+  }
+}
+
+async function toggleFavorite(){
+
+  if(!activeBusiness?.id){
+    return;
+  }
+
+  const button =
+    this;
+
+  const currentlyFavorite =
+    button.dataset.favorite ===
+    "true";
+
+  button.disabled = true;
+
+  try{
+
+    const method =
+      currentlyFavorite
+        ? "DELETE"
+        : "POST";
+
+    const result =
+      await apiRequest(
+        `/businesses/${encodeURIComponent(
+          activeBusiness.id
+        )}/favorites`,
+        {
+          method,
+          body:
+            JSON.stringify({
+              visitor_key:
+                getVisitorKey()
+            })
+        }
+      );
+
+    const favorited =
+      result.favorited === true;
+
+    document
+      .querySelectorAll(
+        ".favorite-button"
+      )
+      .forEach(element => {
+
+        element.dataset.favorite =
+          String(favorited);
+      });
+
+    updateFavoriteButtons();
+
+  }catch(error){
+
+    showStatus(
+      error.message ||
+      "Unable to update favorite.",
+      "error"
     );
 
-    modal.addEventListener(
-      "click",
-      event => {
-
-        if (
-          event.target === modal
-        ) {
-          closeModal();
-        }
-      }
-    );
-
-    document.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key === "Escape" &&
-          modal.classList.contains("active")
-        ) {
-          closeModal();
-        }
-      }
-    );
-
-    /* --------------------------------------------------
-       REVIEW
-    -------------------------------------------------- */
-
-    function openReviewModal() {
-
-      openModal(
-        "Write a Review",
-        `
-          <p class="small-note">
-            Share your experience with this business.
-            Your review may be moderated before appearing publicly.
-          </p>
-
-          <form
-            id="reviewForm"
-            class="modal-form"
-          >
-
-            <input
-              id="reviewerName"
-              type="text"
-              placeholder="Your name"
-              autocomplete="name"
-              maxlength="100"
-              required
-            >
-
-            <select
-              id="reviewRating"
-              required
-            >
-              <option value="">
-                Select rating
-              </option>
-
-              <option value="5">
-                5 — Excellent
-              </option>
-
-              <option value="4">
-                4 — Very good
-              </option>
-
-              <option value="3">
-                3 — Good
-              </option>
-
-              <option value="2">
-                2 — Fair
-              </option>
-
-              <option value="1">
-                1 — Poor
-              </option>
-            </select>
-
-            <textarea
-              id="reviewComment"
-              placeholder="Write your review..."
-              maxlength="2000"
-              required
-            ></textarea>
-
-            <div
-              id="reviewStatus"
-              class="status"
-            ></div>
-
-            <div class="modal-actions">
-
-              <button
-                type="button"
-                class="btn"
-                data-close-modal
-              >
-                Cancel
-              </button>
-
-              <button
-                type="submit"
-                class="btn btn-primary"
-                id="reviewSubmit"
-              >
-                Submit Review
-              </button>
-
-            </div>
-
-          </form>
-        `
-      );
-
-      const form =
-        document.getElementById(
-          "reviewForm"
-        );
-
-      if (!form) return;
-
-      form.addEventListener(
-        "submit",
-        async event => {
-
-          event.preventDefault();
-
-          const name =
-            document
-              .getElementById(
-                "reviewerName"
-              )
-              .value
-              .trim();
-
-          const rating =
-            Number(
-              document
-                .getElementById(
-                  "reviewRating"
-                )
-                .value
-            );
-
-          const comment =
-            document
-              .getElementById(
-                "reviewComment"
-              )
-              .value
-              .trim();
-
-          const status =
-            document.getElementById(
-              "reviewStatus"
-            );
-
-          const submit =
-            document.getElementById(
-              "reviewSubmit"
-            );
-
-          if (
-            !name ||
-            !Number.isInteger(rating) ||
-            rating < 1 ||
-            rating > 5 ||
-            !comment
-          ) {
-
-            status.className =
-              "status error";
-
-            status.textContent =
-              "Please provide your name, rating and review.";
-
-            return;
-          }
-
-          submit.disabled =
-            true;
-
-          submit.textContent =
-            "Submitting...";
-
-          status.className =
-            "status info";
-
-          status.textContent =
-            "Submitting your review...";
-
-          try {
-
-            await apiRequest(
-              `/businesses/${encodeURIComponent(
-                currentBusiness.id ||
-                getIdentifier()
-              )}/reviews`,
-              {
-                method:"POST",
-
-                body:
-                  JSON.stringify({
-                    name:name,
-                    rating:rating,
-                    comment:comment
-                  })
-              }
-            );
-
-            status.className =
-              "status success";
-
-            status.textContent =
-              "Your review was submitted successfully and may require moderation before publication.";
-
-            submit.textContent =
-              "Submitted";
-
-            setTimeout(
-              closeModal,
-              1800
-            );
-
-          } catch (error) {
-
-            console.error(
-              "Review submission failed:",
-              error
-            );
-
-            status.className =
-              "status error";
-
-            status.textContent =
-              error.message ||
-              "Unable to submit your review.";
-
-            submit.disabled =
-              false;
-
-            submit.textContent =
-              "Submit Review";
-          }
-        }
-      );
-
-      const closeButton =
-        modalBody.querySelector(
-          "[data-close-modal]"
-        );
-
-      if (closeButton) {
-        closeButton.addEventListener(
-          "click",
-          closeModal
-        );
-      }
-    }
-
-    /* --------------------------------------------------
-       REPORT / CORRECTION / DISPUTE
-    -------------------------------------------------- */
-
-    function openReportModal(type) {
-
-      const configurations = {
-
-        report: {
-          title:"Report Listing",
-
-          reasonOptions:`
-            <option value="">
-              Select a reason
-            </option>
-
-            <option value="wrong_info">
-              Wrong information
-            </option>
-
-            <option value="closed">
-              Business is closed
-            </option>
-
-            <option value="duplicate">
-              Duplicate listing
-            </option>
-
-            <option value="location">
-              Wrong location
-            </option>
-
-            <option value="category">
-              Wrong category
-            </option>
-
-            <option value="inappropriate">
-              Inappropriate content
-            </option>
-
-            <option value="copyright">
-              Copyright issue
-            </option>
-
-            <option value="other">
-              Other
-            </option>
-          `,
-
-          intro:
-            "Help us keep NearAfrica accurate by reporting an issue with this listing."
-        },
-
-        correction: {
-          title:"Suggest a Correction",
-
-          reasonOptions:`
-            <option value="">
-              Select what needs correcting
-            </option>
-
-            <option value="business_name">
-              Business name
-            </option>
-
-            <option value="category">
-              Category
-            </option>
-
-            <option value="address">
-              Address/location
-            </option>
-
-            <option value="phone">
-              Phone
-            </option>
-
-            <option value="website">
-              Website
-            </option>
-
-            <option value="hours">
-              Opening hours
-            </option>
-
-            <option value="description">
-              Description
-            </option>
-
-            <option value="other">
-              Other
-            </option>
-          `,
-
-          intro:
-            "Tell us what information should be corrected. We will review the suggestion."
-        },
-
-        dispute: {
-          title:"Claim Dispute",
-
-          reasonOptions:`
-            <option value="">
-              Select a dispute reason
-            </option>
-
-            <option value="unauthorized_claim">
-              I believe this claim is unauthorized
-            </option>
-
-            <option value="wrong_owner">
-              The wrong person claimed this business
-            </option>
-
-            <option value="ownership_conflict">
-              There is an ownership conflict
-            </option>
-
-            <option value="other">
-              Other
-            </option>
-          `,
-
-          intro:
-            "Use this form if you believe a business claim or ownership verification should be reviewed."
-        }
-
-      };
-
-      const config =
-        configurations[type] ||
-        configurations.report;
-
-      openModal(
-        config.title,
-        `
-          <p class="small-note">
-            ${escapeHtml(config.intro)}
-          </p>
-
-          <form
-            id="reportForm"
-            class="modal-form"
-          >
-
-            <input
-              id="reporterName"
-              type="text"
-              placeholder="Your name (optional)"
-              maxlength="100"
-            >
-
-            <input
-              id="reporterEmail"
-              type="email"
-              placeholder="Your email (optional)"
-              maxlength="150"
-              autocomplete="email"
-            >
-
-            <select
-              id="reportReason"
-              required
-            >
-              ${config.reasonOptions}
-            </select>
-
-            <textarea
-              id="reportDetails"
-              placeholder="Explain the issue..."
-              maxlength="3000"
-              required
-            ></textarea>
-
-            <div
-              id="reportStatus"
-              class="status"
-            ></div>
-
-            <div class="modal-actions">
-
-              <button
-                type="button"
-                class="btn"
-                data-close-modal
-              >
-                Cancel
-              </button>
-
-              <button
-                type="submit"
-                class="btn btn-primary"
-                id="reportSubmit"
-              >
-                Submit
-              </button>
-
-            </div>
-
-          </form>
-        `
-      );
-
-      const form =
-        document.getElementById(
-          "reportForm"
-        );
-
-      if (!form) return;
-
-      form.addEventListener(
-        "submit",
-        async event => {
-
-          event.preventDefault();
-
-          const name =
-            document
-              .getElementById(
-                "reporterName"
-              )
-              .value
-              .trim();
-
-          const email =
-            document
-              .getElementById(
-                "reporterEmail"
-              )
-              .value
-              .trim();
-
-          const reason =
-            document
-              .getElementById(
-                "reportReason"
-              )
-              .value;
-
-          const details =
-            document
-              .getElementById(
-                "reportDetails"
-              )
-              .value
-              .trim();
-
-          const status =
-            document.getElementById(
-              "reportStatus"
-            );
-
-          const submit =
-            document.getElementById(
-              "reportSubmit"
-            );
-
-          if (
-            !reason ||
-            !details
-          ) {
-
-            status.className =
-              "status error";
-
-            status.textContent =
-              "Please select a reason and describe the issue.";
-
-            return;
-          }
-
-          if (
-            email &&
-            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-          ) {
-
-            status.className =
-              "status error";
-
-            status.textContent =
-              "Please enter a valid email address.";
-
-            return;
-          }
-
-          submit.disabled =
-            true;
-
-          submit.textContent =
-            "Submitting...";
-
-          status.className =
-            "status info";
-
-          status.textContent =
-            "Submitting your request...";
-
-          try {
-
-            await apiRequest(
-              "/reports",
-              {
-                method:"POST",
-
-                body:
-                  JSON.stringify({
-
-                    business_id:
-                      currentBusiness.id,
-
-                    report_type:
-                      type === "correction"
-                        ? "correction"
-                        : type === "dispute"
-                        ? "claim_dispute"
-                        : "listing_report",
-
-                    reason:
-                      reason,
-
-                    details:
-                      details,
-
-                    reporter_name:
-                      name || null,
-
-                    reporter_email:
-                      email || null
-                  })
-              }
-            );
-
-            status.className =
-              "status success";
-
-            status.textContent =
-              "Thank you. Your submission has been received for review.";
-
-            submit.textContent =
-              "Submitted";
-
-            setTimeout(
-              closeModal,
-              1800
-            );
-
-          } catch (error) {
-
-            console.error(
-              "Trust action failed:",
-              error
-            );
-
-            status.className =
-              "status error";
-
-            status.textContent =
-              error.message ||
-              "Unable to submit your request.";
-
-            submit.disabled =
-              false;
-
-            submit.textContent =
-              "Submit";
-          }
-        }
-      );
-
-      const closeButton =
-        modalBody.querySelector(
-          "[data-close-modal]"
-        );
-
-      if (closeButton) {
-        closeButton.addEventListener(
-          "click",
-          closeModal
-        );
-      }
-    }
-
-    /* --------------------------------------------------
-       REVIEWS
-    -------------------------------------------------- */
-
-    function renderReviews(reviews) {
-
-      if (
-        !Array.isArray(reviews) ||
-        reviews.length === 0
-      ) {
-
-        return `
-          <div class="empty-state">
-            No approved reviews yet.
-          </div>
-        `;
-      }
-
-      return reviews
-        .map(review => {
-
-          return `
-            <div class="review">
-
-              <div class="review-top">
-
-                <div class="review-name">
-                  ${escapeHtml(
-                    review.name ||
-                    review.reviewer_name ||
-                    "Anonymous"
-                  )}
-                </div>
-
-                <div class="review-date">
-                  ${escapeHtml(
-                    formatDate(
-                      review.created_at
-                    )
-                  )}
-                </div>
-
-              </div>
-
-              <div class="stars">
-                ${escapeHtml(
-                  renderStars(
-                    review.rating
-                  )
-                )}
-              </div>
-
-              <p class="review-comment">
-                ${escapeHtml(
-                  review.comment ||
-                  review.review ||
-                  ""
-                )}
-              </p>
-
-            </div>
-          `;
-
-        })
-        .join("");
-    }
-
-    /* --------------------------------------------------
-       BUSINESS LOGO
-    -------------------------------------------------- */
-
-    function getBusinessLogo(business) {
-
-      const candidates = [
-        business.logo_url,
-        business.logo,
-        business.image_url,
-        business.image
-      ];
-
-      for (
-        const candidate of candidates
-      ) {
-
-        if (
-          candidate &&
-          String(candidate).trim()
-        ) {
-          return String(candidate).trim();
-        }
-      }
-
-      return "";
-    }
-
-    function createBusinessLogoHtml(
-      business,
-      initial
-    ) {
-
-      const logo =
-        getBusinessLogo(
-          business
-        );
-
-      const name =
-        business.business_name ||
-        business.name ||
-        "Business";
-
-      if (!logo) {
-
-        return `
-          <div
-            class="business-placeholder"
-            aria-label="${escapeHtml(name)}"
-          >
-            ${escapeHtml(initial)}
-          </div>
-        `;
-      }
-
-      return `
-        <img
-          class="business-logo"
-          src="${escapeHtml(logo)}"
-          alt="${escapeHtml(name)}"
-          loading="eager"
-          onerror="
-            this.onerror=null;
-            this.style.display='none';
-            this.nextElementSibling.style.display='flex';
-          "
+  }finally{
+
+    button.disabled = false;
+  }
+}
+
+/* =========================================================
+   REVIEW
+========================================================= */
+
+function openReviewModal(){
+
+  openModal(
+    "Leave a Review",
+    `
+      <form id="reviewForm">
+
+        <input
+          type="text"
+          id="reviewName"
+          maxlength="100"
+          placeholder="Your name"
+          required
         >
+
+        <select
+          id="reviewRating"
+          required
+        >
+          <option value="">
+            Rating
+          </option>
+
+          <option value="5">
+            5 — Excellent
+          </option>
+
+          <option value="4">
+            4 — Very Good
+          </option>
+
+          <option value="3">
+            3 — Good
+          </option>
+
+          <option value="2">
+            2 — Fair
+          </option>
+
+          <option value="1">
+            1 — Poor
+          </option>
+
+        </select>
+
+        <textarea
+          id="reviewComment"
+          maxlength="2000"
+          placeholder="Write your review..."
+          required
+        ></textarea>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Submit Review
+        </button>
 
         <div
-          class="business-placeholder"
-          style="display:none;"
-          aria-hidden="true"
+          id="reviewStatus"
+          class="status"
+        ></div>
+
+      </form>
+    `
+  );
+
+  document
+    .getElementById(
+      "reviewForm"
+    )
+    .addEventListener(
+      "submit",
+      submitReview
+    );
+}
+
+async function submitReview(
+  event
+){
+
+  event.preventDefault();
+
+  const status =
+    document.getElementById(
+      "reviewStatus"
+    );
+
+  const name =
+    document.getElementById(
+      "reviewName"
+    ).value.trim();
+
+  const rating =
+    Number(
+      document.getElementById(
+        "reviewRating"
+      ).value
+    );
+
+  const comment =
+    document.getElementById(
+      "reviewComment"
+    ).value.trim();
+
+  if(
+    !name ||
+    !rating ||
+    !comment
+  ){
+
+    status.className =
+      "status error";
+
+    status.textContent =
+      "Please complete all fields.";
+
+    return;
+  }
+
+  try{
+
+    status.className =
+      "status info";
+
+    status.textContent =
+      "Submitting review...";
+
+    await apiRequest(
+      `/businesses/${encodeURIComponent(
+        activeBusiness.id
+      )}/reviews`,
+      {
+        method:"POST",
+        body:
+          JSON.stringify({
+            name,
+            rating,
+            comment
+          })
+      }
+    );
+
+    status.className =
+      "status success";
+
+    status.textContent =
+      "Review submitted for moderation.";
+
+    setTimeout(
+      closeModal,
+      1500
+    );
+
+  }catch(error){
+
+    status.className =
+      "status error";
+
+    status.textContent =
+      error.message ||
+      "Unable to submit review.";
+  }
+}
+
+/* =========================================================
+   REPORT / CORRECTION / DISPUTE
+========================================================= */
+
+function openReportModal(
+  type
+){
+
+  const isReport =
+    type === "report";
+
+  const isCorrection =
+    type === "correction";
+
+  const title =
+    isReport
+      ? "Report Listing"
+      : isCorrection
+        ? "Suggest a Correction"
+        : "Claim Dispute";
+
+  openModal(
+    title,
+    `
+      <form id="actionForm">
+
+        <input
+          type="text"
+          id="actionName"
+          maxlength="150"
+          placeholder="Your name"
+          required
         >
-          ${escapeHtml(initial)}
-        </div>
-      `;
+
+        <input
+          type="email"
+          id="actionEmail"
+          maxlength="254"
+          placeholder="Your email"
+          required
+        >
+
+        ${
+          isCorrection
+            ? `
+              <textarea
+                id="actionChanges"
+                placeholder="What information should be corrected?"
+                required
+              ></textarea>
+            `
+            : `
+              <textarea
+                id="actionReason"
+                placeholder="${
+                  isReport
+                    ? "Tell us what is wrong with this listing."
+                    : "Explain why you are disputing this ownership claim."
+                }"
+                required
+              ></textarea>
+            `
+        }
+
+        ${
+          isCorrection
+            ? `
+              <textarea
+                id="actionReason"
+                placeholder="Optional reason"
+              ></textarea>
+            `
+            : ""
+        }
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Submit
+        </button>
+
+        <div
+          id="actionStatus"
+          class="status"
+        ></div>
+
+      </form>
+    `
+  );
+
+  document
+    .getElementById(
+      "actionForm"
+    )
+    .addEventListener(
+      "submit",
+      event =>
+        submitPublicAction(
+          event,
+          type
+        )
+    );
+}
+
+async function submitPublicAction(
+  event,
+  type
+){
+
+  event.preventDefault();
+
+  const status =
+    document.getElementById(
+      "actionStatus"
+    );
+
+  const name =
+    document.getElementById(
+      "actionName"
+    ).value.trim();
+
+  const email =
+    document.getElementById(
+      "actionEmail"
+    ).value.trim();
+
+  if(
+    !name ||
+    !email
+  ){
+
+    status.className =
+      "status error";
+
+    status.textContent =
+      "Please complete your name and email.";
+
+    return;
+  }
+
+  if(
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+      email
+    )
+  ){
+
+    status.className =
+      "status error";
+
+    status.textContent =
+      "Please enter a valid email address.";
+
+    return;
+  }
+
+  try{
+
+    let endpoint;
+    let body;
+
+    if(type === "report"){
+
+      const reason =
+        document.getElementById(
+          "actionReason"
+        ).value.trim();
+
+      if(!reason){
+
+        status.className =
+          "status error";
+
+        status.textContent =
+          "Please explain the problem with this listing.";
+
+        return;
+      }
+
+      endpoint =
+        "/reports";
+
+      body = {
+        business_id:
+          activeBusiness.id,
+
+        report_type:
+          "listing_report",
+
+        reporter_name:
+          name,
+
+        reporter_email:
+          email,
+
+        reason
+      };
+
+    }else if(
+      type === "correction"
+    ){
+
+      const changes =
+        document.getElementById(
+          "actionChanges"
+        ).value.trim();
+
+      const reason =
+        document.getElementById(
+          "actionReason"
+        )?.value.trim() || "";
+
+      if(!changes){
+
+        status.className =
+          "status error";
+
+        status.textContent =
+          "Please describe the correction.";
+
+        return;
+      }
+
+      endpoint =
+        `/businesses/${encodeURIComponent(
+          activeBusiness.id
+        )}/corrections`;
+
+      body = {
+        requester_name:
+          name,
+
+        requester_email:
+          email,
+
+        requested_changes:{
+          description:
+            changes
+        },
+
+        reason
+      };
+
+    }else{
+
+      const reason =
+        document.getElementById(
+          "actionReason"
+        ).value.trim();
+
+      if(!reason){
+
+        status.className =
+          "status error";
+
+        status.textContent =
+          "Please explain the dispute.";
+
+        return;
+      }
+
+      endpoint =
+        `/businesses/${encodeURIComponent(
+          activeBusiness.id
+        )}/claim-disputes`;
+
+      body = {
+        requester_name:
+          name,
+
+        requester_email:
+          email,
+
+        reason
+      };
     }
 
-    /* --------------------------------------------------
-       DISPLAY BUSINESS
-    -------------------------------------------------- */
+    status.className =
+      "status info";
 
-    function displayBusiness(
-      business,
-      result
-    ) {
+    status.textContent =
+      "Submitting...";
 
-      currentBusiness =
-        business;
+    const result =
+      await apiRequest(
+        endpoint,
+        {
+          method:"POST",
+          body:
+            JSON.stringify(body)
+        }
+      );
 
-      currentResult =
-        result;
+    status.className =
+      "status success";
 
-      const statistics =
-        result?.statistics ||
-        {};
+    status.textContent =
+      result.message ||
+      "Submitted successfully.";
 
-      const reviews =
-        Array.isArray(
-          result?.reviews
-        )
-          ? result.reviews
-          : [];
+    setTimeout(
+      closeModal,
+      1600
+    );
 
-      const images =
-        Array.isArray(
-          result?.images
-        )
-          ? result.images
-          : [];
+  }catch(error){
 
-      const products =
-        Array.isArray(
-          result?.products
-        )
-          ? result.products
-          : [];
+    status.className =
+      "status error";
 
-      const hours =
-        result?.hours ||
-        result?.opening_hours ||
-        result?.business_hours;
+    status.textContent =
+      error.message ||
+      "Unable to submit this request.";
+  }
+}
 
-      const location =
-        formatLocation(
-          business
-        );
+/* =========================================================
+   CLAIM SYSTEM
+========================================================= */
 
-      const category =
-        normalizeCategory(
-          business.category
-        );
+function setupClaimForm(
+  business
+){
 
-      const businessName =
-        business.business_name ||
-        business.name ||
-        "Business";
+  const form =
+    document.getElementById(
+      "claimForm"
+    );
 
-      const initial =
-        businessName
-          .charAt(0)
-          .toUpperCase();
+  if(!form){
+    return;
+  }
 
-      const logoHtml =
-        createBusinessLogoHtml(
-          business,
-          initial
-        );
+  const requestSection =
+    document.getElementById(
+      "claimRequestSection"
+    );
 
-      const website =
-        normalizeWebsite(
-          business.website
-        );
+  const verificationSection =
+    document.getElementById(
+      "claimVerificationSection"
+    );
 
-      const whatsapp =
-        cleanWhatsAppNumber(
-          business.whatsapp ||
-          business.phone
-        );
+  const completedSection =
+    document.getElementById(
+      "claimCompletedSection"
+    );
 
-      const phone =
-        business.phone
-          ? String(
-              business.phone
-            )
-          : "";
+  const claimStatus =
+    document.getElementById(
+      "claimStatus"
+    );
+
+  const verificationForm =
+    document.getElementById(
+      "verificationForm"
+    );
+
+  const verificationStatus =
+    document.getElementById(
+      "verificationStatus"
+    );
+
+  const verificationEmail =
+    document.getElementById(
+      "verificationEmail"
+    );
+
+  const otpInput =
+    document.getElementById(
+      "claimOtp"
+    );
+
+  const claimSubmitButton =
+    document.getElementById(
+      "claimSubmitButton"
+    );
+
+  const verifyOtpButton =
+    document.getElementById(
+      "verifyOtpButton"
+    );
+
+  const resendOtpButton =
+    document.getElementById(
+      "resendOtpButton"
+    );
+
+  const otpExpiry =
+    document.getElementById(
+      "otpExpiry"
+    );
+
+  function setClaimStatus(
+    message,
+    type="info"
+  ){
+
+    if(!claimStatus){
+      return;
+    }
+
+    claimStatus.className =
+      `status ${type}`;
+
+    claimStatus.textContent =
+      message || "";
+  }
+
+  function setVerificationStatus(
+    message,
+    type="info"
+  ){
+
+    if(!verificationStatus){
+      return;
+    }
+
+    verificationStatus.className =
+      `status ${type}`;
+
+    verificationStatus.textContent =
+      message || "";
+  }
+
+  function setButtonLoading(
+    button,
+    loadingText,
+    normalText,
+    disabled
+  ){
+
+    if(!button){
+      return;
+    }
+
+    button.disabled =
+      Boolean(disabled);
+
+    button.textContent =
+      disabled
+        ? loadingText
+        : normalText;
+  }
+
+  function startResendCooldown(
+    seconds=60
+  ){
+
+    if(!resendOtpButton){
+      return;
+    }
+
+    if(resendCooldownTimer){
+
+      clearInterval(
+        resendCooldownTimer
+      );
+
+      resendCooldownTimer =
+        null;
+    }
+
+    resendCooldownSeconds =
+      Math.max(
+        0,
+        Number(seconds) || 0
+      );
+
+    if(
+      resendCooldownSeconds <= 0
+    ){
+
+      resendOtpButton.disabled =
+        false;
+
+      resendOtpButton.textContent =
+        "Resend Code";
+
+      return;
+    }
+
+    resendOtpButton.disabled =
+      true;
+
+    resendOtpButton.textContent =
+      `Resend Code (${resendCooldownSeconds}s)`;
+
+    resendCooldownTimer =
+      setInterval(
+        () => {
+
+          resendCooldownSeconds--;
+
+          if(
+            resendCooldownSeconds <= 0
+          ){
+
+            clearInterval(
+              resendCooldownTimer
+            );
+
+            resendCooldownTimer =
+              null;
+
+            resendOtpButton.disabled =
+              false;
+
+            resendOtpButton.textContent =
+              "Resend Code";
+
+            return;
+          }
+
+          resendOtpButton.textContent =
+            `Resend Code (${resendCooldownSeconds}s)`;
+
+        },
+        1000
+      );
+  }
+
+  function showVerificationStep(
+    result
+  ){
+
+    activeClaimId =
+      result.claim_id ||
+      null;
+
+    if(!activeClaimId){
+
+      setClaimStatus(
+        "The claim was created, but no claim ID was returned.",
+        "error"
+      );
+
+      return;
+    }
+
+    if(verificationEmail){
+
+      verificationEmail.textContent =
+        result.verification_email ||
+        "the business email currently listed on NearAfrica";
+    }
+
+    if(otpExpiry){
+
+      const minutes =
+        Number(
+          result.expires_in_minutes
+        ) || 10;
+
+      otpExpiry.textContent =
+        `${minutes} minute${
+          minutes === 1
+            ? ""
+            : "s"
+        }`;
+    }
+
+    if(requestSection){
+
+      requestSection.style.display =
+        "none";
+    }
+
+    if(verificationSection){
+
+      verificationSection.classList.add(
+        "active"
+      );
+    }
+
+    setClaimStatus(
+      result.message ||
+      "Your claim was created. Enter the verification code sent to the business email.",
+      "success"
+    );
+
+    setVerificationStatus(
+      "Enter the 6-digit verification code.",
+      "info"
+    );
+
+    if(otpInput){
+
+      otpInput.value = "";
+
+      otpInput.focus();
+    }
+
+    startResendCooldown(60);
+  }
+
+  function showCompletedStep(){
+
+    if(requestSection){
+
+      requestSection.style.display =
+        "none";
+    }
+
+    if(verificationSection){
+
+      verificationSection.classList.remove(
+        "active"
+      );
+    }
+
+    if(completedSection){
+
+      completedSection.classList.add(
+        "active"
+      );
+    }
+
+    setClaimStatus(
+      "",
+      "success"
+    );
+
+    setVerificationStatus(
+      "",
+      "success"
+    );
+  }
+
+  form.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      const name =
+        document.getElementById(
+          "claimName"
+        ).value.trim();
 
       const email =
-        business.email
-          ? String(
-              business.email
-            )
-          : "";
+        document.getElementById(
+          "claimEmail"
+        ).value
+          .trim()
+          .toLowerCase();
 
-      let actions = "";
+      const evidence =
+        document.getElementById(
+          "claimEvidence"
+        ).value.trim();
 
-      actions += `
-        <button
-          type="button"
-          class="btn favorite-button"
-          aria-pressed="false"
-          title="Save this business"
-        >
-          ♡ Favorite
-        </button>
-      `;
+      if(
+        !name ||
+        !email ||
+        !evidence
+      ){
 
-      actions += `
-        <button
-          type="button"
-          class="btn"
-          data-action="review"
-        >
-          ★ Write a Review
-        </button>
-      `;
+        setClaimStatus(
+          "Please complete all fields.",
+          "error"
+        );
 
-      if (phone) {
-
-        actions += `
-          <a
-            class="btn"
-            href="tel:${escapeHtml(phone)}"
-          >
-            Call
-          </a>
-        `;
+        return;
       }
 
-      if (whatsapp) {
-
-        actions += `
-          <a
-            class="btn"
-            href="https://wa.me/${escapeHtml(whatsapp)}"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            WhatsApp
-          </a>
-        `;
-      }
-
-      if (email) {
-
-        actions += `
-          <a
-            class="btn"
-            href="mailto:${escapeHtml(email)}"
-          >
-            Email
-          </a>
-        `;
-      }
-
-      if (website) {
-
-        actions += `
-          <a
-            class="btn"
-            href="${escapeHtml(website)}"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Website
-          </a>
-        `;
-      }
-
-      const badges = [];
-
-      if (
-        Number(
-          business.verified
-        ) === 1
-      ) {
-
-        badges.push(`
-          <span class="badge gold">
-            ✓ Verified
-          </span>
-        `);
-      }
-
-      if (
-        Number(
-          business.claimed
-        ) === 1
-      ) {
-
-        badges.push(`
-          <span class="badge">
-            ✓ Claimed
-          </span>
-        `);
-      }
-
-      if (
-        Number(
-          business.featured
-        ) === 1
-      ) {
-
-        badges.push(`
-          <span class="badge gold">
-            Featured
-          </span>
-        `);
-      }
-
-      const photosHtml =
-        images.length
-          ? `
-            <div class="photos-grid">
-
-              ${images
-                .map(image => {
-
-                  const imageUrl =
-                    image.image_url ||
-                    image.url ||
-                    image.image ||
-                    image.src ||
-                    "";
-
-                  if (!imageUrl) {
-                    return "";
-                  }
-
-                  return `
-                    <img
-                      class="photo"
-                      src="${escapeHtml(imageUrl)}"
-                      alt="${escapeHtml(
-                        businessName +
-                        " photo"
-                      )}"
-                      loading="lazy"
-                      onerror="this.style.display='none';"
-                    >
-                  `;
-
-                })
-                .join("")}
-
-            </div>
-          `
-          : `
-            <div class="empty-state">
-              No photos have been added yet.
-            </div>
-          `;
-
-      const views =
-        statistics.views !== undefined
-          ? statistics.views
-          : business.views || 0;
-
-      const reviewCount =
-        statistics.review_count !== undefined
-          ? statistics.review_count
-          : reviews.length;
-
-      content.innerHTML = `
-
-        <section class="profile-header">
-
-          <div class="profile-header-main">
-
-            <div class="business-title-wrap">
-
-              ${logoHtml}
-
-              <div>
-
-                <h1>
-                  ${escapeHtml(
-                    businessName
-                  )}
-                </h1>
-
-                ${
-                  category
-                    ? `
-                      <div class="business-category">
-                        ${escapeHtml(
-                          category
-                        )}
-                      </div>
-                    `
-                    : ""
-                }
-
-                ${
-                  location
-                    ? `
-                      <div class="business-location">
-                        ${escapeHtml(
-                          location
-                        )}
-                      </div>
-                    `
-                    : ""
-                }
-
-                ${
-                  badges.length
-                    ? `
-                      <div class="badge-row">
-                        ${badges.join("")}
-                      </div>
-                    `
-                    : ""
-                }
-
-              </div>
-
-            </div>
-
-            <div class="header-actions">
-              ${actions}
-            </div>
-
-          </div>
-
-          <div class="stats">
-
-            <div class="stat">
-              <div class="stat-value">
-                ${escapeHtml(views)}
-              </div>
-
-              <div class="stat-label">
-                Views
-              </div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-value">
-                ${escapeHtml(reviewCount)}
-              </div>
-
-              <div class="stat-label">
-                Reviews
-              </div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-value">
-                ${escapeHtml(products.length)}
-              </div>
-
-              <div class="stat-label">
-                Products &amp; Services
-              </div>
-            </div>
-
-          </div>
-
-        </section>
-
-        <div class="profile-grid">
-
-          <div>
-
-            <section class="profile-card">
-
-              <h2>
-                About
-              </h2>
-
-              <p>
-                ${
-                  business.description
-                    ? escapeHtml(
-                        business.description
-                      )
-                    : "No business description has been provided yet."
-                }
-              </p>
-
-            </section>
-
-            <section class="profile-card">
-
-              <h2>
-                Products &amp; Services
-              </h2>
-
-              ${renderProducts(products)}
-
-            </section>
-
-            <section class="profile-card">
-
-              <h2>
-                Opening Hours
-              </h2>
-
-              ${renderHours(hours)}
-
-            </section>
-
-            <section class="profile-card">
-
-              <h2>
-                Photos
-              </h2>
-
-              ${photosHtml}
-
-            </section>
-
-            <section class="profile-card">
-
-              <div
-                style="
-                  display:flex;
-                  justify-content:space-between;
-                  align-items:center;
-                  gap:10px;
-                  flex-wrap:wrap;
-                "
-              >
-
-                <h2
-                  style="margin-bottom:0;"
-                >
-                  Reviews
-                </h2>
-
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  data-action="review"
-                >
-                  ★ Write a Review
-                </button>
-
-              </div>
-
-              <div style="margin-top:5px;">
-                ${renderReviews(reviews)}
-              </div>
-
-            </section>
-
-            <section class="profile-card">
-
-              <h2>
-                Location
-              </h2>
-
-              ${
-                Number.isFinite(
-                  Number(
-                    business.latitude
-                  )
-                ) &&
-                Number.isFinite(
-                  Number(
-                    business.longitude
-                  )
-                )
-                  ? `
-                    <div
-                      id="businessMap"
-                      class="map"
-                    ></div>
-                  `
-                  : `
-                    <div class="empty-state">
-                      Location coordinates are not available.
-                    </div>
-                  `
-              }
-
-            </section>
-
-          </div>
-
-          <div>
-
-            <section class="profile-card">
-
-              <h2>
-                Business Information
-              </h2>
-
-              <div class="info-list">
-
-                ${
-                  business.business_name ||
-                  business.name
-                    ? `
-                      <div class="info-item">
-
-                        <div class="info-label">
-                          Business Name
-                        </div>
-
-                        <div class="info-value">
-                          ${escapeHtml(
-                            business.business_name ||
-                            business.name
-                          )}
-                        </div>
-
-                      </div>
-                    `
-                    : ""
-                }
-
-                ${
-                  category
-                    ? `
-                      <div class="info-item">
-
-                        <div class="info-label">
-                          Category
-                        </div>
-
-                        <div class="info-value">
-                          ${escapeHtml(
-                            category
-                          )}
-                        </div>
-
-                      </div>
-                    `
-                    : ""
-                }
-
-                ${
-                  location
-                    ? `
-                      <div class="info-item">
-
-                        <div class="info-label">
-                          Address
-                        </div>
-
-                        <div class="info-value">
-                          ${escapeHtml(
-                            location
-                          )}
-                        </div>
-
-                      </div>
-                    `
-                    : ""
-                }
-
-                ${
-                  phone
-                    ? `
-                      <div class="info-item">
-
-                        <div class="info-label">
-                          Phone
-                        </div>
-
-                        <div class="info-value">
-                          ${escapeHtml(phone)}
-                        </div>
-
-                        <div class="contact-actions">
-
-                          <a
-                            class="btn"
-                            href="tel:${escapeHtml(phone)}"
-                          >
-                            Call Us
-                          </a>
-
-                        </div>
-
-                      </div>
-                    `
-                    : ""
-                }
-
-                ${
-                  whatsapp
-                    ? `
-                      <div class="info-item">
-
-                        <div class="info-label">
-                          WhatsApp
-                        </div>
-
-                        <div class="contact-actions">
-
-                          <a
-                            class="btn"
-                            href="https://wa.me/${escapeHtml(whatsapp)}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            WhatsApp Us
-                          </a>
-
-                        </div>
-
-                      </div>
-                    `
-                    : ""
-                }
-
-                ${
-                  email
-                    ? `
-                      <div class="info-item">
-
-                        <div class="info-label">
-                          Email
-                        </div>
-
-                        <div class="contact-actions">
-
-                          <a
-                            class="btn"
-                            href="mailto:${escapeHtml(email)}"
-                          >
-                            Email Us
-                          </a>
-
-                        </div>
-
-                      </div>
-                    `
-                    : ""
-                }
-
-                ${
-                  website
-                    ? `
-                      <div class="info-item">
-
-                        <div class="info-label">
-                          Website
-                        </div>
-
-                        <div class="contact-actions">
-
-                          <a
-                            class="btn"
-                            href="${escapeHtml(website)}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Visit Website
-                          </a>
-
-                        </div>
-
-                      </div>
-                    `
-                    : ""
-                }
-
-              </div>
-
-            </section>
-
-            <!-- TRUST / MODERATION ACTIONS -->
-
-            <section class="profile-card">
-
-              <h2>
-                Listing Actions
-              </h2>
-
-              <div
-                style="
-                  display:grid;
-                  gap:9px;
-                "
-              >
-
-                <button
-                  type="button"
-                  class="btn"
-                  data-action="report"
-                >
-                  Report Listing
-                </button>
-
-                <button
-                  type="button"
-                  class="btn"
-                  data-action="correction"
-                >
-                  Suggest a Correction
-                </button>
-
-                ${
-                  Number(
-                    business.claimed
-                  ) === 1
-                    ? `
-                      <button
-                        type="button"
-                        class="btn btn-danger"
-                        data-action="dispute"
-                      >
-                        Claim Dispute
-                      </button>
-                    `
-                    : ""
-                }
-
-              </div>
-
-            </section>
-
-            <!-- CLAIM -->
-
-            <section class="profile-card">
-
-              ${
-                Number(
-                  business.claimed
-                ) === 1
-
-                  ? `
-
-                    <div class="claim-box">
-
-                      <h3>
-                        Business Claimed
-                      </h3>
-
-                      <p>
-                        This business has been claimed by its owner.
-                      </p>
-
-                      <button
-                        type="button"
-                        class="btn btn-danger"
-                        data-action="dispute"
-                      >
-                        Dispute This Claim
-                      </button>
-
-                    </div>
-
-                  `
-
-                  : `
-
-                    <div class="claim-box">
-
-                      <div id="claimRequestSection">
-
-                        <h3>
-                          Claim This Business
-                        </h3>
-
-                        <p>
-                          Are you the owner or an authorized representative
-                          of this business? Submit a claim and verify access
-                          to the business email currently listed on NearAfrica.
-                        </p>
-
-                        <form
-                          id="claimForm"
-                          class="claim-form"
-                        >
-
-                          <input
-                            type="text"
-                            id="claimName"
-                            placeholder="Your name"
-                            autocomplete="name"
-                            required
-                          >
-
-                          <input
-                            type="email"
-                            id="claimEmail"
-                            placeholder="Your email"
-                            autocomplete="email"
-                            required
-                          >
-
-                          <textarea
-                            id="claimEvidence"
-                            rows="4"
-                            placeholder="Tell us why you are authorized to claim this business."
-                            required
-                          ></textarea>
-
-                          <button
-                            type="submit"
-                            class="btn btn-primary"
-                            id="claimSubmitButton"
-                          >
-                            Submit Claim
-                          </button>
-
-                        </form>
-
-                      </div>
-
-                      <div
-                        id="claimVerificationSection"
-                        class="verification-box"
-                      >
-
-                        <h3>
-                          Verify Ownership
-                        </h3>
-
-                        <p>
-                          A 6-digit verification code will be sent to:
-                        </p>
-
-                        <p
-                          id="verificationEmail"
-                          class="verification-email"
-                        ></p>
-
-                        <form
-                          id="verificationForm"
-                          class="verification-form"
-                        >
-
-                          <input
-                            type="text"
-                            id="claimOtp"
-                            class="otp-input"
-                            inputmode="numeric"
-                            autocomplete="one-time-code"
-                            maxlength="6"
-                            pattern="[0-9]{6}"
-                            placeholder="000000"
-                            required
-                          >
-
-                          <button
-                            type="submit"
-                            class="btn btn-primary"
-                            id="verifyOtpButton"
-                          >
-                            Verify Code
-                          </button>
-
-                        </form>
-
-                        <div class="verification-meta">
-
-                          <span>
-                            Code expires in
-                            <strong id="otpExpiry">
-                              10 minutes
-                            </strong>
-                          </span>
-
-                          <span>
-                            Maximum 5 attempts
-                          </span>
-
-                        </div>
-
-                        <div class="verification-actions">
-
-                          <button
-                            type="button"
-                            class="btn"
-                            id="resendOtpButton"
-                          >
-                            Resend Code
-                          </button>
-
-                        </div>
-
-                        <div
-                          id="verificationStatus"
-                          class="status"
-                        ></div>
-
-                        <div class="small-note">
-                          Resend requests are subject to the NearAfrica
-                          verification cooldown.
-                        </div>
-
-                      </div>
-
-                      <div
-                        id="claimCompletedSection"
-                        class="verification-box"
-                      >
-
-                        <div class="claim-success">
-
-                          <div class="claim-success-title">
-                            ✓ Ownership Verified
-                          </div>
-
-                          <div>
-                            Your ownership verification was successful.
-                            Your claim is now awaiting NearAfrica admin approval.
-                          </div>
-
-                        </div>
-
-                      </div>
-
-                      <div
-                        id="claimStatus"
-                        class="status"
-                      ></div>
-
-                    </div>
-                  `
-              }
-
-            </section>
-
-          </div>
-
-        </div>
-      `;
-
-      initializeMap(
-        business
-      );
-
-      setupClaimForm(
-        business
-      );
-
-      updateFavoriteButtons();
-
-      document
-        .querySelectorAll(
-          "[data-action]"
+      if(
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+          email
         )
-        .forEach(button => {
+      ){
 
-          button.addEventListener(
-            "click",
-            () => {
+        setClaimStatus(
+          "Please enter a valid email address.",
+          "error"
+        );
 
-              const action =
-                button.getAttribute(
-                  "data-action"
-                );
+        return;
+      }
 
-              if (
-                action === "review"
-              ) {
-                openReviewModal();
-              }
+      /*
+       * Current public claim flow uses the business
+       * contact email for ownership verification.
+       */
+      const businessEmail =
+        clean(
+          business.email
+        ).toLowerCase();
 
-              if (
-                action === "report"
-              ) {
-                openReportModal(
-                  "report"
-                );
-              }
+      if(
+        businessEmail &&
+        businessEmail !== email
+      ){
 
-              if (
-                action === "correction"
-              ) {
-                openReportModal(
-                  "correction"
-                );
-              }
+        setClaimStatus(
+          "For ownership verification, the email must match the business contact email currently listed on NearAfrica.",
+          "error"
+        );
 
-              if (
-                action === "dispute"
-              ) {
-                openReportModal(
-                  "dispute"
-                );
-              }
+        return;
+      }
 
+      setClaimStatus(
+        "Submitting claim...",
+        "info"
+      );
+
+      setButtonLoading(
+        claimSubmitButton,
+        "Submitting...",
+        "Submit Claim",
+        true
+      );
+
+      try{
+
+        const result =
+          await apiRequest(
+            `/businesses/${encodeURIComponent(
+              business.id
+            )}/claim`,
+            {
+              method:"POST",
+
+              body:
+                JSON.stringify({
+                  claimant_name:
+                    name,
+
+                  claimant_email:
+                    email,
+
+                  evidence_type:
+                    "email",
+
+                  evidence_details:
+                    evidence,
+
+                  business_email:
+                    businessEmail
+                })
             }
           );
-        });
 
-      document
-        .querySelectorAll(
-          ".favorite-button"
-        )
-        .forEach(button => {
+        showVerificationStep(
+          result
+        );
 
-          button.addEventListener(
-            "click",
-            toggleFavorite
+      }catch(error){
+
+        console.error(
+          "Claim submission failed:",
+          error
+        );
+
+        setClaimStatus(
+          error.message ||
+          "Unable to submit your claim. Please try again.",
+          "error"
+        );
+
+      }finally{
+
+        setButtonLoading(
+          claimSubmitButton,
+          "Submitting...",
+          "Submit Claim",
+          false
+        );
+      }
+    }
+  );
+
+  if(verificationForm){
+
+    verificationForm.addEventListener(
+      "submit",
+      async event => {
+
+        event.preventDefault();
+
+        if(!activeClaimId){
+
+          setVerificationStatus(
+            "Your claim session is missing. Please submit the claim again.",
+            "error"
           );
 
-        });
-    }
-
-    /* --------------------------------------------------
-       MAP
-    -------------------------------------------------- */
-
-    function initializeMap(
-      business
-    ) {
-
-      const mapElement =
-        document.getElementById(
-          "businessMap"
-        );
-
-      if (
-        !mapElement ||
-        typeof L === "undefined"
-      ) {
-        return;
-      }
-
-      const latitude =
-        Number(
-          business.latitude
-        );
-
-      const longitude =
-        Number(
-          business.longitude
-        );
-
-      if (
-        !Number.isFinite(latitude) ||
-        !Number.isFinite(longitude)
-      ) {
-        return;
-      }
-
-      if (activeMap) {
-
-        activeMap.remove();
-
-        activeMap = null;
-      }
-
-      activeMap =
-        L.map(mapElement)
-          .setView(
-            [
-              latitude,
-              longitude
-            ],
-            15
-          );
-
-      L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          attribution:
-            "© OpenStreetMap contributors"
-        }
-      ).addTo(
-        activeMap
-      );
-
-      L.marker(
-        [
-          latitude,
-          longitude
-        ]
-      )
-        .addTo(activeMap)
-        .bindPopup(
-          escapeHtml(
-            business.business_name ||
-            business.name ||
-            "Business"
-          )
-        )
-        .openPopup();
-    }
-
-    /* --------------------------------------------------
-       CLAIM / OTP
-    -------------------------------------------------- */
-
-    function setupClaimForm(
-      business
-    ) {
-
-      const form =
-        document.getElementById(
-          "claimForm"
-        );
-
-      if (!form) return;
-
-      const requestSection =
-        document.getElementById(
-          "claimRequestSection"
-        );
-
-      const verificationSection =
-        document.getElementById(
-          "claimVerificationSection"
-        );
-
-      const completedSection =
-        document.getElementById(
-          "claimCompletedSection"
-        );
-
-      const claimStatus =
-        document.getElementById(
-          "claimStatus"
-        );
-
-      const verificationForm =
-        document.getElementById(
-          "verificationForm"
-        );
-
-      const verificationStatus =
-        document.getElementById(
-          "verificationStatus"
-        );
-
-      const verificationEmail =
-        document.getElementById(
-          "verificationEmail"
-        );
-
-      const otpInput =
-        document.getElementById(
-          "claimOtp"
-        );
-
-      const claimSubmitButton =
-        document.getElementById(
-          "claimSubmitButton"
-        );
-
-      const verifyOtpButton =
-        document.getElementById(
-          "verifyOtpButton"
-        );
-
-      const resendOtpButton =
-        document.getElementById(
-          "resendOtpButton"
-        );
-
-      const otpExpiry =
-        document.getElementById(
-          "otpExpiry"
-        );
-
-      function setClaimStatus(
-        message,
-        type = "info"
-      ) {
-
-        if (!claimStatus) return;
-
-        claimStatus.className =
-          `status ${type}`;
-
-        claimStatus.textContent =
-          message || "";
-      }
-
-      function setVerificationStatus(
-        message,
-        type = "info"
-      ) {
-
-        if (!verificationStatus) return;
-
-        verificationStatus.className =
-          `status ${type}`;
-
-        verificationStatus.textContent =
-          message || "";
-      }
-
-      function setButtonLoading(
-        button,
-        loadingText,
-        normalText,
-        disabled
-      ) {
-
-        if (!button) return;
-
-        button.disabled =
-          Boolean(disabled);
-
-        button.textContent =
-          disabled
-            ? loadingText
-            : normalText;
-      }
-
-      function startResendCooldown(
-        seconds = 60
-      ) {
-
-        if (!resendOtpButton) {
           return;
         }
 
-        if (resendCooldownTimer) {
+        const otp =
+          otpInput
+            ? otpInput.value
+                .replace(/\D/g,"")
+                .slice(0,6)
+            : "";
 
-          clearInterval(
-            resendCooldownTimer
+        if(
+          !/^\d{6}$/.test(otp)
+        ){
+
+          setVerificationStatus(
+            "Please enter the 6-digit verification code.",
+            "error"
           );
 
-          resendCooldownTimer =
-            null;
+          otpInput?.focus();
+
+          return;
         }
 
-        resendCooldownSeconds =
-          Math.max(
-            0,
-            Number(seconds) || 0
+        setVerificationStatus(
+          "Verifying code...",
+          "info"
+        );
+
+        setButtonLoading(
+          verifyOtpButton,
+          "Verifying...",
+          "Verify Code",
+          true
+        );
+
+        try{
+
+          const result =
+            await apiRequest(
+              `/claims/${encodeURIComponent(
+                activeClaimId
+              )}/verify`,
+              {
+                method:"POST",
+
+                body:
+                  JSON.stringify({
+                    otp
+                  })
+              }
+            );
+
+          /*
+           * Self-submission / immediate-owner
+           * activation flow.
+           */
+          if(
+            result.ownership_activated === true &&
+            result.owner_token
+          ){
+
+            try{
+
+              localStorage.setItem(
+                OWNER_TOKEN_KEY,
+                result.owner_token
+              );
+
+            }catch(storageError){
+
+              console.error(
+                "Owner session storage failed:",
+                storageError
+              );
+
+              setVerificationStatus(
+                "Ownership was verified, but this browser could not save the dashboard session.",
+                "error"
+              );
+
+              return;
+            }
+
+            setVerificationStatus(
+              "Ownership verified. Opening your owner dashboard...",
+              "success"
+            );
+
+            window.location.href =
+              result.dashboard_url ||
+              "/pages/owner-dashboard.html";
+
+            return;
+          }
+
+          showCompletedStep();
+
+          setClaimStatus(
+            result.message ||
+            "Ownership verified. Your claim is now awaiting NearAfrica admin approval.",
+            "success"
           );
 
-        if (
-          resendCooldownSeconds <= 0
-        ) {
+        }catch(error){
 
-          resendOtpButton.disabled =
-            false;
+          console.error(
+            "Claim verification failed:",
+            error
+          );
 
-          resendOtpButton.textContent =
-            "Resend Code";
+          setVerificationStatus(
+            error.message ||
+            "The verification code could not be verified.",
+            "error"
+          );
+
+        }finally{
+
+          setButtonLoading(
+            verifyOtpButton,
+            "Verifying...",
+            "Verify Code",
+            false
+          );
+        }
+      }
+    );
+  }
+
+  if(otpInput){
+
+    otpInput.addEventListener(
+      "input",
+      () => {
+
+        otpInput.value =
+          otpInput.value
+            .replace(/\D/g,"")
+            .slice(0,6);
+      }
+    );
+  }
+
+  if(resendOtpButton){
+
+    resendOtpButton.addEventListener(
+      "click",
+      async () => {
+
+        if(!activeClaimId){
+
+          setVerificationStatus(
+            "Your claim session is missing. Please submit the claim again.",
+            "error"
+          );
+
+          return;
+        }
+
+        if(
+          resendCooldownSeconds > 0
+        ){
 
           return;
         }
@@ -3945,666 +2690,1873 @@
           true;
 
         resendOtpButton.textContent =
-          `Resend Code (${resendCooldownSeconds}s)`;
-
-        resendCooldownTimer =
-          setInterval(
-            () => {
-
-              resendCooldownSeconds--;
-
-              if (
-                resendCooldownSeconds <= 0
-              ) {
-
-                clearInterval(
-                  resendCooldownTimer
-                );
-
-                resendCooldownTimer =
-                  null;
-
-                resendOtpButton.disabled =
-                  false;
-
-                resendOtpButton.textContent =
-                  "Resend Code";
-
-                return;
-              }
-
-              resendOtpButton.textContent =
-                `Resend Code (${resendCooldownSeconds}s)`;
-
-            },
-            1000
-          );
-      }
-
-      function showVerificationStep(
-        result
-      ) {
-
-        activeClaimId =
-          result.claim_id ||
-          null;
-
-        if (!activeClaimId) {
-
-          setClaimStatus(
-            "The claim was created, but no claim ID was returned.",
-            "error"
-          );
-
-          return;
-        }
-
-        if (verificationEmail) {
-
-          verificationEmail.textContent =
-            result.verification_email ||
-            "the business email currently listed on NearAfrica";
-        }
-
-        if (otpExpiry) {
-
-          const minutes =
-            Number(
-              result.expires_in_minutes
-            ) || 10;
-
-          otpExpiry.textContent =
-            `${minutes} minute${
-              minutes === 1
-                ? ""
-                : "s"
-            }`;
-        }
-
-        if (requestSection) {
-          requestSection.style.display =
-            "none";
-        }
-
-        if (verificationSection) {
-          verificationSection.classList.add(
-            "active"
-          );
-        }
-
-        setClaimStatus(
-          result.message ||
-          "Your claim was created. Enter the verification code sent to the business email.",
-          "success"
-        );
+          "Sending...";
 
         setVerificationStatus(
-          "Enter the 6-digit verification code.",
+          "Requesting a new verification code...",
           "info"
         );
 
-        if (otpInput) {
+        try{
 
-          otpInput.value =
-            "";
-
-          otpInput.focus();
-        }
-
-        startResendCooldown(
-          60
-        );
-      }
-
-      function showCompletedStep() {
-
-        if (requestSection) {
-          requestSection.style.display =
-            "none";
-        }
-
-        if (verificationSection) {
-          verificationSection.classList.remove(
-            "active"
-          );
-        }
-
-        if (completedSection) {
-          completedSection.classList.add(
-            "active"
-          );
-        }
-
-        setClaimStatus(
-          "",
-          "success"
-        );
-
-        setVerificationStatus(
-          "",
-          "success"
-        );
-      }
-
-      form.addEventListener(
-        "submit",
-        async event => {
-
-          event.preventDefault();
-
-          const name =
-            document
-              .getElementById(
-                "claimName"
-              )
-              .value
-              .trim();
-
-          const email =
-            document
-              .getElementById(
-                "claimEmail"
-              )
-              .value
-              .trim();
-
-          const evidence =
-            document
-              .getElementById(
-                "claimEvidence"
-              )
-              .value
-              .trim();
-
-          if (
-            !name ||
-            !email ||
-            !evidence
-          ) {
-
-            setClaimStatus(
-              "Please complete all fields.",
-              "error"
+          const result =
+            await apiRequest(
+              `/claims/${encodeURIComponent(
+                activeClaimId
+              )}/resend`,
+              {
+                method:"POST",
+                body:
+                  JSON.stringify({})
+              }
             );
 
-            return;
+          if(
+            verificationEmail &&
+            result.verification_email
+          ){
+
+            verificationEmail.textContent =
+              result.verification_email;
           }
 
-          if (
-            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-          ) {
+          if(otpExpiry){
 
-            setClaimStatus(
-              "Please enter a valid email address.",
-              "error"
-            );
+            const minutes =
+              Number(
+                result.expires_in_minutes
+              ) || 10;
 
-            return;
+            otpExpiry.textContent =
+              `${minutes} minute${
+                minutes === 1
+                  ? ""
+                  : "s"
+              }`;
           }
 
-          setClaimStatus(
-            "Submitting claim...",
-            "info"
+          if(otpInput){
+
+            otpInput.value = "";
+
+            otpInput.focus();
+          }
+
+          setVerificationStatus(
+            result.message ||
+            "A new verification code has been sent.",
+            "success"
           );
 
-          setButtonLoading(
-            claimSubmitButton,
-            "Submitting...",
-            "Submit Claim",
-            true
+          startResendCooldown(60);
+
+        }catch(error){
+
+          console.error(
+            "OTP resend failed:",
+            error
           );
 
-          try {
+          setVerificationStatus(
+            error.message ||
+            "Unable to resend the verification code.",
+            "error"
+          );
 
-            const result =
-              await apiRequest(
-                `/businesses/${encodeURIComponent(
-                  business.id
-                )}/claim`,
-                {
-                  method:"POST",
+          resendOtpButton.disabled =
+            false;
 
-                  body:
-                    JSON.stringify({
+          resendOtpButton.textContent =
+            "Resend Code";
+        }
+      }
+    );
+  }
+}
 
-                      claimant_name:
-                        name,
+/* =========================================================
+   VIEW TRACKING
+========================================================= */
 
-                      claimant_email:
-                        email,
+async function recordBusinessView(
+  businessId
+){
 
-                      evidence_type:
-                        "email",
+  if(!businessId){
+    return;
+  }
 
-                      evidence_details:
-                        evidence
-                    })
-                }
-              );
+  try{
 
-            showVerificationStep(
-              result
+    await fetch(
+      `${API_URL}/businesses/${encodeURIComponent(
+        businessId
+      )}/view`,
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+        cache:"no-store"
+      }
+    );
+
+  }catch(error){
+
+    console.warn(
+      "Business view tracking failed:",
+      error
+    );
+  }
+}
+
+/* =========================================================
+   MAP
+========================================================= */
+
+function initializeMap(
+  business
+){
+
+  const mapElement =
+    document.getElementById(
+      "businessMap"
+    );
+
+  if(
+    !mapElement ||
+    typeof L === "undefined"
+  ){
+
+    return;
+  }
+
+  const latitude =
+    Number(
+      business.latitude
+    );
+
+  const longitude =
+    Number(
+      business.longitude
+    );
+
+  if(
+    !Number.isFinite(latitude) ||
+    !Number.isFinite(longitude)
+  ){
+
+    mapElement.innerHTML = `
+      <div style="
+        height:100%;
+        display:grid;
+        place-items:center;
+        color:#777;
+        background:#111;
+        padding:20px;
+        text-align:center;
+      ">
+        Location coordinates are not available.
+      </div>
+    `;
+
+    return;
+  }
+
+  if(activeMap){
+
+    activeMap.remove();
+
+    activeMap = null;
+  }
+
+  activeMap =
+    L.map(
+      mapElement
+    ).setView(
+      [
+        latitude,
+        longitude
+      ],
+      15
+    );
+
+  L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      attribution:
+        "© OpenStreetMap contributors"
+    }
+  ).addTo(
+    activeMap
+  );
+
+  L.marker(
+    [
+      latitude,
+      longitude
+    ]
+  )
+  .addTo(
+    activeMap
+  )
+  .bindPopup(
+    escapeHtml(
+      business.business_name ||
+      business.name ||
+      "Business"
+    )
+  )
+  .openPopup();
+}
+
+/* =========================================================
+   RENDER HELPERS
+========================================================= */
+
+function getLocation(
+  business
+){
+
+  return [
+    business.address,
+    business.area,
+    business.city,
+    business.state,
+    business.country
+  ]
+    .map(clean)
+    .filter(Boolean)
+    .join(", ");
+}
+
+function getPhone(
+  business
+){
+
+  return clean(
+    business.phone
+  );
+}
+
+function getWhatsApp(
+  business
+){
+
+  return clean(
+    business.whatsapp
+  ).replace(
+    /[^\d+]/g,
+    ""
+  );
+}
+
+function getWebsite(
+  business
+){
+
+  return normalizeUrl(
+    business.website
+  );
+}
+
+function getEmail(
+  business
+){
+
+  return clean(
+    business.email
+  );
+}
+
+function getBusinessName(
+  business
+){
+
+  return (
+    business.business_name ||
+    business.name ||
+    "Business"
+  );
+}
+
+function getLogo(
+  business
+){
+
+  const candidates = [
+    business.logo_url,
+    business.logo,
+    business.image_url,
+    business.image,
+    business.imageUrl
+  ];
+
+  if(
+    Array.isArray(
+      business.images
+    )
+  ){
+
+    for(
+      const image of
+      business.images
+    ){
+
+      if(
+        typeof image ===
+        "string"
+      ){
+
+        candidates.push(
+          image
+        );
+
+      }else if(
+        image &&
+        typeof image ===
+        "object"
+      ){
+
+        candidates.push(
+          image.url,
+          image.image_url,
+          image.public_url,
+          image.src
+        );
+      }
+    }
+  }
+
+  for(
+    const candidate of
+    candidates
+  ){
+
+    const value =
+      clean(candidate);
+
+    if(value){
+
+      return normalizeUrl(
+        value
+      );
+    }
+  }
+
+  return "";
+}
+
+function getProductImage(
+  product
+){
+
+  const candidates = [
+    product?.image_url,
+    product?.image,
+    product?.imageUrl,
+    product?.public_url,
+    product?.src
+  ];
+
+  for(
+    const candidate of
+    candidates
+  ){
+
+    const value =
+      clean(candidate);
+
+    if(value){
+
+      return normalizeUrl(
+        value
+      );
+    }
+  }
+
+  return "";
+}
+
+function getPhotoUrl(
+  image
+){
+
+  if(
+    typeof image ===
+    "string"
+  ){
+
+    return normalizeUrl(
+      image
+    );
+  }
+
+  if(
+    !image ||
+    typeof image !==
+      "object"
+  ){
+
+    return "";
+  }
+
+  const source =
+    image.url ||
+    image.image_url ||
+    image.public_url ||
+    image.src ||
+    image.image ||
+    image.imageUrl ||
+    "";
+
+  return normalizeUrl(
+    source
+  );
+}
+
+/* =========================================================
+   DISPLAY BUSINESS
+========================================================= */
+
+function displayBusiness(
+  business,
+  result
+){
+
+  activeBusiness =
+    business;
+
+  const name =
+    getBusinessName(
+      business
+    );
+
+  const location =
+    getLocation(
+      business
+    );
+
+  const phone =
+    getPhone(
+      business
+    );
+
+  const whatsapp =
+    getWhatsApp(
+      business
+    );
+
+  const website =
+    getWebsite(
+      business
+    );
+
+  const email =
+    getEmail(
+      business
+    );
+
+  const logo =
+    getLogo(
+      business
+    );
+
+  const category =
+    clean(
+      business.category
+    );
+
+  const description =
+    clean(
+      business.description
+    );
+
+  const reviews =
+    Array.isArray(
+      result?.reviews
+    )
+      ? result.reviews
+      : [];
+
+  const images =
+    Array.isArray(
+      result?.images
+    )
+      ? result.images
+      : Array.isArray(
+          business.images
+        )
+        ? business.images
+        : [];
+
+  const products =
+    Array.isArray(
+      result?.products
+    )
+      ? result.products
+      : [];
+
+  const hours =
+    Array.isArray(
+      result?.hours
+    )
+      ? result.hours
+      : [];
+
+  const statistics =
+    result?.statistics ||
+    {};
+
+  const averageRating =
+    Number(
+      statistics.average_rating ??
+      business.average_rating ??
+      0
+    );
+
+  const reviewCount =
+    Number(
+      statistics.review_count ??
+      reviews.length ??
+      business.review_count ??
+      0
+    );
+
+  const views =
+    Number(
+      statistics.views ??
+      business.views ??
+      0
+    );
+
+  const featured =
+    Number(
+      business.featured
+    ) === 1;
+
+  const claimed =
+    Number(
+      business.claimed
+    ) === 1;
+
+  const verified =
+    Number(
+      business.verified
+    ) === 1;
+
+  const initial =
+    name
+      .charAt(0)
+      .toUpperCase();
+
+  const content =
+    document.getElementById(
+      "businessContent"
+    );
+
+  content.innerHTML = `
+
+    <!-- PROFILE HERO -->
+
+    <section class="profile-hero">
+
+      <div class="profile-top">
+
+        <div class="business-logo">
+
+          ${
+            logo
+              ? `
+                <img
+                  src="${escapeAttribute(logo)}"
+                  alt="${escapeAttribute(name)}"
+                  onerror="
+                    this.onerror=null;
+                    this.style.display='none';
+                    this.parentElement.textContent='${escapeAttribute(initial)}';
+                  "
+                >
+              `
+              : escapeHtml(initial)
+          }
+
+        </div>
+
+        <div class="profile-main">
+
+          <h1>
+            ${escapeHtml(name)}
+          </h1>
+
+          <div class="meta">
+
+            ${
+              category
+                ? `
+                  <span>
+                    ${escapeHtml(category)}
+                  </span>
+                `
+                : ""
+            }
+
+            ${
+              location
+                ? `
+                  <span>•</span>
+
+                  <span>
+                    ${escapeHtml(location)}
+                  </span>
+                `
+                : ""
+            }
+
+          </div>
+
+          <div class="badges">
+
+            ${
+              verified
+                ? `
+                  <span class="badge green">
+                    ✓ Verified
+                  </span>
+                `
+                : ""
+            }
+
+            ${
+              claimed
+                ? `
+                  <span class="badge gold">
+                    ✓ Claimed
+                  </span>
+                `
+                : ""
+            }
+
+            ${
+              featured
+                ? `
+                  <span class="badge gold">
+                    Featured
+                  </span>
+                `
+                : ""
+            }
+
+          </div>
+
+          <div class="profile-actions">
+
+            ${
+              phone
+                ? `
+                  <a
+                    class="btn btn-primary"
+                    href="tel:${escapeAttribute(phone)}"
+                  >
+                    Call
+                  </a>
+                `
+                : ""
+            }
+
+            ${
+              whatsapp
+                ? `
+                  <a
+                    class="btn"
+                    href="https://wa.me/${escapeAttribute(
+                      whatsapp.replace(
+                        /^\+/,
+                        ""
+                      )
+                    )}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    WhatsApp
+                  </a>
+                `
+                : ""
+            }
+
+            ${
+              email
+                ? `
+                  <a
+                    class="btn"
+                    href="mailto:${escapeAttribute(email)}"
+                  >
+                    Email
+                  </a>
+                `
+                : ""
+            }
+
+            ${
+              website
+                ? `
+                  <a
+                    class="btn"
+                    href="${escapeAttribute(website)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Website
+                  </a>
+                `
+                : ""
+            }
+
+            <button
+              type="button"
+              class="btn favorite-button"
+              data-favorite="false"
+            >
+              ☆ Save
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="stats">
+
+        <div class="stat">
+
+          <strong>
+            ${formatNumber(views)}
+          </strong>
+
+          <span>
+            Views
+          </span>
+
+        </div>
+
+        <div class="stat">
+
+          <strong>
+            ${
+              averageRating
+                ? averageRating.toFixed(1)
+                : "—"
+            }
+          </strong>
+
+          <span>
+            ${
+              averageRating
+                ? stars(averageRating)
+                : "No rating yet"
+            }
+          </span>
+
+        </div>
+
+        <div class="stat">
+
+          <strong>
+            ${formatNumber(reviewCount)}
+          </strong>
+
+          <span>
+            Reviews
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <div class="profile-grid">
+
+      <div>
+
+        <!-- ABOUT -->
+
+        ${
+          description
+            ? `
+              <section class="profile-card">
+
+                <h2>
+                  About
+                </h2>
+
+                <div class="description">
+                  ${escapeHtml(description)}
+                </div>
+
+              </section>
+            `
+            : ""
+        }
+
+        <!-- PRODUCTS -->
+
+        ${
+          products.length
+            ? `
+              <section class="profile-card">
+
+                <h2>
+                  Products & Services
+                </h2>
+
+                <div class="product-grid">
+
+                  ${products.map(
+                    product => {
+
+                      const productImage =
+                        getProductImage(
+                          product
+                        );
+
+                      return `
+                        <article class="product">
+
+                          ${
+                            productImage
+                              ? `
+                                <img
+                                  src="${escapeAttribute(
+                                    productImage
+                                  )}"
+                                  alt="${escapeAttribute(
+                                    product.name ||
+                                    product.title ||
+                                    "Product"
+                                  )}"
+                                  loading="lazy"
+                                  onerror="this.style.display='none'"
+                                >
+                              `
+                              : ""
+                          }
+
+                          <div class="product-body">
+
+                            <h3>
+                              ${escapeHtml(
+                                product.name ||
+                                product.title ||
+                                "Product"
+                              )}
+                            </h3>
+
+                            ${
+                              product.description
+                                ? `
+                                  <p>
+                                    ${escapeHtml(
+                                      product.description
+                                    )}
+                                  </p>
+                                `
+                                : ""
+                            }
+
+                            ${
+                              product.price !==
+                                undefined &&
+                              product.price !==
+                                null &&
+                              String(
+                                product.price
+                              ).trim()
+                                ? `
+                                  <div class="price">
+
+                                    ${escapeHtml(
+                                      product.currency ||
+                                      "NGN"
+                                    )}
+
+                                    ${escapeHtml(
+                                      product.price
+                                    )}
+
+                                  </div>
+                                `
+                                : ""
+                            }
+
+                          </div>
+
+                        </article>
+                      `;
+                    }
+                  ).join("")}
+
+                </div>
+
+              </section>
+            `
+            : ""
+        }
+
+        <!-- PHOTOS -->
+
+        ${
+          images.length
+            ? `
+              <section class="profile-card">
+
+                <h2>
+                  Photos
+                </h2>
+
+                <div class="photo-grid">
+
+                  ${images.map(
+                    image => {
+
+                      const src =
+                        getPhotoUrl(
+                          image
+                        );
+
+                      if(!src){
+                        return "";
+                      }
+
+                      return `
+                        <img
+                          src="${escapeAttribute(src)}"
+                          alt="${escapeAttribute(name)}"
+                          loading="lazy"
+                          onclick="window.open('${escapeAttribute(
+                            src
+                          )}','_blank','noopener,noreferrer')"
+                          onerror="this.style.display='none'"
+                        >
+                      `;
+                    }
+                  ).join("")}
+
+                </div>
+
+              </section>
+            `
+            : ""
+        }
+
+        <!-- REVIEWS -->
+
+        <section class="profile-card">
+
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:12px;
+            flex-wrap:wrap;
+          ">
+
+            <h2>
+              Reviews
+            </h2>
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-action="review"
+            >
+              Write a Review
+            </button>
+
+          </div>
+
+          ${
+            reviews.length
+              ? `
+                <div class="review-list">
+
+                  ${reviews.map(
+                    review => `
+
+                      <article class="review">
+
+                        <div class="review-header">
+
+                          <div class="review-name">
+                            ${escapeHtml(
+                              review.name ||
+                              review.reviewer_name ||
+                              "Anonymous"
+                            )}
+                          </div>
+
+                          <div class="review-rating">
+                            ${stars(
+                              review.rating
+                            )}
+                          </div>
+
+                        </div>
+
+                        <div class="review-comment">
+                          ${escapeHtml(
+                            review.comment ||
+                            review.review ||
+                            ""
+                          )}
+                        </div>
+
+                        ${
+                          review.created_at
+                            ? `
+                              <div class="review-date">
+                                ${escapeHtml(
+                                  new Date(
+                                    review.created_at
+                                  ).toLocaleDateString()
+                                )}
+                              </div>
+                            `
+                            : ""
+                        }
+
+                      </article>
+
+                    `
+                  ).join("")}
+
+                </div>
+              `
+              : `
+                <div class="empty">
+                  No approved reviews yet.
+                </div>
+              `
+          }
+
+        </section>
+
+        <!-- LOCATION -->
+
+        <section class="profile-card">
+
+          <h2>
+            Location
+          </h2>
+
+          ${
+            location
+              ? `
+                <p style="color:#aaa">
+                  ${escapeHtml(location)}
+                </p>
+              `
+              : ""
+          }
+
+          <div id="businessMap"></div>
+
+        </section>
+
+      </div>
+
+      <aside>
+
+        <!-- BUSINESS INFORMATION -->
+
+        <section class="profile-card">
+
+          <h2>
+            Business Information
+          </h2>
+
+          <div class="info-grid">
+
+            ${
+              category
+                ? `
+                  <div class="info-item">
+
+                    <div class="info-label">
+                      Category
+                    </div>
+
+                    <div class="info-value">
+                      ${escapeHtml(category)}
+                    </div>
+
+                  </div>
+                `
+                : ""
+            }
+
+            ${
+              location
+                ? `
+                  <div class="info-item">
+
+                    <div class="info-label">
+                      Address
+                    </div>
+
+                    <div class="info-value">
+                      ${escapeHtml(location)}
+                    </div>
+
+                  </div>
+                `
+                : ""
+            }
+
+            ${
+              phone
+                ? `
+                  <div class="info-item">
+
+                    <div class="info-label">
+                      Phone
+                    </div>
+
+                    <div class="info-value">
+                      ${escapeHtml(phone)}
+                    </div>
+
+                    <div class="contact-actions">
+
+                      <a
+                        class="btn"
+                        href="tel:${escapeAttribute(phone)}"
+                      >
+                        Call Us
+                      </a>
+
+                    </div>
+
+                  </div>
+                `
+                : ""
+            }
+
+            ${
+              whatsapp
+                ? `
+                  <div class="info-item">
+
+                    <div class="info-label">
+                      WhatsApp
+                    </div>
+
+                    <div class="contact-actions">
+
+                      <a
+                        class="btn"
+                        href="https://wa.me/${escapeAttribute(
+                          whatsapp.replace(
+                            /^\+/,
+                            ""
+                          )
+                        )}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        WhatsApp Us
+                      </a>
+
+                    </div>
+
+                  </div>
+                `
+                : ""
+            }
+
+            ${
+              email
+                ? `
+                  <div class="info-item">
+
+                    <div class="info-label">
+                      Email
+                    </div>
+
+                    <div class="contact-actions">
+
+                      <a
+                        class="btn"
+                        href="mailto:${escapeAttribute(email)}"
+                      >
+                        Email Us
+                      </a>
+
+                    </div>
+
+                  </div>
+                `
+                : ""
+            }
+
+            ${
+              website
+                ? `
+                  <div class="info-item">
+
+                    <div class="info-label">
+                      Website
+                    </div>
+
+                    <div class="contact-actions">
+
+                      <a
+                        class="btn"
+                        href="${escapeAttribute(website)}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Visit Website
+                      </a>
+
+                    </div>
+
+                  </div>
+                `
+                : ""
+            }
+
+          </div>
+
+        </section>
+
+        <!-- OPENING HOURS -->
+
+        ${
+          hours.length
+            ? `
+              <section class="profile-card">
+
+                <h2>
+                  Opening Hours
+                </h2>
+
+                <div class="hours">
+
+                  ${hours.map(
+                    hour => {
+
+                      const day =
+                        hour.day ||
+                        hour.day_name ||
+                        hour.weekday ||
+                        "";
+
+                      const open =
+                        hour.open ||
+                        hour.open_time ||
+                        "";
+
+                      const close =
+                        hour.close ||
+                        hour.close_time ||
+                        "";
+
+                      const closed =
+                        hour.closed === true ||
+                        hour.is_closed === true ||
+                        Number(
+                          hour.closed
+                        ) === 1 ||
+                        Number(
+                          hour.is_closed
+                        ) === 1;
+
+                      return `
+                        <div class="hours-row">
+
+                          <div class="hours-day">
+                            ${escapeHtml(day)}
+                          </div>
+
+                          <div class="hours-time">
+
+                            ${
+                              closed
+                                ? "Closed"
+                                : escapeHtml(
+                                    [
+                                      open,
+                                      close
+                                    ]
+                                      .filter(
+                                        Boolean
+                                      )
+                                      .join(
+                                        " — "
+                                      )
+                                  ) ||
+                                  "Hours unavailable"
+                            }
+
+                          </div>
+
+                        </div>
+                      `;
+                    }
+                  ).join("")}
+
+                </div>
+
+              </section>
+            `
+            : ""
+        }
+
+        <!-- LISTING ACTIONS -->
+
+        <section class="profile-card">
+
+          <h2>
+            Listing Actions
+          </h2>
+
+          <div style="
+            display:grid;
+            gap:9px;
+          ">
+
+            <button
+              type="button"
+              class="btn"
+              data-action="report"
+            >
+              Report Listing
+            </button>
+
+            <button
+              type="button"
+              class="btn"
+              data-action="correction"
+            >
+              Suggest a Correction
+            </button>
+
+            ${
+              claimed
+                ? `
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-action="dispute"
+                  >
+                    Claim Dispute
+                  </button>
+                `
+                : ""
+            }
+
+          </div>
+
+        </section>
+
+        <!-- CLAIM -->
+
+        <section class="profile-card">
+
+          ${
+            claimed
+
+              ? `
+
+                <div class="claim-box">
+
+                  <h3>
+                    Business Claimed
+                  </h3>
+
+                  <p>
+                    This business has been claimed by its owner.
+                  </p>
+
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-action="dispute"
+                  >
+                    Dispute This Claim
+                  </button>
+
+                </div>
+
+              `
+
+              : `
+
+                <div class="claim-box">
+
+                  <div id="claimRequestSection">
+
+                    <h3>
+                      Claim This Business
+                    </h3>
+
+                    <p>
+                      Are you the owner or an authorized representative
+                      of this business? Submit a claim and verify access
+                      to the business email currently listed on NearAfrica.
+                    </p>
+
+                    <form
+                      id="claimForm"
+                      class="claim-form"
+                    >
+
+                      <input
+                        type="text"
+                        id="claimName"
+                        placeholder="Your name"
+                        autocomplete="name"
+                        maxlength="150"
+                        required
+                      >
+
+                      <input
+                        type="email"
+                        id="claimEmail"
+                        placeholder="Business email currently listed"
+                        autocomplete="email"
+                        maxlength="254"
+                        required
+                      >
+
+                      <textarea
+                        id="claimEvidence"
+                        rows="4"
+                        maxlength="2000"
+                        placeholder="Tell us why you are authorized to claim this business."
+                        required
+                      ></textarea>
+
+                      <button
+                        type="submit"
+                        class="btn btn-primary"
+                        id="claimSubmitButton"
+                      >
+                        Submit Claim
+                      </button>
+
+                    </form>
+
+                  </div>
+
+                  <div
+                    id="claimVerificationSection"
+                    class="verification-box"
+                  >
+
+                    <h3>
+                      Verify Ownership
+                    </h3>
+
+                    <p>
+                      A 6-digit verification code will be sent to:
+                    </p>
+
+                    <p
+                      id="verificationEmail"
+                      class="verification-email"
+                    ></p>
+
+                    <form
+                      id="verificationForm"
+                      class="verification-form"
+                    >
+
+                      <input
+                        type="text"
+                        id="claimOtp"
+                        class="otp-input"
+                        inputmode="numeric"
+                        autocomplete="one-time-code"
+                        maxlength="6"
+                        pattern="[0-9]{6}"
+                        placeholder="000000"
+                        required
+                      >
+
+                      <button
+                        type="submit"
+                        class="btn btn-primary"
+                        id="verifyOtpButton"
+                      >
+                        Verify Code
+                      </button>
+
+                    </form>
+
+                    <div class="verification-meta">
+
+                      <span>
+                        Code expires in
+                        <strong id="otpExpiry">
+                          10 minutes
+                        </strong>
+                      </span>
+
+                      <span>
+                        Maximum 5 attempts
+                      </span>
+
+                    </div>
+
+                    <div class="verification-actions">
+
+                      <button
+                        type="button"
+                        class="btn"
+                        id="resendOtpButton"
+                      >
+                        Resend Code
+                      </button>
+
+                    </div>
+
+                    <div
+                      id="verificationStatus"
+                      class="status"
+                    ></div>
+
+                    <div class="small-note">
+                      Resend requests are subject to the NearAfrica
+                      verification cooldown.
+                    </div>
+
+                  </div>
+
+                  <div
+                    id="claimCompletedSection"
+                    class="verification-box"
+                  >
+
+                    <div class="claim-success">
+
+                      <div class="claim-success-title">
+                        ✓ Ownership Verified
+                      </div>
+
+                      <div>
+                        Your ownership verification was successful.
+                        Your claim is now awaiting NearAfrica admin approval.
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <div
+                    id="claimStatus"
+                    class="status"
+                  ></div>
+
+                </div>
+
+              `
+          }
+
+        </section>
+
+      </aside>
+
+    </div>
+  `;
+
+  document
+    .getElementById(
+      "loadingState"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+  content.classList.remove(
+    "hidden"
+  );
+
+  initializeMap(
+    business
+  );
+
+  setupClaimForm(
+    business
+  );
+
+  updateFavoriteButtons();
+
+  document
+    .querySelectorAll(
+      "[data-action]"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const action =
+            button.getAttribute(
+              "data-action"
             );
 
-          } catch (error) {
+          if(
+            action === "review"
+          ){
 
-            console.error(
-              "Claim submission failed:",
-              error
+            openReviewModal();
+          }
+
+          if(
+            action === "report"
+          ){
+
+            openReportModal(
+              "report"
             );
+          }
 
-            setClaimStatus(
-              error.message ||
-              "Unable to submit your claim. Please try again.",
-              "error"
+          if(
+            action === "correction"
+          ){
+
+            openReportModal(
+              "correction"
             );
+          }
 
-          } finally {
+          if(
+            action === "dispute"
+          ){
 
-            setButtonLoading(
-              claimSubmitButton,
-              "Submitting...",
-              "Submit Claim",
-              false
+            openReportModal(
+              "dispute"
             );
           }
         }
       );
-
-      if (verificationForm) {
-
-        verificationForm.addEventListener(
-          "submit",
-          async event => {
-
-            event.preventDefault();
-
-            if (!activeClaimId) {
-
-              setVerificationStatus(
-                "Your claim session is missing. Please submit the claim again.",
-                "error"
-              );
-
-              return;
-            }
-
-            const otp =
-              otpInput
-                ? otpInput.value
-                    .replace(/\D/g, "")
-                    .slice(0,6)
-                : "";
-
-            if (
-              !/^\d{6}$/.test(otp)
-            ) {
-
-              setVerificationStatus(
-                "Please enter the 6-digit verification code.",
-                "error"
-              );
-
-              otpInput?.focus();
-
-              return;
-            }
-
-            setVerificationStatus(
-              "Verifying code...",
-              "info"
-            );
-
-            setButtonLoading(
-              verifyOtpButton,
-              "Verifying...",
-              "Verify Code",
-              true
-            );
-
-            try {
-
-              const result =
-                await apiRequest(
-                  `/claims/${encodeURIComponent(
-                    activeClaimId
-                  )}/verify`,
-                  {
-                    method:"POST",
-
-                    body:
-                      JSON.stringify({
-                        otp:otp
-                      })
-                  }
-                );
-
-              /*
-                The owner token is only stored if the
-                Worker explicitly returns one.
-              */
-
-              if (
-                result.ownership_activated === true &&
-                result.owner_token
-              ) {
-
-                try {
-
-                  localStorage.setItem(
-                    "nearafrica_owner_token",
-                    result.owner_token
-                  );
-
-                } catch (
-                  storageError
-                ) {
-
-                  console.error(
-                    "Owner session storage failed:",
-                    storageError
-                  );
-
-                  setVerificationStatus(
-                    "Ownership was verified, but this browser could not save the dashboard session.",
-                    "error"
-                  );
-
-                  return;
-                }
-
-                setVerificationStatus(
-                  "Ownership verified. Opening your owner dashboard...",
-                  "success"
-                );
-
-                window.location.href =
-                  result.dashboard_url ||
-                  "/pages/owner-dashboard.html";
-
-                return;
-              }
-
-              showCompletedStep();
-
-              setClaimStatus(
-                result.message ||
-                "Ownership verified. Your claim is now awaiting NearAfrica admin approval.",
-                "success"
-              );
-
-            } catch (error) {
-
-              console.error(
-                "Claim verification failed:",
-                error
-              );
-
-              setVerificationStatus(
-                error.message ||
-                "The verification code could not be verified.",
-                "error"
-              );
-
-            } finally {
-
-              setButtonLoading(
-                verifyOtpButton,
-                "Verifying...",
-                "Verify Code",
-                false
-              );
-            }
-          }
-        );
-      }
-
-      if (otpInput) {
-
-        otpInput.addEventListener(
-          "input",
-          () => {
-
-            otpInput.value =
-              otpInput.value
-                .replace(/\D/g, "")
-                .slice(0,6);
-          }
-        );
-      }
-
-      if (resendOtpButton) {
-
-        resendOtpButton.addEventListener(
-          "click",
-          async () => {
-
-            if (!activeClaimId) {
-
-              setVerificationStatus(
-                "Your claim session is missing. Please submit the claim again.",
-                "error"
-              );
-
-              return;
-            }
-
-            if (
-              resendCooldownSeconds > 0
-            ) {
-              return;
-            }
-
-            resendOtpButton.disabled =
-              true;
-
-            resendOtpButton.textContent =
-              "Sending...";
-
-            setVerificationStatus(
-              "Requesting a new verification code...",
-              "info"
-            );
-
-            try {
-
-              const result =
-                await apiRequest(
-                  `/claims/${encodeURIComponent(
-                    activeClaimId
-                  )}/resend`,
-                  {
-                    method:"POST",
-
-                    body:
-                      JSON.stringify({})
-                  }
-                );
-
-              if (
-                verificationEmail &&
-                result.verification_email
-              ) {
-
-                verificationEmail.textContent =
-                  result.verification_email;
-              }
-
-              if (otpExpiry) {
-
-                const minutes =
-                  Number(
-                    result.expires_in_minutes
-                  ) || 10;
-
-                otpExpiry.textContent =
-                  `${minutes} minute${
-                    minutes === 1
-                      ? ""
-                      : "s"
-                  }`;
-              }
-
-              if (otpInput) {
-
-                otpInput.value =
-                  "";
-
-                otpInput.focus();
-              }
-
-              setVerificationStatus(
-                result.message ||
-                "A new verification code has been sent.",
-                "success"
-              );
-
-              startResendCooldown(
-                60
-              );
-
-            } catch (error) {
-
-              console.error(
-                "OTP resend failed:",
-                error
-              );
-
-              setVerificationStatus(
-                error.message ||
-                "Unable to resend the verification code.",
-                "error"
-              );
-
-              resendOtpButton.disabled =
-                false;
-
-              resendOtpButton.textContent =
-                "Resend Code";
-            }
-          }
-        );
-      }
-    }
-
-    /* --------------------------------------------------
-       VIEW TRACKING
-    -------------------------------------------------- */
-
-    async function recordBusinessView(
-      businessId
-    ) {
-
-      if (!businessId) {
-        return;
-      }
-
-      try {
-
-        await fetch(
-          `${API_URL}/businesses/${encodeURIComponent(
-            businessId
-          )}/view`,
-          {
-            method:"POST",
-
-            headers:{
-              "Content-Type":
-                "application/json"
-            },
-
-            cache:"no-store"
-          }
-        );
-
-      } catch (error) {
-
-        console.warn(
-          "Business view tracking failed:",
-          error
-        );
-      }
-    }
-
-    /* --------------------------------------------------
-       LOAD BUSINESS
-    -------------------------------------------------- */
-
-    async function loadBusiness() {
-
-      const identifier =
-        getIdentifier();
-
-      if (!identifier) {
-
-        showNotFound(
-          "No business ID or slug was provided."
-        );
-
-        return;
-      }
-
-      try {
-
-        const result =
-          await apiRequest(
-            `/businesses/${encodeURIComponent(
-              identifier
-            )}?_=${Date.now()}`,
-            {
-              method:"GET",
-              cache:"no-store"
-            }
-          );
-
-        if (!result.business) {
-
-          showNotFound(
-            result.message ||
-            "This business could not be found."
-          );
-
-          return;
-        }
-
-        displayBusiness(
-          result.business,
-          result
-        );
-
-        /*
-          Use the canonical Worker-returned ID
-          for view tracking even if the visitor
-          opened the profile using a slug.
-        */
-
-        recordBusinessView(
-          result.business.id ||
+    });
+
+  document
+    .querySelectorAll(
+      ".favorite-button"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        toggleFavorite
+      );
+    });
+
+  loadFavoriteStatus();
+}
+
+/* =========================================================
+   NOT FOUND
+========================================================= */
+
+function showNotFound(
+  message
+){
+
+  document
+    .getElementById(
+      "loadingState"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+  document
+    .getElementById(
+      "businessContent"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+  const state =
+    document.getElementById(
+      "notFoundState"
+    );
+
+  state.classList.remove(
+    "hidden"
+  );
+
+  document.getElementById(
+    "notFoundMessage"
+  ).textContent =
+    message ||
+    "This business could not be found.";
+}
+
+/* =========================================================
+   LOAD BUSINESS
+========================================================= */
+
+async function loadBusiness(){
+
+  const identifier =
+    getIdentifier();
+
+  if(!identifier){
+
+    showNotFound(
+      "No business ID or slug was provided."
+    );
+
+    return;
+  }
+
+  try{
+
+    const result =
+      await apiRequest(
+        `/businesses/${encodeURIComponent(
           identifier
-        );
+        )}?_=${Date.now()}`,
+        {
+          method:"GET",
+          cache:"no-store"
+        }
+      );
 
-      } catch (error) {
+    if(!result.business){
 
-        console.error(
-          "Business loading failed:",
-          error
-        );
+      showNotFound(
+        result.message ||
+        "This business could not be found."
+      );
 
-        showNotFound(
-          error.message ||
-          "Unable to load this business right now."
-        );
-      }
+      return;
     }
 
-    /* --------------------------------------------------
-       START
-    -------------------------------------------------- */
+    displayBusiness(
+      result.business,
+      result
+    );
 
-    loadBusiness();
+    /*
+     * Use the canonical Worker-returned ID
+     * for view tracking even if the visitor
+     * opened the page using a slug.
+     */
+    recordBusinessView(
+      result.business.id ||
+      identifier
+    );
 
-  })();
-  </script>
+  }catch(error){
+
+    console.error(
+      "Business loading failed:",
+      error
+    );
+
+    showNotFound(
+      error.message ||
+      "Unable to load this business right now."
+    );
+  }
+}
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+const mobileMenuButton =
+  document.getElementById(
+    "mobileMenuButton"
+  );
+
+const mainNav =
+  document.getElementById(
+    "mainNav"
+  );
+
+if(
+  mobileMenuButton &&
+  mainNav
+){
+
+  mobileMenuButton.addEventListener(
+    "click",
+    () => {
+
+      const isOpen =
+        mainNav.classList.toggle(
+          "open"
+        );
+
+      mobileMenuButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+
+      mobileMenuButton.setAttribute(
+        "aria-label",
+        isOpen
+          ? "Close menu"
+          : "Open menu"
+      );
+    }
+  );
+
+  mainNav
+    .querySelectorAll("a")
+    .forEach(link => {
+
+      link.addEventListener(
+        "click",
+        () => {
+
+          mainNav.classList.remove(
+            "open"
+          );
+
+          mobileMenuButton.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+          mobileMenuButton.setAttribute(
+            "aria-label",
+            "Open menu"
+          );
+        }
+      );
+    });
+}
+
+/* =========================================================
+   YEAR
+========================================================= */
+
+document.getElementById(
+  "year"
+).textContent =
+  new Date().getFullYear();
+
+/* =========================================================
+   START
+========================================================= */
+
+loadBusiness();
+
+})();
+</script>
 
 </body>
   </html>
