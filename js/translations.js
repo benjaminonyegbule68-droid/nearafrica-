@@ -1299,7 +1299,6 @@ const NearAfricaTranslations = {
 
 };
 
-
 // =============================================================
 // MAKE TRANSLATIONS AVAILABLE TO THE FRONTEND
 // =============================================================
@@ -1319,4 +1318,3 @@ if (
 ) {
   module.exports = NearAfricaTranslations;
 }
-```
