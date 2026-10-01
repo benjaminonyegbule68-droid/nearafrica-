@@ -1,3 +1,4 @@
+```javascript
 /**
  * NearAfrica - Translation Dictionary
  * ===================================
@@ -1318,4 +1319,5 @@ if (
   module.exports
 ) {
   module.exports = NearAfricaTranslations;
-        }
+}
+```
