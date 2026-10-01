@@ -1319,4 +1319,3 @@ if (
 ) {
   module.exports = NearAfricaTranslations;
 }
-```
