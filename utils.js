@@ -2,6 +2,7 @@
  * NearAfrica - Utility Functions
  * ==============================
  * Shared frontend utilities for:
+ *
  * - Business normalization
  * - Distance calculation
  * - Location handling
@@ -10,6 +11,7 @@
  * - URL/query handling
  * - Safe HTML output
  * - Contact/directions links
+ * - API URL handling
  */
 
 
@@ -21,18 +23,29 @@ function toRad(deg) {
   return Number(deg) * (Math.PI / 180);
 }
 
+
 function toNumber(value) {
-  if (value === null || value === undefined || value === "") {
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
     return null;
   }
 
   const number = Number(value);
 
-  return Number.isFinite(number) ? number : null;
+  return Number.isFinite(number)
+    ? number
+    : null;
 }
 
+
 function cleanText(value) {
-  if (value === null || value === undefined) {
+  if (
+    value === null ||
+    value === undefined
+  ) {
     return "";
   }
 
@@ -40,9 +53,189 @@ function cleanText(value) {
 }
 
 
+/**
+ * Convert a value into a reliable boolean.
+ */
+function toBoolean(value) {
+
+  if (
+    value === true ||
+    value === 1 ||
+    value === "1" ||
+    value === "true" ||
+    value === "TRUE" ||
+    value === "yes" ||
+    value === "YES" ||
+    value === "on" ||
+    value === "ON"
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+
+/**
+ * Normalize a string for comparisons.
+ */
+function normalizeText(value) {
+
+  return cleanText(value)
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+
+/* =========================================================
+   URL HELPERS
+   ========================================================= */
+
+
+/**
+ * Normalize an external website URL.
+ */
+function normalizeWebsite(url) {
+
+  const value = cleanText(url);
+
+  if (!value) {
+    return "";
+  }
+
+  if (
+    value.startsWith("http://") ||
+    value.startsWith("https://")
+  ) {
+    return value;
+  }
+
+  return `https://${value}`;
+}
+
+
+/**
+ * Safely check whether a URL is usable.
+ */
+function isValidExternalUrl(url) {
+
+  const value = cleanText(url);
+
+  if (!value) {
+    return false;
+  }
+
+  try {
+
+    const parsed =
+      new URL(
+        value.startsWith("http")
+          ? value
+          : `https://${value}`
+      );
+
+    return (
+      parsed.protocol === "http:" ||
+      parsed.protocol === "https:"
+    );
+
+  } catch {
+
+    return false;
+  }
+}
+
+
 /* =========================================================
    BUSINESS NORMALIZATION
    ========================================================= */
+
+
+/**
+ * Extract the first useful image from an API business object.
+ *
+ * Supports:
+ *
+ * image_url
+ * imageUrl
+ * logo_url
+ * logoUrl
+ * image
+ * images[]
+ */
+function getBusinessImage(business = {}) {
+
+  const directImage =
+    business.image_url ??
+    business.imageUrl ??
+    business.image ??
+    business.photo_url ??
+    business.photoUrl;
+
+  if (cleanText(directImage)) {
+    return cleanText(directImage);
+  }
+
+
+  const logo =
+    business.logo_url ??
+    business.logoUrl ??
+    business.logo;
+
+  if (cleanText(logo)) {
+    return cleanText(logo);
+  }
+
+
+  if (Array.isArray(business.images)) {
+
+    for (const image of business.images) {
+
+      if (typeof image === "string") {
+
+        if (cleanText(image)) {
+          return cleanText(image);
+        }
+
+      } else if (
+        image &&
+        typeof image === "object"
+      ) {
+
+        const imageUrl =
+          image.url ??
+          image.image_url ??
+          image.imageUrl ??
+          image.public_url ??
+          image.publicUrl;
+
+        if (cleanText(imageUrl)) {
+          return cleanText(imageUrl);
+        }
+      }
+    }
+  }
+
+
+  return "";
+}
+
+
+/**
+ * Extract business ID safely.
+ */
+function getBusinessId(business = {}) {
+
+  return cleanText(
+    business.id ??
+    business.business_id ??
+    business.businessId ??
+    business.slug ??
+    ""
+  );
+}
+
 
 /**
  * Normalizes businesses coming from:
@@ -58,14 +251,33 @@ function cleanText(value) {
  */
 function normalizeBusiness(business = {}) {
 
+  const image =
+    getBusinessImage(business);
+
+
   const normalized = {
+
     ...business,
 
+
+    /* -----------------------------------------------------
+       ID
+       ----------------------------------------------------- */
+
     id:
-      business.id ??
-      business.business_id ??
-      business.slug ??
-      null,
+      getBusinessId(business),
+
+
+    business_id:
+      cleanText(
+        business.business_id ??
+        business.id
+      ),
+
+
+    /* -----------------------------------------------------
+       NAME
+       ----------------------------------------------------- */
 
     name:
       cleanText(
@@ -74,6 +286,7 @@ function normalizeBusiness(business = {}) {
         business.businessName
       ),
 
+
     business_name:
       cleanText(
         business.business_name ??
@@ -81,82 +294,244 @@ function normalizeBusiness(business = {}) {
         business.businessName
       ),
 
-    category: cleanText(business.category),
 
-    subcategory: cleanText(business.subcategory),
+    /* -----------------------------------------------------
+       CATEGORY
+       ----------------------------------------------------- */
 
-    country: cleanText(business.country),
+    category:
+      cleanText(
+        business.category
+      ),
 
-    state: cleanText(
-      business.state ??
-      business.region
-    ),
 
-    city: cleanText(business.city),
+    subcategory:
+      cleanText(
+        business.subcategory
+      ),
 
-    address: cleanText(business.address),
 
-    description: cleanText(business.description),
+    /* -----------------------------------------------------
+       LOCATION
+       ----------------------------------------------------- */
 
-    phone: cleanText(business.phone),
+    country:
+      cleanText(
+        business.country
+      ),
 
-    whatsapp: cleanText(
-      business.whatsapp ??
-      business.whatsapp_number
-    ),
 
-    email: cleanText(
-      business.email ??
-      business.contact_email
-    ),
+    state:
+      cleanText(
+        business.state ??
+        business.region
+      ),
 
-    website: cleanText(
-      business.website ??
-      business.website_url
-    ),
 
-    latitude: toNumber(business.latitude),
+    city:
+      cleanText(
+        business.city
+      ),
 
-    longitude: toNumber(business.longitude),
 
-    rating: toNumber(business.rating),
+    address:
+      cleanText(
+        business.address
+      ),
 
-    views: toNumber(business.views) || 0,
+
+    /* -----------------------------------------------------
+       DESCRIPTION
+       ----------------------------------------------------- */
+
+    description:
+      cleanText(
+        business.description
+      ),
+
+
+    /* -----------------------------------------------------
+       CONTACT
+       ----------------------------------------------------- */
+
+    phone:
+      cleanText(
+        business.phone ??
+        business.phone_number
+      ),
+
+
+    whatsapp:
+      cleanText(
+        business.whatsapp ??
+        business.whatsapp_number ??
+        business.whatsappNumber
+      ),
+
+
+    email:
+      cleanText(
+        business.email ??
+        business.contact_email ??
+        business.contactEmail
+      ),
+
+
+    website:
+      cleanText(
+        business.website ??
+        business.website_url ??
+        business.websiteUrl
+      ),
+
+
+    instagram:
+      cleanText(
+        business.instagram ??
+        business.instagram_url
+      ),
+
+
+    facebook:
+      cleanText(
+        business.facebook ??
+        business.facebook_url
+      ),
+
+
+    tiktok:
+      cleanText(
+        business.tiktok ??
+        business.tiktok_url
+      ),
+
+
+    /* -----------------------------------------------------
+       COORDINATES
+       ----------------------------------------------------- */
+
+    latitude:
+      toNumber(
+        business.latitude ??
+        business.lat
+      ),
+
+
+    longitude:
+      toNumber(
+        business.longitude ??
+        business.lng ??
+        business.lon
+      ),
+
+
+    /* -----------------------------------------------------
+       RATINGS / VIEWS
+       ----------------------------------------------------- */
+
+    rating:
+      toNumber(
+        business.rating ??
+        business.average_rating
+      ),
+
+
+    review_count:
+      toNumber(
+        business.review_count ??
+        business.reviewCount ??
+        business.reviews_count
+      ) || 0,
+
+
+    views:
+      toNumber(
+        business.views ??
+        business.view_count
+      ) || 0,
+
+
+    /* -----------------------------------------------------
+       STATUS FLAGS
+       ----------------------------------------------------- */
 
     featured:
-      business.featured === true ||
-      business.featured === 1 ||
-      business.featured === "1",
+      toBoolean(
+        business.featured
+      ),
+
 
     verified:
-      business.verified === true ||
-      business.verified === 1 ||
-      business.verified === "1",
+      toBoolean(
+        business.verified
+      ),
+
 
     claimed:
-      business.claimed === true ||
-      business.claimed === 1 ||
-      business.claimed === "1",
+      toBoolean(
+        business.claimed
+      ),
 
-    status: cleanText(business.status),
+
+    status:
+      cleanText(
+        business.status
+      ),
+
+
+    /* -----------------------------------------------------
+       HOURS
+       ----------------------------------------------------- */
 
     openingHours:
       business.openingHours ??
       business.opening_hours ??
       null,
 
-    image_url: cleanText(
-      business.image_url ??
-      business.imageUrl
-    ),
 
-    logo_url: cleanText(
-      business.logo_url ??
-      business.logoUrl
-    ),
+    /* -----------------------------------------------------
+       IMAGES
+       ----------------------------------------------------- */
 
-    slug: cleanText(business.slug)
+    image_url:
+      image,
+
+
+    imageUrl:
+      image,
+
+
+    logo_url:
+      cleanText(
+        business.logo_url ??
+        business.logoUrl
+      ),
+
+
+    /* -----------------------------------------------------
+       SLUG
+       ----------------------------------------------------- */
+
+    slug:
+      cleanText(
+        business.slug
+      )
+
   };
+
+
+  /*
+   * If there is no explicit logo but an image exists,
+   * let the frontend use the image as the visual fallback.
+   */
+  if (
+    !normalized.logo_url &&
+    normalized.image_url
+  ) {
+    normalized.logo_url =
+      normalized.image_url;
+  }
+
 
   return normalized;
 }
@@ -181,16 +556,23 @@ function normalizeBusinesses(businesses) {
    DISTANCE
    ========================================================= */
 
+
 /**
  * Haversine formula:
  * distance in kilometres between two latitude/longitude points.
  */
-function calculateDistance(lat1, lon1, lat2, lon2) {
+function calculateDistance(
+  lat1,
+  lon1,
+  lat2,
+  lon2
+) {
 
   lat1 = toNumber(lat1);
   lon1 = toNumber(lon1);
   lat2 = toNumber(lat2);
   lon2 = toNumber(lon2);
+
 
   if (
     lat1 === null ||
@@ -201,10 +583,16 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     return null;
   }
 
+
   const R = 6371;
 
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
+
+  const dLat =
+    toRad(lat2 - lat1);
+
+  const dLon =
+    toRad(lon2 - lon1);
+
 
   const a =
     Math.sin(dLat / 2) *
@@ -214,7 +602,13 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
 
-  const safeA = Math.min(1, Math.max(0, a));
+
+  const safeA =
+    Math.min(
+      1,
+      Math.max(0, a)
+    );
+
 
   const c =
     2 *
@@ -222,6 +616,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
       Math.sqrt(safeA),
       Math.sqrt(1 - safeA)
     );
+
 
   return R * c;
 }
@@ -232,15 +627,19 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
  */
 function formatDistance(km) {
 
-  const distance = toNumber(km);
+  const distance =
+    toNumber(km);
+
 
   if (distance === null) {
     return "";
   }
 
+
   if (distance < 1) {
     return `${Math.round(distance * 1000)} m`;
   }
+
 
   return `${distance.toFixed(1)} km`;
 }
@@ -250,16 +649,19 @@ function formatDistance(km) {
    OPENING HOURS
    ========================================================= */
 
+
 /**
  * Check whether a business is currently open.
  *
  * Supports:
+ *
  * - "09:00 - 19:00"
  * - "09:00-19:00"
+ * - "9 AM - 7 PM"
  * - "24 hours"
  * - "Closed"
  * - "By appointment"
- * - overnight schedules such as "22:00 - 02:00"
+ * - overnight schedules
  */
 function isOpenNow(openingHours) {
 
@@ -267,12 +669,14 @@ function isOpenNow(openingHours) {
     return null;
   }
 
+
   if (
     typeof openingHours !== "object" ||
     Array.isArray(openingHours)
   ) {
     return null;
   }
+
 
   const days = [
     "sunday",
@@ -284,21 +688,32 @@ function isOpenNow(openingHours) {
     "saturday"
   ];
 
-  const now = new Date();
 
-  const day = days[now.getDay()];
+  const now =
+    new Date();
+
+
+  const day =
+    days[now.getDay()];
+
 
   const hoursValue =
     openingHours[day] ??
     openingHours[day.toLowerCase()];
 
+
   if (!hoursValue) {
     return null;
   }
 
-  const hours = String(hoursValue).trim();
 
-  const lower = hours.toLowerCase();
+  const hours =
+    String(hoursValue).trim();
+
+
+  const lower =
+    hours.toLowerCase();
+
 
   if (
     lower === "closed" ||
@@ -307,12 +722,14 @@ function isOpenNow(openingHours) {
     return false;
   }
 
+
   if (
     lower === "by appointment" ||
     lower === "appointment"
   ) {
     return false;
   }
+
 
   if (
     lower.includes("24 hours") ||
@@ -322,47 +739,81 @@ function isOpenNow(openingHours) {
     return true;
   }
 
-  const match = hours.match(
-    /(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*[-–]\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i
-  );
+
+  const match =
+    hours.match(
+      /(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*[-–]\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i
+    );
+
 
   if (!match) {
     return null;
   }
 
-  let openH = Number(match[1]);
-  let openM = Number(match[2] || 0);
 
-  let closeH = Number(match[4]);
-  let closeM = Number(match[5] || 0);
+  let openH =
+    Number(match[1]);
 
-  const openPeriod = match[3]
-    ? match[3].toLowerCase()
-    : null;
+  let openM =
+    Number(match[2] || 0);
 
-  const closePeriod = match[6]
-    ? match[6].toLowerCase()
-    : null;
+
+  let closeH =
+    Number(match[4]);
+
+  let closeM =
+    Number(match[5] || 0);
+
+
+  const openPeriod =
+    match[3]
+      ? match[3].toLowerCase()
+      : null;
+
+
+  const closePeriod =
+    match[6]
+      ? match[6].toLowerCase()
+      : null;
+
 
   if (openPeriod) {
-    if (openPeriod === "pm" && openH < 12) {
+
+    if (
+      openPeriod === "pm" &&
+      openH < 12
+    ) {
       openH += 12;
     }
 
-    if (openPeriod === "am" && openH === 12) {
+
+    if (
+      openPeriod === "am" &&
+      openH === 12
+    ) {
       openH = 0;
     }
   }
 
+
   if (closePeriod) {
-    if (closePeriod === "pm" && closeH < 12) {
+
+    if (
+      closePeriod === "pm" &&
+      closeH < 12
+    ) {
       closeH += 12;
     }
 
-    if (closePeriod === "am" && closeH === 12) {
+
+    if (
+      closePeriod === "am" &&
+      closeH === 12
+    ) {
       closeH = 0;
     }
   }
+
 
   if (
     openH > 23 ||
@@ -373,17 +824,21 @@ function isOpenNow(openingHours) {
     return null;
   }
 
+
   const currentMinutes =
     now.getHours() * 60 +
     now.getMinutes();
+
 
   const openMinutes =
     openH * 60 +
     openM;
 
+
   let closeMinutes =
     closeH * 60 +
     closeM;
+
 
   /*
    * Same-day midnight close:
@@ -394,19 +849,25 @@ function isOpenNow(openingHours) {
     closeM === 0 &&
     openMinutes > 0
   ) {
-    closeMinutes = 24 * 60;
+    closeMinutes =
+      24 * 60;
   }
+
 
   /*
    * Overnight schedule:
    * 22:00 - 02:00
    */
-  if (closeMinutes <= openMinutes) {
+  if (
+    closeMinutes <= openMinutes
+  ) {
+
     return (
       currentMinutes >= openMinutes ||
       currentMinutes < closeMinutes
     );
   }
+
 
   return (
     currentMinutes >= openMinutes &&
@@ -419,11 +880,13 @@ function isOpenNow(openingHours) {
    CITY COORDINATES
    ========================================================= */
 
+
 /**
  * Approximate city coordinates.
  *
- * These are fallback coordinates only.
- * Business GPS coordinates from the API should take priority.
+ * Fallback only.
+ * Business GPS coordinates from the API
+ * should always take priority.
  */
 const CITY_COORDS = {
 
@@ -565,44 +1028,59 @@ const CITY_COORDS = {
    LOCATION RESOLUTION
    ========================================================= */
 
+
 /**
  * Resolve a known city/location into approximate coordinates.
  *
- * This is a fallback for manually entered locations.
- * Browser GPS is more precise and should take priority.
+ * Browser GPS is more precise and takes priority.
  */
 function resolveLocation(locationStr) {
 
-  const input = cleanText(locationStr);
+  const input =
+    cleanText(locationStr);
+
 
   if (!input) {
     return null;
   }
 
-  const key = input
-    .toLowerCase()
-    .split(",")[0]
-    .trim();
+
+  const normalized =
+    normalizeText(input);
+
+
+  const key =
+    normalized
+      .split(",")[0]
+      .trim();
+
 
   if (CITY_COORDS[key]) {
+
     return {
       ...CITY_COORDS[key],
       label: input
     };
   }
 
-  for (const [city, coords] of Object.entries(CITY_COORDS)) {
+
+  for (
+    const [city, coords]
+    of Object.entries(CITY_COORDS)
+  ) {
 
     if (
       key.includes(city) ||
       city.includes(key)
     ) {
+
       return {
         ...coords,
         label: input
       };
     }
   }
+
 
   return null;
 }
@@ -612,96 +1090,132 @@ function resolveLocation(locationStr) {
    USER LOCATION
    ========================================================= */
 
+
 /**
  * Get the visitor's browser location.
  *
  * Returns:
+ *
  * {
  *   lat,
- *   lng
+ *   lng,
+ *   accuracy
  * }
  */
 function getUserLocation() {
 
-  return new Promise((resolve, reject) => {
+  return new Promise(
+    (resolve, reject) => {
 
-    if (
-      typeof navigator === "undefined" ||
-      !navigator.geolocation
-    ) {
-      reject(
-        new Error(
-          "Geolocation is not supported by your browser."
-        )
-      );
+      if (
+        typeof navigator === "undefined" ||
+        !navigator.geolocation
+      ) {
 
-      return;
-    }
+        reject(
+          new Error(
+            "Geolocation is not supported by your browser."
+          )
+        );
 
-    navigator.geolocation.getCurrentPosition(
-
-      (position) => {
-
-        const lat =
-          toNumber(position.coords.latitude);
-
-        const lng =
-          toNumber(position.coords.longitude);
-
-        if (
-          lat === null ||
-          lng === null
-        ) {
-          reject(
-            new Error(
-              "Your location could not be determined."
-            )
-          );
-
-          return;
-        }
-
-        resolve({
-          lat,
-          lng,
-          accuracy:
-            toNumber(position.coords.accuracy)
-        });
-      },
-
-      (error) => {
-
-        let message =
-          "Location access was unavailable. Enter your city or location manually.";
-
-        if (error && error.code === 1) {
-
-          message =
-            "Location access was denied. Enter your city or location manually.";
-
-        } else if (error && error.code === 2) {
-
-          message =
-            "Location could not be determined. Enter your city or location manually.";
-
-        } else if (error && error.code === 3) {
-
-          message =
-            "Location request timed out. Enter your city or location manually.";
-        }
-
-        reject(new Error(message));
-      },
-
-      {
-        enableHighAccuracy: true,
-
-        timeout: 10000,
-
-        maximumAge: 60000
+        return;
       }
-    );
-  });
+
+
+      navigator.geolocation.getCurrentPosition(
+
+        (position) => {
+
+          const lat =
+            toNumber(
+              position.coords.latitude
+            );
+
+
+          const lng =
+            toNumber(
+              position.coords.longitude
+            );
+
+
+          if (
+            lat === null ||
+            lng === null
+          ) {
+
+            reject(
+              new Error(
+                "Your location could not be determined."
+              )
+            );
+
+            return;
+          }
+
+
+          resolve({
+
+            lat,
+
+            lng,
+
+            accuracy:
+              toNumber(
+                position.coords.accuracy
+              )
+
+          });
+        },
+
+
+        (error) => {
+
+          let message =
+            "Location access was unavailable. Enter your city or location manually.";
+
+
+          if (
+            error &&
+            error.code === 1
+          ) {
+
+            message =
+              "Location access was denied. Enter your city or location manually.";
+
+          } else if (
+            error &&
+            error.code === 2
+          ) {
+
+            message =
+              "Location could not be determined. Enter your city or location manually.";
+
+          } else if (
+            error &&
+            error.code === 3
+          ) {
+
+            message =
+              "Location request timed out. Enter your city or location manually.";
+          }
+
+
+          reject(
+            new Error(message)
+          );
+        },
+
+
+        {
+          enableHighAccuracy: true,
+
+          timeout: 10000,
+
+          maximumAge: 60000
+        }
+      );
+    }
+  );
 }
 
 
@@ -709,13 +1223,19 @@ function getUserLocation() {
    SEARCH
    ========================================================= */
 
+
 /**
  * Search and filter businesses.
  *
  * Options:
+ *
  * {
  *   query,
+ *   location,
  *   category,
+ *   country,
+ *   state,
+ *   city,
  *   lat,
  *   lng,
  *   radiusKm,
@@ -732,7 +1252,15 @@ function searchBusinesses(
 
     query = "",
 
+    location = "",
+
     category = "",
+
+    country = "",
+
+    state = "",
+
+    city = "",
 
     lat = null,
 
@@ -748,38 +1276,111 @@ function searchBusinesses(
 
 
   let results =
-    normalizeBusinesses(businesses);
+    normalizeBusinesses(
+      businesses
+    );
 
 
   /* ---------------------------------------------------------
      Calculate distance
      --------------------------------------------------------- */
 
-  results = results.map((business) => {
+  results =
+    results.map(
+      (business) => {
 
-    let distance = null;
+        let distance = null;
 
-    if (
-      lat != null &&
-      lng != null &&
-      business.latitude != null &&
-      business.longitude != null
-    ) {
 
-      distance =
-        calculateDistance(
-          lat,
-          lng,
-          business.latitude,
-          business.longitude
-        );
-    }
+        if (
+          lat != null &&
+          lng != null &&
+          business.latitude != null &&
+          business.longitude != null
+        ) {
 
-    return {
-      ...business,
-      distance
-    };
-  });
+          distance =
+            calculateDistance(
+              lat,
+              lng,
+              business.latitude,
+              business.longitude
+            );
+        }
+
+
+        return {
+          ...business,
+          distance
+        };
+      }
+    );
+
+
+  /* ---------------------------------------------------------
+     Country
+     --------------------------------------------------------- */
+
+  if (cleanText(country)) {
+
+    const wantedCountry =
+      normalizeText(country);
+
+
+    results =
+      results.filter(
+        (business) =>
+          normalizeText(
+            business.country
+          ).includes(
+            wantedCountry
+          )
+      );
+  }
+
+
+  /* ---------------------------------------------------------
+     State
+     --------------------------------------------------------- */
+
+  if (cleanText(state)) {
+
+    const wantedState =
+      normalizeText(state);
+
+
+    results =
+      results.filter(
+        (business) =>
+          normalizeText(
+            business.state
+          ).includes(
+            wantedState
+          )
+      );
+  }
+
+
+  /* ---------------------------------------------------------
+     City
+     --------------------------------------------------------- */
+
+  if (cleanText(city)) {
+
+    const wantedCity =
+      normalizeText(city);
+
+
+    results =
+      results.filter(
+        (business) =>
+          normalizeText(
+            business.city
+          ).includes(
+            wantedCity
+          )
+      );
+  }
 
 
   /* ---------------------------------------------------------
@@ -789,21 +1390,69 @@ function searchBusinesses(
   if (cleanText(category)) {
 
     const catLower =
-      cleanText(category).toLowerCase();
+      normalizeText(category);
+
 
     results =
-      results.filter((business) => {
+      results.filter(
+        (business) => {
 
-        const businessCategory =
-          cleanText(
-            business.category
-          ).toLowerCase();
+          const businessCategory =
+            normalizeText(
+              business.category
+            );
 
-        return (
-          businessCategory.includes(catLower) ||
-          catLower.includes(businessCategory)
-        );
-      });
+
+          return (
+            businessCategory.includes(
+              catLower
+            ) ||
+            catLower.includes(
+              businessCategory
+            )
+          );
+        }
+      );
+  }
+
+
+  /* ---------------------------------------------------------
+     Location text
+     --------------------------------------------------------- */
+
+  if (cleanText(location)) {
+
+    const locationLower =
+      normalizeText(location);
+
+
+    results =
+      results.filter(
+        (business) => {
+
+          const locationFields = [
+
+            business.city,
+
+            business.state,
+
+            business.country,
+
+            business.address
+
+          ];
+
+
+          return locationFields.some(
+            (value) =>
+              normalizeText(
+                value
+              ).includes(
+                locationLower
+              )
+          );
+        }
+      );
   }
 
 
@@ -812,42 +1461,60 @@ function searchBusinesses(
      --------------------------------------------------------- */
 
   const searchQuery =
-    cleanText(query).toLowerCase();
+    normalizeText(query);
+
 
   if (searchQuery) {
 
     results =
-      results.filter((business) => {
+      results.filter(
+        (business) => {
 
-        const searchableFields = [
+          const searchableFields = [
 
-          business.name,
+            business.name,
 
-          business.business_name,
+            business.business_name,
 
-          business.description,
+            business.description,
 
-          business.category,
+            business.category,
 
-          business.subcategory,
+            business.subcategory,
 
-          business.city,
+            business.city,
 
-          business.state,
+            business.state,
 
-          business.country,
+            business.country,
 
-          business.address
+            business.address,
 
-        ];
+            business.phone,
 
-        return searchableFields.some(
-          (value) =>
-            cleanText(value)
-              .toLowerCase()
-              .includes(searchQuery)
-        );
-      });
+            business.email,
+
+            business.website,
+
+            business.instagram,
+
+            business.facebook,
+
+            business.tiktok
+
+          ];
+
+
+          return searchableFields.some(
+            (value) =>
+              normalizeText(
+                value
+              ).includes(
+                searchQuery
+              )
+          );
+        }
+      );
   }
 
 
@@ -864,17 +1531,12 @@ function searchBusinesses(
     const radius =
       Number(radiusKm);
 
+
     if (
       Number.isFinite(radius) &&
       radius > 0
     ) {
 
-      /*
-       * If a user specifically asks for
-       * businesses near their location,
-       * businesses without coordinates should
-       * NOT bypass the radius filter.
-       */
       results =
         results.filter(
           (business) =>
@@ -907,27 +1569,37 @@ function searchBusinesses(
 
   if (sortBy === "distance") {
 
-    results.sort((a, b) => {
+    results.sort(
+      (a, b) => {
 
-      if (
-        a.distance == null &&
-        b.distance == null
-      ) {
-        return 0;
+        if (
+          a.distance == null &&
+          b.distance == null
+        ) {
+          return 0;
+        }
+
+
+        if (a.distance == null) {
+          return 1;
+        }
+
+
+        if (b.distance == null) {
+          return -1;
+        }
+
+
+        return (
+          a.distance -
+          b.distance
+        );
       }
+    );
 
-      if (a.distance == null) {
-        return 1;
-      }
-
-      if (b.distance == null) {
-        return -1;
-      }
-
-      return a.distance - b.distance;
-    });
-
-  } else if (sortBy === "rating") {
+  } else if (
+    sortBy === "rating"
+  ) {
 
     results.sort(
       (a, b) =>
@@ -935,27 +1607,49 @@ function searchBusinesses(
         (a.rating || 0)
     );
 
-  } else if (sortBy === "name") {
+  } else if (
+    sortBy === "name"
+  ) {
 
     results.sort(
       (a, b) =>
-        cleanText(a.name).localeCompare(
-          cleanText(b.name)
+        cleanText(
+          a.name
+        ).localeCompare(
+          cleanText(
+            b.name
+          )
         )
+    );
+
+  } else if (
+    sortBy === "newest"
+  ) {
+
+    results.sort(
+      (a, b) => {
+
+        const aDate =
+          new Date(
+            a.created_at ||
+            a.createdAt ||
+            0
+          ).getTime();
+
+
+        const bDate =
+          new Date(
+            b.created_at ||
+            b.createdAt ||
+            0
+          ).getTime();
+
+
+        return bDate - aDate;
+      }
     );
   }
 
-
-  /*
-   * IMPORTANT:
-   * We do NOT perform a second "featured first"
-   * sort after distance sorting.
-   *
-   * That would destroy nearest-first ordering.
-   *
-   * Featured/premium ranking should ultimately
-   * be handled by the Worker ranking system.
-   */
 
   return results;
 }
@@ -965,36 +1659,35 @@ function searchBusinesses(
    BUSINESS LOOKUP
    ========================================================= */
 
+
 /**
- * Get a business by ID.
- *
- * First checks the current API-backed frontend
- * collection, then falls back to legacy static data.
+ * Get a business by ID, slug, or business name.
  */
-function getBusinessById(id, businesses = null) {
+function getBusinessById(
+  id,
+  businesses = null
+) {
 
   const cleanId =
     cleanText(id);
+
 
   if (!cleanId) {
     return null;
   }
 
 
+  const normalizedId =
+    normalizeText(cleanId);
+
+
+  const collections = [];
+
+
   if (Array.isArray(businesses)) {
-
-    const found =
-      businesses.find(
-        (business) =>
-          String(
-            business.id ??
-            business.business_id
-          ) === cleanId
-      );
-
-    if (found) {
-      return normalizeBusiness(found);
-    }
+    collections.push(
+      businesses
+    );
   }
 
 
@@ -1006,17 +1699,52 @@ function getBusinessById(id, businesses = null) {
     )
   ) {
 
+    collections.push(
+      window.NearAfricaData.businesses
+    );
+  }
+
+
+  for (
+    const collection
+    of collections
+  ) {
+
     const found =
-      window.NearAfricaData.businesses.find(
-        (business) =>
-          String(
-            business.id ??
-            business.business_id
-          ) === cleanId
+      collection.find(
+        (business) => {
+
+          const identifiers = [
+
+            business.id,
+
+            business.business_id,
+
+            business.businessId,
+
+            business.slug,
+
+            business.name,
+
+            business.business_name
+
+          ];
+
+
+          return identifiers.some(
+            (value) =>
+              normalizeText(
+                value
+              ) === normalizedId
+          );
+        }
       );
 
+
     if (found) {
-      return normalizeBusiness(found);
+      return normalizeBusiness(
+        found
+      );
     }
   }
 
@@ -1028,6 +1756,7 @@ function getBusinessById(id, businesses = null) {
 /* =========================================================
    HTML SAFETY
    ========================================================= */
+
 
 /**
  * Escape HTML to prevent accidental HTML injection.
@@ -1041,34 +1770,50 @@ function escapeHtml(value) {
     return "";
   }
 
+
   const text =
     String(value);
 
-  /*
-   * Browser environment.
-   */
+
   if (
     typeof document !== "undefined"
   ) {
 
     const div =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
-    div.textContent = text;
+
+    div.textContent =
+      text;
+
 
     return div.innerHTML;
   }
 
 
-  /*
-   * Safe fallback for non-browser environments.
-   */
   return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 }
 
 
@@ -1081,9 +1826,11 @@ function formatRating(rating) {
   const value =
     toNumber(rating);
 
+
   if (value === null) {
     return "—";
   }
+
 
   return value.toFixed(1);
 }
@@ -1093,8 +1840,13 @@ function formatRating(rating) {
    CONTACT LINKS
    ========================================================= */
 
+
 /**
  * Create a WhatsApp URL.
+ *
+ * Important:
+ * This does not invent a country code.
+ * The stored business number is used as supplied.
  */
 function whatsappLink(
   number,
@@ -1104,21 +1856,31 @@ function whatsappLink(
   const raw =
     cleanText(number);
 
+
   if (!raw) {
     return null;
   }
 
+
   const clean =
-    raw.replace(/\D/g, "");
+    raw.replace(
+      /\D/g,
+      ""
+    );
+
 
   if (!clean) {
     return null;
   }
 
+
   const encodedMessage =
     cleanText(message)
-      ? encodeURIComponent(message)
+      ? encodeURIComponent(
+          message
+        )
       : "";
+
 
   return (
     `https://wa.me/${clean}` +
@@ -1143,8 +1905,10 @@ function directionsLink(
   const latitude =
     toNumber(lat);
 
+
   const longitude =
     toNumber(lng);
+
 
   if (
     latitude !== null &&
@@ -1157,18 +1921,64 @@ function directionsLink(
     );
   }
 
+
   const cleanAddress =
     cleanText(address);
+
 
   if (cleanAddress) {
 
     return (
       "https://www.google.com/maps/dir/?api=1" +
-      `&destination=${encodeURIComponent(cleanAddress)}`
+      `&destination=${encodeURIComponent(
+        cleanAddress
+      )}`
     );
   }
 
+
   return null;
+}
+
+
+/**
+ * Create a telephone link.
+ */
+function phoneLink(number) {
+
+  const value =
+    cleanText(number);
+
+
+  if (!value) {
+    return null;
+  }
+
+
+  return `tel:${value.replace(
+    /[^0-9+]/g,
+    ""
+  )}`;
+}
+
+
+/**
+ * Create an email link.
+ */
+function emailLink(email) {
+
+  const value =
+    cleanText(email);
+
+
+  if (!value) {
+    return null;
+  }
+
+
+  return `mailto:${encodeURIComponent(
+    value
+  )}`;
 }
 
 
@@ -1176,15 +1986,14 @@ function directionsLink(
    QUERY STRING
    ========================================================= */
 
+
 /**
  * Read URL query parameters safely.
- *
- * Uses URLSearchParams instead of manually
- * splitting "=" characters.
  */
 function getQueryParams() {
 
   const params = {};
+
 
   if (
     typeof window === "undefined"
@@ -1192,16 +2001,21 @@ function getQueryParams() {
     return params;
   }
 
+
   const searchParams =
     new URLSearchParams(
       window.location.search
     );
 
+
   searchParams.forEach(
     (value, key) => {
-      params[key] = value;
+
+      params[key] =
+        value;
     }
   );
+
 
   return params;
 }
@@ -1210,10 +2024,13 @@ function getQueryParams() {
 /**
  * Build a URL query string.
  */
-function buildQueryString(obj = {}) {
+function buildQueryString(
+  obj = {}
+) {
 
   const params =
     new URLSearchParams();
+
 
   Object.entries(obj).forEach(
     ([key, value]) => {
@@ -1232,13 +2049,79 @@ function buildQueryString(obj = {}) {
     }
   );
 
+
   return params.toString();
+}
+
+
+/* =========================================================
+   API RESPONSE HELPERS
+   ========================================================= */
+
+
+/**
+ * Extract an array from common NearAfrica API
+ * response shapes.
+ */
+function extractBusinessesFromResponse(
+  payload
+) {
+
+  if (
+    Array.isArray(payload)
+  ) {
+    return payload;
+  }
+
+
+  if (
+    payload &&
+    Array.isArray(payload.businesses)
+  ) {
+    return payload.businesses;
+  }
+
+
+  if (
+    payload &&
+    payload.data &&
+    Array.isArray(
+      payload.data.businesses
+    )
+  ) {
+    return payload.data.businesses;
+  }
+
+
+  if (
+    payload &&
+    payload.data &&
+    Array.isArray(
+      payload.data
+    )
+  ) {
+    return payload.data;
+  }
+
+
+  if (
+    payload &&
+    Array.isArray(
+      payload.results
+    )
+  ) {
+    return payload.results;
+  }
+
+
+  return [];
 }
 
 
 /* =========================================================
    API HELPERS
    ========================================================= */
+
 
 /**
  * Get the configured API base URL.
@@ -1254,8 +2137,12 @@ function getApiBaseUrl() {
 
     return String(
       window.NearAfricaConfig.api.baseUrl
-    ).replace(/\/+$/, "");
+    ).replace(
+      /\/+$/,
+      ""
+    );
   }
+
 
   return "";
 }
@@ -1271,18 +2158,28 @@ function buildApiUrl(
   const base =
     getApiBaseUrl();
 
+
   if (!base) {
     return path;
   }
+
 
   if (!path) {
     return base;
   }
 
-  if (path.startsWith("http://") ||
-      path.startsWith("https://")) {
+
+  if (
+    path.startsWith(
+      "http://"
+    ) ||
+    path.startsWith(
+      "https://"
+    )
+  ) {
     return path;
   }
+
 
   return (
     base +
@@ -1299,6 +2196,7 @@ function buildApiUrl(
    EXPORT
    ========================================================= */
 
+
 if (
   typeof window !== "undefined"
 ) {
@@ -1310,6 +2208,18 @@ if (
     toNumber,
 
     cleanText,
+
+    toBoolean,
+
+    normalizeText,
+
+    normalizeWebsite,
+
+    isValidExternalUrl,
+
+    getBusinessImage,
+
+    getBusinessId,
 
     normalizeBusiness,
 
@@ -1337,14 +2247,22 @@ if (
 
     directionsLink,
 
+    phoneLink,
+
+    emailLink,
+
     getQueryParams,
 
     buildQueryString,
+
+    extractBusinessesFromResponse,
 
     getApiBaseUrl,
 
     buildApiUrl,
 
     CITY_COORDS
+
   };
-    }
+
+     }
