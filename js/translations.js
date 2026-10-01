@@ -1,4 +1,3 @@
-```javascript
 /**
  * NearAfrica - Translation Dictionary
  * ===================================
