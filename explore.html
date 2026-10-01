@@ -70,6 +70,7 @@
       font-weight: 800;
       font-size: 20px;
       color: #111;
+      text-decoration: none;
     }
 
     .explore-brand img {
@@ -90,6 +91,7 @@
       color: #555;
       font-size: 14px;
       font-weight: 600;
+      text-decoration: none;
       transition: color 0.2s ease;
     }
 
@@ -102,6 +104,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      flex-shrink: 0;
     }
 
     .explore-language select {
@@ -125,6 +128,7 @@
       background: #fff;
       color: #111;
       font-size: 20px;
+      cursor: pointer;
     }
 
     .explore-mobile-nav {
@@ -145,6 +149,7 @@
       color: #555;
       font-size: 14px;
       font-weight: 600;
+      text-decoration: none;
     }
 
     .explore-mobile-nav a.active {
@@ -185,13 +190,15 @@
       font-size: clamp(34px, 6vw, 56px);
       line-height: 1.05;
       letter-spacing: -1.8px;
-      margin-bottom: 14px;
+      margin: 0 0 14px;
     }
 
     .explore-hero p {
       max-width: 750px;
       color: #cfcfcf;
       font-size: 16px;
+      margin: 0;
+      line-height: 1.6;
     }
 
     /* =====================================================
@@ -215,6 +222,7 @@
       color: #fff;
       padding: 0 18px;
       outline: none;
+      box-sizing: border-box;
     }
 
     .explore-search input::placeholder {
@@ -305,10 +313,11 @@
       font-size: 25px;
       line-height: 1.15;
       color: #111;
+      margin: 0;
     }
 
     .explore-section-heading p {
-      margin-top: 6px;
+      margin: 6px 0 0;
       color: #777;
       font-size: 14px;
     }
@@ -318,6 +327,7 @@
       font-size: 13px;
       font-weight: 800;
       white-space: nowrap;
+      text-decoration: none;
     }
 
     .explore-section-link:hover {
@@ -346,10 +356,12 @@
       justify-content: center;
       align-items: center;
       text-align: center;
+      text-decoration: none;
       transition:
         transform 0.2s ease,
         border-color 0.2s ease,
         background 0.2s ease;
+      box-sizing: border-box;
     }
 
     .category-card:hover {
@@ -394,12 +406,13 @@
 
     .area-panel-heading h3 {
       font-size: 20px;
-      margin-bottom: 5px;
+      margin: 0 0 5px;
     }
 
     .area-panel-heading p {
       color: #aaa;
       font-size: 13px;
+      margin: 0;
     }
 
     .area-controls {
@@ -425,6 +438,7 @@
       color: #fff;
       padding: 0 12px;
       outline: none;
+      box-sizing: border-box;
     }
 
     .area-control select:focus {
@@ -478,6 +492,7 @@
       color: #222;
       padding: 0 12px;
       outline: none;
+      box-sizing: border-box;
     }
 
     .filter-group select:focus {
@@ -499,6 +514,7 @@
     .results-title h2 {
       font-size: 24px;
       color: #111;
+      margin: 0;
     }
 
     .result-count {
@@ -683,6 +699,7 @@
       text-align: center;
       font-size: 12px;
       font-weight: 800;
+      text-decoration: none;
     }
 
     .business-action.primary {
@@ -718,13 +735,14 @@
     }
 
     .empty-state h3 {
-      margin-bottom: 7px;
+      margin: 0 0 7px;
       color: #111;
     }
 
     .empty-state p {
       color: #777;
       font-size: 14px;
+      margin: 0;
     }
 
     /* =====================================================
@@ -764,6 +782,7 @@
 
     .pagination button:disabled {
       opacity: 0.45;
+      cursor: not-allowed;
     }
 
     /* =====================================================
@@ -780,7 +799,7 @@
     }
 
     .owner-cta h2 {
-      margin-bottom: 9px;
+      margin: 0 0 9px;
       font-size: 28px;
     }
 
@@ -789,6 +808,7 @@
       margin: 0 auto 20px;
       color: #bdbdbd;
       font-size: 14px;
+      line-height: 1.6;
     }
 
     .owner-cta-actions {
@@ -804,6 +824,7 @@
       border-radius: 8px;
       font-size: 13px;
       font-weight: 800;
+      text-decoration: none;
     }
 
     .owner-primary {
@@ -893,7 +914,7 @@
 
       .explore-mobile-button {
         display: block;
-        margin-left: auto;
+        margin-left: 0;
       }
 
       .explore-language {
@@ -999,10 +1020,12 @@
       <a
         href="index.html"
         class="explore-brand"
+        aria-label="NearAfrica home"
       >
         <img
           src="logo.png"
           alt="NearAfrica"
+          onerror="this.style.display='none';"
         >
         <span>NearAfrica</span>
       </a>
@@ -1011,6 +1034,7 @@
         class="explore-main-nav"
         aria-label="Main navigation"
       >
+
         <a
           href="index.html"
           data-i18n="nav.home"
@@ -1046,6 +1070,7 @@
         >
           Contact
         </a>
+
       </nav>
 
       <div class="explore-language">
@@ -1123,7 +1148,7 @@
 
 
   <!-- =====================================================
-       HERO / SEARCH
+       HERO
   ====================================================== -->
 
   <section class="explore-hero">
@@ -1144,7 +1169,11 @@
         location, or find businesses near you.
       </p>
 
-      <div class="explore-search">
+      <form
+        id="exploreSearchForm"
+        class="explore-search"
+        novalidate
+      >
 
         <input
           id="searchInput"
@@ -1156,13 +1185,13 @@
 
         <button
           id="searchButton"
-          type="button"
+          type="submit"
           data-i18n="search.search"
         >
           Search
         </button>
 
-      </div>
+      </form>
 
       <div class="explore-location-bar">
 
@@ -1205,9 +1234,8 @@
 
   <main class="explore-main">
 
-
     <!-- ===================================================
-         BROWSE CATEGORIES
+         CATEGORIES
     ==================================================== -->
 
     <section class="explore-section">
@@ -1235,41 +1263,40 @@
 
       </div>
 
-
       <div class="category-grid">
 
         <a href="explore.html?category=Restaurants%20%26%20Food" class="category-card">
           <span class="category-icon">🍽️</span>
           <span class="category-name" data-i18n="categories.restaurants">
-            Restaurants & Food
+            Restaurants &amp; Food
           </span>
         </a>
 
         <a href="explore.html?category=Hotels%20%26%20Accommodation" class="category-card">
           <span class="category-icon">🏨</span>
           <span class="category-name" data-i18n="categories.hotels">
-            Hotels & Accommodation
+            Hotels &amp; Accommodation
           </span>
         </a>
 
         <a href="explore.html?category=Beauty%20%26%20Spa" class="category-card">
           <span class="category-icon">💆</span>
           <span class="category-name" data-i18n="categories.beauty">
-            Beauty & Spa
+            Beauty &amp; Spa
           </span>
         </a>
 
         <a href="explore.html?category=Health%20%26%20Medical" class="category-card">
           <span class="category-icon">🏥</span>
           <span class="category-name" data-i18n="categories.health">
-            Health & Medical
+            Health &amp; Medical
           </span>
         </a>
 
         <a href="explore.html?category=Shopping%20%26%20Retail" class="category-card">
           <span class="category-icon">🛍️</span>
           <span class="category-name" data-i18n="categories.shopping">
-            Shopping & Retail
+            Shopping &amp; Retail
           </span>
         </a>
 
@@ -1283,7 +1310,7 @@
         <a href="explore.html?category=Banks%20%26%20Finance" class="category-card">
           <span class="category-icon">🏦</span>
           <span class="category-name" data-i18n="categories.banks">
-            Banks & Finance
+            Banks &amp; Finance
           </span>
         </a>
 
@@ -1318,14 +1345,14 @@
         <a href="explore.html?category=Travel%20%26%20Tourism" class="category-card">
           <span class="category-icon">✈️</span>
           <span class="category-name" data-i18n="categories.travel">
-            Travel & Tourism
+            Travel &amp; Tourism
           </span>
         </a>
 
         <a href="explore.html?category=Logistics%20%26%20Delivery" class="category-card">
           <span class="category-icon">🚚</span>
           <span class="category-name" data-i18n="categories.logistics">
-            Logistics & Delivery
+            Logistics &amp; Delivery
           </span>
         </a>
 
@@ -1346,21 +1373,21 @@
         <a href="explore.html?category=Gyms%20%26%20Fitness" class="category-card">
           <span class="category-icon">🏋️</span>
           <span class="category-name" data-i18n="categories.gyms">
-            Gyms & Fitness
+            Gyms &amp; Fitness
           </span>
         </a>
 
         <a href="explore.html?category=Fitness%20%26%20Sports" class="category-card">
           <span class="category-icon">⚽</span>
           <span class="category-name" data-i18n="categories.fitness">
-            Fitness & Sports
+            Fitness &amp; Sports
           </span>
         </a>
 
         <a href="explore.html?category=Construction%20%26%20Home%20Services" class="category-card">
           <span class="category-icon">🔨</span>
           <span class="category-name" data-i18n="categories.construction">
-            Construction & Home Services
+            Construction &amp; Home Services
           </span>
         </a>
 
@@ -1388,7 +1415,14 @@
         <a href="explore.html?category=Government%20%26%20Public%20Services" class="category-card">
           <span class="category-icon">🏛️</span>
           <span class="category-name" data-i18n="categories.government">
-            Government & Public Services
+            Government &amp; Public Services
+          </span>
+        </a>
+
+        <a href="explore.html?category=Other" class="category-card">
+          <span class="category-icon">➕</span>
+          <span class="category-name" data-i18n="categories.other">
+            Other
           </span>
         </a>
 
@@ -1419,7 +1453,6 @@
 
       </div>
 
-
       <div class="area-panel">
 
         <div class="area-panel-heading">
@@ -1435,10 +1468,7 @@
 
         </div>
 
-
         <div class="area-controls">
-
-          <!-- COUNTRY -->
 
           <div class="area-control">
 
@@ -1456,9 +1486,6 @@
 
           </div>
 
-
-          <!-- STATE -->
-
           <div class="area-control">
 
             <label for="stateFilter">
@@ -1474,9 +1501,6 @@
             </select>
 
           </div>
-
-
-          <!-- CITY -->
 
           <div class="area-control">
 
@@ -1516,7 +1540,6 @@
           Filter businesses
         </div>
 
-
         <div class="filters">
 
           <div class="filter-group">
@@ -1534,28 +1557,28 @@
                 All categories
               </option>
 
-              <option value="Restaurants & Food">Restaurants & Food</option>
-              <option value="Hotels & Accommodation">Hotels & Accommodation</option>
-              <option value="Beauty & Spa">Beauty & Spa</option>
-              <option value="Health & Medical">Health & Medical</option>
-              <option value="Shopping & Retail">Shopping & Retail</option>
+              <option value="Restaurants & Food">Restaurants &amp; Food</option>
+              <option value="Hotels & Accommodation">Hotels &amp; Accommodation</option>
+              <option value="Beauty & Spa">Beauty &amp; Spa</option>
+              <option value="Health & Medical">Health &amp; Medical</option>
+              <option value="Shopping & Retail">Shopping &amp; Retail</option>
               <option value="Supermarkets">Supermarkets</option>
-              <option value="Banks & Finance">Banks & Finance</option>
+              <option value="Banks & Finance">Banks &amp; Finance</option>
               <option value="Professional Services">Professional Services</option>
               <option value="Education">Education</option>
               <option value="Real Estate">Real Estate</option>
               <option value="Automotive">Automotive</option>
-              <option value="Travel & Tourism">Travel & Tourism</option>
-              <option value="Logistics & Delivery">Logistics & Delivery</option>
+              <option value="Travel & Tourism">Travel &amp; Tourism</option>
+              <option value="Logistics & Delivery">Logistics &amp; Delivery</option>
               <option value="Technology">Technology</option>
               <option value="Entertainment">Entertainment</option>
-              <option value="Gyms & Fitness">Gyms & Fitness</option>
-              <option value="Fitness & Sports">Fitness & Sports</option>
-              <option value="Construction & Home Services">Construction & Home Services</option>
+              <option value="Gyms & Fitness">Gyms &amp; Fitness</option>
+              <option value="Fitness & Sports">Fitness &amp; Sports</option>
+              <option value="Construction & Home Services">Construction &amp; Home Services</option>
               <option value="Fashion">Fashion</option>
               <option value="Agriculture">Agriculture</option>
               <option value="Religious Organizations">Religious Organizations</option>
-              <option value="Government & Public Services">Government & Public Services</option>
+              <option value="Government & Public Services">Government &amp; Public Services</option>
               <option value="Other">Other</option>
 
             </select>
@@ -1657,7 +1680,6 @@
 
         </div>
 
-
         <div
           id="nearbyIndicator"
           class="nearby-indicator"
@@ -1667,16 +1689,6 @@
 
       </div>
 
-
-      <!-- app.js compatibility -->
-
-      <div
-        id="statusMessage"
-        class="status"
-        aria-live="polite"
-      ></div>
-
-      <!-- Legacy alias retained for compatibility -->
 
       <div
         id="status"
@@ -1709,14 +1721,6 @@
         </p>
 
       </div>
-
-
-      <!-- Legacy alias retained for compatibility -->
-
-      <div
-        id="empty-state"
-        class="empty-state"
-      ></div>
 
 
       <div
@@ -1781,6 +1785,7 @@
         <img
           src="logo.png"
           alt="NearAfrica"
+          onerror="this.style.display='none';"
         >
 
         <span>
@@ -1803,16 +1808,6 @@
   ====================================================== -->
 
   <script>
-
-    /*
-     * NearAfrica Nigeria geographic structure.
-     *
-     * State -> major cities / areas.
-     *
-     * This is intentionally kept in a single data object so
-     * additional African countries can be added later without
-     * rebuilding the Explore page.
-     */
 
     window.NearAfricaNigeriaLocations = {
 
@@ -2143,9 +2138,9 @@
     };
 
 
-    /*
-     * Populate the state selector.
-     */
+    /* =====================================================
+       LOCATION SELECTORS
+    ===================================================== */
 
     function populateNigeriaStates() {
 
@@ -2156,6 +2151,10 @@
         document.getElementById("cityFilter");
 
       if (!stateFilter) return;
+
+      const currentState =
+        new URLSearchParams(window.location.search)
+          .get("state") || "";
 
       stateFilter.innerHTML = "";
 
@@ -2169,8 +2168,7 @@
 
       Object.keys(
         window.NearAfricaNigeriaLocations
-      )
-      .forEach(function (state) {
+      ).forEach(function (state) {
 
         const option =
           document.createElement("option");
@@ -2182,7 +2180,16 @@
 
       });
 
-      if (cityFilter) {
+      if (
+        currentState &&
+        window.NearAfricaNigeriaLocations[currentState]
+      ) {
+
+        stateFilter.value = currentState;
+
+        populateNigeriaCities(currentState);
+
+      } else if (cityFilter) {
 
         cityFilter.innerHTML = "";
 
@@ -2200,10 +2207,6 @@
 
     }
 
-
-    /*
-     * Populate cities after state selection.
-     */
 
     function populateNigeriaCities(state) {
 
@@ -2223,6 +2226,7 @@
         option.textContent = "Select a state first";
 
         cityFilter.appendChild(option);
+
         cityFilter.disabled = true;
 
         return;
@@ -2257,12 +2261,13 @@
     }
 
 
-    /*
-     * Push geographic selections into the URL.
-     * This lets Explore remain linkable/shareable.
-     */
+    /* =====================================================
+       URL MANAGEMENT
+    ===================================================== */
 
-    function updateExploreLocationUrl() {
+    function updateExploreLocationUrl(
+      replaceHistory = true
+    ) {
 
       const url =
         new URL(window.location.href);
@@ -2274,23 +2279,110 @@
         document.getElementById("cityFilter")?.value || "";
 
       const country =
-        document.getElementById("countryFilter")?.value || "Nigeria";
+        document.getElementById("countryFilter")?.value ||
+        "Nigeria";
 
       if (country) {
-        url.searchParams.set("country", country);
+        url.searchParams.set(
+          "country",
+          country
+        );
       }
 
       if (state) {
-        url.searchParams.set("state", state);
+
+        url.searchParams.set(
+          "state",
+          state
+        );
+
       } else {
+
         url.searchParams.delete("state");
+
       }
 
       if (city) {
-        url.searchParams.set("city", city);
+
+        url.searchParams.set(
+          "city",
+          city
+        );
+
       } else {
+
         url.searchParams.delete("city");
+
       }
+
+      if (replaceHistory) {
+
+        window.history.replaceState(
+          {},
+          "",
+          url.toString()
+        );
+
+      }
+
+      return url;
+
+    }
+
+
+    function dispatchLocationChange() {
+
+      const state =
+        document.getElementById("stateFilter")?.value || "";
+
+      const city =
+        document.getElementById("cityFilter")?.value || "";
+
+      const country =
+        document.getElementById("countryFilter")?.value ||
+        "Nigeria";
+
+      window.dispatchEvent(
+        new CustomEvent(
+          "nearafrica:locationchange",
+          {
+            detail: {
+              country: country,
+              state: state,
+              city: city
+            }
+          }
+        )
+      );
+
+    }
+
+
+    /* =====================================================
+       CATEGORY URL
+    ===================================================== */
+
+    function updateCategoryUrl(category) {
+
+      const url =
+        new URL(window.location.href);
+
+      if (category) {
+
+        url.searchParams.set(
+          "category",
+          category
+        );
+
+      } else {
+
+        url.searchParams.delete(
+          "category"
+        );
+
+      }
+
+      url.searchParams.delete("page");
 
       window.history.replaceState(
         {},
@@ -2300,6 +2392,45 @@
 
     }
 
+
+    /* =====================================================
+       SEARCH URL
+    ===================================================== */
+
+    function updateSearchUrl(search) {
+
+      const url =
+        new URL(window.location.href);
+
+      if (search) {
+
+        url.searchParams.set(
+          "search",
+          search
+        );
+
+      } else {
+
+        url.searchParams.delete(
+          "search"
+        );
+
+      }
+
+      url.searchParams.delete("page");
+
+      window.history.replaceState(
+        {},
+        "",
+        url.toString()
+      );
+
+    }
+
+
+    /* =====================================================
+       INITIALIZATION
+    ===================================================== */
 
     document.addEventListener(
       "DOMContentLoaded",
@@ -2329,7 +2460,9 @@
             function () {
 
               const isOpen =
-                mobileNav.classList.toggle("open");
+                mobileNav.classList.toggle(
+                  "open"
+                );
 
               mobileButton.setAttribute(
                 "aria-expanded",
@@ -2343,14 +2476,92 @@
 
 
         /* ===============================================
-           INITIALIZE NIGERIA STATES
+           INITIALIZE STATES
         =============================================== */
 
         populateNigeriaStates();
 
 
         /* ===============================================
-           STATE → CITY
+           READ URL PARAMETERS
+        =============================================== */
+
+        const params =
+          new URLSearchParams(
+            window.location.search
+          );
+
+        const category =
+          params.get("category") || "";
+
+        const search =
+          params.get("search") ||
+          params.get("q") ||
+          "";
+
+        const state =
+          params.get("state") ||
+          "";
+
+        const city =
+          params.get("city") ||
+          "";
+
+
+        /* ===============================================
+           SEARCH INPUT
+        =============================================== */
+
+        const searchInput =
+          document.getElementById(
+            "searchInput"
+          );
+
+        if (
+          searchInput &&
+          search
+        ) {
+
+          searchInput.value =
+            search;
+
+        }
+
+
+        /* ===============================================
+           CATEGORY FILTER
+        =============================================== */
+
+        const categoryFilter =
+          document.getElementById(
+            "categoryFilter"
+          );
+
+        if (
+          categoryFilter &&
+          category
+        ) {
+
+          const categoryExists =
+            Array.from(
+              categoryFilter.options
+            ).some(
+              option =>
+                option.value === category
+            );
+
+          if (categoryExists) {
+
+            categoryFilter.value =
+              category;
+
+          }
+
+        }
+
+
+        /* ===============================================
+           STATE/CITY RESTORE
         =============================================== */
 
         const stateFilter =
@@ -2362,6 +2573,48 @@
           document.getElementById(
             "cityFilter"
           );
+
+        if (
+          stateFilter &&
+          state &&
+          window.NearAfricaNigeriaLocations[state]
+        ) {
+
+          stateFilter.value =
+            state;
+
+          populateNigeriaCities(
+            state
+          );
+
+          if (
+            cityFilter &&
+            city
+          ) {
+
+            const hasCity =
+              Array.from(
+                cityFilter.options
+              ).some(
+                option =>
+                  option.value === city
+              );
+
+            if (hasCity) {
+
+              cityFilter.value =
+                city;
+
+            }
+
+          }
+
+        }
+
+
+        /* ===============================================
+           STATE CHANGE
+        =============================================== */
 
         if (stateFilter) {
 
@@ -2375,24 +2628,7 @@
 
               updateExploreLocationUrl();
 
-              /*
-               * Tell the current app/search system
-               * to refresh the business results.
-               */
-
-              window.dispatchEvent(
-                new CustomEvent(
-                  "nearafrica:locationchange",
-                  {
-                    detail: {
-                      country: "Nigeria",
-                      state: stateFilter.value,
-                      city:
-                        cityFilter?.value || ""
-                    }
-                  }
-                )
-              );
+              dispatchLocationChange();
 
             }
           );
@@ -2412,16 +2648,35 @@
 
               updateExploreLocationUrl();
 
+              dispatchLocationChange();
+
+            }
+          );
+
+        }
+
+
+        /* ===============================================
+           CATEGORY CHANGE
+        =============================================== */
+
+        if (categoryFilter) {
+
+          categoryFilter.addEventListener(
+            "change",
+            function () {
+
+              updateCategoryUrl(
+                categoryFilter.value
+              );
+
               window.dispatchEvent(
                 new CustomEvent(
-                  "nearafrica:locationchange",
+                  "nearafrica:filterchange",
                   {
                     detail: {
-                      country: "Nigeria",
-                      state:
-                        stateFilter?.value || "",
-                      city:
-                        cityFilter.value || ""
+                      category:
+                        categoryFilter.value
                     }
                   }
                 )
@@ -2434,99 +2689,62 @@
 
 
         /* ===============================================
-           CATEGORY + URL PARAMETERS
+           SEARCH FORM
         =============================================== */
 
-        const params =
-          new URLSearchParams(
-            window.location.search
-          );
-
-        const category =
-          params.get("category");
-
-        const search =
-          params.get("search") ||
-          params.get("q");
-
-        const state =
-          params.get("state");
-
-        const city =
-          params.get("city");
-
-        const searchInput =
+        const searchForm =
           document.getElementById(
-            "searchInput"
+            "exploreSearchForm"
           );
 
-        const categoryFilter =
-          document.getElementById(
-            "categoryFilter"
-          );
+        if (searchForm) {
 
-        if (
-          searchInput &&
-          search
-        ) {
+          searchForm.addEventListener(
+            "submit",
+            function (event) {
 
-          searchInput.value =
-            search;
+              event.preventDefault();
 
-        }
+              const value =
+                String(
+                  searchInput?.value || ""
+                ).trim();
 
-        if (
-          categoryFilter &&
-          category
-        ) {
+              updateSearchUrl(value);
 
-          categoryFilter.value =
-            category;
-
-        }
-
-
-        /* ===============================================
-           RESTORE STATE/CITY FROM URL
-        =============================================== */
-
-        if (
-          stateFilter &&
-          state &&
-          window.NearAfricaNigeriaLocations[state]
-        ) {
-
-          stateFilter.value =
-            state;
-
-          populateNigeriaCities(state);
-
-          if (
-            cityFilter &&
-            city
-          ) {
-
-            const hasCity =
-              Array.from(
-                cityFilter.options
-              )
-              .some(
-                option =>
-                  option.value === city
+              window.dispatchEvent(
+                new CustomEvent(
+                  "nearafrica:search",
+                  {
+                    detail: {
+                      search: value
+                    }
+                  }
+                )
               );
 
-            if (hasCity) {
-              cityFilter.value =
-                city;
-            }
+              const results =
+                document.getElementById(
+                  "business-results"
+                );
 
-          }
+              if (results) {
+
+                results.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start"
+                });
+
+              }
+
+            }
+          );
 
         }
 
 
         /* ===============================================
-           COUNTRY SELECTOR
+           SECONDARY COUNTRY FILTER
         =============================================== */
 
         const countryFilter =
@@ -2551,6 +2769,10 @@
               countryFilterSecondary.value =
                 countryFilter.value;
 
+              updateExploreLocationUrl();
+
+              dispatchLocationChange();
+
             }
           );
 
@@ -2558,8 +2780,169 @@
             "change",
             function () {
 
+              /*
+               * Launch is Nigeria-only.
+               * Keep both controls synchronized.
+               */
+
               countryFilter.value =
                 "Nigeria";
+
+              countryFilterSecondary.value =
+                "Nigeria";
+
+              updateExploreLocationUrl();
+
+              dispatchLocationChange();
+
+            }
+          );
+
+        }
+
+
+        /* ===============================================
+           SORT FILTER
+        =============================================== */
+
+        const sortFilter =
+          document.getElementById(
+            "sortFilter"
+          );
+
+        if (sortFilter) {
+
+          sortFilter.addEventListener(
+            "change",
+            function () {
+
+              window.dispatchEvent(
+                new CustomEvent(
+                  "nearafrica:sortchange",
+                  {
+                    detail: {
+                      sort:
+                        sortFilter.value
+                    }
+                  }
+                )
+              );
+
+            }
+          );
+
+        }
+
+
+        /* ===============================================
+           RADIUS FILTER
+        =============================================== */
+
+        const radiusFilter =
+          document.getElementById(
+            "radiusFilter"
+          );
+
+        if (radiusFilter) {
+
+          radiusFilter.addEventListener(
+            "change",
+            function () {
+
+              window.dispatchEvent(
+                new CustomEvent(
+                  "nearafrica:radiuschange",
+                  {
+                    detail: {
+                      radiusKm:
+                        Number(
+                          radiusFilter.value
+                        ) || 25
+                    }
+                  }
+                )
+              );
+
+            }
+          );
+
+        }
+
+
+        /* ===============================================
+           CATEGORY CARD CLICK HANDLING
+        =============================================== */
+
+        document
+          .querySelectorAll(
+            ".category-card"
+          )
+          .forEach(
+            function (card) {
+
+              card.addEventListener(
+                "click",
+                function () {
+
+                  const href =
+                    card.getAttribute(
+                      "href"
+                    );
+
+                  if (!href) return;
+
+                  /*
+                   * Normal navigation is intentionally
+                   * preserved. app.js reads the URL.
+                   */
+
+                }
+              );
+
+            }
+          );
+
+
+        /* ===============================================
+           CLEAR LOCATION
+        =============================================== */
+
+        const clearLocationButton =
+          document.getElementById(
+            "clearLocationButton"
+          );
+
+        if (clearLocationButton) {
+
+          clearLocationButton.addEventListener(
+            "click",
+            function () {
+
+              window.dispatchEvent(
+                new CustomEvent(
+                  "nearafrica:clear-location"
+                )
+              );
+
+              clearLocationButton.hidden =
+                true;
+
+              const locationStatus =
+                document.getElementById(
+                  "locationStatus"
+                );
+
+              if (locationStatus) {
+
+                locationStatus.textContent =
+                  "Location cleared.";
+
+                locationStatus.classList.remove(
+                  "success",
+                  "error"
+                );
+
+              }
 
             }
           );
@@ -2573,7 +2956,7 @@
 
 
   <!-- =====================================================
-       SCRIPTS
+       NEARAFRICA SCRIPTS
   ====================================================== -->
 
   <script src="js/config.js"></script>
@@ -2584,4 +2967,4 @@
   <script src="js/app.js"></script>
 
 </body>
-  </html>
+          </html>
