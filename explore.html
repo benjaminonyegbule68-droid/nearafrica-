@@ -12,7 +12,7 @@
 
   <meta
     name="description"
-    content="Discover businesses, services, shops, restaurants, hotels and more across Africa with NearAfrica."
+    content="Discover businesses, services, shops, restaurants, hotels and more across Nigeria with NearAfrica."
   >
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -233,6 +233,7 @@
       background: #d4af37;
       color: #111;
       font-weight: 800;
+      cursor: pointer;
     }
 
     .explore-search button:hover {
@@ -256,6 +257,7 @@
       padding: 10px 15px;
       font-size: 13px;
       font-weight: 700;
+      cursor: pointer;
     }
 
     .explore-location-button:hover,
@@ -286,10 +288,6 @@
       margin: 0 auto;
       padding: 38px 0 80px;
     }
-
-    /* =====================================================
-       SECTION HEADERS
-    ===================================================== */
 
     .explore-section {
       margin-bottom: 42px;
@@ -433,6 +431,11 @@
       border-color: #d4af37;
     }
 
+    .area-control select:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     /* =====================================================
        FILTER PANEL
     ===================================================== */
@@ -482,7 +485,7 @@
     }
 
     /* =====================================================
-       RESULTS HEADER
+       RESULTS
     ===================================================== */
 
     .results-header {
@@ -520,10 +523,6 @@
     .nearby-indicator.visible {
       display: inline-flex;
     }
-
-    /* =====================================================
-       STATUS
-    ===================================================== */
 
     .status {
       display: none;
@@ -582,12 +581,7 @@
 
     .business-image {
       height: 190px;
-      background:
-        linear-gradient(
-          135deg,
-          #111,
-          #2a2a2a
-        );
+      background: linear-gradient(135deg, #111, #2a2a2a);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -755,6 +749,7 @@
       background: #fff;
       color: #222;
       font-weight: 700;
+      cursor: pointer;
     }
 
     .pagination button.active {
@@ -1054,6 +1049,7 @@
       </nav>
 
       <div class="explore-language">
+
         <span aria-hidden="true">🌐</span>
 
         <select
@@ -1067,6 +1063,7 @@
           <option value="pt">Português</option>
           <option value="sw">Kiswahili</option>
         </select>
+
       </div>
 
       <button
@@ -1086,6 +1083,7 @@
       class="explore-mobile-nav"
       aria-label="Mobile navigation"
     >
+
       <a href="index.html" data-i18n="nav.home">
         Home
       </a>
@@ -1118,6 +1116,7 @@
       >
         Contact
       </a>
+
     </nav>
 
   </header>
@@ -1181,7 +1180,6 @@
           class="explore-location-button"
           type="button"
           hidden
-          data-i18n="explore.clearLocation"
         >
           Clear Location
         </button>
@@ -1190,7 +1188,6 @@
           id="locationStatus"
           class="explore-location-status"
           aria-live="polite"
-          data-i18n="search.locationUnavailable"
         >
           Search by area or use your current location.
         </span>
@@ -1218,6 +1215,7 @@
       <div class="explore-section-heading">
 
         <div>
+
           <h2 data-i18n="explore.category">
             Browse by Category
           </h2>
@@ -1225,6 +1223,7 @@
           <p>
             Find businesses by what they offer.
           </p>
+
         </div>
 
         <a
@@ -1239,288 +1238,156 @@
 
       <div class="category-grid">
 
-        <a
-          href="explore.html?category=Restaurants%20%26%20Food"
-          class="category-card"
-        >
+        <a href="explore.html?category=Restaurants%20%26%20Food" class="category-card">
           <span class="category-icon">🍽️</span>
-          <span
-            class="category-name"
-            data-i18n="categories.restaurants"
-          >
+          <span class="category-name" data-i18n="categories.restaurants">
             Restaurants & Food
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Hotels%20%26%20Accommodation"
-          class="category-card"
-        >
+        <a href="explore.html?category=Hotels%20%26%20Accommodation" class="category-card">
           <span class="category-icon">🏨</span>
-          <span
-            class="category-name"
-            data-i18n="categories.hotels"
-          >
+          <span class="category-name" data-i18n="categories.hotels">
             Hotels & Accommodation
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Beauty%20%26%20Spa"
-          class="category-card"
-        >
+        <a href="explore.html?category=Beauty%20%26%20Spa" class="category-card">
           <span class="category-icon">💆</span>
-          <span
-            class="category-name"
-            data-i18n="categories.beauty"
-          >
+          <span class="category-name" data-i18n="categories.beauty">
             Beauty & Spa
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Health%20%26%20Medical"
-          class="category-card"
-        >
+        <a href="explore.html?category=Health%20%26%20Medical" class="category-card">
           <span class="category-icon">🏥</span>
-          <span
-            class="category-name"
-            data-i18n="categories.health"
-          >
+          <span class="category-name" data-i18n="categories.health">
             Health & Medical
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Shopping%20%26%20Retail"
-          class="category-card"
-        >
+        <a href="explore.html?category=Shopping%20%26%20Retail" class="category-card">
           <span class="category-icon">🛍️</span>
-          <span
-            class="category-name"
-            data-i18n="categories.shopping"
-          >
+          <span class="category-name" data-i18n="categories.shopping">
             Shopping & Retail
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Supermarkets"
-          class="category-card"
-        >
+        <a href="explore.html?category=Supermarkets" class="category-card">
           <span class="category-icon">🛒</span>
-          <span
-            class="category-name"
-            data-i18n="categories.supermarkets"
-          >
+          <span class="category-name" data-i18n="categories.supermarkets">
             Supermarkets
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Banks%20%26%20Finance"
-          class="category-card"
-        >
+        <a href="explore.html?category=Banks%20%26%20Finance" class="category-card">
           <span class="category-icon">🏦</span>
-          <span
-            class="category-name"
-            data-i18n="categories.banks"
-          >
+          <span class="category-name" data-i18n="categories.banks">
             Banks & Finance
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Professional%20Services"
-          class="category-card"
-        >
+        <a href="explore.html?category=Professional%20Services" class="category-card">
           <span class="category-icon">💼</span>
-          <span
-            class="category-name"
-            data-i18n="categories.professional"
-          >
+          <span class="category-name" data-i18n="categories.professional">
             Professional Services
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Education"
-          class="category-card"
-        >
+        <a href="explore.html?category=Education" class="category-card">
           <span class="category-icon">🎓</span>
-          <span
-            class="category-name"
-            data-i18n="categories.education"
-          >
+          <span class="category-name" data-i18n="categories.education">
             Education
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Real%20Estate"
-          class="category-card"
-        >
+        <a href="explore.html?category=Real%20Estate" class="category-card">
           <span class="category-icon">🏠</span>
-          <span
-            class="category-name"
-            data-i18n="categories.realEstate"
-          >
+          <span class="category-name" data-i18n="categories.realEstate">
             Real Estate
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Automotive"
-          class="category-card"
-        >
+        <a href="explore.html?category=Automotive" class="category-card">
           <span class="category-icon">🚗</span>
-          <span
-            class="category-name"
-            data-i18n="categories.automotive"
-          >
+          <span class="category-name" data-i18n="categories.automotive">
             Automotive
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Travel%20%26%20Tourism"
-          class="category-card"
-        >
+        <a href="explore.html?category=Travel%20%26%20Tourism" class="category-card">
           <span class="category-icon">✈️</span>
-          <span
-            class="category-name"
-            data-i18n="categories.travel"
-          >
+          <span class="category-name" data-i18n="categories.travel">
             Travel & Tourism
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Logistics%20%26%20Delivery"
-          class="category-card"
-        >
+        <a href="explore.html?category=Logistics%20%26%20Delivery" class="category-card">
           <span class="category-icon">🚚</span>
-          <span
-            class="category-name"
-            data-i18n="categories.logistics"
-          >
+          <span class="category-name" data-i18n="categories.logistics">
             Logistics & Delivery
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Technology"
-          class="category-card"
-        >
+        <a href="explore.html?category=Technology" class="category-card">
           <span class="category-icon">💻</span>
-          <span
-            class="category-name"
-            data-i18n="categories.technology"
-          >
+          <span class="category-name" data-i18n="categories.technology">
             Technology
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Entertainment"
-          class="category-card"
-        >
+        <a href="explore.html?category=Entertainment" class="category-card">
           <span class="category-icon">🎬</span>
-          <span
-            class="category-name"
-            data-i18n="categories.entertainment"
-          >
+          <span class="category-name" data-i18n="categories.entertainment">
             Entertainment
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Gyms%20%26%20Fitness"
-          class="category-card"
-        >
+        <a href="explore.html?category=Gyms%20%26%20Fitness" class="category-card">
           <span class="category-icon">🏋️</span>
-          <span
-            class="category-name"
-            data-i18n="categories.gyms"
-          >
+          <span class="category-name" data-i18n="categories.gyms">
             Gyms & Fitness
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Fitness%20%26%20Sports"
-          class="category-card"
-        >
+        <a href="explore.html?category=Fitness%20%26%20Sports" class="category-card">
           <span class="category-icon">⚽</span>
-          <span
-            class="category-name"
-            data-i18n="categories.fitness"
-          >
+          <span class="category-name" data-i18n="categories.fitness">
             Fitness & Sports
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Construction%20%26%20Home%20Services"
-          class="category-card"
-        >
+        <a href="explore.html?category=Construction%20%26%20Home%20Services" class="category-card">
           <span class="category-icon">🔨</span>
-          <span
-            class="category-name"
-            data-i18n="categories.construction"
-          >
+          <span class="category-name" data-i18n="categories.construction">
             Construction & Home Services
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Fashion"
-          class="category-card"
-        >
+        <a href="explore.html?category=Fashion" class="category-card">
           <span class="category-icon">👗</span>
-          <span
-            class="category-name"
-            data-i18n="categories.fashion"
-          >
+          <span class="category-name" data-i18n="categories.fashion">
             Fashion
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Agriculture"
-          class="category-card"
-        >
+        <a href="explore.html?category=Agriculture" class="category-card">
           <span class="category-icon">🌱</span>
-          <span
-            class="category-name"
-            data-i18n="categories.agriculture"
-          >
+          <span class="category-name" data-i18n="categories.agriculture">
             Agriculture
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Religious%20Organizations"
-          class="category-card"
-        >
+        <a href="explore.html?category=Religious%20Organizations" class="category-card">
           <span class="category-icon">⛪</span>
-          <span
-            class="category-name"
-            data-i18n="categories.religious"
-          >
+          <span class="category-name" data-i18n="categories.religious">
             Religious Organizations
           </span>
         </a>
 
-        <a
-          href="explore.html?category=Government%20%26%20Public%20Services"
-          class="category-card"
-        >
+        <a href="explore.html?category=Government%20%26%20Public%20Services" class="category-card">
           <span class="category-icon">🏛️</span>
-          <span
-            class="category-name"
-            data-i18n="categories.government"
-          >
+          <span class="category-name" data-i18n="categories.government">
             Government & Public Services
           </span>
         </a>
@@ -1539,13 +1406,15 @@
       <div class="explore-section-heading">
 
         <div>
+
           <h2>
             Browse by Area
           </h2>
 
           <p>
-            Start broad with a country, state, or city.
+            Start with a Nigerian state and narrow down to a city or area.
           </p>
+
         </div>
 
       </div>
@@ -1560,7 +1429,7 @@
           </h3>
 
           <p>
-            Choose a location or use your current location
+            Choose a state and city, or use your current location
             for nearby discovery.
           </p>
 
@@ -1568,6 +1437,8 @@
 
 
         <div class="area-controls">
+
+          <!-- COUNTRY -->
 
           <div class="area-control">
 
@@ -1577,70 +1448,16 @@
 
             <select id="countryFilter">
 
-              <option value="">
-                All countries
-              </option>
-
-              <option value="Nigeria">
+              <option value="Nigeria" selected>
                 Nigeria
-              </option>
-
-              <option value="Ghana">
-                Ghana
-              </option>
-
-              <option value="South Africa">
-                South Africa
-              </option>
-
-              <option value="Kenya">
-                Kenya
-              </option>
-
-              <option value="Uganda">
-                Uganda
-              </option>
-
-              <option value="Tanzania">
-                Tanzania
-              </option>
-
-              <option value="Rwanda">
-                Rwanda
-              </option>
-
-              <option value="Egypt">
-                Egypt
-              </option>
-
-              <option value="Morocco">
-                Morocco
-              </option>
-
-              <option value="Ethiopia">
-                Ethiopia
-              </option>
-
-              <option value="Senegal">
-                Senegal
-              </option>
-
-              <option value="Cameroon">
-                Cameroon
-              </option>
-
-              <option value="Zambia">
-                Zambia
-              </option>
-
-              <option value="Zimbabwe">
-                Zimbabwe
               </option>
 
             </select>
 
           </div>
 
+
+          <!-- STATE -->
 
           <div class="area-control">
 
@@ -1651,7 +1468,7 @@
             <select id="stateFilter">
 
               <option value="">
-                All states / regions
+                All states / FCT
               </option>
 
             </select>
@@ -1659,16 +1476,18 @@
           </div>
 
 
+          <!-- CITY -->
+
           <div class="area-control">
 
             <label for="cityFilter">
               City / Area
             </label>
 
-            <select id="cityFilter">
+            <select id="cityFilter" disabled>
 
               <option value="">
-                All cities / areas
+                Select a state first
               </option>
 
             </select>
@@ -1711,104 +1530,33 @@
 
             <select id="categoryFilter">
 
-              <option
-                value=""
-                data-i18n="explore.allCategories"
-              >
+              <option value="">
                 All categories
               </option>
 
-              <option value="Restaurants & Food">
-                Restaurants & Food
-              </option>
-
-              <option value="Hotels & Accommodation">
-                Hotels & Accommodation
-              </option>
-
-              <option value="Beauty & Spa">
-                Beauty & Spa
-              </option>
-
-              <option value="Health & Medical">
-                Health & Medical
-              </option>
-
-              <option value="Shopping & Retail">
-                Shopping & Retail
-              </option>
-
-              <option value="Supermarkets">
-                Supermarkets
-              </option>
-
-              <option value="Banks & Finance">
-                Banks & Finance
-              </option>
-
-              <option value="Professional Services">
-                Professional Services
-              </option>
-
-              <option value="Education">
-                Education
-              </option>
-
-              <option value="Real Estate">
-                Real Estate
-              </option>
-
-              <option value="Automotive">
-                Automotive
-              </option>
-
-              <option value="Travel & Tourism">
-                Travel & Tourism
-              </option>
-
-              <option value="Logistics & Delivery">
-                Logistics & Delivery
-              </option>
-
-              <option value="Technology">
-                Technology
-              </option>
-
-              <option value="Entertainment">
-                Entertainment
-              </option>
-
-              <option value="Gyms & Fitness">
-                Gyms & Fitness
-              </option>
-
-              <option value="Fitness & Sports">
-                Fitness & Sports
-              </option>
-
-              <option value="Construction & Home Services">
-                Construction & Home Services
-              </option>
-
-              <option value="Fashion">
-                Fashion
-              </option>
-
-              <option value="Agriculture">
-                Agriculture
-              </option>
-
-              <option value="Religious Organizations">
-                Religious Organizations
-              </option>
-
-              <option value="Government & Public Services">
-                Government & Public Services
-              </option>
-
-              <option value="Other">
-                Other
-              </option>
+              <option value="Restaurants & Food">Restaurants & Food</option>
+              <option value="Hotels & Accommodation">Hotels & Accommodation</option>
+              <option value="Beauty & Spa">Beauty & Spa</option>
+              <option value="Health & Medical">Health & Medical</option>
+              <option value="Shopping & Retail">Shopping & Retail</option>
+              <option value="Supermarkets">Supermarkets</option>
+              <option value="Banks & Finance">Banks & Finance</option>
+              <option value="Professional Services">Professional Services</option>
+              <option value="Education">Education</option>
+              <option value="Real Estate">Real Estate</option>
+              <option value="Automotive">Automotive</option>
+              <option value="Travel & Tourism">Travel & Tourism</option>
+              <option value="Logistics & Delivery">Logistics & Delivery</option>
+              <option value="Technology">Technology</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Gyms & Fitness">Gyms & Fitness</option>
+              <option value="Fitness & Sports">Fitness & Sports</option>
+              <option value="Construction & Home Services">Construction & Home Services</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Agriculture">Agriculture</option>
+              <option value="Religious Organizations">Religious Organizations</option>
+              <option value="Government & Public Services">Government & Public Services</option>
+              <option value="Other">Other</option>
 
             </select>
 
@@ -1823,44 +1571,8 @@
 
             <select id="countryFilterSecondary">
 
-              <option value="">
-                All countries
-              </option>
-
-              <option value="Nigeria">
+              <option value="Nigeria" selected>
                 Nigeria
-              </option>
-
-              <option value="Ghana">
-                Ghana
-              </option>
-
-              <option value="South Africa">
-                South Africa
-              </option>
-
-              <option value="Kenya">
-                Kenya
-              </option>
-
-              <option value="Uganda">
-                Uganda
-              </option>
-
-              <option value="Tanzania">
-                Tanzania
-              </option>
-
-              <option value="Rwanda">
-                Rwanda
-              </option>
-
-              <option value="Egypt">
-                Egypt
-              </option>
-
-              <option value="Morocco">
-                Morocco
               </option>
 
             </select>
@@ -1901,29 +1613,12 @@
 
             <select id="radiusFilter">
 
-              <option value="5">
-                5 km
-              </option>
-
-              <option value="10">
-                10 km
-              </option>
-
-              <option value="25" selected>
-                25 km
-              </option>
-
-              <option value="50">
-                50 km
-              </option>
-
-              <option value="100">
-                100 km
-              </option>
-
-              <option value="250">
-                250 km
-              </option>
+              <option value="5">5 km</option>
+              <option value="10">10 km</option>
+              <option value="25" selected>25 km</option>
+              <option value="50">50 km</option>
+              <option value="100">100 km</option>
+              <option value="250">250 km</option>
 
             </select>
 
@@ -1973,6 +1668,16 @@
       </div>
 
 
+      <!-- app.js compatibility -->
+
+      <div
+        id="statusMessage"
+        class="status"
+        aria-live="polite"
+      ></div>
+
+      <!-- Legacy alias retained for compatibility -->
+
       <div
         id="status"
         class="status"
@@ -1983,12 +1688,11 @@
       <div
         id="business-list"
         class="business-grid"
-      >
-      </div>
+      ></div>
 
 
       <div
-        id="empty-state"
+        id="emptyState"
         class="empty-state"
       >
 
@@ -2001,18 +1705,25 @@
         </h3>
 
         <p>
-          Try a different search, category, or location.
+          Try a different search, category, state, city, or location.
         </p>
 
       </div>
+
+
+      <!-- Legacy alias retained for compatibility -->
+
+      <div
+        id="empty-state"
+        class="empty-state"
+      ></div>
 
 
       <div
         id="pagination"
         class="pagination"
         aria-label="Business pages"
-      >
-      </div>
+      ></div>
 
     </section>
 
@@ -2088,6 +1799,780 @@
 
 
   <!-- =====================================================
+       NIGERIA LOCATION DATA
+  ====================================================== -->
+
+  <script>
+
+    /*
+     * NearAfrica Nigeria geographic structure.
+     *
+     * State -> major cities / areas.
+     *
+     * This is intentionally kept in a single data object so
+     * additional African countries can be added later without
+     * rebuilding the Explore page.
+     */
+
+    window.NearAfricaNigeriaLocations = {
+
+      "Abia": [
+        "Aba",
+        "Umuahia",
+        "Arochukwu",
+        "Bende",
+        "Isiala Ngwa",
+        "Ohafia"
+      ],
+
+      "Adamawa": [
+        "Yola",
+        "Mubi",
+        "Jimeta",
+        "Numan",
+        "Ganye",
+        "Gombi"
+      ],
+
+      "Akwa Ibom": [
+        "Uyo",
+        "Eket",
+        "Ikot Ekpene",
+        "Oron",
+        "Abak",
+        "Ikot Abasi"
+      ],
+
+      "Anambra": [
+        "Awka",
+        "Onitsha",
+        "Nnewi",
+        "Ekwulobia",
+        "Obosi",
+        "Ihiala"
+      ],
+
+      "Bauchi": [
+        "Bauchi",
+        "Azare",
+        "Misau",
+        "Jama'are",
+        "Katagum"
+      ],
+
+      "Bayelsa": [
+        "Yenagoa",
+        "Brass",
+        "Sagbama",
+        "Ogbia",
+        "Nembe"
+      ],
+
+      "Benue": [
+        "Makurdi",
+        "Gboko",
+        "Otukpo",
+        "Katsina-Ala",
+        "Adikpo"
+      ],
+
+      "Borno": [
+        "Maiduguri",
+        "Biu",
+        "Monguno",
+        "Dikwa",
+        "Bama"
+      ],
+
+      "Cross River": [
+        "Calabar",
+        "Ikom",
+        "Ogoja",
+        "Ugep",
+        "Obudu"
+      ],
+
+      "Delta": [
+        "Asaba",
+        "Warri",
+        "Sapele",
+        "Ughelli",
+        "Agbor",
+        "Ozoro"
+      ],
+
+      "Ebonyi": [
+        "Abakaliki",
+        "Afikpo",
+        "Onueke",
+        "Ezza"
+      ],
+
+      "Edo": [
+        "Benin City",
+        "Auchi",
+        "Ekpoma",
+        "Uromi",
+        "Igarra"
+      ],
+
+      "Ekiti": [
+        "Ado-Ekiti",
+        "Ikere-Ekiti",
+        "Ilawe-Ekiti",
+        "Ikole-Ekiti",
+        "Oye-Ekiti"
+      ],
+
+      "Enugu": [
+        "Enugu",
+        "Nsukka",
+        "Oji River",
+        "Awgu",
+        "Agbani"
+      ],
+
+      "Gombe": [
+        "Gombe",
+        "Kumo",
+        "Billiri",
+        "Kaltungo",
+        "Deba"
+      ],
+
+      "Imo": [
+        "Owerri",
+        "Orlu",
+        "Okigwe",
+        "Mbaise",
+        "Oguta"
+      ],
+
+      "Jigawa": [
+        "Dutse",
+        "Hadejia",
+        "Gumel",
+        "Birnin Kudu",
+        "Kazaure"
+      ],
+
+      "Kaduna": [
+        "Kaduna",
+        "Zaria",
+        "Kafanchan",
+        "Kagoro",
+        "Birnin Gwari"
+      ],
+
+      "Kano": [
+        "Kano",
+        "Wudil",
+        "Gwarzo",
+        "Rano",
+        "Bichi",
+        "Dambatta"
+      ],
+
+      "Katsina": [
+        "Katsina",
+        "Funtua",
+        "Daura",
+        "Malumfashi",
+        "Kankara"
+      ],
+
+      "Kebbi": [
+        "Birnin Kebbi",
+        "Argungu",
+        "Yauri",
+        "Jega",
+        "Zuru"
+      ],
+
+      "Kogi": [
+        "Lokoja",
+        "Okene",
+        "Kabba",
+        "Idah",
+        "Anyigba"
+      ],
+
+      "Kwara": [
+        "Ilorin",
+        "Offa",
+        "Lafiagi",
+        "Jebba",
+        "Omu-Aran"
+      ],
+
+      "Lagos": [
+        "Ikeja",
+        "Lagos Island",
+        "Victoria Island",
+        "Lekki",
+        "Yaba",
+        "Surulere",
+        "Agege",
+        "Alimosho",
+        "Ikorodu",
+        "Badagry",
+        "Epe",
+        "Apapa"
+      ],
+
+      "Nasarawa": [
+        "Lafia",
+        "Keffi",
+        "Karu",
+        "Akwanga",
+        "Nasarawa"
+      ],
+
+      "Niger": [
+        "Minna",
+        "Suleja",
+        "Bida",
+        "Kontagora",
+        "New Bussa"
+      ],
+
+      "Ogun": [
+        "Abeokuta",
+        "Ijebu-Ode",
+        "Sagamu",
+        "Ota",
+        "Ilaro",
+        "Ifo"
+      ],
+
+      "Ondo": [
+        "Akure",
+        "Ondo",
+        "Owo",
+        "Ikare",
+        "Ore",
+        "Ondo City"
+      ],
+
+      "Osun": [
+        "Osogbo",
+        "Ile-Ife",
+        "Ilesa",
+        "Ede",
+        "Ikire",
+        "Iwo"
+      ],
+
+      "Oyo": [
+        "Ibadan",
+        "Ogbomosho",
+        "Oyo",
+        "Iseyin",
+        "Igboho",
+        "Eruwa"
+      ],
+
+      "Plateau": [
+        "Jos",
+        "Bukuru",
+        "Barkin Ladi",
+        "Pankshin",
+        "Shendam"
+      ],
+
+      "Rivers": [
+        "Port Harcourt",
+        "Obio-Akpor",
+        "Bonny",
+        "Eleme",
+        "Okrika",
+        "Ahoada",
+        "Bori"
+      ],
+
+      "Sokoto": [
+        "Sokoto",
+        "Tambuwal",
+        "Wurno",
+        "Gwadabawa",
+        "Illela"
+      ],
+
+      "Taraba": [
+        "Jalingo",
+        "Wukari",
+        "Bali",
+        "Gembu",
+        "Takum"
+      ],
+
+      "Yobe": [
+        "Damaturu",
+        "Potiskum",
+        "Nguru",
+        "Gashua",
+        "Geidam"
+      ],
+
+      "Zamfara": [
+        "Gusau",
+        "Kaura Namoda",
+        "Talata Mafara",
+        "Anka",
+        "Tsafe"
+      ],
+
+      "Federal Capital Territory": [
+        "Abuja",
+        "Garki",
+        "Wuse",
+        "Maitama",
+        "Asokoro",
+        "Gwarinpa",
+        "Kubwa",
+        "Jabi",
+        "Karu",
+        "Nyanya",
+        "Lugbe",
+        "Gwagwalada",
+        "Bwari",
+        "Kuje",
+        "Abaji"
+      ]
+
+    };
+
+
+    /*
+     * Populate the state selector.
+     */
+
+    function populateNigeriaStates() {
+
+      const stateFilter =
+        document.getElementById("stateFilter");
+
+      const cityFilter =
+        document.getElementById("cityFilter");
+
+      if (!stateFilter) return;
+
+      stateFilter.innerHTML = "";
+
+      const allOption =
+        document.createElement("option");
+
+      allOption.value = "";
+      allOption.textContent = "All states / FCT";
+
+      stateFilter.appendChild(allOption);
+
+      Object.keys(
+        window.NearAfricaNigeriaLocations
+      )
+      .forEach(function (state) {
+
+        const option =
+          document.createElement("option");
+
+        option.value = state;
+        option.textContent = state;
+
+        stateFilter.appendChild(option);
+
+      });
+
+      if (cityFilter) {
+
+        cityFilter.innerHTML = "";
+
+        const option =
+          document.createElement("option");
+
+        option.value = "";
+        option.textContent = "Select a state first";
+
+        cityFilter.appendChild(option);
+
+        cityFilter.disabled = true;
+
+      }
+
+    }
+
+
+    /*
+     * Populate cities after state selection.
+     */
+
+    function populateNigeriaCities(state) {
+
+      const cityFilter =
+        document.getElementById("cityFilter");
+
+      if (!cityFilter) return;
+
+      cityFilter.innerHTML = "";
+
+      if (!state) {
+
+        const option =
+          document.createElement("option");
+
+        option.value = "";
+        option.textContent = "Select a state first";
+
+        cityFilter.appendChild(option);
+        cityFilter.disabled = true;
+
+        return;
+
+      }
+
+      const cities =
+        window.NearAfricaNigeriaLocations[state] || [];
+
+      const allOption =
+        document.createElement("option");
+
+      allOption.value = "";
+      allOption.textContent = "All cities / areas";
+
+      cityFilter.appendChild(allOption);
+
+      cities.forEach(function (city) {
+
+        const option =
+          document.createElement("option");
+
+        option.value = city;
+        option.textContent = city;
+
+        cityFilter.appendChild(option);
+
+      });
+
+      cityFilter.disabled = false;
+
+    }
+
+
+    /*
+     * Push geographic selections into the URL.
+     * This lets Explore remain linkable/shareable.
+     */
+
+    function updateExploreLocationUrl() {
+
+      const url =
+        new URL(window.location.href);
+
+      const state =
+        document.getElementById("stateFilter")?.value || "";
+
+      const city =
+        document.getElementById("cityFilter")?.value || "";
+
+      const country =
+        document.getElementById("countryFilter")?.value || "Nigeria";
+
+      if (country) {
+        url.searchParams.set("country", country);
+      }
+
+      if (state) {
+        url.searchParams.set("state", state);
+      } else {
+        url.searchParams.delete("state");
+      }
+
+      if (city) {
+        url.searchParams.set("city", city);
+      } else {
+        url.searchParams.delete("city");
+      }
+
+      window.history.replaceState(
+        {},
+        "",
+        url.toString()
+      );
+
+    }
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function () {
+
+        /* ===============================================
+           MOBILE NAVIGATION
+        =============================================== */
+
+        const mobileButton =
+          document.getElementById(
+            "mobileMenuButton"
+          );
+
+        const mobileNav =
+          document.getElementById(
+            "mobileNav"
+          );
+
+        if (
+          mobileButton &&
+          mobileNav
+        ) {
+
+          mobileButton.addEventListener(
+            "click",
+            function () {
+
+              const isOpen =
+                mobileNav.classList.toggle("open");
+
+              mobileButton.setAttribute(
+                "aria-expanded",
+                String(isOpen)
+              );
+
+            }
+          );
+
+        }
+
+
+        /* ===============================================
+           INITIALIZE NIGERIA STATES
+        =============================================== */
+
+        populateNigeriaStates();
+
+
+        /* ===============================================
+           STATE → CITY
+        =============================================== */
+
+        const stateFilter =
+          document.getElementById(
+            "stateFilter"
+          );
+
+        const cityFilter =
+          document.getElementById(
+            "cityFilter"
+          );
+
+        if (stateFilter) {
+
+          stateFilter.addEventListener(
+            "change",
+            function () {
+
+              populateNigeriaCities(
+                stateFilter.value
+              );
+
+              updateExploreLocationUrl();
+
+              /*
+               * Tell the current app/search system
+               * to refresh the business results.
+               */
+
+              window.dispatchEvent(
+                new CustomEvent(
+                  "nearafrica:locationchange",
+                  {
+                    detail: {
+                      country: "Nigeria",
+                      state: stateFilter.value,
+                      city:
+                        cityFilter?.value || ""
+                    }
+                  }
+                )
+              );
+
+            }
+          );
+
+        }
+
+
+        /* ===============================================
+           CITY CHANGE
+        =============================================== */
+
+        if (cityFilter) {
+
+          cityFilter.addEventListener(
+            "change",
+            function () {
+
+              updateExploreLocationUrl();
+
+              window.dispatchEvent(
+                new CustomEvent(
+                  "nearafrica:locationchange",
+                  {
+                    detail: {
+                      country: "Nigeria",
+                      state:
+                        stateFilter?.value || "",
+                      city:
+                        cityFilter.value || ""
+                    }
+                  }
+                )
+              );
+
+            }
+          );
+
+        }
+
+
+        /* ===============================================
+           CATEGORY + URL PARAMETERS
+        =============================================== */
+
+        const params =
+          new URLSearchParams(
+            window.location.search
+          );
+
+        const category =
+          params.get("category");
+
+        const search =
+          params.get("search") ||
+          params.get("q");
+
+        const state =
+          params.get("state");
+
+        const city =
+          params.get("city");
+
+        const searchInput =
+          document.getElementById(
+            "searchInput"
+          );
+
+        const categoryFilter =
+          document.getElementById(
+            "categoryFilter"
+          );
+
+        if (
+          searchInput &&
+          search
+        ) {
+
+          searchInput.value =
+            search;
+
+        }
+
+        if (
+          categoryFilter &&
+          category
+        ) {
+
+          categoryFilter.value =
+            category;
+
+        }
+
+
+        /* ===============================================
+           RESTORE STATE/CITY FROM URL
+        =============================================== */
+
+        if (
+          stateFilter &&
+          state &&
+          window.NearAfricaNigeriaLocations[state]
+        ) {
+
+          stateFilter.value =
+            state;
+
+          populateNigeriaCities(state);
+
+          if (
+            cityFilter &&
+            city
+          ) {
+
+            const hasCity =
+              Array.from(
+                cityFilter.options
+              )
+              .some(
+                option =>
+                  option.value === city
+              );
+
+            if (hasCity) {
+              cityFilter.value =
+                city;
+            }
+
+          }
+
+        }
+
+
+        /* ===============================================
+           COUNTRY SELECTOR
+        =============================================== */
+
+        const countryFilter =
+          document.getElementById(
+            "countryFilter"
+          );
+
+        const countryFilterSecondary =
+          document.getElementById(
+            "countryFilterSecondary"
+          );
+
+        if (
+          countryFilter &&
+          countryFilterSecondary
+        ) {
+
+          countryFilter.addEventListener(
+            "change",
+            function () {
+
+              countryFilterSecondary.value =
+                countryFilter.value;
+
+            }
+          );
+
+          countryFilterSecondary.addEventListener(
+            "change",
+            function () {
+
+              countryFilter.value =
+                "Nigeria";
+
+            }
+          );
+
+        }
+
+      }
+    );
+
+  </script>
+
+
+  <!-- =====================================================
        SCRIPTS
   ====================================================== -->
 
@@ -2098,128 +2583,5 @@
   <script src="js/map.js"></script>
   <script src="js/app.js"></script>
 
-
-  <!-- =====================================================
-       EXPLORE PAGE HELPERS
-  ====================================================== -->
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-
-      /*
-       * Mobile navigation
-       */
-
-      const mobileButton =
-        document.getElementById("mobileMenuButton");
-
-      const mobileNav =
-        document.getElementById("mobileNav");
-
-      if (mobileButton && mobileNav) {
-
-        mobileButton.addEventListener("click", function () {
-
-          const isOpen =
-            mobileNav.classList.toggle("open");
-
-          mobileButton.setAttribute(
-            "aria-expanded",
-            String(isOpen)
-          );
-
-        });
-
-      }
-
-
-      /*
-       * Keep the two country selectors synchronized.
-       */
-
-      const countryFilter =
-        document.getElementById("countryFilter");
-
-      const countryFilterSecondary =
-        document.getElementById(
-          "countryFilterSecondary"
-        );
-
-      if (
-        countryFilter &&
-        countryFilterSecondary
-      ) {
-
-        countryFilter.addEventListener(
-          "change",
-          function () {
-
-            countryFilterSecondary.value =
-              countryFilter.value;
-
-          }
-        );
-
-        countryFilterSecondary.addEventListener(
-          "change",
-          function () {
-
-            countryFilter.value =
-              countryFilterSecondary.value;
-
-          }
-        );
-
-      }
-
-
-      /*
-       * Category cards send the category through the URL.
-       * app.js can then use the URL when loading results.
-       */
-
-      const params =
-        new URLSearchParams(window.location.search);
-
-      const category =
-        params.get("category");
-
-      const search =
-        params.get("search");
-
-      const location =
-        params.get("location");
-
-      const searchInput =
-        document.getElementById("searchInput");
-
-      const categoryFilter =
-        document.getElementById("categoryFilter");
-
-      if (searchInput && search) {
-        searchInput.value = search;
-      }
-
-      if (categoryFilter && category) {
-        categoryFilter.value = category;
-      }
-
-      /*
-       * If a location was supplied in the URL,
-       * put it into the search field when no search
-       * term is already present.
-       */
-
-      if (
-        searchInput &&
-        location &&
-        !searchInput.value
-      ) {
-        searchInput.value = location;
-      }
-
-    });
-  </script>
-
 </body>
-          </html>
+  </html>
