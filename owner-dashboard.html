@@ -3839,740 +3839,929 @@
     }
 
     /*
-      ============================================================
-      HELP WANTED — FRONTEND/DRAFT MODE
-      ============================================================
+  ============================================================
+  HELP WANTED — BACKEND CONNECTED
+  ============================================================
 
-      IMPORTANT:
+  Uses the real NearAfrica Help Wanted API.
 
-      This section deliberately does NOT call a Worker endpoint yet.
+  POST:
+    /help-wanted
 
-      We first need to inspect the exact Help Wanted routes and
-      database fields in the deployed v18.4.1 Worker.
+  Authentication:
+    Bearer owner token
 
-      For now:
-      - Posts are stored in localStorage.
-      - Owners can create drafts.
-      - Owners can close drafts.
-      - Owners can delete drafts.
-      - The UI is ready to be connected to the real API later.
+  New posts are created as:
+    status = open
+    moderation_status = pending
 
-      This prevents us from guessing endpoint names or database
-      fields and accidentally breaking the Worker.
-      ============================================================
-    */
+  Only approved/open posts are returned by the public
+  Help Wanted GET endpoint.
 
-    function getHelpWantedStorageKey() {
+  IMPORTANT:
+  The current Worker does not yet expose an owner-specific
+  Help Wanted management GET endpoint, so this dashboard does
+  not pretend that pending posts are permanently loaded from
+  the backend.
+
+  After submission, the newly created post is shown locally
+  in the current dashboard session with its real backend ID
+  and moderation status.
+
+  ============================================================
+*/
+
+function clearHelpWantedForm() {
+
+  document.getElementById(
+    "helpWantedTitle"
+  ).value = "";
+
+  document.getElementById(
+    "helpWantedType"
+  ).value = "job";
+
+  document.getElementById(
+    "helpWantedCategory"
+  ).value = "";
+
+  document.getElementById(
+    "helpWantedLocation"
+  ).value = "";
+
+  document.getElementById(
+    "helpWantedDescription"
+  ).value = "";
+
+  document.getElementById(
+    "helpWantedContact"
+  ).value = "";
+
+  document.getElementById(
+    "helpWantedDeadline"
+  ).value = "";
+
+  hideStatus(
+    helpWantedStatus
+  );
+}
+
+
+/*
+  ============================================================
+  HELP WANTED DISPLAY
+  ============================================================
+*/
+
+let currentHelpWantedPosts = [];
+
+
+function loadHelpWantedDrafts() {
+
+  /*
+    Compatibility function.
+
+    The old dashboard called this function during login
+    and session restoration.
+
+    It is intentionally retained so the rest of the dashboard
+    does not need to be changed.
+
+    The old localStorage draft system has been removed.
+  */
+
+  renderHelpWantedPosts(
+    currentHelpWantedPosts
+  );
+}
+
+
+function renderHelpWantedPosts(
+  posts
+) {
+
+  helpWantedList.innerHTML = "";
+
+  if (
+    !Array.isArray(posts) ||
+    !posts.length
+  ) {
+
+    helpWantedList.innerHTML =
+      '<div class="image-empty">No Help Wanted posts have been submitted during this dashboard session.</div>';
+
+    return;
+  }
+
+  posts.forEach(
+    function(post) {
+
+      const card =
+        document.createElement("div");
+
+      card.className =
+        "help-wanted-card";
+
 
       /*
-        Include the business ID so drafts from different businesses
-        are kept separate on the same device.
+        STATUS
       */
 
-      const businessId =
-        currentBusiness &&
-        currentBusiness.id
-          ? String(currentBusiness.id)
-          : "unknown";
+      const status =
+        document.createElement("div");
 
-      return (
-        HELP_WANTED_DRAFTS_KEY +
-        "_" +
-        businessId
-      );
-    }
+      const moderationStatus =
+        String(
+          post.moderation_status ||
+          "pending"
+        ).toLowerCase();
 
-    function getHelpWantedDrafts() {
+      const postStatus =
+        String(
+          post.status ||
+          "open"
+        ).toLowerCase();
 
-      try {
 
-        const raw =
-          localStorage.getItem(
-            getHelpWantedStorageKey()
-          );
-
-        if (!raw) {
-          return [];
-        }
-
-        const parsed =
-          JSON.parse(raw);
-
-        return Array.isArray(parsed)
-          ? parsed
-          : [];
-
-      } catch(error) {
-
-        console.warn(
-          "Unable to read Help Wanted drafts:",
-          error
-        );
-
-        return [];
-      }
-    }
-
-    function saveHelpWantedDrafts(
-      drafts
-    ) {
-
-      try {
-
-        localStorage.setItem(
-          getHelpWantedStorageKey(),
-          JSON.stringify(drafts)
-        );
-
-      } catch(error) {
-
-        console.warn(
-          "Unable to save Help Wanted drafts:",
-          error
-        );
-      }
-    }
-
-    function clearHelpWantedForm() {
-
-      document.getElementById(
-        "helpWantedTitle"
-      ).value = "";
-
-      document.getElementById(
-        "helpWantedType"
-      ).value = "job";
-
-      document.getElementById(
-        "helpWantedCategory"
-      ).value = "";
-
-      document.getElementById(
-        "helpWantedLocation"
-      ).value = "";
-
-      document.getElementById(
-        "helpWantedDescription"
-      ).value = "";
-
-      document.getElementById(
-        "helpWantedContact"
-      ).value = "";
-
-      document.getElementById(
-        "helpWantedDeadline"
-      ).value = "";
-
-      hideStatus(
-        helpWantedStatus
-      );
-    }
-
-    function loadHelpWantedDrafts() {
-
-      renderHelpWantedDrafts(
-        getHelpWantedDrafts()
-      );
-    }
-
-    function renderHelpWantedDrafts(
-      drafts
-    ) {
-
-      helpWantedList.innerHTML = "";
+      status.className =
+        "help-wanted-status";
 
       if (
-        !Array.isArray(drafts) ||
-        !drafts.length
+        postStatus === "closed"
       ) {
 
-        helpWantedList.innerHTML =
-          '<div class="image-empty">No Help Wanted posts have been added yet.</div>';
-
-        return;
-      }
-
-      drafts.forEach(
-        function(post) {
-
-          const card =
-            document.createElement("div");
-
-          card.className =
-            "help-wanted-card";
-
-          const status =
-            document.createElement("div");
-
-          status.className =
-            "help-wanted-status" +
-            (
-              post.status === "closed"
-                ? " closed"
-                : ""
-            );
-
-          status.textContent =
-            post.status === "closed"
-              ? "Closed"
-              : "Active";
-
-          const title =
-            document.createElement("h4");
-
-          title.textContent =
-            post.title ||
-            "Untitled opportunity";
-
-          const description =
-            document.createElement("p");
-
-          description.textContent =
-            post.description ||
-            "No description provided.";
-
-          const meta =
-            document.createElement("div");
-
-          meta.className =
-            "help-wanted-meta";
-
-          const typeBox =
-            createHelpWantedMetaBox(
-              "Type",
-              formatHelpWantedType(
-                post.type
-              )
-            );
-
-          const categoryBox =
-            createHelpWantedMetaBox(
-              "Category",
-              post.category ||
-                "Not specified"
-            );
-
-          const locationBox =
-            createHelpWantedMetaBox(
-              "Location",
-              post.location ||
-                "Not specified"
-            );
-
-          const deadlineBox =
-            createHelpWantedMetaBox(
-              "Deadline",
-              post.deadline
-                ? formatHelpWantedDate(
-                    post.deadline
-                  )
-                : "No deadline"
-            );
-
-          meta.appendChild(typeBox);
-          meta.appendChild(categoryBox);
-          meta.appendChild(locationBox);
-          meta.appendChild(deadlineBox);
-
-          const actions =
-            document.createElement("div");
-
-          actions.className =
-            "btn-row";
-
-          actions.style.marginTop =
-            "14px";
-
-          if (
-            post.status !== "closed"
-          ) {
-
-            const closeButton =
-              document.createElement("button");
-
-            closeButton.type =
-              "button";
-
-            closeButton.className =
-              "btn btn-secondary";
-
-            closeButton.textContent =
-              "Close Post";
-
-            closeButton.addEventListener(
-              "click",
-              function() {
-
-                closeHelpWantedDraft(
-                  post.id
-                );
-              }
-            );
-
-            actions.appendChild(
-              closeButton
-            );
-          }
-
-          const deleteButton =
-            document.createElement("button");
-
-          deleteButton.type =
-            "button";
-
-          deleteButton.className =
-            "btn btn-danger";
-
-          deleteButton.textContent =
-            "Delete Draft";
-
-          deleteButton.addEventListener(
-            "click",
-            function() {
-
-              deleteHelpWantedDraft(
-                post.id
-              );
-            }
-          );
-
-          actions.appendChild(
-            deleteButton
-          );
-
-          card.appendChild(status);
-          card.appendChild(title);
-          card.appendChild(description);
-          card.appendChild(meta);
-          card.appendChild(actions);
-
-          helpWantedList.appendChild(
-            card
-          );
-        }
-      );
-    }
-
-    function createHelpWantedMetaBox(
-      label,
-      value
-    ) {
-
-      const box =
-        document.createElement("div");
-
-      box.className =
-        "help-wanted-meta-box";
-
-      const labelElement =
-        document.createElement("div");
-
-      labelElement.className =
-        "help-wanted-meta-label";
-
-      labelElement.textContent =
-        label;
-
-      const valueElement =
-        document.createElement("div");
-
-      valueElement.className =
-        "help-wanted-meta-value";
-
-      valueElement.textContent =
-        value || "—";
-
-      box.appendChild(
-        labelElement
-      );
-
-      box.appendChild(
-        valueElement
-      );
-
-      return box;
-    }
-
-    function formatHelpWantedType(
-      type
-    ) {
-
-      const labels = {
-
-        job: "Job",
-
-        part_time:
-          "Part-time",
-
-        contract:
-          "Contract",
-
-        internship:
-          "Internship",
-
-        volunteer:
-          "Volunteer",
-
-        other:
-          "Other"
-      };
-
-      return (
-        labels[type] ||
-        "Other"
-      );
-    }
-
-    function formatHelpWantedDate(
-      value
-    ) {
-
-      if (!value) {
-        return "No deadline";
-      }
-
-      try {
-
-        const date =
-          new Date(
-            value + "T00:00:00"
-          );
-
-        if (
-          Number.isNaN(
-            date.getTime()
-          )
-        ) {
-
-          return value;
-        }
-
-        return date.toLocaleDateString(
-          undefined,
-          {
-            year: "numeric",
-            month: "short",
-            day: "numeric"
-          }
+        status.classList.add(
+          "closed"
         );
 
-      } catch(error) {
+        status.textContent =
+          "Closed";
 
-        return value;
-      }
-    }
+      } else if (
+        moderationStatus === "approved"
+      ) {
 
-    function createHelpWantedDraft() {
+        status.textContent =
+          "Approved";
 
-      if (!ownerToken) {
+      } else {
 
-        showStatus(
-          helpWantedStatus,
-          "Your owner session has expired. Please log in again.",
-          "error"
-        );
-
-        return;
+        status.textContent =
+          "Pending Moderation";
       }
 
-      if (!currentBusiness) {
 
-        showStatus(
-          helpWantedStatus,
-          "Your business information has not loaded yet.",
-          "error"
-        );
-
-        return;
-      }
+      /*
+        TITLE
+      */
 
       const title =
-        document.getElementById(
-          "helpWantedTitle"
-        ).value.trim();
+        document.createElement("h4");
 
-      const type =
-        document.getElementById(
-          "helpWantedType"
-        ).value;
+      title.textContent =
+        post.title ||
+        "Untitled opportunity";
 
-      const category =
-        document.getElementById(
-          "helpWantedCategory"
-        ).value.trim();
 
-      const location =
-        document.getElementById(
-          "helpWantedLocation"
-        ).value.trim();
+      /*
+        DESCRIPTION
+      */
 
       const description =
-        document.getElementById(
-          "helpWantedDescription"
-        ).value.trim();
+        document.createElement("p");
 
-      const contact =
-        document.getElementById(
-          "helpWantedContact"
-        ).value.trim();
+      description.textContent =
+        post.description ||
+        "No description provided.";
 
-      const deadline =
-        document.getElementById(
-          "helpWantedDeadline"
-        ).value;
 
-      if (!title) {
+      /*
+        META
+      */
 
-        showStatus(
-          helpWantedStatus,
-          "Opportunity title is required.",
-          "error"
+      const meta =
+        document.createElement("div");
+
+      meta.className =
+        "help-wanted-meta";
+
+
+      const typeBox =
+        createHelpWantedMetaBox(
+          "Type",
+          formatHelpWantedType(
+            post.type
+          )
         );
 
-        return;
-      }
 
-      if (!description) {
-
-        showStatus(
-          helpWantedStatus,
-          "Please provide a description of the opportunity.",
-          "error"
+      const categoryBox =
+        createHelpWantedMetaBox(
+          "Category",
+          post.category ||
+            "Not specified"
         );
 
-        return;
-      }
 
-      if (!contact) {
-
-        showStatus(
-          helpWantedStatus,
-          "Please provide an application or contact method.",
-          "error"
+      const locationBox =
+        createHelpWantedMetaBox(
+          "Location",
+          post.location ||
+            "Not specified"
         );
 
-        return;
+
+      const deadlineBox =
+        createHelpWantedMetaBox(
+          "Deadline",
+          post.deadline
+            ? formatHelpWantedDate(
+                post.deadline
+              )
+            : "No deadline"
+        );
+
+
+      meta.appendChild(
+        typeBox
+      );
+
+      meta.appendChild(
+        categoryBox
+      );
+
+      meta.appendChild(
+        locationBox
+      );
+
+      meta.appendChild(
+        deadlineBox
+      );
+
+
+      /*
+        MODERATION INFORMATION
+      */
+
+      const moderationBox =
+        createHelpWantedMetaBox(
+          "Moderation",
+          formatHelpWantedModerationStatus(
+            moderationStatus
+          )
+        );
+
+      meta.appendChild(
+        moderationBox
+      );
+
+
+      /*
+        BACKEND ID
+      */
+
+      if (post.id) {
+
+        const idBox =
+          createHelpWantedMetaBox(
+            "Post ID",
+            String(post.id)
+          );
+
+        meta.appendChild(
+          idBox
+        );
       }
+
+
+      /*
+        NOTE
+      */
+
+      const note =
+        document.createElement("p");
+
+      note.style.margin =
+        "14px 0 0";
+
+      note.style.color =
+        "var(--text-muted)";
+
+      note.style.fontSize =
+        "12px";
+
+      note.style.lineHeight =
+        "1.5";
+
 
       if (
-        deadline
+        moderationStatus === "pending"
       ) {
 
-        const deadlineDate =
-          new Date(
-            deadline + "T23:59:59"
-          );
+        note.textContent =
+          "This Help Wanted post has been submitted to NearAfrica and is waiting for moderation approval.";
 
-        if (
-          Number.isNaN(
-            deadlineDate.getTime()
-          )
-        ) {
+      } else if (
+        moderationStatus === "approved"
+      ) {
 
-          showStatus(
-            helpWantedStatus,
-            "Please enter a valid application deadline.",
-            "error"
-          );
+        note.textContent =
+          "This Help Wanted post has been approved and is eligible for public discovery.";
 
-          return;
-        }
+      } else {
+
+        note.textContent =
+          "This Help Wanted post is currently not approved for public discovery.";
       }
 
-      const drafts =
-        getHelpWantedDrafts();
 
-      const draft = {
+      /*
+        CARD ACTIONS
 
-        id:
-          "draft_" +
-          Date.now(),
+        The current Worker does not yet expose an owner
+        close/edit/delete endpoint for Help Wanted posts.
 
-        business_id:
-          currentBusiness.id,
+        Therefore we deliberately do not create fake
+        close/delete buttons that only modify localStorage.
+      */
 
-        business_name:
-          currentBusiness.business_name ||
-          "",
-
-        title,
-
-        type,
-
-        category:
-          category || null,
-
-        location:
-          location || null,
-
-        description,
-
-        contact,
-
-        deadline:
-          deadline || null,
-
-        status:
-          "active",
-
-        created_at:
-          new Date().toISOString()
-      };
-
-      drafts.unshift(
-        draft
+      card.appendChild(
+        status
       );
 
-      saveHelpWantedDrafts(
-        drafts
+      card.appendChild(
+        title
       );
 
-      renderHelpWantedDrafts(
-        drafts
+      card.appendChild(
+        description
       );
 
-      clearHelpWantedForm();
+      card.appendChild(
+        meta
+      );
 
-      showStatus(
-        helpWantedStatus,
-        "Help Wanted post saved as a local dashboard draft. We will connect it to the NearAfrica backend next.",
-        "success"
+      card.appendChild(
+        note
+      );
+
+      helpWantedList.appendChild(
+        card
       );
     }
+  );
+}
 
-    function closeHelpWantedDraft(
-      draftId
+
+function createHelpWantedMetaBox(
+  label,
+  value
+) {
+
+  const box =
+    document.createElement("div");
+
+  box.className =
+    "help-wanted-meta-box";
+
+
+  const labelElement =
+    document.createElement("div");
+
+  labelElement.className =
+    "help-wanted-meta-label";
+
+  labelElement.textContent =
+    label;
+
+
+  const valueElement =
+    document.createElement("div");
+
+  valueElement.className =
+    "help-wanted-meta-value";
+
+  valueElement.textContent =
+    value || "—";
+
+
+  box.appendChild(
+    labelElement
+  );
+
+  box.appendChild(
+    valueElement
+  );
+
+
+  return box;
+}
+
+
+function formatHelpWantedType(
+  type
+) {
+
+  const labels = {
+
+    job:
+      "Job",
+
+    part_time:
+      "Part-time",
+
+    contract:
+      "Contract",
+
+    internship:
+      "Internship",
+
+    volunteer:
+      "Volunteer",
+
+    other:
+      "Other"
+  };
+
+
+  return (
+    labels[type] ||
+    "Other"
+  );
+}
+
+
+function formatHelpWantedModerationStatus(
+  status
+) {
+
+  const labels = {
+
+    pending:
+      "Pending",
+
+    approved:
+      "Approved",
+
+    rejected:
+      "Rejected",
+
+    removed:
+      "Removed"
+  };
+
+
+  return (
+    labels[status] ||
+    "Pending"
+  );
+}
+
+
+function formatHelpWantedDate(
+  value
+) {
+
+  if (!value) {
+    return "No deadline";
+  }
+
+
+  try {
+
+    const date =
+      new Date(
+        value + "T00:00:00"
+      );
+
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
     ) {
 
-      const drafts =
-        getHelpWantedDrafts();
-
-      const updated =
-        drafts.map(
-          function(post) {
-
-            if (
-              String(post.id) ===
-              String(draftId)
-            ) {
-
-              return {
-                ...post,
-                status: "closed"
-              };
-            }
-
-            return post;
-          }
-        );
-
-      saveHelpWantedDrafts(
-        updated
-      );
-
-      renderHelpWantedDrafts(
-        updated
-      );
-
-      showStatus(
-        helpWantedStatus,
-        "Help Wanted post closed.",
-        "success"
-      );
+      return value;
     }
 
-    function deleteHelpWantedDraft(
-      draftId
-    ) {
 
-      const confirmed =
-        window.confirm(
-          "Delete this Help Wanted draft?"
-        );
-
-      if (!confirmed) {
-        return;
+    return date.toLocaleDateString(
+      undefined,
+      {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
       }
+    );
 
-      const drafts =
-        getHelpWantedDrafts();
 
-      const updated =
-        drafts.filter(
-          function(post) {
+  } catch(error) {
 
-            return String(post.id) !==
-              String(draftId);
+    return value;
+  }
+}
 
-          }
-        );
 
-      saveHelpWantedDrafts(
-        updated
+/*
+  ============================================================
+  CREATE REAL HELP WANTED POST
+  ============================================================
+*/
+
+async function createHelpWantedDraft() {
+
+  if (!ownerToken) {
+
+    showStatus(
+      helpWantedStatus,
+      "Your owner session has expired. Please log in again.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (!currentBusiness) {
+
+    showStatus(
+      helpWantedStatus,
+      "Your business information has not loaded yet.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  const title =
+    document.getElementById(
+      "helpWantedTitle"
+    ).value.trim();
+
+
+  const type =
+    document.getElementById(
+      "helpWantedType"
+    ).value;
+
+
+  const category =
+    document.getElementById(
+      "helpWantedCategory"
+    ).value.trim();
+
+
+  const location =
+    document.getElementById(
+      "helpWantedLocation"
+    ).value.trim();
+
+
+  const description =
+    document.getElementById(
+      "helpWantedDescription"
+    ).value.trim();
+
+
+  const contact =
+    document.getElementById(
+      "helpWantedContact"
+    ).value.trim();
+
+
+  const deadline =
+    document.getElementById(
+      "helpWantedDeadline"
+    ).value;
+
+
+  /*
+    VALIDATION
+  */
+
+  if (!title) {
+
+    showStatus(
+      helpWantedStatus,
+      "Opportunity title is required.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (!description) {
+
+    showStatus(
+      helpWantedStatus,
+      "Please provide a description of the opportunity.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (!contact) {
+
+    showStatus(
+      helpWantedStatus,
+      "Please provide an application or contact method.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (deadline) {
+
+    const deadlineDate =
+      new Date(
+        deadline + "T23:59:59"
       );
 
-      renderHelpWantedDrafts(
-        updated
-      );
+
+    if (
+      Number.isNaN(
+        deadlineDate.getTime()
+      )
+    ) {
 
       showStatus(
         helpWantedStatus,
-        "Help Wanted draft deleted.",
-        "success"
+        "Please enter a valid application deadline.",
+        "error"
       );
+
+      return;
     }
+  }
+
+
+  /*
+    DISABLE BUTTON
+  */
+
+  createHelpWantedButton.disabled =
+    true;
+
+  createHelpWantedButton.textContent =
+    "Submitting...";
+
+  hideStatus(
+    helpWantedStatus
+  );
+
+
+  try {
 
     /*
-      ============================================================
-      LOGOUT
-      ============================================================
+      REAL WORKER REQUEST
+
+      The ownerFetch helper automatically sends:
+
+      Authorization:
+        Bearer <owner token>
     */
 
-    async function logoutOwner() {
+    const response =
+      await ownerFetch(
+        "/help-wanted",
+        {
+          method: "POST",
 
-      const tokenAtLogout =
-        ownerToken;
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
 
-      clearStoredOwnerToken();
+          body:
+            JSON.stringify({
 
-      if (!tokenAtLogout) {
+              title,
 
-        ownerToken = null;
-        currentBusiness = null;
+              description,
 
-        resetDashboard();
+              type,
 
-        return;
-      }
+              category:
+                category ||
+                null,
 
-      try {
+              location:
+                location ||
+                null,
 
-        await fetch(
-          API_BASE + "/owner/logout",
-          {
-            method: "POST",
+              application_contact:
+                contact,
 
-            headers: {
-              Authorization:
-                "Bearer " + tokenAtLogout
-            }
-          }
-        );
+              deadline:
+                deadline ||
+                null
+            })
+        }
+      );
 
-      } catch(error) {
 
-        console.warn(
-          "Owner logout request failed."
-        );
+    const result =
+      await response.json();
 
-      } finally {
 
-        ownerToken = null;
-        currentBusiness = null;
+    if (
+      !response.ok ||
+      result.status !== "ok"
+    ) {
 
-        resetDashboard();
-      }
+      throw new Error(
+        result.message ||
+        "Unable to create Help Wanted post."
+      );
     }
+
+
+    /*
+      The Worker should return the created
+      Help Wanted record.
+
+      Support several reasonable response
+      shapes without breaking if the exact
+      response wrapper changes.
+    */
+
+    const createdPost =
+      result.help_wanted ||
+      result.post ||
+      result.helpWanted ||
+      result.data ||
+      null;
+
+
+    const post =
+      createdPost &&
+      typeof createdPost === "object"
+
+        ? createdPost
+
+        : {
+
+            id:
+              result.id ||
+              result.help_wanted_id ||
+              "created",
+
+            business_id:
+              currentBusiness.id,
+
+            business_name:
+              currentBusiness.business_name ||
+              "",
+
+            title,
+
+            description,
+
+            type,
+
+            category:
+              category ||
+              null,
+
+            location:
+              location ||
+              null,
+
+            application_contact:
+              contact,
+
+            deadline:
+              deadline ||
+              null,
+
+            status:
+              "open",
+
+            moderation_status:
+              "pending",
+
+            created_at:
+              new Date().toISOString()
+          };
+
+
+    /*
+      Make sure the dashboard has the fields
+      required to display the submission.
+    */
+
+    post.business_id =
+      post.business_id ||
+      currentBusiness.id;
+
+    post.business_name =
+      post.business_name ||
+      currentBusiness.business_name ||
+      "";
+
+    post.title =
+      post.title ||
+      title;
+
+    post.description =
+      post.description ||
+      description;
+
+    post.type =
+      post.type ||
+      type;
+
+    post.category =
+      post.category ??
+      (category || null);
+
+    post.location =
+      post.location ??
+      (location || null);
+
+    post.deadline =
+      post.deadline ??
+      (deadline || null);
+
+    post.status =
+      post.status ||
+      "open";
+
+    post.moderation_status =
+      post.moderation_status ||
+      "pending";
+
+
+    /*
+      Add the real backend-created post to the
+      current dashboard session.
+
+      This is NOT pretending it is persisted in
+      localStorage.
+    */
+
+    currentHelpWantedPosts =
+      [
+        post,
+        ...currentHelpWantedPosts.filter(
+          function(existingPost) {
+
+            return String(
+              existingPost.id
+            ) !== String(
+              post.id
+            );
+          }
+        )
+      ];
+
+
+    renderHelpWantedPosts(
+      currentHelpWantedPosts
+    );
+
+
+    clearHelpWantedForm();
+
+
+    showStatus(
+      helpWantedStatus,
+      "Help Wanted post submitted successfully. It is now waiting for moderation approval.",
+      "success"
+    );
+
+
+  } catch(error) {
+
+    console.error(
+      "Creating Help Wanted post failed:",
+      error
+    );
+
+
+    showStatus(
+      helpWantedStatus,
+      error.message ||
+        "Unable to create Help Wanted post.",
+      "error"
+    );
+
+
+  } finally {
+
+    createHelpWantedButton.disabled =
+      false;
+
+    createHelpWantedButton.textContent =
+      "Create Help Wanted Post";
+  }
+}
 
     /*
       ============================================================
