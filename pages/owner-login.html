@@ -1,17 +1,18 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+<meta
+ name="viewport"
+ content="width=device-width, initial-scale=1.0"
+/>
 
-  <meta
-    name="description"
-    content="NearAfrica Owner Login"
-  />
+<meta
+ name="description"
+ content="NearAfrica Owner Login"
+/>
 
   <title>Owner Login | NearAfrica</title>
 
@@ -197,91 +198,94 @@
       }
     }
   </style>
+
 </head>
 
 <body>
 
   <main class="container">
 
-    <div class="brand">
-      <img
-        src="/logo.png"
-        alt="NearAfrica"
+```
+<div class="brand">
+  <img
+    src="logo.png"
+    alt="NearAfrica"
+  />
+
+  <h1>NearAfrica</h1>
+
+  <p>Business Owner Portal</p>
+</div>
+
+<section class="card">
+
+  <h2>Owner Login</h2>
+
+  <p class="intro">
+    Sign in to manage your claimed NearAfrica
+    business listing and access owner features.
+  </p>
+
+  <div
+    id="message"
+    class="message"
+    role="alert"
+  ></div>
+
+  <form id="ownerLoginForm">
+
+    <div class="field">
+      <label for="businessName">
+        Business Name
+      </label>
+
+      <input
+        id="businessName"
+        name="business_name"
+        type="text"
+        autocomplete="organization"
+        placeholder="Enter your business name"
+        required
       />
-
-      <h1>NearAfrica</h1>
-
-      <p>Business Owner Portal</p>
     </div>
 
-    <section class="card">
+    <div class="field">
+      <label for="email">
+        Owner Email
+      </label>
 
-      <h2>Owner Login</h2>
-
-      <p class="intro">
-        Sign in to manage your claimed NearAfrica
-        business listing and access owner features.
-      </p>
-
-      <div
-        id="message"
-        class="message"
-        role="alert"
-      ></div>
-
-      <form id="ownerLoginForm">
-
-        <div class="field">
-          <label for="businessName">
-            Business Name
-          </label>
-
-          <input
-            id="businessName"
-            name="business_name"
-            type="text"
-            autocomplete="organization"
-            placeholder="Enter your business name"
-            required
-          />
-        </div>
-
-        <div class="field">
-          <label for="email">
-            Owner Email
-          </label>
-
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autocomplete="email"
-            placeholder="Enter the email used for your claim"
-            required
-          />
-        </div>
-
-        <button
-          id="loginButton"
-          type="submit"
-        >
-          Sign In
-        </button>
-
-      </form>
-
-      <div class="help">
-        Your business must have an approved and verified
-        owner claim before owner access can be granted.
-      </div>
-
-    </section>
-
-    <div class="back">
-      <a href="/index.html">
-        ← Back to NearAfrica
-      </a>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        placeholder="Enter the email used for your claim"
+        required
+      />
     </div>
+
+    <button
+      id="loginButton"
+      type="submit"
+    >
+      Sign In
+    </button>
+
+  </form>
+
+  <div class="help">
+    Your business must have an approved and verified
+    owner claim before owner access can be granted.
+  </div>
+
+</section>
+
+<div class="back">
+  <a href="index.html">
+    ← Back to NearAfrica
+  </a>
+</div>
+```
 
   </main>
 
@@ -397,10 +401,6 @@
             return;
           }
 
-          /*
-           * Store the existing owner
-           * session returned by the Worker.
-           */
           sessionStorage.setItem(
             "nearafrica_owner_token",
             data.token
@@ -433,7 +433,7 @@
 
               window.location.href =
                 data.dashboard_url ||
-                "/pages/owner-dashboard.html";
+                "owner-dashboard.html";
 
             },
             500
