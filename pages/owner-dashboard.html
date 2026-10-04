@@ -1191,48 +1191,12 @@
 
 
     /* =====================================================
-       HELP WANTED NOTICE
+       HELP WANTED
     ===================================================== */
-
-    .feature-notice {
-      padding:
-        22px;
-
-      border:
-        1px solid #2b2b2b;
-
-      border-radius:
-        10px;
-
-      background:
-        #101010;
-    }
-
-
-    .feature-notice h3 {
-      margin-bottom:
-        7px;
-    }
-
-
-    .feature-notice p {
-      color:
-        #999;
-
-      font-size:
-        13px;
-
-      line-height:
-        1.6;
-    }
-
-    /* =================================================
-       HELP WANTED MANAGEMENT
-    ================================================= */
 
     .help-form {
       margin-bottom:
-        22px;
+        24px;
 
       padding:
         17px;
@@ -1421,7 +1385,7 @@
         pre-wrap;
 
       margin-bottom:
-        11px;
+        12px;
     }
 
 
@@ -1524,20 +1488,20 @@
     }
 
 
-    @media (max-width: 650px) {
+    .help-editing {
+      border-color:
+        var(--gold);
 
-      .help-card-details {
-        grid-template-columns:
-          1fr;
-      }
-
-      .help-card-header {
-        flex-direction:
-          column;
-      }
-
+      box-shadow:
+        0 0 0 1px rgba(
+          212,
+          175,
+          55,
+          .08
+        );
     }
-    
+
+
     /* =====================================================
        LOADING
     ===================================================== */
@@ -1587,6 +1551,7 @@
           );
       }
 
+
       .image-grid {
         grid-template-columns:
           repeat(
@@ -1597,6 +1562,7 @@
             )
           );
       }
+
 
       .upload-controls {
         grid-template-columns:
@@ -1619,6 +1585,7 @@
           column;
       }
 
+
       .header-actions {
         width:
           100%;
@@ -1627,11 +1594,13 @@
           flex-start;
       }
 
+
       .form-grid,
       .product-form {
         grid-template-columns:
           1fr;
       }
+
 
       .form-group.full,
       .product-form .full {
@@ -1639,10 +1608,12 @@
           auto;
       }
 
+
       .business-summary {
         grid-template-columns:
           1fr;
       }
+
 
       .business-avatar {
         width:
@@ -1652,6 +1623,7 @@
           100px;
       }
 
+
       .stats-grid,
       .analytics-grid,
       .image-grid {
@@ -1659,19 +1631,34 @@
           1fr;
       }
 
+
       .hours-table {
         min-width:
           650px;
       }
+
 
       .hours-scroll {
         overflow-x:
           auto;
       }
 
+
       .panel {
         padding:
           16px;
+      }
+
+
+      .help-card-details {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .help-card-header {
+        flex-direction:
+          column;
       }
 
     }
@@ -1717,12 +1704,14 @@
           Home
         </a>
 
+
         <a
           href="../explore.html"
           class="header-link"
         >
           Explore
         </a>
+
 
         <button
           id="logoutButton"
@@ -1755,7 +1744,7 @@
       <p>
         Manage your NearAfrica business listing,
         images, opening hours, products and services,
-        and see how people are discovering your business.
+        hiring opportunities, and business analytics.
       </p>
 
     </div>
@@ -1765,6 +1754,7 @@
       id="globalStatus"
       class="global-status"
       role="status"
+      aria-live="polite"
     ></div>
 
 
@@ -1854,6 +1844,7 @@
         Business
       </button>
 
+
       <button
         class="tab"
         data-tab="images"
@@ -1861,6 +1852,7 @@
       >
         Images
       </button>
+
 
       <button
         class="tab"
@@ -1870,6 +1862,7 @@
         Opening Hours
       </button>
 
+
       <button
         class="tab"
         data-tab="products"
@@ -1878,6 +1871,7 @@
         Products & Services
       </button>
 
+
       <button
         class="tab"
         data-tab="analytics"
@@ -1885,6 +1879,7 @@
       >
         Analytics
       </button>
+
 
       <button
         class="tab"
@@ -1937,15 +1932,18 @@
             N
           </div>
 
+
           <div>
 
             <h3 id="summaryBusinessName">
               Loading...
             </h3>
 
+
             <p id="summaryLocation">
               —
             </p>
+
 
             <div
               id="summaryBadges"
@@ -2158,7 +2156,6 @@
 
             </div>
 
-
           </div>
 
 
@@ -2216,6 +2213,7 @@
             <label for="imageFile">
               Choose Image
             </label>
+
 
             <div class="upload-controls">
 
@@ -2334,6 +2332,7 @@
               </tr>
 
             </thead>
+
 
             <tbody id="hoursBody"></tbody>
 
@@ -2599,6 +2598,7 @@
 
           </div>
 
+
           <button
             id="refreshAnalyticsButton"
             class="button button-secondary"
@@ -2681,6 +2681,7 @@
 
       <div class="panel">
 
+
         <div class="panel-header">
 
           <div>
@@ -2690,8 +2691,8 @@
             </h2>
 
             <p>
-              Manage hiring and opportunity posts connected
-              to your business.
+              Create and manage hiring and opportunity posts
+              connected to your business.
             </p>
 
           </div>
@@ -2699,20 +2700,233 @@
         </div>
 
 
-        <div class="feature-notice">
+        <!-- CREATE / EDIT -->
 
-          <h3>
-            Help Wanted backend connection
-          </h3>
+        <div
+          id="helpFormBox"
+          class="help-form"
+        >
 
-          <p>
-            The current Worker has the main Help Wanted
-            system, but the saved current Worker does not
-            currently expose the owner Help Wanted routes
-            needed by this dashboard. We should connect
-            those owner routes before allowing owners to
-            create or edit posts here.
-          </p>
+          <div class="help-form-header">
+
+            <h3 id="helpFormTitle">
+              Create Help Wanted Post
+            </h3>
+
+            <p id="helpFormDescription">
+              New posts are submitted for moderation before
+              they appear publicly.
+            </p>
+
+          </div>
+
+
+          <form id="helpWantedForm">
+
+            <div class="form-grid">
+
+
+              <div class="form-group">
+
+                <label for="helpTitle">
+                  Title
+                </label>
+
+                <input
+                  id="helpTitle"
+                  type="text"
+                  maxlength="200"
+                  placeholder="e.g. Sales Assistant"
+                  required
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="helpType">
+                  Type
+                </label>
+
+                <select id="helpType">
+
+                  <option value="">
+                    Select type
+                  </option>
+
+                  <option value="Full-time">
+                    Full-time
+                  </option>
+
+                  <option value="Part-time">
+                    Part-time
+                  </option>
+
+                  <option value="Contract">
+                    Contract
+                  </option>
+
+                  <option value="Internship">
+                    Internship
+                  </option>
+
+                  <option value="Temporary">
+                    Temporary
+                  </option>
+
+                  <option value="Other">
+                    Other
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="helpCategory">
+                  Category
+                </label>
+
+                <input
+                  id="helpCategory"
+                  type="text"
+                  maxlength="150"
+                  placeholder="e.g. Sales"
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="helpLocation">
+                  Location
+                </label>
+
+                <input
+                  id="helpLocation"
+                  type="text"
+                  maxlength="250"
+                  placeholder="e.g. Lagos, Nigeria"
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="helpContact">
+                  Application Contact
+                </label>
+
+                <input
+                  id="helpContact"
+                  type="text"
+                  maxlength="500"
+                  placeholder="Email, phone or application link"
+                  required
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="helpDeadline">
+                  Deadline
+                </label>
+
+                <input
+                  id="helpDeadline"
+                  type="date"
+                >
+
+              </div>
+
+
+              <div class="form-group full">
+
+                <label for="helpDescription">
+                  Description
+                </label>
+
+                <textarea
+                  id="helpDescription"
+                  maxlength="5000"
+                  placeholder="Describe the opportunity, requirements and responsibilities."
+                  required
+                ></textarea>
+
+              </div>
+
+            </div>
+
+
+            <div class="button-row">
+
+              <button
+                id="saveHelpButton"
+                class="button button-primary"
+                type="submit"
+              >
+                Create Help Wanted Post
+              </button>
+
+
+              <button
+                id="cancelHelpButton"
+                class="button button-secondary hidden"
+                type="button"
+              >
+                Cancel Edit
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+
+        <!-- EXISTING POSTS -->
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>
+              Your Help Wanted Posts
+            </h2>
+
+            <p>
+              Only posts belonging to your business are shown here.
+            </p>
+
+          </div>
+
+
+          <button
+            id="refreshHelpButton"
+            class="button button-secondary"
+            type="button"
+          >
+            Refresh
+          </button>
+
+        </div>
+
+
+        <div
+          id="helpWantedList"
+          class="help-list"
+        >
+
+          <div class="loading">
+            Help Wanted posts will load when this tab opens.
+          </div>
 
         </div>
 
@@ -2750,14 +2964,25 @@
       let currentBusiness =
         null;
 
+
       let currentImages =
         [];
+
 
       let currentHours =
         [];
 
+
       let currentProducts =
         [];
+
+
+      let currentHelpWanted =
+        [];
+
+
+      let editingHelpWantedId =
+        null;
 
 
       /* =================================================
@@ -2809,6 +3034,42 @@
       const productList =
         document.getElementById(
           "productList"
+        );
+
+
+      const helpWantedForm =
+        document.getElementById(
+          "helpWantedForm"
+        );
+
+
+      const helpWantedList =
+        document.getElementById(
+          "helpWantedList"
+        );
+
+
+      const saveHelpButton =
+        document.getElementById(
+          "saveHelpButton"
+        );
+
+
+      const cancelHelpButton =
+        document.getElementById(
+          "cancelHelpButton"
+        );
+
+
+      const refreshHelpButton =
+        document.getElementById(
+          "refreshHelpButton"
+        );
+
+
+      const helpFormBox =
+        document.getElementById(
+          "helpFormBox"
         );
 
 
@@ -2896,6 +3157,7 @@
         const number =
           Number(value);
 
+
         if (
           !Number.isFinite(
             number
@@ -2905,6 +3167,7 @@
           return "0";
 
         }
+
 
         return number.toLocaleString();
 
@@ -2936,7 +3199,8 @@
         )
           .trim()
           .charAt(0)
-          .toUpperCase() || "N";
+          .toUpperCase() ||
+          "N";
 
       }
 
@@ -2946,7 +3210,10 @@
         const value =
           token();
 
-        if (!value) {
+
+        if (
+          !value
+        ) {
 
           window.location.href =
             "../owner-login.html";
@@ -2954,6 +3221,7 @@
           return null;
 
         }
+
 
         return value;
 
@@ -2972,7 +3240,10 @@
         const ownerToken =
           requireToken();
 
-        if (!ownerToken) {
+
+        if (
+          !ownerToken
+        ) {
 
           throw new Error(
             "Owner session is missing."
@@ -2982,6 +3253,7 @@
 
 
         const headers = {
+
           Accept:
             "application/json",
 
@@ -2989,6 +3261,7 @@
             `Bearer ${ownerToken}`,
 
           ...(options.headers || {})
+
         };
 
 
@@ -3020,7 +3293,8 @@
 
 
         if (
-          response.status === 401
+          response.status ===
+          401
         ) {
 
           try {
@@ -3031,8 +3305,10 @@
 
           } catch {}
 
+
           window.location.href =
             "../owner-login.html";
+
 
           throw new Error(
             "Your owner session has expired. Please sign in again."
@@ -3041,7 +3317,9 @@
         }
 
 
-        if (!response.ok) {
+        if (
+          !response.ok
+        ) {
 
           throw new Error(
             data?.message ||
@@ -3054,7 +3332,8 @@
 
         if (
           data &&
-          data.status === "error"
+          data.status ===
+            "error"
         ) {
 
           throw new Error(
@@ -3086,7 +3365,8 @@
 
           if (
             !data ||
-            data.status !== "ok" ||
+            data.status !==
+              "ok" ||
             !data.business
           ) {
 
@@ -3112,6 +3392,7 @@
             "OWNER BUSINESS LOAD ERROR:",
             error
           );
+
 
           showStatus(
             error.message ||
@@ -3241,7 +3522,8 @@
           );
 
 
-        badges.innerHTML = "";
+        badges.innerHTML =
+          "";
 
 
         if (
@@ -3292,7 +3574,9 @@
           "";
 
 
-        if (image) {
+        if (
+          image
+        ) {
 
           avatar.innerHTML =
             `
@@ -3405,6 +3689,7 @@
           button.disabled =
             true;
 
+
           button.textContent =
             "Saving...";
 
@@ -3438,6 +3723,7 @@
               currentBusiness =
                 data.business;
 
+
               populateBusiness(
                 currentBusiness
               );
@@ -3459,6 +3745,7 @@
               error
             );
 
+
             showStatus(
               error.message ||
               "Unable to update business.",
@@ -3470,6 +3757,7 @@
 
             button.disabled =
               false;
+
 
             button.textContent =
               "Save Business Changes";
@@ -3520,6 +3808,7 @@
             error
           );
 
+
           imageGrid.innerHTML =
             `
               <div class="empty">
@@ -3548,6 +3837,7 @@
               </div>
             `;
 
+
           return;
 
         }
@@ -3561,6 +3851,7 @@
                 const imageId =
                   image.id ||
                   image.image_id;
+
 
                 const imageUrl =
                   image.image_url ||
@@ -3588,9 +3879,13 @@
                       loading="lazy"
                     >
 
-                    <div class="image-card-content">
+                    <div
+                      class="image-card-content"
+                    >
 
-                      <span class="image-type">
+                      <span
+                        class="image-type"
+                      >
                         ${escapeHTML(type)}
                       </span>
 
@@ -3681,6 +3976,7 @@
               "error"
             );
 
+
             return;
 
           }
@@ -3704,6 +4000,7 @@
 
           button.disabled =
             true;
+
 
           button.textContent =
             "Uploading...";
@@ -3747,16 +4044,19 @@
               error
             );
 
+
             showStatus(
               error.message ||
               "Unable to upload image.",
               "error"
             );
 
+
           } finally {
 
             button.disabled =
               false;
+
 
             button.textContent =
               "Upload";
@@ -3771,12 +4071,15 @@
         imageId
       ) {
 
-        if (!imageId) {
+        if (
+          !imageId
+        ) {
 
           showStatus(
             "This image does not have a valid ID.",
             "error"
           );
+
 
           return;
 
@@ -3789,7 +4092,9 @@
           );
 
 
-        if (!confirmed) {
+        if (
+          !confirmed
+        ) {
 
           return;
 
@@ -3829,6 +4134,7 @@
             error
           );
 
+
           showStatus(
             error.message ||
             "Unable to delete image.",
@@ -3845,13 +4151,21 @@
       ================================================= */
 
       const days = [
+
         "Sunday",
+
         "Monday",
+
         "Tuesday",
+
         "Wednesday",
+
         "Thursday",
+
         "Friday",
+
         "Saturday"
+
       ];
 
 
@@ -3966,6 +4280,7 @@
                   const day =
                     checkbox.dataset.day;
 
+
                   const row =
                     checkbox.closest(
                       "tr"
@@ -4008,6 +4323,7 @@
                   const day =
                     checkbox.dataset.day;
 
+
                   const row =
                     checkbox.closest(
                       "tr"
@@ -4043,11 +4359,15 @@
         hoursBody.innerHTML =
           `
             <tr>
+
               <td colspan="5">
+
                 <div class="loading">
                   Loading hours...
                 </div>
+
               </td>
+
             </tr>
           `;
 
@@ -4078,19 +4398,24 @@
             error
           );
 
+
           hoursBody.innerHTML =
             `
               <tr>
+
                 <td colspan="5">
 
                   <div class="empty">
+
                     ${escapeHTML(
                       error.message ||
                       "Unable to load hours."
                     )}
+
                   </div>
 
                 </td>
+
               </tr>
             `;
 
@@ -4113,6 +4438,27 @@
               );
 
 
+            const rows =
+              hoursBody.querySelectorAll(
+                "tr"
+              );
+
+
+            if (
+              rows.length !== 7
+            ) {
+
+              showStatus(
+                "Opening hours are not ready yet.",
+                "error"
+              );
+
+
+              return;
+
+            }
+
+
             const hours =
               days.map(
                 (
@@ -4121,10 +4467,7 @@
                 ) => {
 
                   const row =
-                    hoursBody
-                      .querySelectorAll(
-                        "tr"
-                      )[index];
+                    rows[index];
 
 
                   const closed =
@@ -4181,6 +4524,7 @@
             button.disabled =
               true;
 
+
             button.textContent =
               "Saving...";
 
@@ -4232,16 +4576,19 @@
                 error
               );
 
+
               showStatus(
                 error.message ||
                 "Unable to save opening hours.",
                 "error"
               );
 
+
             } finally {
 
               button.disabled =
                 false;
+
 
               button.textContent =
                 "Save Opening Hours";
@@ -4292,6 +4639,7 @@
             error
           );
 
+
           productList.innerHTML =
             `
               <div class="empty">
@@ -4320,6 +4668,7 @@
               </div>
             `;
 
+
           return;
 
         }
@@ -4332,6 +4681,7 @@
 
                 const id =
                   product.id;
+
 
                 const name =
                   product.name ||
@@ -4532,6 +4882,7 @@
               "error"
             );
 
+
             return;
 
           }
@@ -4539,6 +4890,7 @@
 
           button.disabled =
             true;
+
 
           button.textContent =
             "Adding...";
@@ -4604,16 +4956,19 @@
               error
             );
 
+
             showStatus(
               error.message ||
               "Unable to create product or service.",
               "error"
             );
 
+
           } finally {
 
             button.disabled =
               false;
+
 
             button.textContent =
               "Add Product / Service";
@@ -4628,7 +4983,9 @@
         productId
       ) {
 
-        if (!productId) {
+        if (
+          !productId
+        ) {
 
           return;
 
@@ -4641,7 +4998,9 @@
           );
 
 
-        if (!confirmed) {
+        if (
+          !confirmed
+        ) {
 
           return;
 
@@ -4679,9 +5038,1139 @@
             error
           );
 
+
           showStatus(
             error.message ||
             "Unable to delete product or service.",
+            "error"
+          );
+
+        }
+
+      }
+
+
+      /* =================================================
+         HELP WANTED
+      ================================================= */
+
+      function resetHelpWantedForm() {
+
+        editingHelpWantedId =
+          null;
+
+
+        helpWantedForm.reset();
+
+
+        document.getElementById(
+          "helpFormTitle"
+        ).textContent =
+          "Create Help Wanted Post";
+
+
+        document.getElementById(
+          "helpFormDescription"
+        ).textContent =
+          "New posts are submitted for moderation before they appear publicly.";
+
+
+        saveHelpButton.textContent =
+          "Create Help Wanted Post";
+
+
+        cancelHelpButton.classList.add(
+          "hidden"
+        );
+
+
+        helpFormBox.classList.remove(
+          "help-editing"
+        );
+
+      }
+
+
+      function populateHelpWantedForm(
+        item
+      ) {
+
+        editingHelpWantedId =
+          String(
+            item.id
+          );
+
+
+        document.getElementById(
+          "helpTitle"
+        ).value =
+          item.title ||
+          "";
+
+
+        document.getElementById(
+          "helpType"
+        ).value =
+          item.type ||
+          "";
+
+
+        document.getElementById(
+          "helpCategory"
+        ).value =
+          item.category ||
+          "";
+
+
+        document.getElementById(
+          "helpLocation"
+        ).value =
+          item.location ||
+          "";
+
+
+        document.getElementById(
+          "helpContact"
+        ).value =
+          item.application_contact ||
+          item.contact ||
+          "";
+
+
+        document.getElementById(
+          "helpDeadline"
+        ).value =
+          item.deadline
+            ? String(
+                item.deadline
+              ).slice(
+                0,
+                10
+              )
+            : "";
+
+
+        document.getElementById(
+          "helpDescription"
+        ).value =
+          item.description ||
+          "";
+
+
+        document.getElementById(
+          "helpFormTitle"
+        ).textContent =
+          "Edit Help Wanted Post";
+
+
+        document.getElementById(
+          "helpFormDescription"
+        ).textContent =
+          "Saving changes sends the post back through moderation.";
+
+
+        saveHelpButton.textContent =
+          "Save Changes";
+
+
+        cancelHelpButton.classList.remove(
+          "hidden"
+        );
+
+
+        helpFormBox.classList.add(
+          "help-editing"
+        );
+
+
+        helpFormBox.scrollIntoView({
+          behavior:
+            "smooth",
+
+          block:
+            "start"
+        });
+
+      }
+
+
+      function getModerationClass(
+        status
+      ) {
+
+        const value =
+          String(
+            status ||
+            "pending"
+          )
+            .trim()
+            .toLowerCase();
+
+
+        if (
+          value ===
+          "approved"
+        ) {
+
+          return "approved";
+
+        }
+
+
+        if (
+          value ===
+          "rejected"
+        ) {
+
+          return "rejected";
+
+        }
+
+
+        return "pending";
+
+      }
+
+
+      function formatHelpDate(
+        value
+      ) {
+
+        if (
+          !value
+        ) {
+
+          return "No deadline";
+
+        }
+
+
+        const parsed =
+          new Date(
+            value
+          );
+
+
+        if (
+          Number.isNaN(
+            parsed.getTime()
+          )
+        ) {
+
+          return String(
+            value
+          );
+
+        }
+
+
+        return parsed.toLocaleDateString();
+
+      }
+
+
+      function renderHelpWanted() {
+
+        if (
+          !currentHelpWanted.length
+        ) {
+
+          helpWantedList.innerHTML =
+            `
+              <div class="help-empty">
+
+                You have not created any
+                Help Wanted posts yet.
+
+              </div>
+            `;
+
+
+          return;
+
+        }
+
+
+        helpWantedList.innerHTML =
+          currentHelpWanted
+            .map(
+              item => {
+
+                const id =
+                  item.id;
+
+
+                const title =
+                  item.title ||
+                  "Untitled opportunity";
+
+
+                const description =
+                  item.description ||
+                  "No description provided.";
+
+
+                const type =
+                  item.type ||
+                  "Not specified";
+
+
+                const category =
+                  item.category ||
+                  "Not specified";
+
+
+                const location =
+                  item.location ||
+                  "Not specified";
+
+
+                const contact =
+                  item.application_contact ||
+                  item.contact ||
+                  "Not specified";
+
+
+                const deadline =
+                  formatHelpDate(
+                    item.deadline
+                  );
+
+
+                const status =
+                  String(
+                    item.status ||
+                    "open"
+                  )
+                    .trim()
+                    .toLowerCase();
+
+
+                const moderation =
+                  String(
+                    item.moderation_status ||
+                    "pending"
+                  )
+                    .trim()
+                    .toLowerCase();
+
+
+                const statusClass =
+                  status ===
+                    "closed"
+                    ? "closed"
+                    : "open";
+
+
+                const moderationClass =
+                  getModerationClass(
+                    moderation
+                  );
+
+
+                const statusLabel =
+                  status ===
+                    "closed"
+                    ? "Closed"
+                    : "Open";
+
+
+                const moderationLabel =
+                  moderation.charAt(0)
+                    .toUpperCase() +
+                  moderation.slice(1);
+
+
+                const openCloseButton =
+                  status ===
+                    "closed"
+                    ? `
+                      <button
+                        class="small-button"
+                        type="button"
+                        data-help-open="${escapeHTML(
+                          id
+                        )}"
+                      >
+                        Reopen
+                      </button>
+                    `
+                    : `
+                      <button
+                        class="small-button"
+                        type="button"
+                        data-help-close="${escapeHTML(
+                          id
+                        )}"
+                      >
+                        Close
+                      </button>
+                    `;
+
+
+                const editing =
+                  String(
+                    editingHelpWantedId
+                  ) ===
+                  String(
+                    id
+                  );
+
+
+                return `
+                  <article
+                    class="help-card ${
+                      editing
+                        ? "help-editing"
+                        : ""
+                    }"
+                  >
+
+                    <div
+                      class="help-card-header"
+                    >
+
+                      <div>
+
+                        <div
+                          class="help-card-title"
+                        >
+                          ${escapeHTML(
+                            title
+                          )}
+                        </div>
+
+
+                        <div
+                          class="help-card-meta"
+                        >
+
+                          <span
+                            class="help-badge ${statusClass}"
+                          >
+                            ${escapeHTML(
+                              statusLabel
+                            )}
+                          </span>
+
+
+                          <span
+                            class="help-badge ${moderationClass}"
+                          >
+                            ${escapeHTML(
+                              moderationLabel
+                            )}
+                          </span>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+
+                    <div
+                      class="help-card-description"
+                    >
+                      ${escapeHTML(
+                        description
+                      )}
+                    </div>
+
+
+                    <div
+                      class="help-card-details"
+                    >
+
+                      <div
+                        class="help-detail"
+                      >
+
+                        <span>
+                          Type
+                        </span>
+
+                        <strong>
+                          ${escapeHTML(
+                            type
+                          )}
+                        </strong>
+
+                      </div>
+
+
+                      <div
+                        class="help-detail"
+                      >
+
+                        <span>
+                          Category
+                        </span>
+
+                        <strong>
+                          ${escapeHTML(
+                            category
+                          )}
+                        </strong>
+
+                      </div>
+
+
+                      <div
+                        class="help-detail"
+                      >
+
+                        <span>
+                          Location
+                        </span>
+
+                        <strong>
+                          ${escapeHTML(
+                            location
+                          )}
+                        </strong>
+
+                      </div>
+
+
+                      <div
+                        class="help-detail"
+                      >
+
+                        <span>
+                          Application Contact
+                        </span>
+
+                        <strong>
+                          ${escapeHTML(
+                            contact
+                          )}
+                        </strong>
+
+                      </div>
+
+
+                      <div
+                        class="help-detail"
+                      >
+
+                        <span>
+                          Deadline
+                        </span>
+
+                        <strong>
+                          ${escapeHTML(
+                            deadline
+                          )}
+                        </strong>
+
+                      </div>
+
+                    </div>
+
+
+                    <div
+                      class="help-actions"
+                    >
+
+                      <button
+                        class="small-button"
+                        type="button"
+                        data-help-edit="${escapeHTML(
+                          id
+                        )}"
+                      >
+                        Edit
+                      </button>
+
+
+                      ${openCloseButton}
+
+
+                      <button
+                        class="small-button delete"
+                        type="button"
+                        data-help-delete="${escapeHTML(
+                          id
+                        )}"
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+
+                  </article>
+                `;
+
+              }
+            )
+            .join("");
+
+
+        helpWantedList
+          .querySelectorAll(
+            "[data-help-edit]"
+          )
+          .forEach(
+            button => {
+
+              button.addEventListener(
+                "click",
+                () => {
+
+                  const item =
+                    currentHelpWanted.find(
+                      entry =>
+                        String(
+                          entry.id
+                        ) ===
+                        String(
+                          button.dataset.helpEdit
+                        )
+                    );
+
+
+                  if (
+                    item
+                  ) {
+
+                    populateHelpWantedForm(
+                      item
+                    );
+
+
+                    renderHelpWanted();
+
+                  }
+
+                }
+              );
+
+            }
+          );
+
+
+        helpWantedList
+          .querySelectorAll(
+            "[data-help-close]"
+          )
+          .forEach(
+            button => {
+
+              button.addEventListener(
+                "click",
+                () => {
+
+                  changeHelpWantedStatus(
+                    button.dataset.helpClose,
+                    "closed"
+                  );
+
+                }
+              );
+
+            }
+          );
+
+
+        helpWantedList
+          .querySelectorAll(
+            "[data-help-open]"
+          )
+          .forEach(
+            button => {
+
+              button.addEventListener(
+                "click",
+                () => {
+
+                  changeHelpWantedStatus(
+                    button.dataset.helpOpen,
+                    "open"
+                  );
+
+                }
+              );
+
+            }
+          );
+
+
+        helpWantedList
+          .querySelectorAll(
+            "[data-help-delete]"
+          )
+          .forEach(
+            button => {
+
+              button.addEventListener(
+                "click",
+                () => {
+
+                  deleteHelpWanted(
+                    button.dataset.helpDelete
+                  );
+
+                }
+              );
+
+            }
+          );
+
+      }
+
+
+      async function loadHelpWanted() {
+
+        helpWantedList.innerHTML =
+          `
+            <div class="loading">
+              Loading Help Wanted posts...
+            </div>
+          `;
+
+
+        try {
+
+          const data =
+            await apiRequest(
+              "/owner/help-wanted"
+            );
+
+
+          currentHelpWanted =
+            Array.isArray(
+              data?.help_wanted
+            )
+              ? data.help_wanted
+              : [];
+
+
+          renderHelpWanted();
+
+
+        } catch (error) {
+
+          console.error(
+            "OWNER HELP WANTED LOAD ERROR:",
+            error
+          );
+
+
+          helpWantedList.innerHTML =
+            `
+              <div class="help-empty">
+
+                ${escapeHTML(
+                  error.message ||
+                  "Unable to load Help Wanted posts."
+                )}
+
+              </div>
+            `;
+
+        }
+
+      }
+
+
+      helpWantedForm.addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+
+          const isEditing =
+            !!editingHelpWantedId;
+
+
+          const payload = {
+
+            title:
+              document.getElementById(
+                "helpTitle"
+              ).value.trim(),
+
+
+            type:
+              document.getElementById(
+                "helpType"
+              ).value.trim(),
+
+
+            category:
+              document.getElementById(
+                "helpCategory"
+              ).value.trim(),
+
+
+            location:
+              document.getElementById(
+                "helpLocation"
+              ).value.trim(),
+
+
+            application_contact:
+              document.getElementById(
+                "helpContact"
+              ).value.trim(),
+
+
+            deadline:
+              document.getElementById(
+                "helpDeadline"
+              ).value.trim(),
+
+
+            description:
+              document.getElementById(
+                "helpDescription"
+              ).value.trim()
+
+          };
+
+
+          if (
+            !payload.title
+          ) {
+
+            showStatus(
+              "A Help Wanted title is required.",
+              "error"
+            );
+
+
+            return;
+
+          }
+
+
+          if (
+            !payload.description
+          ) {
+
+            showStatus(
+              "A Help Wanted description is required.",
+              "error"
+            );
+
+
+            return;
+
+          }
+
+
+          if (
+            !payload.application_contact
+          ) {
+
+            showStatus(
+              "An application contact is required.",
+              "error"
+            );
+
+
+            return;
+
+          }
+
+
+          saveHelpButton.disabled =
+            true;
+
+
+          saveHelpButton.textContent =
+            isEditing
+              ? "Saving..."
+              : "Creating...";
+
+
+          try {
+
+            let data;
+
+
+            if (
+              isEditing
+            ) {
+
+              data =
+                await apiRequest(
+                  `/owner/help-wanted/${encodeURIComponent(
+                    editingHelpWantedId
+                  )}`,
+                  {
+                    method:
+                      "PATCH",
+
+                    headers: {
+                      "Content-Type":
+                        "application/json"
+                    },
+
+                    body:
+                      JSON.stringify(
+                        payload
+                      )
+                  }
+                );
+
+
+              showStatus(
+                data?.message ||
+                "Help Wanted post updated and sent for moderation.",
+                "success"
+              );
+
+
+            } else {
+
+              data =
+                await apiRequest(
+                  "/owner/help-wanted",
+                  {
+                    method:
+                      "POST",
+
+                    headers: {
+                      "Content-Type":
+                        "application/json"
+                    },
+
+                    body:
+                      JSON.stringify(
+                        payload
+                      )
+                  }
+                );
+
+
+              showStatus(
+                data?.message ||
+                "Help Wanted post submitted for moderation.",
+                "success"
+              );
+
+            }
+
+
+            resetHelpWantedForm();
+
+
+            await loadHelpWanted();
+
+
+          } catch (error) {
+
+            console.error(
+              "OWNER HELP WANTED SAVE ERROR:",
+              error
+            );
+
+
+            showStatus(
+              error.message ||
+              "Unable to save Help Wanted post.",
+              "error"
+            );
+
+          } finally {
+
+            saveHelpButton.disabled =
+              false;
+
+
+            saveHelpButton.textContent =
+              isEditing
+                ? "Create Help Wanted Post"
+                : "Create Help Wanted Post";
+
+          }
+
+        }
+      );
+
+
+      cancelHelpButton.addEventListener(
+        "click",
+        () => {
+
+          resetHelpWantedForm();
+
+
+          renderHelpWanted();
+
+
+          showStatus(
+            "Help Wanted edit cancelled.",
+            "info"
+          );
+
+        }
+      );
+
+
+      refreshHelpButton.addEventListener(
+        "click",
+        async () => {
+
+          await loadHelpWanted();
+
+
+          showStatus(
+            "Help Wanted posts refreshed.",
+            "success"
+          );
+
+        }
+      );
+
+
+      async function changeHelpWantedStatus(
+        helpWantedId,
+        status
+      ) {
+
+        const confirmed =
+          window.confirm(
+            status ===
+              "closed"
+              ? "Close this Help Wanted post?"
+              : "Reopen this Help Wanted post?"
+          );
+
+
+        if (
+          !confirmed
+        ) {
+
+          return;
+
+        }
+
+
+        try {
+
+          const data =
+            await apiRequest(
+              `/owner/help-wanted/${encodeURIComponent(
+                helpWantedId
+              )}/status`,
+              {
+                method:
+                  "PATCH",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body:
+                  JSON.stringify({
+                    status
+                  })
+              }
+            );
+
+
+          showStatus(
+            data?.message ||
+            `Help Wanted post marked ${status}.`,
+            "success"
+          );
+
+
+          await loadHelpWanted();
+
+
+        } catch (error) {
+
+          console.error(
+            "OWNER HELP WANTED STATUS ERROR:",
+            error
+          );
+
+
+          showStatus(
+            error.message ||
+            "Unable to update Help Wanted status.",
+            "error"
+          );
+
+        }
+
+      }
+
+
+      async function deleteHelpWanted(
+        helpWantedId
+      ) {
+
+        const confirmed =
+          window.confirm(
+            "Delete this Help Wanted post permanently?"
+          );
+
+
+        if (
+          !confirmed
+        ) {
+
+          return;
+
+        }
+
+
+        try {
+
+          const data =
+            await apiRequest(
+              `/owner/help-wanted/${encodeURIComponent(
+                helpWantedId
+              )}`,
+              {
+                method:
+                  "DELETE"
+              }
+            );
+
+
+          if (
+            String(
+              editingHelpWantedId
+            ) ===
+            String(
+              helpWantedId
+            )
+          ) {
+
+            resetHelpWantedForm();
+
+          }
+
+
+          showStatus(
+            data?.message ||
+            "Help Wanted post deleted successfully.",
+            "success"
+          );
+
+
+          await loadHelpWanted();
+
+
+        } catch (error) {
+
+          console.error(
+            "OWNER HELP WANTED DELETE ERROR:",
+            error
+          );
+
+
+          showStatus(
+            error.message ||
+            "Unable to delete Help Wanted post.",
             "error"
           );
 
@@ -4801,6 +6290,7 @@
             error
           );
 
+
           showStatus(
             error.message ||
             "Unable to load analytics.",
@@ -4819,6 +6309,7 @@
         async () => {
 
           await loadAnalytics();
+
 
           showStatus(
             "Analytics refreshed.",
@@ -4885,7 +6376,9 @@
                   );
 
 
-                if (target) {
+                if (
+                  target
+                ) {
 
                   target.classList.remove(
                     "hidden"
@@ -4933,6 +6426,16 @@
 
                 }
 
+
+                if (
+                  tab ===
+                  "help"
+                ) {
+
+                  await loadHelpWanted();
+
+                }
+
               }
             );
 
@@ -4954,7 +6457,9 @@
             );
 
 
-          if (!confirmed) {
+          if (
+            !confirmed
+          ) {
 
             return;
 
