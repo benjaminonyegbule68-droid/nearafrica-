@@ -2,6 +2,12 @@
  * ============================================================
  * NearAfrica — app-new.js
  * Clean frontend controller for Home + Explore pages.
+ *
+ * Version:
+ * - Preserves existing NearAfrica frontend functionality.
+ * - Fixes Nearby filtering and location restoration behavior.
+ * - Home location uses GPS distance without forcing state/city
+ *   filters.
  * ============================================================
  */
 
@@ -20,24 +26,42 @@
   const STORAGE_NEARBY_KEY =
     "nearafrica_nearby_mode";
 
+
   const App = {
     initialized: false,
+
     allBusinesses: [],
+
     filteredBusinesses: [],
+
     userLocation: null,
+
     locationInfo: null,
+
     nearbyMode: false,
+
     radiusKm: 25,
+
     currentPage: 1,
+
     pageSize: 12,
+
     totalPages: 1,
+
     apiLoading: false,
+
     locationLoading: false,
+
     lastError: null,
+
     homepageInitialized: false,
+
     currentQuery: "",
+
     currentCategory: "",
+
     currentState: "",
+
     currentCity: ""
   };
 
@@ -50,6 +74,7 @@
     return window.NearAfricaConfig || {};
   }
 
+
   function clean(value, fallback = "") {
     if (
       value === null ||
@@ -58,21 +83,26 @@
       return fallback;
     }
 
-    const text = String(value).trim();
+    const text =
+      String(value).trim();
 
     return text || fallback;
   }
 
+
   function toNumber(value, fallback = null) {
-    const number = Number(value);
+    const number =
+      Number(value);
 
     return Number.isFinite(number)
       ? number
       : fallback;
   }
 
+
   function getApiBaseUrl() {
-    const config = getConfig();
+    const config =
+      getConfig();
 
     const base =
       config.api &&
@@ -80,11 +110,17 @@
         ? config.api.baseUrl
         : API_FALLBACK;
 
-    return String(base).replace(/\/+$/, "");
+    return String(base)
+      .replace(/\/+$/, "");
   }
 
-  function getEndpoint(name, fallback) {
-    const config = getConfig();
+
+  function getEndpoint(
+    name,
+    fallback
+  ) {
+    const config =
+      getConfig();
 
     const endpoint =
       config.api &&
@@ -93,9 +129,14 @@
         ? config.api.endpoints[name]
         : fallback;
 
-    return String(endpoint || "")
-      .replace(/^\/+/, "");
+    return String(
+      endpoint || ""
+    ).replace(
+      /^\/+/,
+      ""
+    );
   }
+
 
   function buildApiUrl(path) {
     if (
@@ -108,12 +149,19 @@
     return (
       getApiBaseUrl() +
       "/" +
-      String(path || "").replace(/^\/+/, "")
+      String(
+        path || ""
+      ).replace(
+        /^\/+/,
+        ""
+      )
     );
   }
 
+
   function pagePath() {
-    const config = getConfig();
+    const config =
+      getConfig();
 
     return clean(
       config.profilePage ||
@@ -137,23 +185,42 @@
         ? ""
         : value
     )
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
   }
+
 
   function escapeAttribute(value) {
     return escapeHtml(value);
   }
+
 
   function firstElement(selectors) {
     for (
       const selector of selectors
     ) {
       const element =
-        document.querySelector(selector);
+        document.querySelector(
+          selector
+        );
 
       if (element) {
         return element;
@@ -163,20 +230,38 @@
     return null;
   }
 
+
   function allElements(selectors) {
     const found = [];
-    const seen = new Set();
 
-    selectors.forEach(function (selector) {
-      document
-        .querySelectorAll(selector)
-        .forEach(function (element) {
-          if (!seen.has(element)) {
-            seen.add(element);
-            found.push(element);
-          }
-        });
-    });
+    const seen =
+      new Set();
+
+    selectors.forEach(
+      function (selector) {
+        document
+          .querySelectorAll(
+            selector
+          )
+          .forEach(
+            function (element) {
+              if (
+                !seen.has(
+                  element
+                )
+              ) {
+                seen.add(
+                  element
+                );
+
+                found.push(
+                  element
+                );
+              }
+            }
+          );
+      }
+    );
 
     return found;
   }
@@ -196,6 +281,7 @@
     ]);
   }
 
+
   function getCategoryFilter() {
     return firstElement([
       "#categoryFilter",
@@ -204,6 +290,7 @@
       "select[data-filter='category']"
     ]);
   }
+
 
   function getStateFilter() {
     return firstElement([
@@ -214,6 +301,7 @@
     ]);
   }
 
+
   function getCityFilter() {
     return firstElement([
       "#cityFilter",
@@ -222,6 +310,7 @@
       "select[data-filter='city']"
     ]);
   }
+
 
   function getRadiusFilter() {
     return firstElement([
@@ -232,6 +321,7 @@
       "select[data-filter='radius']"
     ]);
   }
+
 
   function getResultsContainer() {
     return firstElement([
@@ -244,6 +334,7 @@
     ]);
   }
 
+
   function getResultsCount() {
     return firstElement([
       "#resultsCount",
@@ -252,6 +343,7 @@
       "[data-results-count]"
     ]);
   }
+
 
   function getLocationStatus() {
     return firstElement([
@@ -263,6 +355,7 @@
     ]);
   }
 
+
   function getEmptyState() {
     return firstElement([
       "#emptyState",
@@ -271,6 +364,7 @@
       "[data-empty-state]"
     ]);
   }
+
 
   function getPaginationContainer() {
     return firstElement([
@@ -295,6 +389,7 @@
     );
   }
 
+
   function isHomePage() {
     const path =
       window.location.pathname.toLowerCase();
@@ -315,7 +410,10 @@
      API HELPERS
   ============================================================ */
 
-  function extractApiMessage(payload, fallback) {
+  function extractApiMessage(
+    payload,
+    fallback
+  ) {
     if (!payload) {
       return fallback;
     }
@@ -332,7 +430,11 @@
     );
   }
 
-  async function fetchJson(url, options = {}) {
+
+  async function fetchJson(
+    url,
+    options = {}
+  ) {
     const response =
       await fetch(
         url,
@@ -340,7 +442,9 @@
           ...options,
 
           headers: {
-            Accept: "application/json",
+            Accept:
+              "application/json",
+
             ...(options.headers || {})
           },
 
@@ -350,16 +454,20 @@
         }
       );
 
-    let payload = null;
+    let payload =
+      null;
 
     const text =
       await response.text();
 
     if (text) {
       try {
-        payload = JSON.parse(text);
+        payload =
+          JSON.parse(text);
+
       } catch (error) {
-        payload = null;
+        payload =
+          null;
       }
     }
 
@@ -381,7 +489,8 @@
   ============================================================ */
 
   function normalizeBusiness(raw) {
-    const business = raw || {};
+    const business =
+      raw || {};
 
     const id =
       clean(
@@ -400,7 +509,9 @@
       );
 
     const category =
-      clean(business.category);
+      clean(
+        business.category
+      );
 
     const address =
       clean(
@@ -465,11 +576,15 @@
         business.logo_url ||
         business.logo ||
         (
-          Array.isArray(business.images) &&
+          Array.isArray(
+            business.images
+          ) &&
           business.images[0]
             ? (
-                business.images[0].image_url ||
-                business.images[0].url
+                business.images[0]
+                  .image_url ||
+                business.images[0]
+                  .url
               )
             : ""
         )
@@ -511,43 +626,74 @@
       ...business,
 
       id,
+
       name,
-      business_name: name,
+
+      business_name:
+        name,
+
       category,
+
       address,
+
       city,
+
       state,
+
       country,
+
       latitude,
+
       longitude,
+
       rating,
+
       reviewCount,
+
       image,
+
       website,
+
       phone,
+
       verified,
+
       claimed
     };
   }
 
-  function normalizeBusinessResponse(payload) {
-    if (Array.isArray(payload)) {
+
+  function normalizeBusinessResponse(
+    payload
+  ) {
+    if (
+      Array.isArray(payload)
+    ) {
       return payload.map(
         normalizeBusiness
       );
     }
 
     const candidates = [
-      payload && payload.businesses,
-      payload && payload.results,
-      payload && payload.data,
-      payload && payload.items
+      payload &&
+      payload.businesses,
+
+      payload &&
+      payload.results,
+
+      payload &&
+      payload.data,
+
+      payload &&
+      payload.items
     ];
 
     for (
       const candidate of candidates
     ) {
-      if (Array.isArray(candidate)) {
+      if (
+        Array.isArray(candidate)
+      ) {
         return candidate.map(
           normalizeBusiness
         );
@@ -568,22 +714,36 @@
     return [];
   }
 
-  function uniqueBusinesses(list) {
+
+  function uniqueBusinesses(
+    list
+  ) {
     const output = [];
-    const seen = new Set();
 
-    list.forEach(function (business) {
-      const key =
-        clean(business.id) ||
-        (
-          `${business.name}|${business.city}|${business.state}`
-        ).toLowerCase();
+    const seen =
+      new Set();
 
-      if (!seen.has(key)) {
-        seen.add(key);
-        output.push(business);
+    list.forEach(
+      function (business) {
+        const key =
+          clean(
+            business.id
+          ) ||
+          (
+            `${business.name}|${business.city}|${business.state}`
+          ).toLowerCase();
+
+        if (
+          !seen.has(key)
+        ) {
+          seen.add(key);
+
+          output.push(
+            business
+          );
+        }
       }
-    });
+    );
 
     return output;
   }
@@ -594,10 +754,15 @@
   ============================================================ */
 
   async function loadBusinesses() {
-    App.apiLoading = true;
-    App.lastError = null;
+    App.apiLoading =
+      true;
 
-    setLoading(true);
+    App.lastError =
+      null;
+
+    setLoading(
+      true
+    );
 
     setStatus(
       "Loading businesses…",
@@ -642,7 +807,9 @@
           )
         );
 
-      setLoading(false);
+      setLoading(
+        false
+      );
 
       setStatus(
         App.allBusinesses.length
@@ -653,10 +820,15 @@
       return App.allBusinesses;
 
     } catch (error) {
-      App.lastError = error;
-      App.allBusinesses = [];
+      App.lastError =
+        error;
 
-      setLoading(false);
+      App.allBusinesses =
+        [];
+
+      setLoading(
+        false
+      );
 
       setStatus(
         `Unable to load businesses. ${error.message}`,
@@ -668,7 +840,8 @@
       return [];
 
     } finally {
-      App.apiLoading = false;
+      App.apiLoading =
+        false;
     }
   }
 
@@ -695,7 +868,9 @@
         );
 
       const payload =
-        await fetchJson(url);
+        await fetchJson(
+          url
+        );
 
       const categories =
         Array.isArray(payload)
@@ -722,37 +897,46 @@
       const current =
         Array.from(
           filter.options
-        ).map(function (option) {
-          return option.value;
-        });
-
-      categories.forEach(function (category) {
-        const value =
-          clean(
-            typeof category === "string"
-              ? category
-              : category.name
-          );
-
-        if (
-          !value ||
-          current.includes(value)
-        ) {
-          return;
-        }
-
-        filter.add(
-          new Option(
-            value,
-            value
-          )
+        ).map(
+          function (option) {
+            return option.value;
+          }
         );
 
-        current.push(value);
-      });
+      categories.forEach(
+        function (category) {
+          const value =
+            clean(
+              typeof category === "string"
+                ? category
+                : category.name
+            );
+
+          if (
+            !value ||
+            current.includes(
+              value
+            )
+          ) {
+            return;
+          }
+
+          filter.add(
+            new Option(
+              value,
+              value
+            )
+          );
+
+          current.push(
+            value
+          );
+        }
+      );
 
       if (existing) {
-        filter.value = existing;
+        filter.value =
+          existing;
       }
 
     } catch (error) {
@@ -768,19 +952,26 @@
      LOCATION
   ============================================================ */
 
-  function normalizeLocationInfo(raw) {
+  function normalizeLocationInfo(
+    raw
+  ) {
     if (!raw) {
       return null;
     }
 
     const latitude =
-      toNumber(raw.latitude);
+      toNumber(
+        raw.latitude
+      );
 
     const longitude =
-      toNumber(raw.longitude);
+      toNumber(
+        raw.longitude
+      );
 
     return {
       latitude,
+
       longitude,
 
       country:
@@ -790,28 +981,43 @@
         ),
 
       country_code:
-        clean(raw.country_code),
+        clean(
+          raw.country_code
+        ),
 
       state:
-        clean(raw.state),
+        clean(
+          raw.state
+        ),
 
       city:
-        clean(raw.city),
+        clean(
+          raw.city
+        ),
 
       area:
-        clean(raw.area),
+        clean(
+          raw.area
+        ),
 
       display_name:
-        clean(raw.display_name)
+        clean(
+          raw.display_name
+        )
     };
   }
 
-  function formatLocationLabel(info) {
+
+  function formatLocationLabel(
+    info
+  ) {
     if (!info) {
       return "";
     }
 
-    if (info.display_name) {
+    if (
+      info.display_name
+    ) {
       return info.display_name;
     }
 
@@ -829,13 +1035,15 @@
           array
         ) {
           return (
-            array.indexOf(value) ===
-            index
+            array.indexOf(
+              value
+            ) === index
           );
         }
       )
       .join(", ");
   }
+
 
   function getBrowserLocation() {
     return new Promise(
@@ -843,7 +1051,9 @@
         resolve,
         reject
       ) {
-        if (!window.isSecureContext) {
+        if (
+          !window.isSecureContext
+        ) {
           reject(
             new Error(
               "Location access requires a secure HTTPS connection."
@@ -853,7 +1063,9 @@
           return;
         }
 
-        if (!navigator.geolocation) {
+        if (
+          !navigator.geolocation
+        ) {
           reject(
             new Error(
               "Location services are not supported by this browser."
@@ -864,7 +1076,9 @@
         }
 
         navigator.geolocation.getCurrentPosition(
-          function (position) {
+          function (
+            position
+          ) {
             if (
               !position ||
               !position.coords
@@ -880,22 +1094,29 @@
 
             const latitude =
               Number(
-                position.coords.latitude
+                position.coords
+                  .latitude
               );
 
             const longitude =
               Number(
-                position.coords.longitude
+                position.coords
+                  .longitude
               );
 
             const accuracy =
               Number(
-                position.coords.accuracy
+                position.coords
+                  .accuracy
               );
 
             if (
-              !Number.isFinite(latitude) ||
-              !Number.isFinite(longitude) ||
+              !Number.isFinite(
+                latitude
+              ) ||
+              !Number.isFinite(
+                longitude
+              ) ||
               latitude < -90 ||
               latitude > 90 ||
               longitude < -180 ||
@@ -912,16 +1133,21 @@
 
             resolve({
               latitude,
+
               longitude,
 
               accuracy:
-                Number.isFinite(accuracy)
+                Number.isFinite(
+                  accuracy
+                )
                   ? accuracy
                   : null
             });
           },
 
-          function (error) {
+          function (
+            error
+          ) {
             let message =
               "Unable to get your location.";
 
@@ -948,19 +1174,27 @@
             }
 
             reject(
-              new Error(message)
+              new Error(
+                message
+              )
             );
           },
 
           {
-            enableHighAccuracy: false,
-            timeout: 20000,
-            maximumAge: 60000
+            enableHighAccuracy:
+              false,
+
+            timeout:
+              20000,
+
+            maximumAge:
+              60000
           }
         );
       }
     );
   }
+
 
   async function reverseGeocodeLocation(
     location
@@ -979,7 +1213,9 @@
 
     const url =
       new URL(
-        buildApiUrl(endpoint)
+        buildApiUrl(
+          endpoint
+        )
       );
 
     url.searchParams.set(
@@ -1072,6 +1308,7 @@
     }
   }
 
+
   function readStoredLocation() {
     try {
       const raw =
@@ -1084,7 +1321,9 @@
       }
 
       const parsed =
-        JSON.parse(raw);
+        JSON.parse(
+          raw
+        );
 
       if (!parsed) {
         return null;
@@ -1101,14 +1340,19 @@
         );
 
       if (
-        !Number.isFinite(latitude) ||
-        !Number.isFinite(longitude)
+        !Number.isFinite(
+          latitude
+        ) ||
+        !Number.isFinite(
+          longitude
+        )
       ) {
         return null;
       }
 
       return {
         latitude,
+
         longitude,
 
         accuracy:
@@ -1127,6 +1371,7 @@
     }
   }
 
+
   function clearStoredLocation() {
     try {
       sessionStorage.removeItem(
@@ -1137,8 +1382,11 @@
         STORAGE_NEARBY_KEY
       );
 
-    } catch (error) {}
+    } catch (error) {
+      /* Ignore storage errors. */
+    }
   }
+
 
   function restoreStoredLocation() {
     const stored =
@@ -1177,18 +1425,19 @@
     lat2,
     lon2
   ) {
-    const values =
-      [
-        lat1,
-        lon1,
-        lat2,
-        lon2
-      ].map(Number);
+    const values = [
+      lat1,
+      lon1,
+      lat2,
+      lon2
+    ].map(Number);
 
     if (
       values.some(
         function (value) {
-          return !Number.isFinite(value);
+          return !Number.isFinite(
+            value
+          );
         }
       )
     ) {
@@ -1196,7 +1445,9 @@
     }
 
     const toRadians =
-      function (degrees) {
+      function (
+        degrees
+      ) {
         return (
           degrees *
           Math.PI /
@@ -1204,7 +1455,8 @@
         );
       };
 
-    const earthRadiusKm = 6371;
+    const earthRadiusKm =
+      6371;
 
     const dLat =
       toRadians(
@@ -1217,26 +1469,38 @@
       );
 
     const a =
-      Math.sin(dLat / 2) ** 2 +
+      Math.sin(
+        dLat / 2
+      ) ** 2 +
       Math.cos(
-        toRadians(lat1)
+        toRadians(
+          lat1
+        )
       ) *
         Math.cos(
-          toRadians(lat2)
+          toRadians(
+            lat2
+          )
         ) *
-        Math.sin(dLon / 2) ** 2;
+        Math.sin(
+          dLon / 2
+        ) ** 2;
 
     const c =
       2 *
       Math.atan2(
         Math.sqrt(a),
-        Math.sqrt(1 - a)
+        Math.sqrt(
+          1 - a
+        )
       );
 
     return (
-      earthRadiusKm * c
+      earthRadiusKm *
+      c
     );
   }
+
 
   function getRadiusKm() {
     const radiusFilter =
@@ -1252,10 +1516,13 @@
       );
 
     if (
-      Number.isFinite(value) &&
+      Number.isFinite(
+        value
+      ) &&
       value > 0
     ) {
-      App.radiusKm = value;
+      App.radiusKm =
+        value;
     }
 
     return App.radiusKm;
@@ -1264,12 +1531,24 @@
 
   /* ============================================================
      LOCATION → FILTERS
+     IMPORTANT:
+     Reverse-geocoded location is informational by default.
+     It does not automatically force State/City filters.
   ============================================================ */
 
-  function applyLocationToFilters(info) {
+  function applyLocationToFilters(
+    info,
+    options = {}
+  ) {
     if (!info) {
       return;
     }
+
+    const applyState =
+      options.applyState === true;
+
+    const applyCity =
+      options.applyCity === true;
 
     const stateFilter =
       getStateFilter();
@@ -1278,6 +1557,7 @@
       getCityFilter();
 
     if (
+      applyState &&
       stateFilter &&
       info.state
     ) {
@@ -1289,11 +1569,13 @@
             return (
               item.value
                 .toLowerCase() ===
-                info.state.toLowerCase() ||
+                info.state
+                  .toLowerCase() ||
               item.textContent
                 .trim()
                 .toLowerCase() ===
-                info.state.toLowerCase()
+                info.state
+                  .toLowerCase()
             );
           }
         );
@@ -1311,11 +1593,8 @@
       }
     }
 
-    /*
-     * Only apply city if the Worker
-     * actually returned a city.
-     */
     if (
+      applyCity &&
       cityFilter &&
       info.city
     ) {
@@ -1327,11 +1606,13 @@
             return (
               item.value
                 .toLowerCase() ===
-                info.city.toLowerCase() ||
+                info.city
+                  .toLowerCase() ||
               item.textContent
                 .trim()
                 .toLowerCase() ===
-                info.city.toLowerCase()
+                info.city
+                  .toLowerCase()
             );
           }
         );
@@ -1346,7 +1627,38 @@
     }
   }
 
-  function updateCityOptions(stateValue) {
+
+  function clearStateCityFilters() {
+    const stateFilter =
+      getStateFilter();
+
+    const cityFilter =
+      getCityFilter();
+
+    if (stateFilter) {
+      stateFilter.value =
+        "";
+    }
+
+    if (cityFilter) {
+      cityFilter.innerHTML =
+        '<option value="">All cities</option>';
+
+      cityFilter.value =
+        "";
+    }
+
+    App.currentState =
+      "";
+
+    App.currentCity =
+      "";
+  }
+
+
+  function updateCityOptions(
+    stateValue
+  ) {
     const cityFilter =
       getCityFilter();
 
@@ -1359,7 +1671,9 @@
         App.allBusinesses
       )
         .filter(
-          function (business) {
+          function (
+            business
+          ) {
             return (
               !stateValue ||
               clean(
@@ -1372,7 +1686,9 @@
           }
         )
         .map(
-          function (business) {
+          function (
+            business
+          ) {
             return clean(
               business.city
             );
@@ -1386,14 +1702,20 @@
             array
           ) {
             return (
-              array.indexOf(value) ===
-              index
+              array.indexOf(
+                value
+              ) === index
             );
           }
         )
         .sort(
-          function (a, b) {
-            return a.localeCompare(b);
+          function (
+            a,
+            b
+          ) {
+            return a.localeCompare(
+              b
+            );
           }
         );
 
@@ -1404,7 +1726,9 @@
       '<option value="">All cities</option>';
 
     cities.forEach(
-      function (city) {
+      function (
+        city
+      ) {
         cityFilter.add(
           new Option(
             city,
@@ -1415,10 +1739,16 @@
     );
 
     if (
-      cities.includes(existing)
+      cities.includes(
+        existing
+      )
     ) {
       cityFilter.value =
         existing;
+
+    } else {
+      cityFilter.value =
+        "";
     }
   }
 
@@ -1477,6 +1807,7 @@
       params.get("nearby") === "1" ||
       params.get("nearby") === "true";
 
+
     if (
       searchInput &&
       query
@@ -1484,6 +1815,7 @@
       searchInput.value =
         query;
     }
+
 
     if (
       categoryFilter &&
@@ -1493,6 +1825,15 @@
         category;
     }
 
+
+    /*
+     * State and city from the URL remain valid
+     * manual filters.
+     *
+     * Home → Use My Location no longer puts these
+     * values in the URL, so nearby mode does not get
+     * accidental location filters.
+     */
     if (
       stateFilter &&
       state
@@ -1501,12 +1842,15 @@
         state;
     }
 
+
     if (
-      stateFilter &&
       state
     ) {
-      updateCityOptions(state);
+      updateCityOptions(
+        state
+      );
     }
+
 
     if (
       cityFilter &&
@@ -1516,17 +1860,23 @@
         city;
     }
 
+
     if (
       radiusFilter &&
-      Number.isFinite(radius) &&
+      Number.isFinite(
+        radius
+      ) &&
       radius > 0
     ) {
       radiusFilter.value =
-        String(radius);
+        String(
+          radius
+        );
 
       App.radiusKm =
         radius;
     }
+
 
     App.currentQuery =
       query;
@@ -1540,6 +1890,7 @@
     App.currentCity =
       city;
 
+
     if (nearby) {
       App.nearbyMode =
         true;
@@ -1552,8 +1903,11 @@
     return false;
   }
 
+
   function syncUrl() {
-    if (!isExplorePage()) {
+    if (
+      !isExplorePage()
+    ) {
       return;
     }
 
@@ -1589,7 +1943,9 @@
             value
           ]
         ) {
-          if (clean(value)) {
+          if (
+            clean(value)
+          ) {
             url.searchParams.set(
               key,
               value
@@ -1602,7 +1958,10 @@
         }
       );
 
-      if (App.nearbyMode) {
+
+      if (
+        App.nearbyMode
+      ) {
         url.searchParams.set(
           "nearby",
           "1"
@@ -1614,6 +1973,7 @@
             getRadiusKm()
           )
         );
+
       } else {
         url.searchParams.delete(
           "nearby"
@@ -1624,13 +1984,16 @@
         );
       }
 
+
       window.history.replaceState(
         {},
         "",
         url.toString()
       );
 
-    } catch (error) {}
+    } catch (error) {
+      /* Ignore URL sync errors. */
+    }
   }
 
 
@@ -1651,12 +2014,14 @@
     const cityFilter =
       getCityFilter();
 
+
     App.currentQuery =
       clean(
         searchInput
           ? searchInput.value
           : App.currentQuery
       );
+
 
     App.currentCategory =
       clean(
@@ -1665,6 +2030,7 @@
           : App.currentCategory
       );
 
+
     App.currentState =
       clean(
         stateFilter
@@ -1672,12 +2038,14 @@
           : App.currentState
       );
 
+
     App.currentCity =
       clean(
         cityFilter
           ? cityFilter.value
           : App.currentCity
       );
+
 
     if (
       stateFilter &&
@@ -1696,25 +2064,33 @@
       }
     }
 
+
     const query =
-      App.currentQuery.toLowerCase();
+      App.currentQuery
+        .toLowerCase();
 
     const category =
-      App.currentCategory.toLowerCase();
+      App.currentCategory
+        .toLowerCase();
 
     const state =
-      App.currentState.toLowerCase();
+      App.currentState
+        .toLowerCase();
 
     const city =
-      App.currentCity.toLowerCase();
+      App.currentCity
+        .toLowerCase();
 
     const radius =
       getRadiusKm();
 
+
     const results =
       App.allBusinesses
         .map(
-          function (business) {
+          function (
+            business
+          ) {
             const searchable =
               [
                 business.name,
@@ -1724,35 +2100,49 @@
                 business.state,
                 business.country,
                 business.description,
-                business.phone
+                business.phone,
+                business.website
               ]
                 .filter(Boolean)
                 .join(" ")
                 .toLowerCase();
 
-            const distance =
+
+            let distance =
+              null;
+
+
+            if (
               App.userLocation &&
               business.latitude !== null &&
               business.longitude !== null
-                ? distanceKm(
-                    App.userLocation.latitude,
-                    App.userLocation.longitude,
-                    business.latitude,
-                    business.longitude
-                  )
-                : null;
+            ) {
+              distance =
+                distanceKm(
+                  App.userLocation.latitude,
+                  App.userLocation.longitude,
+                  business.latitude,
+                  business.longitude
+                );
+            }
+
 
             return {
               business,
+
               searchable,
+
               distance
             };
           }
         )
         .filter(
-          function (entry) {
+          function (
+            entry
+          ) {
             const business =
               entry.business;
+
 
             if (
               query &&
@@ -1762,6 +2152,7 @@
             ) {
               return false;
             }
+
 
             if (
               category &&
@@ -1773,6 +2164,12 @@
               return false;
             }
 
+
+            /*
+             * These remain normal manual filters.
+             * They are NOT automatically populated by
+             * GPS location anymore.
+             */
             if (
               state &&
               clean(
@@ -1782,6 +2179,7 @@
             ) {
               return false;
             }
+
 
             if (
               city &&
@@ -1793,7 +2191,15 @@
               return false;
             }
 
-            if (App.nearbyMode) {
+
+            /*
+             * Nearby mode is controlled by GPS distance.
+             * Businesses without usable coordinates cannot
+             * be considered "nearby".
+             */
+            if (
+              App.nearbyMode
+            ) {
               if (
                 entry.distance === null
               ) {
@@ -1808,36 +2214,54 @@
               }
             }
 
+
             return true;
           }
         )
         .sort(
-          function (a, b) {
-            if (App.nearbyMode) {
+          function (
+            a,
+            b
+          ) {
+            if (
+              App.nearbyMode
+            ) {
               return (
-                (a.distance ?? Infinity) -
-                (b.distance ?? Infinity)
+                (
+                  a.distance ??
+                  Infinity
+                ) -
+                (
+                  b.distance ??
+                  Infinity
+                )
               );
             }
 
+
             const featuredA =
               Number(
-                a.business.featured || 0
+                a.business.featured ||
+                0
               );
 
             const featuredB =
               Number(
-                b.business.featured || 0
+                b.business.featured ||
+                0
               );
 
+
             if (
-              featuredA !== featuredB
+              featuredA !==
+              featuredB
             ) {
               return (
                 featuredB -
                 featuredA
               );
             }
+
 
             return a.business.name
               .localeCompare(
@@ -1846,19 +2270,26 @@
           }
         )
         .map(
-          function (entry) {
+          function (
+            entry
+          ) {
             return {
               ...entry.business,
+
               distanceKm:
                 entry.distance
             };
           }
         );
 
+
     App.filteredBusinesses =
       results;
 
-    App.currentPage = 1;
+
+    App.currentPage =
+      1;
+
 
     App.totalPages =
       Math.max(
@@ -1868,6 +2299,7 @@
           App.pageSize
         )
       );
+
 
     syncUrl();
 
@@ -1879,32 +2311,48 @@
      DISPLAY HELPERS
   ============================================================ */
 
-  function formatNumber(value) {
-    const number = Number(value);
+  function formatNumber(
+    value
+  ) {
+    const number =
+      Number(value);
 
-    return Number.isFinite(number)
+    return Number.isFinite(
+      number
+    )
       ? number.toLocaleString()
       : "0";
   }
 
-  function stars(rating) {
+
+  function stars(
+    rating
+  ) {
     const score =
       Math.max(
         0,
         Math.min(
           5,
-          Number(rating) || 0
+          Number(
+            rating
+          ) || 0
         )
       );
 
     const rounded =
-      Math.round(score);
+      Math.round(
+        score
+      );
 
     return "★★★★★"
       .split("")
       .map(
-        function (star, index) {
-          return index < rounded
+        function (
+          star,
+          index
+        ) {
+          return index <
+            rounded
             ? "★"
             : "☆";
         }
@@ -1912,17 +2360,24 @@
       .join("");
   }
 
-  function formatDistance(value) {
+
+  function formatDistance(
+    value
+  ) {
     const distance =
       Number(value);
 
     if (
-      !Number.isFinite(distance)
+      !Number.isFinite(
+        distance
+      )
     ) {
       return "";
     }
 
-    if (distance < 1) {
+    if (
+      distance < 1
+    ) {
       return (
         Math.round(
           distance * 1000
@@ -1955,12 +2410,18 @@
 
       const parsed =
         raw
-          ? JSON.parse(raw)
+          ? JSON.parse(
+              raw
+            )
           : [];
 
       return new Set(
-        Array.isArray(parsed)
-          ? parsed.map(String)
+        Array.isArray(
+          parsed
+        )
+          ? parsed.map(
+              String
+            )
           : []
       );
 
@@ -1969,12 +2430,17 @@
     }
   }
 
-  function saveSavedIds(ids) {
+
+  function saveSavedIds(
+    ids
+  ) {
     try {
       localStorage.setItem(
         STORAGE_SAVED_KEY,
         JSON.stringify(
-          Array.from(ids)
+          Array.from(
+            ids
+          )
         )
       );
 
@@ -1986,7 +2452,10 @@
     }
   }
 
-  function isSaved(id) {
+
+  function isSaved(
+    id
+  ) {
     if (!id) {
       return false;
     }
@@ -1996,7 +2465,10 @@
     );
   }
 
-  function toggleSaved(id) {
+
+  function toggleSaved(
+    id
+  ) {
     if (!id) {
       return false;
     }
@@ -2007,15 +2479,27 @@
     const key =
       String(id);
 
-    if (ids.has(key)) {
-      ids.delete(key);
+
+    if (
+      ids.has(key)
+    ) {
+      ids.delete(
+        key
+      );
+
     } else {
-      ids.add(key);
+      ids.add(
+        key
+      );
     }
 
-    saveSavedIds(ids);
+
+    saveSavedIds(
+      ids
+    );
 
     renderResults();
+
 
     setStatus(
       ids.has(key)
@@ -2024,7 +2508,10 @@
       "success"
     );
 
-    return ids.has(key);
+
+    return ids.has(
+      key
+    );
   }
 
 
@@ -2032,7 +2519,9 @@
      BUSINESS URL
   ============================================================ */
 
-  function businessUrl(business) {
+  function businessUrl(
+    business
+  ) {
     const path =
       pagePath();
 
@@ -2054,6 +2543,7 @@
         window.location.href
       );
 
+
     if (id) {
       url.searchParams.set(
         "id",
@@ -2066,6 +2556,7 @@
         slug
       );
     }
+
 
     return url.toString();
   }
@@ -2088,6 +2579,7 @@
           businessId
         )}/view`
       );
+
 
     fetch(
       url,
@@ -2115,7 +2607,10 @@
     business
   ) {
     const saved =
-      isSaved(business.id);
+      isSaved(
+        business.id
+      );
+
 
     const location =
       [
@@ -2131,12 +2626,14 @@
             array
           ) {
             return (
-              array.indexOf(value) ===
-              index
+              array.indexOf(
+                value
+              ) === index
             );
           }
         )
         .join(", ");
+
 
     const image =
       business.image
@@ -2166,10 +2663,12 @@
           </div>
         `;
 
+
     const distance =
       formatDistance(
         business.distanceKm
       );
+
 
     return `
       <article
@@ -2182,7 +2681,9 @@
         <a
           class="business-card-image"
           href="${escapeAttribute(
-            businessUrl(business)
+            businessUrl(
+              business
+            )
           )}"
           aria-label="View ${escapeAttribute(
             business.name
@@ -2190,6 +2691,7 @@
         >
           ${image}
         </a>
+
 
         <div
           class="business-card-body"
@@ -2208,6 +2710,7 @@
               )}
             </span>
 
+
             ${
               business.verified
                 ? `
@@ -2223,13 +2726,16 @@
 
           </div>
 
+
           <h3
             class="business-card-title"
           >
 
             <a
               href="${escapeAttribute(
-                businessUrl(business)
+                businessUrl(
+                  business
+                )
               )}"
             >
               ${escapeHtml(
@@ -2239,6 +2745,7 @@
 
           </h3>
 
+
           <div
             class="business-card-location"
           >
@@ -2247,6 +2754,7 @@
               "Location unavailable"
             )}
           </div>
+
 
           <div
             class="business-card-rating"
@@ -2262,6 +2770,7 @@
               )}
             </span>
 
+
             <span>
               ${
                 business.rating > 0
@@ -2272,6 +2781,7 @@
               }
             </span>
 
+
             <span>
               (
               ${formatNumber(
@@ -2281,6 +2791,7 @@
             </span>
 
           </div>
+
 
           ${
             distance
@@ -2296,6 +2807,7 @@
               : ""
           }
 
+
           <div
             class="business-card-actions"
           >
@@ -2303,7 +2815,9 @@
             <a
               class="btn btn-primary"
               href="${escapeAttribute(
-                businessUrl(business)
+                businessUrl(
+                  business
+                )
               )}"
               data-view-business="${escapeAttribute(
                 business.id
@@ -2312,16 +2826,21 @@
               View Business
             </a>
 
+
             <button
               type="button"
               class="btn btn-save ${
-                saved ? "saved" : ""
+                saved
+                  ? "saved"
+                  : ""
               }"
               data-save-business="${escapeAttribute(
                 business.id
               )}"
               aria-pressed="${
-                saved ? "true" : "false"
+                saved
+                  ? "true"
+                  : "false"
               }"
             >
               ${
@@ -2351,14 +2870,19 @@
     const emptyState =
       getEmptyState();
 
+
     if (!container) {
       updateResultsCount();
+
       renderPagination();
+
       return;
     }
 
+
     const total =
       App.filteredBusinesses.length;
+
 
     App.totalPages =
       Math.max(
@@ -2369,6 +2893,7 @@
         )
       );
 
+
     if (
       App.currentPage >
       App.totalPages
@@ -2377,24 +2902,35 @@
         App.totalPages;
     }
 
+
     const start =
       (
         App.currentPage - 1
       ) *
       App.pageSize;
 
+
     const pageItems =
       App.filteredBusinesses.slice(
         start,
-        start + App.pageSize
+        start +
+          App.pageSize
       );
 
-    if (!pageItems.length) {
-      container.innerHTML = "";
+
+    if (
+      !pageItems.length
+    ) {
+      container.innerHTML =
+        "";
+
 
       if (emptyState) {
-        emptyState.hidden = false;
-        emptyState.style.display = "";
+        emptyState.hidden =
+          false;
+
+        emptyState.style.display =
+          "";
 
         emptyState.innerHTML = `
           <h2>
@@ -2413,9 +2949,13 @@
 
     } else {
       if (emptyState) {
-        emptyState.hidden = true;
-        emptyState.style.display = "none";
+        emptyState.hidden =
+          true;
+
+        emptyState.style.display =
+          "none";
       }
+
 
       container.innerHTML =
         pageItems
@@ -2425,9 +2965,12 @@
           .join("");
     }
 
+
     updateResultsCount();
+
     renderPagination();
   }
+
 
   function updateResultsCount() {
     const element =
@@ -2440,6 +2983,7 @@
     const total =
       App.filteredBusinesses.length;
 
+
     element.textContent =
       total === 1
         ? "1 business found"
@@ -2447,6 +2991,7 @@
             total
           )} businesses found`;
   }
+
 
   function renderPagination() {
     const container =
@@ -2459,13 +3004,17 @@
     const total =
       App.filteredBusinesses.length;
 
+
     if (
       !total ||
       App.totalPages <= 1
     ) {
-      container.innerHTML = "";
+      container.innerHTML =
+        "";
+
       return;
     }
+
 
     container.innerHTML = `
       <div
@@ -2485,12 +3034,14 @@
           Previous
         </button>
 
+
         <span>
           Page
           ${App.currentPage}
           of
           ${App.totalPages}
         </span>
+
 
         <button
           type="button"
@@ -2510,7 +3061,10 @@
     `;
   }
 
-  function goToPage(page) {
+
+  function goToPage(
+    page
+  ) {
     const target =
       Math.max(
         1,
@@ -2520,6 +3074,7 @@
         )
       );
 
+
     if (
       target ===
       App.currentPage
@@ -2527,13 +3082,16 @@
       return;
     }
 
+
     App.currentPage =
       target;
 
     renderResults();
 
+
     const container =
       getResultsContainer();
+
 
     if (
       container &&
@@ -2541,8 +3099,11 @@
         "function"
     ) {
       container.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
+        behavior:
+          "smooth",
+
+        block:
+          "start"
       });
     }
   }
@@ -2552,7 +3113,9 @@
      UI STATUS
   ============================================================ */
 
-  function setLoading(isLoading) {
+  function setLoading(
+    isLoading
+  ) {
     const loading =
       firstElement([
         "#loadingState",
@@ -2560,18 +3123,22 @@
         "[data-loading]"
       ]);
 
+
     if (!loading) {
       return;
     }
 
+
     loading.hidden =
       !isLoading;
+
 
     loading.style.display =
       isLoading
         ? ""
         : "none";
   }
+
 
   function setStatus(
     message,
@@ -2580,21 +3147,29 @@
     const element =
       getLocationStatus();
 
+
     if (!element) {
       return;
     }
 
+
     const value =
-      clean(message);
+      clean(
+        message
+      );
+
 
     element.textContent =
       value;
 
+
     element.dataset.statusType =
       type;
 
+
     element.hidden =
       !value;
+
 
     element.style.display =
       value
@@ -2602,11 +3177,13 @@
         : "none";
   }
 
+
   function updateLocationUi() {
     const label =
       formatLocationLabel(
         App.locationInfo
       );
+
 
     const buttons =
       allElements([
@@ -2615,10 +3192,14 @@
         "[data-use-location]"
       ]);
 
+
     buttons.forEach(
-      function (button) {
+      function (
+        button
+      ) {
         button.disabled =
           App.locationLoading;
+
 
         button.setAttribute(
           "aria-busy",
@@ -2627,12 +3208,14 @@
           )
         );
 
+
         button.textContent =
           App.locationLoading
             ? "Finding your location…"
             : "Use My Location";
       }
     );
+
 
     const nearbyButtons =
       allElements([
@@ -2641,10 +3224,14 @@
         "[data-clear-location]"
       ]);
 
+
     nearbyButtons.forEach(
-      function (button) {
+      function (
+        button
+      ) {
         button.hidden =
           !App.nearbyMode;
+
 
         button.style.display =
           App.nearbyMode
@@ -2653,7 +3240,10 @@
       }
     );
 
-    if (App.nearbyMode) {
+
+    if (
+      App.nearbyMode
+    ) {
       setStatus(
         label
           ? `Using your current location: ${label}`
@@ -2662,6 +3252,7 @@
       );
     }
   }
+
 
   function dispatchLocationChange() {
     try {
@@ -2686,7 +3277,9 @@
         )
       );
 
-    } catch (error) {}
+    } catch (error) {
+      /* Ignore event errors. */
+    }
   }
 
 
@@ -2695,28 +3288,38 @@
   ============================================================ */
 
   async function enableNearbyLocation() {
-    if (App.locationLoading) {
+    if (
+      App.locationLoading
+    ) {
       return false;
     }
 
-    App.locationLoading = true;
+
+    App.locationLoading =
+      true;
+
 
     updateLocationUi();
+
 
     setStatus(
       "Finding your current location…",
       "info"
     );
 
+
     try {
       const location =
         await getBrowserLocation();
 
+
       App.userLocation =
         location;
 
+
       App.locationInfo =
         null;
+
 
       try {
         App.locationInfo =
@@ -2731,19 +3334,30 @@
         );
       }
 
+
+      /*
+       * Nearby mode is GPS-based.
+       *
+       * IMPORTANT:
+       * We deliberately do NOT call
+       * applyLocationToFilters() here.
+       *
+       * The user's actual coordinates determine
+       * nearby businesses. Reverse-geocoded State
+       * and City are informational only.
+       */
       App.nearbyMode =
         true;
 
+
       getRadiusKm();
 
-      applyLocationToFilters(
-        App.locationInfo
-      );
 
       saveStoredLocation(
         location,
         App.locationInfo
       );
+
 
       try {
         sessionStorage.setItem(
@@ -2751,33 +3365,42 @@
           "1"
         );
 
-      } catch (error) {}
+      } catch (error) {
+        /* Ignore storage errors. */
+      }
 
-      App.currentPage = 1;
+
+      /*
+       * Clear accidental State/City filters when
+       * the user intentionally enters Nearby mode.
+       *
+       * Search and Category are preserved.
+       */
+      clearStateCityFilters();
+
+
+      App.currentPage =
+        1;
+
 
       syncUrl();
 
-      /*
-       * Filter only if businesses are
-       * already loaded.
-       *
-       * On the Home page there are
-       * normally no businesses loaded,
-       * so we simply save the location
-       * and redirect to Explore.
-       */
+
       if (
         App.allBusinesses.length
       ) {
         filterBusinesses();
       }
 
+
       dispatchLocationChange();
+
 
       const label =
         formatLocationLabel(
           App.locationInfo
         );
+
 
       setStatus(
         label
@@ -2786,16 +3409,19 @@
         "success"
       );
 
+
       return true;
 
     } catch (error) {
       App.lastError =
         error;
 
+
       setStatus(
         error.message,
         "error"
       );
+
 
       return false;
 
@@ -2803,28 +3429,68 @@
       App.locationLoading =
         false;
 
+
       updateLocationUi();
     }
   }
 
+
   function clearNearbyLocation() {
-    App.userLocation = null;
-    App.locationInfo = null;
-    App.nearbyMode = false;
-    App.currentPage = 1;
+    App.userLocation =
+      null;
+
+    App.locationInfo =
+      null;
+
+    App.nearbyMode =
+      false;
+
+    App.currentPage =
+      1;
+
 
     clearStoredLocation();
 
-    syncUrl();
+
+    /*
+     * Clearing location must also remove the
+     * nearby URL state immediately.
+     */
+    try {
+      const url =
+        new URL(
+          window.location.href
+        );
+
+      url.searchParams.delete(
+        "nearby"
+      );
+
+      url.searchParams.delete(
+        "radius"
+      );
+
+      window.history.replaceState(
+        {},
+        "",
+        url.toString()
+      );
+
+    } catch (error) {
+      /* Ignore URL errors. */
+    }
+
 
     filterBusinesses();
 
     dispatchLocationChange();
 
+
     setStatus(
       "Location cleared.",
       "info"
     );
+
 
     updateLocationUi();
   }
@@ -2833,16 +3499,19 @@
   /* ============================================================
      HOME LOCATION
      IMPORTANT:
-     Home now redirects to explore.html.
+     Home redirects to Explore with nearby mode only.
+     It does NOT pass State/City filters.
   ============================================================ */
 
   async function handleHomeLocation() {
     const okay =
       await enableNearbyLocation();
 
+
     if (!okay) {
       return;
     }
+
 
     const url =
       new URL(
@@ -2850,10 +3519,12 @@
         window.location.href
       );
 
+
     url.searchParams.set(
       "nearby",
       "1"
     );
+
 
     url.searchParams.set(
       "radius",
@@ -2862,37 +3533,14 @@
       )
     );
 
-    /*
-     * We pass the state only when the
-     * Worker actually returns one.
-     */
-    if (
-      App.locationInfo &&
-      App.locationInfo.state
-    ) {
-      url.searchParams.set(
-        "state",
-        App.locationInfo.state
-      );
-    }
 
     /*
-     * Only pass city when the Worker
-     * actually returns a city.
+     * DO NOT pass reverse-geocoded state/city here.
      *
-     * Area names such as Shomolu
-     * must NOT be treated as cities.
+     * Nearby search should be based on GPS distance.
+     * This prevents a location like Lagos from becoming
+     * an additional hard filter.
      */
-    if (
-      App.locationInfo &&
-      App.locationInfo.city
-    ) {
-      url.searchParams.set(
-        "city",
-        App.locationInfo.city
-      );
-    }
-
     window.location.href =
       url.toString();
   }
@@ -2908,7 +3556,9 @@
       "#useLocation",
       "[data-use-location]"
     ]).forEach(
-      function (button) {
+      function (
+        button
+      ) {
         if (
           button.dataset
             .nearafricaLocationBound ===
@@ -2917,9 +3567,11 @@
           return;
         }
 
+
         button.dataset
           .nearafricaLocationBound =
           "1";
+
 
         button.addEventListener(
           "click",
@@ -2929,6 +3581,7 @@
               !isExplorePage()
             ) {
               handleHomeLocation();
+
             } else {
               enableNearbyLocation();
             }
@@ -2937,12 +3590,15 @@
       }
     );
 
+
     allElements([
       "#clearLocation",
       "#clearNearby",
       "[data-clear-location]"
     ]).forEach(
-      function (button) {
+      function (
+        button
+      ) {
         if (
           button.dataset
             .nearafricaClearBound ===
@@ -2951,9 +3607,11 @@
           return;
         }
 
+
         button.dataset
           .nearafricaClearBound =
           "1";
+
 
         button.addEventListener(
           "click",
@@ -2978,8 +3636,11 @@
         getRadiusFilter()
       ].filter(Boolean);
 
+
     elements.forEach(
-      function (element) {
+      function (
+        element
+      ) {
         if (
           element.dataset
             .nearafricaFilterBound ===
@@ -2988,18 +3649,24 @@
           return;
         }
 
+
         element.dataset
           .nearafricaFilterBound =
           "1";
 
+
         const eventName =
-          element.tagName === "INPUT" &&
+          element.tagName ===
+            "INPUT" &&
           (
-            element.type === "search" ||
-            element.type === "text"
+            element.type ===
+              "search" ||
+            element.type ===
+              "text"
           )
             ? "input"
             : "change";
+
 
         element.addEventListener(
           eventName,
@@ -3008,7 +3675,11 @@
           }
         );
 
-        if (eventName === "input") {
+
+        if (
+          eventName ===
+          "input"
+        ) {
           element.addEventListener(
             "search",
             filterBusinesses
@@ -3017,11 +3688,13 @@
       }
     );
 
+
     const searchForm =
       firstElement([
         "#searchForm",
         "form[data-search-form]"
       ]);
+
 
     if (
       searchForm &&
@@ -3033,9 +3706,12 @@
         .nearafricaBound =
         "1";
 
+
       searchForm.addEventListener(
         "submit",
-        function (event) {
+        function (
+          event
+        ) {
           event.preventDefault();
 
           filterBusinesses();
@@ -3043,8 +3719,10 @@
       );
     }
 
+
     const stateFilter =
       getStateFilter();
+
 
     if (
       stateFilter &&
@@ -3055,6 +3733,7 @@
       stateFilter.dataset
         .nearafricaCityBound =
         "1";
+
 
       stateFilter.addEventListener(
         "change",
@@ -3076,6 +3755,7 @@
     const container =
       getResultsContainer();
 
+
     if (
       container &&
       container.dataset
@@ -3086,30 +3766,39 @@
         .nearafricaResultsBound =
         "1";
 
+
       container.addEventListener(
         "click",
-        function (event) {
+        function (
+          event
+        ) {
           const saveButton =
             event.target.closest(
               "[data-save-business]"
             );
 
+
           if (saveButton) {
             event.preventDefault();
+
             event.stopPropagation();
+
 
             toggleSaved(
               saveButton.dataset
                 .saveBusiness
             );
 
+
             return;
           }
+
 
           const viewLink =
             event.target.closest(
               "[data-view-business]"
             );
+
 
           if (viewLink) {
             recordBusinessView(
@@ -3121,8 +3810,10 @@
       );
     }
 
+
     const pagination =
       getPaginationContainer();
+
 
     if (
       pagination &&
@@ -3134,13 +3825,17 @@
         .nearafricaBound =
         "1";
 
+
       pagination.addEventListener(
         "click",
-        function (event) {
+        function (
+          event
+        ) {
           const button =
             event.target.closest(
               "[data-page-action]"
             );
+
 
           if (
             !button ||
@@ -3149,13 +3844,15 @@
             return;
           }
 
+
           if (
             button.dataset
               .pageAction ===
             "prev"
           ) {
             goToPage(
-              App.currentPage - 1
+              App.currentPage -
+              1
             );
 
           } else if (
@@ -3164,7 +3861,8 @@
             "next"
           ) {
             goToPage(
-              App.currentPage + 1
+              App.currentPage +
+              1
             );
           }
         }
@@ -3186,6 +3884,7 @@
         "[data-mobile-menu-toggle]"
       ]);
 
+
     const nav =
       firstElement([
         "#mobileNav",
@@ -3193,6 +3892,7 @@
         ".mobile-nav",
         ".nav"
       ]);
+
 
     if (
       !toggle ||
@@ -3204,14 +3904,17 @@
       return;
     }
 
+
     toggle.dataset
       .nearafricaMenuBound =
       "1";
+
 
     toggle.setAttribute(
       "aria-expanded",
       "false"
     );
+
 
     toggle.addEventListener(
       "click",
@@ -3221,10 +3924,14 @@
             "open"
           );
 
+
         toggle.setAttribute(
           "aria-expanded",
-          String(open)
+          String(
+            open
+          )
         );
+
 
         toggle.setAttribute(
           "aria-label",
@@ -3232,6 +3939,7 @@
             ? "Close menu"
             : "Open menu"
         );
+
 
         if (
           toggle.tagName ===
@@ -3245,9 +3953,12 @@
       }
     );
 
+
     nav.querySelectorAll("a")
       .forEach(
-        function (link) {
+        function (
+          link
+        ) {
           link.addEventListener(
             "click",
             function () {
@@ -3255,15 +3966,18 @@
                 "open"
               );
 
+
               toggle.setAttribute(
                 "aria-expanded",
                 "false"
               );
 
+
               toggle.setAttribute(
                 "aria-label",
                 "Open menu"
               );
+
 
               if (
                 toggle.tagName ===
@@ -3284,9 +3998,27 @@
   ============================================================ */
 
   function setupKeyboardSearch() {
+    if (
+      document.documentElement
+        .dataset
+        .nearafricaKeyboardBound ===
+      "1"
+    ) {
+      return;
+    }
+
+
+    document.documentElement
+      .dataset
+      .nearafricaKeyboardBound =
+      "1";
+
+
     document.addEventListener(
       "keydown",
-      function (event) {
+      function (
+        event
+      ) {
         if (
           event.key !== "/" ||
           event.ctrlKey ||
@@ -3296,8 +4028,10 @@
           return;
         }
 
+
         const target =
           event.target;
+
 
         const tag =
           target &&
@@ -3305,21 +4039,27 @@
             ? target.tagName.toLowerCase()
             : "";
 
+
         if (
           [
             "input",
             "textarea",
             "select"
-          ].includes(tag)
+          ].includes(
+            tag
+          )
         ) {
           return;
         }
 
+
         const searchInput =
           getSearchInput();
 
+
         if (searchInput) {
           event.preventDefault();
+
           searchInput.focus();
         }
       }
@@ -3335,22 +4075,29 @@
     const restored =
       restoreStoredLocation();
 
+
     if (!restored) {
       return false;
     }
+
 
     const params =
       new URLSearchParams(
         window.location.search
       );
 
+
     let nearbyFromStorage =
       false;
 
+
     if (
-      params.get("nearby") === "1"
+      params.get("nearby") ===
+      "1"
     ) {
-      nearbyFromStorage = true;
+      nearbyFromStorage =
+        true;
+
     } else {
       try {
         nearbyFromStorage =
@@ -3359,21 +4106,30 @@
           ) === "1";
 
       } catch (error) {
-        nearbyFromStorage = false;
+        nearbyFromStorage =
+          false;
       }
     }
 
-    if (nearbyFromStorage) {
-      App.nearbyMode = true;
 
-      applyLocationToFilters(
-        App.locationInfo
-      );
+    if (
+      nearbyFromStorage
+    ) {
+      App.nearbyMode =
+        true;
 
+
+      /*
+       * IMPORTANT:
+       * Do not convert stored reverse-geocoded
+       * State/City into hard filters.
+       */
       updateLocationUi();
+
 
       return true;
     }
+
 
     return false;
   }
@@ -3385,48 +4141,70 @@
 
   async function initializeExplorePage() {
     setupLocationButtons();
+
     setupFilters();
+
     setupResultsEvents();
+
     setupMobileMenu();
+
 
     const nearbyFromUrl =
       applyUrlParameters();
 
+
     const restoredNearby =
       applyRestoredLocationIfAvailable();
 
+
     await loadCategories();
 
+
     /*
-     * IMPORTANT:
-     * Businesses are loaded BEFORE filtering.
-     * This prevents a restored location from
-     * filtering an empty business array.
+     * Businesses must load BEFORE filtering.
      */
     await loadBusinesses();
 
+
+    /*
+     * Rebuild City options now that businesses exist.
+     *
+     * Only preserve a manually selected State.
+     * Nearby location itself does not populate these.
+     */
     updateCityOptions(
       App.currentState
     );
 
-    if (App.locationInfo) {
-      applyLocationToFilters(
-        App.locationInfo
-      );
+
+    /*
+     * Only apply location info to UI.
+     * Never automatically force State/City filters.
+     */
+    if (
+      App.locationInfo
+    ) {
+      updateLocationUi();
     }
+
 
     if (
       nearbyFromUrl ||
       restoredNearby
     ) {
-      App.nearbyMode = true;
+      App.nearbyMode =
+        true;
 
       updateLocationUi();
     }
 
+
     filterBusinesses();
 
-    App.initialized = true;
+
+    App.initialized =
+      true;
+
 
     dispatchLocationChange();
   }
@@ -3443,16 +4221,23 @@
       return;
     }
 
+
     App.homepageInitialized =
       true;
 
+
     setupLocationButtons();
+
     setupMobileMenu();
+
     setupKeyboardSearch();
+
 
     restoreStoredLocation();
 
+
     updateLocationUi();
+
 
     const searchForms =
       allElements([
@@ -3461,8 +4246,11 @@
         "form[data-search-form]"
       ]);
 
+
     searchForms.forEach(
-      function (form) {
+      function (
+        form
+      ) {
         if (
           form.dataset
             .nearafricaHomeBound ===
@@ -3471,14 +4259,19 @@
           return;
         }
 
+
         form.dataset
           .nearafricaHomeBound =
           "1";
 
+
         form.addEventListener(
           "submit",
-          function (event) {
+          function (
+            event
+          ) {
             event.preventDefault();
+
 
             const input =
               form.querySelector(
@@ -3486,21 +4279,20 @@
               ) ||
               getSearchInput();
 
+
             const query =
               clean(
                 input &&
                 input.value
               );
 
-            /*
-             * Home search also goes to
-             * the actual Explore page.
-             */
+
             const target =
               new URL(
                 "explore.html",
                 window.location.href
               );
+
 
             if (query) {
               target.searchParams.set(
@@ -3508,6 +4300,7 @@
                 query
               );
             }
+
 
             window.location.href =
               target.toString();
@@ -3538,18 +4331,23 @@
       return;
     }
 
+
     setupKeyboardSearch();
+
 
     if (
       isExplorePage()
     ) {
       initializeExplorePage()
         .catch(
-          function (error) {
+          function (
+            error
+          ) {
             console.error(
               "NearAfrica explore initialization failed:",
               error
             );
+
 
             setStatus(
               `NearAfrica could not initialize correctly. ${error.message}`,
@@ -3563,17 +4361,22 @@
     ) {
       initializeHomePage();
 
-      App.initialized = true;
+      App.initialized =
+        true;
 
     } else {
       setupLocationButtons();
+
       setupMobileMenu();
 
-      App.initialized = true;
+      App.initialized =
+        true;
     }
 
+
     window.NearAfricaApp = {
-      state: App,
+      state:
+        App,
 
       refresh:
         loadBusinesses,
