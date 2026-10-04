@@ -1465,7 +1465,7 @@ async function loadFavoriteStatus(){
       await apiRequest(
         `/businesses/${encodeURIComponent(
           activeBusiness.id
-        )}/favorites`,
+        )}/favorite`,
         {
           method:"GET"
         }
