@@ -1757,244 +1757,148 @@
      URL STATE
   ============================================================ */
 
-  function applyUrlParameters() {
-    const params =
-      new URLSearchParams(
-        window.location.search
-      );
+ function applyUrlParameters() {
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
 
-    const searchInput =
-      getSearchInput();
+  const searchInput =
+    getSearchInput();
 
-    const categoryFilter =
-      getCategoryFilter();
+  const categoryFilter =
+    getCategoryFilter();
 
-    const stateFilter =
-      getStateFilter();
+  const stateFilter =
+    getStateFilter();
 
-    const cityFilter =
-      getCityFilter();
+  const cityFilter =
+    getCityFilter();
 
-    const radiusFilter =
-      getRadiusFilter();
+  const radiusFilter =
+    getRadiusFilter();
 
-    const query =
-      clean(
-        params.get("q")
-      );
+  const query =
+    clean(
+      params.get("q")
+    );
 
-    const category =
-      clean(
-        params.get("category")
-      );
+  const category =
+    clean(
+      params.get("category")
+    );
 
-    const state =
-      clean(
-        params.get("state")
-      );
+  const state =
+    clean(
+      params.get("state")
+    );
 
-    const city =
-      clean(
-        params.get("city")
-      );
+  const city =
+    clean(
+      params.get("city")
+    );
 
-    const radius =
-      Number(
-        params.get("radius")
-      );
+  const radius =
+    Number(
+      params.get("radius")
+    );
 
-    const nearby =
-      params.get("nearby") === "1" ||
-      params.get("nearby") === "true";
-
-
-    if (
-      searchInput &&
-      query
-    ) {
-      searchInput.value =
-        query;
-    }
+  const nearby =
+    params.get("nearby") === "1" ||
+    params.get("nearby") === "true";
 
 
-    if (
-      categoryFilter &&
-      category
-    ) {
-      categoryFilter.value =
-        category;
-    }
-
-
-    /*
-     * State and city from the URL remain valid
-     * manual filters.
-     *
-     * Home → Use My Location no longer puts these
-     * values in the URL, so nearby mode does not get
-     * accidental location filters.
-     */
-    if (
-      stateFilter &&
-      state
-    ) {
-      stateFilter.value =
-        state;
-    }
-
-
-    if (
-      state
-    ) {
-      updateCityOptions(
-        state
-      );
-    }
-
-
-    if (
-      cityFilter &&
-      city
-    ) {
-      cityFilter.value =
-        city;
-    }
-
-
-    if (
-      radiusFilter &&
-      Number.isFinite(
-        radius
-      ) &&
-      radius > 0
-    ) {
-      radiusFilter.value =
-        String(
-          radius
-        );
-
-      App.radiusKm =
-        radius;
-    }
-
-
-    App.currentQuery =
+  if (
+    searchInput &&
+    query
+  ) {
+    searchInput.value =
       query;
+  }
 
-    App.currentCategory =
+
+  if (
+    categoryFilter &&
+    category
+  ) {
+    categoryFilter.value =
       category;
+  }
 
-    App.currentState =
+
+  if (
+    stateFilter &&
+    state
+  ) {
+    stateFilter.value =
       state;
+  }
 
-    App.currentCity =
+
+  if (
+    state
+  ) {
+    updateCityOptions(
+      state
+    );
+  }
+
+
+  if (
+    cityFilter &&
+    city
+  ) {
+    cityFilter.value =
       city;
-
-
-    if (nearby) {
-      App.nearbyMode =
-        true;
-
-      getRadiusKm();
-
-      return true;
-    }
-
-    return false;
   }
 
 
-  function syncUrl() {
-    if (
-      !isExplorePage()
-    ) {
-      return;
-    }
+  /*
+   * IMPORTANT:
+   * Apply the URL radius to App.radiusKm
+   * even when the Explore page does not
+   * contain a radius control.
+   */
+  if (
+    Number.isFinite(radius) &&
+    radius > 0
+  ) {
+    App.radiusKm =
+      radius;
 
-    try {
-      const url =
-        new URL(
-          window.location.href
-        );
-
-      const entries = [
-        [
-          "q",
-          App.currentQuery
-        ],
-        [
-          "category",
-          App.currentCategory
-        ],
-        [
-          "state",
-          App.currentState
-        ],
-        [
-          "city",
-          App.currentCity
-        ]
-      ];
-
-      entries.forEach(
-        function (
-          [
-            key,
-            value
-          ]
-        ) {
-          if (
-            clean(value)
-          ) {
-            url.searchParams.set(
-              key,
-              value
-            );
-          } else {
-            url.searchParams.delete(
-              key
-            );
-          }
-        }
-      );
-
-
-      if (
-        App.nearbyMode
-      ) {
-        url.searchParams.set(
-          "nearby",
-          "1"
-        );
-
-        url.searchParams.set(
-          "radius",
-          String(
-            getRadiusKm()
-          )
-        );
-
-      } else {
-        url.searchParams.delete(
-          "nearby"
-        );
-
-        url.searchParams.delete(
-          "radius"
-        );
-      }
-
-
-      window.history.replaceState(
-        {},
-        "",
-        url.toString()
-      );
-
-    } catch (error) {
-      /* Ignore URL sync errors. */
+    if (radiusFilter) {
+      radiusFilter.value =
+        String(radius);
     }
   }
+
+
+  App.currentQuery =
+    query;
+
+  App.currentCategory =
+    category;
+
+  App.currentState =
+    state;
+
+  App.currentCity =
+    city;
+
+
+  if (
+    nearby
+  ) {
+    App.nearbyMode =
+      true;
+
+    getRadiusKm();
+
+    return true;
+  }
+
+  return false;
+}
 
 
   /* ============================================================
