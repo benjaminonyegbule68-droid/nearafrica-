@@ -1226,7 +1226,318 @@
         1.6;
     }
 
+    /* =================================================
+       HELP WANTED MANAGEMENT
+    ================================================= */
 
+    .help-form {
+      margin-bottom:
+        22px;
+
+      padding:
+        17px;
+
+      border:
+        1px solid #292929;
+
+      border-radius:
+        10px;
+
+      background:
+        #101010;
+    }
+
+
+    .help-form-header {
+      margin-bottom:
+        15px;
+    }
+
+
+    .help-form-header h3 {
+      font-size:
+        16px;
+
+      margin-bottom:
+        4px;
+    }
+
+
+    .help-form-header p {
+      color:
+        #888;
+
+      font-size:
+        12px;
+    }
+
+
+    .help-list {
+      display:
+        grid;
+
+      gap:
+        12px;
+    }
+
+
+    .help-card {
+      background:
+        #111;
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        10px;
+
+      padding:
+        15px;
+    }
+
+
+    .help-card-header {
+      display:
+        flex;
+
+      align-items:
+        flex-start;
+
+      justify-content:
+        space-between;
+
+      gap:
+        14px;
+
+      margin-bottom:
+        10px;
+    }
+
+
+    .help-card-title {
+      font-size:
+        16px;
+
+      font-weight:
+        800;
+    }
+
+
+    .help-card-meta {
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        7px;
+
+      margin-top:
+        8px;
+    }
+
+
+    .help-badge {
+      display:
+        inline-block;
+
+      padding:
+        4px 7px;
+
+      border-radius:
+        5px;
+
+      background:
+        #222;
+
+      color:
+        #bbb;
+
+      font-size:
+        10px;
+
+      font-weight:
+        700;
+    }
+
+
+    .help-badge.open {
+      background:
+        #102117;
+
+      color:
+        #8be0a0;
+    }
+
+
+    .help-badge.closed {
+      background:
+        #241717;
+
+      color:
+        #ffaaaa;
+    }
+
+
+    .help-badge.pending {
+      background:
+        #241f10;
+
+      color:
+        var(--gold-light);
+    }
+
+
+    .help-badge.approved {
+      background:
+        #102117;
+
+      color:
+        #8be0a0;
+    }
+
+
+    .help-badge.rejected {
+      background:
+        #241313;
+
+      color:
+        #ffaaaa;
+    }
+
+
+    .help-card-description {
+      color:
+        #aaa;
+
+      font-size:
+        12px;
+
+      line-height:
+        1.65;
+
+      white-space:
+        pre-wrap;
+
+      margin-bottom:
+        11px;
+    }
+
+
+    .help-card-details {
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap:
+        8px;
+
+      margin-bottom:
+        13px;
+    }
+
+
+    .help-detail {
+      padding:
+        9px;
+
+      border:
+        1px solid #272727;
+
+      border-radius:
+        7px;
+
+      background:
+        #0d0d0d;
+    }
+
+
+    .help-detail span {
+      display:
+        block;
+
+      color:
+        #777;
+
+      font-size:
+        10px;
+
+      margin-bottom:
+        3px;
+    }
+
+
+    .help-detail strong {
+      display:
+        block;
+
+      color:
+        #ddd;
+
+      font-size:
+        11px;
+
+      word-break:
+        break-word;
+    }
+
+
+    .help-actions {
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        7px;
+    }
+
+
+    .help-empty {
+      padding:
+        30px 10px;
+
+      text-align:
+        center;
+
+      color:
+        #777;
+
+      font-size:
+        13px;
+
+      border:
+        1px dashed #2d2d2d;
+
+      border-radius:
+        9px;
+    }
+
+
+    @media (max-width: 650px) {
+
+      .help-card-details {
+        grid-template-columns:
+          1fr;
+      }
+
+      .help-card-header {
+        flex-direction:
+          column;
+      }
+
+    }
+    
     /* =====================================================
        LOADING
     ===================================================== */
