@@ -1,0 +1,4726 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Owner Dashboard | NearAfrica</title>
+
+  <meta
+    name="description"
+    content="Manage your NearAfrica business listing."
+  >
+
+  <style>
+
+    :root {
+      --bg: #0b0b0b;
+      --panel: #151515;
+      --panel-2: #1b1b1b;
+      --border: #2b2b2b;
+      --text: #f4f4f4;
+      --muted: #999;
+      --gold: #d4af37;
+      --gold-light: #e5c85a;
+      --danger: #ef6b6b;
+      --success: #54c878;
+      --input: #101010;
+    }
+
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    body {
+      font-family:
+        Inter,
+        Arial,
+        sans-serif;
+
+      background:
+        linear-gradient(
+          135deg,
+          #080808,
+          #111111
+        );
+
+      color: var(--text);
+
+      min-height: 100vh;
+
+      line-height: 1.5;
+    }
+
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+
+    button {
+      cursor: pointer;
+    }
+
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+
+    .hidden {
+      display: none !important;
+    }
+
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    .topbar {
+      position: sticky;
+
+      top: 0;
+
+      z-index: 1000;
+
+      background:
+        rgba(10, 10, 10, 0.96);
+
+      backdrop-filter:
+        blur(12px);
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+
+    .topbar-inner {
+      width:
+        min(
+          1200px,
+          calc(100% - 32px)
+        );
+
+      min-height: 70px;
+
+      margin: auto;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+
+    .brand {
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      font-weight: 800;
+
+      font-size: 19px;
+    }
+
+
+    .brand-mark {
+      width: 38px;
+
+      height: 38px;
+
+      border-radius: 50%;
+
+      display: grid;
+
+      place-items: center;
+
+      background: #111;
+
+      border:
+        1px solid var(--gold);
+
+      color: var(--gold);
+
+      font-size: 13px;
+
+      font-weight: 800;
+    }
+
+
+    .header-actions {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      flex-wrap: wrap;
+
+      justify-content: flex-end;
+    }
+
+
+    .header-link,
+    .logout-button {
+      border:
+        1px solid var(--border);
+
+      background:
+        transparent;
+
+      color: #ddd;
+
+      padding:
+        9px 13px;
+
+      border-radius: 8px;
+
+      font-size: 12px;
+
+      font-weight: 700;
+    }
+
+
+    .header-link:hover {
+      border-color:
+        var(--gold);
+
+      color:
+        var(--gold-light);
+    }
+
+
+    .logout-button:hover {
+      border-color:
+        var(--danger);
+
+      color:
+        #ff9b9b;
+    }
+
+
+    /* =====================================================
+       PAGE
+    ===================================================== */
+
+    .page {
+      width:
+        min(
+          1200px,
+          calc(100% - 32px)
+        );
+
+      margin:
+        32px auto 70px;
+    }
+
+
+    .page-heading {
+      margin-bottom: 28px;
+    }
+
+
+    .page-heading h1 {
+      font-size:
+        clamp(
+          30px,
+          5vw,
+          48px
+        );
+
+      line-height: 1.1;
+
+      margin-bottom: 9px;
+    }
+
+
+    .page-heading p {
+      color: var(--muted);
+
+      max-width: 760px;
+
+      font-size: 14px;
+    }
+
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    .global-status {
+      display: none;
+
+      margin-bottom: 20px;
+
+      padding: 13px 15px;
+
+      border-radius: 9px;
+
+      font-size: 13px;
+    }
+
+
+    .global-status.info {
+      display: block;
+
+      background:
+        #171717;
+
+      border:
+        1px solid #2d2d2d;
+
+      color: #ccc;
+    }
+
+
+    .global-status.success {
+      display: block;
+
+      background:
+        #102117;
+
+      border:
+        1px solid #245933;
+
+      color:
+        #8be0a0;
+    }
+
+
+    .global-status.error {
+      display: block;
+
+      background:
+        #241313;
+
+      border:
+        1px solid #653232;
+
+      color:
+        #ffaaaa;
+    }
+
+
+    /* =====================================================
+       STATS
+    ===================================================== */
+
+    .stats-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          4,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap: 14px;
+
+      margin-bottom: 26px;
+    }
+
+
+    .stat-card {
+      background:
+        var(--panel);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 13px;
+
+      padding: 18px;
+    }
+
+
+    .stat-label {
+      font-size: 12px;
+
+      color: var(--muted);
+
+      margin-bottom: 8px;
+    }
+
+
+    .stat-value {
+      font-size: 26px;
+
+      font-weight: 800;
+
+      color: var(--gold-light);
+    }
+
+
+    /* =====================================================
+       NAV TABS
+    ===================================================== */
+
+    .tabs {
+      display: flex;
+
+      gap: 8px;
+
+      overflow-x: auto;
+
+      padding-bottom: 4px;
+
+      margin-bottom: 18px;
+    }
+
+
+    .tab {
+      flex:
+        0 0 auto;
+
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--panel);
+
+      color: #aaa;
+
+      padding:
+        10px 14px;
+
+      border-radius: 8px;
+
+      font-size: 12px;
+
+      font-weight: 700;
+    }
+
+
+    .tab:hover {
+      border-color:
+        #555;
+
+      color:
+        #ddd;
+    }
+
+
+    .tab.active {
+      background:
+        var(--gold);
+
+      border-color:
+        var(--gold);
+
+      color:
+        #111;
+    }
+
+
+    /* =====================================================
+       PANELS
+    ===================================================== */
+
+    .panel {
+      background:
+        var(--panel);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 15px;
+
+      padding: 22px;
+
+      margin-bottom: 20px;
+    }
+
+
+    .panel-header {
+      display: flex;
+
+      align-items: flex-start;
+
+      justify-content: space-between;
+
+      gap: 16px;
+
+      margin-bottom: 20px;
+    }
+
+
+    .panel-header h2 {
+      font-size: 20px;
+    }
+
+
+    .panel-header p {
+      color:
+        var(--muted);
+
+      font-size: 13px;
+
+      margin-top: 4px;
+    }
+
+
+    /* =====================================================
+       FORM
+    ===================================================== */
+
+    .form-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap: 15px;
+    }
+
+
+    .form-group {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 6px;
+    }
+
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+
+    .form-group label {
+      font-size: 12px;
+
+      font-weight: 700;
+
+      color: #bbb;
+    }
+
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+
+      border:
+        1px solid #343434;
+
+      background:
+        var(--input);
+
+      color:
+        #fff;
+
+      border-radius: 8px;
+
+      padding:
+        11px 12px;
+
+      outline: none;
+    }
+
+
+    .form-group textarea {
+      min-height: 115px;
+
+      resize: vertical;
+    }
+
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color:
+        var(--gold);
+    }
+
+
+    .button-row {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 9px;
+
+      margin-top: 17px;
+    }
+
+
+    .button {
+      border: none;
+
+      border-radius: 8px;
+
+      padding:
+        10px 15px;
+
+      font-size: 12px;
+
+      font-weight: 800;
+    }
+
+
+    .button-primary {
+      background:
+        var(--gold);
+
+      color:
+        #111;
+    }
+
+
+    .button-primary:hover {
+      background:
+        var(--gold-light);
+    }
+
+
+    .button-secondary {
+      background:
+        #222;
+
+      color:
+        #eee;
+
+      border:
+        1px solid var(--border);
+    }
+
+
+    .button-danger {
+      background:
+        #311717;
+
+      color:
+        #ffaaaa;
+
+      border:
+        1px solid #673333;
+    }
+
+
+    .button:disabled {
+      opacity: .55;
+
+      cursor:
+        not-allowed;
+    }
+
+
+    /* =====================================================
+       BUSINESS SUMMARY
+    ===================================================== */
+
+    .business-summary {
+      display: grid;
+
+      grid-template-columns:
+        120px 1fr;
+
+      gap: 20px;
+
+      align-items:
+        center;
+
+      margin-bottom: 25px;
+    }
+
+
+    .business-avatar {
+      width: 120px;
+
+      height: 120px;
+
+      border-radius: 14px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #151515,
+          #2b2b2b
+        );
+
+      border:
+        1px solid var(--border);
+
+      display: grid;
+
+      place-items: center;
+
+      color:
+        var(--gold);
+
+      font-size: 42px;
+
+      font-weight: 800;
+
+      overflow: hidden;
+    }
+
+
+    .business-avatar img {
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+
+    .business-summary h3 {
+      font-size: 23px;
+
+      margin-bottom: 5px;
+    }
+
+
+    .business-summary p {
+      color:
+        var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    .badge-row {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 7px;
+
+      margin-top: 11px;
+    }
+
+
+    .badge {
+      padding:
+        5px 8px;
+
+      border-radius: 5px;
+
+      background:
+        #222;
+
+      color:
+        #bbb;
+
+      font-size: 10px;
+
+      font-weight: 700;
+    }
+
+
+    .badge.verified {
+      background:
+        #102117;
+
+      color:
+        #8be0a0;
+    }
+
+
+    .badge.claimed {
+      background:
+        #1c1b10;
+
+      color:
+        var(--gold-light);
+    }
+
+
+    /* =====================================================
+       IMAGES
+    ===================================================== */
+
+    .upload-box {
+      border:
+        1px dashed #3b3b3b;
+
+      padding:
+        18px;
+
+      border-radius: 10px;
+
+      background:
+        #111;
+
+      margin-bottom: 18px;
+    }
+
+
+    .upload-box label {
+      display: block;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      color:
+        #ccc;
+
+      margin-bottom: 8px;
+    }
+
+
+    .upload-controls {
+      display: grid;
+
+      grid-template-columns:
+        1fr 150px auto;
+
+      gap: 9px;
+
+      align-items: end;
+    }
+
+
+    .upload-controls input,
+    .upload-controls select {
+      width: 100%;
+
+      background:
+        var(--input);
+
+      color:
+        #fff;
+
+      border:
+        1px solid #343434;
+
+      border-radius: 8px;
+
+      padding:
+        10px;
+    }
+
+
+    .image-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap: 13px;
+    }
+
+
+    .image-card {
+      background:
+        #111;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      overflow: hidden;
+    }
+
+
+    .image-card img {
+      display: block;
+
+      width: 100%;
+
+      height: 180px;
+
+      object-fit: cover;
+    }
+
+
+    .image-card-content {
+      padding:
+        11px;
+    }
+
+
+    .image-type {
+      display: inline-block;
+
+      padding:
+        4px 7px;
+
+      border-radius: 4px;
+
+      background:
+        #222;
+
+      color:
+        var(--gold-light);
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      margin-bottom: 8px;
+    }
+
+
+    .image-card-content p {
+      color:
+        #888;
+
+      font-size: 11px;
+
+      margin-bottom: 9px;
+    }
+
+
+    /* =====================================================
+       HOURS
+    ===================================================== */
+
+    .hours-table {
+      width: 100%;
+
+      border-collapse:
+        collapse;
+    }
+
+
+    .hours-table th,
+    .hours-table td {
+      padding:
+        10px 8px;
+
+      border-bottom:
+        1px solid #282828;
+
+      text-align: left;
+
+      font-size: 12px;
+    }
+
+
+    .hours-table th {
+      color:
+        #aaa;
+
+      font-size: 11px;
+    }
+
+
+    .hours-day {
+      font-weight:
+        700;
+    }
+
+
+    .hours-table input[type="time"] {
+      background:
+        var(--input);
+
+      color:
+        #fff;
+
+      border:
+        1px solid #333;
+
+      border-radius:
+        7px;
+
+      padding:
+        7px;
+    }
+
+
+    .check-cell {
+      text-align:
+        center;
+    }
+
+
+    .check-cell input {
+      width: 16px;
+
+      height: 16px;
+    }
+
+
+    /* =====================================================
+       PRODUCTS
+    ===================================================== */
+
+    .product-form {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap: 12px;
+
+      margin-bottom: 20px;
+
+      padding:
+        16px;
+
+      border-radius:
+        10px;
+
+      background:
+        #101010;
+
+      border:
+        1px solid #272727;
+    }
+
+
+    .product-form .full {
+      grid-column:
+        1 / -1;
+    }
+
+
+    .product-list {
+      display:
+        grid;
+
+      gap:
+        10px;
+    }
+
+
+    .product-card {
+      background:
+        #111;
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        10px;
+
+      padding:
+        14px;
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr auto;
+
+      gap:
+        15px;
+    }
+
+
+    .product-card h3 {
+      font-size:
+        15px;
+
+      margin-bottom:
+        4px;
+    }
+
+
+    .product-card p {
+      color:
+        #888;
+
+      font-size:
+        12px;
+
+      margin-bottom:
+        6px;
+    }
+
+
+    .product-price {
+      color:
+        var(--gold-light);
+
+      font-weight:
+        800;
+
+      font-size:
+        13px;
+    }
+
+
+    .product-actions {
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        7px;
+    }
+
+
+    .small-button {
+      border:
+        1px solid var(--border);
+
+      background:
+        #1c1c1c;
+
+      color:
+        #ddd;
+
+      border-radius:
+        6px;
+
+      padding:
+        7px 9px;
+
+      font-size:
+        10px;
+
+      font-weight:
+        700;
+    }
+
+
+    .small-button.delete {
+      color:
+        #ff9c9c;
+
+      border-color:
+        #512c2c;
+    }
+
+
+    /* =====================================================
+       ANALYTICS
+    ===================================================== */
+
+    .analytics-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          4,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap:
+        13px;
+    }
+
+
+    .analytics-box {
+      background:
+        #101010;
+
+      border:
+        1px solid #292929;
+
+      border-radius:
+        10px;
+
+      padding:
+        18px;
+    }
+
+
+    .analytics-box span {
+      display:
+        block;
+
+      color:
+        #888;
+
+      font-size:
+        11px;
+
+      margin-bottom:
+        7px;
+    }
+
+
+    .analytics-box strong {
+      display:
+        block;
+
+      font-size:
+        26px;
+
+      color:
+        var(--gold-light);
+    }
+
+
+    /* =====================================================
+       HELP WANTED NOTICE
+    ===================================================== */
+
+    .feature-notice {
+      padding:
+        22px;
+
+      border:
+        1px solid #2b2b2b;
+
+      border-radius:
+        10px;
+
+      background:
+        #101010;
+    }
+
+
+    .feature-notice h3 {
+      margin-bottom:
+        7px;
+    }
+
+
+    .feature-notice p {
+      color:
+        #999;
+
+      font-size:
+        13px;
+
+      line-height:
+        1.6;
+    }
+
+
+    /* =====================================================
+       LOADING
+    ===================================================== */
+
+    .loading {
+      color:
+        #888;
+
+      font-size:
+        13px;
+
+      padding:
+        20px 0;
+    }
+
+
+    .empty {
+      padding:
+        30px 10px;
+
+      text-align:
+        center;
+
+      color:
+        #777;
+
+      font-size:
+        13px;
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 900px) {
+
+      .stats-grid,
+      .analytics-grid {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(
+              0,
+              1fr
+            )
+          );
+      }
+
+      .image-grid {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(
+              0,
+              1fr
+            )
+          );
+      }
+
+      .upload-controls {
+        grid-template-columns:
+          1fr;
+      }
+
+    }
+
+
+    @media (max-width: 650px) {
+
+      .topbar-inner {
+        align-items:
+          flex-start;
+
+        padding:
+          12px 0;
+
+        flex-direction:
+          column;
+      }
+
+      .header-actions {
+        width:
+          100%;
+
+        justify-content:
+          flex-start;
+      }
+
+      .form-grid,
+      .product-form {
+        grid-template-columns:
+          1fr;
+      }
+
+      .form-group.full,
+      .product-form .full {
+        grid-column:
+          auto;
+      }
+
+      .business-summary {
+        grid-template-columns:
+          1fr;
+      }
+
+      .business-avatar {
+        width:
+          100px;
+
+        height:
+          100px;
+      }
+
+      .stats-grid,
+      .analytics-grid,
+      .image-grid {
+        grid-template-columns:
+          1fr;
+      }
+
+      .hours-table {
+        min-width:
+          650px;
+      }
+
+      .hours-scroll {
+        overflow-x:
+          auto;
+      }
+
+      .panel {
+        padding:
+          16px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <header class="topbar">
+
+    <div class="topbar-inner">
+
+      <a
+        href="../index.html"
+        class="brand"
+      >
+
+        <span class="brand-mark">
+          NA
+        </span>
+
+        <span>
+          NearAfrica
+        </span>
+
+      </a>
+
+
+      <div class="header-actions">
+
+        <a
+          href="../index.html"
+          class="header-link"
+        >
+          Home
+        </a>
+
+        <a
+          href="../explore.html"
+          class="header-link"
+        >
+          Explore
+        </a>
+
+        <button
+          id="logoutButton"
+          class="logout-button"
+          type="button"
+        >
+          Log Out
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       MAIN
+  ====================================================== -->
+
+  <main class="page">
+
+
+    <div class="page-heading">
+
+      <h1>
+        Owner Dashboard
+      </h1>
+
+      <p>
+        Manage your NearAfrica business listing,
+        images, opening hours, products and services,
+        and see how people are discovering your business.
+      </p>
+
+    </div>
+
+
+    <div
+      id="globalStatus"
+      class="global-status"
+      role="status"
+    ></div>
+
+
+    <!-- ===================================================
+         STATS
+    ==================================================== -->
+
+    <section class="stats-grid">
+
+      <div class="stat-card">
+
+        <div class="stat-label">
+          Total Views
+        </div>
+
+        <div
+          id="statTotalViews"
+          class="stat-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-label">
+          Views Today
+        </div>
+
+        <div
+          id="statToday"
+          class="stat-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-label">
+          Last 7 Days
+        </div>
+
+        <div
+          id="statWeek"
+          class="stat-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-label">
+          Last 30 Days
+        </div>
+
+        <div
+          id="statMonth"
+          class="stat-value"
+        >
+          —
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         TABS
+    ==================================================== -->
+
+    <div class="tabs">
+
+      <button
+        class="tab active"
+        data-tab="business"
+        type="button"
+      >
+        Business
+      </button>
+
+      <button
+        class="tab"
+        data-tab="images"
+        type="button"
+      >
+        Images
+      </button>
+
+      <button
+        class="tab"
+        data-tab="hours"
+        type="button"
+      >
+        Opening Hours
+      </button>
+
+      <button
+        class="tab"
+        data-tab="products"
+        type="button"
+      >
+        Products & Services
+      </button>
+
+      <button
+        class="tab"
+        data-tab="analytics"
+        type="button"
+      >
+        Analytics
+      </button>
+
+      <button
+        class="tab"
+        data-tab="help"
+        type="button"
+      >
+        Help Wanted
+      </button>
+
+    </div>
+
+
+    <!-- ===================================================
+         BUSINESS TAB
+    ==================================================== -->
+
+    <section
+      id="tab-business"
+      class="tab-content"
+    >
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>
+              Your Business
+            </h2>
+
+            <p>
+              Update the public information customers see.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="businessSummary"
+          class="business-summary"
+        >
+
+          <div
+            id="businessAvatar"
+            class="business-avatar"
+          >
+            N
+          </div>
+
+          <div>
+
+            <h3 id="summaryBusinessName">
+              Loading...
+            </h3>
+
+            <p id="summaryLocation">
+              —
+            </p>
+
+            <div
+              id="summaryBadges"
+              class="badge-row"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <form id="businessForm">
+
+          <div class="form-grid">
+
+
+            <div class="form-group">
+
+              <label for="businessName">
+                Business Name
+              </label>
+
+              <input
+                id="businessName"
+                name="business_name"
+                type="text"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="category">
+                Category
+              </label>
+
+              <input
+                id="category"
+                name="category"
+                type="text"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="country">
+                Country
+              </label>
+
+              <input
+                id="country"
+                name="country"
+                type="text"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="state">
+                State
+              </label>
+
+              <input
+                id="state"
+                name="state"
+                type="text"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="city">
+                City
+              </label>
+
+              <input
+                id="city"
+                name="city"
+                type="text"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="phone">
+                Phone
+              </label>
+
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="whatsapp">
+                WhatsApp
+              </label>
+
+              <input
+                id="whatsapp"
+                name="whatsapp"
+                type="tel"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="email">
+                Email
+              </label>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+              >
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label for="address">
+                Address
+              </label>
+
+              <input
+                id="address"
+                name="address"
+                type="text"
+              >
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label for="website">
+                Website
+              </label>
+
+              <input
+                id="website"
+                name="website"
+                type="url"
+                placeholder="https://example.com"
+              >
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label for="description">
+                Description
+              </label>
+
+              <textarea
+                id="description"
+                name="description"
+                maxlength="5000"
+              ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="latitude">
+                Latitude
+              </label>
+
+              <input
+                id="latitude"
+                name="latitude"
+                type="text"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="longitude">
+                Longitude
+              </label>
+
+              <input
+                id="longitude"
+                name="longitude"
+                type="text"
+              >
+
+            </div>
+
+
+          </div>
+
+
+          <div class="button-row">
+
+            <button
+              id="saveBusinessButton"
+              class="button button-primary"
+              type="submit"
+            >
+              Save Business Changes
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         IMAGES TAB
+    ==================================================== -->
+
+    <section
+      id="tab-images"
+      class="tab-content hidden"
+    >
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>
+              Business Images
+            </h2>
+
+            <p>
+              Add a logo, cover image or gallery photos.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="upload-box">
+
+          <form id="imageUploadForm">
+
+            <label for="imageFile">
+              Choose Image
+            </label>
+
+            <div class="upload-controls">
+
+              <input
+                id="imageFile"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                required
+              >
+
+
+              <select id="imageType">
+
+                <option value="gallery">
+                  Gallery
+                </option>
+
+                <option value="cover">
+                  Cover
+                </option>
+
+                <option value="logo">
+                  Logo
+                </option>
+
+              </select>
+
+
+              <button
+                id="uploadImageButton"
+                class="button button-primary"
+                type="submit"
+              >
+                Upload
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+
+        <div
+          id="imageGrid"
+          class="image-grid"
+        >
+
+          <div class="loading">
+            Loading images...
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         HOURS TAB
+    ==================================================== -->
+
+    <section
+      id="tab-hours"
+      class="tab-content hidden"
+    >
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>
+              Opening Hours
+            </h2>
+
+            <p>
+              Set the hours customers see on your listing.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="hours-scroll">
+
+          <table class="hours-table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Day
+                </th>
+
+                <th>
+                  Closed
+                </th>
+
+                <th>
+                  24 Hours
+                </th>
+
+                <th>
+                  Opens
+                </th>
+
+                <th>
+                  Closes
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="hoursBody"></tbody>
+
+          </table>
+
+        </div>
+
+
+        <div class="button-row">
+
+          <button
+            id="saveHoursButton"
+            class="button button-primary"
+            type="button"
+          >
+            Save Opening Hours
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         PRODUCTS TAB
+    ==================================================== -->
+
+    <section
+      id="tab-products"
+      class="tab-content hidden"
+    >
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>
+              Products & Services
+            </h2>
+
+            <p>
+              Add products or services customers can see.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <form
+          id="productForm"
+          class="product-form"
+        >
+
+
+          <div class="form-group">
+
+            <label for="productName">
+              Name
+            </label>
+
+            <input
+              id="productName"
+              type="text"
+              maxlength="200"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="productType">
+              Type
+            </label>
+
+            <select id="productType">
+
+              <option value="product">
+                Product
+              </option>
+
+              <option value="service">
+                Service
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="productPrice">
+              Price
+            </label>
+
+            <input
+              id="productPrice"
+              type="number"
+              min="0"
+              step="0.01"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="productCurrency">
+              Currency
+            </label>
+
+            <input
+              id="productCurrency"
+              type="text"
+              value="NGN"
+              maxlength="10"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="productCategory">
+              Category
+            </label>
+
+            <input
+              id="productCategory"
+              type="text"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="productSortOrder">
+              Sort Order
+            </label>
+
+            <input
+              id="productSortOrder"
+              type="number"
+              min="0"
+              value="0"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="productImageUrl">
+              Image URL
+            </label>
+
+            <input
+              id="productImageUrl"
+              type="url"
+              placeholder="https://..."
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="productAvailable">
+              Availability
+            </label>
+
+            <select id="productAvailable">
+
+              <option value="1">
+                Available
+              </option>
+
+              <option value="0">
+                Not Available
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label for="productDescription">
+              Description
+            </label>
+
+            <textarea
+              id="productDescription"
+              maxlength="5000"
+            ></textarea>
+
+          </div>
+
+
+          <div class="button-row full">
+
+            <button
+              id="addProductButton"
+              class="button button-primary"
+              type="submit"
+            >
+              Add Product / Service
+            </button>
+
+          </div>
+
+
+        </form>
+
+
+        <div
+          id="productList"
+          class="product-list"
+        >
+
+          <div class="loading">
+            Loading products...
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         ANALYTICS TAB
+    ==================================================== -->
+
+    <section
+      id="tab-analytics"
+      class="tab-content hidden"
+    >
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>
+              Business Analytics
+            </h2>
+
+            <p>
+              See how often people view your listing.
+            </p>
+
+          </div>
+
+          <button
+            id="refreshAnalyticsButton"
+            class="button button-secondary"
+            type="button"
+          >
+            Refresh
+          </button>
+
+        </div>
+
+
+        <div class="analytics-grid">
+
+          <div class="analytics-box">
+
+            <span>
+              Total Views
+            </span>
+
+            <strong id="analyticsTotal">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="analytics-box">
+
+            <span>
+              Today
+            </span>
+
+            <strong id="analyticsToday">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="analytics-box">
+
+            <span>
+              Last 7 Days
+            </span>
+
+            <strong id="analyticsWeek">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="analytics-box">
+
+            <span>
+              Last 30 Days
+            </span>
+
+            <strong id="analyticsMonth">
+              —
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         HELP WANTED TAB
+    ==================================================== -->
+
+    <section
+      id="tab-help"
+      class="tab-content hidden"
+    >
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>
+              Help Wanted
+            </h2>
+
+            <p>
+              Manage hiring and opportunity posts connected
+              to your business.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="feature-notice">
+
+          <h3>
+            Help Wanted backend connection
+          </h3>
+
+          <p>
+            The current Worker has the main Help Wanted
+            system, but the saved current Worker does not
+            currently expose the owner Help Wanted routes
+            needed by this dashboard. We should connect
+            those owner routes before allowing owners to
+            create or edit posts here.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+  <script>
+
+    (() => {
+
+      "use strict";
+
+
+      /* =================================================
+         CONFIG
+      ================================================= */
+
+      const API_BASE =
+        "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+
+
+      const OWNER_TOKEN_KEY =
+        "nearafrica_owner_token";
+
+
+      /* =================================================
+         STATE
+      ================================================= */
+
+      let currentBusiness =
+        null;
+
+      let currentImages =
+        [];
+
+      let currentHours =
+        [];
+
+      let currentProducts =
+        [];
+
+
+      /* =================================================
+         DOM
+      ================================================= */
+
+      const globalStatus =
+        document.getElementById(
+          "globalStatus"
+        );
+
+
+      const logoutButton =
+        document.getElementById(
+          "logoutButton"
+        );
+
+
+      const businessForm =
+        document.getElementById(
+          "businessForm"
+        );
+
+
+      const imageUploadForm =
+        document.getElementById(
+          "imageUploadForm"
+        );
+
+
+      const imageGrid =
+        document.getElementById(
+          "imageGrid"
+        );
+
+
+      const hoursBody =
+        document.getElementById(
+          "hoursBody"
+        );
+
+
+      const productForm =
+        document.getElementById(
+          "productForm"
+        );
+
+
+      const productList =
+        document.getElementById(
+          "productList"
+        );
+
+
+      /* =================================================
+         HELPERS
+      ================================================= */
+
+      function token() {
+
+        try {
+
+          return localStorage.getItem(
+            OWNER_TOKEN_KEY
+          ) || "";
+
+        } catch {
+
+          return "";
+
+        }
+
+      }
+
+
+      function escapeHTML(
+        value
+      ) {
+
+        return String(
+          value ?? ""
+        )
+          .replace(
+            /&/g,
+            "&amp;"
+          )
+          .replace(
+            /</g,
+            "&lt;"
+          )
+          .replace(
+            />/g,
+            "&gt;"
+          )
+          .replace(
+            /"/g,
+            "&quot;"
+          )
+          .replace(
+            /'/g,
+            "&#039;"
+          );
+
+      }
+
+
+      function showStatus(
+        message,
+        type = "info"
+      ) {
+
+        globalStatus.textContent =
+          message;
+
+        globalStatus.className =
+          `global-status ${type}`;
+
+      }
+
+
+      function clearStatus() {
+
+        globalStatus.textContent =
+          "";
+
+        globalStatus.className =
+          "global-status";
+
+      }
+
+
+      function formatNumber(
+        value
+      ) {
+
+        const number =
+          Number(value);
+
+        if (
+          !Number.isFinite(
+            number
+          )
+        ) {
+
+          return "0";
+
+        }
+
+        return number.toLocaleString();
+
+      }
+
+
+      function formatLocation(
+        business
+      ) {
+
+        return [
+          business?.city,
+          business?.state,
+          business?.country
+        ]
+          .filter(Boolean)
+          .join(", ");
+
+      }
+
+
+      function getBusinessInitial(
+        business
+      ) {
+
+        return String(
+          business?.business_name ||
+          "N"
+        )
+          .trim()
+          .charAt(0)
+          .toUpperCase() || "N";
+
+      }
+
+
+      function requireToken() {
+
+        const value =
+          token();
+
+        if (!value) {
+
+          window.location.href =
+            "../owner-login.html";
+
+          return null;
+
+        }
+
+        return value;
+
+      }
+
+
+      /* =================================================
+         API
+      ================================================= */
+
+      async function apiRequest(
+        path,
+        options = {}
+      ) {
+
+        const ownerToken =
+          requireToken();
+
+        if (!ownerToken) {
+
+          throw new Error(
+            "Owner session is missing."
+          );
+
+        }
+
+
+        const headers = {
+          Accept:
+            "application/json",
+
+          Authorization:
+            `Bearer ${ownerToken}`,
+
+          ...(options.headers || {})
+        };
+
+
+        const response =
+          await fetch(
+            `${API_BASE}${path}`,
+            {
+              ...options,
+              headers
+            }
+          );
+
+
+        let data =
+          null;
+
+
+        try {
+
+          data =
+            await response.json();
+
+        } catch {
+
+          data =
+            null;
+
+        }
+
+
+        if (
+          response.status === 401
+        ) {
+
+          try {
+
+            localStorage.removeItem(
+              OWNER_TOKEN_KEY
+            );
+
+          } catch {}
+
+          window.location.href =
+            "../owner-login.html";
+
+          throw new Error(
+            "Your owner session has expired. Please sign in again."
+          );
+
+        }
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data?.message ||
+            data?.error ||
+            `Request failed with HTTP ${response.status}`
+          );
+
+        }
+
+
+        if (
+          data &&
+          data.status === "error"
+        ) {
+
+          throw new Error(
+            data.message ||
+            "Request failed."
+          );
+
+        }
+
+
+        return data;
+
+      }
+
+
+      /* =================================================
+         BUSINESS
+      ================================================= */
+
+      async function loadBusiness() {
+
+        try {
+
+          const data =
+            await apiRequest(
+              "/owner/business"
+            );
+
+
+          if (
+            !data ||
+            data.status !== "ok" ||
+            !data.business
+          ) {
+
+            throw new Error(
+              "The owner business response was invalid."
+            );
+
+          }
+
+
+          currentBusiness =
+            data.business;
+
+
+          populateBusiness(
+            currentBusiness
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "OWNER BUSINESS LOAD ERROR:",
+            error
+          );
+
+          showStatus(
+            error.message ||
+            "Unable to load your business.",
+            "error"
+          );
+
+        }
+
+      }
+
+
+      function populateBusiness(
+        business
+      ) {
+
+        document.getElementById(
+          "businessName"
+        ).value =
+          business.business_name ||
+          "";
+
+
+        document.getElementById(
+          "category"
+        ).value =
+          business.category ||
+          "";
+
+
+        document.getElementById(
+          "country"
+        ).value =
+          business.country ||
+          "Nigeria";
+
+
+        document.getElementById(
+          "state"
+        ).value =
+          business.state ||
+          "";
+
+
+        document.getElementById(
+          "city"
+        ).value =
+          business.city ||
+          "";
+
+
+        document.getElementById(
+          "phone"
+        ).value =
+          business.phone ||
+          "";
+
+
+        document.getElementById(
+          "whatsapp"
+        ).value =
+          business.whatsapp ||
+          "";
+
+
+        document.getElementById(
+          "email"
+        ).value =
+          business.email ||
+          "";
+
+
+        document.getElementById(
+          "address"
+        ).value =
+          business.address ||
+          "";
+
+
+        document.getElementById(
+          "website"
+        ).value =
+          business.website ||
+          "";
+
+
+        document.getElementById(
+          "description"
+        ).value =
+          business.description ||
+          "";
+
+
+        document.getElementById(
+          "latitude"
+        ).value =
+          business.latitude ??
+          "";
+
+
+        document.getElementById(
+          "longitude"
+        ).value =
+          business.longitude ??
+          "";
+
+
+        document.getElementById(
+          "summaryBusinessName"
+        ).textContent =
+          business.business_name ||
+          "Your Business";
+
+
+        document.getElementById(
+          "summaryLocation"
+        ).textContent =
+          formatLocation(
+            business
+          ) ||
+          "Location not provided";
+
+
+        const badges =
+          document.getElementById(
+            "summaryBadges"
+          );
+
+
+        badges.innerHTML = "";
+
+
+        if (
+          Number(
+            business.verified
+          ) === 1
+        ) {
+
+          badges.insertAdjacentHTML(
+            "beforeend",
+            `
+              <span class="badge verified">
+                ✓ Verified
+              </span>
+            `
+          );
+
+        }
+
+
+        if (
+          Number(
+            business.claimed
+          ) === 1
+        ) {
+
+          badges.insertAdjacentHTML(
+            "beforeend",
+            `
+              <span class="badge claimed">
+                ✓ Claimed
+              </span>
+            `
+          );
+
+        }
+
+
+        const avatar =
+          document.getElementById(
+            "businessAvatar"
+          );
+
+
+        const image =
+          business.logo_url ||
+          business.image_url ||
+          "";
+
+
+        if (image) {
+
+          avatar.innerHTML =
+            `
+              <img
+                src="${escapeHTML(image)}"
+                alt=""
+                onerror="this.parentElement.innerHTML='${escapeHTML(
+                  getBusinessInitial(
+                    business
+                  )
+                )}'"
+              >
+            `;
+
+        } else {
+
+          avatar.textContent =
+            getBusinessInitial(
+              business
+            );
+
+        }
+
+      }
+
+
+      businessForm.addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+
+          const button =
+            document.getElementById(
+              "saveBusinessButton"
+            );
+
+
+          const payload = {
+
+            business_name:
+              document.getElementById(
+                "businessName"
+              ).value.trim(),
+
+            category:
+              document.getElementById(
+                "category"
+              ).value.trim(),
+
+            country:
+              document.getElementById(
+                "country"
+              ).value.trim(),
+
+            state:
+              document.getElementById(
+                "state"
+              ).value.trim(),
+
+            city:
+              document.getElementById(
+                "city"
+              ).value.trim(),
+
+            phone:
+              document.getElementById(
+                "phone"
+              ).value.trim(),
+
+            whatsapp:
+              document.getElementById(
+                "whatsapp"
+              ).value.trim(),
+
+            email:
+              document.getElementById(
+                "email"
+              ).value.trim(),
+
+            address:
+              document.getElementById(
+                "address"
+              ).value.trim(),
+
+            website:
+              document.getElementById(
+                "website"
+              ).value.trim(),
+
+            description:
+              document.getElementById(
+                "description"
+              ).value.trim(),
+
+            latitude:
+              document.getElementById(
+                "latitude"
+              ).value.trim(),
+
+            longitude:
+              document.getElementById(
+                "longitude"
+              ).value.trim()
+
+          };
+
+
+          button.disabled =
+            true;
+
+          button.textContent =
+            "Saving...";
+
+
+          try {
+
+            const data =
+              await apiRequest(
+                "/owner/business",
+                {
+                  method:
+                    "PATCH",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json"
+                  },
+
+                  body:
+                    JSON.stringify(
+                      payload
+                    )
+                }
+              );
+
+
+            if (
+              data?.business
+            ) {
+
+              currentBusiness =
+                data.business;
+
+              populateBusiness(
+                currentBusiness
+              );
+
+            }
+
+
+            showStatus(
+              data?.message ||
+              "Business profile updated successfully.",
+              "success"
+            );
+
+
+          } catch (error) {
+
+            console.error(
+              "OWNER BUSINESS UPDATE ERROR:",
+              error
+            );
+
+            showStatus(
+              error.message ||
+              "Unable to update business.",
+              "error"
+            );
+
+
+          } finally {
+
+            button.disabled =
+              false;
+
+            button.textContent =
+              "Save Business Changes";
+
+          }
+
+        }
+      );
+
+
+      /* =================================================
+         IMAGES
+      ================================================= */
+
+      async function loadImages() {
+
+        imageGrid.innerHTML =
+          `
+            <div class="loading">
+              Loading images...
+            </div>
+          `;
+
+
+        try {
+
+          const data =
+            await apiRequest(
+              "/owner/business/images"
+            );
+
+
+          currentImages =
+            Array.isArray(
+              data?.images
+            )
+              ? data.images
+              : [];
+
+
+          renderImages();
+
+
+        } catch (error) {
+
+          console.error(
+            "OWNER IMAGES LOAD ERROR:",
+            error
+          );
+
+          imageGrid.innerHTML =
+            `
+              <div class="empty">
+                ${escapeHTML(
+                  error.message ||
+                  "Unable to load images."
+                )}
+              </div>
+            `;
+
+        }
+
+      }
+
+
+      function renderImages() {
+
+        if (
+          !currentImages.length
+        ) {
+
+          imageGrid.innerHTML =
+            `
+              <div class="empty">
+                No business images have been uploaded yet.
+              </div>
+            `;
+
+          return;
+
+        }
+
+
+        imageGrid.innerHTML =
+          currentImages
+            .map(
+              image => {
+
+                const imageId =
+                  image.id ||
+                  image.image_id;
+
+                const imageUrl =
+                  image.image_url ||
+                  image.url ||
+                  "";
+
+
+                const type =
+                  image.image_type ||
+                  image.type ||
+                  image.category ||
+                  "gallery";
+
+
+                return `
+                  <article class="image-card">
+
+                    <img
+                      src="${escapeHTML(imageUrl)}"
+                      alt="${escapeHTML(
+                        image.alt_text ||
+                        image.caption ||
+                        "Business image"
+                      )}"
+                      loading="lazy"
+                    >
+
+                    <div class="image-card-content">
+
+                      <span class="image-type">
+                        ${escapeHTML(type)}
+                      </span>
+
+                      <p>
+                        ${escapeHTML(
+                          image.alt_text ||
+                          image.caption ||
+                          "NearAfrica business image"
+                        )}
+                      </p>
+
+                      <button
+                        class="small-button delete"
+                        type="button"
+                        data-image-id="${escapeHTML(
+                          imageId
+                        )}"
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+
+                  </article>
+                `;
+
+              }
+            )
+            .join("");
+
+
+        imageGrid
+          .querySelectorAll(
+            "[data-image-id]"
+          )
+          .forEach(
+            button => {
+
+              button.addEventListener(
+                "click",
+                () => {
+
+                  deleteImage(
+                    button.dataset.imageId
+                  );
+
+                }
+              );
+
+            }
+          );
+
+      }
+
+
+      imageUploadForm.addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+
+          const button =
+            document.getElementById(
+              "uploadImageButton"
+            );
+
+
+          const fileInput =
+            document.getElementById(
+              "imageFile"
+            );
+
+
+          const typeSelect =
+            document.getElementById(
+              "imageType"
+            );
+
+
+          if (
+            !fileInput.files ||
+            !fileInput.files.length
+          ) {
+
+            showStatus(
+              "Please choose an image first.",
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          const formData =
+            new FormData();
+
+
+          formData.append(
+            "image",
+            fileInput.files[0]
+          );
+
+
+          formData.append(
+            "image_type",
+            typeSelect.value
+          );
+
+
+          button.disabled =
+            true;
+
+          button.textContent =
+            "Uploading...";
+
+
+          try {
+
+            const data =
+              await apiRequest(
+                "/owner/business/images",
+                {
+                  method:
+                    "POST",
+
+                  body:
+                    formData
+                }
+              );
+
+
+            showStatus(
+              data?.message ||
+              "Image uploaded successfully.",
+              "success"
+            );
+
+
+            fileInput.value =
+              "";
+
+
+            await loadImages();
+
+            await loadBusiness();
+
+
+          } catch (error) {
+
+            console.error(
+              "OWNER IMAGE UPLOAD ERROR:",
+              error
+            );
+
+            showStatus(
+              error.message ||
+              "Unable to upload image.",
+              "error"
+            );
+
+          } finally {
+
+            button.disabled =
+              false;
+
+            button.textContent =
+              "Upload";
+
+          }
+
+        }
+      );
+
+
+      async function deleteImage(
+        imageId
+      ) {
+
+        if (!imageId) {
+
+          showStatus(
+            "This image does not have a valid ID.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        const confirmed =
+          window.confirm(
+            "Delete this image from your business?"
+          );
+
+
+        if (!confirmed) {
+
+          return;
+
+        }
+
+
+        try {
+
+          const data =
+            await apiRequest(
+              `/owner/business/images/${encodeURIComponent(
+                imageId
+              )}`,
+              {
+                method:
+                  "DELETE"
+              }
+            );
+
+
+          showStatus(
+            data?.message ||
+            "Image deleted successfully.",
+            "success"
+          );
+
+
+          await loadImages();
+
+          await loadBusiness();
+
+
+        } catch (error) {
+
+          console.error(
+            "OWNER IMAGE DELETE ERROR:",
+            error
+          );
+
+          showStatus(
+            error.message ||
+            "Unable to delete image.",
+            "error"
+          );
+
+        }
+
+      }
+
+
+      /* =================================================
+         HOURS
+      ================================================= */
+
+      const days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ];
+
+
+      function renderHours() {
+
+        hoursBody.innerHTML =
+          days
+            .map(
+              (
+                day,
+                index
+              ) => {
+
+                const existing =
+                  currentHours.find(
+                    item =>
+                      Number(
+                        item.day_of_week
+                      ) === index
+                  ) ||
+                  {};
+
+
+                return `
+                  <tr>
+
+                    <td class="hours-day">
+                      ${day}
+                    </td>
+
+                    <td class="check-cell">
+
+                      <input
+                        type="checkbox"
+                        class="closed-check"
+                        data-day="${index}"
+                        ${
+                          Number(
+                            existing.is_closed
+                          ) === 1
+                            ? "checked"
+                            : ""
+                        }
+                      >
+
+                    </td>
+
+                    <td class="check-cell">
+
+                      <input
+                        type="checkbox"
+                        class="hours24-check"
+                        data-day="${index}"
+                        ${
+                          Number(
+                            existing.is_24_hours
+                          ) === 1
+                            ? "checked"
+                            : ""
+                        }
+                      >
+
+                    </td>
+
+                    <td>
+
+                      <input
+                        type="time"
+                        class="opening-time"
+                        data-day="${index}"
+                        value="${escapeHTML(
+                          existing.opening_time ||
+                          ""
+                        )}"
+                      >
+
+                    </td>
+
+                    <td>
+
+                      <input
+                        type="time"
+                        class="closing-time"
+                        data-day="${index}"
+                        value="${escapeHTML(
+                          existing.closing_time ||
+                          ""
+                        )}"
+                      >
+
+                    </td>
+
+                  </tr>
+                `;
+
+              }
+            )
+            .join("");
+
+
+        hoursBody
+          .querySelectorAll(
+            ".closed-check"
+          )
+          .forEach(
+            checkbox => {
+
+              checkbox.addEventListener(
+                "change",
+                () => {
+
+                  const day =
+                    checkbox.dataset.day;
+
+                  const row =
+                    checkbox.closest(
+                      "tr"
+                    );
+
+
+                  const hours24 =
+                    row.querySelector(
+                      `.hours24-check[data-day="${day}"]`
+                    );
+
+
+                  if (
+                    checkbox.checked
+                  ) {
+
+                    hours24.checked =
+                      false;
+
+                  }
+
+                }
+              );
+
+            }
+          );
+
+
+        hoursBody
+          .querySelectorAll(
+            ".hours24-check"
+          )
+          .forEach(
+            checkbox => {
+
+              checkbox.addEventListener(
+                "change",
+                () => {
+
+                  const day =
+                    checkbox.dataset.day;
+
+                  const row =
+                    checkbox.closest(
+                      "tr"
+                    );
+
+
+                  const closed =
+                    row.querySelector(
+                      `.closed-check[data-day="${day}"]`
+                    );
+
+
+                  if (
+                    checkbox.checked
+                  ) {
+
+                    closed.checked =
+                      false;
+
+                  }
+
+                }
+              );
+
+            }
+          );
+
+      }
+
+
+      async function loadHours() {
+
+        hoursBody.innerHTML =
+          `
+            <tr>
+              <td colspan="5">
+                <div class="loading">
+                  Loading hours...
+                </div>
+              </td>
+            </tr>
+          `;
+
+
+        try {
+
+          const data =
+            await apiRequest(
+              "/owner/business/hours"
+            );
+
+
+          currentHours =
+            Array.isArray(
+              data?.hours
+            )
+              ? data.hours
+              : [];
+
+
+          renderHours();
+
+
+        } catch (error) {
+
+          console.error(
+            "OWNER HOURS LOAD ERROR:",
+            error
+          );
+
+          hoursBody.innerHTML =
+            `
+              <tr>
+                <td colspan="5">
+
+                  <div class="empty">
+                    ${escapeHTML(
+                      error.message ||
+                      "Unable to load hours."
+                    )}
+                  </div>
+
+                </td>
+              </tr>
+            `;
+
+        }
+
+      }
+
+
+      document
+        .getElementById(
+          "saveHoursButton"
+        )
+        .addEventListener(
+          "click",
+          async () => {
+
+            const button =
+              document.getElementById(
+                "saveHoursButton"
+              );
+
+
+            const hours =
+              days.map(
+                (
+                  day,
+                  index
+                ) => {
+
+                  const row =
+                    hoursBody
+                      .querySelectorAll(
+                        "tr"
+                      )[index];
+
+
+                  const closed =
+                    row.querySelector(
+                      ".closed-check"
+                    ).checked;
+
+
+                  const hours24 =
+                    row.querySelector(
+                      ".hours24-check"
+                    ).checked;
+
+
+                  const opening =
+                    row.querySelector(
+                      ".opening-time"
+                    ).value;
+
+
+                  const closing =
+                    row.querySelector(
+                      ".closing-time"
+                    ).value;
+
+
+                  return {
+
+                    day_of_week:
+                      index,
+
+                    is_closed:
+                      closed
+                        ? 1
+                        : 0,
+
+                    is_24_hours:
+                      hours24
+                        ? 1
+                        : 0,
+
+                    opening_time:
+                      opening,
+
+                    closing_time:
+                      closing
+
+                  };
+
+                }
+              );
+
+
+            button.disabled =
+              true;
+
+            button.textContent =
+              "Saving...";
+
+
+            try {
+
+              const data =
+                await apiRequest(
+                  "/owner/business/hours",
+                  {
+                    method:
+                      "PUT",
+
+                    headers: {
+                      "Content-Type":
+                        "application/json"
+                    },
+
+                    body:
+                      JSON.stringify({
+                        hours
+                      })
+                  }
+                );
+
+
+              currentHours =
+                Array.isArray(
+                  data?.hours
+                )
+                  ? data.hours
+                  : hours;
+
+
+              renderHours();
+
+
+              showStatus(
+                data?.message ||
+                "Business hours updated successfully.",
+                "success"
+              );
+
+
+            } catch (error) {
+
+              console.error(
+                "OWNER HOURS UPDATE ERROR:",
+                error
+              );
+
+              showStatus(
+                error.message ||
+                "Unable to save opening hours.",
+                "error"
+              );
+
+            } finally {
+
+              button.disabled =
+                false;
+
+              button.textContent =
+                "Save Opening Hours";
+
+            }
+
+          }
+        );
+
+
+      /* =================================================
+         PRODUCTS
+      ================================================= */
+
+      async function loadProducts() {
+
+        productList.innerHTML =
+          `
+            <div class="loading">
+              Loading products...
+            </div>
+          `;
+
+
+        try {
+
+          const data =
+            await apiRequest(
+              "/owner/business/products"
+            );
+
+
+          currentProducts =
+            Array.isArray(
+              data?.products
+            )
+              ? data.products
+              : [];
+
+
+          renderProducts();
+
+
+        } catch (error) {
+
+          console.error(
+            "OWNER PRODUCTS LOAD ERROR:",
+            error
+          );
+
+          productList.innerHTML =
+            `
+              <div class="empty">
+                ${escapeHTML(
+                  error.message ||
+                  "Unable to load products."
+                )}
+              </div>
+            `;
+
+        }
+
+      }
+
+
+      function renderProducts() {
+
+        if (
+          !currentProducts.length
+        ) {
+
+          productList.innerHTML =
+            `
+              <div class="empty">
+                No products or services have been added yet.
+              </div>
+            `;
+
+          return;
+
+        }
+
+
+        productList.innerHTML =
+          currentProducts
+            .map(
+              product => {
+
+                const id =
+                  product.id;
+
+                const name =
+                  product.name ||
+                  "Unnamed item";
+
+
+                const description =
+                  product.description ||
+                  "";
+
+
+                const currency =
+                  product.currency ||
+                  "NGN";
+
+
+                const price =
+                  product.price !== null &&
+                  product.price !== undefined &&
+                  product.price !== ""
+                    ? `${escapeHTML(
+                        currency
+                      )} ${formatNumber(
+                        product.price
+                      )}`
+                    : "Price not listed";
+
+
+                const itemType =
+                  product.item_type ||
+                  "product";
+
+
+                const available =
+                  Number(
+                    product.available
+                  ) !== 0;
+
+
+                return `
+                  <article class="product-card">
+
+                    <div>
+
+                      <h3>
+                        ${escapeHTML(name)}
+                      </h3>
+
+                      <p>
+                        ${escapeHTML(description)}
+                      </p>
+
+                      <div class="product-price">
+                        ${price}
+                      </div>
+
+                      <div class="badge-row">
+
+                        <span class="badge">
+                          ${escapeHTML(
+                            itemType
+                          )}
+                        </span>
+
+                        <span class="badge">
+                          ${
+                            available
+                              ? "Available"
+                              : "Unavailable"
+                          }
+                        </span>
+
+                      </div>
+
+                    </div>
+
+
+                    <div class="product-actions">
+
+                      <button
+                        class="small-button delete"
+                        type="button"
+                        data-product-delete="${escapeHTML(
+                          id
+                        )}"
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+
+                  </article>
+                `;
+
+              }
+            )
+            .join("");
+
+
+        productList
+          .querySelectorAll(
+            "[data-product-delete]"
+          )
+          .forEach(
+            button => {
+
+              button.addEventListener(
+                "click",
+                () => {
+
+                  deleteProduct(
+                    button.dataset.productDelete
+                  );
+
+                }
+              );
+
+            }
+          );
+
+      }
+
+
+      productForm.addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+
+          const button =
+            document.getElementById(
+              "addProductButton"
+            );
+
+
+          const payload = {
+
+            name:
+              document.getElementById(
+                "productName"
+              ).value.trim(),
+
+            description:
+              document.getElementById(
+                "productDescription"
+              ).value.trim(),
+
+            price:
+              document.getElementById(
+                "productPrice"
+              ).value.trim(),
+
+            currency:
+              document.getElementById(
+                "productCurrency"
+              ).value.trim() ||
+              "NGN",
+
+            category:
+              document.getElementById(
+                "productCategory"
+              ).value.trim(),
+
+            item_type:
+              document.getElementById(
+                "productType"
+              ).value,
+
+            available:
+              Number(
+                document.getElementById(
+                  "productAvailable"
+                ).value
+              ),
+
+            sort_order:
+              Number(
+                document.getElementById(
+                  "productSortOrder"
+                ).value
+              ) || 0,
+
+            image_url:
+              document.getElementById(
+                "productImageUrl"
+              ).value.trim()
+
+          };
+
+
+          if (
+            !payload.name
+          ) {
+
+            showStatus(
+              "Product or service name is required.",
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          button.disabled =
+            true;
+
+          button.textContent =
+            "Adding...";
+
+
+          try {
+
+            const data =
+              await apiRequest(
+                "/owner/business/products",
+                {
+                  method:
+                    "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json"
+                  },
+
+                  body:
+                    JSON.stringify(
+                      payload
+                    )
+                }
+              );
+
+
+            showStatus(
+              data?.message ||
+              "Product or service created successfully.",
+              "success"
+            );
+
+
+            productForm.reset();
+
+
+            document.getElementById(
+              "productCurrency"
+            ).value =
+              "NGN";
+
+
+            document.getElementById(
+              "productAvailable"
+            ).value =
+              "1";
+
+
+            document.getElementById(
+              "productSortOrder"
+            ).value =
+              "0";
+
+
+            await loadProducts();
+
+
+          } catch (error) {
+
+            console.error(
+              "OWNER PRODUCT CREATE ERROR:",
+              error
+            );
+
+            showStatus(
+              error.message ||
+              "Unable to create product or service.",
+              "error"
+            );
+
+          } finally {
+
+            button.disabled =
+              false;
+
+            button.textContent =
+              "Add Product / Service";
+
+          }
+
+        }
+      );
+
+
+      async function deleteProduct(
+        productId
+      ) {
+
+        if (!productId) {
+
+          return;
+
+        }
+
+
+        const confirmed =
+          window.confirm(
+            "Delete this product or service?"
+          );
+
+
+        if (!confirmed) {
+
+          return;
+
+        }
+
+
+        try {
+
+          const data =
+            await apiRequest(
+              `/owner/business/products/${encodeURIComponent(
+                productId
+              )}`,
+              {
+                method:
+                  "DELETE"
+              }
+            );
+
+
+          showStatus(
+            data?.message ||
+            "Product or service deleted.",
+            "success"
+          );
+
+
+          await loadProducts();
+
+
+        } catch (error) {
+
+          console.error(
+            "OWNER PRODUCT DELETE ERROR:",
+            error
+          );
+
+          showStatus(
+            error.message ||
+            "Unable to delete product or service.",
+            "error"
+          );
+
+        }
+
+      }
+
+
+      /* =================================================
+         ANALYTICS
+      ================================================= */
+
+      async function loadAnalytics() {
+
+        try {
+
+          const data =
+            await apiRequest(
+              "/owner/business/analytics"
+            );
+
+
+          const analytics =
+            data?.analytics ||
+            data ||
+            {};
+
+
+          const total =
+            analytics.total_views ||
+            0;
+
+
+          const today =
+            analytics.views_today ||
+            0;
+
+
+          const week =
+            analytics.views_last_7_days ||
+            0;
+
+
+          const month =
+            analytics.views_last_30_days ||
+            0;
+
+
+          document.getElementById(
+            "statTotalViews"
+          ).textContent =
+            formatNumber(
+              total
+            );
+
+
+          document.getElementById(
+            "statToday"
+          ).textContent =
+            formatNumber(
+              today
+            );
+
+
+          document.getElementById(
+            "statWeek"
+          ).textContent =
+            formatNumber(
+              week
+            );
+
+
+          document.getElementById(
+            "statMonth"
+          ).textContent =
+            formatNumber(
+              month
+            );
+
+
+          document.getElementById(
+            "analyticsTotal"
+          ).textContent =
+            formatNumber(
+              total
+            );
+
+
+          document.getElementById(
+            "analyticsToday"
+          ).textContent =
+            formatNumber(
+              today
+            );
+
+
+          document.getElementById(
+            "analyticsWeek"
+          ).textContent =
+            formatNumber(
+              week
+            );
+
+
+          document.getElementById(
+            "analyticsMonth"
+          ).textContent =
+            formatNumber(
+              month
+            );
+
+
+        } catch (error) {
+
+          console.error(
+            "OWNER ANALYTICS LOAD ERROR:",
+            error
+          );
+
+          showStatus(
+            error.message ||
+            "Unable to load analytics.",
+            "error"
+          );
+
+        }
+
+      }
+
+
+      document.getElementById(
+        "refreshAnalyticsButton"
+      ).addEventListener(
+        "click",
+        async () => {
+
+          await loadAnalytics();
+
+          showStatus(
+            "Analytics refreshed.",
+            "success"
+          );
+
+        }
+      );
+
+
+      /* =================================================
+         TABS
+      ================================================= */
+
+      document
+        .querySelectorAll(
+          ".tab"
+        )
+        .forEach(
+          button => {
+
+            button.addEventListener(
+              "click",
+              async () => {
+
+                const tab =
+                  button.dataset.tab;
+
+
+                document
+                  .querySelectorAll(
+                    ".tab"
+                  )
+                  .forEach(
+                    item => {
+
+                      item.classList.toggle(
+                        "active",
+                        item === button
+                      );
+
+                    }
+                  );
+
+
+                document
+                  .querySelectorAll(
+                    ".tab-content"
+                  )
+                  .forEach(
+                    content => {
+
+                      content.classList.add(
+                        "hidden"
+                      );
+
+                    }
+                  );
+
+
+                const target =
+                  document.getElementById(
+                    `tab-${tab}`
+                  );
+
+
+                if (target) {
+
+                  target.classList.remove(
+                    "hidden"
+                  );
+
+                }
+
+
+                if (
+                  tab ===
+                  "images"
+                ) {
+
+                  await loadImages();
+
+                }
+
+
+                if (
+                  tab ===
+                  "hours"
+                ) {
+
+                  await loadHours();
+
+                }
+
+
+                if (
+                  tab ===
+                  "products"
+                ) {
+
+                  await loadProducts();
+
+                }
+
+
+                if (
+                  tab ===
+                  "analytics"
+                ) {
+
+                  await loadAnalytics();
+
+                }
+
+              }
+            );
+
+          }
+        );
+
+
+      /* =================================================
+         LOGOUT
+      ================================================= */
+
+      logoutButton.addEventListener(
+        "click",
+        async () => {
+
+          const confirmed =
+            window.confirm(
+              "Log out of your NearAfrica owner account?"
+            );
+
+
+          if (!confirmed) {
+
+            return;
+
+          }
+
+
+          try {
+
+            await apiRequest(
+              "/owner/logout",
+              {
+                method:
+                  "POST"
+              }
+            );
+
+          } catch (error) {
+
+            console.warn(
+              "Owner logout request failed:",
+              error
+            );
+
+          } finally {
+
+            try {
+
+              localStorage.removeItem(
+                OWNER_TOKEN_KEY
+              );
+
+            } catch {}
+
+
+            window.location.href =
+              "../owner-login.html";
+
+          }
+
+        }
+      );
+
+
+      /* =================================================
+         INITIAL LOAD
+      ================================================= */
+
+      async function initialize() {
+
+        if (
+          !requireToken()
+        ) {
+
+          return;
+
+        }
+
+
+        clearStatus();
+
+
+        await Promise.all([
+          loadBusiness(),
+          loadAnalytics()
+        ]);
+
+      }
+
+
+      initialize();
+
+
+    })();
+
+  </script>
+
+
+</body>
+
+</html>
