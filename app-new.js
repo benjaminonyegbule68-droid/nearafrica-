@@ -335,14 +335,15 @@
   }
 
 
-  function getResultsCount() {
-    return firstElement([
-      "#resultsCount",
-      "#businessCount",
-      "#resultCount",
-      "[data-results-count]"
-    ]);
-  }
+ function getResultsCount() {
+  return firstElement([
+    "#resultsStatus",
+    "#resultsCount",
+    "#businessCount",
+    "#resultCount",
+    "[data-results-count]"
+  ]);
+}
 
 
   function getLocationStatus() {
