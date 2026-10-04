@@ -1,467 +1,654 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
 
-<meta
- name="viewport"
- content="width=device-width, initial-scale=1.0"
-/>
+  <meta charset="UTF-8">
 
-<meta
- name="description"
- content="NearAfrica Owner Login"
-/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Owner Login | NearAfrica</title>
 
+  <meta
+    name="description"
+    content="Secure owner login for NearAfrica business owners."
+  >
+
   <style>
-    :root {
-      --bg: #0b0b0b;
-      --card: #151515;
-      --gold: #d4af37;
-      --gold-light: #f0d77a;
-      --text: #f5f5f5;
-      --muted: #a9a9a9;
-      --border: #292929;
-      --danger: #ff7777;
-      --success: #75d69c;
-    }
 
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
+      font-family:
+        Inter,
+        Arial,
+        sans-serif;
+
       min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
+
       background:
-        radial-gradient(
-          circle at top,
-          #1b1b1b 0%,
-          var(--bg) 55%
+        linear-gradient(
+          135deg,
+          #0d0d0d,
+          #1a1a1a
         );
-      color: var(--text);
+
+      color: #ffffff;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       padding: 24px;
     }
 
-    .container {
+    .page {
       width: 100%;
       max-width: 460px;
     }
 
     .brand {
       text-align: center;
+
       margin-bottom: 24px;
     }
 
-    .brand img {
-      width: 70px;
-      height: 70px;
-      object-fit: contain;
-      margin-bottom: 10px;
+    .brand-mark {
+      width: 52px;
+      height: 52px;
+
+      margin: 0 auto 12px;
+
+      border-radius: 50%;
+
+      display: grid;
+      place-items: center;
+
+      background: #111111;
+
+      border:
+        1px solid #d4af37;
+
+      color: #d4af37;
+
+      font-size: 20px;
+
+      font-weight: 800;
     }
 
     .brand h1 {
-      margin: 0;
-      font-size: 30px;
-      color: var(--gold);
+      font-size: 28px;
+
+      margin-bottom: 6px;
     }
 
     .brand p {
-      margin: 8px 0 0;
-      color: var(--muted);
+      color: #aaaaaa;
+
+      font-size: 14px;
     }
 
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
+      background: #ffffff;
+
+      color: #171717;
+
       border-radius: 18px;
+
       padding: 30px;
+
       box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.45);
+        0 20px 60px
+        rgba(0, 0, 0, 0.3);
     }
 
     .card h2 {
-      margin-top: 0;
+      font-size: 22px;
+
       margin-bottom: 8px;
-      font-size: 24px;
     }
 
-    .intro {
-      color: var(--muted);
+    .card-intro {
+      color: #666666;
+
+      font-size: 14px;
+
       line-height: 1.6;
-      margin-bottom: 24px;
-    }
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
+      margin-bottom: 24px;
     }
 
     .field {
       margin-bottom: 18px;
     }
 
+    label {
+      display: block;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      margin-bottom: 7px;
+    }
+
     input {
       width: 100%;
-      padding: 14px 15px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: #0f0f0f;
-      color: var(--text);
-      font-size: 15px;
+
+      height: 48px;
+
+      border:
+        1px solid #d9d9d9;
+
+      border-radius: 9px;
+
+      padding: 0 14px;
+
+      font-size: 14px;
+
       outline: none;
     }
 
     input:focus {
-      border-color: var(--gold);
+      border-color: #d4af37;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(212, 175, 55, 0.12);
     }
 
-    button {
+    .login-button {
       width: 100%;
+
+      height: 50px;
+
       border: none;
-      border-radius: 10px;
-      padding: 14px;
-      background: var(--gold);
-      color: #111;
-      font-size: 16px;
+
+      border-radius: 9px;
+
+      background: #111111;
+
+      color: #ffffff;
+
       font-weight: 700;
+
       cursor: pointer;
-      transition: 0.2s ease;
+
+      transition:
+        opacity 0.2s ease;
     }
 
-    button:hover {
-      background: var(--gold-light);
+    .login-button:hover {
+      opacity: 0.88;
     }
 
-    button:disabled {
-      opacity: 0.6;
+    .login-button:disabled {
+      opacity: 0.55;
+
       cursor: not-allowed;
     }
 
-    .message {
+    .status {
       display: none;
-      margin-bottom: 18px;
+
+      margin-top: 16px;
+
       padding: 12px 14px;
-      border-radius: 9px;
+
+      border-radius: 8px;
+
+      font-size: 13px;
+
       line-height: 1.5;
-      font-size: 14px;
     }
 
-    .message.error {
+    .status.error {
       display: block;
-      background: rgba(255, 119, 119, 0.1);
-      border: 1px solid rgba(255, 119, 119, 0.35);
-      color: var(--danger);
+
+      background: #fff1f1;
+
+      color: #a10000;
+
+      border:
+        1px solid #ffd1d1;
     }
 
-    .message.success {
+    .status.success {
       display: block;
-      background: rgba(117, 214, 156, 0.1);
-      border: 1px solid rgba(117, 214, 156, 0.35);
-      color: var(--success);
+
+      background: #effaf1;
+
+      color: #236b2d;
+
+      border:
+        1px solid #ccebd0;
     }
 
-    .back {
-      text-align: center;
-      margin-top: 20px;
+    .links {
+      display: flex;
+
+      justify-content: center;
+
+      flex-wrap: wrap;
+
+      gap: 16px;
+
+      margin-top: 22px;
+
+      font-size: 13px;
     }
 
-    .back a {
-      color: var(--gold);
+    .links a {
+      color: #777777;
+
       text-decoration: none;
     }
 
-    .back a:hover {
-      text-decoration: underline;
+    .links a:hover {
+      color: #111111;
     }
 
-    .help {
-      margin-top: 22px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
+    .note {
+      margin-top: 18px;
+
+      padding: 12px 14px;
+
+      border-radius: 8px;
+
+      background: #faf6e7;
+
+      color: #6d5a1b;
+
+      font-size: 12px;
+
+      line-height: 1.5;
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: 520px) {
+
+      body {
+        padding: 16px;
+      }
+
       .card {
         padding: 22px;
       }
+
     }
+
   </style>
 
 </head>
 
+
 <body>
 
-  <main class="container">
 
-```
-<div class="brand">
-  <img
-    src="logo.png"
-    alt="NearAfrica"
-  />
+  <main class="page">
 
-  <h1>NearAfrica</h1>
 
-  <p>Business Owner Portal</p>
-</div>
+    <div class="brand">
 
-<section class="card">
+      <div class="brand-mark">
+        NA
+      </div>
 
-  <h2>Owner Login</h2>
+      <h1>
+        NearAfrica
+      </h1>
 
-  <p class="intro">
-    Sign in to manage your claimed NearAfrica
-    business listing and access owner features.
-  </p>
+      <p>
+        Business Owner Portal
+      </p>
 
-  <div
-    id="message"
-    class="message"
-    role="alert"
-  ></div>
-
-  <form id="ownerLoginForm">
-
-    <div class="field">
-      <label for="businessName">
-        Business Name
-      </label>
-
-      <input
-        id="businessName"
-        name="business_name"
-        type="text"
-        autocomplete="organization"
-        placeholder="Enter your business name"
-        required
-      />
     </div>
 
-    <div class="field">
-      <label for="email">
-        Owner Email
-      </label>
 
-      <input
-        id="email"
-        name="email"
-        type="email"
-        autocomplete="email"
-        placeholder="Enter the email used for your claim"
-        required
-      />
-    </div>
+    <section class="card">
 
-    <button
-      id="loginButton"
-      type="submit"
-    >
-      Sign In
-    </button>
+      <h2>
+        Owner Login
+      </h2>
 
-  </form>
+      <p class="card-intro">
+        Sign in to manage your claimed business
+        on NearAfrica.
+      </p>
 
-  <div class="help">
-    Your business must have an approved and verified
-    owner claim before owner access can be granted.
-  </div>
 
-</section>
+      <form id="loginForm">
 
-<div class="back">
-  <a href="index.html">
-    ← Back to NearAfrica
-  </a>
-</div>
-```
+
+        <div class="field">
+
+          <label for="businessName">
+            Business Name
+          </label>
+
+          <input
+            id="businessName"
+            name="business_name"
+            type="text"
+            autocomplete="organization"
+            placeholder="Enter your business name"
+            required
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="email">
+            Owner Email
+          </label>
+
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="Enter your owner email"
+            required
+          >
+
+        </div>
+
+
+        <button
+          id="loginButton"
+          class="login-button"
+          type="submit"
+        >
+          Sign In
+        </button>
+
+
+      </form>
+
+
+      <div
+        id="statusMessage"
+        class="status"
+        role="status"
+      ></div>
+
+
+      <div class="note">
+        Owner access requires an approved and
+        verified ownership claim for the business.
+      </div>
+
+
+      <div class="links">
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="explore.html">
+          Explore
+        </a>
+
+        <a href="claim-business.html">
+          Claim Business
+        </a>
+
+      </div>
+
+    </section>
+
 
   </main>
 
+
   <script>
-    const API_BASE =
-      "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
-    const form =
-      document.getElementById(
-        "ownerLoginForm"
-      );
+    (() => {
 
-    const button =
-      document.getElementById(
-        "loginButton"
-      );
+      "use strict";
 
-    const message =
-      document.getElementById(
-        "message"
-      );
 
-    function showMessage(
-      text,
-      type
-    ) {
-      message.textContent = text;
+      const API_BASE =
+        "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
-      message.className =
-        "message " + type;
-    }
 
-    form.addEventListener(
-      "submit",
-      async function (event) {
+      const OWNER_TOKEN_KEY =
+        "nearafrica_owner_token";
 
-        event.preventDefault();
 
-        const businessName =
-          document
-            .getElementById(
-              "businessName"
-            )
-            .value
-            .trim();
+      const form =
+        document.getElementById(
+          "loginForm"
+        );
 
-        const email =
-          document
-            .getElementById(
-              "email"
-            )
-            .value
-            .trim();
 
-        if (
-          !businessName ||
-          !email
-        ) {
-          showMessage(
-            "Please enter your business name and owner email.",
-            "error"
-          );
+      const loginButton =
+        document.getElementById(
+          "loginButton"
+        );
 
-          return;
-        }
 
-        button.disabled = true;
-        button.textContent =
-          "Signing in...";
+      const statusMessage =
+        document.getElementById(
+          "statusMessage"
+        );
 
-        message.className =
-          "message";
 
-        try {
+      function showStatus(
+        message,
+        type
+      ) {
 
-          const response =
-            await fetch(
-              API_BASE +
-                "/owner/login",
-              {
-                method: "POST",
+        statusMessage.textContent =
+          message;
 
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
+        statusMessage.className =
+          `status ${type}`;
 
-                body:
-                  JSON.stringify({
-                    business_name:
-                      businessName,
+      }
 
-                    email:
-                      email
-                  })
-              }
-            );
 
-          const data =
-            await response.json();
+      form.addEventListener(
+        "submit",
+        async event => {
 
-          if (
-            !response.ok ||
-            data.status !== "ok"
-          ) {
+          event.preventDefault();
 
-            showMessage(
-              data.message ||
-                "Owner login failed.",
+
+          const businessName =
+            document
+              .getElementById(
+                "businessName"
+              )
+              .value
+              .trim();
+
+
+          const email =
+            document
+              .getElementById(
+                "email"
+              )
+              .value
+              .trim()
+              .toLowerCase();
+
+
+          if (!businessName) {
+
+            showStatus(
+              "Please enter your business name.",
               "error"
             );
 
             return;
+
           }
 
-          sessionStorage.setItem(
-            "nearafrica_owner_token",
-            data.token
-          );
 
-          sessionStorage.setItem(
-            "nearafrica_owner_business_id",
-            String(
-              data.business_id
-            )
-          );
+          if (!email) {
 
-          sessionStorage.setItem(
-            "nearafrica_owner_business_name",
-            data.business_name || ""
-          );
+            showStatus(
+              "Please enter your owner email.",
+              "error"
+            );
 
-          sessionStorage.setItem(
-            "nearafrica_owner_expires_at",
-            data.expires_at || ""
-          );
+            return;
 
-          showMessage(
-            "Owner access granted. Redirecting...",
-            "success"
-          );
+          }
 
-          setTimeout(
-            function () {
 
-              window.location.href =
-                data.dashboard_url ||
-                "owner-dashboard.html";
+          loginButton.disabled =
+            true;
 
-            },
-            500
-          );
+          loginButton.textContent =
+            "Signing In...";
 
-        } catch (error) {
 
-          console.error(
-            "OWNER_LOGIN_FRONTEND_ERROR",
-            error
-          );
+          statusMessage.className =
+            "status";
 
-          showMessage(
-            "Unable to connect to NearAfrica. Please try again.",
-            "error"
-          );
 
-        } finally {
+          try {
 
-          button.disabled = false;
-          button.textContent =
-            "Sign In";
+            const response =
+              await fetch(
+                `${API_BASE}/owner/login`,
+                {
+                  method: "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json",
+
+                    "Accept":
+                      "application/json"
+                  },
+
+                  body:
+                    JSON.stringify({
+                      business_name:
+                        businessName,
+
+                      email:
+                        email
+                    })
+                }
+              );
+
+
+            const data =
+              await response.json();
+
+
+            if (
+              !response.ok ||
+              !data ||
+              data.status !== "ok"
+            ) {
+
+              throw new Error(
+                data &&
+                data.message
+                  ? data.message
+                  : "Owner login failed."
+              );
+
+            }
+
+
+            if (!data.token) {
+
+              throw new Error(
+                "The server did not return an owner session token."
+              );
+
+            }
+
+
+            try {
+
+              localStorage.setItem(
+                OWNER_TOKEN_KEY,
+                data.token
+              );
+
+            } catch (storageError) {
+
+              console.error(
+                "OWNER TOKEN STORAGE ERROR:",
+                storageError
+              );
+
+              throw new Error(
+                "Login succeeded, but this browser could not save the owner session."
+              );
+
+            }
+
+
+            showStatus(
+              "Login successful. Opening your owner dashboard...",
+              "success"
+            );
+
+
+            window.setTimeout(
+              () => {
+
+                window.location.href =
+                  data.dashboard_url ||
+                  "pages/owner-dashboard.html";
+
+              },
+              500
+            );
+
+
+          } catch (error) {
+
+            console.error(
+              "OWNER LOGIN ERROR:",
+              error
+            );
+
+
+            showStatus(
+              error.message ||
+                "Unable to sign in. Please try again.",
+              "error"
+            );
+
+
+          } finally {
+
+            loginButton.disabled =
+              false;
+
+            loginButton.textContent =
+              "Sign In";
+
+          }
 
         }
+      );
 
-      }
-    );
+
+    })();
+
   </script>
 
+
 </body>
+
 </html>
