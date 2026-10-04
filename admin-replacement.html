@@ -1,0 +1,4613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex,nofollow"
+    >
+
+    <title>NearAfrica Admin</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background: #080808;
+            color: #f5f5f5;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            min-height: 72px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 14px 24px;
+
+            background: #0b0b0b;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid #d4af37;
+            border-radius: 10px;
+
+            color: #d4af37;
+            font-weight: 900;
+            font-size: 15px;
+
+            background: rgba(212, 175, 55, 0.04);
+        }
+
+        .brand-text strong {
+            display: block;
+            color: #fff;
+            font-size: 17px;
+        }
+
+        .brand-text span {
+            display: block;
+            margin-top: 2px;
+            color: #888;
+            font-size: 12px;
+        }
+
+        .logout-btn {
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            background: transparent;
+            color: #d4af37;
+
+            padding: 10px 15px;
+            border-radius: 8px;
+
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* =====================================================
+           LOGIN
+        ===================================================== */
+
+        .login-screen {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 24px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+
+            padding: 34px;
+
+            background: #101010;
+
+            border:
+                1px solid
+                rgba(212, 175, 55, 0.25);
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.45);
+        }
+
+        .login-logo {
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 20px;
+
+            border: 1px solid #d4af37;
+            border-radius: 14px;
+
+            color: #d4af37;
+            font-weight: 900;
+        }
+
+        .login-card h1 {
+            margin: 0 0 8px;
+            font-size: 27px;
+        }
+
+        .login-card p {
+            margin: 0 0 25px;
+            color: #999;
+            line-height: 1.6;
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 7px;
+
+            color: #ccc;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            color: #fff;
+            background: #080808;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
+
+            border-radius: 8px;
+
+            outline: none;
+        }
+
+        .field input:focus,
+        .field textarea:focus,
+        .field select:focus {
+            border-color: #d4af37;
+        }
+
+        .login-btn {
+            width: 100%;
+
+            padding: 13px;
+
+            border: 0;
+            border-radius: 8px;
+
+            background: #d4af37;
+            color: #090909;
+
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: #e4c45a;
+        }
+
+        .login-btn:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
+        .login-error {
+            margin-top: 15px;
+            color: #f87171;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           APP
+        ===================================================== */
+
+        #adminApp {
+            display: none;
+        }
+
+        .container {
+            width: min(1500px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 30px 0 60px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 7px;
+            font-size: 30px;
+        }
+
+        .page-heading p {
+            margin: 0;
+            color: #888;
+        }
+
+        /* =====================================================
+           STATS
+        ===================================================== */
+
+        .stats-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(150px, 1fr)
+                );
+
+            gap: 14px;
+
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            padding: 18px;
+
+            background: #101010;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 12px;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            margin-top: 8px;
+
+            color: #d4af37;
+
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           TABS
+        ===================================================== */
+
+        .tabs-wrap {
+            overflow-x: auto;
+            margin-bottom: 18px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+
+            min-width: max-content;
+        }
+
+        .tab {
+            padding: 10px 15px;
+
+            background: #111;
+            color: #aaa;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            color: #fff;
+            border-color:
+                rgba(212,175,55,0.3);
+        }
+
+        .tab.active {
+            color: #090909;
+            background: #d4af37;
+            border-color: #d4af37;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           PANEL
+        ===================================================== */
+
+        .panel {
+            background: #101010;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 14px;
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+
+            padding: 18px 20px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.08);
+        }
+
+        .panel-title {
+            margin: 0;
+
+            font-size: 17px;
+        }
+
+        .refresh-btn {
+            padding: 9px 13px;
+
+            color: #d4af37;
+            background: transparent;
+
+            border:
+                1px solid
+                rgba(212,175,55,0.3);
+
+            border-radius: 7px;
+
+            cursor: pointer;
+        }
+
+        .refresh-btn:hover {
+            background:
+                rgba(212,175,55,0.08);
+        }
+
+        .refresh-btn:disabled {
+            opacity: 0.55;
+            cursor: wait;
+        }
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        #content {
+            min-height: 200px;
+        }
+
+        .loading,
+        .empty,
+        .error {
+            padding: 50px 20px;
+
+            text-align: center;
+            color: #888;
+        }
+
+        .error {
+            color: #f87171;
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th {
+            padding: 13px 15px;
+
+            text-align: left;
+
+            color: #999;
+
+            background: #0b0b0b;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 15px;
+
+            vertical-align: top;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            color: #ddd;
+
+            font-size: 13px;
+        }
+
+        tbody tr:hover {
+            background:
+                rgba(255,255,255,0.02);
+        }
+
+        .muted {
+            color: #777;
+        }
+
+        .business-id,
+        .claim-id {
+            color: #777;
+
+            font-family:
+                Consolas,
+                Monaco,
+                monospace;
+
+            font-size: 11px;
+
+            word-break: break-all;
+        }
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 5px 9px;
+
+            border-radius: 999px;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            text-transform: capitalize;
+        }
+
+        .status.pending {
+            color: #fbbf24;
+            background:
+                rgba(251,191,36,0.1);
+        }
+
+        .status.approved,
+        .status.active,
+        .status.verified,
+        .status.resolved {
+            color: #4ade80;
+            background:
+                rgba(74,222,128,0.1);
+        }
+
+        .status.rejected,
+        .status.dismissed,
+        .status.removed,
+        .status.suspended {
+            color: #f87171;
+            background:
+                rgba(248,113,113,0.1);
+        }
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .action-btn {
+            padding: 7px 10px;
+
+            border-radius: 6px;
+
+            background: transparent;
+            color: #ccc;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
+
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            border-color: #d4af37;
+            color: #d4af37;
+        }
+
+        .action-btn.primary {
+            color: #090909;
+            background: #d4af37;
+            border-color: #d4af37;
+        }
+
+        .action-btn.primary:hover {
+            background: #e4c45a;
+        }
+
+        .action-btn.resolve {
+            color: #4ade80;
+            border-color: rgba(74,222,128,0.3);
+            background: rgba(74,222,128,0.05);
+        }
+
+        .action-btn.resolve:hover {
+            color: #090909;
+            background: #4ade80;
+            border-color: #4ade80;
+        }
+
+        .action-btn.dismiss {
+            color: #f87171;
+            border-color: rgba(248,113,113,0.3);
+            background: rgba(248,113,113,0.05);
+        }
+
+        .action-btn.dismiss:hover {
+            color: #090909;
+            background: #f87171;
+            border-color: #f87171;
+        }
+
+        .action-btn:disabled {
+            opacity: 0.55;
+            cursor: wait;
+        }
+
+        /* =====================================================
+           REPORT MODERATION
+        ===================================================== */
+
+        .report-moderation {
+            min-width: 260px;
+        }
+
+        .report-note {
+            width: 100%;
+            min-height: 72px;
+
+            padding: 9px 10px;
+
+            resize: vertical;
+
+            color: #fff;
+            background: #080808;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
+
+            border-radius: 7px;
+
+            outline: none;
+
+            line-height: 1.45;
+        }
+
+        .report-note:focus {
+            border-color: #d4af37;
+        }
+
+        .report-note::placeholder {
+            color: #666;
+        }
+
+        .report-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+
+            margin-top: 8px;
+        }
+
+        .report-action-message {
+            margin-top: 8px;
+
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .report-action-message.success {
+            color: #4ade80;
+        }
+
+        .report-action-message.error {
+            color: #f87171;
+        }
+
+        .report-action-message.info {
+            color: #aaa;
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .topbar {
+                padding: 12px 15px;
+            }
+
+            .brand-text span {
+                display: none;
+            }
+
+            .container {
+                width:
+                    min(
+                        100% - 20px,
+                        1500px
+                    );
+
+                padding-top: 20px;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .stats-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .panel-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .login-card {
+                padding: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- =========================================================
+     LOGIN
+========================================================= -->
+
+<section
+    id="loginScreen"
+    class="login-screen"
+>
+
+    <div class="login-card">
+
+        <div class="login-logo">
+            NA
+        </div>
+
+        <h1>
+            NearAfrica Admin
+        </h1>
+
+        <p>
+            Secure administration dashboard
+            for managing the NearAfrica platform.
+        </p>
+
+        <form id="loginForm">
+
+            <div class="field">
+
+                <label for="adminKey">
+                    Admin API Key
+                </label>
+
+                <input
+                    id="adminKey"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="Enter admin key"
+                    required
+                >
+
+            </div>
+
+            <button
+                type="submit"
+                class="login-btn"
+                id="loginBtn"
+            >
+                Sign In
+            </button>
+
+        </form>
+
+        <div
+            id="loginError"
+            class="login-error"
+        ></div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ADMIN APP
+========================================================= -->
+
+<div id="adminApp">
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                NA
+            </div>
+
+            <div class="brand-text">
+
+                <strong>
+                    NearAfrica
+                </strong>
+
+                <span>
+                    Administration
+                </span>
+
+            </div>
+
+        </div>
+
+        <button
+            id="logoutBtn"
+            class="logout-btn"
+        >
+            Logout
+        </button>
+
+    </header>
+
+
+    <main class="container">
+
+        <div class="page-heading">
+
+            <h1>
+                Admin Dashboard
+            </h1>
+
+            <p>
+                Manage NearAfrica businesses,
+                submissions, claims, reports and
+                platform activity.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             STATS
+        ================================================== -->
+
+        <section
+            id="statsGrid"
+            class="stats-grid"
+        >
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Businesses
+                </div>
+
+                <div
+                    id="statBusinesses"
+                    class="stat-value"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Submissions
+                </div>
+
+                <div
+                    id="statSubmissions"
+                    class="stat-value"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Claims
+                </div>
+
+                <div
+                    id="statClaims"
+                    class="stat-value"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Reviews
+                </div>
+
+                <div
+                    id="statReviews"
+                    class="stat-value"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Reports
+                </div>
+
+                <div
+                    id="statReports"
+                    class="stat-value"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Help Wanted
+                </div>
+
+                <div
+                    id="statHelpWanted"
+                    class="stat-value"
+                >
+                    —
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             TABS
+        ================================================== -->
+
+        <div class="tabs-wrap">
+
+            <div class="tabs">
+
+                <button
+                    class="tab active"
+                    data-resource="businesses"
+                >
+                    Businesses
+                </button>
+
+                <button
+                    class="tab"
+                    data-resource="submissions"
+                >
+                    Submissions
+                </button>
+
+                <button
+                    class="tab"
+                    data-resource="claims"
+                >
+                    Claims
+                </button>
+
+                <button
+                    class="tab"
+                    data-resource="reviews"
+                >
+                    Reviews
+                </button>
+
+                <button
+                    class="tab"
+                    data-resource="reports"
+                >
+                    Reports
+                </button>
+
+                <button
+                    class="tab"
+                    data-resource="help_wanted"
+                >
+                    Help Wanted
+                </button>
+
+                <button
+                    class="tab"
+                    data-resource="subscriptions"
+                >
+                    Subscriptions
+                </button>
+
+                <button
+                    class="tab"
+                    data-resource="discoveries"
+                >
+                    Discoveries
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MAIN PANEL
+        ================================================== -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2
+                    id="panelTitle"
+                    class="panel-title"
+                >
+                    Businesses
+                </h2>
+
+                <button
+                    id="refreshBtn"
+                    class="refresh-btn"
+                >
+                    Refresh
+                </button>
+
+            </div>
+
+            <div id="content">
+
+                <div class="loading">
+                    Loading...
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+                    Claims
+                </button>
+
+                <button
+                    class="tab"
+                    data-resource="reviews"
+                >
+                    Reviews
+                </button>
+
+                <button
+                    class="tab"
+                    data-resource="reports"
+                >
+                    Reports
+                </button>
+
+                <button
+                    class="tab"
+                    data-resource="help_wanted"
+                >
+                    Help Wanted
+                </button>
+
+                <button
+                    class="tab"
+                    data-resource="subscriptions"
+                >
+                    Subscriptions
+                </button>
+
+                <button
+                    class="tab"
+                    data-resource="discoveries"
+                >
+                    Discoveries
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CONTENT PANEL
+        ================================================== -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2
+                    id="panelTitle"
+                    class="panel-title"
+                >
+                    Businesses
+                </h2>
+
+                <button
+                    id="refreshBtn"
+                    class="refresh-btn"
+                >
+                    Refresh
+                </button>
+
+            </div>
+
+            <div id="content">
+
+                <div class="loading">
+                    Loading...
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* =========================================================
+       CONFIG
+    ========================================================= */
+
+    const API_BASE =
+        "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+
+
+    /* =========================================================
+       STATE
+    ========================================================= */
+
+    let adminKey =
+        sessionStorage.getItem(
+            "nearafrica_admin_key"
+        ) || "";
+
+    let currentResource =
+        "businesses";
+
+
+    /* =========================================================
+       DOM
+    ========================================================= */
+
+    const loginScreen =
+        document.getElementById(
+            "loginScreen"
+        );
+
+    const adminApp =
+        document.getElementById(
+            "adminApp"
+        );
+
+    const loginForm =
+        document.getElementById(
+            "loginForm"
+        );
+
+    const adminKeyInput =
+        document.getElementById(
+            "adminKey"
+        );
+
+    const loginError =
+        document.getElementById(
+            "loginError"
+        );
+
+    const loginBtn =
+        document.getElementById(
+            "loginBtn"
+        );
+
+    const logoutBtn =
+        document.getElementById(
+            "logoutBtn"
+        );
+
+    const content =
+        document.getElementById(
+            "content"
+        );
+
+    const panelTitle =
+        document.getElementById(
+            "panelTitle"
+        );
+
+    const refreshBtn =
+        document.getElementById(
+            "refreshBtn"
+        );
+
+
+    /* =========================================================
+       ESCAPING
+    ========================================================= */
+
+    function escapeHtml(
+        value
+    ) {
+
+        return String(
+            value ?? ""
+        )
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
+
+    }
+
+
+    function escapeAttribute(
+        value
+    ) {
+
+        return escapeHtml(
+            value
+        );
+
+    }
+
+
+    /* =========================================================
+       AUTH HEADERS
+    ========================================================= */
+
+    function getHeaders() {
+
+        const headers = {
+
+            "Accept":
+                "application/json"
+
+        };
+
+
+        if (adminKey) {
+
+            headers[
+                "Authorization"
+            ] =
+                `Bearer ${adminKey}`;
+
+            headers[
+                "X-Admin-Key"
+            ] =
+                adminKey;
+
+        }
+
+
+        /*
+         * Only send Content-Type when a request
+         * actually has a body.
+         */
+
+        return headers;
+
+    }
+
+
+    /* =========================================================
+       API REQUEST
+    ========================================================= */
+
+    async function apiRequest(
+        path,
+        options = {}
+    ) {
+
+        const requestOptions = {
+            ...options,
+
+            headers: {
+                ...getHeaders(),
+                ...(options.headers || {})
+            }
+        };
+
+
+        if (
+            options.body !== undefined &&
+            options.body !== null &&
+            !requestOptions.headers["Content-Type"]
+        ) {
+
+            requestOptions.headers[
+                "Content-Type"
+            ] =
+                "application/json";
+
+        }
+
+
+        let response;
+
+        try {
+
+            response =
+                await fetch(
+                    API_BASE + path,
+                    requestOptions
+                );
+
+        } catch (error) {
+
+            const networkError =
+                new Error(
+                    "Unable to connect to the NearAfrica API."
+                );
+
+            networkError.status =
+                0;
+
+            networkError.cause =
+                error;
+
+            throw networkError;
+
+        }
+
+
+        let data = null;
+
+        try {
+
+            data =
+                await response.json();
+
+        } catch {
+
+            data = null;
+
+        }
+
+
+        if (
+            response.status === 401 ||
+            response.status === 403
+        ) {
+
+            const error =
+                new Error(
+                    "Admin authentication failed."
+                );
+
+            error.status =
+                response.status;
+
+            throw error;
+
+        }
+
+
+        if (!response.ok) {
+
+            const error =
+                new Error(
+                    data?.error ||
+                    data?.message ||
+                    `Request failed with HTTP ${response.status}`
+                );
+
+            error.status =
+                response.status;
+
+            throw error;
+
+        }
+
+
+        return data;
+
+    }
+
+
+    /* =========================================================
+       ADMIN ENDPOINT MAPPING
+    ========================================================= */
+
+    function getAdminResourcePath(
+        resource
+    ) {
+
+        /*
+         * The current Worker uses
+         * /admin/discovery (singular).
+         */
+
+        if (
+            resource === "discoveries"
+        ) {
+
+            return (
+                "/admin/discovery?limit=100"
+            );
+
+        }
+
+
+        /*
+         * Keep the existing Help Wanted
+         * resource name for compatibility.
+         */
+
+        return (
+            `/admin/${resource}?limit=100`
+        );
+
+    }
+
+
+    /* =========================================================
+       LOGIN
+    ========================================================= */
+
+    loginForm.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            const key =
+                adminKeyInput.value.trim();
+
+
+            if (!key) {
+
+                loginError.textContent =
+                    "Please enter the admin API key.";
+
+                return;
+
+            }
+
+
+            /*
+             * IMPORTANT:
+             * previousKey is declared outside
+             * the try block so catch() can use it.
+             */
+
+            const previousKey =
+                adminKey;
+
+
+            adminKey =
+                key;
+
+
+            loginBtn.disabled =
+                true;
+
+            loginBtn.textContent =
+                "Checking...";
+
+
+            loginError.textContent =
+                "Checking admin access...";
+
+
+            try {
+
+                /*
+                 * Authenticate using the lightweight
+                 * admin root endpoint.
+                 *
+                 * This prevents /admin/stats from
+                 * deciding whether the key is valid.
+                 */
+
+                await apiRequest(
+                    "/admin"
+                );
+
+
+                sessionStorage.setItem(
+                    "nearafrica_admin_key",
+                    adminKey
+                );
+
+
+                loginScreen.style.display =
+                    "none";
+
+                adminApp.style.display =
+                    "block";
+
+                loginError.textContent =
+                    "";
+
+
+                /*
+                 * Stats are deliberately non-blocking.
+                 */
+
+                await loadStats();
+
+
+                await loadResource(
+                    currentResource
+                );
+
+
+            } catch (error) {
+
+                /*
+                 * Restore the previous key
+                 * when authentication fails.
+                 */
+
+                adminKey =
+                    previousKey;
+
+
+                /*
+                 * Only present authentication
+                 * errors as invalid-key errors.
+                 */
+
+                if (
+                    error.status === 401 ||
+                    error.status === 403
+                ) {
+
+                    loginError.textContent =
+                        "Invalid admin API key.";
+
+                } else {
+
+                    loginError.textContent =
+                        error.message ||
+                        "Unable to sign in.";
+
+                }
+
+            } finally {
+
+                loginBtn.disabled =
+                    false;
+
+                loginBtn.textContent =
+                    "Sign In";
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       LOGOUT
+    ========================================================= */
+
+    logoutBtn.addEventListener(
+        "click",
+        () => {
+
+            sessionStorage.removeItem(
+                "nearafrica_admin_key"
+            );
+
+            adminKey = "";
+
+            adminApp.style.display =
+                "none";
+
+            loginScreen.style.display =
+                "flex";
+
+            adminKeyInput.value =
+                "";
+
+            loginError.textContent =
+                "";
+
+        }
+    );
+
+
+    /* =========================================================
+       GET RECORDS
+    ========================================================= */
+
+    function getRecords(
+        data
+    ) {
+
+        if (
+            Array.isArray(
+                data?.businesses
+            )
+        ) {
+
+            return data.businesses;
+
+        }
+
+
+        if (
+            Array.isArray(
+                data?.submissions
+            )
+        ) {
+
+            return data.submissions;
+
+        }
+
+
+        if (
+            Array.isArray(
+                data?.claims
+            )
+        ) {
+
+            return data.claims;
+
+        }
+
+
+        if (
+            Array.isArray(
+                data?.reviews
+            )
+        ) {
+
+            return data.reviews;
+
+        }
+
+
+        if (
+            Array.isArray(
+                data?.reports
+            )
+        ) {
+
+            return data.reports;
+
+        }
+
+
+        if (
+            Array.isArray(
+                data?.help_wanted
+            )
+        ) {
+
+            return data.help_wanted;
+
+        }
+
+
+        if (
+            Array.isArray(
+                data?.subscriptions
+            )
+        ) {
+
+            return data.subscriptions;
+
+        }
+
+
+        if (
+            Array.isArray(
+                data?.discoveries
+            )
+        ) {
+
+            return data.discoveries;
+
+        }
+
+
+        if (
+            Array.isArray(
+                data?.discovery
+            )
+        ) {
+
+            return data.discovery;
+
+        }
+
+
+        if (
+            Array.isArray(
+                data?.results
+            )
+        ) {
+
+            return data.results;
+
+        }
+
+
+        return [];
+
+    }
+
+
+    /* =========================================================
+       STATS
+    ========================================================= */
+
+    async function loadStats() {
+
+        try {
+
+            const data =
+                await apiRequest(
+                    "/admin/stats"
+                );
+
+
+            const stats =
+                data?.stats ||
+                data?.statistics ||
+                data ||
+                {};
+
+
+            document.getElementById(
+                "statBusinesses"
+            ).textContent =
+                stats.businesses ??
+                stats.business_count ??
+                "—";
+
+
+            document.getElementById(
+                "statSubmissions"
+            ).textContent =
+                stats.submissions ??
+                stats.submission_count ??
+                "—";
+
+
+            document.getElementById(
+                "statClaims"
+            ).textContent =
+                stats.claims ??
+                stats.claim_count ??
+                "—";
+
+
+            document.getElementById(
+                "statReviews"
+            ).textContent =
+                stats.reviews ??
+                stats.review_count ??
+                "—";
+
+
+            document.getElementById(
+                "statReports"
+            ).textContent =
+                stats.reports ??
+                stats.report_count ??
+                "—";
+
+
+            document.getElementById(
+                "statHelpWanted"
+            ).textContent =
+                stats.help_wanted ??
+                stats.help_wanted_count ??
+                "—";
+
+
+        } catch (error) {
+
+            /*
+             * Stats are informational only.
+             * A broken stats endpoint must not
+             * prevent the dashboard from opening.
+             */
+
+            console.warn(
+                "NearAfrica admin stats unavailable:",
+                error
+            );
+
+
+            document.getElementById(
+                "statBusinesses"
+            ).textContent =
+                "—";
+
+            document.getElementById(
+                "statSubmissions"
+            ).textContent =
+                "—";
+
+            document.getElementById(
+                "statClaims"
+            ).textContent =
+                "—";
+
+            document.getElementById(
+                "statReviews"
+            ).textContent =
+                "—";
+
+            document.getElementById(
+                "statReports"
+            ).textContent =
+                "—";
+
+            document.getElementById(
+                "statHelpWanted"
+            ).textContent =
+                "—";
+
+        }
+
+    }
+
+
+    /* =========================================================
+       LOAD RESOURCE
+    ========================================================= */
+
+    async function loadResource(
+        resource
+    ) {
+
+        currentResource =
+            resource;
+
+
+        const readableTitle =
+            resource
+                .replaceAll(
+                    "_",
+                    " "
+                )
+                .replace(
+                    /\b\w/g,
+                    char =>
+                        char.toUpperCase()
+                );
+
+
+        panelTitle.textContent =
+            readableTitle;
+
+
+        content.innerHTML = `
+            <div class="loading">
+                Loading ${escapeHtml(
+                    readableTitle
+                )}...
+            </div>
+        `;
+
+
+        try {
+
+            const data =
+                await apiRequest(
+                    getAdminResourcePath(
+                        resource
+                    )
+                );
+
+
+            const records =
+                getRecords(
+                    data
+                );
+
+
+            if (
+                resource === "businesses"
+            ) {
+
+                renderBusinesses(
+                    records
+                );
+
+                return;
+
+            }
+
+
+            if (
+                resource === "claims"
+            ) {
+
+                renderClaims(
+                    records
+                );
+
+                return;
+
+            }
+
+
+            if (
+                resource === "submissions"
+            ) {
+
+                renderSubmissions(
+                    records
+                );
+
+                return;
+
+            }
+
+
+            if (
+                resource === "reports"
+            ) {
+
+                renderReports(
+                    records
+                );
+
+                return;
+
+            }
+
+
+            if (
+                resource === "discoveries"
+            ) {
+
+                renderDiscoveries(
+                    records
+                );
+
+                return;
+
+            }
+
+
+            renderGeneric(
+                records,
+                resource
+            );
+
+        } catch (error) {
+
+            content.innerHTML = `
+                <div class="error">
+
+                    <strong>
+                        Unable to load ${escapeHtml(
+                            readableTitle
+                        )}
+                    </strong>
+
+                    <div
+                        style="
+                            margin-top:10px;
+                        "
+                    >
+                        ${escapeHtml(
+                            error.message ||
+                            "Unknown error."
+                        )}
+                    </div>
+
+                </div>
+            `;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       DELETE BUSINESS
+    ========================================================= */
+
+    async function deleteBusinessFromAdmin(
+        businessId,
+        businessName,
+        button
+    ) {
+
+        if (!businessId) {
+
+            alert(
+                "This business does not have a valid ID."
+            );
+
+            return;
+
+        }
+
+
+        const confirmed =
+            confirm(
+                `Delete "${businessName}" permanently?\n\nThis will remove the business and its related records.\n\nThis action cannot be undone.`
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        button.disabled =
+            true;
+
+        button.textContent =
+            "Deleting...";
+              try {
+
+            const response =
+                await apiRequest(
+                    `/admin/businesses/${encodeURIComponent(
+                        businessId
+                    )}`,
+                    {
+                        method:
+                            "DELETE"
+                    }
+                );
+
+
+            alert(
+                response.message ||
+                "Business deleted successfully."
+            );
+
+
+            await loadStats();
+
+
+            await loadResource(
+                "businesses"
+            );
+
+
+        } catch (error) {
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "Delete";
+
+
+            alert(
+                error.message ||
+                "Unable to delete business."
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       BUSINESSES
+    ========================================================= */
+
+    function renderBusinesses(
+        businesses
+    ) {
+
+        if (
+            !businesses.length
+        ) {
+
+            content.innerHTML = `
+                <div class="empty">
+                    No businesses found.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const rows =
+            businesses.map(
+                business => {
+
+                    const businessId =
+                        business.id ||
+                        business.business_id ||
+                        "";
+
+
+                    const businessName =
+                        business.business_name ||
+                        business.name ||
+                        "Unnamed business";
+
+
+                    const category =
+                        business.category ||
+                        "—";
+
+
+                    const city =
+                        business.city ||
+                        "—";
+
+
+                    const state =
+                        business.state ||
+                        "—";
+
+
+                    const country =
+                        business.country ||
+                        "—";
+
+
+                    const status =
+                        String(
+                            business.status ||
+                            "active"
+                        )
+                            .trim()
+                            .toLowerCase();
+
+
+                    const owner =
+                        business.owner_id ||
+                        "—";
+
+
+                    const publicLink =
+                        businessId
+                            ? `
+                                <a
+                                    href="https://nearafrica.pages.dev/pages/business.html?id=${encodeURIComponent(
+                                        businessId
+                                    )}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style="
+                                        display:inline-block;
+                                        padding:7px 10px;
+                                        border:1px solid rgba(212,175,55,0.3);
+                                        border-radius:6px;
+                                        color:#d4af37;
+                                        text-decoration:none;
+                                        font-size:12px;
+                                        font-weight:700;
+                                    "
+                                >
+                                    Open Listing
+                                </a>
+                            `
+                            : "";
+
+
+                    const deleteButton =
+                        businessId
+                            ? `
+                                <button
+                                    type="button"
+                                    class="action-btn dismiss"
+                                    onclick="deleteBusinessFromAdmin(
+                                        '${escapeAttribute(
+                                            businessId
+                                        )}',
+                                        '${escapeAttribute(
+                                            businessName
+                                        )}',
+                                        this
+                                    )"
+                                >
+                                    Delete
+                                </button>
+                            `
+                            : "";
+
+
+                    return `
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        businessName
+                                    )}
+                                </strong>
+
+                                <div
+                                    class="business-id"
+                                    style="
+                                        margin-top:6px;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        businessId
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                ${escapeHtml(
+                                    category
+                                )}
+
+                            </td>
+
+
+                            <td>
+
+                                ${escapeHtml(
+                                    city
+                                )}
+
+                                <div
+                                    class="muted"
+                                    style="
+                                        margin-top:4px;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        state
+                                    )},
+                                    ${escapeHtml(
+                                        country
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <span
+                                    class="status ${escapeAttribute(
+                                        status
+                                    )}"
+                                >
+                                    ${escapeHtml(
+                                        status
+                                    )}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <div
+                                    class="muted"
+                                    style="
+                                        max-width:220px;
+                                        word-break:break-word;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        owner
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="actions">
+
+                                    ${publicLink}
+
+                                    ${deleteButton}
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            ).join("");
+
+
+        content.innerHTML = `
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Business
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Location
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Owner
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        ${rows}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================================================
+       DISCOVERY MODERATION
+    ========================================================= */
+
+    async function moderateDiscoveryFromAdmin(
+        discoveryId,
+        action,
+        button
+    ) {
+
+        if (!discoveryId) {
+
+            alert(
+                "This discovery does not have a valid ID."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            action !== "approve" &&
+            action !== "reject"
+        ) {
+
+            return;
+
+        }
+
+
+        const confirmed =
+            confirm(
+                action === "approve"
+                    ? "Approve this discovery?"
+                    : "Reject this discovery?"
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        const actionButtons =
+            document.querySelectorAll(
+                `.discovery-action[data-discovery-id="${CSS.escape(
+                    String(discoveryId)
+                )}"]`
+            );
+
+
+        actionButtons.forEach(
+            item => {
+
+                item.disabled =
+                    true;
+
+            }
+        );
+
+
+        if (button) {
+
+            button.textContent =
+                action === "approve"
+                    ? "Approving..."
+                    : "Rejecting...";
+
+        }
+
+
+        try {
+
+            const response =
+                await apiRequest(
+                    `/admin/discovery/${encodeURIComponent(
+                        discoveryId
+                    )}/${action}`,
+                    {
+                        method:
+                            "POST"
+                    }
+                );
+
+
+            alert(
+                response.message ||
+                (
+                    action === "approve"
+                        ? "Discovery approved successfully."
+                        : "Discovery rejected successfully."
+                )
+            );
+
+
+            await loadResource(
+                "discoveries"
+            );
+
+
+        } catch (error) {
+
+            actionButtons.forEach(
+                item => {
+
+                    item.disabled =
+                        false;
+
+                }
+            );
+
+
+            if (button) {
+
+                button.textContent =
+                    action === "approve"
+                        ? "Approve"
+                        : "Reject";
+
+            }
+
+
+            alert(
+                error.message ||
+                "Unable to update discovery."
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       RENDER DISCOVERIES
+    ========================================================= */
+
+    function renderDiscoveries(
+        discoveries
+    ) {
+
+        if (
+            !Array.isArray(
+                discoveries
+            ) ||
+            !discoveries.length
+        ) {
+
+            content.innerHTML = `
+                <div class="empty">
+                    No discoveries found.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const rows =
+            discoveries.map(
+                discovery => {
+
+                    const discoveryId =
+                        discovery.id ||
+                        discovery.discovery_id ||
+                        "";
+
+
+                    const title =
+                        discovery.title ||
+                        discovery.name ||
+                        "Untitled discovery";
+
+
+                    const description =
+                        discovery.description ||
+                        "—";
+
+
+                    const category =
+                        discovery.category ||
+                        "—";
+
+
+                    const country =
+                        discovery.country ||
+                        "—";
+
+
+                    const state =
+                        discovery.state ||
+                        "—";
+
+
+                    const city =
+                        discovery.city ||
+                        "—";
+
+
+                    const sourceUrl =
+                        discovery.url ||
+                        discovery.source_url ||
+                        "";
+
+
+                    const status =
+                        String(
+                            discovery.status ||
+                            "pending"
+                        )
+                            .trim()
+                            .toLowerCase();
+
+
+                    const isPending =
+                        ![
+                            "approved",
+                            "rejected"
+                        ].includes(
+                            status
+                        );
+
+
+                    const actions =
+                        isPending &&
+                        discoveryId
+                            ? `
+                                <div
+                                    class="actions"
+                                >
+
+                                    <button
+                                        type="button"
+                                        class="action-btn primary discovery-action"
+                                        data-discovery-id="${escapeAttribute(
+                                            String(
+                                                discoveryId
+                                            )
+                                        )}"
+                                        onclick="moderateDiscoveryFromAdmin(
+                                            '${escapeAttribute(
+                                                String(
+                                                    discoveryId
+                                                )
+                                            )}',
+                                            'approve',
+                                            this
+                                        )"
+                                    >
+                                        Approve
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="action-btn dismiss discovery-action"
+                                        data-discovery-id="${escapeAttribute(
+                                            String(
+                                                discoveryId
+                                            )
+                                        )}"
+                                        onclick="moderateDiscoveryFromAdmin(
+                                            '${escapeAttribute(
+                                                String(
+                                                    discoveryId
+                                                )
+                                            )}',
+                                            'reject',
+                                            this
+                                        )"
+                                    >
+                                        Reject
+                                    </button>
+
+                                </div>
+                            `
+                            : `
+                                <span class="muted">
+                                    No actions
+                                </span>
+                            `;
+
+
+                    const location =
+                        [
+                            city,
+                            state,
+                            country
+                        ]
+                            .filter(
+                                value =>
+                                    value &&
+                                    value !== "—"
+                            )
+                            .join(
+                                ", "
+                            ) ||
+                        "—";
+
+
+                    return `
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        title
+                                    )}
+                                </strong>
+
+                                <div
+                                    class="business-id"
+                                    style="
+                                        margin-top:6px;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        discoveryId
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                ${escapeHtml(
+                                    category
+                                )}
+
+                            </td>
+
+
+                            <td>
+
+                                ${escapeHtml(
+                                    location
+                                )}
+
+                            </td>
+
+
+                            <td>
+
+                                <div
+                                    style="
+                                        max-width:300px;
+                                        white-space:normal;
+                                        line-height:1.5;
+                                        color:#aaa;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        description
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <span>
+                                    ${escapeHtml(
+                                        status
+                                    )}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                ${
+                                    sourceUrl
+                                        ? `
+                                            <a
+                                                href="${escapeAttribute(
+                                                    sourceUrl
+                                                )}"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style="
+                                                    color:#d4af37;
+                                                    text-decoration:none;
+                                                    font-weight:700;
+                                                "
+                                            >
+                                                Open Source
+                                            </a>
+                                        `
+                                        : `
+                                            <span class="muted">
+                                                —
+                                            </span>
+                                        `
+                                }
+
+                            </td>
+
+
+                            <td>
+
+                                ${actions}
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            ).join("");
+
+
+        content.innerHTML = `
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Discovery
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Location
+                            </th>
+
+                            <th>
+                                Description
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Source
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        ${rows}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================================================
+       GENERIC TABLE
+    ========================================================= */
+
+    function renderGeneric(
+        records,
+        resource
+    ) {
+
+        if (
+            !records.length
+        ) {
+
+            content.innerHTML = `
+                <div class="empty">
+                    No ${escapeHtml(
+                        resource
+                    )} records found.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const keys =
+            Object.keys(
+                records[0]
+            )
+            .slice(
+                0,
+                8
+            );
+
+
+        const headers =
+            keys.map(
+                key =>
+                    `<th>${escapeHtml(
+                        key
+                            .replaceAll(
+                                "_",
+                                " "
+                            )
+                    )}</th>`
+            )
+            .join("");
+
+
+        const rows =
+            records.map(
+                record => {
+
+                    return `
+                        <tr>
+
+                            ${
+                                keys
+                                    .map(
+                                        key => {
+
+                                            const value =
+                                                record[
+                                                    key
+                                                ];
+
+                                            return `
+                                                <td>
+                                                    ${escapeHtml(
+                                                        value ??
+                                                        "—"
+                                                    )}
+                                                </td>
+                                            `;
+
+                                        }
+                                    )
+                                    .join("")
+                            }
+
+                        </tr>
+                    `;
+
+                }
+            ).join("");
+
+
+        content.innerHTML = `
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            ${headers}
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        ${rows}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================================================
+       MODERATE REPORT
+    ========================================================= */
+
+    async function moderateReportFromAdmin(
+        reportId,
+        action,
+        button
+    ) {
+
+        if (!reportId) {
+
+            alert(
+                "This report does not have a valid ID."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            action !== "resolve" &&
+            action !== "dismiss"
+        ) {
+
+            return;
+
+        }
+
+
+        const noteInput =
+            document.querySelector(
+                `.report-note[data-report-id="${CSS.escape(
+                    reportId
+                )}"]`
+            );
+
+
+        const note =
+            noteInput
+                ? noteInput.value.trim()
+                : "";
+
+
+        const actionName =
+            action === "resolve"
+                ? "resolve"
+                : "dismiss";
+
+
+        const confirmed =
+            confirm(
+                `Are you sure you want to ${actionName} this report?`
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        const actionButtons =
+            document.querySelectorAll(
+                `.report-action[data-report-id="${CSS.escape(
+                    reportId
+                )}"]`
+            );
+
+
+        actionButtons.forEach(
+            item => {
+
+                item.disabled =
+                    true;
+
+            }
+        );
+              const messageElement =
+            document.querySelector(
+                `.report-action-message[data-report-id="${CSS.escape(
+                    reportId
+                )}"]`
+            );
+
+
+        if (messageElement) {
+
+            messageElement.className =
+                "report-action-message info";
+
+            messageElement.textContent =
+                "Saving moderation decision...";
+
+        }
+
+
+        try {
+
+            const response =
+                await apiRequest(
+                    `/admin/reports/${encodeURIComponent(
+                        reportId
+                    )}/${action}`,
+                    {
+                        method: "POST",
+
+                        body: JSON.stringify({
+                            admin_notes:
+                                note
+                        })
+                    }
+                );
+
+
+            if (messageElement) {
+
+                messageElement.className =
+                    "report-action-message success";
+
+                messageElement.textContent =
+                    response.message ||
+                    "Report updated successfully.";
+
+            }
+
+
+            await loadStats();
+
+
+            await loadResource(
+                "reports"
+            );
+
+
+        } catch (error) {
+
+            actionButtons.forEach(
+                item => {
+
+                    item.disabled =
+                        false;
+
+                }
+            );
+
+
+            if (messageElement) {
+
+                messageElement.className =
+                    "report-action-message error";
+
+                messageElement.textContent =
+                    error.message ||
+                    "Unable to update report.";
+
+            }
+
+        }
+
+    }
+
+
+    /* =========================================================
+       REPORTS
+    ========================================================= */
+
+    function renderReports(
+        reports
+    ) {
+
+        if (
+            !reports.length
+        ) {
+
+            content.innerHTML = `
+                <div class="empty">
+                    No reports found.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const rows =
+            reports.map(
+                report => {
+
+                    const status =
+                        String(
+                            report.status ||
+                            "pending"
+                        ).toLowerCase();
+
+
+                    const reportId =
+                        report.id ||
+                        report.report_id ||
+                        "";
+
+
+                    const businessId =
+                        report.business_id ||
+                        "";
+
+
+                    const reporterName =
+                        report.reporter_name ||
+                        "Anonymous";
+
+
+                    const reporterEmail =
+                        report.reporter_email ||
+                        "—";
+
+
+                    const reason =
+                        report.reason ||
+                        "—";
+
+
+                    const details =
+                        report.details ||
+                        report.message ||
+                        "—";
+
+
+                    const adminNotes =
+                        report.admin_notes ||
+                        "—";
+
+
+                    const createdAt =
+                        report.created_at ||
+                        "";
+
+
+                    const businessLink =
+                        businessId
+                            ? `
+                                <a
+                                    href="business.html?id=${encodeURIComponent(
+                                        businessId
+                                    )}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style="
+                                        color:#d4af37;
+                                        text-decoration:none;
+                                        font-weight:700;
+                                    "
+                                >
+                                    Open Business
+                                </a>
+                            `
+                            : `
+                                <span class="muted">
+                                    —
+                                </span>
+                            `;
+
+
+                    const isPending =
+                        status === "pending";
+
+
+                    const moderationControls =
+                        isPending
+                            ? `
+                                <div
+                                    class="report-moderation"
+                                >
+
+                                    <textarea
+                                        class="report-note"
+                                        data-report-id="${escapeAttribute(
+                                            reportId
+                                        )}"
+                                        maxlength="2000"
+                                        placeholder="Optional admin note..."
+                                    ></textarea>
+
+
+                                    <div
+                                        class="report-actions"
+                                    >
+
+                                        <button
+                                            type="button"
+                                            class="action-btn resolve report-action"
+                                            data-report-id="${escapeAttribute(
+                                                reportId
+                                            )}"
+                                            onclick="moderateReportFromAdmin(
+                                                '${escapeAttribute(
+                                                    reportId
+                                                )}',
+                                                'resolve',
+                                                this
+                                            )"
+                                        >
+                                            Resolve
+                                        </button>
+
+
+                                        <button
+                                            type="button"
+                                            class="action-btn dismiss report-action"
+                                            data-report-id="${escapeAttribute(
+                                                reportId
+                                            )}"
+                                            onclick="moderateReportFromAdmin(
+                                                '${escapeAttribute(
+                                                    reportId
+                                                )}',
+                                                'dismiss',
+                                                this
+                                            )"
+                                        >
+                                            Dismiss
+                                        </button>
+
+                                    </div>
+
+
+                                    <div
+                                        class="report-action-message"
+                                        data-report-id="${escapeAttribute(
+                                            reportId
+                                        )}"
+                                    ></div>
+
+                                </div>
+                            `
+                            : `
+                                <div
+                                    class="muted"
+                                    style="
+                                        line-height:1.5;
+                                    "
+                                >
+                                    Report already
+                                    ${escapeHtml(
+                                        status
+                                    )}.
+                                </div>
+                            `;
+
+
+                    return `
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        reason
+                                    )}
+                                </strong>
+
+                                <div
+                                    class="claim-id"
+                                    style="
+                                        margin-top:6px;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        reportId
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <div
+                                    class="business-id"
+                                >
+                                    ${escapeHtml(
+                                        businessId
+                                    )}
+                                </div>
+
+                                <div
+                                    style="
+                                        margin-top:8px;
+                                    "
+                                >
+                                    ${businessLink}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        reporterName
+                                    )}
+                                </strong>
+
+                                <div
+                                    class="muted"
+                                    style="
+                                        margin-top:5px;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        reporterEmail
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <div
+                                    style="
+                                        max-width:350px;
+                                        white-space:normal;
+                                        line-height:1.5;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        details
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <span
+                                    class="status ${escapeAttribute(
+                                        status
+                                    )}"
+                                >
+                                    ${escapeHtml(
+                                        status
+                                    )}
+                                </span>
+
+                                ${
+                                    createdAt
+                                        ? `
+                                            <div
+                                                class="muted"
+                                                style="
+                                                    margin-top:7px;
+                                                    font-size:11px;
+                                                "
+                                            >
+                                                ${escapeHtml(
+                                                    createdAt
+                                                )}
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+                            </td>
+
+
+                            <td>
+
+                                <div
+                                    style="
+                                        max-width:220px;
+                                        white-space:normal;
+                                        color:#aaa;
+                                        line-height:1.5;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        adminNotes
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                ${moderationControls}
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            ).join("");
+
+
+        content.innerHTML = `
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Report
+                            </th>
+
+                            <th>
+                                Business
+                            </th>
+
+                            <th>
+                                Reporter
+                            </th>
+
+                            <th>
+                                Details
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Admin Notes
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        ${rows}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================================================
+       CLAIMS
+    ========================================================= */
+
+    function renderClaims(
+        claims
+    ) {
+
+        if (
+            !claims.length
+        ) {
+
+            content.innerHTML = `
+                <div class="empty">
+                    No claims found.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const rows =
+            claims.map(
+                claim => {
+
+                    const status =
+                        String(
+                            claim.status ||
+                            "pending"
+                        ).toLowerCase();
+
+
+                    const claimId =
+                        claim.id ||
+                        claim.claim_id ||
+                        "";
+
+
+                    const businessId =
+                        claim.business_id ||
+                        claim.business?.id ||
+                        "";
+
+
+                    const businessName =
+                        claim.business?.business_name ||
+                        claim.business_name ||
+                        businessId ||
+                        "—";
+
+
+                    const claimant =
+                        claim.claimant_name ||
+                        claim.name ||
+                        claim.claimant_email ||
+                        "—";
+
+
+                    const claimantEmail =
+                        claim.claimant_email ||
+                        claim.email ||
+                        "—";
+
+
+                    const notes =
+                        claim.reviewer_notes ||
+                        claim.admin_notes ||
+                        claim.notes ||
+                        claim.message ||
+                        claim.evidence_details ||
+                        "—";
+
+
+                    const verified =
+                        status === "verified" ||
+                        Boolean(
+                            claim.verified
+                        ) ||
+                        Boolean(
+                            claim.email_verified
+                        );
+
+
+                    return `
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        claimant
+                                    )}
+                                </strong>
+
+                                <div
+                                    class="claim-id"
+                                    style="
+                                        margin-top:6px;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        claimId
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        businessName
+                                    )}
+                                </strong>
+
+                                <div
+                                    class="business-id"
+                                    style="
+                                        margin-top:6px;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        businessId
+                                    )}
+                                </div>
+
+
+                                ${
+                                    businessId
+                                        ? `
+                                            <div
+                                                style="
+                                                    margin-top:8px;
+                                                "
+                                            >
+
+                                                <a
+                                                    href="https://nearafrica.pages.dev/business.html?id=${encodeURIComponent(
+                                                        businessId
+                                                    )}"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    style="
+                                                        color:#d4af37;
+                                                        text-decoration:none;
+                                                        font-weight:700;
+                                                    "
+                                                >
+                                                    Open Business
+                                                </a>
+
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+                            </td>
+
+
+                            <td>
+
+                                ${escapeHtml(
+                                    claimantEmail
+                                )}
+
+                            </td>
+
+
+                            <td>
+
+                                <span
+                                    class="status ${escapeAttribute(
+                                        status
+                                    )}"
+                                >
+                                    ${escapeHtml(
+                                        status
+                                    )}
+                                </span>
+
+
+                                ${
+                                    verified
+                                        ? `
+                                            <div
+                                                style="
+                                                    margin-top:6px;
+                                                    font-size:12px;
+                                                    opacity:.75;
+                                                "
+                                            >
+                                                Email verified
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+                            </td>
+
+
+                            <td>
+
+                                <div
+                                    style="
+                                        max-width:300px;
+                                        white-space:normal;
+                                        line-height:1.5;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        notes
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                ${
+                                    status === "verified"
+                                        ? `
+
+                                            <div
+                                                style="
+                                                    display:flex;
+                                                    gap:8px;
+                                                    flex-wrap:wrap;
+                                                "
+                                            >
+
+                                                <button
+                                                    type="button"
+                                                    class="claim-action"
+                                                    data-claim-id="${escapeAttribute(
+                                                        claimId
+                                                    )}"
+                                                    data-action="approve"
+                                                >
+                                                    Approve
+                                                </button>
+
+
+                                                <button
+                                                    type="button"
+                                                    class="claim-action"
+                                                    data-claim-id="${escapeAttribute(
+                                                        claimId
+                                                    )}"
+                                                    data-action="reject"
+                                                >
+                                                    Reject
+                                                </button>
+
+                                            </div>
+
+                                        `
+                                        : status === "pending"
+                                        ? `
+
+                                            <button
+                                                type="button"
+                                                class="claim-action"
+                                                data-claim-id="${escapeAttribute(
+                                                    claimId
+                                                )}"
+                                                data-action="reject"
+                                            >
+                                                Reject
+                                            </button>
+
+                                        `
+                                        : `
+                                            —
+                                        `
+                                }
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            ).join("");
+
+
+        content.innerHTML = `
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Claimant
+                            </th>
+
+                            <th>
+                                Business
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Notes
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        ${rows}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+
+        content
+            .querySelectorAll(
+                ".claim-action"
+            )
+            .forEach(
+                button => {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            const claimId =
+                                button.dataset.claimId;
+
+                            const action =
+                                button.dataset.action;
+
+
+                            moderateClaimFromAdmin(
+                                claimId,
+                                action,
+                                button
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* =========================================================
+       SUBMISSIONS
+    ========================================================= */
+
+    async function moderateSubmissionFromAdmin(
+        submissionId,
+        action,
+        button
+    ) {
+
+        if (!submissionId) {
+
+            alert(
+                "This submission does not have a valid ID."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            action !== "approve" &&
+            action !== "reject"
+        ) {
+
+            return;
+
+        }
+
+
+        const actionButtons =
+            document.querySelectorAll(
+                `.submission-action[data-submission-id="${CSS.escape(
+                    String(submissionId)
+                )}"]`
+            );
+
+
+        let reason = "";
+
+
+        if (
+            action === "reject"
+        ) {
+
+            reason =
+                prompt(
+                    "Why are you rejecting this submission? (Optional)"
+                );
+
+            if (
+                reason === null
+            ) {
+
+                return;
+
+            }
+
+            reason =
+                reason.trim();
+
+        }
+
+
+        const confirmed =
+            confirm(
+                action === "approve"
+                    ? "Approve this business submission?"
+                    : "Reject this business submission?"
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        actionButtons.forEach(
+            item => {
+
+                item.disabled =
+                    true;
+
+            }
+        );
+
+
+        try {
+
+            const response =
+                await apiRequest(
+                    `/admin/submissions/${encodeURIComponent(
+                        submissionId
+                    )}/${action}`,
+                    {
+                        method: "POST",
+
+                        body:
+                            JSON.stringify(
+                                action === "reject"
+                                    ? {
+                                        reason:
+                                            reason
+                                    }
+                                    : {}
+                            )
+                    }
+                );
+
+
+            alert(
+                response.message ||
+                (
+                    action === "approve"
+                        ? "Submission approved successfully."
+                        : "Submission rejected successfully."
+                )
+            );
+
+
+            await loadStats();
+
+
+            await loadResource(
+                "submissions"
+            );
+
+
+        } catch (error) {
+
+            actionButtons.forEach(
+                item => {
+
+                    item.disabled =
+                        false;
+
+                }
+            );
+
+
+            alert(
+                error.message ||
+                "Unable to update submission."
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       RENDER SUBMISSIONS
+    ========================================================= */
+
+    function renderSubmissions(
+        submissions
+    ) {
+
+        if (
+            !Array.isArray(
+                submissions
+            ) ||
+            !submissions.length
+        ) {
+
+            content.innerHTML = `
+                <div class="empty">
+                    No submissions found.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const rows =
+            submissions.map(
+                submission => {
+
+                    const status =
+                        String(
+                            submission.status ||
+                            "pending"
+                        )
+                            .trim()
+                            .toLowerCase();
+
+
+                    const id =
+                        submission.id ||
+                        submission.submission_id ||
+                        "";
+
+
+                    const name =
+                        submission.name ||
+                        submission.business_name ||
+                        "—";
+
+
+                    const category =
+                        submission.category ||
+                        "—";
+
+
+                    const city =
+                        submission.city ||
+                        "—";
+
+
+                    const state =
+                        submission.state ||
+                        "—";
+
+
+                    const country =
+                        submission.country ||
+                        "Nigeria";
+
+
+                    const email =
+                        submission.email ||
+                        "—";
+
+
+                    const phone =
+                        submission.phone ||
+                        "—";
+
+
+                    let actions = `
+                        <span class="muted">
+                            No actions
+                        </span>
+                    `;
+
+
+                    if (
+                        status === "pending" &&
+                        id
+                    ) {
+
+                        actions = `
+
+                            <div
+                                class="actions"
+                            >
+
+                                <button
+                                    type="button"
+                                    class="action-btn primary submission-action"
+                                    data-submission-id="${escapeAttribute(
+                                        String(id)
+                                    )}"
+                                    onclick="moderateSubmissionFromAdmin(
+                                        '${escapeAttribute(
+                                            String(id)
+                                        )}',
+                                        'approve',
+                                        this
+                                    )"
+                                >
+                                    Approve
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="action-btn dismiss submission-action"
+                                    data-submission-id="${escapeAttribute(
+                                        String(id)
+                                    )}"
+                                    onclick="moderateSubmissionFromAdmin(
+                                        '${escapeAttribute(
+                                            String(id)
+                                        )}',
+                                        'reject',
+                                        this
+                                    )"
+                                >
+                                    Reject
+                                </button>
+
+                            </div>
+
+                        `;
+
+                    }
+
+
+                    return `
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        name
+                                    )}
+                                </strong>
+
+
+                                ${
+                                    id
+                                        ? `
+                                            <div
+                                                class="claim-id"
+                                                style="
+                                                    margin-top:6px;
+                                                    word-break:break-all;
+                                                "
+                                            >
+                                                ID:
+                                                ${escapeHtml(
+                                                    String(id)
+                                                )}
+                                            </div>
+                                        `
+                                        : `
+                                            <div
+                                                class="muted"
+                                                style="margin-top:6px;"
+                                            >
+                                                No submission ID
+                                            </div>
+                                        `
+                                }
+
+                            </td>
+
+
+                            <td>
+                                ${escapeHtml(
+                                    category
+                                )}
+                            </td>
+
+
+                            <td>
+
+                                ${escapeHtml(
+                                    city
+                                )}
+
+                                <div
+                                    class="muted"
+                                    style="
+                                        margin-top:4px;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        state
+                                    )},
+                                    ${escapeHtml(
+                                        country
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                ${
+                                    email !== "—"
+                                        ? `
+                                            <div>
+                                                ${escapeHtml(
+                                                    email
+                                                )}
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+
+                                ${
+                                    phone !== "—"
+                                        ? `
+                                            <div
+                                                class="muted"
+                                                style="
+                                                    margin-top:5px;
+                                                "
+                                            >
+                                                ${escapeHtml(
+                                                    phone
+                                                )}
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+                            </td>
+
+
+                            <td>
+
+                                <span
+                                    class="status ${escapeAttribute(
+                                        status
+                                    )}"
+                                >
+                                    ${escapeHtml(
+                                        status
+                                    )}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+                                ${actions}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            ).join("");
+
+
+        content.innerHTML = `
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Business
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Location
+                            </th>
+
+                            <th>
+                                Contact
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+                        ${rows}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================================================
+       TABS
+    ========================================================= */
+
+    document
+        .querySelectorAll(
+            ".tab"
+        )
+        .forEach(
+            tab => {
+
+                tab.addEventListener(
+                    "click",
+                    async () => {
+
+                        document
+                            .querySelectorAll(
+                                ".tab"
+                            )
+                            .forEach(
+                                item =>
+                                    item.classList.remove(
+                                        "active"
+                                    )
+                            );
+
+
+                        tab.classList.add(
+                            "active"
+                        );
+
+
+                        const resource =
+                            tab.dataset.resource;
+
+
+                        await loadResource(
+                            resource
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+    /* =========================================================
+       REFRESH
+    ========================================================= */
+
+    refreshBtn.addEventListener(
+        "click",
+        async () => {
+
+            refreshBtn.disabled =
+                true;
+
+            refreshBtn.textContent =
+                "Refreshing...";
+
+
+            try {
+
+                await loadStats();
+
+
+                await loadResource(
+                    currentResource
+                );
+
+            } finally {
+
+                refreshBtn.disabled =
+                    false;
+
+                refreshBtn.textContent =
+                    "Refresh";
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       INITIALIZATION
+    ========================================================= */
+
+    async function initialize() {
+
+        if (!adminKey) {
+
+            loginScreen.style.display =
+                "flex";
+
+            adminApp.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        try {
+
+            /*
+             * Validate saved key against
+             * /admin, not /admin/stats.
+             */
+
+            await apiRequest(
+                "/admin"
+            );
+
+
+            loginScreen.style.display =
+                "none";
+
+            adminApp.style.display =
+                "block";
+
+
+            /*
+             * Stats cannot lock the user
+             * out anymore.
+             */
+
+            await loadStats();
+
+
+            await loadResource(
+                currentResource
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "NearAfrica admin initialization failed:",
+                error
+            );
+
+
+            /*
+             * Only discard the saved key
+             * when authentication failed.
+             */
+
+            if (
+                error.status === 401 ||
+                error.status === 403
+            ) {
+
+                sessionStorage.removeItem(
+                    "nearafrica_admin_key"
+                );
+
+                adminKey = "";
+
+                loginScreen.style.display =
+                    "flex";
+
+                adminApp.style.display =
+                    "none";
+
+                loginError.textContent =
+                    "Your saved admin key is no longer valid.";
+
+            } else {
+
+                /*
+                 * Keep the dashboard available
+                 * for non-authentication errors.
+                 */
+
+                loginScreen.style.display =
+                    "none";
+
+                adminApp.style.display =
+                    "block";
+
+
+                await loadResource(
+                    currentResource
+                );
+
+            }
+
+        }
+
+    }
+
+
+    initialize();
+
+</script>
+
+</body>
+</html>
