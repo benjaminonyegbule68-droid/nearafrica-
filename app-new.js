@@ -1900,6 +1900,91 @@
   return false;
 }
 
+  function syncUrl() {
+  if (!isExplorePage()) {
+    return;
+  }
+
+  try {
+    const url =
+      new URL(
+        window.location.href
+      );
+
+    const entries = [
+      [
+        "q",
+        App.currentQuery
+      ],
+      [
+        "category",
+        App.currentCategory
+      ],
+      [
+        "state",
+        App.currentState
+      ],
+      [
+        "city",
+        App.currentCity
+      ]
+    ];
+
+    entries.forEach(
+      function (
+        [
+          key,
+          value
+        ]
+      ) {
+        if (clean(value)) {
+          url.searchParams.set(
+            key,
+            value
+          );
+        } else {
+          url.searchParams.delete(
+            key
+          );
+        }
+      }
+    );
+
+    if (App.nearbyMode) {
+      url.searchParams.set(
+        "nearby",
+        "1"
+      );
+
+      url.searchParams.set(
+        "radius",
+        String(
+          App.radiusKm
+        )
+      );
+    } else {
+      url.searchParams.delete(
+        "nearby"
+      );
+
+      url.searchParams.delete(
+        "radius"
+      );
+    }
+
+    window.history.replaceState(
+      {},
+      "",
+      url.toString()
+    );
+
+  } catch (error) {
+    console.warn(
+      "NearAfrica URL sync failed:",
+      error
+    );
+  }
+}
 
   /* ============================================================
      FILTERING
