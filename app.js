@@ -11,6 +11,8 @@
  * - Nigeria country/state/city filtering
  * - Category filtering
  * - Nearby location search
+ * - Browser geolocation
+ * - Location persistence
  * - Distance calculation
  * - Sorting
  * - Pagination
@@ -25,11 +27,14 @@
  * - Homepage search redirects to Explore.
  * - Explore only initializes its business engine when
  *   the Explore results container exists.
+ * - Browser location is used only for nearby calculations.
+ * - Raw coordinates are never displayed in the UI.
  * ============================================================
  */
 
 (function () {
   "use strict";
+
 
   /* ==========================================================
      APPLICATION STATE
@@ -310,10 +315,6 @@
         raw.lon
       );
 
-    /*
-     * Prefer the business logo when available,
-     * then the normal image.
-     */
     business.logo_url =
       cleanText(
         raw.logo_url ||
@@ -329,21 +330,20 @@
         business.logo_url
       );
 
-    /*
-     * Some API responses may include an images array.
-     */
     if (
       !business.image_url &&
       Array.isArray(raw.images) &&
       raw.images.length
     ) {
-      const firstImage = raw.images[0];
+      const firstImage =
+        raw.images[0];
 
       if (
         typeof firstImage === "string"
       ) {
         business.image_url =
           firstImage;
+
       } else if (
         firstImage &&
         typeof firstImage === "object"
@@ -571,11 +571,6 @@
         );
       }
 
-      /*
-       * A JSON response with status:error should
-       * also be treated as an API failure even if
-       * the HTTP status happens to be 200.
-       */
       if (
         payload &&
         payload.status === "error"
@@ -930,10 +925,6 @@
       App.allBusinesses.slice();
 
 
-    /*
-     * Country
-     */
-
     businesses =
       businesses.filter(
         function (business) {
@@ -944,10 +935,6 @@
         }
       );
 
-
-    /*
-     * Search
-     */
 
     businesses =
       businesses.filter(
@@ -960,10 +947,6 @@
       );
 
 
-    /*
-     * Category
-     */
-
     businesses =
       businesses.filter(
         function (business) {
@@ -974,10 +957,6 @@
         }
       );
 
-
-    /*
-     * State
-     */
 
     businesses =
       businesses.filter(
@@ -990,10 +969,6 @@
       );
 
 
-    /*
-     * City
-     */
-
     businesses =
       businesses.filter(
         function (business) {
@@ -1005,19 +980,11 @@
       );
 
 
-    /*
-     * Distances
-     */
-
     businesses =
       addDistances(
         businesses
       );
 
-
-    /*
-     * Nearby mode
-     */
 
     if (App.nearbyMode) {
       const radiusKm =
@@ -1034,10 +1001,6 @@
         );
     }
 
-
-    /*
-     * Sorting
-     */
 
     const sort =
       getSortValue();
@@ -1117,11 +1080,6 @@
       );
 
     } else {
-      /*
-       * Default:
-       * Featured → Verified → Claimed → Name
-       */
-
       businesses.sort(
         function (a, b) {
           if (
@@ -1968,12 +1926,49 @@
 
 
   /* ==========================================================
+     LOCATION VALIDATION
+  ========================================================== */
+
+  function isValidCoordinates(
+    latitude,
+    longitude
+  ) {
+    return (
+      Number.isFinite(
+        latitude
+      ) &&
+      Number.isFinite(
+        longitude
+      ) &&
+      latitude >= -90 &&
+      latitude <= 90 &&
+      longitude >= -180 &&
+      longitude <= 180
+    );
+  }
+
+
+  /* ==========================================================
      BROWSER LOCATION
   ========================================================== */
 
   function getBrowserLocation() {
     return new Promise(
       function (resolve, reject) {
+
+        if (
+          !window.isSecureContext
+        ) {
+          reject(
+            new Error(
+              "Location access requires a secure HTTPS connection."
+            )
+          );
+
+          return;
+        }
+
+
         if (
           !navigator.geolocation
         ) {
@@ -1988,7 +1983,23 @@
 
 
         navigator.geolocation.getCurrentPosition(
+
           function (position) {
+
+            if (
+              !position ||
+              !position.coords
+            ) {
+              reject(
+                new Error(
+                  "Your location could not be determined."
+                )
+              );
+
+              return;
+            }
+
+
             const latitude =
               Number(
                 position.coords.latitude
@@ -1999,11 +2010,15 @@
                 position.coords.longitude
               );
 
+            const accuracy =
+              Number(
+                position.coords.accuracy
+              );
+
+
             if (
-              !Number.isFinite(
-                latitude
-              ) ||
-              !Number.isFinite(
+              !isValidCoordinates(
+                latitude,
                 longitude
               )
             ) {
@@ -2016,52 +2031,73 @@
               return;
             }
 
+
             resolve({
-              latitude,
-              longitude,
+              latitude:
+                latitude,
+
+              longitude:
+                longitude,
 
               accuracy:
-                Number(
-                  position.coords.accuracy
-                ) || null
+                Number.isFinite(
+                  accuracy
+                )
+                  ? accuracy
+                  : null
             });
           },
 
+
           function (error) {
+
             let message =
               "Unable to get your location.";
 
+
             if (
               error &&
-              error.code === 1
+              error.code ===
+              1
             ) {
               message =
-                "Location permission was denied.";
+                "Location permission was denied. Allow location access for NearAfrica and try again.";
 
             } else if (
               error &&
-              error.code === 2
+              error.code ===
+              2
             ) {
               message =
-                "Your location could not be determined.";
+                "Your device could not determine your location. Check that location services are enabled.";
 
             } else if (
               error &&
-              error.code === 3
+              error.code ===
+              3
             ) {
               message =
-                "Location request timed out.";
+                "Location request timed out. Please try again.";
             }
 
+
             reject(
-              new Error(message)
+              new Error(
+                message
+              )
             );
           },
 
+
           {
-            enableHighAccuracy: true,
-            timeout: 15000,
-            maximumAge: 300000
+            enableHighAccuracy:
+              false,
+
+            timeout:
+              20000,
+
+            maximumAge:
+              60000
           }
         );
       }
@@ -2069,127 +2105,43 @@
   }
 
 
-  async function enableNearbyLocation() {
+  /* ==========================================================
+     LOCATION STORAGE
+  ========================================================== */
+
+  function saveStoredLocation(
+    location
+  ) {
     if (
-      App.locationLoading
+      !location ||
+      !isValidCoordinates(
+        Number(location.latitude),
+        Number(location.longitude)
+      )
     ) {
       return;
     }
 
-    App.locationLoading =
-      true;
-
-    App.nearbyMode =
-      true;
-
-    updateLocationButtons();
-
-    updateLocationStatus(
-      "Requesting your location...",
-      ""
-    );
-
     try {
-      const location =
-        await getBrowserLocation();
+      sessionStorage.setItem(
+        "nearafrica_user_location",
+        JSON.stringify({
+          latitude:
+            Number(
+              location.latitude
+            ),
 
-      App.userLocation =
-        location;
-
-
-      try {
-        sessionStorage.setItem(
-          "nearafrica_user_location",
-          JSON.stringify({
-            latitude:
-              location.latitude,
-
-            longitude:
+          longitude:
+            Number(
               location.longitude
-          })
-        );
-      } catch (storageError) {
-        /*
-         * Session storage is optional.
-         */
-      }
-
-
-      updateLocationStatus(
-        "Using your current location.",
-        "success"
-      );
-
-      updateLocationButtons();
-
-      App.currentPage =
-        1;
-
-      syncUrlFromFilters();
-
-      filterBusinesses();
-
-    } catch (error) {
-      console.error(
-        "NearAfrica location error:",
-        error
-      );
-
-      App.userLocation =
-        null;
-
-      App.nearbyMode =
-        false;
-
-      updateLocationStatus(
-        error.message ||
-        "Unable to use your location.",
-        "error"
-      );
-
-      updateLocationButtons();
-
-      filterBusinesses();
-
-    } finally {
-      App.locationLoading =
-        false;
-
-      updateLocationButtons();
-    }
-  }
-
-
-  function clearNearbyLocation() {
-    App.userLocation =
-      null;
-
-    App.nearbyMode =
-      false;
-
-    try {
-      sessionStorage.removeItem(
-        "nearafrica_user_location"
+            )
+        })
       );
     } catch (error) {
       /*
-       * Ignore storage errors.
+       * Storage is optional.
        */
     }
-
-    updateLocationStatus(
-      "Search by area or use your current location.",
-      ""
-    );
-
-    updateLocationButtons();
-
-    App.currentPage =
-      1;
-
-    syncUrlFromFilters();
-
-    filterBusinesses();
   }
 
 
@@ -2204,8 +2156,10 @@
         return false;
       }
 
+
       const parsed =
         JSON.parse(raw);
+
 
       const latitude =
         Number(
@@ -2217,23 +2171,189 @@
           parsed.longitude
         );
 
+
       if (
-        !Number.isFinite(latitude) ||
-        !Number.isFinite(longitude)
+        !isValidCoordinates(
+          latitude,
+          longitude
+        )
       ) {
+        sessionStorage.removeItem(
+          "nearafrica_user_location"
+        );
+
         return false;
       }
 
+
       App.userLocation = {
-        latitude,
-        longitude
+        latitude:
+          latitude,
+
+        longitude:
+          longitude
       };
+
 
       return true;
 
     } catch (error) {
       return false;
     }
+  }
+
+
+  function clearStoredLocation() {
+    try {
+      sessionStorage.removeItem(
+        "nearafrica_user_location"
+      );
+    } catch (error) {
+      /*
+       * Ignore storage errors.
+       */
+    }
+  }
+
+
+  /* ==========================================================
+     NEARBY LOCATION
+  ========================================================== */
+
+  async function enableNearbyLocation() {
+
+    if (
+      App.locationLoading
+    ) {
+      return;
+    }
+
+
+    App.locationLoading =
+      true;
+
+
+    updateLocationButtons();
+
+
+    updateLocationStatus(
+      "Requesting your location...",
+      ""
+    );
+
+
+    try {
+
+      const location =
+        await getBrowserLocation();
+
+
+      App.userLocation =
+        location;
+
+
+      App.nearbyMode =
+        true;
+
+
+      saveStoredLocation(
+        location
+      );
+
+
+      updateLocationStatus(
+        "Using your current location.",
+        "success"
+      );
+
+
+      updateLocationButtons();
+
+
+      App.currentPage =
+        1;
+
+
+      syncUrlFromFilters();
+
+
+      filterBusinesses();
+
+
+    } catch (error) {
+
+      console.error(
+        "NearAfrica location error:",
+        error
+      );
+
+
+      App.userLocation =
+        null;
+
+
+      App.nearbyMode =
+        false;
+
+
+      clearStoredLocation();
+
+
+      updateLocationStatus(
+        error &&
+        error.message
+          ? error.message
+          : "Unable to use your location.",
+        "error"
+      );
+
+
+      updateLocationButtons();
+
+
+      filterBusinesses();
+
+    } finally {
+
+      App.locationLoading =
+        false;
+
+
+      updateLocationButtons();
+    }
+  }
+
+
+  function clearNearbyLocation() {
+
+    App.userLocation =
+      null;
+
+
+    App.nearbyMode =
+      false;
+
+
+    clearStoredLocation();
+
+
+    updateLocationStatus(
+      "Search by area or use your current location.",
+      ""
+    );
+
+
+    updateLocationButtons();
+
+
+    App.currentPage =
+      1;
+
+
+    syncUrlFromFilters();
+
+
+    filterBusinesses();
   }
 
 
@@ -2288,12 +2408,14 @@
 
 
   function syncUrlFromFilters() {
+
     if (
       !window.history ||
       !window.history.replaceState
     ) {
       return;
     }
+
 
     const url =
       new URL(
@@ -2377,7 +2499,10 @@
     }
 
 
-    if (App.nearbyMode) {
+    if (
+      App.nearbyMode &&
+      App.userLocation
+    ) {
       url.searchParams.set(
         "nearby",
         "1"
@@ -2389,6 +2514,7 @@
           getRadiusValue()
         )
       );
+
     } else {
       url.searchParams.delete(
         "nearby"
@@ -2413,12 +2539,14 @@
   ========================================================== */
 
   function applyUrlParameters() {
+
     const params =
       readUrlParameters();
 
 
     const searchInput =
       $("searchInput");
+
 
     if (
       searchInput &&
@@ -2432,10 +2560,12 @@
     const categoryFilter =
       $("categoryFilter");
 
+
     if (
       categoryFilter &&
       params.category
     ) {
+
       const optionExists =
         Array.from(
           categoryFilter.options
@@ -2452,6 +2582,7 @@
           }
         );
 
+
       if (optionExists) {
         categoryFilter.value =
           params.category;
@@ -2462,6 +2593,7 @@
     const countryFilter =
       $("countryFilter");
 
+
     const countryFilterSecondary =
       $("countryFilterSecondary");
 
@@ -2471,7 +2603,10 @@
         "Nigeria";
     }
 
-    if (countryFilterSecondary) {
+
+    if (
+      countryFilterSecondary
+    ) {
       countryFilterSecondary.value =
         "Nigeria";
     }
@@ -2479,6 +2614,7 @@
 
     const stateFilter =
       $("stateFilter");
+
 
     const cityFilter =
       $("cityFilter");
@@ -2488,6 +2624,7 @@
       stateFilter &&
       params.state
     ) {
+
       const stateExists =
         Array.from(
           stateFilter.options
@@ -2504,9 +2641,12 @@
           }
         );
 
+
       if (stateExists) {
+
         stateFilter.value =
           params.state;
+
 
         populateCitiesForState(
           params.state
@@ -2519,6 +2659,7 @@
       cityFilter &&
       params.city
     ) {
+
       const cityExists =
         Array.from(
           cityFilter.options
@@ -2535,6 +2676,7 @@
           }
         );
 
+
       if (cityExists) {
         cityFilter.value =
           params.city;
@@ -2545,10 +2687,12 @@
     const radiusFilter =
       $("radiusFilter");
 
+
     if (
       radiusFilter &&
       params.radius
     ) {
+
       const radiusExists =
         Array.from(
           radiusFilter.options
@@ -2561,6 +2705,7 @@
           }
         );
 
+
       if (radiusExists) {
         radiusFilter.value =
           String(
@@ -2571,15 +2716,27 @@
 
 
     if (params.nearby) {
+
       App.nearbyMode =
         true;
 
-      restoreStoredLocation();
 
-      if (App.userLocation) {
+      const restored =
+        restoreStoredLocation();
+
+
+      if (restored) {
+
         updateLocationStatus(
           "Using your current location.",
           "success"
+        );
+
+      } else {
+
+        updateLocationStatus(
+          "Use My Location to find businesses near you.",
+          ""
         );
       }
     }
@@ -2591,19 +2748,23 @@
   ========================================================== */
 
   function populateStates() {
+
     const stateFilter =
       $("stateFilter");
+
 
     if (!stateFilter) {
       return;
     }
+
 
     const locations =
       window.NearAfricaNigeriaLocations ||
       {};
 
 
-    stateFilter.innerHTML = "";
+    stateFilter.innerHTML =
+      "";
 
 
     const all =
@@ -2611,11 +2772,14 @@
         "option"
       );
 
+
     all.value =
       "";
 
+
     all.textContent =
       "All states / FCT";
+
 
     stateFilter.appendChild(
       all
@@ -2634,16 +2798,20 @@
       )
       .forEach(
         function (state) {
+
           const option =
             document.createElement(
               "option"
             );
 
+
           option.value =
             state;
 
+
           option.textContent =
             state;
+
 
           stateFilter.appendChild(
             option
@@ -2656,34 +2824,44 @@
   function populateCitiesForState(
     state
   ) {
+
     const cityFilter =
       $("cityFilter");
+
 
     if (!cityFilter) {
       return;
     }
 
-    cityFilter.innerHTML = "";
+
+    cityFilter.innerHTML =
+      "";
 
 
     if (!state) {
+
       const option =
         document.createElement(
           "option"
         );
 
+
       option.value =
         "";
 
+
       option.textContent =
         "Select a state first";
+
 
       cityFilter.appendChild(
         option
       );
 
+
       cityFilter.disabled =
         true;
+
 
       return;
     }
@@ -2692,6 +2870,7 @@
     const locations =
       window.NearAfricaNigeriaLocations ||
       {};
+
 
     const cities =
       Array.isArray(
@@ -2706,14 +2885,18 @@
         "option"
       );
 
+
     all.value =
       "";
+
 
     all.textContent =
       "All cities / areas";
 
+
     cityFilter.appendChild(
-      all );
+      all
+    );
 
 
     const existing =
@@ -2722,17 +2905,21 @@
 
     cities.forEach(
       function (city) {
+
         const value =
           cleanText(city);
+
 
         if (!value) {
           return;
         }
 
+
         const key =
           normalizeSearchText(
             value
           );
+
 
         if (
           existing.has(key)
@@ -2740,18 +2927,23 @@
           return;
         }
 
+
         existing.add(key);
+
 
         const option =
           document.createElement(
             "option"
           );
 
+
         option.value =
           value;
 
+
         option.textContent =
           value;
+
 
         cityFilter.appendChild(
           option
@@ -2759,11 +2951,6 @@
       }
     );
 
-
-    /*
-     * Add real API cities that are not already
-     * present in the base Nigeria location list.
-     */
 
     App.allBusinesses
       .filter(
@@ -2784,10 +2971,12 @@
       .filter(Boolean)
       .forEach(
         function (city) {
+
           const key =
             normalizeSearchText(
               city
             );
+
 
           if (
             existing.has(key)
@@ -2795,18 +2984,23 @@
             return;
           }
 
+
           existing.add(key);
+
 
           const option =
             document.createElement(
               "option"
             );
 
+
           option.value =
             city;
 
+
           option.textContent =
             city;
+
 
           cityFilter.appendChild(
             option
@@ -2825,23 +3019,30 @@
   ========================================================== */
 
   function setupSearch() {
+
     const searchButton =
       $("searchButton");
+
 
     const searchInput =
       $("searchInput");
 
 
     if (searchButton) {
+
       searchButton.addEventListener(
         "click",
         function () {
+
           App.currentPage =
             1;
 
+
           syncUrlFromFilters();
 
+
           filterBusinesses();
+
 
           scrollToResults();
         }
@@ -2850,21 +3051,28 @@
 
 
     if (searchInput) {
+
       searchInput.addEventListener(
         "keydown",
         function (event) {
+
           if (
             event.key ===
             "Enter"
           ) {
+
             event.preventDefault();
+
 
             App.currentPage =
               1;
 
+
             syncUrlFromFilters();
 
+
             filterBusinesses();
+
 
             scrollToResults();
           }
@@ -2872,20 +3080,29 @@
       );
 
 
-      let timer = null;
+      let timer =
+        null;
+
 
       searchInput.addEventListener(
         "input",
         function () {
-          clearTimeout(timer);
+
+          clearTimeout(
+            timer
+          );
+
 
           timer =
             setTimeout(
               function () {
+
                 App.currentPage =
                   1;
 
+
                 syncUrlFromFilters();
+
 
                 filterBusinesses();
               },
@@ -2902,36 +3119,47 @@
   ========================================================== */
 
   function setupFilters() {
+
     const categoryFilter =
       $("categoryFilter");
+
 
     const countryFilter =
       $("countryFilter");
 
+
     const countryFilterSecondary =
       $("countryFilterSecondary");
+
 
     const stateFilter =
       $("stateFilter");
 
+
     const cityFilter =
       $("cityFilter");
 
+
     const sortFilter =
       $("sortFilter");
+
 
     const radiusFilter =
       $("radiusFilter");
 
 
     if (categoryFilter) {
+
       categoryFilter.addEventListener(
         "change",
         function () {
+
           App.currentPage =
             1;
 
+
           syncUrlFromFilters();
+
 
           filterBusinesses();
         }
@@ -2940,14 +3168,14 @@
 
 
     if (countryFilter) {
+
       countryFilter.addEventListener(
         "change",
         function () {
-          /*
-           * Nigeria-first launch.
-           */
+
           countryFilter.value =
             "Nigeria";
+
 
           if (
             countryFilterSecondary
@@ -2956,10 +3184,13 @@
               "Nigeria";
           }
 
+
           App.currentPage =
             1;
 
+
           syncUrlFromFilters();
+
 
           filterBusinesses();
         }
@@ -2970,21 +3201,27 @@
     if (
       countryFilterSecondary
     ) {
+
       countryFilterSecondary.addEventListener(
         "change",
         function () {
+
           countryFilterSecondary.value =
             "Nigeria";
+
 
           if (countryFilter) {
             countryFilter.value =
               "Nigeria";
           }
 
+
           App.currentPage =
             1;
 
+
           syncUrlFromFilters();
+
 
           filterBusinesses();
         }
@@ -2993,22 +3230,28 @@
 
 
     if (stateFilter) {
+
       stateFilter.addEventListener(
         "change",
         function () {
+
           populateCitiesForState(
             stateFilter.value
           );
+
 
           if (cityFilter) {
             cityFilter.value =
               "";
           }
 
+
           App.currentPage =
             1;
 
+
           syncUrlFromFilters();
+
 
           filterBusinesses();
         }
@@ -3017,13 +3260,17 @@
 
 
     if (cityFilter) {
+
       cityFilter.addEventListener(
         "change",
         function () {
+
           App.currentPage =
             1;
 
+
           syncUrlFromFilters();
+
 
           filterBusinesses();
         }
@@ -3032,13 +3279,17 @@
 
 
     if (sortFilter) {
+
       sortFilter.addEventListener(
         "change",
         function () {
+
           App.currentPage =
             1;
 
+
           syncUrlFromFilters();
+
 
           filterBusinesses();
         }
@@ -3047,16 +3298,22 @@
 
 
     if (radiusFilter) {
+
       radiusFilter.addEventListener(
         "change",
         function () {
+
           if (
-            App.nearbyMode
+            App.nearbyMode &&
+            App.userLocation
           ) {
+
             App.currentPage =
               1;
 
+
             syncUrlFromFilters();
+
 
             filterBusinesses();
           }
@@ -3071,31 +3328,66 @@
   ========================================================== */
 
   function setupLocationButtons() {
+
     const useButton =
       $("useLocationButton");
+
 
     const clearButton =
       $("clearLocationButton");
 
 
     if (useButton) {
-      useButton.addEventListener(
-        "click",
-        function () {
-          enableNearbyLocation();
-        }
-      );
+
+      if (
+        useButton.dataset.naLocationReady !==
+        "1"
+      ) {
+
+        useButton.dataset.naLocationReady =
+          "1";
+
+
+        useButton.addEventListener(
+          "click",
+          function (event) {
+
+            event.preventDefault();
+
+
+            enableNearbyLocation();
+          }
+        );
+      }
     }
 
 
     if (clearButton) {
-      clearButton.addEventListener(
-        "click",
-        function () {
-          clearNearbyLocation();
-        }
-      );
+
+      if (
+        clearButton.dataset.naClearLocationReady !==
+        "1"
+      ) {
+
+        clearButton.dataset.naClearLocationReady =
+          "1";
+
+
+        clearButton.addEventListener(
+          "click",
+          function (event) {
+
+            event.preventDefault();
+
+
+            clearNearbyLocation();
+          }
+        );
+      }
     }
+
+
+    updateLocationButtons();
   }
 
 
@@ -3104,11 +3396,13 @@
   ========================================================== */
 
   function setupLocationChangeEvent() {
+
     if (
       window.__nearAfricaLocationListener
     ) {
       return;
     }
+
 
     window.__nearAfricaLocationListener =
       true;
@@ -3117,6 +3411,7 @@
     window.addEventListener(
       "nearafrica:locationchange",
       function (event) {
+
         const detail =
           event &&
           event.detail
@@ -3127,6 +3422,7 @@
         const stateFilter =
           $("stateFilter");
 
+
         const cityFilter =
           $("cityFilter");
 
@@ -3135,8 +3431,10 @@
           stateFilter &&
           detail.state !== undefined
         ) {
+
           stateFilter.value =
             detail.state || "";
+
 
           populateCitiesForState(
             detail.state || ""
@@ -3148,14 +3446,17 @@
           cityFilter &&
           detail.city !== undefined
         ) {
+
           const city =
             detail.city || "";
+
 
           const exists =
             Array.from(
               cityFilter.options
             ).some(
               function (option) {
+
                 return (
                   normalizeSearchText(
                     option.value
@@ -3167,6 +3468,7 @@
               }
             );
 
+
           if (exists) {
             cityFilter.value =
               city;
@@ -3177,7 +3479,9 @@
         App.currentPage =
           1;
 
+
         syncUrlFromFilters();
+
 
         filterBusinesses();
       }
@@ -3190,11 +3494,14 @@
   ========================================================== */
 
   function setupMobileNavigation() {
+
     const button =
       $("mobileMenuButton");
 
+
     const nav =
       $("mobileNav");
+
 
     if (
       !button ||
@@ -3211,6 +3518,7 @@
       return;
     }
 
+
     button.dataset.naMobileReady =
       "1";
 
@@ -3218,10 +3526,12 @@
     button.addEventListener(
       "click",
       function () {
+
         const open =
           nav.classList.toggle(
             "open"
           );
+
 
         button.setAttribute(
           "aria-expanded",
@@ -3235,12 +3545,15 @@
       .querySelectorAll("a")
       .forEach(
         function (link) {
+
           link.addEventListener(
             "click",
             function () {
+
               nav.classList.remove(
                 "open"
               );
+
 
               button.setAttribute(
                 "aria-expanded",
@@ -3258,32 +3571,34 @@
   ========================================================== */
 
   function setupHomepageSearch() {
+
     if (
       App.homepageInitialized
     ) {
       return;
     }
 
+
     const form =
       $("searchForm");
+
 
     const searchInput =
       $("search");
 
+
     const locationInput =
       $("location");
 
+
     const useLocationButton =
       $("useLocation");
+
 
     const message =
       $("locationMessage");
 
 
-    /*
-     * If none of the homepage elements exist,
-     * this is not the homepage.
-     */
     if (
       !form &&
       !searchInput &&
@@ -3298,6 +3613,7 @@
 
 
     function redirectToExplore() {
+
       const params =
         new URLSearchParams();
 
@@ -3326,11 +3642,6 @@
       }
 
 
-      /*
-       * Homepage location is intentionally treated
-       * as a search term unless it can be mapped
-       * directly to a known Nigeria location.
-       */
       if (location) {
         params.set(
           "city",
@@ -3354,10 +3665,13 @@
 
 
     if (form) {
+
       form.addEventListener(
         "submit",
         function (event) {
+
           event.preventDefault();
+
 
           redirectToExplore();
         }
@@ -3365,22 +3679,22 @@
     }
 
 
-    /*
-     * Some homepage versions use a button
-     * instead of a normal form submit.
-     */
     if (
       searchInput &&
       !form
     ) {
+
       searchInput.addEventListener(
         "keydown",
         function (event) {
+
           if (
             event.key ===
             "Enter"
           ) {
+
             event.preventDefault();
+
 
             redirectToExplore();
           }
@@ -3390,76 +3704,89 @@
 
 
     if (useLocationButton) {
-      useLocationButton.addEventListener(
-        "click",
-        async function () {
-          if (
-            message
-          ) {
-            message.textContent =
-              "Requesting your location...";
-          }
 
-          try {
-            const location =
-              await getBrowserLocation();
+      if (
+        useLocationButton.dataset.naHomeLocationReady !==
+        "1"
+      ) {
 
-            /*
-             * Do not expose raw coordinates in
-             * the homepage UI.
-             */
-            try {
-              sessionStorage.setItem(
-                "nearafrica_user_location",
-                JSON.stringify({
-                  latitude:
-                    location.latitude,
-
-                  longitude:
-                    location.longitude
-                })
-              );
-            } catch (storageError) {
-              /* Optional storage. */
-            }
+        useLocationButton.dataset.naHomeLocationReady =
+          "1";
 
 
-            if (
-              message
-            ) {
-              message.textContent =
-                "Location detected. You can now search nearby.";
-            }
+        useLocationButton.addEventListener(
+          "click",
+          async function (event) {
+
+            event.preventDefault();
 
 
-            const exploreUrl =
-              new URL(
-                "explore.html",
-                window.location.href
-              );
-
-            exploreUrl.searchParams.set(
-              "nearby",
-              "1"
-            );
-
-            exploreUrl.searchParams.set(
-              "radius",
-              "25"
-            );
-
-            window.location.href =
-              exploreUrl.toString();
-
-          } catch (error) {
             if (message) {
               message.textContent =
-                error.message ||
-                "Unable to use your location.";
+                "Requesting your location...";
+            }
+
+
+            try {
+
+              const location =
+                await getBrowserLocation();
+
+
+              saveStoredLocation(
+                location
+              );
+
+
+              if (message) {
+                message.textContent =
+                  "Location detected. Finding nearby businesses...";
+              }
+
+
+              const exploreUrl =
+                new URL(
+                  "explore.html",
+                  window.location.href
+                );
+
+
+              exploreUrl.searchParams.set(
+                "nearby",
+                "1"
+              );
+
+
+              exploreUrl.searchParams.set(
+                "radius",
+                "25"
+              );
+
+
+              window.location.href =
+                exploreUrl.toString();
+
+
+            } catch (error) {
+
+              console.error(
+                "NearAfrica homepage location error:",
+                error
+              );
+
+
+              if (message) {
+
+                message.textContent =
+                  error &&
+                  error.message
+                    ? error.message
+                    : "Unable to use your location.";
+              }
             }
           }
-        }
-      );
+        );
+      }
     }
   }
 
@@ -3469,13 +3796,11 @@
   ========================================================== */
 
   async function initializeExplorePage() {
+
     const businessList =
       $("business-list");
 
-    /*
-     * Homepage and other pages do not need the
-     * Explore engine.
-     */
+
     if (!businessList) {
       return;
     }
@@ -3485,26 +3810,19 @@
       return;
     }
 
+
     App.initialized =
       true;
 
 
     try {
-      /*
-       * State list first.
-       */
+
       populateStates();
 
 
-      /*
-       * URL parameters after states exist.
-       */
       applyUrlParameters();
 
 
-      /*
-       * Restore nearby location.
-       */
       if (
         App.nearbyMode &&
         !App.userLocation
@@ -3515,47 +3833,52 @@
 
       setupSearch();
 
+
       setupFilters();
+
 
       setupLocationButtons();
 
+
       setupLocationChangeEvent();
+
 
       setupMobileNavigation();
 
 
-      /*
-       * Load real businesses.
-       */
       await fetchBusinesses();
 
 
-      /*
-       * Rebuild cities using real API data.
-       */
       const state =
         getStateValue();
 
+
       if (state) {
+
         const selectedCity =
           getCityValue();
+
 
         populateCitiesForState(
           state
         );
 
+
         const cityFilter =
           $("cityFilter");
+
 
         if (
           cityFilter &&
           selectedCity
         ) {
+
           const exists =
             Array.from(
               cityFilter.options
             ).some(
               function (option) {
+
                 return (
                   normalizeSearchText(
                     option.value
@@ -3567,6 +3890,7 @@
               }
             );
 
+
           if (exists) {
             cityFilter.value =
               selectedCity;
@@ -3575,16 +3899,14 @@
       }
 
 
-      /*
-       * Nearby was requested but there is no
-       * stored location.
-       */
       if (
         App.nearbyMode &&
         !App.userLocation
       ) {
+
         App.nearbyMode =
           false;
+
 
         updateLocationStatus(
           "Use My Location to find businesses near you.",
@@ -3595,20 +3917,18 @@
 
       updateLocationButtons();
 
+
       filterBusinesses();
 
 
     } catch (error) {
+
       console.error(
         "NearAfrica Explore initialization failed:",
         error
       );
 
 
-      /*
-       * Keep the page usable even if the API
-       * is temporarily unavailable.
-       */
       setStatus(
         "error",
         error.message ||
@@ -3623,6 +3943,7 @@
 
       const count =
         $("resultCount");
+
 
       if (count) {
         count.textContent =
@@ -3643,7 +3964,9 @@
 
     getState:
       function () {
+
         return {
+
           allBusinesses:
             App.allBusinesses.slice(),
 
@@ -3673,10 +3996,13 @@
 
     refresh:
       async function () {
+
         await fetchBusinesses();
+
 
         App.currentPage =
           1;
+
 
         filterBusinesses();
       },
@@ -3684,10 +4010,13 @@
 
     search:
       function () {
+
         App.currentPage =
           1;
 
+
         syncUrlFromFilters();
+
 
         filterBusinesses();
       },
@@ -3715,15 +4044,10 @@
   ========================================================== */
 
   function initialize() {
-    /*
-     * Homepage search is independent of the API.
-     */
+
     setupHomepageSearch();
 
-    /*
-     * Explore initializes only when its results
-     * container is present.
-     */
+
     initializeExplorePage();
   }
 
@@ -3732,6 +4056,7 @@
     document.readyState ===
     "loading"
   ) {
+
     document.addEventListener(
       "DOMContentLoaded",
       initialize,
@@ -3739,7 +4064,9 @@
         once: true
       }
     );
+
   } else {
+
     initialize();
   }
 
