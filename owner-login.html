@@ -1,397 +1,647 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Owner Login | NearAfrica</title>
+  />
 
   <meta
     name="description"
-    content="Secure owner login for NearAfrica business owners."
-  >
+    content="Post a Help Wanted opportunity on NearAfrica and connect with people looking for work."
+  />
+
+  <title>Post Help Wanted | NearAfrica</title>
+
+  <link rel="icon" href="../logo.png" />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="../styles.css" />
 
   <style>
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f0d878;
+      --dark: #0b0b0b;
+      --dark-2: #111;
+      --dark-3: #171717;
+      --text: #f5f5f5;
+      --muted: #a8a8a8;
+      --border: rgba(255,255,255,0.09);
+      --danger: #ef5350;
+      --success: #4fc477;
+    }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family:
-        Inter,
-        Arial,
-        sans-serif;
-
-      min-height: 100vh;
-
+      margin: 0;
       background:
-        linear-gradient(
-          135deg,
-          #0d0d0d,
-          #1a1a1a
-        );
-
-      color: #ffffff;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      padding: 24px;
-    }
-
-    .page {
-      width: 100%;
-      max-width: 460px;
-    }
-
-    .brand {
-      text-align: center;
-
-      margin-bottom: 24px;
-    }
-
-    .brand-mark {
-      width: 52px;
-      height: 52px;
-
-      margin: 0 auto 12px;
-
-      border-radius: 50%;
-
-      display: grid;
-      place-items: center;
-
-      background: #111111;
-
-      border:
-        1px solid #d4af37;
-
-      color: #d4af37;
-
-      font-size: 20px;
-
-      font-weight: 800;
-    }
-
-    .brand h1 {
-      font-size: 28px;
-
-      margin-bottom: 6px;
-    }
-
-    .brand p {
-      color: #aaaaaa;
-
-      font-size: 14px;
-    }
-
-    .card {
-      background: #ffffff;
-
-      color: #171717;
-
-      border-radius: 18px;
-
-      padding: 30px;
-
-      box-shadow:
-        0 20px 60px
-        rgba(0, 0, 0, 0.3);
-    }
-
-    .card h2 {
-      font-size: 22px;
-
-      margin-bottom: 8px;
-    }
-
-    .card-intro {
-      color: #666666;
-
-      font-size: 14px;
-
+        radial-gradient(
+          circle at top right,
+          rgba(212,175,55,0.08),
+          transparent 32%
+        ),
+        var(--dark);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
       line-height: 1.6;
-
-      margin-bottom: 24px;
     }
 
-    .field {
-      margin-bottom: 18px;
-    }
-
-    label {
-      display: block;
-
-      font-size: 13px;
-
-      font-weight: 700;
-
-      margin-bottom: 7px;
-    }
-
-    input {
-      width: 100%;
-
-      height: 48px;
-
-      border:
-        1px solid #d9d9d9;
-
-      border-radius: 9px;
-
-      padding: 0 14px;
-
-      font-size: 14px;
-
-      outline: none;
-    }
-
-    input:focus {
-      border-color: #d4af37;
-
-      box-shadow:
-        0 0 0 3px
-        rgba(212, 175, 55, 0.12);
-    }
-
-    .login-button {
-      width: 100%;
-
-      height: 50px;
-
-      border: none;
-
-      border-radius: 9px;
-
-      background: #111111;
-
-      color: #ffffff;
-
-      font-weight: 700;
-
-      cursor: pointer;
-
-      transition:
-        opacity 0.2s ease;
-    }
-
-    .login-button:hover {
-      opacity: 0.88;
-    }
-
-    .login-button:disabled {
-      opacity: 0.55;
-
-      cursor: not-allowed;
-    }
-
-    .status {
-      display: none;
-
-      margin-top: 16px;
-
-      padding: 12px 14px;
-
-      border-radius: 8px;
-
-      font-size: 13px;
-
-      line-height: 1.5;
-    }
-
-    .status.error {
-      display: block;
-
-      background: #fff1f1;
-
-      color: #a10000;
-
-      border:
-        1px solid #ffd1d1;
-    }
-
-    .status.success {
-      display: block;
-
-      background: #effaf1;
-
-      color: #236b2d;
-
-      border:
-        1px solid #ccebd0;
-    }
-
-    .links {
-      display: flex;
-
-      justify-content: center;
-
-      flex-wrap: wrap;
-
-      gap: 16px;
-
-      margin-top: 22px;
-
-      font-size: 13px;
-    }
-
-    .links a {
-      color: #777777;
-
+    a {
+      color: inherit;
       text-decoration: none;
     }
 
-    .links a:hover {
-      color: #111111;
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
     }
 
-    .note {
-      margin-top: 18px;
+    .container {
+      width: min(100% - 32px, 1100px);
+      margin: 0 auto;
+    }
 
-      padding: 12px 14px;
+    /* =========================
+       HEADER
+    ========================= */
 
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(11,11,11,0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    .header-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.15rem;
+    }
+
+    .brand img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .brand span {
+      color: var(--gold);
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .main-nav a {
+      color: #d1d1d1;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .main-nav a:hover,
+    .main-nav a.active {
+      color: var(--gold);
+    }
+
+    .mobile-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border);
       border-radius: 8px;
+      background: transparent;
+      color: white;
+      font-size: 1.2rem;
+    }
 
-      background: #faf6e7;
+    /* =========================
+       PAGE
+    ========================= */
 
-      color: #6d5a1b;
+    .page {
+      padding: 65px 0 90px;
+    }
 
-      font-size: 12px;
+    .intro {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 40px;
+    }
 
+    .eyebrow {
+      color: var(--gold);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      margin-bottom: 14px;
+    }
+
+    .intro h1 {
+      margin: 0 0 15px;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      line-height: 1.08;
+    }
+
+    .intro h1 span {
+      color: var(--gold);
+    }
+
+    .intro p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    /* =========================
+       AUTH NOTICE
+    ========================= */
+
+    .auth-notice {
+      max-width: 850px;
+      margin: 0 auto 18px;
+      padding: 14px 16px;
+      border: 1px solid rgba(212,175,55,0.22);
+      border-radius: 10px;
+      background: rgba(212,175,55,0.06);
+      color: #cfcfcf;
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+
+    .auth-notice strong {
+      color: var(--gold);
+    }
+
+    .auth-notice a {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    /* =========================
+       FORM CARD
+    ========================= */
+
+    .form-card {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 32px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,0.035),
+          rgba(255,255,255,0.01)
+        ),
+        #121212;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+    }
+
+    .form-section {
+      margin-bottom: 32px;
+    }
+
+    .form-section:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .form-section h2 {
+      margin: 0 0 5px;
+      font-size: 1.1rem;
+    }
+
+    .form-section-description {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      color: #ddd;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .required {
+      color: var(--gold);
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #181818;
+      color: white;
+      outline: none;
+    }
+
+    .field input,
+    .field select {
+      height: 46px;
+      padding: 0 13px;
+    }
+
+    .field textarea {
+      min-height: 130px;
+      padding: 12px 13px;
+      resize: vertical;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: #707070;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .field input[readonly] {
+      opacity: 0.78;
+      cursor: not-allowed;
+    }
+
+    .help-text {
+      color: #777;
+      font-size: 0.72rem;
       line-height: 1.5;
     }
 
-    @media (max-width: 520px) {
+    /* =========================
+       CHECKBOX
+    ========================= */
 
-      body {
-        padding: 16px;
-      }
-
-      .card {
-        padding: 22px;
-      }
-
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: rgba(255,255,255,0.015);
     }
 
+    .checkbox-row input {
+      margin-top: 4px;
+      accent-color: var(--gold);
+    }
+
+    .checkbox-row label {
+      color: #aaa;
+      font-size: 0.78rem;
+    }
+
+    .checkbox-row a {
+      color: var(--gold);
+    }
+
+    /* =========================
+       NOTICE
+    ========================= */
+
+    .notice {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 25px;
+      padding: 14px;
+      border: 1px solid rgba(212,175,55,0.2);
+      border-radius: 9px;
+      background: rgba(212,175,55,0.05);
+      color: #c5c5c5;
+      font-size: 0.78rem;
+    }
+
+    .notice strong {
+      color: var(--gold);
+    }
+
+    /* =========================
+       BUTTON
+    ========================= */
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.86rem;
+      cursor: pointer;
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--border);
+      background: transparent;
+      color: white;
+    }
+
+    .btn-primary {
+      border: 1px solid var(--gold);
+      background: var(--gold);
+      color: #111;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* =========================
+       MESSAGE
+    ========================= */
+
+    .form-message {
+      display: none;
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+    }
+
+    .form-message.show {
+      display: block;
+    }
+
+    .form-message.success {
+      border: 1px solid rgba(79,196,119,0.3);
+      background: rgba(79,196,119,0.08);
+      color: #8be0a7;
+    }
+
+    .form-message.error {
+      border: 1px solid rgba(239,83,80,0.3);
+      background: rgba(239,83,80,0.08);
+      color: #ff9997;
+    }
+
+    /* =========================
+       SUCCESS PANEL
+    ========================= */
+
+    .success-panel {
+      display: none;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 45px 30px;
+      text-align: center;
+      border: 1px solid rgba(79,196,119,0.25);
+      border-radius: 16px;
+      background: #121212;
+    }
+
+    .success-panel.show {
+      display: block;
+    }
+
+    .success-icon {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      background: rgba(79,196,119,0.1);
+      color: var(--success);
+      font-size: 1.7rem;
+    }
+
+    .success-panel h2 {
+      margin: 0 0 10px;
+      font-family: "Playfair Display", serif;
+    }
+
+    .success-panel p {
+      margin: 0 auto 25px;
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      padding: 35px 0;
+      border-top: 1px solid var(--border);
+      background: #090909;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .footer-brand {
+      color: var(--gold);
+      font-weight: 800;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .footer-links a {
+      color: #888;
+      font-size: 0.75rem;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold);
+    }
+
+    .copyright {
+      margin-top: 18px;
+      color: #606060;
+      font-size: 0.7rem;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 720px) {
+
+      .main-nav {
+        position: absolute;
+        top: 76px;
+        left: 0;
+        right: 0;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 8px 16px 18px;
+        background: #0b0b0b;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .main-nav.open {
+        display: flex;
+      }
+
+      .main-nav a {
+        padding: 12px 4px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+
+      .page {
+        padding-top: 45px;
+      }
+
+      .form-card {
+        padding: 22px 18px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+
+      .form-actions {
+        flex-direction: column-reverse;
+      }
+
+      .form-actions .btn {
+        width: 100%;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   </style>
-
 </head>
-
 
 <body>
 
+  <!-- =========================
+       HEADER
+  ========================= -->
 
-  <main class="page">
+  <header class="site-header">
 
+    <div class="container header-inner">
 
-    <div class="brand">
+      <a
+        class="brand"
+        href="../index.html"
+      >
+        <img
+          src="../logo.png"
+          alt="NearAfrica"
+        />
 
-      <div class="brand-mark">
-        NA
-      </div>
+        <span>NearAfrica</span>
+      </a>
 
-      <h1>
-        NearAfrica
-      </h1>
+      <nav
+        class="main-nav"
+        id="mainNav"
+        aria-label="Main navigation"
+      >
 
-      <p>
-        Business Owner Portal
-      </p>
-
-    </div>
-
-
-    <section class="card">
-
-      <h2>
-        Owner Login
-      </h2>
-
-      <p class="card-intro">
-        Sign in to manage your claimed business
-        on NearAfrica.
-      </p>
-
-
-      <form id="loginForm">
-
-
-        <div class="field">
-
-          <label for="businessName">
-            Business Name
-          </label>
-
-          <input
-            id="businessName"
-            name="business_name"
-            type="text"
-            autocomplete="organization"
-            placeholder="Enter your business name"
-            required
-          >
-
-        </div>
-
-
-        <div class="field">
-
-          <label for="email">
-            Owner Email
-          </label>
-
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autocomplete="email"
-            placeholder="Enter your owner email"
-            required
-          >
-
-        </div>
-
-
-        <button
-          id="loginButton"
-          class="login-button"
-          type="submit"
-        >
-          Sign In
-        </button>
-
-
-      </form>
-
-
-      <div
-        id="statusMessage"
-        class="status"
-        role="status"
-      ></div>
-
-
-      <div class="note">
-        Owner access requires an approved and
-        verified ownership claim for the business.
-      </div>
-
-
-      <div class="links">
-
-        <a href="index.html">
+        <a href="../index.html">
           Home
         </a>
 
@@ -399,256 +649,1596 @@
           Explore
         </a>
 
+        <a href="help-wanted.html">
+          Help Wanted
+        </a>
+
+        <a href="list-business.html">
+          List Business
+        </a>
+
         <a href="claim-business.html">
           Claim Business
         </a>
+
+        <a href="owner-dashboard.html">
+          Owner Dashboard
+        </a>
+
+        <a href="contact.html">
+          Contact
+        </a>
+
+      </nav>
+
+      <button
+        class="mobile-toggle"
+        id="mobileToggle"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       MAIN
+  ========================= -->
+
+  <main>
+
+    <section class="page">
+
+      <div class="container">
+
+        <div class="intro">
+
+          <div class="eyebrow">
+            NEARAFRICA OPPORTUNITIES
+          </div>
+
+          <h1>
+            Post a
+            <span>Help Wanted</span>
+            Listing
+          </h1>
+
+          <p>
+            Let people know who you are looking for and what
+            opportunity your business or organization has available.
+          </p>
+
+        </div>
+
+
+        <!-- =========================
+             AUTH STATUS
+        ========================= -->
+
+        <div
+          class="auth-notice"
+          id="authNotice"
+        >
+          <strong>Owner access required.</strong>
+          You must be signed in to your approved NearAfrica
+          owner account before you can post a Help Wanted listing.
+          <a href="owner-login.html">Sign in here</a>.
+        </div>
+
+
+        <!-- =========================
+             FORM
+        ========================= -->
+
+        <div id="formWrapper">
+
+          <form
+            class="form-card"
+            id="helpWantedForm"
+            novalidate
+          >
+
+            <div class="notice">
+
+              <div>
+                <strong>Before you post:</strong>
+                Help Wanted listings are subject to NearAfrica's
+                listing rules and moderation. Do not submit false,
+                misleading, discriminatory, or fraudulent opportunities.
+              </div>
+
+            </div>
+
+
+            <!-- =========================
+                 OPPORTUNITY DETAILS
+            ========================= -->
+
+            <section class="form-section">
+
+              <h2>
+                Opportunity Details
+              </h2>
+
+              <p class="form-section-description">
+                Tell potential applicants what you need.
+              </p>
+
+              <div class="form-grid">
+
+                <div class="field full">
+
+                  <label for="title">
+                    Position / Opportunity Title
+                    <span class="required">*</span>
+                  </label>
+
+                  <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    maxlength="150"
+                    placeholder="e.g. Graphic Designer"
+                    required
+                  />
+
+                  <span class="help-text">
+                    Use a clear title that accurately describes
+                    the opportunity.
+                  </span>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label for="category">
+                    Opportunity Type
+                    <span class="required">*</span>
+                  </label>
+
+                  <select
+                    id="category"
+                    name="category"
+                    required
+                  >
+
+                    <option value="">
+                      Select type
+                    </option>
+
+                    <option value="Full-Time">
+                      Full-Time
+                    </option>
+
+                    <option value="Part-Time">
+                      Part-Time
+                    </option>
+
+                    <option value="Contract">
+                      Contract
+                    </option>
+
+                    <option value="Freelance">
+                      Freelance
+                    </option>
+
+                    <option value="Internship">
+                      Internship
+                    </option>
+
+                    <option value="Apprenticeship">
+                      Apprenticeship
+                    </option>
+
+                    <option value="Temporary">
+                      Temporary
+                    </option>
+
+                    <option value="Other">
+                      Other
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label for="location">
+                    Location
+                    <span class="required">*</span>
+                  </label>
+
+                  <input
+                    id="location"
+                    name="location"
+                    type="text"
+                    maxlength="150"
+                    placeholder="e.g. Ikeja, Lagos"
+                    required
+                  />
+
+                </div>
+
+
+                <div class="field full">
+
+                  <label for="description">
+                    Description
+                    <span class="required">*</span>
+                  </label>
+
+                  <textarea
+                    id="description"
+                    name="description"
+                    maxlength="5000"
+                    placeholder="Describe the opportunity, responsibilities, required skills, experience, working arrangement, and any other important information..."
+                    required
+                  ></textarea>
+
+                  <span class="help-text">
+                    Do not include passwords, financial information,
+                    or unnecessary personal information.
+                  </span>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label for="requirements">
+                    Requirements
+                  </label>
+
+                  <textarea
+                    id="requirements"
+                    name="requirements"
+                    maxlength="3000"
+                    placeholder="e.g. 2 years experience, communication skills..."
+                  ></textarea>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label for="compensation">
+                    Compensation
+                  </label>
+
+                  <input
+                    id="compensation"
+                    name="compensation"
+                    type="text"
+                    maxlength="200"
+                    placeholder="e.g. ₦150,000/month or Negotiable"
+                  />
+
+                  <span class="help-text">
+                    Be as clear as possible. Avoid misleading claims.
+                  </span>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label for="expiresAt">
+                    Application Deadline
+                  </label>
+
+                  <input
+                    id="expiresAt"
+                    name="expires_at"
+                    type="date"
+                  />
+
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <!-- =========================
+                 BUSINESS DETAILS
+            ========================= -->
+
+            <section class="form-section">
+
+              <h2>
+                Business / Organization
+              </h2>
+
+              <p class="form-section-description">
+                Your approved owner session determines which
+                NearAfrica business this listing belongs to.
+              </p>
+
+              <div class="form-grid">
+
+                <div class="field full">
+
+                  <label for="businessName">
+                    Business / Organization Name
+                  </label>
+
+                  <input
+                    id="businessName"
+                    name="business_name"
+                    type="text"
+                    maxlength="200"
+                    placeholder="Loading your business..."
+                    readonly
+                  />
+
+                  <span class="help-text">
+                    This is provided by your authenticated owner
+                    session and cannot be used to switch businesses.
+                  </span>
+
+                </div>
+
+
+                <div class="field full">
+
+                  <label for="businessId">
+                    NearAfrica Business ID
+                  </label>
+
+                  <input
+                    id="businessId"
+                    name="business_id"
+                    type="text"
+                    maxlength="100"
+                    placeholder="Loading..."
+                    readonly
+                  />
+
+                  <span class="help-text">
+                    This is automatically associated with your
+                    authenticated owner session.
+                  </span>
+
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <!-- =========================
+                 CONTACT
+            ========================= -->
+
+            <section class="form-section">
+
+              <h2>
+                Application Contact
+              </h2>
+
+              <p class="form-section-description">
+                Give interested applicants a legitimate way to
+                contact you.
+              </p>
+
+              <div class="form-grid">
+
+                <div class="field">
+
+                  <label for="contactEmail">
+                    Contact Email
+                  </label>
+
+                  <input
+                    id="contactEmail"
+                    name="contact_email"
+                    type="email"
+                    maxlength="254"
+                    placeholder="business@example.com"
+                  />
+
+                </div>
+
+
+                <div class="field">
+
+                  <label for="contactPhone">
+                    Contact Phone
+                  </label>
+
+                  <input
+                    id="contactPhone"
+                    name="contact_phone"
+                    type="tel"
+                    maxlength="40"
+                    placeholder="+234..."
+                  />
+
+                </div>
+
+
+                <div class="field full">
+
+                  <label for="applicationUrl">
+                    Application Link
+                  </label>
+
+                  <input
+                    id="applicationUrl"
+                    name="application_url"
+                    type="url"
+                    maxlength="1000"
+                    placeholder="https://example.com/apply"
+                  />
+
+                  <span class="help-text">
+                    Optional. Use a secure, legitimate application
+                    page if applicants should apply online.
+                  </span>
+
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <!-- =========================
+                 POLICY
+            ========================= -->
+
+            <div class="checkbox-row">
+
+              <input
+                id="agree"
+                name="agree"
+                type="checkbox"
+                required
+              />
+
+              <label for="agree">
+
+                I confirm that I am authorized to post this
+                opportunity, that the information is accurate,
+                and that the listing complies with the
+                <a href="listing-policy.html">
+                  NearAfrica Listing Policy
+                </a>
+                and applicable laws.
+
+              </label>
+
+            </div>
+
+
+            <!-- =========================
+                 ACTIONS
+            ========================= -->
+
+            <div class="form-actions">
+
+              <a
+                href="help-wanted.html"
+                class="btn btn-secondary"
+              >
+                Cancel
+              </a>
+
+              <button
+                id="submitButton"
+                type="submit"
+                class="btn btn-primary"
+              >
+                Publish Help Wanted
+              </button>
+
+            </div>
+
+
+            <div
+              id="formMessage"
+              class="form-message"
+              role="alert"
+            ></div>
+
+          </form>
+
+        </div>
+
+
+        <!-- =========================
+             SUCCESS
+        ========================= -->
+
+        <div
+          class="success-panel"
+          id="successPanel"
+        >
+
+          <div class="success-icon">
+            ✓
+          </div>
+
+          <h2>
+            Listing Submitted
+          </h2>
+
+          <p>
+            Your Help Wanted listing has been submitted to
+            NearAfrica. If moderation is required, it will be
+            reviewed before becoming publicly visible.
+          </p>
+
+          <div
+            style="
+              display:flex;
+              justify-content:center;
+              flex-wrap:wrap;
+              gap:10px;
+            "
+          >
+
+            <a
+              href="help-wanted.html"
+              class="btn btn-primary"
+            >
+              View Help Wanted
+            </a>
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="postAnotherButton"
+            >
+              Post Another
+            </button>
+
+          </div>
+
+        </div>
 
       </div>
 
     </section>
 
-
   </main>
 
 
+  <!-- =========================
+       FOOTER
+  ========================= -->
+
+  <footer>
+
+    <div class="container">
+
+      <div class="footer-inner">
+
+        <div class="footer-brand">
+          NearAfrica
+        </div>
+
+        <div class="footer-links">
+
+          <a href="../index.html">
+            Home
+          </a>
+
+          <a href="explore.html">
+            Explore
+          </a>
+
+          <a href="help-wanted.html">
+            Help Wanted
+          </a>
+
+          <a href="list-business.html">
+            List Business
+          </a>
+
+          <a href="claim-business.html">
+            Claim Business
+          </a>
+
+          <a href="privacy.html">
+            Privacy
+          </a>
+
+          <a href="terms.html">
+            Terms
+          </a>
+
+          <a href="listing-policy.html">
+            Listing Policy
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="copyright">
+        © <span id="currentYear"></span>
+        NearAfrica. All rights reserved.
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =========================
+       CONFIG
+  ========================= -->
+
+  <script src="../config.js"></script>
+
   <script>
 
-    (() => {
+    /*
+      ============================================
+      NEARAFRICA — POST HELP WANTED
+      OWNER-AUTHENTICATED VERSION
+      ============================================
 
-      "use strict";
+      Authentication:
+
+        localStorage key:
+          nearafrica_owner_token
+
+      Authenticated endpoint:
+
+        POST /owner/help-wanted
+
+      IMPORTANT:
+
+      The browser does NOT determine which business
+      owns the listing.
+
+      The Worker determines the business from the
+      authenticated owner session.
+
+      The frontend only supplies the opportunity
+      information and optional contact information.
+    */
 
 
-      const API_BASE =
-        "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+    const DEFAULT_API =
+      "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
 
-      const OWNER_TOKEN_KEY =
-        "nearafrica_owner_token";
+    const API_BASE =
+      (
+        window.NEARAFRICA_API ||
+        window.API_BASE ||
+        window.API_URL ||
+        DEFAULT_API
+      ).replace(/\/+$/, "");
 
 
-      const form =
-        document.getElementById(
-          "loginForm"
+    const OWNER_TOKEN_KEY =
+      "nearafrica_owner_token";
+
+
+    const form =
+      document.getElementById(
+        "helpWantedForm"
+      );
+
+
+    const submitButton =
+      document.getElementById(
+        "submitButton"
+      );
+
+
+    const formMessage =
+      document.getElementById(
+        "formMessage"
+      );
+
+
+    const formWrapper =
+      document.getElementById(
+        "formWrapper"
+      );
+
+
+    const successPanel =
+      document.getElementById(
+        "successPanel"
+      );
+
+
+    const postAnotherButton =
+      document.getElementById(
+        "postAnotherButton"
+      );
+
+
+    const mobileToggle =
+      document.getElementById(
+        "mobileToggle"
+      );
+
+
+    const mainNav =
+      document.getElementById(
+        "mainNav"
+      );
+
+
+    const authNotice =
+      document.getElementById(
+        "authNotice"
+      );
+
+
+    const businessNameInput =
+      document.getElementById(
+        "businessName"
+      );
+
+
+    const businessIdInput =
+      document.getElementById(
+        "businessId"
+      );
+
+
+    /* =========================
+       MOBILE MENU
+    ========================= */
+
+    mobileToggle.addEventListener(
+      "click",
+      () => {
+
+        const open =
+          mainNav.classList.toggle(
+            "open"
+          );
+
+        mobileToggle.setAttribute(
+          "aria-expanded",
+          String(open)
         );
 
+      }
+    );
 
-      const loginButton =
-        document.getElementById(
-          "loginButton"
+
+    mainNav
+      .querySelectorAll("a")
+      .forEach(link => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            mainNav.classList.remove(
+              "open"
+            );
+
+            mobileToggle.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+          }
         );
 
-
-      const statusMessage =
-        document.getElementById(
-          "statusMessage"
-        );
+      });
 
 
-      function showStatus(
-        message,
-        type
+    /* =========================
+       HELPERS
+    ========================= */
+
+    function showMessage(
+      message,
+      type
+    ) {
+
+      formMessage.textContent =
+        message;
+
+      formMessage.className =
+        `form-message show ${type}`;
+
+    }
+
+
+    function clearMessage() {
+
+      formMessage.textContent =
+        "";
+
+      formMessage.className =
+        "form-message";
+
+    }
+
+
+    function cleanString(value) {
+
+      if (
+        value === null ||
+        value === undefined
       ) {
 
-        statusMessage.textContent =
-          message;
+        return "";
 
-        statusMessage.className =
-          `status ${type}`;
+      }
+
+      return String(value).trim();
+
+    }
+
+
+    function getOwnerToken() {
+
+      try {
+
+        return cleanString(
+          localStorage.getItem(
+            OWNER_TOKEN_KEY
+          )
+        );
+
+      } catch (error) {
+
+        console.error(
+          "OWNER TOKEN READ ERROR:",
+          error
+        );
+
+        return "";
+
+      }
+
+    }
+
+
+    function isValidEmail(email) {
+
+      if (!email) {
+        return true;
+      }
+
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(email);
+
+    }
+
+
+    function isValidUrl(url) {
+
+      if (!url) {
+        return true;
+      }
+
+      try {
+
+        const parsed =
+          new URL(url);
+
+        return (
+          parsed.protocol ===
+            "http:" ||
+          parsed.protocol ===
+            "https:"
+        );
+
+      } catch {
+
+        return false;
+
+      }
+
+    }
+
+
+    function getFormData() {
+
+      const formData =
+        new FormData(form);
+
+
+      return {
+
+        title:
+          cleanString(
+            formData.get("title")
+          ),
+
+        category:
+          cleanString(
+            formData.get("category")
+          ),
+
+        location:
+          cleanString(
+            formData.get("location")
+          ),
+
+        description:
+          cleanString(
+            formData.get("description")
+          ),
+
+        requirements:
+          cleanString(
+            formData.get("requirements")
+          ),
+
+        compensation:
+          cleanString(
+            formData.get("compensation")
+          ),
+
+        expires_at:
+          cleanString(
+            formData.get("expires_at")
+          ),
+
+        /*
+          These values are intentionally NOT used
+          to authenticate or select the business.
+
+          The backend obtains business identity
+          from the authenticated owner session.
+        */
+
+        contact_email:
+          cleanString(
+            formData.get("contact_email")
+          ),
+
+        contact_phone:
+          cleanString(
+            formData.get("contact_phone")
+          ),
+
+        application_url:
+          cleanString(
+            formData.get("application_url")
+          )
+
+      };
+
+    }
+
+
+    /* =========================
+       OWNER SESSION CHECK
+    ========================= */
+
+    function requireOwnerToken() {
+
+      const token =
+        getOwnerToken();
+
+
+      if (!token) {
+
+        showMessage(
+          "Owner authentication is required. Please sign in to your NearAfrica owner account before posting a Help Wanted listing.",
+          "error"
+        );
+
+        submitButton.disabled =
+          true;
+
+        return null;
 
       }
 
 
-      form.addEventListener(
-        "submit",
-        async event => {
+      return token;
 
-          event.preventDefault();
+    }
 
 
-          const businessName =
-            document
-              .getElementById(
-                "businessName"
-              )
-              .value
-              .trim();
+    /* =========================
+       LOAD OWNER BUSINESS
+    ========================= */
+
+    async function loadOwnerBusiness() {
+
+      const token =
+        getOwnerToken();
 
 
-          const email =
-            document
-              .getElementById(
-                "email"
-              )
-              .value
-              .trim()
-              .toLowerCase();
+      if (!token) {
+
+        authNotice.innerHTML =
+          `<strong>Owner access required.</strong>
+           Please
+           <a href="owner-login.html">
+             sign in
+           </a>
+           with your approved NearAfrica owner account
+           before posting a Help Wanted listing.`;
+
+        return false;
+
+      }
 
 
-          if (!businessName) {
+      try {
 
-            showStatus(
-              "Please enter your business name.",
-              "error"
+        const response =
+          await fetch(
+            `${API_BASE}/owner/business`,
+            {
+              method: "GET",
+
+              headers: {
+                "Accept":
+                  "application/json",
+
+                "Authorization":
+                  `Bearer ${token}`
+              }
+            }
+          );
+
+
+        let result = null;
+
+        try {
+
+          result =
+            await response.json();
+
+        } catch {
+
+          result = null;
+
+        }
+
+
+        if (!response.ok) {
+
+          if (
+            response.status === 401 ||
+            response.status === 403
+          ) {
+
+            throw new Error(
+              "Your owner session is invalid or expired. Please sign in again."
             );
-
-            return;
 
           }
 
 
-          if (!email) {
+          throw new Error(
+            result &&
+            (
+              result.message ||
+              result.error
+            )
+              ? (
+                  result.message ||
+                  result.error
+                )
+              : "Unable to verify your owner account."
+          );
 
-            showStatus(
-              "Please enter your owner email.",
-              "error"
+        }
+
+
+        const business =
+          result &&
+          (
+            result.business ||
+            result.data ||
+            result
+          );
+
+
+        if (!business) {
+
+          throw new Error(
+            "Your owner account was verified, but no business information was returned."
+          );
+
+        }
+
+
+        const resolvedBusinessName =
+          cleanString(
+            business.business_name ||
+            business.name
+          );
+
+
+        const resolvedBusinessId =
+          cleanString(
+            business.id ||
+            business.business_id
+          );
+
+
+        if (
+          resolvedBusinessName
+        ) {
+
+          businessNameInput.value =
+            resolvedBusinessName;
+
+        } else {
+
+          businessNameInput.value =
+            "Authenticated owner business";
+
+        }
+
+
+        if (
+          resolvedBusinessId
+        ) {
+
+          businessIdInput.value =
+            resolvedBusinessId;
+
+        } else {
+
+          businessIdInput.value =
+            "Verified by owner session";
+
+        }
+
+
+        authNotice.innerHTML =
+          `<strong>Owner account verified.</strong>
+           This listing will be associated with your authenticated
+           NearAfrica business.`;
+
+        return true;
+
+      } catch (error) {
+
+        console.error(
+          "OWNER BUSINESS CHECK ERROR:",
+          error
+        );
+
+
+        authNotice.innerHTML =
+          `<strong>Owner authentication could not be verified.</strong>
+           ${cleanString(error.message) ||
+             "Please sign in again before posting."}
+           <a href="owner-login.html">
+             Sign in
+           </a>.`;
+
+
+        submitButton.disabled =
+          true;
+
+
+        return false;
+
+      }
+
+    }
+
+
+    /* =========================
+       VALIDATION
+    ========================= */
+
+    function validate(data) {
+
+      if (!getOwnerToken()) {
+
+        return "Owner authentication is required. Please sign in before posting.";
+
+      }
+
+
+      if (!data.title) {
+
+        return "Please enter the position or opportunity title.";
+
+      }
+
+
+      if (!data.category) {
+
+        return "Please select the opportunity type.";
+
+      }
+
+
+      if (!data.location) {
+
+        return "Please enter the location.";
+
+      }
+
+
+      if (!data.description) {
+
+        return "Please provide a description of the opportunity.";
+
+      }
+
+
+      if (
+        !data.contact_email &&
+        !data.contact_phone &&
+        !data.application_url
+      ) {
+
+        return "Please provide at least one application contact method.";
+
+      }
+
+
+      if (
+        data.contact_email &&
+        !isValidEmail(
+          data.contact_email
+        )
+      ) {
+
+        return "Please enter a valid contact email.";
+
+      }
+
+
+      if (
+        data.application_url &&
+        !isValidUrl(
+          data.application_url
+        )
+      ) {
+
+        return "Application link must begin with http:// or https://.";
+
+      }
+
+
+      const deadline =
+        document.getElementById(
+          "expiresAt"
+        ).value;
+
+
+      if (deadline) {
+
+        const deadlineDate =
+          new Date(
+            `${deadline}T23:59:59`
+          );
+
+
+        if (
+          Number.isNaN(
+            deadlineDate.getTime()
+          )
+        ) {
+
+          return "Please enter a valid application deadline.";
+
+        }
+
+
+        if (
+          deadlineDate < new Date()
+        ) {
+
+          return "The application deadline cannot be in the past.";
+
+        }
+
+      }
+
+
+      if (
+        !document.getElementById(
+          "agree"
+        ).checked
+      ) {
+
+        return "Please confirm that you are authorized to post this listing.";
+
+      }
+
+
+      return null;
+
+    }
+
+
+    /* =========================
+       SUBMIT
+    ========================= */
+
+    form.addEventListener(
+      "submit",
+      async event => {
+
+        event.preventDefault();
+
+        clearMessage();
+
+
+        const ownerToken =
+          requireOwnerToken();
+
+
+        if (!ownerToken) {
+
+          return;
+
+        }
+
+
+        const data =
+          getFormData();
+
+
+        const validationError =
+          validate(data);
+
+
+        if (validationError) {
+
+          showMessage(
+            validationError,
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        submitButton.disabled =
+          true;
+
+        submitButton.textContent =
+          "Submitting...";
+
+
+        try {
+
+          /*
+            IMPORTANT:
+
+            The request goes through the authenticated
+            owner endpoint.
+
+            The Worker determines the business from
+            the owner session token.
+          */
+
+          const response =
+            await fetch(
+              `${API_BASE}/owner/help-wanted`,
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json",
+
+                  "Accept":
+                    "application/json",
+
+                  "Authorization":
+                    `Bearer ${ownerToken}`
+                },
+
+                body:
+                  JSON.stringify(data)
+              }
             );
 
-            return;
 
-          }
-
-
-          loginButton.disabled =
-            true;
-
-          loginButton.textContent =
-            "Signing In...";
-
-
-          statusMessage.className =
-            "status";
-
+          let result = null;
 
           try {
 
-            const response =
-              await fetch(
-                `${API_BASE}/owner/login`,
-                {
-                  method: "POST",
-
-                  headers: {
-                    "Content-Type":
-                      "application/json",
-
-                    "Accept":
-                      "application/json"
-                  },
-
-                  body:
-                    JSON.stringify({
-                      business_name:
-                        businessName,
-
-                      email:
-                        email
-                    })
-                }
-              );
-
-
-            const data =
+            result =
               await response.json();
 
+          } catch {
 
-            if (
-              !response.ok ||
-              !data ||
-              data.status !== "ok"
-            ) {
-
-              throw new Error(
-                data &&
-                data.message
-                  ? data.message
-                  : "Owner login failed."
-              );
-
-            }
-
-
-            if (!data.token) {
-
-              throw new Error(
-                "The server did not return an owner session token."
-              );
-
-            }
-
-
-            try {
-
-              localStorage.setItem(
-                OWNER_TOKEN_KEY,
-                data.token
-              );
-
-            } catch (storageError) {
-
-              console.error(
-                "OWNER TOKEN STORAGE ERROR:",
-                storageError
-              );
-
-              throw new Error(
-                "Login succeeded, but this browser could not save the owner session."
-              );
-
-            }
-
-
-            showStatus(
-              "Login successful. Opening your owner dashboard...",
-              "success"
-            );
-
-
-            window.setTimeout(
-              () => {
-
-                window.location.href =
-                  data.dashboard_url ||
-                  "pages/owner-dashboard.html";
-
-              },
-              500
-            );
-
-
-          } catch (error) {
-
-            console.error(
-              "OWNER LOGIN ERROR:",
-              error
-            );
-
-
-            showStatus(
-              error.message ||
-                "Unable to sign in. Please try again.",
-              "error"
-            );
-
-
-          } finally {
-
-            loginButton.disabled =
-              false;
-
-            loginButton.textContent =
-              "Sign In";
+            result = null;
 
           }
 
-        }
-      );
 
+          if (!response.ok) {
+
+            let message =
+              "The Help Wanted listing could not be submitted.";
+
+
+            if (
+              result &&
+              typeof result === "object"
+            ) {
+
+              message =
+                result.error ||
+                result.message ||
+                result.detail ||
+                message;
+
+            }
+
+
+            if (
+              response.status === 401 ||
+              response.status === 403
+            ) {
+
+              message =
+                "Your owner session is invalid or expired. Please sign in again.";
+
+              try {
+
+                localStorage.removeItem(
+                  OWNER_TOKEN_KEY
+                );
+
+              } catch {
+
+                /* Ignore storage cleanup errors. */
+
+              }
+
+            }
+
+
+            throw new Error(
+              message
+            );
+
+          }
+
+
+          /*
+            Submission succeeded.
+
+            The frontend intentionally does not assume
+            that the listing is immediately public.
+          */
+
+          formWrapper.style.display =
+            "none";
+
+          successPanel.classList.add(
+            "show"
+          );
+
+
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+
+
+        } catch (error) {
+
+          console.error(
+            "Help Wanted submission error:",
+            error
+          );
+
+
+          showMessage(
+            error.message ||
+              "Something went wrong while submitting the listing. Please try again.",
+            "error"
+          );
+
+
+          submitButton.disabled =
+            false;
+
+          submitButton.textContent =
+            "Publish Help Wanted";
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       POST ANOTHER
+    ========================= */
+
+    postAnotherButton.addEventListener(
+      "click",
+      async () => {
+
+        form.reset();
+
+        clearMessage();
+
+        successPanel.classList.remove(
+          "show"
+        );
+
+        formWrapper.style.display =
+          "block";
+
+        submitButton.disabled =
+          false;
+
+        submitButton.textContent =
+          "Publish Help Wanted";
+
+
+        businessNameInput.value =
+          "Loading your business...";
+
+        businessIdInput.value =
+          "Loading...";
+
+
+        await loadOwnerBusiness();
+
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+
+      }
+    );
+
+
+    /* =========================
+       YEAR
+    ========================= */
+
+    document.getElementById(
+      "currentYear"
+    ).textContent =
+      new Date().getFullYear();
+
+
+    /* =========================
+       INITIAL OWNER CHECK
+    ========================= */
+
+    (async () => {
+
+      const token =
+        getOwnerToken();
+
+
+      if (!token) {
+
+        submitButton.disabled =
+          true;
+
+        return;
+
+      }
+
+
+      await loadOwnerBusiness();
 
     })();
 
   </script>
 
-
 </body>
-
 </html>
