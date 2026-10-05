@@ -3634,7 +3634,7 @@ function renderDiscoveries(records) {
                     actions = `
                         <button
                             type="button"
-                            onclick="moderateDiscovery('${escapeHtml(id)}', 'approve')"
+                         onclick="moderateDiscoveryFromAdmin('${escapeHtml(id)}', 'approve', this)"
                         >
                             Approve
                         </button>
