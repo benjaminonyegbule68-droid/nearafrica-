@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8" />
 
   <meta
@@ -36,6 +37,7 @@
   <link rel="stylesheet" href="../styles.css" />
 
   <style>
+
     :root {
       --gold: #d4af37;
       --gold-light: #f0d878;
@@ -443,6 +445,7 @@
       padding: 14px;
       border-radius: 8px;
       font-size: 0.82rem;
+      white-space: pre-wrap;
     }
 
     .form-message.show {
@@ -609,15 +612,14 @@
         flex-direction: column;
         align-items: flex-start;
       }
+
     }
+
   </style>
+
 </head>
 
 <body>
-
-  <!-- =========================
-       HEADER
-  ========================= -->
 
   <header class="site-header">
 
@@ -627,13 +629,16 @@
         class="brand"
         href="../index.html"
       >
+
         <img
           src="../logo.png"
           alt="NearAfrica"
         />
 
         <span>NearAfrica</span>
+
       </a>
+
 
       <nav
         class="main-nav"
@@ -671,6 +676,7 @@
 
       </nav>
 
+
       <button
         class="mobile-toggle"
         id="mobileToggle"
@@ -685,10 +691,6 @@
 
   </header>
 
-
-  <!-- =========================
-       MAIN
-  ========================= -->
 
   <main>
 
@@ -716,24 +718,14 @@
         </div>
 
 
-        <!-- =========================
-             AUTH STATUS
-        ========================= -->
-
         <div
           class="auth-notice"
           id="authNotice"
         >
-          <strong>Owner access required.</strong>
-          You must be signed in to your approved NearAfrica
-          owner account before you can post a Help Wanted listing.
-          <a href="owner-login.html">Sign in here</a>.
+          <strong>Checking owner access...</strong>
+          Please wait while NearAfrica verifies your owner session.
         </div>
 
-
-        <!-- =========================
-             FORM
-        ========================= -->
 
         <div id="formWrapper">
 
@@ -746,18 +738,17 @@
             <div class="notice">
 
               <div>
+
                 <strong>Before you post:</strong>
+
                 Help Wanted listings are subject to NearAfrica's
                 listing rules and moderation. Do not submit false,
                 misleading, discriminatory, or fraudulent opportunities.
+
               </div>
 
             </div>
 
-
-            <!-- =========================
-                 OPPORTUNITY DETAILS
-            ========================= -->
 
             <section class="form-section">
 
@@ -768,6 +759,7 @@
               <p class="form-section-description">
                 Tell potential applicants what you need.
               </p>
+
 
               <div class="form-grid">
 
@@ -838,6 +830,10 @@
 
                     <option value="Temporary">
                       Temporary
+                    </option>
+
+                    <option value="Volunteer">
+                      Volunteer
                     </option>
 
                     <option value="Other">
@@ -947,10 +943,6 @@
             </section>
 
 
-            <!-- =========================
-                 BUSINESS DETAILS
-            ========================= -->
-
             <section class="form-section">
 
               <h2>
@@ -961,6 +953,7 @@
                 Your approved owner session determines which
                 NearAfrica business this listing belongs to.
               </p>
+
 
               <div class="form-grid">
 
@@ -975,13 +968,13 @@
                     name="business_name"
                     type="text"
                     maxlength="200"
-                    placeholder="Loading your business..."
+                    placeholder="Checking..."
                     readonly
                   />
 
                   <span class="help-text">
-                    This is provided by your authenticated owner
-                    session and cannot be used to switch businesses.
+                    Supplied by the authenticated owner session.
+                    It cannot be changed here.
                   </span>
 
                 </div>
@@ -998,13 +991,13 @@
                     name="business_id"
                     type="text"
                     maxlength="100"
-                    placeholder="Loading..."
+                    placeholder="Checking..."
                     readonly
                   />
 
                   <span class="help-text">
-                    This is automatically associated with your
-                    authenticated owner session.
+                    The Worker obtains this from the authenticated
+                    owner session.
                   </span>
 
                 </div>
@@ -1013,10 +1006,6 @@
 
             </section>
 
-
-            <!-- =========================
-                 CONTACT
-            ========================= -->
 
             <section class="form-section">
 
@@ -1028,6 +1017,7 @@
                 Give interested applicants a legitimate way to
                 contact you.
               </p>
+
 
               <div class="form-grid">
 
@@ -1091,10 +1081,6 @@
             </section>
 
 
-            <!-- =========================
-                 POLICY
-            ========================= -->
-
             <div class="checkbox-row">
 
               <input
@@ -1119,10 +1105,6 @@
             </div>
 
 
-            <!-- =========================
-                 ACTIONS
-            ========================= -->
-
             <div class="form-actions">
 
               <a
@@ -1136,8 +1118,9 @@
                 id="submitButton"
                 type="submit"
                 class="btn btn-primary"
+                disabled
               >
-                Publish Help Wanted
+                Verify Owner Account...
               </button>
 
             </div>
@@ -1153,10 +1136,6 @@
 
         </div>
 
-
-        <!-- =========================
-             SUCCESS
-        ========================= -->
 
         <div
           class="success-panel"
@@ -1176,6 +1155,7 @@
             NearAfrica. If moderation is required, it will be
             reviewed before becoming publicly visible.
           </p>
+
 
           <div
             style="
@@ -1211,10 +1191,6 @@
 
   </main>
 
-
-  <!-- =========================
-       FOOTER
-  ========================= -->
 
   <footer>
 
@@ -1264,19 +1240,19 @@
 
       </div>
 
+
       <div class="copyright">
-        © <span id="currentYear"></span>
+
+        ©
+        <span id="currentYear"></span>
         NearAfrica. All rights reserved.
+
       </div>
 
     </div>
 
   </footer>
 
-
-  <!-- =========================
-       CONFIG
-  ========================= -->
 
   <script src="../config.js"></script>
 
@@ -1288,25 +1264,16 @@
       OWNER-AUTHENTICATED VERSION
       ============================================
 
-      Authentication:
+      SECURITY MODEL:
 
-        localStorage key:
-          nearafrica_owner_token
-
-      Authenticated endpoint:
-
-        POST /owner/help-wanted
-
-      IMPORTANT:
-
-      The browser does NOT determine which business
-      owns the listing.
-
-      The Worker determines the business from the
-      authenticated owner session.
-
-      The frontend only supplies the opportunity
-      information and optional contact information.
+      1. Owner logs in.
+      2. Worker creates a secure owner session.
+      3. Session token is stored locally.
+      4. This page sends that token to the Worker.
+      5. Worker identifies the business from the
+         authenticated session.
+      6. Browser-supplied business_id/business_name
+         are NOT trusted for ownership.
     */
 
 
@@ -1325,6 +1292,14 @@
 
     const OWNER_TOKEN_KEY =
       "nearafrica_owner_token";
+
+
+    const OWNER_BUSINESS_ENDPOINT =
+      `${API_BASE}/owner/business`;
+
+
+    const OWNER_HELP_WANTED_ENDPOINT =
+      `${API_BASE}/owner/help-wanted`;
 
 
     const form =
@@ -1442,13 +1417,30 @@
        HELPERS
     ========================= */
 
+    function cleanString(value) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+
+        return "";
+
+      }
+
+      return String(value).trim();
+
+    }
+
+
     function showMessage(
       message,
-      type
+      type = "error"
     ) {
 
       formMessage.textContent =
-        message;
+        cleanString(message) ||
+        "An unexpected error occurred.";
 
       formMessage.className =
         `form-message show ${type}`;
@@ -1463,22 +1455,6 @@
 
       formMessage.className =
         "form-message";
-
-    }
-
-
-    function cleanString(value) {
-
-      if (
-        value === null ||
-        value === undefined
-      ) {
-
-        return "";
-
-      }
-
-      return String(value).trim();
 
     }
 
@@ -1501,6 +1477,26 @@
         );
 
         return "";
+
+      }
+
+    }
+
+
+    function clearOwnerToken() {
+
+      try {
+
+        localStorage.removeItem(
+          OWNER_TOKEN_KEY
+        );
+
+      } catch (error) {
+
+        console.error(
+          "OWNER TOKEN REMOVE ERROR:",
+          error
+        );
 
       }
 
@@ -1531,10 +1527,8 @@
           new URL(url);
 
         return (
-          parsed.protocol ===
-            "http:" ||
-          parsed.protocol ===
-            "https:"
+          parsed.protocol === "http:" ||
+          parsed.protocol === "https:"
         );
 
       } catch {
@@ -1589,14 +1583,6 @@
             formData.get("expires_at")
           ),
 
-        /*
-          These values are intentionally NOT used
-          to authenticate or select the business.
-
-          The backend obtains business identity
-          from the authenticated owner session.
-        */
-
         contact_email:
           cleanString(
             formData.get("contact_email")
@@ -1618,40 +1604,71 @@
 
 
     /* =========================
-       OWNER SESSION CHECK
+       API JSON HELPER
     ========================= */
 
-    function requireOwnerToken() {
+    async function readJsonResponse(
+      response
+    ) {
 
-      const token =
-        getOwnerToken();
+      const text =
+        await response.text();
 
 
-      if (!token) {
-
-        showMessage(
-          "Owner authentication is required. Please sign in to your NearAfrica owner account before posting a Help Wanted listing.",
-          "error"
-        );
-
-        submitButton.disabled =
-          true;
+      if (!text) {
 
         return null;
 
       }
 
 
-      return token;
+      try {
+
+        return JSON.parse(text);
+
+      } catch {
+
+        return {
+          raw: text
+        };
+
+      }
+
+    }
+
+
+    function getServerMessage(
+      result,
+      fallback
+    ) {
+
+      if (
+        result &&
+        typeof result === "object"
+      ) {
+
+        return cleanString(
+          result.error ||
+          result.message ||
+          result.detail ||
+          result.raw
+        ) || fallback;
+
+      }
+
+      return fallback;
 
     }
 
 
     /* =========================
-       LOAD OWNER BUSINESS
+       OWNER BUSINESS CHECK
     ========================= */
 
     async function loadOwnerBusiness() {
+
+      clearMessage();
+
 
       const token =
         getOwnerToken();
@@ -1661,23 +1678,53 @@
 
         authNotice.innerHTML =
           `<strong>Owner access required.</strong>
-           Please
+           You must
            <a href="owner-login.html">
              sign in
            </a>
-           with your approved NearAfrica owner account
            before posting a Help Wanted listing.`;
+
+        businessNameInput.value =
+          "Owner login required";
+
+        businessIdInput.value =
+          "Owner login required";
+
+        submitButton.disabled =
+          true;
+
+        submitButton.textContent =
+          "Sign In Required";
 
         return false;
 
       }
 
 
+      authNotice.innerHTML =
+        `<strong>Checking owner account...</strong>
+         Verifying your NearAfrica owner session.`;
+
+
+      businessNameInput.value =
+        "Verifying...";
+
+      businessIdInput.value =
+        "Verifying...";
+
+
+      submitButton.disabled =
+        true;
+
+      submitButton.textContent =
+        "Verifying Owner...";
+
+
       try {
 
         const response =
           await fetch(
-            `${API_BASE}/owner/business`,
+            OWNER_BUSINESS_ENDPOINT,
             {
               method: "GET",
 
@@ -1692,18 +1739,17 @@
           );
 
 
-        let result = null;
+        const result =
+          await readJsonResponse(
+            response
+          );
 
-        try {
 
-          result =
-            await response.json();
-
-        } catch {
-
-          result = null;
-
-        }
+        console.log(
+          "OWNER BUSINESS RESPONSE:",
+          response.status,
+          result
+        );
 
 
         if (!response.ok) {
@@ -1713,6 +1759,8 @@
             response.status === 403
           ) {
 
+            clearOwnerToken();
+
             throw new Error(
               "Your owner session is invalid or expired. Please sign in again."
             );
@@ -1721,20 +1769,32 @@
 
 
           throw new Error(
-            result &&
-            (
-              result.message ||
-              result.error
+            getServerMessage(
+              result,
+              `Owner verification failed (HTTP ${response.status}).`
             )
-              ? (
-                  result.message ||
-                  result.error
-                )
-              : "Unable to verify your owner account."
           );
 
         }
 
+
+        /*
+          Accept the common response shapes:
+
+          {
+            business: {...}
+          }
+
+          or
+
+          {
+            data: {...}
+          }
+
+          or
+
+          {...business fields...}
+        */
 
         const business =
           result &&
@@ -1745,10 +1805,13 @@
           );
 
 
-        if (!business) {
+        if (
+          !business ||
+          typeof business !== "object"
+        ) {
 
           throw new Error(
-            "Your owner account was verified, but no business information was returned."
+            "The server verified the owner session but did not return business information."
           );
 
         }
@@ -1757,7 +1820,8 @@
         const resolvedBusinessName =
           cleanString(
             business.business_name ||
-            business.name
+            business.name ||
+            business.title
           );
 
 
@@ -1768,40 +1832,44 @@
           );
 
 
-        if (
-          resolvedBusinessName
-        ) {
+        if (!resolvedBusinessName) {
 
-          businessNameInput.value =
-            resolvedBusinessName;
-
-        } else {
-
-          businessNameInput.value =
-            "Authenticated owner business";
+          throw new Error(
+            "Your owner session was accepted, but the business name was not returned."
+          );
 
         }
 
 
-        if (
-          resolvedBusinessId
-        ) {
+        if (!resolvedBusinessId) {
 
-          businessIdInput.value =
-            resolvedBusinessId;
-
-        } else {
-
-          businessIdInput.value =
-            "Verified by owner session";
+          throw new Error(
+            "Your owner session was accepted, but the business ID was not returned."
+          );
 
         }
+
+
+        businessNameInput.value =
+          resolvedBusinessName;
+
+
+        businessIdInput.value =
+          resolvedBusinessId;
 
 
         authNotice.innerHTML =
           `<strong>Owner account verified.</strong>
-           This listing will be associated with your authenticated
-           NearAfrica business.`;
+           This listing will be securely associated with
+           <strong>${escapeHtml(resolvedBusinessName)}</strong>.`;
+
+
+        submitButton.disabled =
+          false;
+
+        submitButton.textContent =
+          "Publish Help Wanted";
+
 
         return true;
 
@@ -1813,22 +1881,61 @@
         );
 
 
+        businessNameInput.value =
+          "Unable to verify";
+
+        businessIdInput.value =
+          "Unable to verify";
+
+
+        const message =
+          cleanString(
+            error &&
+            error.message
+          ) ||
+          "Unable to verify your owner account.";
+
+
         authNotice.innerHTML =
-          `<strong>Owner authentication could not be verified.</strong>
-           ${cleanString(error.message) ||
-             "Please sign in again before posting."}
+          `<strong>Owner verification failed.</strong>
+           ${escapeHtml(message)}
            <a href="owner-login.html">
-             Sign in
+             Sign in again
            </a>.`;
 
 
         submitButton.disabled =
           true;
 
+        submitButton.textContent =
+          "Owner Verification Required";
+
+
+        showMessage(
+          message,
+          "error"
+        );
+
 
         return false;
 
       }
+
+    }
+
+
+    /* =========================
+       HTML ESCAPING
+    ========================= */
+
+    function escapeHtml(value) {
+
+      return cleanString(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
     }
 
@@ -1841,35 +1948,46 @@
 
       if (!getOwnerToken()) {
 
-        return "Owner authentication is required. Please sign in before posting.";
+        return (
+          "Owner authentication is required. " +
+          "Please sign in before posting."
+        );
 
       }
 
 
       if (!data.title) {
 
-        return "Please enter the position or opportunity title.";
+        return (
+          "Please enter the position or opportunity title."
+        );
 
       }
 
 
       if (!data.category) {
 
-        return "Please select the opportunity type.";
+        return (
+          "Please select the opportunity type."
+        );
 
       }
 
 
       if (!data.location) {
 
-        return "Please enter the location.";
+        return (
+          "Please enter the location."
+        );
 
       }
 
 
       if (!data.description) {
 
-        return "Please provide a description of the opportunity.";
+        return (
+          "Please provide a description of the opportunity."
+        );
 
       }
 
@@ -1880,7 +1998,9 @@
         !data.application_url
       ) {
 
-        return "Please provide at least one application contact method.";
+        return (
+          "Please provide at least one application contact method."
+        );
 
       }
 
@@ -1892,7 +2012,9 @@
         )
       ) {
 
-        return "Please enter a valid contact email.";
+        return (
+          "Please enter a valid contact email."
+        );
 
       }
 
@@ -1904,7 +2026,9 @@
         )
       ) {
 
-        return "Application link must begin with http:// or https://.";
+        return (
+          "Application link must begin with http:// or https://."
+        );
 
       }
 
@@ -1929,7 +2053,9 @@
           )
         ) {
 
-          return "Please enter a valid application deadline.";
+          return (
+            "Please enter a valid application deadline."
+          );
 
         }
 
@@ -1938,7 +2064,9 @@
           deadlineDate < new Date()
         ) {
 
-          return "The application deadline cannot be in the past.";
+          return (
+            "The application deadline cannot be in the past."
+          );
 
         }
 
@@ -1951,7 +2079,9 @@
         ).checked
       ) {
 
-        return "Please confirm that you are authorized to post this listing.";
+        return (
+          "Please confirm that you are authorized to post this listing."
+        );
 
       }
 
@@ -1971,14 +2101,26 @@
 
         event.preventDefault();
 
+
         clearMessage();
 
 
         const ownerToken =
-          requireOwnerToken();
+          getOwnerToken();
 
 
         if (!ownerToken) {
+
+          showMessage(
+            "Your owner session is missing. Please sign in again.",
+            "error"
+          );
+
+          submitButton.disabled =
+            true;
+
+          submitButton.textContent =
+            "Sign In Required";
 
           return;
 
@@ -2014,19 +2156,15 @@
 
         try {
 
-          /*
-            IMPORTANT:
+          console.log(
+            "SUBMITTING HELP WANTED:",
+            OWNER_HELP_WANTED_ENDPOINT
+          );
 
-            The request goes through the authenticated
-            owner endpoint.
-
-            The Worker determines the business from
-            the owner session token.
-          */
 
           const response =
             await fetch(
-              `${API_BASE}/owner/help-wanted`,
+              OWNER_HELP_WANTED_ENDPOINT,
               {
                 method: "POST",
 
@@ -2047,76 +2185,44 @@
             );
 
 
-          let result = null;
+          const result =
+            await readJsonResponse(
+              response
+            );
 
-          try {
 
-            result =
-              await response.json();
-
-          } catch {
-
-            result = null;
-
-          }
+          console.log(
+            "HELP WANTED RESPONSE:",
+            response.status,
+            result
+          );
 
 
           if (!response.ok) {
-
-            let message =
-              "The Help Wanted listing could not be submitted.";
-
-
-            if (
-              result &&
-              typeof result === "object"
-            ) {
-
-              message =
-                result.error ||
-                result.message ||
-                result.detail ||
-                message;
-
-            }
-
 
             if (
               response.status === 401 ||
               response.status === 403
             ) {
 
-              message =
-                "Your owner session is invalid or expired. Please sign in again.";
+              clearOwnerToken();
 
-              try {
-
-                localStorage.removeItem(
-                  OWNER_TOKEN_KEY
-                );
-
-              } catch {
-
-                /* Ignore storage cleanup errors. */
-
-              }
+              throw new Error(
+                "Your owner session is invalid or expired. Please sign in again."
+              );
 
             }
 
 
             throw new Error(
-              message
+              getServerMessage(
+                result,
+                `The Help Wanted listing could not be submitted (HTTP ${response.status}).`
+              )
             );
 
           }
 
-
-          /*
-            Submission succeeded.
-
-            The frontend intentionally does not assume
-            that the listing is immediately public.
-          */
 
           formWrapper.style.display =
             "none";
@@ -2135,14 +2241,17 @@
         } catch (error) {
 
           console.error(
-            "Help Wanted submission error:",
+            "HELP WANTED SUBMISSION ERROR:",
             error
           );
 
 
           showMessage(
-            error.message ||
-              "Something went wrong while submitting the listing. Please try again.",
+            cleanString(
+              error &&
+              error.message
+            ) ||
+            "Something went wrong while submitting the listing.",
             "error"
           );
 
@@ -2178,18 +2287,19 @@
         formWrapper.style.display =
           "block";
 
-        submitButton.disabled =
-          false;
-
-        submitButton.textContent =
-          "Publish Help Wanted";
-
 
         businessNameInput.value =
-          "Loading your business...";
+          "Checking...";
 
         businessIdInput.value =
-          "Loading...";
+          "Checking...";
+
+
+        submitButton.disabled =
+          true;
+
+        submitButton.textContent =
+          "Verifying Owner...";
 
 
         await loadOwnerBusiness();
@@ -2219,20 +2329,6 @@
     ========================= */
 
     (async () => {
-
-      const token =
-        getOwnerToken();
-
-
-      if (!token) {
-
-        submitButton.disabled =
-          true;
-
-        return;
-
-      }
-
 
       await loadOwnerBusiness();
 
