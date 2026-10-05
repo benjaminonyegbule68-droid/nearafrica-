@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
@@ -404,7 +405,6 @@
 
         .panel-title {
             margin: 0;
-
             font-size: 17px;
         }
 
@@ -445,7 +445,6 @@
         .empty,
         .error {
             padding: 50px 20px;
-
             text-align: center;
             color: #888;
         }
@@ -508,7 +507,8 @@
         }
 
         .business-id,
-        .claim-id {
+        .claim-id,
+        .help-id {
             color: #777;
 
             font-family:
@@ -561,6 +561,12 @@
             color: #f87171;
             background:
                 rgba(248,113,113,0.1);
+        }
+
+        .status.closed {
+            color: #aaa;
+            background:
+                rgba(255,255,255,0.06);
         }
 
         /* =====================================================
@@ -630,6 +636,27 @@
         .action-btn:disabled {
             opacity: 0.55;
             cursor: wait;
+        }
+
+        /* =====================================================
+           HELP WANTED
+        ===================================================== */
+
+        .help-wanted-details {
+            max-width: 360px;
+            white-space: normal;
+            line-height: 1.5;
+            color: #aaa;
+        }
+
+        .help-wanted-contact {
+            max-width: 240px;
+            word-break: break-word;
+            line-height: 1.5;
+        }
+
+        .help-wanted-actions {
+            min-width: 170px;
         }
 
         /* =====================================================
@@ -841,6 +868,7 @@
         <button
             id="logoutBtn"
             class="logout-btn"
+            type="button"
         >
             Logout
         </button>
@@ -858,8 +886,8 @@
 
             <p>
                 Manage NearAfrica businesses,
-                submissions, claims, reports and
-                platform activity.
+                submissions, claims, reports,
+                Help Wanted and platform activity.
             </p>
 
         </div>
@@ -983,6 +1011,7 @@
                 <button
                     class="tab active"
                     data-resource="businesses"
+                    type="button"
                 >
                     Businesses
                 </button>
@@ -990,6 +1019,7 @@
                 <button
                     class="tab"
                     data-resource="submissions"
+                    type="button"
                 >
                     Submissions
                 </button>
@@ -997,6 +1027,7 @@
                 <button
                     class="tab"
                     data-resource="claims"
+                    type="button"
                 >
                     Claims
                 </button>
@@ -1004,6 +1035,7 @@
                 <button
                     class="tab"
                     data-resource="reviews"
+                    type="button"
                 >
                     Reviews
                 </button>
@@ -1011,6 +1043,7 @@
                 <button
                     class="tab"
                     data-resource="reports"
+                    type="button"
                 >
                     Reports
                 </button>
@@ -1018,6 +1051,7 @@
                 <button
                     class="tab"
                     data-resource="help_wanted"
+                    type="button"
                 >
                     Help Wanted
                 </button>
@@ -1025,6 +1059,7 @@
                 <button
                     class="tab"
                     data-resource="subscriptions"
+                    type="button"
                 >
                     Subscriptions
                 </button>
@@ -1032,6 +1067,7 @@
                 <button
                     class="tab"
                     data-resource="discoveries"
+                    type="button"
                 >
                     Discoveries
                 </button>
@@ -1059,6 +1095,7 @@
                 <button
                     id="refreshBtn"
                     class="refresh-btn"
+                    type="button"
                 >
                     Refresh
                 </button>
@@ -1233,11 +1270,6 @@
         }
 
 
-        /*
-         * Only send Content-Type when a request
-         * actually has a body.
-         */
-
         return headers;
 
     }
@@ -1366,11 +1398,6 @@
         resource
     ) {
 
-        /*
-         * The current Worker uses
-         * /admin/discovery (singular).
-         */
-
         if (
             resource === "discoveries"
         ) {
@@ -1382,10 +1409,16 @@
         }
 
 
-        /*
-         * Keep the existing Help Wanted
-         * resource name for compatibility.
-         */
+        if (
+            resource === "help_wanted"
+        ) {
+
+            return (
+                "/admin/help_wanted?limit=100"
+            );
+
+        }
+
 
         return (
             `/admin/${resource}?limit=100`
@@ -1419,12 +1452,6 @@
             }
 
 
-            /*
-             * IMPORTANT:
-             * previousKey is declared outside
-             * the try block so catch() can use it.
-             */
-
             const previousKey =
                 adminKey;
 
@@ -1445,14 +1472,6 @@
 
 
             try {
-
-                /*
-                 * Authenticate using the lightweight
-                 * admin root endpoint.
-                 *
-                 * This prevents /admin/stats from
-                 * deciding whether the key is valid.
-                 */
 
                 await apiRequest(
                     "/admin"
@@ -1475,10 +1494,6 @@
                     "";
 
 
-                /*
-                 * Stats are deliberately non-blocking.
-                 */
-
                 await loadStats();
 
 
@@ -1489,19 +1504,9 @@
 
             } catch (error) {
 
-                /*
-                 * Restore the previous key
-                 * when authentication fails.
-                 */
-
                 adminKey =
                     previousKey;
 
-
-                /*
-                 * Only present authentication
-                 * errors as invalid-key errors.
-                 */
 
                 if (
                     error.status === 401 ||
@@ -1757,12 +1762,6 @@
 
         } catch (error) {
 
-            /*
-             * Stats are informational only.
-             * A broken stats endpoint must not
-             * prevent the dashboard from opening.
-             */
-
             console.warn(
                 "NearAfrica admin stats unavailable:",
                 error
@@ -1915,6 +1914,19 @@
             ) {
 
                 renderDiscoveries(
+                    records
+                );
+
+                return;
+
+            }
+
+
+            if (
+                resource === "help_wanted"
+            ) {
+
+                renderHelpWanted(
                     records
                 );
 
@@ -2116,6 +2128,7 @@
 
                     const owner =
                         business.owner_id ||
+                        business.owner_email ||
                         "—";
 
 
@@ -2608,9 +2621,11 @@
                                 </div>
                             `
                             : `
+
                                 <span class="muted">
                                     No actions
                                 </span>
+
                             `;
 
 
@@ -2695,7 +2710,11 @@
 
                             <td>
 
-                                <span>
+                                <span
+                                    class="status ${escapeAttribute(
+                                        status
+                                    )}"
+                                >
                                     ${escapeHtml(
                                         status
                                     )}
@@ -2804,6 +2823,648 @@
 
 
     /* =========================================================
+       HELP WANTED MODERATION
+    ========================================================= */
+
+    async function moderateHelpWantedFromAdmin(
+        helpWantedId,
+        action,
+        button
+    ) {
+
+        const id =
+            String(
+                helpWantedId ||
+                ""
+            ).trim();
+
+
+        const cleanAction =
+            String(
+                action ||
+                ""
+            ).trim().toLowerCase();
+
+
+        if (!id) {
+
+            alert(
+                "This Help Wanted post does not have a valid ID."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            cleanAction !== "approve" &&
+            cleanAction !== "reject"
+        ) {
+
+            return;
+
+        }
+
+
+        const confirmed =
+            confirm(
+                cleanAction === "approve"
+                    ? "Approve this Help Wanted post?\n\nOnce approved, it can become publicly visible."
+                    : "Reject this Help Wanted post?\n\nRejected posts will not be publicly visible."
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        const actionButtons =
+            document.querySelectorAll(
+                `.help-wanted-action[data-help-id="${CSS.escape(
+                    id
+                )}"]`
+            );
+
+
+        actionButtons.forEach(
+            item => {
+
+                item.disabled =
+                    true;
+
+            }
+        );
+
+
+        if (button) {
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                cleanAction === "approve"
+                    ? "Approving..."
+                    : "Rejecting...";
+
+        }
+
+
+        try {
+
+            const response =
+                await apiRequest(
+                    `/admin/help-wanted/${encodeURIComponent(
+                        id
+                    )}/${cleanAction}`,
+                    {
+                        method:
+                            "POST"
+                    }
+                );
+
+
+            alert(
+                response.message ||
+                (
+                    cleanAction === "approve"
+                        ? "Help Wanted post approved successfully."
+                        : "Help Wanted post rejected successfully."
+                )
+            );
+
+
+            await loadStats();
+
+
+            await loadResource(
+                "help_wanted"
+            );
+
+
+        } catch (error) {
+
+            actionButtons.forEach(
+                item => {
+
+                    item.disabled =
+                        false;
+
+                }
+            );
+
+
+            if (button) {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    cleanAction === "approve"
+                        ? "Approve"
+                        : "Reject";
+
+            }
+
+
+            alert(
+                error.message ||
+                "Unable to update Help Wanted post."
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       RENDER HELP WANTED
+    ========================================================= */
+
+    function renderHelpWanted(
+        helpWanted
+    ) {
+
+        if (
+            !Array.isArray(
+                helpWanted
+            ) ||
+            !helpWanted.length
+        ) {
+
+            content.innerHTML = `
+                <div class="empty">
+                    No Help Wanted posts found.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const rows =
+            helpWanted.map(
+                item => {
+
+                    const helpId =
+                        item.id ||
+                        item.help_wanted_id ||
+                        "";
+
+
+                    const title =
+                        item.title ||
+                        item.name ||
+                        "Untitled opportunity";
+
+
+                    const businessId =
+                        item.business_id ||
+                        "";
+
+
+                    const businessName =
+                        item.business_name ||
+                        item.business?.business_name ||
+                        item.business?.name ||
+                        businessId ||
+                        "—";
+
+
+                    const category =
+                        item.category ||
+                        "—";
+
+
+                    const opportunityType =
+                        item.employment_type ||
+                        item.type ||
+                        item.opportunity_type ||
+                        "—";
+
+
+                    const city =
+                        item.city ||
+                        "";
+
+
+                    const state =
+                        item.state ||
+                        "";
+
+
+                    const country =
+                        item.country ||
+                        "Nigeria";
+
+
+                    const rawLocation =
+                        item.location ||
+                        "";
+
+
+                    const location =
+                        rawLocation ||
+                        [
+                            city,
+                            state,
+                            country
+                        ]
+                            .filter(Boolean)
+                            .join(
+                                ", "
+                            ) ||
+                        "—";
+
+
+                    const description =
+                        item.description ||
+                        "—";
+
+
+                    const contact =
+                        item.application_contact ||
+                        item.contact ||
+                        item.contact_email ||
+                        item.contact_phone ||
+                        item.application_url ||
+                        "—";
+
+
+                    const deadline =
+                        item.deadline ||
+                        item.expires_at ||
+                        item.expiration_date ||
+                        "—";
+
+
+                    /*
+                     * Prefer moderation_status because that
+                     * represents the Admin moderation decision.
+                     *
+                     * Fall back to status for compatibility
+                     * with older Help Wanted records.
+                     */
+
+                    const moderationStatus =
+                        String(
+                            item.moderation_status ||
+                            ""
+                        )
+                            .trim()
+                            .toLowerCase();
+
+
+                    const statusField =
+                        String(
+                            item.status ||
+                            ""
+                        )
+                            .trim()
+                            .toLowerCase();
+
+
+                    let displayStatus =
+                        moderationStatus ||
+                        statusField ||
+                        "pending";
+
+
+                    /*
+                     * If the record has not yet been explicitly
+                     * approved or rejected, display it as pending.
+                     */
+
+                    if (
+                        displayStatus === "active" &&
+                        moderationStatus !== "approved"
+                    ) {
+
+                        displayStatus =
+                            "pending";
+
+                    }
+
+
+                    const canModerate =
+                        (
+                            displayStatus === "pending" ||
+                            displayStatus === "active"
+                        ) &&
+                        !!helpId;
+
+
+                    const actions =
+                        canModerate
+                            ? `
+                                <div
+                                    class="actions"
+                                >
+
+                                    <button
+                                        type="button"
+                                        class="action-btn primary help-wanted-action"
+                                        data-help-id="${escapeAttribute(
+                                            String(
+                                                helpId
+                                            )
+                                        )}"
+                                        onclick="moderateHelpWantedFromAdmin(
+                                            '${escapeAttribute(
+                                                String(
+                                                    helpId
+                                                )
+                                            )}',
+                                            'approve',
+                                            this
+                                        )"
+                                    >
+                                        Approve
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="action-btn dismiss help-wanted-action"
+                                        data-help-id="${escapeAttribute(
+                                            String(
+                                                helpId
+                                            )
+                                        )}"
+                                        onclick="moderateHelpWantedFromAdmin(
+                                            '${escapeAttribute(
+                                                String(
+                                                    helpId
+                                                )
+                                            )}',
+                                            'reject',
+                                            this
+                                        )"
+                                    >
+                                        Reject
+                                    </button>
+
+                                </div>
+                            `
+                            : `
+                                <span class="muted">
+                                    No actions
+                                </span>
+                            `;
+
+
+                    const publicBusinessLink =
+                        businessId
+                            ? `
+                                <div
+                                    style="
+                                        margin-top:8px;
+                                    "
+                                >
+                                    <a
+                                        href="https://nearafrica.pages.dev/pages/business.html?id=${encodeURIComponent(
+                                            businessId
+                                        )}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style="
+                                            color:#d4af37;
+                                            text-decoration:none;
+                                            font-weight:700;
+                                            font-size:12px;
+                                        "
+                                    >
+                                        Open Business
+                                    </a>
+                                </div>
+                            `
+                            : "";
+
+
+                    return `
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        title
+                                    )}
+                                </strong>
+
+                                <div
+                                    class="help-id"
+                                    style="
+                                        margin-top:6px;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        String(
+                                            helpId
+                                        )
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        businessName
+                                    )}
+                                </strong>
+
+                                ${
+                                    businessId
+                                        ? `
+                                            <div
+                                                class="business-id"
+                                                style="
+                                                    margin-top:5px;
+                                                "
+                                            >
+                                                ${escapeHtml(
+                                                    String(
+                                                        businessId
+                                                    )
+                                                )}
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+                                ${publicBusinessLink}
+
+                            </td>
+
+
+                            <td>
+
+                                <div>
+                                    ${escapeHtml(
+                                        opportunityType
+                                    )}
+                                </div>
+
+                                <div
+                                    class="muted"
+                                    style="
+                                        margin-top:5px;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        category
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                ${escapeHtml(
+                                    location
+                                )}
+
+                            </td>
+
+
+                            <td>
+
+                                <div
+                                    class="help-wanted-details"
+                                >
+                                    ${escapeHtml(
+                                        description
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <div
+                                    class="help-wanted-contact"
+                                >
+                                    ${escapeHtml(
+                                        contact
+                                    )}
+                                </div>
+
+                                <div
+                                    class="muted"
+                                    style="
+                                        margin-top:8px;
+                                    "
+                                >
+                                    Deadline:
+                                    ${escapeHtml(
+                                        deadline
+                                    )}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <span
+                                    class="status ${escapeAttribute(
+                                        displayStatus
+                                    )}"
+                                >
+                                    ${escapeHtml(
+                                        displayStatus
+                                    )}
+                                </span>
+
+                            </td>
+
+
+                            <td
+                                class="help-wanted-actions"
+                            >
+
+                                ${actions}
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            ).join("");
+
+
+        content.innerHTML = `
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Opportunity
+                            </th>
+
+                            <th>
+                                Business
+                            </th>
+
+                            <th>
+                                Type / Category
+                            </th>
+
+                            <th>
+                                Location
+                            </th>
+
+                            <th>
+                                Description
+                            </th>
+
+                            <th>
+                                Contact
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        ${rows}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================================================
        GENERIC TABLE
     ========================================================= */
 
@@ -2869,6 +3530,7 @@
                                                 record[
                                                     key
                                                 ];
+
 
                                             return `
                                                 <td>
@@ -3027,12 +3689,14 @@
                         reportId
                     )}/${action}`,
                     {
-                        method: "POST",
+                        method:
+                            "POST",
 
-                        body: JSON.stringify({
-                            admin_notes:
-                                note
-                        })
+                        body:
+                            JSON.stringify({
+                                admin_notes:
+                                    note
+                            })
                     }
                 );
 
@@ -3165,7 +3829,7 @@
                         businessId
                             ? `
                                 <a
-                                    href="business.html?id=${encodeURIComponent(
+                                    href="https://nearafrica.pages.dev/pages/business.html?id=${encodeURIComponent(
                                         businessId
                                     )}"
                                     target="_blank"
@@ -3480,6 +4144,164 @@
 
 
     /* =========================================================
+       CLAIM MODERATION
+    ========================================================= */
+
+    async function moderateClaimFromAdmin(
+        claimId,
+        action,
+        button
+    ) {
+
+        const cleanId =
+            String(
+                claimId ||
+                ""
+            ).trim();
+
+
+        const cleanAction =
+            String(
+                action ||
+                ""
+            ).trim().toLowerCase();
+
+
+        if (!cleanId) {
+
+            alert(
+                "This claim does not have a valid ID."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            cleanAction !== "approve" &&
+            cleanAction !== "reject"
+        ) {
+
+            return;
+
+        }
+
+
+        const confirmed =
+            confirm(
+                cleanAction === "approve"
+                    ? "Approve this business claim?"
+                    : "Reject this business claim?"
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        const actionButtons =
+            document.querySelectorAll(
+                `.claim-action[data-claim-id="${CSS.escape(
+                    cleanId
+                )}"]`
+            );
+
+
+        actionButtons.forEach(
+            item => {
+
+                item.disabled =
+                    true;
+
+            }
+        );
+
+
+        if (button) {
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                cleanAction === "approve"
+                    ? "Approving..."
+                    : "Rejecting...";
+
+        }
+
+
+        try {
+
+            const response =
+                await apiRequest(
+                    `/admin/claims/${encodeURIComponent(
+                        cleanId
+                    )}/${cleanAction}`,
+                    {
+                        method:
+                            "POST"
+                    }
+                );
+
+
+            alert(
+                response.message ||
+                (
+                    cleanAction === "approve"
+                        ? "Claim approved successfully."
+                        : "Claim rejected successfully."
+                )
+            );
+
+
+            await loadStats();
+
+
+            await loadResource(
+                "claims"
+            );
+
+
+        } catch (error) {
+
+            actionButtons.forEach(
+                item => {
+
+                    item.disabled =
+                        false;
+
+                }
+            );
+
+
+            if (button) {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    cleanAction === "approve"
+                        ? "Approve"
+                        : "Reject";
+
+            }
+
+
+            alert(
+                error.message ||
+                "Unable to update claim."
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
        CLAIMS
     ========================================================= */
 
@@ -3564,6 +4386,104 @@
                         );
 
 
+                    let actionMarkup =
+                        "—";
+
+
+                    if (
+                        status === "verified" &&
+                        claimId
+                    ) {
+
+                        actionMarkup = `
+
+                            <div
+                                class="actions"
+                            >
+
+                                <button
+                                    type="button"
+                                    class="action-btn primary claim-action"
+                                    data-claim-id="${escapeAttribute(
+                                        String(
+                                            claimId
+                                        )
+                                    )}"
+                                    data-action="approve"
+                                    onclick="moderateClaimFromAdmin(
+                                        '${escapeAttribute(
+                                            String(
+                                                claimId
+                                            )
+                                        )}',
+                                        'approve',
+                                        this
+                                    )"
+                                >
+                                    Approve
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="action-btn dismiss claim-action"
+                                    data-claim-id="${escapeAttribute(
+                                        String(
+                                            claimId
+                                        )
+                                    )}"
+                                    data-action="reject"
+                                    onclick="moderateClaimFromAdmin(
+                                        '${escapeAttribute(
+                                            String(
+                                                claimId
+                                            )
+                                        )}',
+                                        'reject',
+                                        this
+                                    )"
+                                >
+                                    Reject
+                                </button>
+
+                            </div>
+
+                        `;
+
+                    } else if (
+                        status === "pending" &&
+                        claimId
+                    ) {
+
+                        actionMarkup = `
+
+                            <button
+                                type="button"
+                                class="action-btn dismiss claim-action"
+                                data-claim-id="${escapeAttribute(
+                                    String(
+                                        claimId
+                                    )
+                                )}"
+                                data-action="reject"
+                                onclick="moderateClaimFromAdmin(
+                                    '${escapeAttribute(
+                                        String(
+                                            claimId
+                                        )
+                                    )}',
+                                    'reject',
+                                    this
+                                )"
+                            >
+                                Reject
+                            </button>
+
+                        `;
+
+                    }
+
+
                     return `
 
                         <tr>
@@ -3620,7 +4540,7 @@
                                             >
 
                                                 <a
-                                                    href="https://nearafrica.pages.dev/business.html?id=${encodeURIComponent(
+                                                    href="https://nearafrica.pages.dev/pages/business.html?id=${encodeURIComponent(
                                                         businessId
                                                     )}"
                                                     target="_blank"
@@ -3702,63 +4622,7 @@
 
                             <td>
 
-                                ${
-                                    status === "verified"
-                                        ? `
-
-                                            <div
-                                                style="
-                                                    display:flex;
-                                                    gap:8px;
-                                                    flex-wrap:wrap;
-                                                "
-                                            >
-
-                                                <button
-                                                    type="button"
-                                                    class="claim-action"
-                                                    data-claim-id="${escapeAttribute(
-                                                        claimId
-                                                    )}"
-                                                    data-action="approve"
-                                                >
-                                                    Approve
-                                                </button>
-
-
-                                                <button
-                                                    type="button"
-                                                    class="claim-action"
-                                                    data-claim-id="${escapeAttribute(
-                                                        claimId
-                                                    )}"
-                                                    data-action="reject"
-                                                >
-                                                    Reject
-                                                </button>
-
-                                            </div>
-
-                                        `
-                                        : status === "pending"
-                                        ? `
-
-                                            <button
-                                                type="button"
-                                                class="claim-action"
-                                                data-claim-id="${escapeAttribute(
-                                                    claimId
-                                                )}"
-                                                data-action="reject"
-                                            >
-                                                Reject
-                                            </button>
-
-                                        `
-                                        : `
-                                            —
-                                        `
-                                }
+                                ${actionMarkup}
 
                             </td>
 
@@ -3818,42 +4682,11 @@
 
         `;
 
-
-        content
-            .querySelectorAll(
-                ".claim-action"
-            )
-            .forEach(
-                button => {
-
-                    button.addEventListener(
-                        "click",
-                        () => {
-
-                            const claimId =
-                                button.dataset.claimId;
-
-                            const action =
-                                button.dataset.action;
-
-
-                            moderateClaimFromAdmin(
-                                claimId,
-                                action,
-                                button
-                            );
-
-                        }
-                    );
-
-                }
-            );
-
     }
 
 
     /* =========================================================
-       SUBMISSIONS
+       SUBMISSION MODERATION
     ========================================================= */
 
     async function moderateSubmissionFromAdmin(
@@ -3950,7 +4783,8 @@
                         submissionId
                     )}/${action}`,
                     {
-                        method: "POST",
+                        method:
+                            "POST",
 
                         body:
                             JSON.stringify(
@@ -4087,9 +4921,11 @@
 
 
                     let actions = `
+
                         <span class="muted">
                             No actions
                         </span>
+
                     `;
 
 
@@ -4269,7 +5105,9 @@
 
 
                             <td>
+
                                 ${actions}
+
                             </td>
 
                         </tr>
@@ -4438,11 +5276,6 @@
 
         try {
 
-            /*
-             * Validate saved key against
-             * /admin, not /admin/stats.
-             */
-
             await apiRequest(
                 "/admin"
             );
@@ -4454,11 +5287,6 @@
             adminApp.style.display =
                 "block";
 
-
-            /*
-             * Stats cannot lock the user
-             * out anymore.
-             */
 
             await loadStats();
 
@@ -4475,11 +5303,6 @@
                 error
             );
 
-
-            /*
-             * Only discard the saved key
-             * when authentication failed.
-             */
 
             if (
                 error.status === 401 ||
@@ -4502,11 +5325,6 @@
                     "Your saved admin key is no longer valid.";
 
             } else {
-
-                /*
-                 * Keep the dashboard available
-                 * for non-authentication errors.
-                 */
 
                 loginScreen.style.display =
                     "none";
