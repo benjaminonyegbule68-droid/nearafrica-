@@ -3103,14 +3103,21 @@
 
 
                     /*
-                     * Prefer moderation_status because that
-                     * represents the Admin moderation decision.
+                     * =================================================
+                     * IMPORTANT MODERATION LOGIC
                      *
-                     * Fall back to status for compatibility
-                     * with older Help Wanted records.
+                     * Only these three statuses are considered FINAL:
+                     *
+                     * approved
+                     * rejected
+                     * closed
+                     *
+                     * Every other status is treated as pending so that
+                     * an Admin always has a chance to moderate it.
+                     * =================================================
                      */
 
-                    const moderationStatus =
+                    const rawModerationStatus =
                         String(
                             item.moderation_status ||
                             ""
@@ -3119,7 +3126,7 @@
                             .toLowerCase();
 
 
-                    const statusField =
+                    const rawStatus =
                         String(
                             item.status ||
                             ""
@@ -3129,33 +3136,56 @@
 
 
                     let displayStatus =
-                        moderationStatus ||
-                        statusField ||
                         "pending";
 
 
-                    /*
-                     * If the record has not yet been explicitly
-                     * approved or rejected, display it as pending.
-                     */
-
                     if (
-                        displayStatus === "active" &&
-                        moderationStatus !== "approved"
+                        rawModerationStatus ===
+                            "approved" ||
+                        rawStatus ===
+                            "approved"
                     ) {
 
                         displayStatus =
-                            "pending";
+                            "approved";
+
+                    } else if (
+                        rawModerationStatus ===
+                            "rejected" ||
+                        rawStatus ===
+                            "rejected"
+                    ) {
+
+                        displayStatus =
+                            "rejected";
+
+                    } else if (
+                        rawModerationStatus ===
+                            "closed" ||
+                        rawStatus ===
+                            "closed"
+                    ) {
+
+                        displayStatus =
+                            "closed";
 
                     }
 
 
+                    /*
+                     * Everything that is not explicitly final
+                     * remains moderatable.
+                     */
+
                     const canModerate =
-                        (
-                            displayStatus === "pending" ||
-                            displayStatus === "active"
-                        ) &&
-                        !!helpId;
+                        !!helpId &&
+                        ![
+                            "approved",
+                            "rejected",
+                            "closed"
+                        ].includes(
+                            displayStatus
+                        );
 
 
                     const actions =
@@ -3173,6 +3203,7 @@
                                                 helpId
                                             )
                                         )}"
+                                        data-action="approve"
                                         onclick="moderateHelpWantedFromAdmin(
                                             '${escapeAttribute(
                                                 String(
@@ -3195,6 +3226,7 @@
                                                 helpId
                                             )
                                         )}"
+                                        data-action="reject"
                                         onclick="moderateHelpWantedFromAdmin(
                                             '${escapeAttribute(
                                                 String(
@@ -3385,6 +3417,26 @@
                                         displayStatus
                                     )}
                                 </span>
+
+                                ${
+                                    rawStatus &&
+                                    rawStatus !== displayStatus
+                                        ? `
+                                            <div
+                                                class="muted"
+                                                style="
+                                                    margin-top:6px;
+                                                    font-size:11px;
+                                                "
+                                            >
+                                                Original:
+                                                ${escapeHtml(
+                                                    rawStatus
+                                                )}
+                                            </div>
+                                        `
+                                        : ""
+                                }
 
                             </td>
 
