@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Owner Dashboard | NearAfrica</title>
 
@@ -279,6 +284,16 @@
       background: rgba(224, 82, 82, 0.08);
     }
 
+    .btn-warning {
+      background: transparent;
+      color: var(--warning);
+      border: 1px solid rgba(224, 173, 69, 0.35);
+    }
+
+    .btn-warning:hover {
+      background: rgba(224, 173, 69, 0.08);
+    }
+
     button:disabled {
       opacity: 0.6;
       cursor: not-allowed;
@@ -489,9 +504,7 @@
       line-height: 1.4;
     }
 
-    /*
-      OPENING HOURS
-    */
+    /* OPENING HOURS */
 
     .hours-header,
     .hours-row {
@@ -532,6 +545,8 @@
       overflow-wrap: anywhere;
     }
 
+    /* PRODUCTS */
+
     .products-list {
       width: 100%;
       min-width: 0;
@@ -564,9 +579,7 @@
       min-width: 0;
     }
 
-    /*
-      HELP WANTED
-    */
+    /* HELP WANTED */
 
     .help-wanted-list {
       width: 100%;
@@ -648,6 +661,19 @@
       border-color: rgba(224, 82, 82, 0.25);
     }
 
+    .help-wanted-status.pending {
+      color: var(--warning);
+      background: rgba(224, 173, 69, 0.08);
+      border-color: rgba(224, 173, 69, 0.25);
+    }
+
+    .help-wanted-status.rejected,
+    .help-wanted-status.removed {
+      color: var(--danger);
+      background: rgba(224, 82, 82, 0.08);
+      border-color: rgba(224, 82, 82, 0.25);
+    }
+
     .help-wanted-form-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -666,6 +692,35 @@
       line-height: 1.5;
     }
 
+    .help-wanted-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .edit-banner {
+      display: none;
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border-radius: 9px;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      background: rgba(212, 175, 55, 0.07);
+      color: var(--text-secondary);
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    .edit-banner.show {
+      display: block;
+    }
+
+    .edit-banner strong {
+      color: var(--accent);
+    }
+
     .footer {
       width: 100%;
       border-top: 1px solid var(--border);
@@ -675,10 +730,6 @@
       font-size: 13px;
       overflow-wrap: anywhere;
     }
-
-    /*
-      TABLET
-    */
 
     @media (max-width: 800px) {
 
@@ -728,10 +779,6 @@
         grid-column: auto;
       }
     }
-
-    /*
-      PHONE
-    */
 
     @media (max-width: 600px) {
 
@@ -809,10 +856,6 @@
         font-size: 24px;
       }
 
-      /*
-        PHONE OPENING HOURS
-      */
-
       .hours-header {
         display: none;
       }
@@ -849,14 +892,18 @@
         grid-template-columns: 1fr;
       }
 
+      .help-wanted-actions {
+        flex-direction: column;
+      }
+
+      .help-wanted-actions button {
+        width: 100%;
+      }
+
       .footer {
         padding: 22px 12px;
       }
     }
-
-    /*
-      VERY SMALL PHONES
-    */
 
     @media (max-width: 380px) {
 
@@ -922,6 +969,7 @@
 
       <section class="hero">
         <h1>Owner Dashboard</h1>
+
         <p>
           Manage your NearAfrica business profile.
         </p>
@@ -934,12 +982,14 @@
         <h2>Business Owner Login</h2>
 
         <p class="card-description">
-          Enter the business name and owner email associated with your approved NearAfrica ownership claim.
+          Enter the business name and owner email associated
+          with your approved NearAfrica ownership claim.
         </p>
 
         <form id="loginForm">
 
           <div class="form-group">
+
             <label for="businessName">
               Business Name
             </label>
@@ -952,9 +1002,11 @@
               autocomplete="organization"
               required
             >
+
           </div>
 
           <div class="form-group">
+
             <label for="ownerEmail">
               Owner Email
             </label>
@@ -967,6 +1019,7 @@
               autocomplete="email"
               required
             >
+
           </div>
 
           <button
@@ -979,17 +1032,25 @@
 
         </form>
 
-        <div id="loginStatus" class="status"></div>
+        <div
+          id="loginStatus"
+          class="status"
+        ></div>
 
         <p class="locked-note">
-          Your business must have an approved and verified ownership claim before owner access is available.
+          Your business must have an approved and verified
+          ownership claim before owner access is available.
         </p>
 
       </section>
 
+
       <!-- DASHBOARD -->
 
-      <section id="dashboardSection" class="hidden">
+      <section
+        id="dashboardSection"
+        class="hidden"
+      >
 
         <!-- BUSINESS PROFILE -->
 
@@ -1000,83 +1061,138 @@
           </h2>
 
           <p class="card-description">
-            Review and update the information you are allowed to manage.
+            Review and update the information you are allowed
+            to manage.
           </p>
 
-          <div id="dashboardStatus" class="status"></div>
+          <div
+            id="dashboardStatus"
+            class="status"
+          ></div>
 
           <div class="business-grid">
 
             <div class="info-box">
               <div class="info-label">Business Name</div>
-              <div id="displayBusinessName" class="info-value">—</div>
+              <div
+                id="displayBusinessName"
+                class="info-value"
+              >
+                —
+              </div>
             </div>
 
             <div class="info-box">
               <div class="info-label">Category</div>
-              <div id="displayCategory" class="info-value">—</div>
+              <div
+                id="displayCategory"
+                class="info-value"
+              >
+                —
+              </div>
             </div>
 
             <div class="info-box">
               <div class="info-label">Country</div>
-              <div id="displayCountry" class="info-value">—</div>
+              <div
+                id="displayCountry"
+                class="info-value"
+              >
+                —
+              </div>
             </div>
 
             <div class="info-box">
               <div class="info-label">State</div>
-              <div id="displayState" class="info-value">—</div>
+              <div
+                id="displayState"
+                class="info-value"
+              >
+                —
+              </div>
             </div>
 
             <div class="info-box">
               <div class="info-label">City</div>
-              <div id="displayCity" class="info-value">—</div>
+              <div
+                id="displayCity"
+                class="info-value"
+              >
+                —
+              </div>
             </div>
 
             <div class="info-box">
               <div class="info-label">Phone</div>
-              <div id="displayPhone" class="info-value">—</div>
+              <div
+                id="displayPhone"
+                class="info-value"
+              >
+                —
+              </div>
             </div>
 
           </div>
 
+
           <div class="form-group">
-            <label for="whatsapp">WhatsApp</label>
+
+            <label for="whatsapp">
+              WhatsApp
+            </label>
 
             <input
               type="text"
               id="whatsapp"
               placeholder="WhatsApp number"
             >
+
           </div>
 
+
           <div class="form-group">
-            <label for="website">Website</label>
+
+            <label for="website">
+              Website
+            </label>
 
             <input
               type="url"
               id="website"
               placeholder="https://example.com"
             >
+
           </div>
 
+
           <div class="form-group">
-            <label for="address">Address</label>
+
+            <label for="address">
+              Address
+            </label>
 
             <input
               type="text"
               id="address"
               placeholder="Business address"
             >
+
           </div>
 
+
           <div class="form-group">
-            <label for="description">Description</label>
+
+            <label for="description">
+              Description
+            </label>
 
             <textarea
               id="description"
               placeholder="Describe your business..."
             ></textarea>
+
           </div>
+
 
           <div class="btn-row">
 
@@ -1108,15 +1224,20 @@
 
         </div>
 
+
         <!-- PHOTOS -->
 
         <div class="card">
 
-          <h2>Business Photos</h2>
+          <h2>
+            Business Photos
+          </h2>
 
           <p class="card-description">
-            Add and manage photos displayed on your NearAfrica business profile.
+            Add and manage photos displayed on your NearAfrica
+            business profile.
           </p>
+
 
           <div class="form-group">
 
@@ -1131,6 +1252,7 @@
             >
 
           </div>
+
 
           <div class="form-group">
 
@@ -1156,6 +1278,7 @@
 
           </div>
 
+
           <div class="btn-row">
 
             <button
@@ -1168,21 +1291,34 @@
 
           </div>
 
-          <div id="imageStatus" class="status"></div>
 
-          <div id="imageGallery" class="image-gallery"></div>
+          <div
+            id="imageStatus"
+            class="status"
+          ></div>
+
+
+          <div
+            id="imageGallery"
+            class="image-gallery"
+          ></div>
 
         </div>
+
 
         <!-- MORE FEATURES -->
 
         <div class="card">
 
-          <h2>More Owner Features</h2>
+          <h2>
+            More Owner Features
+          </h2>
 
           <p class="card-description">
-            Manage additional tools and features connected to your business.
+            Manage additional tools and features connected
+            to your business.
           </p>
+
 
           <div class="feature-grid">
 
@@ -1193,21 +1329,26 @@
               style="grid-column: 1 / -1;"
             >
 
-              <h3>Opening Hours</h3>
+              <h3>
+                Opening Hours
+              </h3>
 
               <p>
                 Manage your business opening and closing hours.
               </p>
+
 
               <div
                 id="hoursEditor"
                 style="margin-top: 18px; width: 100%; min-width: 0;"
               ></div>
 
+
               <div
                 id="hoursStatus"
                 class="status"
               ></div>
+
 
               <div
                 class="btn-row"
@@ -1226,6 +1367,7 @@
 
             </div>
 
+
             <!-- PRODUCTS & SERVICES -->
 
             <div
@@ -1233,18 +1375,26 @@
               style="grid-column: 1 / -1;"
             >
 
-              <h3>Products &amp; Services</h3>
+              <h3>
+                Products &amp; Services
+              </h3>
 
               <p>
                 Add products or services that customers can view.
               </p>
 
-              <div id="productsStatus" class="status"></div>
+
+              <div
+                id="productsStatus"
+                class="status"
+              ></div>
+
 
               <div
                 id="productsList"
                 class="products-list"
               ></div>
+
 
               <div
                 style="
@@ -1260,12 +1410,14 @@
                   Add Product or Service
                 </h4>
 
+
                 <input
                   type="text"
                   id="productName"
                   placeholder="Product or service name"
                   maxlength="150"
-                />
+                >
+
 
                 <textarea
                   id="productDescription"
@@ -1273,6 +1425,7 @@
                   maxlength="2000"
                   style="margin-top: 10px;"
                 ></textarea>
+
 
                 <div class="product-form-grid">
 
@@ -1282,7 +1435,8 @@
                     placeholder="Price"
                     min="0"
                     step="0.01"
-                  />
+                  >
+
 
                   <input
                     type="text"
@@ -1290,9 +1444,10 @@
                     value="NGN"
                     placeholder="Currency"
                     maxlength="10"
-                  />
+                  >
 
                 </div>
+
 
                 <input
                   type="text"
@@ -1300,7 +1455,8 @@
                   placeholder="Category (optional)"
                   maxlength="150"
                   style="margin-top: 10px;"
-                />
+                >
+
 
                 <select
                   id="productType"
@@ -1317,6 +1473,7 @@
 
                 </select>
 
+
                 <div
                   style="
                     margin-top: 12px;
@@ -1332,7 +1489,8 @@
                     id="productAvailable"
                     checked
                     style="width: auto; flex-shrink: 0;"
-                  />
+                  >
+
 
                   <label
                     for="productAvailable"
@@ -1342,6 +1500,7 @@
                   </label>
 
                 </div>
+
 
                 <div
                   class="btn-row"
@@ -1362,6 +1521,7 @@
 
             </div>
 
+
             <!-- HELP WANTED -->
 
             <div
@@ -1369,31 +1529,32 @@
               style="grid-column: 1 / -1;"
             >
 
-              <h3>Help Wanted</h3>
+              <h3>
+                Help Wanted
+              </h3>
 
               <p>
-                Create and manage job, staff, contract, internship, volunteer,
-                or other business opportunity postings for people who may be
-                looking to work with your business.
+                Create and manage job, staff, contract,
+                internship, volunteer, or other business
+                opportunity postings.
               </p>
+
 
               <div
                 id="helpWantedStatus"
                 class="status"
               ></div>
 
-              <!-- EXISTING / DRAFT POSTS -->
 
               <div
                 id="helpWantedList"
                 class="help-wanted-list"
               >
                 <div class="image-empty">
-                  No Help Wanted posts have been added yet.
+                  Loading Help Wanted posts...
                 </div>
               </div>
 
-              <!-- CREATE POST -->
 
               <div
                 style="
@@ -1406,12 +1567,25 @@
               >
 
                 <h4 style="margin: 0 0 14px;">
-                  Create Help Wanted Post
+                  <span id="helpWantedFormTitle">
+                    Create Help Wanted Post
+                  </span>
                 </h4>
+
+
+                <div
+                  id="helpWantedEditBanner"
+                  class="edit-banner"
+                >
+                  <strong>Editing Help Wanted post.</strong>
+                  Update the fields below and save the changes.
+                </div>
+
 
                 <div class="help-wanted-form-grid">
 
                   <div class="form-group">
+
                     <label for="helpWantedTitle">
                       Opportunity Title
                     </label>
@@ -1422,9 +1596,12 @@
                       placeholder="e.g. Sales Assistant"
                       maxlength="150"
                     >
+
                   </div>
 
+
                   <div class="form-group">
+
                     <label for="helpWantedType">
                       Opportunity Type
                     </label>
@@ -1443,8 +1620,20 @@
                         Contract
                       </option>
 
+                      <option value="freelance">
+                        Freelance
+                      </option>
+
                       <option value="internship">
                         Internship
+                      </option>
+
+                      <option value="apprenticeship">
+                        Apprenticeship
+                      </option>
+
+                      <option value="temporary">
+                        Temporary
                       </option>
 
                       <option value="volunteer">
@@ -1456,9 +1645,12 @@
                       </option>
 
                     </select>
+
                   </div>
 
+
                   <div class="form-group">
+
                     <label for="helpWantedCategory">
                       Category
                     </label>
@@ -1469,9 +1661,12 @@
                       placeholder="e.g. Sales, IT, Hospitality"
                       maxlength="100"
                     >
+
                   </div>
 
+
                   <div class="form-group">
+
                     <label for="helpWantedLocation">
                       Location
                     </label>
@@ -1482,23 +1677,27 @@
                       placeholder="e.g. Aba, Abia"
                       maxlength="200"
                     >
+
                   </div>
 
-                  <div
-                    class="form-group full"
-                  >
+
+                  <div class="form-group full">
+
                     <label for="helpWantedDescription">
                       Description
                     </label>
 
                     <textarea
                       id="helpWantedDescription"
-                      placeholder="Describe the opportunity, responsibilities, requirements, and any other important information..."
+                      placeholder="Describe the opportunity, responsibilities, requirements, and other important information..."
                       maxlength="5000"
                     ></textarea>
+
                   </div>
 
+
                   <div class="form-group">
+
                     <label for="helpWantedContact">
                       Application / Contact Method
                     </label>
@@ -1509,9 +1708,12 @@
                       placeholder="Email, WhatsApp, phone number, or application instructions"
                       maxlength="500"
                     >
+
                   </div>
 
+
                   <div class="form-group">
+
                     <label for="helpWantedDeadline">
                       Application Deadline
                     </label>
@@ -1520,9 +1722,11 @@
                       type="date"
                       id="helpWantedDeadline"
                     >
+
                   </div>
 
                 </div>
+
 
                 <div class="btn-row">
 
@@ -1534,6 +1738,7 @@
                     Create Help Wanted Post
                   </button>
 
+
                   <button
                     type="button"
                     id="clearHelpWantedButton"
@@ -1542,17 +1747,28 @@
                     Clear Form
                   </button>
 
+
+                  <button
+                    type="button"
+                    id="refreshHelpWantedButton"
+                    class="btn btn-secondary"
+                  >
+                    Refresh Posts
+                  </button>
+
                 </div>
 
+
                 <p class="help-wanted-note">
-                  Frontend setup only for now. The posting will be saved as a
-                  local dashboard draft until we connect this section to the
-                  NearAfrica Help Wanted API.
+                  Help Wanted posts are saved through the authenticated
+                  NearAfrica Worker and associated with your business
+                  from your owner session. New posts may require moderation.
                 </p>
 
               </div>
 
             </div>
+
 
             <!-- ANALYTICS -->
 
@@ -1561,16 +1777,20 @@
               style="grid-column: 1 / -1;"
             >
 
-              <h3>Analytics</h3>
+              <h3>
+                Analytics
+              </h3>
 
               <p>
                 See how many people are viewing your business profile.
               </p>
 
+
               <div
                 id="analyticsStatus"
                 class="status"
               ></div>
+
 
               <div class="analytics-grid">
 
@@ -1589,6 +1809,7 @@
 
                 </div>
 
+
                 <div class="analytics-stat">
 
                   <div
@@ -1604,6 +1825,7 @@
 
                 </div>
 
+
                 <div class="analytics-stat">
 
                   <div
@@ -1618,6 +1840,7 @@
                   </div>
 
                 </div>
+
 
                 <div class="analytics-stat">
 
@@ -1636,6 +1859,7 @@
 
               </div>
 
+
               <div
                 class="btn-row"
                 style="margin-top: 16px;"
@@ -1653,23 +1877,30 @@
 
             </div>
 
+
             <!-- REVIEWS -->
 
             <div class="feature-card">
 
-              <h3>Reviews</h3>
+              <h3>
+                Reviews
+              </h3>
 
               <p>
-                View and manage customer reviews when owner tools are enabled.
+                View and manage customer reviews when owner tools
+                are enabled.
               </p>
 
             </div>
+
 
             <!-- OFFERS & EVENTS -->
 
             <div class="feature-card">
 
-              <h3>Offers &amp; Events</h3>
+              <h3>
+                Offers &amp; Events
+              </h3>
 
               <p>
                 Future tools for promoting offers and business events.
@@ -1686,9 +1917,11 @@
     </div>
   </main>
 
+
   <footer class="footer">
     NearAfrica — Find Great Businesses Near You.
   </footer>
+
 
   <script>
 
@@ -1704,11 +1937,11 @@
     const OWNER_TOKEN_STORAGE_KEY =
       "nearafrica_owner_token";
 
-    const HELP_WANTED_DRAFTS_KEY =
-      "nearafrica_owner_help_wanted_drafts";
-
     let ownerToken = null;
     let currentBusiness = null;
+
+    let currentHelpWantedPosts = [];
+    let editingHelpWantedId = null;
 
     /*
       ============================================================
@@ -1838,6 +2071,22 @@
         "clearHelpWantedButton"
       );
 
+    const refreshHelpWantedButton =
+      document.getElementById(
+        "refreshHelpWantedButton"
+      );
+
+    const helpWantedFormTitle =
+      document.getElementById(
+        "helpWantedFormTitle"
+      );
+
+    const helpWantedEditBanner =
+      document.getElementById(
+        "helpWantedEditBanner"
+      );
+
+
     /*
       ============================================================
       GENERAL UI HELPERS
@@ -1855,21 +2104,29 @@
       }
 
       element.textContent =
-        message;
+        message || "";
 
       element.className =
-        "status show " + type;
+        "status show " +
+        (type || "info");
     }
 
-    function hideStatus(element) {
+
+    function hideStatus(
+      element
+    ) {
 
       if (!element) {
         return;
       }
 
-      element.textContent = "";
-      element.className = "status";
+      element.textContent =
+        "";
+
+      element.className =
+        "status";
     }
+
 
     function setDashboardValue(
       id,
@@ -1884,8 +2141,78 @@
       }
 
       element.textContent =
-        value || "—";
+        value ||
+        "—";
     }
+
+
+    function cleanString(
+      value
+    ) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+
+        return "";
+
+      }
+
+      return String(value).trim();
+    }
+
+
+    async function readResponseBody(
+      response
+    ) {
+
+      const text =
+        await response.text();
+
+      if (!text) {
+
+        return null;
+
+      }
+
+      try {
+
+        return JSON.parse(text);
+
+      } catch {
+
+        return {
+          raw: text
+        };
+
+      }
+
+    }
+
+
+    function getResponseMessage(
+      result,
+      fallback
+    ) {
+
+      if (
+        result &&
+        typeof result === "object"
+      ) {
+
+        return cleanString(
+          result.message ||
+          result.error ||
+          result.detail ||
+          result.raw
+        ) || fallback;
+
+      }
+
+      return fallback;
+    }
+
 
     /*
       ============================================================
@@ -1893,7 +2220,9 @@
       ============================================================
     */
 
-    function saveOwnerToken(token) {
+    function saveOwnerToken(
+      token
+    ) {
 
       if (!token) {
         return;
@@ -1906,7 +2235,7 @@
           token
         );
 
-      } catch(error) {
+      } catch (error) {
 
         console.warn(
           "Unable to persist owner session:",
@@ -1917,24 +2246,30 @@
 
     }
 
+
     function getStoredOwnerToken() {
 
       try {
 
-        return localStorage.getItem(
-          OWNER_TOKEN_STORAGE_KEY
+        return cleanString(
+          localStorage.getItem(
+            OWNER_TOKEN_STORAGE_KEY
+          )
         );
 
-      } catch(error) {
+      } catch (error) {
 
         console.warn(
           "Unable to read stored owner session:",
           error
         );
 
-        return null;
+        return "";
+
       }
+
     }
+
 
     function clearStoredOwnerToken() {
 
@@ -1944,7 +2279,7 @@
           OWNER_TOKEN_STORAGE_KEY
         );
 
-      } catch(error) {
+      } catch (error) {
 
         console.warn(
           "Unable to clear stored owner session:",
@@ -1952,7 +2287,9 @@
         );
 
       }
+
     }
+
 
     function handleOwnerUnauthorized() {
 
@@ -1960,15 +2297,19 @@
 
       ownerToken = null;
       currentBusiness = null;
+      currentHelpWantedPosts = [];
+      editingHelpWantedId = null;
 
       resetDashboard();
 
       showStatus(
         loginStatus,
-        "Your owner session has expired. Please log in again.",
+        "Your owner session has expired or is no longer authorized. Please log in again.",
         "error"
       );
+
     }
+
 
     /*
       ============================================================
@@ -1986,44 +2327,84 @@
         throw new Error(
           "Owner session is missing."
         );
+
       }
+
 
       const requestOptions = {
         ...options
       };
+
 
       const headers =
         new Headers(
           options.headers || {}
         );
 
+
       headers.set(
         "Authorization",
         "Bearer " + ownerToken
       );
 
+
+      if (
+        !headers.has("Accept")
+      ) {
+
+        headers.set(
+          "Accept",
+          "application/json"
+        );
+
+      }
+
+
       requestOptions.headers =
         headers;
 
-      const response =
-        await fetch(
-          API_BASE + path,
-          requestOptions
+
+      let response;
+
+      try {
+
+        response =
+          await fetch(
+            API_BASE + path,
+            requestOptions
+          );
+
+      } catch (error) {
+
+        console.error(
+          "Owner API network error:",
+          path,
+          error
         );
 
+        throw error;
+
+      }
+
+
       if (
-        response.status === 401
+        response.status === 401 ||
+        response.status === 403
       ) {
 
         handleOwnerUnauthorized();
 
         throw new Error(
-          "Your owner session has expired. Please log in again."
+          "Your owner session is no longer authorized. Please log in again."
         );
+
       }
 
+
       return response;
+
     }
+
 
     /*
       ============================================================
@@ -2036,12 +2417,17 @@
       const storedToken =
         getStoredOwnerToken();
 
+
       if (!storedToken) {
+
         return false;
+
       }
+
 
       ownerToken =
         storedToken;
+
 
       showStatus(
         loginStatus,
@@ -2049,94 +2435,93 @@
         "info"
       );
 
-      loginButton.disabled = true;
+
+      loginButton.disabled =
+        true;
+
       loginButton.textContent =
         "Restoring...";
+
 
       try {
 
         await loadOwnerBusiness();
 
+
         await Promise.all([
           loadOwnerImages(),
           loadOwnerHours(),
           loadOwnerProducts(),
-          loadOwnerAnalytics()
+          loadOwnerAnalytics(),
+          loadOwnerHelpWanted()
         ]);
 
-        /*
-          Help Wanted is currently frontend-only.
-          Load any locally saved dashboard drafts.
-        */
-
-        loadHelpWantedDrafts();
 
         loginSection.classList.add(
           "hidden"
         );
 
+
         dashboardSection.classList.remove(
           "hidden"
         );
+
 
         hideStatus(
           loginStatus
         );
 
+
         return true;
 
-      } catch(error) {
+      } catch (error) {
 
         console.error(
           "Owner session restoration failed:",
           error
         );
 
-        if (ownerToken) {
 
-          clearStoredOwnerToken();
+        clearStoredOwnerToken();
 
-          ownerToken = null;
-          currentBusiness = null;
-        }
+
+        ownerToken = null;
+        currentBusiness = null;
+        currentHelpWantedPosts = [];
+
 
         dashboardSection.classList.add(
           "hidden"
         );
 
+
         loginSection.classList.remove(
           "hidden"
         );
 
-        if (
-          error &&
-          error.message
-        ) {
 
-          showStatus(
-            loginStatus,
-            error.message,
-            "error"
-          );
-
-        } else {
-
-          showStatus(
-            loginStatus,
+        showStatus(
+          loginStatus,
+          error.message ||
             "Unable to restore your owner session. Please log in again.",
-            "error"
-          );
-        }
+          "error"
+        );
+
 
         return false;
 
       } finally {
 
-        loginButton.disabled = false;
+        loginButton.disabled =
+          false;
+
         loginButton.textContent =
           "Login";
+
       }
+
     }
+
 
     /*
       ============================================================
@@ -2154,7 +2539,9 @@
       "Saturday"
     ];
 
+
     let ownerHours = [];
+
 
     function createDefaultHours() {
 
@@ -2168,67 +2555,103 @@
             opening_time: null,
             closing_time: null
           };
+
         }
       );
+
     }
 
-    function normalizeHours(hours) {
+
+    function normalizeHours(
+      hours
+    ) {
 
       const defaults =
         createDefaultHours();
 
+
       if (!Array.isArray(hours)) {
+
         return defaults;
+
       }
+
 
       hours.forEach(
         function(item) {
 
           const day =
-            Number(item.day_of_week);
+            Number(
+              item.day_of_week
+            );
+
 
           if (
             !Number.isInteger(day) ||
             day < 0 ||
             day > 6
           ) {
+
             return;
+
           }
+
 
           defaults[day] = {
 
-            day_of_week: day,
+            day_of_week:
+              day,
 
             is_closed:
-              Number(item.is_closed || 0),
+              Number(
+                item.is_closed || 0
+              ),
 
             is_24_hours:
-              Number(item.is_24_hours || 0),
+              Number(
+                item.is_24_hours || 0
+              ),
 
             opening_time:
-              item.opening_time || null,
+              item.opening_time ||
+              null,
 
             closing_time:
-              item.closing_time || null
+              item.closing_time ||
+              null
+
           };
+
         }
       );
 
+
       return defaults;
+
     }
 
-    function renderHoursEditor(hours) {
+
+    function renderHoursEditor(
+      hours
+    ) {
 
       ownerHours =
         normalizeHours(hours);
 
-      hoursEditor.innerHTML = "";
+
+      hoursEditor.innerHTML =
+        "";
+
 
       const header =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
+
 
       header.className =
         "hours-header";
+
 
       header.innerHTML = `
         <div>Day</div>
@@ -2237,31 +2660,48 @@
         <div>Closes</div>
       `;
 
-      hoursEditor.appendChild(header);
+
+      hoursEditor.appendChild(
+        header
+      );
+
 
       ownerHours.forEach(
         function(item, index) {
 
           const row =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           row.className =
             "hours-row";
 
+
           const day =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           day.className =
             "hours-day";
 
+
           day.textContent =
             DAYS_OF_WEEK[index];
 
+
           const status =
-            document.createElement("select");
+            document.createElement(
+              "select"
+            );
+
 
           status.dataset.day =
             String(index);
+
 
           status.innerHTML = `
             <option value="open">Open</option>
@@ -2269,48 +2709,82 @@
             <option value="24">24 Hours</option>
           `;
 
+
           if (
             Number(item.is_closed) === 1
           ) {
 
-            status.value = "closed";
+            status.value =
+              "closed";
 
           } else if (
             Number(item.is_24_hours) === 1
           ) {
 
-            status.value = "24";
+            status.value =
+              "24";
 
           } else {
 
-            status.value = "open";
+            status.value =
+              "open";
+
           }
 
-          const opening =
-            document.createElement("input");
 
-          opening.type = "time";
+          const opening =
+            document.createElement(
+              "input"
+            );
+
+
+          opening.type =
+            "time";
+
+
           opening.dataset.day =
             String(index);
+
+
           opening.dataset.field =
             "opening";
+
+
           opening.value =
-            item.opening_time || "";
+            item.opening_time ||
+            "";
+
+
           opening.disabled =
             status.value !== "open";
 
-          const closing =
-            document.createElement("input");
 
-          closing.type = "time";
+          const closing =
+            document.createElement(
+              "input"
+            );
+
+
+          closing.type =
+            "time";
+
+
           closing.dataset.day =
             String(index);
+
+
           closing.dataset.field =
             "closing";
+
+
           closing.value =
-            item.closing_time || "";
+            item.closing_time ||
+            "";
+
+
           closing.disabled =
             status.value !== "open";
+
 
           status.addEventListener(
             "change",
@@ -2319,23 +2793,32 @@
               const isOpen =
                 status.value === "open";
 
+
               opening.disabled =
                 !isOpen;
 
               closing.disabled =
                 !isOpen;
+
             }
           );
+
 
           row.appendChild(day);
           row.appendChild(status);
           row.appendChild(opening);
           row.appendChild(closing);
 
-          hoursEditor.appendChild(row);
+
+          hoursEditor.appendChild(
+            row
+          );
+
         }
       );
+
     }
+
 
     async function loadOwnerHours() {
 
@@ -2343,11 +2826,13 @@
         return;
       }
 
+
       showStatus(
         hoursStatus,
         "Loading opening hours...",
         "info"
       );
+
 
       try {
 
@@ -2359,36 +2844,48 @@
             }
           );
 
+
         const result =
-          await response.json();
+          await readResponseBody(
+            response
+          );
+
 
         if (
           !response.ok ||
-          result.status !== "ok"
+          result?.status !== "ok"
         ) {
 
           throw new Error(
-            result.message ||
-            "Unable to load opening hours."
+            getResponseMessage(
+              result,
+              "Unable to load opening hours."
+            )
           );
+
         }
+
 
         renderHoursEditor(
           result.hours || []
         );
 
+
         hideStatus(
           hoursStatus
         );
 
-      } catch(error) {
+
+      } catch (error) {
 
         console.error(
           "Loading owner hours failed:",
           error
         );
 
+
         renderHoursEditor([]);
+
 
         showStatus(
           hoursStatus,
@@ -2396,8 +2893,11 @@
             "Unable to load opening hours.",
           "error"
         );
+
       }
+
     }
+
 
     async function saveOwnerHours() {
 
@@ -2410,9 +2910,12 @@
         );
 
         return;
+
       }
 
+
       const hours = [];
+
 
       for (
         let day = 0;
@@ -2425,15 +2928,18 @@
             `select[data-day="${day}"]`
           );
 
+
         const opening =
           hoursEditor.querySelector(
             `input[data-day="${day}"][data-field="opening"]`
           );
 
+
         const closing =
           hoursEditor.querySelector(
             `input[data-day="${day}"][data-field="closing"]`
           );
+
 
         if (
           !status ||
@@ -2448,11 +2954,14 @@
           );
 
           return;
+
         }
+
 
         hours.push({
 
-          day_of_week: day,
+          day_of_week:
+            day,
 
           is_closed:
             status.value === "closed",
@@ -2469,16 +2978,24 @@
             status.value === "open"
               ? closing.value || null
               : null
+
         });
+
       }
 
-      saveHoursButton.disabled = true;
+
+      saveHoursButton.disabled =
+        true;
+
+
       saveHoursButton.textContent =
         "Saving...";
+
 
       hideStatus(
         hoursStatus
       );
+
 
       try {
 
@@ -2500,23 +3017,32 @@
             }
           );
 
+
         const result =
-          await response.json();
+          await readResponseBody(
+            response
+          );
+
 
         if (
           !response.ok ||
-          result.status !== "ok"
+          result?.status !== "ok"
         ) {
 
           throw new Error(
-            result.message ||
-            "Unable to save opening hours."
+            getResponseMessage(
+              result,
+              "Unable to save opening hours."
+            )
           );
+
         }
+
 
         renderHoursEditor(
           result.hours || hours
         );
+
 
         showStatus(
           hoursStatus,
@@ -2524,12 +3050,14 @@
           "success"
         );
 
-      } catch(error) {
+
+      } catch (error) {
 
         console.error(
           "Saving owner hours failed:",
           error
         );
+
 
         showStatus(
           hoursStatus,
@@ -2538,13 +3066,19 @@
           "error"
         );
 
+
       } finally {
 
-        saveHoursButton.disabled = false;
+        saveHoursButton.disabled =
+          false;
+
         saveHoursButton.textContent =
           "Save Opening Hours";
+
       }
+
     }
+
 
     /*
       ============================================================
@@ -2558,9 +3092,11 @@
         return;
       }
 
+
       hideStatus(
         analyticsStatus
       );
+
 
       try {
 
@@ -2572,73 +3108,95 @@
             }
           );
 
+
         const result =
-          await response.json();
+          await readResponseBody(
+            response
+          );
+
 
         if (
           !response.ok ||
-          result.status !== "ok"
+          result?.status !== "ok"
         ) {
 
           throw new Error(
-            result.message ||
-            "Unable to load analytics."
+            getResponseMessage(
+              result,
+              "Unable to load analytics."
+            )
           );
+
         }
+
 
         const analytics =
           result.analytics || {};
+
 
         const totalViews =
           Number(
             analytics.total_views || 0
           );
 
+
         const viewsToday =
           Number(
             analytics.views_today || 0
           );
+
 
         const viewsLast7Days =
           Number(
             analytics.views_last_7_days || 0
           );
 
+
         const viewsLast30Days =
           Number(
             analytics.views_last_30_days || 0
           );
 
+
         analyticsTotalViews.textContent =
           totalViews.toLocaleString();
+
 
         analyticsToday.textContent =
           viewsToday.toLocaleString();
 
+
         analytics7Days.textContent =
           viewsLast7Days.toLocaleString();
+
 
         analytics30Days.textContent =
           viewsLast30Days.toLocaleString();
 
-      } catch(error) {
+
+      } catch (error) {
 
         console.error(
           "Loading owner analytics failed:",
           error
         );
 
+
         analyticsTotalViews.textContent =
           "—";
+
 
         analyticsToday.textContent =
           "—";
 
+
         analytics7Days.textContent =
           "—";
 
+
         analytics30Days.textContent =
           "—";
+
 
         showStatus(
           analyticsStatus,
@@ -2646,8 +3204,11 @@
             "Unable to load analytics.",
           "error"
         );
+
       }
+
     }
+
 
     /*
       ============================================================
@@ -2655,21 +3216,30 @@
       ============================================================
     */
 
-    async function loginOwner(event) {
+    async function loginOwner(
+      event
+    ) {
 
       event.preventDefault();
 
+
       const businessName =
         document
-          .getElementById("businessName")
+          .getElementById(
+            "businessName"
+          )
           .value
           .trim();
 
+
       const ownerEmail =
         document
-          .getElementById("ownerEmail")
+          .getElementById(
+            "ownerEmail"
+          )
           .value
           .trim();
+
 
       if (!businessName) {
 
@@ -2680,7 +3250,9 @@
         );
 
         return;
+
       }
+
 
       if (!ownerEmail) {
 
@@ -2691,98 +3263,140 @@
         );
 
         return;
+
       }
+
 
       hideStatus(
         loginStatus
       );
 
-      loginButton.disabled = true;
+
+      loginButton.disabled =
+        true;
+
+
       loginButton.textContent =
         "Signing In...";
+
 
       try {
 
         const response =
           await fetch(
-            API_BASE + "/owner/login",
+            API_BASE +
+            "/owner/login",
             {
               method: "POST",
 
               headers: {
                 "Content-Type":
+                  "application/json",
+
+                "Accept":
                   "application/json"
               },
 
               body:
                 JSON.stringify({
+
                   business_name:
                     businessName,
 
+                  email:
+                    ownerEmail,
+
                   owner_email:
                     ownerEmail
+
                 })
             }
           );
 
+
         const result =
-          await response.json();
+          await readResponseBody(
+            response
+          );
+
 
         if (
           !response.ok ||
-          result.status !== "ok"
+          result?.status !== "ok"
         ) {
 
           throw new Error(
-            result.message ||
-            "Unable to sign in."
+            getResponseMessage(
+              result,
+              "Unable to sign in."
+            )
           );
+
         }
 
+
         ownerToken =
-          result.token;
+          cleanString(
+            result.token
+          );
+
 
         if (!ownerToken) {
 
           throw new Error(
             "Owner session was not created."
           );
+
         }
+
 
         saveOwnerToken(
           ownerToken
         );
 
+
         await loadOwnerBusiness();
+
 
         await Promise.all([
           loadOwnerImages(),
           loadOwnerHours(),
           loadOwnerProducts(),
-          loadOwnerAnalytics()
+          loadOwnerAnalytics(),
+          loadOwnerHelpWanted()
         ]);
 
-        loadHelpWantedDrafts();
 
         loginSection.classList.add(
           "hidden"
         );
 
+
         dashboardSection.classList.remove(
           "hidden"
         );
 
-      } catch(error) {
+
+        hideStatus(
+          loginStatus
+        );
+
+
+      } catch (error) {
 
         console.error(
           "Owner login failed:",
           error
         );
 
+
         clearStoredOwnerToken();
+
 
         ownerToken = null;
         currentBusiness = null;
+        currentHelpWantedPosts = [];
+
 
         showStatus(
           loginStatus,
@@ -2791,13 +3405,20 @@
           "error"
         );
 
+
       } finally {
 
-        loginButton.disabled = false;
+        loginButton.disabled =
+          false;
+
+
         loginButton.textContent =
           "Login";
+
       }
+
     }
+
 
     /*
       ============================================================
@@ -2812,7 +3433,9 @@
         throw new Error(
           "Owner session is missing."
         );
+
       }
+
 
       const response =
         await ownerFetch(
@@ -2822,27 +3445,49 @@
           }
         );
 
+
       const result =
-        await response.json();
+        await readResponseBody(
+          response
+        );
+
 
       if (
         !response.ok ||
-        result.status !== "ok"
+        result?.status !== "ok"
       ) {
 
         throw new Error(
-          result.message ||
-          "Unable to load your business."
+          getResponseMessage(
+            result,
+            "Unable to load your business."
+          )
         );
+
       }
 
+
       currentBusiness =
-        result.business;
+        result.business ||
+        result.data ||
+        null;
+
+
+      if (!currentBusiness) {
+
+        throw new Error(
+          "The server did not return your business information."
+        );
+
+      }
+
 
       renderBusiness(
         currentBusiness
       );
+
     }
+
 
     function renderBusiness(
       business
@@ -2852,62 +3497,77 @@
         return;
       }
 
+
       setDashboardValue(
         "displayBusinessName",
-        business.business_name
+        business.business_name ||
+          business.name
       );
+
 
       setDashboardValue(
         "displayCategory",
         business.category
       );
 
+
       setDashboardValue(
         "displayCountry",
         business.country
       );
+
 
       setDashboardValue(
         "displayState",
         business.state
       );
 
+
       setDashboardValue(
         "displayCity",
         business.city
       );
+
 
       setDashboardValue(
         "displayPhone",
         business.phone
       );
 
+
       document.getElementById(
         "businessTitle"
       ).textContent =
         business.business_name ||
+        business.name ||
         "Business Profile";
+
 
       document.getElementById(
         "whatsapp"
       ).value =
         business.whatsapp || "";
 
+
       document.getElementById(
         "website"
       ).value =
         business.website || "";
+
 
       document.getElementById(
         "address"
       ).value =
         business.address || "";
 
+
       document.getElementById(
         "description"
       ).value =
         business.description || "";
+
     }
+
 
     /*
       ============================================================
@@ -2926,42 +3586,59 @@
         );
 
         return;
+
       }
+
 
       const payload = {
 
         whatsapp:
           document
-            .getElementById("whatsapp")
+            .getElementById(
+              "whatsapp"
+            )
             .value
             .trim(),
 
         website:
           document
-            .getElementById("website")
+            .getElementById(
+              "website"
+            )
             .value
             .trim(),
 
         address:
           document
-            .getElementById("address")
+            .getElementById(
+              "address"
+            )
             .value
             .trim(),
 
         description:
           document
-            .getElementById("description")
+            .getElementById(
+              "description"
+            )
             .value
             .trim()
+
       };
 
-      saveButton.disabled = true;
+
+      saveButton.disabled =
+        true;
+
+
       saveButton.textContent =
         "Saving...";
+
 
       hideStatus(
         dashboardStatus
       );
+
 
       try {
 
@@ -2983,24 +3660,33 @@
             }
           );
 
+
         const result =
-          await response.json();
+          await readResponseBody(
+            response
+          );
+
 
         if (
           !response.ok ||
-          result.status !== "ok"
+          result?.status !== "ok"
         ) {
 
           throw new Error(
-            result.message ||
-            "Unable to save changes."
+            getResponseMessage(
+              result,
+              "Unable to save changes."
+            )
           );
+
         }
+
 
         if (result.business) {
 
           currentBusiness =
             result.business;
+
 
           renderBusiness(
             currentBusiness
@@ -3009,7 +3695,9 @@
         } else {
 
           await loadOwnerBusiness();
+
         }
+
 
         showStatus(
           dashboardStatus,
@@ -3017,12 +3705,14 @@
           "success"
         );
 
-      } catch(error) {
+
+      } catch (error) {
 
         console.error(
           "Business update failed:",
           error
         );
+
 
         showStatus(
           dashboardStatus,
@@ -3031,13 +3721,19 @@
           "error"
         );
 
+
       } finally {
 
-        saveButton.disabled = false;
+        saveButton.disabled =
+          false;
+
         saveButton.textContent =
           "Save Changes";
+
       }
+
     }
+
 
     /*
       ============================================================
@@ -3051,8 +3747,10 @@
         return;
       }
 
+
       imageGallery.innerHTML =
         '<div class="image-empty">Loading photos...</div>';
+
 
       try {
 
@@ -3064,33 +3762,44 @@
             }
           );
 
+
         const result =
-          await response.json();
+          await readResponseBody(
+            response
+          );
+
 
         if (
           !response.ok ||
-          result.status !== "ok"
+          result?.status !== "ok"
         ) {
 
           throw new Error(
-            result.message ||
-            "Unable to load business photos."
+            getResponseMessage(
+              result,
+              "Unable to load business photos."
+            )
           );
+
         }
+
 
         renderImages(
           result.images || []
         );
 
-      } catch(error) {
+
+      } catch (error) {
 
         console.error(
           "Loading owner images failed:",
           error
         );
 
+
         imageGallery.innerHTML =
           '<div class="image-empty">Unable to load business photos.</div>';
+
 
         showStatus(
           imageStatus,
@@ -3098,86 +3807,128 @@
             "Unable to load business photos.",
           "error"
         );
+
       }
+
     }
+
 
     function renderImages(
       images
     ) {
 
-      imageGallery.innerHTML = "";
+      imageGallery.innerHTML =
+        "";
 
-      if (!images.length) {
+
+      if (
+        !Array.isArray(images) ||
+        !images.length
+      ) {
 
         imageGallery.innerHTML =
           '<div class="image-empty">No business photos have been uploaded yet.</div>';
 
         return;
+
       }
+
 
       images.forEach(
         function(image) {
 
           const card =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           card.className =
             "image-card";
 
+
           const preview =
-            document.createElement("img");
+            document.createElement(
+              "img"
+            );
+
 
           preview.className =
             "image-preview";
 
+
           preview.src =
-            image.image_url || "";
+            image.image_url ||
+            "";
+
 
           preview.alt =
             image.alt_text ||
             currentBusiness?.business_name ||
             "Business photo";
 
+
           preview.loading =
             "lazy";
 
+
           const body =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           body.className =
             "image-card-body";
 
+
           const type =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           type.className =
             "image-type";
+
 
           type.textContent =
             image.image_type ||
             "gallery";
 
+
           const url =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           url.className =
             "image-url";
+
 
           url.textContent =
             image.image_url ||
             "Image URL unavailable";
 
+
           const deleteButton =
-            document.createElement("button");
+            document.createElement(
+              "button"
+            );
+
 
           deleteButton.type =
             "button";
 
+
           deleteButton.className =
             "btn btn-danger";
 
+
           deleteButton.textContent =
             "Delete";
+
 
           deleteButton.addEventListener(
             "click",
@@ -3186,20 +3937,45 @@
               deleteOwnerImage(
                 image.id
               );
+
             }
           );
 
-          body.appendChild(type);
-          body.appendChild(url);
-          body.appendChild(deleteButton);
 
-          card.appendChild(preview);
-          card.appendChild(body);
+          body.appendChild(
+            type
+          );
 
-          imageGallery.appendChild(card);
+
+          body.appendChild(
+            url
+          );
+
+
+          body.appendChild(
+            deleteButton
+          );
+
+
+          card.appendChild(
+            preview
+          );
+
+
+          card.appendChild(
+            body
+          );
+
+
+          imageGallery.appendChild(
+            card
+          );
+
         }
       );
+
     }
+
 
     async function uploadOwnerImage() {
 
@@ -3212,11 +3988,14 @@
         );
 
         return;
+
       }
+
 
       const file =
         businessImage.files &&
         businessImage.files[0];
+
 
       if (!file) {
 
@@ -3227,7 +4006,9 @@
         );
 
         return;
+
       }
+
 
       const allowedTypes = [
         "image/jpeg",
@@ -3235,6 +4016,7 @@
         "image/webp",
         "image/gif"
       ];
+
 
       if (
         !allowedTypes.includes(
@@ -3249,7 +4031,9 @@
         );
 
         return;
+
       }
+
 
       if (
         file.size >
@@ -3263,28 +4047,38 @@
         );
 
         return;
+
       }
+
 
       const formData =
         new FormData();
+
 
       formData.append(
         "image",
         file
       );
 
+
       formData.append(
         "image_type",
         imageType.value
       );
 
-      uploadImageButton.disabled = true;
+
+      uploadImageButton.disabled =
+        true;
+
+
       uploadImageButton.textContent =
         "Uploading...";
+
 
       hideStatus(
         imageStatus
       );
+
 
       try {
 
@@ -3298,23 +4092,34 @@
             }
           );
 
+
         const result =
-          await response.json();
+          await readResponseBody(
+            response
+          );
+
 
         if (
           !response.ok ||
-          result.status !== "ok"
+          result?.status !== "ok"
         ) {
 
           throw new Error(
-            result.message ||
-            "Unable to upload the image."
+            getResponseMessage(
+              result,
+              "Unable to upload the image."
+            )
           );
+
         }
 
-        businessImage.value = "";
+
+        businessImage.value =
+          "";
+
 
         await loadOwnerImages();
+
 
         showStatus(
           imageStatus,
@@ -3322,12 +4127,14 @@
           "success"
         );
 
-      } catch(error) {
+
+      } catch (error) {
 
         console.error(
           "Owner image upload failed:",
           error
         );
+
 
         showStatus(
           imageStatus,
@@ -3336,14 +4143,20 @@
           "error"
         );
 
+
       } finally {
 
-        uploadImageButton.disabled = false;
+        uploadImageButton.disabled =
+          false;
+
 
         uploadImageButton.textContent =
           "Upload Photo";
+
       }
+
     }
+
 
     async function deleteOwnerImage(
       imageId
@@ -3358,7 +4171,9 @@
         );
 
         return;
+
       }
+
 
       if (!imageId) {
 
@@ -3369,16 +4184,20 @@
         );
 
         return;
+
       }
+
 
       const confirmed =
         window.confirm(
           "Delete this business photo?"
         );
 
+
       if (!confirmed) {
         return;
       }
+
 
       try {
 
@@ -3387,6 +4206,7 @@
           "Deleting photo...",
           "info"
         );
+
 
         const response =
           await ownerFetch(
@@ -3399,21 +4219,30 @@
             }
           );
 
+
         const result =
-          await response.json();
+          await readResponseBody(
+            response
+          );
+
 
         if (
           !response.ok ||
-          result.status !== "ok"
+          result?.status !== "ok"
         ) {
 
           throw new Error(
-            result.message ||
-            "Unable to delete the image."
+            getResponseMessage(
+              result,
+              "Unable to delete the image."
+            )
           );
+
         }
 
+
         await loadOwnerImages();
+
 
         showStatus(
           imageStatus,
@@ -3421,12 +4250,14 @@
           "success"
         );
 
-      } catch(error) {
+
+      } catch (error) {
 
         console.error(
           "Owner image deletion failed:",
           error
         );
+
 
         showStatus(
           imageStatus,
@@ -3434,8 +4265,11 @@
             "Unable to delete the image.",
           "error"
         );
+
       }
+
     }
+
 
     /*
       ============================================================
@@ -3449,8 +4283,10 @@
         return;
       }
 
+
       productsList.innerHTML =
         '<div class="image-empty">Loading products and services...</div>';
+
 
       try {
 
@@ -3462,37 +4298,49 @@
             }
           );
 
+
         const result =
-          await response.json();
+          await readResponseBody(
+            response
+          );
+
 
         if (
           !response.ok ||
-          result.status !== "ok"
+          result?.status !== "ok"
         ) {
 
           throw new Error(
-            result.message ||
-            "Unable to load products and services."
+            getResponseMessage(
+              result,
+              "Unable to load products and services."
+            )
           );
+
         }
+
 
         renderOwnerProducts(
           result.products || []
         );
 
+
         hideStatus(
           productsStatus
         );
 
-      } catch(error) {
+
+      } catch (error) {
 
         console.error(
           "Loading owner products failed:",
           error
         );
 
+
         productsList.innerHTML =
           '<div class="image-empty">Unable to load products and services.</div>';
+
 
         showStatus(
           productsStatus,
@@ -3500,80 +4348,117 @@
             "Unable to load products and services.",
           "error"
         );
+
       }
+
     }
+
 
     function renderOwnerProducts(
       products
     ) {
 
-      productsList.innerHTML = "";
+      productsList.innerHTML =
+        "";
 
-      if (!products.length) {
+
+      if (
+        !Array.isArray(products) ||
+        !products.length
+      ) {
 
         productsList.innerHTML =
           '<div class="image-empty">No products or services have been added yet.</div>';
 
         return;
+
       }
+
 
       products.forEach(
         function(product) {
 
           const card =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           card.className =
             "product-card";
 
+
           const title =
-            document.createElement("h4");
+            document.createElement(
+              "h4"
+            );
+
 
           title.textContent =
             product.name ||
             "Unnamed item";
 
+
           title.style.margin =
             "0 0 8px";
 
+
           const type =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           type.textContent =
             product.item_type === "service"
               ? "Service"
               : "Product";
 
+
           type.style.color =
             "var(--accent)";
+
 
           type.style.fontSize =
             "12px";
 
+
           type.style.fontWeight =
             "700";
+
 
           type.style.textTransform =
             "uppercase";
 
+
           type.style.marginBottom =
             "8px";
 
+
           const description =
-            document.createElement("p");
+            document.createElement(
+              "p"
+            );
+
 
           description.textContent =
             product.description ||
             "No description provided.";
 
+
           description.style.color =
             "var(--text-secondary)";
+
 
           description.style.margin =
             "0 0 10px";
 
+
           const price =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           if (
             product.price !== null &&
@@ -3595,29 +4480,39 @@
 
             price.textContent =
               "Price not specified";
+
           }
+
 
           price.style.marginBottom =
             "10px";
 
+
           price.style.fontWeight =
             "700";
 
+
           const availability =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           availability.textContent =
             Number(product.available) === 1
               ? "Available"
               : "Unavailable";
 
+
           availability.style.color =
             Number(product.available) === 1
               ? "var(--success)"
               : "var(--danger)";
 
+
           availability.style.fontSize =
             "13px";
+
 
           card.appendChild(type);
           card.appendChild(title);
@@ -3625,10 +4520,16 @@
           card.appendChild(price);
           card.appendChild(availability);
 
-          productsList.appendChild(card);
+
+          productsList.appendChild(
+            card
+          );
+
         }
       );
+
     }
+
 
     async function addOwnerProduct() {
 
@@ -3641,47 +4542,70 @@
         );
 
         return;
+
       }
+
 
       const name =
         document
-          .getElementById("productName")
+          .getElementById(
+            "productName"
+          )
           .value
           .trim();
+
 
       const description =
         document
-          .getElementById("productDescription")
+          .getElementById(
+            "productDescription"
+          )
           .value
           .trim();
+
 
       const priceValue =
         document
-          .getElementById("productPrice")
+          .getElementById(
+            "productPrice"
+          )
           .value
           .trim();
+
 
       const currency =
         document
-          .getElementById("productCurrency")
+          .getElementById(
+            "productCurrency"
+          )
           .value
           .trim();
+
 
       const category =
         document
-          .getElementById("productCategory")
+          .getElementById(
+            "productCategory"
+          )
           .value
           .trim();
 
+
       const itemType =
         document
-          .getElementById("productType")
+          .getElementById(
+            "productType"
+          )
           .value;
+
 
       const available =
         document
-          .getElementById("productAvailable")
+          .getElementById(
+            "productAvailable"
+          )
           .checked;
+
 
       if (!name) {
 
@@ -3692,14 +4616,20 @@
         );
 
         return;
+
       }
 
+
       let price = null;
+
 
       if (priceValue !== "") {
 
         price =
-          Number(priceValue);
+          Number(
+            priceValue
+          );
+
 
         if (
           !Number.isFinite(price) ||
@@ -3713,17 +4643,24 @@
           );
 
           return;
+
         }
+
       }
 
-      addProductButton.disabled = true;
+
+      addProductButton.disabled =
+        true;
+
 
       addProductButton.textContent =
         "Adding...";
 
+
       hideStatus(
         productsStatus
       );
+
 
       try {
 
@@ -3762,51 +4699,68 @@
 
                   available:
                     available ? 1 : 0
+
                 })
+
             }
           );
 
+
         const result =
-          await response.json();
+          await readResponseBody(
+            response
+          );
+
 
         if (
           !response.ok ||
-          result.status !== "ok"
+          result?.status !== "ok"
         ) {
 
           throw new Error(
-            result.message ||
-            "Unable to add product or service."
+            getResponseMessage(
+              result,
+              "Unable to add product or service."
+            )
           );
+
         }
+
 
         document.getElementById(
           "productName"
         ).value = "";
 
+
         document.getElementById(
           "productDescription"
         ).value = "";
+
 
         document.getElementById(
           "productPrice"
         ).value = "";
 
+
         document.getElementById(
           "productCategory"
         ).value = "";
+
 
         document.getElementById(
           "productType"
         ).value =
           "product";
 
+
         document.getElementById(
           "productAvailable"
         ).checked =
           true;
 
+
         await loadOwnerProducts();
+
 
         showStatus(
           productsStatus,
@@ -3814,12 +4768,14 @@
           "success"
         );
 
-      } catch(error) {
+
+      } catch (error) {
 
         console.error(
           "Adding owner product failed:",
           error
         );
+
 
         showStatus(
           productsStatus,
@@ -3828,940 +4784,1889 @@
           "error"
         );
 
+
       } finally {
 
         addProductButton.disabled =
           false;
 
+
         addProductButton.textContent =
           "Add Product / Service";
+
       }
+
     }
 
+
     /*
-  ============================================================
-  HELP WANTED — BACKEND CONNECTED
-  ============================================================
+      ============================================================
+      HELP WANTED
+      ============================================================
+    */
 
-  Uses the real NearAfrica Help Wanted API.
+    function clearHelpWantedForm() {
 
-  POST:
-    /help-wanted
-
-  Authentication:
-    Bearer owner token
-
-  New posts are created as:
-    status = open
-    moderation_status = pending
-
-  Only approved/open posts are returned by the public
-  Help Wanted GET endpoint.
-
-  IMPORTANT:
-  The current Worker does not yet expose an owner-specific
-  Help Wanted management GET endpoint, so this dashboard does
-  not pretend that pending posts are permanently loaded from
-  the backend.
-
-  After submission, the newly created post is shown locally
-  in the current dashboard session with its real backend ID
-  and moderation status.
-
-  ============================================================
-*/
-
-function clearHelpWantedForm() {
-
-  document.getElementById(
-    "helpWantedTitle"
-  ).value = "";
-
-  document.getElementById(
-    "helpWantedType"
-  ).value = "job";
-
-  document.getElementById(
-    "helpWantedCategory"
-  ).value = "";
-
-  document.getElementById(
-    "helpWantedLocation"
-  ).value = "";
-
-  document.getElementById(
-    "helpWantedDescription"
-  ).value = "";
-
-  document.getElementById(
-    "helpWantedContact"
-  ).value = "";
-
-  document.getElementById(
-    "helpWantedDeadline"
-  ).value = "";
-
-  hideStatus(
-    helpWantedStatus
-  );
-}
+      editingHelpWantedId =
+        null;
 
 
-/*
-  ============================================================
-  HELP WANTED DISPLAY
-  ============================================================
-*/
-
-let currentHelpWantedPosts = [];
+      document.getElementById(
+        "helpWantedTitle"
+      ).value =
+        "";
 
 
-function loadHelpWantedDrafts() {
-
-  /*
-    Compatibility function.
-
-    The old dashboard called this function during login
-    and session restoration.
-
-    It is intentionally retained so the rest of the dashboard
-    does not need to be changed.
-
-    The old localStorage draft system has been removed.
-  */
-
-  renderHelpWantedPosts(
-    currentHelpWantedPosts
-  );
-}
+      document.getElementById(
+        "helpWantedType"
+      ).value =
+        "job";
 
 
-function renderHelpWantedPosts(
-  posts
-) {
-
-  helpWantedList.innerHTML = "";
-
-  if (
-    !Array.isArray(posts) ||
-    !posts.length
-  ) {
-
-    helpWantedList.innerHTML =
-      '<div class="image-empty">No Help Wanted posts have been submitted during this dashboard session.</div>';
-
-    return;
-  }
-
-  posts.forEach(
-    function(post) {
-
-      const card =
-        document.createElement("div");
-
-      card.className =
-        "help-wanted-card";
+      document.getElementById(
+        "helpWantedCategory"
+      ).value =
+        "";
 
 
-      /*
-        STATUS
-      */
+      document.getElementById(
+        "helpWantedLocation"
+      ).value =
+        "";
 
-      const status =
-        document.createElement("div");
 
-      const moderationStatus =
-        String(
-          post.moderation_status ||
-          "pending"
+      document.getElementById(
+        "helpWantedDescription"
+      ).value =
+        "";
+
+
+      document.getElementById(
+        "helpWantedContact"
+      ).value =
+        "";
+
+
+      document.getElementById(
+        "helpWantedDeadline"
+      ).value =
+        "";
+
+
+      helpWantedFormTitle.textContent =
+        "Create Help Wanted Post";
+
+
+      helpWantedEditBanner.classList.remove(
+        "show"
+      );
+
+
+      createHelpWantedButton.textContent =
+        "Create Help Wanted Post";
+
+
+      hideStatus(
+        helpWantedStatus
+      );
+
+    }
+
+
+    async function loadOwnerHelpWanted() {
+
+      if (!ownerToken) {
+        return;
+      }
+
+
+      helpWantedList.innerHTML =
+        '<div class="image-empty">Loading Help Wanted posts...</div>';
+
+
+      try {
+
+        const response =
+          await ownerFetch(
+            "/owner/help-wanted",
+            {
+              method: "GET"
+            }
+          );
+
+
+        const result =
+          await readResponseBody(
+            response
+          );
+
+
+        console.log(
+          "OWNER HELP WANTED GET RESPONSE:",
+          response.status,
+          result
+        );
+
+
+        if (
+          !response.ok ||
+          result?.status !== "ok"
+        ) {
+
+          throw new Error(
+            getResponseMessage(
+              result,
+              "Unable to load your Help Wanted posts."
+            )
+          );
+
+        }
+
+
+        const posts =
+          result.help_wanted ||
+          result.posts ||
+          result.data ||
+          [];
+
+
+        currentHelpWantedPosts =
+          Array.isArray(posts)
+            ? posts
+            : [];
+
+
+        renderHelpWantedPosts(
+          currentHelpWantedPosts
+        );
+
+
+        hideStatus(
+          helpWantedStatus
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Loading owner Help Wanted failed:",
+          error
+        );
+
+
+        helpWantedList.innerHTML =
+          '<div class="image-empty">Unable to load your Help Wanted posts.</div>';
+
+
+        showStatus(
+          helpWantedStatus,
+          error.message ||
+            "Unable to load your Help Wanted posts.",
+          "error"
+        );
+
+      }
+
+    }
+
+
+    function renderHelpWantedPosts(
+      posts
+    ) {
+
+      helpWantedList.innerHTML =
+        "";
+
+
+      if (
+        !Array.isArray(posts) ||
+        !posts.length
+      ) {
+
+        helpWantedList.innerHTML =
+          '<div class="image-empty">No Help Wanted posts have been submitted for this business.</div>';
+
+        return;
+
+      }
+
+
+      posts.forEach(
+        function(post) {
+
+          const card =
+            document.createElement(
+              "div"
+            );
+
+
+          card.className =
+            "help-wanted-card";
+
+
+          /*
+            STATUS
+          */
+
+          const statusBadge =
+            document.createElement(
+              "div"
+            );
+
+
+          const moderationStatus =
+            String(
+              post.moderation_status ||
+              "pending"
+            ).toLowerCase();
+
+
+          const postStatus =
+            String(
+              post.status ||
+              "open"
+            ).toLowerCase();
+
+
+          statusBadge.className =
+            "help-wanted-status";
+
+
+          if (
+            postStatus === "closed"
+          ) {
+
+            statusBadge.classList.add(
+              "closed"
+            );
+
+
+            statusBadge.textContent =
+              "Closed";
+
+          } else if (
+            moderationStatus === "approved"
+          ) {
+
+            statusBadge.textContent =
+              "Approved";
+
+          } else if (
+            moderationStatus === "rejected"
+          ) {
+
+            statusBadge.classList.add(
+              "rejected"
+            );
+
+
+            statusBadge.textContent =
+              "Rejected";
+
+          } else if (
+            moderationStatus === "removed"
+          ) {
+
+            statusBadge.classList.add(
+              "removed"
+            );
+
+
+            statusBadge.textContent =
+              "Removed";
+
+          } else {
+
+            statusBadge.classList.add(
+              "pending"
+            );
+
+
+            statusBadge.textContent =
+              "Pending Moderation";
+
+          }
+
+
+          /*
+            TITLE
+          */
+
+          const title =
+            document.createElement(
+              "h4"
+            );
+
+
+          title.textContent =
+            post.title ||
+            "Untitled opportunity";
+
+
+          /*
+            DESCRIPTION
+          */
+
+          const description =
+            document.createElement(
+              "p"
+            );
+
+
+          description.textContent =
+            post.description ||
+            "No description provided.";
+
+
+          description.style.margin =
+            "0";
+
+
+          /*
+            META
+          */
+
+          const meta =
+            document.createElement(
+              "div"
+            );
+
+
+          meta.className =
+            "help-wanted-meta";
+
+
+          meta.appendChild(
+            createHelpWantedMetaBox(
+              "Type",
+              formatHelpWantedType(
+                post.type ||
+                post.employment_type
+              )
+            )
+          );
+
+
+          meta.appendChild(
+            createHelpWantedMetaBox(
+              "Category",
+              post.category ||
+                "Not specified"
+            )
+          );
+
+
+          meta.appendChild(
+            createHelpWantedMetaBox(
+              "Location",
+              post.location ||
+                "Not specified"
+            )
+          );
+
+
+          meta.appendChild(
+            createHelpWantedMetaBox(
+              "Deadline",
+              post.deadline ||
+              post.expires_at
+                ? formatHelpWantedDate(
+                    post.deadline ||
+                    post.expires_at
+                  )
+                : "No deadline"
+            )
+          );
+
+
+          meta.appendChild(
+            createHelpWantedMetaBox(
+              "Moderation",
+              formatHelpWantedModerationStatus(
+                moderationStatus
+              )
+            )
+          );
+
+
+          if (
+            post.application_contact ||
+            post.contact
+          ) {
+
+            meta.appendChild(
+              createHelpWantedMetaBox(
+                "Application / Contact",
+                post.application_contact ||
+                  post.contact
+              )
+            );
+
+          }
+
+
+          if (
+            post.id
+          ) {
+
+            meta.appendChild(
+              createHelpWantedMetaBox(
+                "Post ID",
+                String(post.id)
+              )
+            );
+
+          }
+
+
+          /*
+            NOTE
+          */
+
+          const note =
+            document.createElement(
+              "p"
+            );
+
+
+          note.className =
+            "help-wanted-note";
+
+
+          if (
+            moderationStatus === "pending"
+          ) {
+
+            note.textContent =
+              "This listing has been submitted and is waiting for moderation approval.";
+
+          } else if (
+            moderationStatus === "approved" &&
+            postStatus === "open"
+          ) {
+
+            note.textContent =
+              "This listing is approved and currently open.";
+
+          } else if (
+            postStatus === "closed"
+          ) {
+
+            note.textContent =
+              "This listing is closed and is no longer accepting applications.";
+
+          } else if (
+            moderationStatus === "rejected"
+          ) {
+
+            note.textContent =
+              "This listing was rejected during moderation.";
+
+          } else if (
+            moderationStatus === "removed"
+          ) {
+
+            note.textContent =
+              "This listing has been removed from public discovery.";
+
+          } else {
+
+            note.textContent =
+              "This listing is currently not eligible for public discovery.";
+
+          }
+
+
+          /*
+            ACTIONS
+          */
+
+          const actions =
+            document.createElement(
+              "div"
+            );
+
+
+          actions.className =
+            "help-wanted-actions";
+
+
+          if (
+            post.id &&
+            moderationStatus !== "removed"
+          ) {
+
+            const editButton =
+              document.createElement(
+                "button"
+              );
+
+
+            editButton.type =
+              "button";
+
+
+            editButton.className =
+              "btn btn-secondary";
+
+
+            editButton.textContent =
+              "Edit";
+
+
+            editButton.addEventListener(
+              "click",
+              function() {
+
+                startHelpWantedEdit(
+                  post
+                );
+
+              }
+            );
+
+
+            actions.appendChild(
+              editButton
+            );
+
+
+            const toggleButton =
+              document.createElement(
+                "button"
+              );
+
+
+            toggleButton.type =
+              "button";
+
+
+            toggleButton.className =
+              "btn btn-warning";
+
+
+            toggleButton.textContent =
+              postStatus === "closed"
+                ? "Reopen"
+                : "Close";
+
+
+            toggleButton.addEventListener(
+              "click",
+              function() {
+
+                toggleHelpWantedStatus(
+                  post
+                );
+
+              }
+            );
+
+
+            actions.appendChild(
+              toggleButton
+            );
+
+
+            const deleteButton =
+              document.createElement(
+                "button"
+              );
+
+
+            deleteButton.type =
+              "button";
+
+
+            deleteButton.className =
+              "btn btn-danger";
+
+
+            deleteButton.textContent =
+              "Delete";
+
+
+            deleteButton.addEventListener(
+              "click",
+              function() {
+
+                deleteOwnerHelpWanted(
+                  post.id
+                );
+
+              }
+            );
+
+
+            actions.appendChild(
+              deleteButton
+            );
+
+          }
+
+
+          card.appendChild(
+            statusBadge
+          );
+
+
+          card.appendChild(
+            title
+          );
+
+
+          card.appendChild(
+            description
+          );
+
+
+          card.appendChild(
+            meta
+          );
+
+
+          card.appendChild(
+            note
+          );
+
+
+          if (
+            actions.children.length
+          ) {
+
+            card.appendChild(
+              actions
+            );
+
+          }
+
+
+          helpWantedList.appendChild(
+            card
+          );
+
+        }
+      );
+
+    }
+
+
+    function createHelpWantedMetaBox(
+      label,
+      value
+    ) {
+
+      const box =
+        document.createElement(
+          "div"
+        );
+
+
+      box.className =
+        "help-wanted-meta-box";
+
+
+      const labelElement =
+        document.createElement(
+          "div"
+        );
+
+
+      labelElement.className =
+        "help-wanted-meta-label";
+
+
+      labelElement.textContent =
+        label;
+
+
+      const valueElement =
+        document.createElement(
+          "div"
+        );
+
+
+      valueElement.className =
+        "help-wanted-meta-value";
+
+
+      valueElement.textContent =
+        value ||
+        "—";
+
+
+      box.appendChild(
+        labelElement
+      );
+
+
+      box.appendChild(
+        valueElement
+      );
+
+
+      return box;
+
+    }
+
+
+    function formatHelpWantedType(
+      type
+    ) {
+
+      const normalized =
+        cleanString(
+          type
         ).toLowerCase();
 
-      const postStatus =
+
+      const labels = {
+
+        job:
+          "Job",
+
+        part_time:
+          "Part-time",
+
+        contract:
+          "Contract",
+
+        freelance:
+          "Freelance",
+
+        internship:
+          "Internship",
+
+        apprenticeship:
+          "Apprenticeship",
+
+        temporary:
+          "Temporary",
+
+        volunteer:
+          "Volunteer",
+
+        other:
+          "Other"
+
+      };
+
+
+      return (
+        labels[normalized] ||
+        type ||
+        "Other"
+      );
+
+    }
+
+
+    function formatHelpWantedModerationStatus(
+      status
+    ) {
+
+      const normalized =
+        cleanString(
+          status
+        ).toLowerCase();
+
+
+      const labels = {
+
+        pending:
+          "Pending",
+
+        approved:
+          "Approved",
+
+        rejected:
+          "Rejected",
+
+        removed:
+          "Removed"
+
+      };
+
+
+      return (
+        labels[normalized] ||
+        "Pending"
+      );
+
+    }
+
+
+    function formatHelpWantedDate(
+      value
+    ) {
+
+      if (!value) {
+        return "No deadline";
+      }
+
+
+      const raw =
+        cleanString(
+          value
+        );
+
+
+      if (!raw) {
+        return "No deadline";
+      }
+
+
+      try {
+
+        const date =
+          new Date(
+            raw.length === 10
+              ? raw + "T00:00:00"
+              : raw
+          );
+
+
+        if (
+          Number.isNaN(
+            date.getTime()
+          )
+        ) {
+
+          return raw;
+
+        }
+
+
+        return date.toLocaleDateString(
+          undefined,
+          {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+          }
+        );
+
+
+      } catch {
+
+        return raw;
+
+      }
+
+    }
+
+
+    function startHelpWantedEdit(
+      post
+    ) {
+
+      if (!post || !post.id) {
+
+        return;
+
+      }
+
+
+      editingHelpWantedId =
+        String(
+          post.id
+        );
+
+
+      document.getElementById(
+        "helpWantedTitle"
+      ).value =
+        post.title ||
+        "";
+
+
+      document.getElementById(
+        "helpWantedType"
+      ).value =
+        normalizeHelpWantedTypeValue(
+          post.type ||
+          post.employment_type
+        );
+
+
+      document.getElementById(
+        "helpWantedCategory"
+      ).value =
+        post.category ||
+        "";
+
+
+      document.getElementById(
+        "helpWantedLocation"
+      ).value =
+        post.location ||
+        "";
+
+
+      document.getElementById(
+        "helpWantedDescription"
+      ).value =
+        post.description ||
+        "";
+
+
+      document.getElementById(
+        "helpWantedContact"
+      ).value =
+        post.application_contact ||
+        post.contact ||
+        "";
+
+
+      document.getElementById(
+        "helpWantedDeadline"
+      ).value =
+        normalizeDateInputValue(
+          post.deadline ||
+          post.expires_at ||
+          ""
+        );
+
+
+      helpWantedFormTitle.textContent =
+        "Edit Help Wanted Post";
+
+
+      helpWantedEditBanner.classList.add(
+        "show"
+      );
+
+
+      createHelpWantedButton.textContent =
+        "Save Help Wanted Changes";
+
+
+      showStatus(
+        helpWantedStatus,
+        "Editing the selected Help Wanted post.",
+        "info"
+      );
+
+
+      document
+        .getElementById(
+          "helpWantedTitle"
+        )
+        .scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+    }
+
+
+    function normalizeHelpWantedTypeValue(
+      type
+    ) {
+
+      const normalized =
+        cleanString(
+          type
+        ).toLowerCase();
+
+
+      const allowed = [
+        "job",
+        "part_time",
+        "contract",
+        "freelance",
+        "internship",
+        "apprenticeship",
+        "temporary",
+        "volunteer",
+        "other"
+      ];
+
+
+      return allowed.includes(
+        normalized
+      )
+        ? normalized
+        : "other";
+
+    }
+
+
+    function normalizeDateInputValue(
+      value
+    ) {
+
+      const raw =
+        cleanString(
+          value
+        );
+
+
+      if (!raw) {
+        return "";
+      }
+
+
+      if (
+        /^\d{4}-\d{2}-\d{2}$/.test(
+          raw
+        )
+      ) {
+
+        return raw;
+
+      }
+
+
+      const date =
+        new Date(raw);
+
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+
+        return "";
+
+      }
+
+
+      const year =
+        date.getFullYear();
+
+
+      const month =
+        String(
+          date.getMonth() + 1
+        ).padStart(
+          2,
+          "0"
+        );
+
+
+      const day =
+        String(
+          date.getDate()
+        ).padStart(
+          2,
+          "0"
+        );
+
+
+      return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day
+      );
+
+    }
+
+
+    function getHelpWantedFormValues() {
+
+      return {
+
+        title:
+          cleanString(
+            document.getElementById(
+              "helpWantedTitle"
+            ).value
+          ),
+
+        type:
+          cleanString(
+            document.getElementById(
+              "helpWantedType"
+            ).value
+          ),
+
+        category:
+          cleanString(
+            document.getElementById(
+              "helpWantedCategory"
+            ).value
+          ),
+
+        location:
+          cleanString(
+            document.getElementById(
+              "helpWantedLocation"
+            ).value
+          ),
+
+        description:
+          cleanString(
+            document.getElementById(
+              "helpWantedDescription"
+            ).value
+          ),
+
+        contact:
+          cleanString(
+            document.getElementById(
+              "helpWantedContact"
+            ).value
+          ),
+
+        deadline:
+          cleanString(
+            document.getElementById(
+              "helpWantedDeadline"
+            ).value
+          )
+
+      };
+
+    }
+
+
+    function validateHelpWantedForm(
+      data
+    ) {
+
+      if (!data.title) {
+
+        return "Opportunity title is required.";
+
+      }
+
+
+      if (!data.description) {
+
+        return "Please provide a description of the opportunity.";
+
+      }
+
+
+      if (!data.contact) {
+
+        return "Please provide an application or contact method.";
+
+      }
+
+
+      if (data.deadline) {
+
+        const deadlineDate =
+          new Date(
+            data.deadline +
+            "T23:59:59"
+          );
+
+
+        if (
+          Number.isNaN(
+            deadlineDate.getTime()
+          )
+        ) {
+
+          return "Please enter a valid application deadline.";
+
+        }
+
+
+        if (
+          deadlineDate <
+          new Date()
+        ) {
+
+          return "The application deadline cannot be in the past.";
+
+        }
+
+      }
+
+
+      return null;
+
+    }
+
+
+    async function createHelpWantedDraft() {
+
+      if (!ownerToken) {
+
+        showStatus(
+          helpWantedStatus,
+          "Your owner session has expired. Please log in again.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      if (!currentBusiness) {
+
+        showStatus(
+          helpWantedStatus,
+          "Your business information has not loaded yet.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      const data =
+        getHelpWantedFormValues();
+
+
+      const validationError =
+        validateHelpWantedForm(
+          data
+        );
+
+
+      if (validationError) {
+
+        showStatus(
+          helpWantedStatus,
+          validationError,
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      createHelpWantedButton.disabled =
+        true;
+
+
+      createHelpWantedButton.textContent =
+        editingHelpWantedId
+          ? "Saving..."
+          : "Submitting...";
+
+
+      hideStatus(
+        helpWantedStatus
+      );
+
+
+      try {
+
+        if (editingHelpWantedId) {
+
+          await updateOwnerHelpWanted(
+            editingHelpWantedId,
+            data
+          );
+
+        } else {
+
+          /*
+            IMPORTANT:
+            This MUST use the authenticated owner endpoint.
+          */
+
+          console.log(
+            "SUBMITTING OWNER HELP WANTED:",
+            API_BASE +
+            "/owner/help-wanted"
+          );
+
+
+          const response =
+            await ownerFetch(
+              "/owner/help-wanted",
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body:
+                  JSON.stringify({
+
+                    title:
+                      data.title,
+
+                    description:
+                      data.description,
+
+                    type:
+                      data.type,
+
+                    category:
+                      data.category ||
+                      null,
+
+                    location:
+                      data.location ||
+                      null,
+
+                    application_contact:
+                      data.contact,
+
+                    deadline:
+                      data.deadline ||
+                      null,
+
+                    /*
+                      Compatibility aliases for the
+                      current Worker implementation.
+                    */
+
+                    contact:
+                      data.contact,
+
+                    employment_type:
+                      data.type,
+
+                    expires_at:
+                      data.deadline ||
+                      null
+
+                  })
+              }
+            );
+
+
+          const result =
+            await readResponseBody(
+              response
+            );
+
+
+          console.log(
+            "OWNER HELP WANTED POST RESPONSE:",
+            response.status,
+            result
+          );
+
+
+          if (
+            !response.ok ||
+            result?.status !== "ok"
+          ) {
+
+            throw new Error(
+              getResponseMessage(
+                result,
+                `Unable to create Help Wanted post (HTTP ${response.status}).`
+              )
+            );
+
+          }
+
+
+          clearHelpWantedForm();
+
+
+          await loadOwnerHelpWanted();
+
+
+          showStatus(
+            helpWantedStatus,
+            "Help Wanted post submitted successfully. It is now waiting for moderation approval.",
+            "success"
+          );
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Creating or updating Help Wanted post failed:",
+          error
+        );
+
+
+        showStatus(
+          helpWantedStatus,
+          error.message ||
+            "Unable to save the Help Wanted post.",
+          "error"
+        );
+
+
+      } finally {
+
+        createHelpWantedButton.disabled =
+          false;
+
+
+        createHelpWantedButton.textContent =
+          editingHelpWantedId
+            ? "Save Help Wanted Changes"
+            : "Create Help Wanted Post";
+
+      }
+
+    }
+
+
+    async function updateOwnerHelpWanted(
+      postId,
+      data
+    ) {
+
+      if (!postId) {
+
+        throw new Error(
+          "Help Wanted post ID is missing."
+        );
+
+      }
+
+
+      const response =
+        await ownerFetch(
+          "/owner/help-wanted/" +
+          encodeURIComponent(
+            postId
+          ),
+          {
+            method: "PATCH",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
+
+                title:
+                  data.title,
+
+                description:
+                  data.description,
+
+                type:
+                  data.type,
+
+                category:
+                  data.category ||
+                  null,
+
+                location:
+                  data.location ||
+                  null,
+
+                application_contact:
+                  data.contact,
+
+                deadline:
+                  data.deadline ||
+                  null,
+
+                contact:
+                  data.contact,
+
+                employment_type:
+                  data.type,
+
+                expires_at:
+                  data.deadline ||
+                  null
+
+              })
+          }
+        );
+
+
+      const result =
+        await readResponseBody(
+          response
+        );
+
+
+      console.log(
+        "OWNER HELP WANTED PATCH RESPONSE:",
+        response.status,
+        result
+      );
+
+
+      if (
+        !response.ok ||
+        result?.status !== "ok"
+      ) {
+
+        throw new Error(
+          getResponseMessage(
+            result,
+            `Unable to update Help Wanted post (HTTP ${response.status}).`
+          )
+        );
+
+      }
+
+
+      editingHelpWantedId =
+        null;
+
+
+      clearHelpWantedForm();
+
+
+      await loadOwnerHelpWanted();
+
+
+      showStatus(
+        helpWantedStatus,
+        "Help Wanted post updated successfully.",
+        "success"
+      );
+
+    }
+
+
+    async function toggleHelpWantedStatus(
+      post
+    ) {
+
+      if (
+        !post ||
+        !post.id
+      ) {
+
+        return;
+
+      }
+
+
+      const currentStatus =
         String(
           post.status ||
           "open"
         ).toLowerCase();
 
 
-      status.className =
-        "help-wanted-status";
+      const nextStatus =
+        currentStatus === "closed"
+          ? "open"
+          : "closed";
 
-      if (
-        postStatus === "closed"
-      ) {
 
-        status.classList.add(
-          "closed"
+      const label =
+        nextStatus === "closed"
+          ? "close"
+          : "reopen";
+
+
+      const confirmed =
+        window.confirm(
+          `Are you sure you want to ${label} this Help Wanted post?`
         );
 
-        status.textContent =
-          "Closed";
 
-      } else if (
-        moderationStatus === "approved"
-      ) {
-
-        status.textContent =
-          "Approved";
-
-      } else {
-
-        status.textContent =
-          "Pending Moderation";
+      if (!confirmed) {
+        return;
       }
 
 
-      /*
-        TITLE
-      */
+      try {
 
-      const title =
-        document.createElement("h4");
-
-      title.textContent =
-        post.title ||
-        "Untitled opportunity";
-
-
-      /*
-        DESCRIPTION
-      */
-
-      const description =
-        document.createElement("p");
-
-      description.textContent =
-        post.description ||
-        "No description provided.";
-
-
-      /*
-        META
-      */
-
-      const meta =
-        document.createElement("div");
-
-      meta.className =
-        "help-wanted-meta";
-
-
-      const typeBox =
-        createHelpWantedMetaBox(
-          "Type",
-          formatHelpWantedType(
-            post.type
-          )
+        showStatus(
+          helpWantedStatus,
+          `${nextStatus === "closed" ? "Closing" : "Reopening"} Help Wanted post...`,
+          "info"
         );
 
 
-      const categoryBox =
-        createHelpWantedMetaBox(
-          "Category",
-          post.category ||
-            "Not specified"
-        );
+        const response =
+          await ownerFetch(
+            "/owner/help-wanted/" +
+            encodeURIComponent(
+              post.id
+            ) +
+            "/status",
+            {
+              method: "PATCH",
 
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
 
-      const locationBox =
-        createHelpWantedMetaBox(
-          "Location",
-          post.location ||
-            "Not specified"
-        );
-
-
-      const deadlineBox =
-        createHelpWantedMetaBox(
-          "Deadline",
-          post.deadline
-            ? formatHelpWantedDate(
-                post.deadline
-              )
-            : "No deadline"
-        );
-
-
-      meta.appendChild(
-        typeBox
-      );
-
-      meta.appendChild(
-        categoryBox
-      );
-
-      meta.appendChild(
-        locationBox
-      );
-
-      meta.appendChild(
-        deadlineBox
-      );
-
-
-      /*
-        MODERATION INFORMATION
-      */
-
-      const moderationBox =
-        createHelpWantedMetaBox(
-          "Moderation",
-          formatHelpWantedModerationStatus(
-            moderationStatus
-          )
-        );
-
-      meta.appendChild(
-        moderationBox
-      );
-
-
-      /*
-        BACKEND ID
-      */
-
-      if (post.id) {
-
-        const idBox =
-          createHelpWantedMetaBox(
-            "Post ID",
-            String(post.id)
+              body:
+                JSON.stringify({
+                  status:
+                    nextStatus
+                })
+            }
           );
 
-        meta.appendChild(
-          idBox
+
+        const result =
+          await readResponseBody(
+            response
+          );
+
+
+        console.log(
+          "OWNER HELP WANTED STATUS RESPONSE:",
+          response.status,
+          result
         );
+
+
+        if (
+          !response.ok ||
+          result?.status !== "ok"
+        ) {
+
+          throw new Error(
+            getResponseMessage(
+              result,
+              `Unable to update Help Wanted status (HTTP ${response.status}).`
+            )
+          );
+
+        }
+
+
+        await loadOwnerHelpWanted();
+
+
+        showStatus(
+          helpWantedStatus,
+          `Help Wanted post ${nextStatus === "closed" ? "closed" : "reopened"} successfully.`,
+          "success"
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Updating Help Wanted status failed:",
+          error
+        );
+
+
+        showStatus(
+          helpWantedStatus,
+          error.message ||
+            "Unable to update Help Wanted status.",
+          "error"
+        );
+
       }
 
-
-      /*
-        NOTE
-      */
-
-      const note =
-        document.createElement("p");
-
-      note.style.margin =
-        "14px 0 0";
-
-      note.style.color =
-        "var(--text-muted)";
-
-      note.style.fontSize =
-        "12px";
-
-      note.style.lineHeight =
-        "1.5";
-
-
-      if (
-        moderationStatus === "pending"
-      ) {
-
-        note.textContent =
-          "This Help Wanted post has been submitted to NearAfrica and is waiting for moderation approval.";
-
-      } else if (
-        moderationStatus === "approved"
-      ) {
-
-        note.textContent =
-          "This Help Wanted post has been approved and is eligible for public discovery.";
-
-      } else {
-
-        note.textContent =
-          "This Help Wanted post is currently not approved for public discovery.";
-      }
-
-
-      /*
-        CARD ACTIONS
-
-        The current Worker does not yet expose an owner
-        close/edit/delete endpoint for Help Wanted posts.
-
-        Therefore we deliberately do not create fake
-        close/delete buttons that only modify localStorage.
-      */
-
-      card.appendChild(
-        status
-      );
-
-      card.appendChild(
-        title
-      );
-
-      card.appendChild(
-        description
-      );
-
-      card.appendChild(
-        meta
-      );
-
-      card.appendChild(
-        note
-      );
-
-      helpWantedList.appendChild(
-        card
-      );
-    }
-  );
-}
-
-
-function createHelpWantedMetaBox(
-  label,
-  value
-) {
-
-  const box =
-    document.createElement("div");
-
-  box.className =
-    "help-wanted-meta-box";
-
-
-  const labelElement =
-    document.createElement("div");
-
-  labelElement.className =
-    "help-wanted-meta-label";
-
-  labelElement.textContent =
-    label;
-
-
-  const valueElement =
-    document.createElement("div");
-
-  valueElement.className =
-    "help-wanted-meta-value";
-
-  valueElement.textContent =
-    value || "—";
-
-
-  box.appendChild(
-    labelElement
-  );
-
-  box.appendChild(
-    valueElement
-  );
-
-
-  return box;
-}
-
-
-function formatHelpWantedType(
-  type
-) {
-
-  const labels = {
-
-    job:
-      "Job",
-
-    part_time:
-      "Part-time",
-
-    contract:
-      "Contract",
-
-    internship:
-      "Internship",
-
-    volunteer:
-      "Volunteer",
-
-    other:
-      "Other"
-  };
-
-
-  return (
-    labels[type] ||
-    "Other"
-  );
-}
-
-
-function formatHelpWantedModerationStatus(
-  status
-) {
-
-  const labels = {
-
-    pending:
-      "Pending",
-
-    approved:
-      "Approved",
-
-    rejected:
-      "Rejected",
-
-    removed:
-      "Removed"
-  };
-
-
-  return (
-    labels[status] ||
-    "Pending"
-  );
-}
-
-
-function formatHelpWantedDate(
-  value
-) {
-
-  if (!value) {
-    return "No deadline";
-  }
-
-
-  try {
-
-    const date =
-      new Date(
-        value + "T00:00:00"
-      );
-
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-
-      return value;
     }
 
 
-    return date.toLocaleDateString(
-      undefined,
-      {
-        year: "numeric",
-        month: "short",
-        day: "numeric"
-      }
-    );
-
-
-  } catch(error) {
-
-    return value;
-  }
-}
-
-
-/*
-  ============================================================
-  CREATE REAL HELP WANTED POST
-  ============================================================
-*/
-
-async function createHelpWantedDraft() {
-
-  if (!ownerToken) {
-
-    showStatus(
-      helpWantedStatus,
-      "Your owner session has expired. Please log in again.",
-      "error"
-    );
-
-    return;
-  }
-
-
-  if (!currentBusiness) {
-
-    showStatus(
-      helpWantedStatus,
-      "Your business information has not loaded yet.",
-      "error"
-    );
-
-    return;
-  }
-
-
-  const title =
-    document.getElementById(
-      "helpWantedTitle"
-    ).value.trim();
-
-
-  const type =
-    document.getElementById(
-      "helpWantedType"
-    ).value;
-
-
-  const category =
-    document.getElementById(
-      "helpWantedCategory"
-    ).value.trim();
-
-
-  const location =
-    document.getElementById(
-      "helpWantedLocation"
-    ).value.trim();
-
-
-  const description =
-    document.getElementById(
-      "helpWantedDescription"
-    ).value.trim();
-
-
-  const contact =
-    document.getElementById(
-      "helpWantedContact"
-    ).value.trim();
-
-
-  const deadline =
-    document.getElementById(
-      "helpWantedDeadline"
-    ).value;
-
-
-  /*
-    VALIDATION
-  */
-
-  if (!title) {
-
-    showStatus(
-      helpWantedStatus,
-      "Opportunity title is required.",
-      "error"
-    );
-
-    return;
-  }
-
-
-  if (!description) {
-
-    showStatus(
-      helpWantedStatus,
-      "Please provide a description of the opportunity.",
-      "error"
-    );
-
-    return;
-  }
-
-
-  if (!contact) {
-
-    showStatus(
-      helpWantedStatus,
-      "Please provide an application or contact method.",
-      "error"
-    );
-
-    return;
-  }
-
-
-  if (deadline) {
-
-    const deadlineDate =
-      new Date(
-        deadline + "T23:59:59"
-      );
-
-
-    if (
-      Number.isNaN(
-        deadlineDate.getTime()
-      )
+    async function deleteOwnerHelpWanted(
+      postId
     ) {
+
+      if (!postId) {
+
+        showStatus(
+          helpWantedStatus,
+          "This Help Wanted post cannot be deleted because its ID is missing.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      const confirmed =
+        window.confirm(
+          "Delete this Help Wanted post permanently?"
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      try {
+
+        showStatus(
+          helpWantedStatus,
+          "Deleting Help Wanted post...",
+          "info"
+        );
+
+
+        const response =
+          await ownerFetch(
+            "/owner/help-wanted/" +
+            encodeURIComponent(
+              postId
+            ),
+            {
+              method: "DELETE"
+            }
+          );
+
+
+        const result =
+          await readResponseBody(
+            response
+          );
+
+
+        console.log(
+          "OWNER HELP WANTED DELETE RESPONSE:",
+          response.status,
+          result
+        );
+
+
+        if (
+          !response.ok ||
+          result?.status !== "ok"
+        ) {
+
+          throw new Error(
+            getResponseMessage(
+              result,
+              `Unable to delete Help Wanted post (HTTP ${response.status}).`
+            )
+          );
+
+        }
+
+
+        if (
+          String(
+            editingHelpWantedId
+          ) ===
+          String(
+            postId
+          )
+        ) {
+
+          clearHelpWantedForm();
+
+        }
+
+
+        await loadOwnerHelpWanted();
+
+
+        showStatus(
+          helpWantedStatus,
+          "Help Wanted post deleted successfully.",
+          "success"
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Deleting Help Wanted post failed:",
+          error
+        );
+
+
+        showStatus(
+          helpWantedStatus,
+          error.message ||
+            "Unable to delete Help Wanted post.",
+          "error"
+        );
+
+      }
+
+    }
+
+
+    /*
+      ============================================================
+      LOGOUT
+      ============================================================
+    */
+
+    async function logoutOwner() {
+
+      const token =
+        ownerToken;
+
+
+      /*
+        Attempt to revoke the server-side session.
+        Local logout still succeeds even if the network
+        request fails.
+      */
+
+      if (token) {
+
+        try {
+
+          await fetch(
+            API_BASE +
+            "/owner/logout",
+            {
+              method: "POST",
+
+              headers: {
+                "Accept":
+                  "application/json",
+
+                "Authorization":
+                  "Bearer " +
+                  token
+              }
+            }
+          );
+
+        } catch (error) {
+
+          console.warn(
+            "Owner logout request failed:",
+            error
+          );
+
+        }
+
+      }
+
+
+      clearStoredOwnerToken();
+
+
+      ownerToken =
+        null;
+
+
+      currentBusiness =
+        null;
+
+
+      currentHelpWantedPosts =
+        [];
+
+
+      editingHelpWantedId =
+        null;
+
+
+      resetDashboard();
+
 
       showStatus(
-        helpWantedStatus,
-        "Please enter a valid application deadline.",
-        "error"
-      );
-
-      return;
-    }
-  }
-
-
-  /*
-    DISABLE BUTTON
-  */
-
-  createHelpWantedButton.disabled =
-    true;
-
-  createHelpWantedButton.textContent =
-    "Submitting...";
-
-  hideStatus(
-    helpWantedStatus
-  );
-
-
-  try {
-
-    /*
-      REAL WORKER REQUEST
-
-      The ownerFetch helper automatically sends:
-
-      Authorization:
-        Bearer <owner token>
-    */
-
-    const response =
-      await ownerFetch(
-        "/help-wanted",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify({
-
-              title,
-
-              description,
-
-              type,
-
-              category:
-                category ||
-                null,
-
-              location:
-                location ||
-                null,
-
-              application_contact:
-                contact,
-
-              deadline:
-                deadline ||
-                null
-            })
-        }
+        loginStatus,
+        "You have been logged out.",
+        "success"
       );
 
 
-    const result =
-      await response.json();
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
 
-
-    if (
-      !response.ok ||
-      result.status !== "ok"
-    ) {
-
-      throw new Error(
-        result.message ||
-        "Unable to create Help Wanted post."
-      );
     }
 
-
-    /*
-      The Worker should return the created
-      Help Wanted record.
-
-      Support several reasonable response
-      shapes without breaking if the exact
-      response wrapper changes.
-    */
-
-    const createdPost =
-      result.help_wanted ||
-      result.post ||
-      result.helpWanted ||
-      result.data ||
-      null;
-
-
-    const post =
-      createdPost &&
-      typeof createdPost === "object"
-
-        ? createdPost
-
-        : {
-
-            id:
-              result.id ||
-              result.help_wanted_id ||
-              "created",
-
-            business_id:
-              currentBusiness.id,
-
-            business_name:
-              currentBusiness.business_name ||
-              "",
-
-            title,
-
-            description,
-
-            type,
-
-            category:
-              category ||
-              null,
-
-            location:
-              location ||
-              null,
-
-            application_contact:
-              contact,
-
-            deadline:
-              deadline ||
-              null,
-
-            status:
-              "open",
-
-            moderation_status:
-              "pending",
-
-            created_at:
-              new Date().toISOString()
-          };
-
-
-    /*
-      Make sure the dashboard has the fields
-      required to display the submission.
-    */
-
-    post.business_id =
-      post.business_id ||
-      currentBusiness.id;
-
-    post.business_name =
-      post.business_name ||
-      currentBusiness.business_name ||
-      "";
-
-    post.title =
-      post.title ||
-      title;
-
-    post.description =
-      post.description ||
-      description;
-
-    post.type =
-      post.type ||
-      type;
-
-    post.category =
-      post.category ??
-      (category || null);
-
-    post.location =
-      post.location ??
-      (location || null);
-
-    post.deadline =
-      post.deadline ??
-      (deadline || null);
-
-    post.status =
-      post.status ||
-      "open";
-
-    post.moderation_status =
-      post.moderation_status ||
-      "pending";
-
-
-    /*
-      Add the real backend-created post to the
-      current dashboard session.
-
-      This is NOT pretending it is persisted in
-      localStorage.
-    */
-
-    currentHelpWantedPosts =
-      [
-        post,
-        ...currentHelpWantedPosts.filter(
-          function(existingPost) {
-
-            return String(
-              existingPost.id
-            ) !== String(
-              post.id
-            );
-          }
-        )
-      ];
-
-
-    renderHelpWantedPosts(
-      currentHelpWantedPosts
-    );
-
-
-    clearHelpWantedForm();
-
-
-    showStatus(
-      helpWantedStatus,
-      "Help Wanted post submitted successfully. It is now waiting for moderation approval.",
-      "success"
-    );
-
-
-  } catch(error) {
-
-    console.error(
-      "Creating Help Wanted post failed:",
-      error
-    );
-
-
-    showStatus(
-      helpWantedStatus,
-      error.message ||
-        "Unable to create Help Wanted post.",
-      "error"
-    );
-
-
-  } finally {
-
-    createHelpWantedButton.disabled =
-      false;
-
-    createHelpWantedButton.textContent =
-      "Create Help Wanted Post";
-  }
-}
 
     /*
       ============================================================
@@ -4775,63 +6680,89 @@ async function createHelpWantedDraft() {
         "hidden"
       );
 
+
       loginSection.classList.remove(
         "hidden"
       );
 
+
       loginForm.reset();
 
-      businessImage.value = "";
 
-      imageGallery.innerHTML = "";
-      hoursEditor.innerHTML = "";
-      productsList.innerHTML = "";
+      businessImage.value =
+        "";
+
+
+      imageGallery.innerHTML =
+        "";
+
+
+      hoursEditor.innerHTML =
+        "";
+
+
+      productsList.innerHTML =
+        "";
+
+
+      currentHelpWantedPosts =
+        [];
+
 
       helpWantedList.innerHTML =
-        '<div class="image-empty">No Help Wanted posts have been added yet.</div>';
+        '<div class="image-empty">No Help Wanted posts have been submitted for this business.</div>';
+
 
       analyticsTotalViews.textContent =
         "—";
 
+
       analyticsToday.textContent =
         "—";
+
 
       analytics7Days.textContent =
         "—";
 
+
       analytics30Days.textContent =
         "—";
 
+
       clearHelpWantedForm();
 
-      hideStatus(
-        loginStatus
-      );
 
       hideStatus(
         dashboardStatus
       );
 
+
       hideStatus(
         imageStatus
       );
+
 
       hideStatus(
         hoursStatus
       );
 
+
       hideStatus(
         productsStatus
       );
+
 
       hideStatus(
         analyticsStatus
       );
 
+
       hideStatus(
         helpWantedStatus
       );
+
     }
+
 
     /*
       ============================================================
@@ -4844,19 +6775,41 @@ async function createHelpWantedDraft() {
       function() {
 
         if (
-          !currentBusiness ||
-          !currentBusiness.id
+          !currentBusiness
         ) {
+
           return;
+
         }
+
+
+        const businessId =
+          currentBusiness.id ||
+          currentBusiness.business_id;
+
+
+        if (!businessId) {
+
+          showStatus(
+            dashboardStatus,
+            "The business ID is unavailable.",
+            "error"
+          );
+
+          return;
+
+        }
+
 
         window.location.href =
           "/pages/business.html?id=" +
           encodeURIComponent(
-            currentBusiness.id
+            businessId
           );
+
       }
     );
+
 
     /*
       ============================================================
@@ -4869,45 +6822,60 @@ async function createHelpWantedDraft() {
       loginOwner
     );
 
+
     saveButton.addEventListener(
       "click",
       saveBusiness
     );
+
 
     saveHoursButton.addEventListener(
       "click",
       saveOwnerHours
     );
 
+
     uploadImageButton.addEventListener(
       "click",
       uploadOwnerImage
     );
+
 
     refreshAnalyticsButton.addEventListener(
       "click",
       loadOwnerAnalytics
     );
 
+
     addProductButton.addEventListener(
       "click",
       addOwnerProduct
     );
+
 
     createHelpWantedButton.addEventListener(
       "click",
       createHelpWantedDraft
     );
 
+
     clearHelpWantedButton.addEventListener(
       "click",
       clearHelpWantedForm
     );
 
+
+    refreshHelpWantedButton.addEventListener(
+      "click",
+      loadOwnerHelpWanted
+    );
+
+
     logoutButton.addEventListener(
       "click",
       logoutOwner
     );
+
 
     /*
       ============================================================
@@ -4920,4 +6888,4 @@ async function createHelpWantedDraft() {
   </script>
 
 </body>
-        </html>
+</html>
