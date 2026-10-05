@@ -1290,62 +1290,107 @@
 
 
     /* =========================================================
-       API REQUEST
-       ========================================================= */
+   API REQUEST
+   ========================================================= */
 
-    async function apiRequest(
-      path,
-      options = {}
-    ) {
+async function apiRequest(
+  path,
+  options = {}
+) {
 
-      const requestOptions = {
-        ...options,
-        headers: {
-          ...getHeaders(
-            options.body !== undefined
-          ),
-          ...(options.headers || {})
-        }
-      };
+  const controller =
+    new AbortController();
 
-      const response =
-        await fetch(
-          `${API_BASE}${path}`,
-          requestOptions
-        );
+  const timeout =
+    setTimeout(
+      function() {
+        controller.abort();
+      },
+      15000
+    );
 
-      let data = null;
+  const requestOptions = {
+    ...options,
 
-      try {
-        data =
-          await response.json();
-      } catch {
-        data = null;
-      }
+    headers: {
+      ...getHeaders(
+        options.body !== undefined
+      ),
+      ...(options.headers || {})
+    },
 
-      if (
-        response.status === 401 ||
-        response.status === 403
-      ) {
+    signal:
+      controller.signal
+  };
 
-        throw new Error(
-          "Unauthorized. Your admin session may be invalid or expired."
-        );
-      }
+  try {
 
-      if (!response.ok) {
+    const response =
+      await fetch(
+        `${API_BASE}${path}`,
+        requestOptions
+      );
 
-        const message =
-          data?.message ||
-          data?.error ||
-          `Request failed with status ${response.status}.`;
+    let data = null;
 
-        throw new Error(message);
-      }
+    try {
 
-      return data;
+      data =
+        await response.json();
+
+    } catch {
+
+      data = null;
+
     }
 
+    if (
+      response.status === 401 ||
+      response.status === 403
+    ) {
+
+      throw new Error(
+        "Unauthorized. Your admin session may be invalid or expired."
+      );
+
+    }
+
+    if (!response.ok) {
+
+      const message =
+        data?.message ||
+        data?.error ||
+        `Request failed with status ${response.status}.`;
+
+      throw new Error(message);
+
+    }
+
+    return data;
+
+  } catch (error) {
+
+    if (
+      error &&
+      error.name === "AbortError"
+    ) {
+
+      throw new Error(
+        `Request to ${API_BASE}${path} timed out after 15 seconds.`
+      );
+
+    }
+
+    throw error;
+
+  } finally {
+
+    clearTimeout(timeout);
+
+  }
+}
+
+   
 
     /* =========================================================
        ADMIN RESOURCE PATH
