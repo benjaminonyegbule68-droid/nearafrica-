@@ -3515,6 +3515,234 @@
 
     }
 
+function renderDiscoveries(records) {
+
+    if (!records.length) {
+
+        content.innerHTML = `
+            <div class="empty">
+                No discoveries found.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    const getValue = (record, keys) => {
+
+        for (const key of keys) {
+
+            if (
+                record[key] !== undefined &&
+                record[key] !== null &&
+                String(record[key]).trim() !== ""
+            ) {
+
+                return record[key];
+
+            }
+
+        }
+
+        return "—";
+
+    };
+
+
+    const rows =
+        records.map(
+            record => {
+
+                const id =
+                    getValue(
+                        record,
+                        ["id"]
+                    );
+
+                const name =
+                    getValue(
+                        record,
+                        [
+                            "business_name",
+                            "name"
+                        ]
+                    );
+
+                const category =
+                    getValue(
+                        record,
+                        ["category"]
+                    );
+
+                const location =
+                    [
+                        getValue(
+                            record,
+                            ["city"]
+                        ),
+                        getValue(
+                            record,
+                            ["state"]
+                        ),
+                        getValue(
+                            record,
+                            ["country"]
+                        )
+                    ]
+                    .filter(
+                        value =>
+                            value !== "—"
+                    )
+                    .join(
+                        ", "
+                    ) || "—";
+
+                const description =
+                    getValue(
+                        record,
+                        ["description"]
+                    );
+
+                const status =
+                    getValue(
+                        record,
+                        ["status"]
+                    );
+
+                const source =
+                    getValue(
+                        record,
+                        ["source"]
+                    );
+
+                const sourceUrl =
+                    getValue(
+                        record,
+                        ["source_url"]
+                    );
+
+
+                let actions = "—";
+
+
+                if (
+                    status === "pending" &&
+                    id !== "—"
+                ) {
+
+                    actions = `
+                        <button
+                            type="button"
+                            onclick="moderateDiscovery('${escapeHtml(id)}', 'approve')"
+                        >
+                            Approve
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="moderateDiscovery('${escapeHtml(id)}', 'reject')"
+                        >
+                            Reject
+                        </button>
+                    `;
+
+                }
+
+
+                return `
+                    <tr>
+
+                        <td>
+                            <strong>
+                                ${escapeHtml(name)}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${escapeHtml(category)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(location)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(description)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(status)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(source)}
+                        </td>
+
+                        <td>
+
+                            ${
+                                sourceUrl !== "—"
+                                    ? `
+                                        <a
+                                            href="${escapeHtml(sourceUrl)}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Open Source
+                                        </a>
+                                    `
+                                    : "—"
+                            }
+
+                        </td>
+
+                        <td>
+                            ${actions}
+                        </td>
+
+                    </tr>
+                `;
+
+            }
+        )
+        .join("");
+
+
+    content.innerHTML = `
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Discovery</th>
+                        <th>Category</th>
+                        <th>Location</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Source</th>
+                        <th>Source Link</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    ${rows}
+                </tbody>
+
+            </table>
+
+        </div>
+
+    `;
+
+}
 
     /* =========================================================
        GENERIC TABLE
