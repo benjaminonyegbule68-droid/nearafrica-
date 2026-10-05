@@ -1,0 +1,2120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <meta
+    name="description"
+    content="Find jobs, opportunities, and people needed by businesses across Africa on NearAfrica Help Wanted."
+  />
+
+  <title>Help Wanted | NearAfrica</title>
+
+  <link rel="icon" href="../logo.png" />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="../styles.css" />
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f0d878;
+      --gold-dark: #a98616;
+      --dark: #0b0b0b;
+      --dark-2: #121212;
+      --dark-3: #181818;
+      --card: #151515;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #f5f5f5;
+      --muted: #a9a9a9;
+      --danger: #ef5350;
+      --success: #48c774;
+      --max-width: 1200px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(212, 175, 55, 0.08),
+          transparent 30%
+        ),
+        var(--dark);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(100% - 32px, var(--max-width));
+      margin: 0 auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(11, 11, 11, 0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    .header-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 800;
+      font-size: 1.2rem;
+      white-space: nowrap;
+    }
+
+    .brand img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .brand span {
+      color: var(--gold);
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .main-nav a {
+      color: #ddd;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .main-nav a:hover,
+    .main-nav a.active {
+      color: var(--gold);
+    }
+
+    .mobile-toggle {
+      display: none;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: white;
+      border-radius: 8px;
+      width: 44px;
+      height: 44px;
+      font-size: 1.25rem;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      padding: 80px 0 55px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(212, 175, 55, 0.05),
+          transparent
+        );
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 26px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .hero h1 {
+      margin: 0 auto 16px;
+      max-width: 850px;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      line-height: 1.05;
+    }
+
+    .hero h1 span {
+      color: var(--gold);
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin: 0 auto 32px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    /* =========================
+       ACTION BUTTONS
+    ========================= */
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: #111;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+    }
+
+    .btn-secondary {
+      border-color: var(--border);
+      background: #171717;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(212, 175, 55, 0.45);
+    }
+
+    /* =========================
+       FILTER AREA
+    ========================= */
+
+    .filters-section {
+      padding: 30px 0;
+      border-bottom: 1px solid var(--border);
+      background: #0d0d0d;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field label {
+      color: #cfcfcf;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      height: 46px;
+      padding: 0 13px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #171717;
+      color: white;
+      outline: none;
+    }
+
+    .field input::placeholder {
+      color: #777;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--gold);
+    }
+
+    .filter-btn {
+      height: 46px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--gold);
+      color: #111;
+      font-weight: 800;
+    }
+
+    /* =========================
+       CONTENT
+    ========================= */
+
+    .content-section {
+      padding: 50px 0 80px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-family: "Playfair Display", serif;
+      font-size: 2rem;
+    }
+
+    .section-heading p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .results-count {
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    /* =========================
+       LISTINGS
+    ========================= */
+
+    .listings {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .listing-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 300px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.035),
+          rgba(255, 255, 255, 0.01)
+        ),
+        var(--card);
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .listing-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(212, 175, 55, 0.35);
+    }
+
+    .listing-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .category-badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.1);
+      color: var(--gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+
+    .status-badge {
+      color: var(--success);
+      font-size: 0.7rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .listing-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+      line-height: 1.3;
+    }
+
+    .listing-description {
+      margin: 0 0 18px;
+      color: #b5b5b5;
+      font-size: 0.88rem;
+      line-height: 1.65;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .listing-meta {
+      display: grid;
+      gap: 7px;
+      margin-bottom: 18px;
+      color: #aaa;
+      font-size: 0.8rem;
+    }
+
+    .listing-meta span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .listing-meta strong {
+      color: #ddd;
+    }
+
+    .listing-footer {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .date {
+      color: #777;
+      font-size: 0.72rem;
+    }
+
+    .apply-btn {
+      min-height: 38px;
+      padding: 0 13px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 7px;
+      background: transparent;
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+
+    .apply-btn:hover {
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    /* =========================
+       LOADING / EMPTY / ERROR
+    ========================= */
+
+    .state-box {
+      grid-column: 1 / -1;
+      padding: 55px 25px;
+      text-align: center;
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      background: #121212;
+    }
+
+    .state-box h3 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+    }
+
+    .state-box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .spinner {
+      width: 30px;
+      height: 30px;
+      margin: 0 auto 15px;
+      border: 3px solid rgba(255, 255, 255, 0.12);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* =========================
+       POST CTA
+    ========================= */
+
+    .post-cta {
+      margin-top: 45px;
+      padding: 35px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 16px;
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(212, 175, 55, 0.1),
+          transparent 40%
+        ),
+        #141414;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .post-cta h2 {
+      margin: 0 0 7px;
+      font-family: "Playfair Display", serif;
+      font-size: 1.65rem;
+    }
+
+    .post-cta p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      padding: 35px 0;
+      border-top: 1px solid var(--border);
+      background: #090909;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .footer-brand {
+      color: var(--gold);
+      font-weight: 800;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-links a {
+      color: #999;
+      font-size: 0.78rem;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold);
+    }
+
+    .copyright {
+      margin-top: 20px;
+      color: #666;
+      font-size: 0.72rem;
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      width: min(100%, 650px);
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #151515;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.55);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.35rem;
+    }
+
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: transparent;
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    .modal-body {
+      padding: 22px;
+    }
+
+    .detail-row {
+      margin-bottom: 18px;
+    }
+
+    .detail-label {
+      margin-bottom: 4px;
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .detail-value {
+      color: #ddd;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 950px) {
+      .listings {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .filters {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .filter-btn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .main-nav {
+        position: absolute;
+        top: 76px;
+        left: 0;
+        right: 0;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 10px 16px 18px;
+        background: #0b0b0b;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .main-nav.open {
+        display: flex;
+      }
+
+      .main-nav a {
+        padding: 13px 4px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+
+      .hero {
+        padding: 60px 0 45px;
+      }
+
+      .filters {
+        grid-template-columns: 1fr;
+      }
+
+      .listings {
+        grid-template-columns: 1fr;
+      }
+
+      .post-cta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================= -->
+
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <a class="brand" href="../index.html">
+        <img
+          src="../logo.png"
+          alt="NearAfrica"
+        />
+        <span>NearAfrica</span>
+      </a>
+
+      <nav
+        class="main-nav"
+        id="mainNav"
+        aria-label="Main navigation"
+      >
+        <a href="../index.html">Home</a>
+        <a href="explore.html">Explore</a>
+        <a href="help-wanted.html" class="active">Help Wanted</a>
+        <a href="list-business.html">List Business</a>
+        <a href="claim-business.html">Claim Business</a>
+        <a href="owner-dashboard.html">Owner Dashboard</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <button
+        class="mobile-toggle"
+        id="mobileToggle"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+
+    </div>
+  </header>
+
+
+  <!-- =========================
+       HERO
+  ========================= -->
+
+  <main>
+
+    <section class="hero">
+
+      <div class="container">
+
+        <div class="eyebrow">
+          OPPORTUNITIES ACROSS AFRICA
+        </div>
+
+        <h1>
+          Help Wanted.
+          <span>People Needed.</span>
+        </h1>
+
+        <p>
+          Discover businesses and organizations looking for employees,
+          professionals, freelancers, apprentices, and other help.
+        </p>
+
+        <div class="hero-actions">
+
+          <a
+            href="#listings"
+            class="btn btn-primary"
+          >
+            Find Opportunities
+          </a>
+
+          <a
+            href="post-help-wanted.html"
+            class="btn btn-secondary"
+          >
+            Post Help Wanted
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         FILTERS
+    ========================= -->
+
+    <section class="filters-section">
+
+      <div class="container">
+
+        <form
+          class="filters"
+          id="filterForm"
+        >
+
+          <div class="field">
+
+            <label for="searchInput">
+              Search
+            </label>
+
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Job, skill, business, keyword..."
+              autocomplete="off"
+            />
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="categoryFilter">
+              Category
+            </label>
+
+            <select id="categoryFilter">
+
+              <option value="">
+                All Categories
+              </option>
+
+              <option value="Full-Time">
+                Full-Time
+              </option>
+
+              <option value="Part-Time">
+                Part-Time
+              </option>
+
+              <option value="Contract">
+                Contract
+              </option>
+
+              <option value="Freelance">
+                Freelance
+              </option>
+
+              <option value="Internship">
+                Internship
+              </option>
+
+              <option value="Apprenticeship">
+                Apprenticeship
+              </option>
+
+              <option value="Temporary">
+                Temporary
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="locationFilter">
+              Location
+            </label>
+
+            <input
+              id="locationFilter"
+              type="text"
+              placeholder="City, state or country"
+              autocomplete="off"
+            />
+
+          </div>
+
+
+          <button
+            class="filter-btn"
+            type="submit"
+          >
+            Search
+          </button>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         LISTINGS
+    ========================= -->
+
+    <section
+      class="content-section"
+      id="listings"
+    >
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div>
+
+            <h2>
+              Latest Opportunities
+            </h2>
+
+            <p>
+              Explore active Help Wanted listings on NearAfrica.
+            </p>
+
+          </div>
+
+          <div
+            class="results-count"
+            id="resultsCount"
+          >
+            Loading...
+          </div>
+
+        </div>
+
+
+        <div
+          class="listings"
+          id="listingsContainer"
+        >
+
+          <div class="state-box">
+
+            <div class="spinner"></div>
+
+            <h3>
+              Loading opportunities...
+            </h3>
+
+            <p>
+              Please wait while NearAfrica retrieves active listings.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- POST CTA -->
+
+        <div class="post-cta">
+
+          <div>
+
+            <h2>
+              Need someone for your business?
+            </h2>
+
+            <p>
+              Publish a Help Wanted listing and connect with people
+              looking for opportunities.
+            </p>
+
+          </div>
+
+          <a
+            href="post-help-wanted.html"
+            class="btn btn-primary"
+          >
+            Post a Listing
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
+
+  <footer>
+
+    <div class="container">
+
+      <div class="footer-inner">
+
+        <div class="footer-brand">
+          NearAfrica
+        </div>
+
+        <div class="footer-links">
+
+          <a href="../index.html">
+            Home
+          </a>
+
+          <a href="explore.html">
+            Explore
+          </a>
+
+          <a href="list-business.html">
+            List Business
+          </a>
+
+          <a href="claim-business.html">
+            Claim Business
+          </a>
+
+          <a href="privacy.html">
+            Privacy
+          </a>
+
+          <a href="terms.html">
+            Terms
+          </a>
+
+          <a href="listing-policy.html">
+            Listing Policy
+          </a>
+
+          <a href="contact.html">
+            Contact
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="copyright">
+        © <span id="currentYear"></span> NearAfrica. All rights reserved.
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =========================
+       DETAILS MODAL
+  ========================= -->
+
+  <div
+    class="modal-overlay"
+    id="detailsModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalTitle"
+  >
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <h2 id="modalTitle">
+          Opportunity Details
+        </h2>
+
+        <button
+          class="modal-close"
+          id="modalClose"
+          type="button"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div
+        class="modal-body"
+        id="modalBody"
+      ></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       CONFIG
+  ========================= -->
+
+  <script src="../config.js"></script>
+
+  <script>
+
+    /*
+      NearAfrica Help Wanted frontend.
+
+      API base is taken from config.js when available.
+
+      Expected endpoint:
+        GET /help_wanted
+
+      The code also supports common response shapes such as:
+
+        { data: [...] }
+        { listings: [...] }
+        { help_wanted: [...] }
+        [...]
+    */
+
+    const DEFAULT_API =
+      "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+
+    const API_BASE =
+      (
+        window.NEARAFRICA_API ||
+        window.API_BASE ||
+        window.API_URL ||
+        DEFAULT_API
+      ).replace(/\/+$/, "");
+
+
+    const listingsContainer =
+      document.getElementById("listingsContainer");
+
+    const resultsCount =
+      document.getElementById("resultsCount");
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+    const categoryFilter =
+      document.getElementById("categoryFilter");
+
+    const locationFilter =
+      document.getElementById("locationFilter");
+
+    const filterForm =
+      document.getElementById("filterForm");
+
+    const detailsModal =
+      document.getElementById("detailsModal");
+
+    const modalClose =
+      document.getElementById("modalClose");
+
+    const modalBody =
+      document.getElementById("modalBody");
+
+    const modalTitle =
+      document.getElementById("modalTitle");
+
+    const mobileToggle =
+      document.getElementById("mobileToggle");
+
+    const mainNav =
+      document.getElementById("mainNav");
+
+
+    let allListings = [];
+
+
+    /* =========================
+       MOBILE MENU
+    ========================= */
+
+    mobileToggle.addEventListener(
+      "click",
+      () => {
+
+        const open =
+          mainNav.classList.toggle("open");
+
+        mobileToggle.setAttribute(
+          "aria-expanded",
+          String(open)
+        );
+
+      }
+    );
+
+
+    mainNav
+      .querySelectorAll("a")
+      .forEach(link => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            mainNav.classList.remove("open");
+
+            mobileToggle.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+          }
+        );
+
+      });
+
+
+    /* =========================
+       HELPERS
+    ========================= */
+
+    function escapeHTML(value) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+        return "";
+      }
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    function firstValue(
+      object,
+      keys,
+      fallback = ""
+    ) {
+
+      if (!object) {
+        return fallback;
+      }
+
+      for (const key of keys) {
+
+        if (
+          object[key] !== undefined &&
+          object[key] !== null &&
+          String(object[key]).trim() !== ""
+        ) {
+
+          return object[key];
+
+        }
+
+      }
+
+      return fallback;
+
+    }
+
+
+    function normalizeListing(item) {
+
+      return {
+
+        id: firstValue(
+          item,
+          [
+            "id",
+            "help_wanted_id",
+            "listing_id"
+          ]
+        ),
+
+        title: firstValue(
+          item,
+          [
+            "title",
+            "job_title",
+            "position",
+            "name"
+          ],
+          "Opportunity"
+        ),
+
+        description: firstValue(
+          item,
+          [
+            "description",
+            "details",
+            "content",
+            "job_description"
+          ],
+          "No description provided."
+        ),
+
+        category: firstValue(
+          item,
+          [
+            "category",
+            "type",
+            "employment_type",
+            "job_type"
+          ],
+          "Other"
+        ),
+
+        location: firstValue(
+          item,
+          [
+            "location",
+            "address",
+            "area",
+            "city"
+          ],
+          "Location not specified"
+        ),
+
+        businessName: firstValue(
+          item,
+          [
+            "business_name",
+            "businessName",
+            "company_name",
+            "company",
+            "organization_name",
+            "organization"
+          ],
+          "Business"
+        ),
+
+        businessId: firstValue(
+          item,
+          [
+            "business_id",
+            "businessId"
+          ]
+        ),
+
+        contactEmail: firstValue(
+          item,
+          [
+            "contact_email",
+            "contactEmail",
+            "email"
+          ]
+        ),
+
+        contactPhone: firstValue(
+          item,
+          [
+            "contact_phone",
+            "contactPhone",
+            "phone",
+            "phone_number"
+          ]
+        ),
+
+        applicationUrl: firstValue(
+          item,
+          [
+            "application_url",
+            "applicationUrl",
+            "apply_url",
+            "apply_link"
+          ]
+        ),
+
+        createdAt: firstValue(
+          item,
+          [
+            "created_at",
+            "createdAt",
+            "date_created",
+            "posted_at"
+          ]
+        ),
+
+        expiresAt: firstValue(
+          item,
+          [
+            "expires_at",
+            "expiresAt",
+            "expiration_date"
+          ]
+        )
+
+      };
+
+    }
+
+
+    function extractListings(payload) {
+
+      if (Array.isArray(payload)) {
+        return payload;
+      }
+
+      if (!payload || typeof payload !== "object") {
+        return [];
+      }
+
+      const possibleArrays = [
+        payload.data,
+        payload.listings,
+        payload.help_wanted,
+        payload.helpWanted,
+        payload.results,
+        payload.items
+      ];
+
+      for (const value of possibleArrays) {
+
+        if (Array.isArray(value)) {
+          return value;
+        }
+
+      }
+
+      return [];
+
+    }
+
+
+    function formatDate(value) {
+
+      if (!value) {
+        return "Recently posted";
+      }
+
+      const date =
+        new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return "Recently posted";
+      }
+
+      return date.toLocaleDateString(
+        undefined,
+        {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        }
+      );
+
+    }
+
+
+    function isExpired(listing) {
+
+      if (!listing.expiresAt) {
+        return false;
+      }
+
+      const expiry =
+        new Date(listing.expiresAt);
+
+      if (Number.isNaN(expiry.getTime())) {
+        return false;
+      }
+
+      return expiry < new Date();
+
+    }
+
+
+    /* =========================
+       LOAD LISTINGS
+    ========================= */
+
+    async function loadListings() {
+
+      listingsContainer.innerHTML = `
+        <div class="state-box">
+          <div class="spinner"></div>
+          <h3>Loading opportunities...</h3>
+          <p>Please wait while NearAfrica retrieves active listings.</p>
+        </div>
+      `;
+
+      resultsCount.textContent =
+        "Loading...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/help_wanted`,
+            {
+              method: "GET",
+              headers: {
+                "Accept": "application/json"
+              }
+            }
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            `HTTP ${response.status}`
+          );
+
+        }
+
+
+        const payload =
+          await response.json();
+
+
+        const rawListings =
+          extractListings(payload);
+
+
+        allListings =
+          rawListings
+            .map(normalizeListing)
+            .filter(listing => !isExpired(listing));
+
+
+        renderListings(allListings);
+
+
+      } catch (error) {
+
+        console.error(
+          "NearAfrica Help Wanted error:",
+          error
+        );
+
+
+        listingsContainer.innerHTML = `
+          <div class="state-box">
+            <h3>Unable to load opportunities</h3>
+            <p>
+              The Help Wanted service could not be reached right now.
+              Please try again later.
+            </p>
+            <br>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="loadListings()"
+            >
+              Try Again
+            </button>
+          </div>
+        `;
+
+        resultsCount.textContent =
+          "Unavailable";
+
+      }
+
+    }
+
+
+    /* =========================
+       RENDER
+    ========================= */
+
+    function renderListings(listings) {
+
+      resultsCount.textContent =
+        `${listings.length} ${
+          listings.length === 1
+            ? "listing"
+            : "listings"
+        }`;
+
+
+      if (!listings.length) {
+
+        listingsContainer.innerHTML = `
+          <div class="state-box">
+            <h3>No opportunities found</h3>
+            <p>
+              There are currently no Help Wanted listings
+              matching your search.
+            </p>
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      listingsContainer.innerHTML =
+        listings
+          .map(createListingCard)
+          .join("");
+
+    }
+
+
+    function createListingCard(listing) {
+
+      return `
+        <article class="listing-card">
+
+          <div class="listing-top">
+
+            <span class="category-badge">
+              ${escapeHTML(listing.category)}
+            </span>
+
+            <span class="status-badge">
+              ● ACTIVE
+            </span>
+
+          </div>
+
+
+          <h3>
+            ${escapeHTML(listing.title)}
+          </h3>
+
+
+          <p class="listing-description">
+            ${escapeHTML(listing.description)}
+          </p>
+
+
+          <div class="listing-meta">
+
+            <span>
+              <strong>Business:</strong>
+              ${escapeHTML(listing.businessName)}
+            </span>
+
+            <span>
+              <strong>Location:</strong>
+              ${escapeHTML(listing.location)}
+            </span>
+
+          </div>
+
+
+          <div class="listing-footer">
+
+            <span class="date">
+              Posted ${escapeHTML(
+                formatDate(listing.createdAt)
+              )}
+            </span>
+
+            <button
+              type="button"
+              class="apply-btn"
+              onclick="openListing(${JSON.stringify(
+                listing.id
+              )})"
+            >
+              View Details
+            </button>
+
+          </div>
+
+        </article>
+      `;
+
+    }
+
+
+    /* =========================
+       SEARCH / FILTER
+    ========================= */
+
+    filterForm.addEventListener(
+      "submit",
+      event => {
+
+        event.preventDefault();
+
+        applyFilters();
+
+      }
+    );
+
+
+    searchInput.addEventListener(
+      "input",
+      applyFilters
+    );
+
+
+    locationFilter.addEventListener(
+      "input",
+      applyFilters
+    );
+
+
+    categoryFilter.addEventListener(
+      "change",
+      applyFilters
+    );
+
+
+    function applyFilters() {
+
+      const search =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+      const category =
+        categoryFilter.value
+          .trim()
+          .toLowerCase();
+
+      const location =
+        locationFilter.value
+          .trim()
+          .toLowerCase();
+
+
+      const filtered =
+        allListings.filter(listing => {
+
+          const searchable = [
+            listing.title,
+            listing.description,
+            listing.category,
+            listing.location,
+            listing.businessName
+          ]
+            .join(" ")
+            .toLowerCase();
+
+
+          const matchesSearch =
+            !search ||
+            searchable.includes(search);
+
+
+          const matchesCategory =
+            !category ||
+            listing.category
+              .toLowerCase()
+              .includes(category);
+
+
+          const matchesLocation =
+            !location ||
+            listing.location
+              .toLowerCase()
+              .includes(location);
+
+
+          return (
+            matchesSearch &&
+            matchesCategory &&
+            matchesLocation
+          );
+
+        });
+
+
+      renderListings(filtered);
+
+    }
+
+
+    /* =========================
+       OPEN DETAILS
+    ========================= */
+
+    window.openListing =
+      function(id) {
+
+        const listing =
+          allListings.find(
+            item =>
+              String(item.id) === String(id)
+          );
+
+
+        if (!listing) {
+          return;
+        }
+
+
+        modalTitle.textContent =
+          listing.title;
+
+
+        let contactHTML = "";
+
+
+        if (listing.contactEmail) {
+
+          contactHTML += `
+            <a
+              class="btn btn-primary"
+              href="mailto:${escapeHTML(
+                listing.contactEmail
+              )}"
+            >
+              Contact by Email
+            </a>
+          `;
+
+        }
+
+
+        if (listing.contactPhone) {
+
+          const cleanPhone =
+            String(
+              listing.contactPhone
+            ).replace(
+              /[^0-9+]/g,
+              ""
+            );
+
+
+          contactHTML += `
+            <a
+              class="btn btn-secondary"
+              href="tel:${escapeHTML(
+                cleanPhone
+              )}"
+            >
+              Call
+            </a>
+          `;
+
+        }
+
+
+        if (listing.applicationUrl) {
+
+          let safeUrl =
+            String(
+              listing.applicationUrl
+            ).trim();
+
+
+          if (
+            /^https?:\/\//i.test(safeUrl)
+          ) {
+
+            contactHTML += `
+              <a
+                class="btn btn-primary"
+                href="${escapeHTML(safeUrl)}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Apply
+              </a>
+            `;
+
+          }
+
+        }
+
+
+        if (!contactHTML) {
+
+          contactHTML = `
+            <p
+              style="
+                color:#999;
+                margin:0;
+              "
+            >
+              Contact information was not provided
+              for this listing.
+            </p>
+          `;
+
+        }
+
+
+        modalBody.innerHTML = `
+
+          <div class="detail-row">
+
+            <div class="detail-label">
+              Business
+            </div>
+
+            <div class="detail-value">
+              ${escapeHTML(
+                listing.businessName
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <div class="detail-label">
+              Opportunity Type
+            </div>
+
+            <div class="detail-value">
+              ${escapeHTML(
+                listing.category
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <div class="detail-label">
+              Location
+            </div>
+
+            <div class="detail-value">
+              ${escapeHTML(
+                listing.location
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <div class="detail-label">
+              Description
+            </div>
+
+            <div class="detail-value">
+              ${escapeHTML(
+                listing.description
+              )}
+            </div>
+
+          </div>
+
+
+          ${
+            listing.expiresAt
+              ? `
+                <div class="detail-row">
+
+                  <div class="detail-label">
+                    Application Deadline
+                  </div>
+
+                  <div class="detail-value">
+                    ${escapeHTML(
+                      formatDate(
+                        listing.expiresAt
+                      )
+                    )}
+                  </div>
+
+                </div>
+              `
+              : ""
+          }
+
+
+          <div class="modal-actions">
+            ${contactHTML}
+          </div>
+
+        `;
+
+
+        detailsModal.classList.add(
+          "active"
+        );
+
+
+        document.body.style.overflow =
+          "hidden";
+
+      };
+
+
+    /* =========================
+       CLOSE MODAL
+    ========================= */
+
+    function closeModal() {
+
+      detailsModal.classList.remove(
+        "active"
+      );
+
+      document.body.style.overflow =
+        "";
+
+    }
+
+
+    modalClose.addEventListener(
+      "click",
+      closeModal
+    );
+
+
+    detailsModal.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          detailsModal
+        ) {
+
+          closeModal();
+
+        }
+
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape" &&
+          detailsModal.classList.contains(
+            "active"
+          )
+        ) {
+
+          closeModal();
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       YEAR
+    ========================= */
+
+    document.getElementById(
+      "currentYear"
+    ).textContent =
+      new Date().getFullYear();
+
+
+    /* =========================
+       START
+    ========================= */
+
+    loadListings();
+
+  </script>
+
+</body>
+</html>
