@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -899,9 +900,11 @@
       color:
         #888;
 
-      font-size: 11px;
+      font-size:
+        11px;
 
-      margin-bottom: 9px;
+      margin-bottom:
+        9px;
     }
 
 
@@ -1187,6 +1190,93 @@
 
       color:
         var(--gold-light);
+    }
+
+
+    .analytics-events {
+      margin-top:
+        18px;
+
+      background:
+        #101010;
+
+      border:
+        1px solid #292929;
+
+      border-radius:
+        10px;
+
+      padding:
+        17px;
+    }
+
+
+    .analytics-events-title {
+      font-size:
+        14px;
+
+      font-weight:
+        800;
+
+      margin-bottom:
+        13px;
+    }
+
+
+    .analytics-event-row {
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      gap:
+        15px;
+
+      padding:
+        11px 0;
+
+      border-bottom:
+        1px solid #252525;
+    }
+
+
+    .analytics-event-row:last-child {
+      border-bottom:
+        none;
+    }
+
+
+    .analytics-event-label {
+      color:
+        #bbb;
+
+      font-size:
+        12px;
+    }
+
+
+    .analytics-event-count {
+      color:
+        var(--gold-light);
+
+      font-weight:
+        800;
+
+      font-size:
+        13px;
+    }
+
+
+    .analytics-events-empty {
+      color:
+        #777;
+
+      font-size:
+        12px;
     }
 
 
@@ -2593,7 +2683,7 @@
             </h2>
 
             <p>
-              See how often people view your listing.
+              See how people interact with your NearAfrica listing.
             </p>
 
           </div>
@@ -2661,6 +2751,31 @@
               —
             </strong>
 
+          </div>
+
+
+          <div class="analytics-box">
+
+            <span>
+              Favorites Added
+            </span>
+
+            <strong id="analyticsFavorites">
+              —
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="analyticsEvents"
+          class="analytics-events"
+        >
+
+          <div class="loading">
+            Loading activity...
           </div>
 
         </div>
@@ -5982,9 +6097,7 @@
 
 
             saveHelpButton.textContent =
-              isEditing
-                ? "Create Help Wanted Post"
-                : "Create Help Wanted Post";
+              "Create Help Wanted Post";
 
           }
 
@@ -6200,23 +6313,36 @@
 
 
           const total =
-            analytics.total_views ||
+            analytics.total_views ??
             0;
 
 
           const today =
-            analytics.views_today ||
+            analytics.views_today ??
             0;
 
 
           const week =
-            analytics.views_last_7_days ||
+            analytics.views_last_7_days ??
             0;
 
 
           const month =
-            analytics.views_last_30_days ||
+            analytics.views_last_30_days ??
             0;
+
+
+          const favorites =
+            analytics.favorites_added ??
+            0;
+
+
+          const events =
+            Array.isArray(
+              analytics.events
+            )
+              ? analytics.events
+              : [];
 
 
           document.getElementById(
@@ -6283,12 +6409,168 @@
             );
 
 
+          document.getElementById(
+            "analyticsFavorites"
+          ).textContent =
+            formatNumber(
+              favorites
+            );
+
+
+          const analyticsEvents =
+            document.getElementById(
+              "analyticsEvents"
+            );
+
+
+          if (
+            events.length
+          ) {
+
+            analyticsEvents.innerHTML =
+              `
+                <div class="analytics-events-title">
+                  Activity
+                </div>
+
+                ${events
+                  .map(
+                    event => {
+
+                      const type =
+                        String(
+                          event?.event_type ||
+                          "unknown"
+                        );
+
+
+                      const count =
+                        Number(
+                          event?.count ||
+                          0
+                        );
+
+
+                      let label =
+                        type;
+
+
+                      if (
+                        type ===
+                        "business_view"
+                      ) {
+
+                        label =
+                          "Business Views";
+
+                      } else if (
+                        type ===
+                        "favorite_added"
+                      ) {
+
+                        label =
+                          "Favorites Added";
+
+                      } else if (
+                        type ===
+                        "favorite_removed"
+                      ) {
+
+                        label =
+                          "Favorites Removed";
+
+                      } else {
+
+                        label =
+                          type
+                            .replaceAll(
+                              "_",
+                              " "
+                            )
+                            .replace(
+                              /\b\w/g,
+                              letter =>
+                                letter.toUpperCase()
+                            );
+
+                      }
+
+
+                      return `
+                        <div
+                          class="analytics-event-row"
+                        >
+
+                          <span
+                            class="analytics-event-label"
+                          >
+                            ${escapeHTML(
+                              label
+                            )}
+                          </span>
+
+                          <span
+                            class="analytics-event-count"
+                          >
+                            ${formatNumber(
+                              count
+                            )}
+                          </span>
+
+                        </div>
+                      `;
+
+                    }
+                  )
+                  .join("")}
+              `;
+
+          } else {
+
+            analyticsEvents.innerHTML =
+              `
+                <div class="analytics-events-title">
+                  Activity
+                </div>
+
+                <div class="analytics-events-empty">
+                  No tracked activity yet.
+                </div>
+              `;
+
+          }
+
+
         } catch (error) {
 
           console.error(
             "OWNER ANALYTICS LOAD ERROR:",
             error
           );
+
+
+          const analyticsEvents =
+            document.getElementById(
+              "analyticsEvents"
+            );
+
+
+          if (
+            analyticsEvents
+          ) {
+
+            analyticsEvents.innerHTML =
+              `
+                <div class="analytics-events-title">
+                  Activity
+                </div>
+
+                <div class="analytics-events-empty">
+                  Unable to load activity.
+                </div>
+              `;
+
+          }
 
 
           showStatus(
@@ -6540,3 +6822,4 @@
 </body>
 
 </html>
+```
