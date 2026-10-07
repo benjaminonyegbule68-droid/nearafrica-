@@ -5,9 +5,10 @@
  *
  * Version:
  * - Preserves existing NearAfrica frontend functionality.
- * - Fixes Nearby filtering and location restoration behavior.
- * - Home location uses GPS distance without forcing state/city
- *   filters.
+ * - Nearby mode is GPS-distance based.
+ * - Nearby never uses State/City as hidden hard filters.
+ * - Search and Category remain usable in Nearby mode.
+ * - Location restoration is handled safely.
  * ============================================================
  */
 
@@ -75,7 +76,10 @@
   }
 
 
-  function clean(value, fallback = "") {
+  function clean(
+    value,
+    fallback = ""
+  ) {
     if (
       value === null ||
       value === undefined
@@ -90,7 +94,10 @@
   }
 
 
-  function toNumber(value, fallback = null) {
+  function toNumber(
+    value,
+    fallback = null
+  ) {
     const number =
       Number(value);
 
@@ -335,15 +342,15 @@
   }
 
 
- function getResultsCount() {
-  return firstElement([
-    "#resultsStatus",
-    "#resultsCount",
-    "#businessCount",
-    "#resultCount",
-    "[data-results-count]"
-  ]);
-}
+  function getResultsCount() {
+    return firstElement([
+      "#resultsStatus",
+      "#resultsCount",
+      "#businessCount",
+      "#resultCount",
+      "[data-results-count]"
+    ]);
+  }
 
 
   function getLocationStatus() {
@@ -1533,8 +1540,8 @@
   /* ============================================================
      LOCATION → FILTERS
      IMPORTANT:
-     Reverse-geocoded location is informational by default.
-     It does not automatically force State/City filters.
+     Reverse-geocoded State/City are informational.
+     They do not automatically become hard filters.
   ============================================================ */
 
   function applyLocationToFilters(
@@ -1758,234 +1765,251 @@
      URL STATE
   ============================================================ */
 
- function applyUrlParameters() {
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
+  function applyUrlParameters() {
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
 
-  const searchInput =
-    getSearchInput();
+    const searchInput =
+      getSearchInput();
 
-  const categoryFilter =
-    getCategoryFilter();
+    const categoryFilter =
+      getCategoryFilter();
 
-  const stateFilter =
-    getStateFilter();
+    const stateFilter =
+      getStateFilter();
 
-  const cityFilter =
-    getCityFilter();
+    const cityFilter =
+      getCityFilter();
 
-  const radiusFilter =
-    getRadiusFilter();
+    const radiusFilter =
+      getRadiusFilter();
 
-  const query =
-    clean(
-      params.get("q")
-    );
+    const query =
+      clean(
+        params.get("q")
+      );
 
-  const category =
-    clean(
-      params.get("category")
-    );
+    const category =
+      clean(
+        params.get("category")
+      );
 
-  const state =
-    clean(
-      params.get("state")
-    );
+    const state =
+      clean(
+        params.get("state")
+      );
 
-  const city =
-    clean(
-      params.get("city")
-    );
+    const city =
+      clean(
+        params.get("city")
+      );
 
-  const radius =
-    Number(
-      params.get("radius")
-    );
+    const radius =
+      Number(
+        params.get("radius")
+      );
 
-  const nearby =
-    params.get("nearby") === "1" ||
-    params.get("nearby") === "true";
-
-
-  if (
-    searchInput &&
-    query
-  ) {
-    searchInput.value =
-      query;
-  }
+    const nearby =
+      params.get("nearby") === "1" ||
+      params.get("nearby") === "true";
 
 
-  if (
-    categoryFilter &&
-    category
-  ) {
-    categoryFilter.value =
-      category;
-  }
-
-
-  if (
-    stateFilter &&
-    state
-  ) {
-    stateFilter.value =
-      state;
-  }
-
-
-  if (
-    state
-  ) {
-    updateCityOptions(
-      state
-    );
-  }
-
-
-  if (
-    cityFilter &&
-    city
-  ) {
-    cityFilter.value =
-      city;
-  }
-
-
-  /*
-   * IMPORTANT:
-   * Apply the URL radius to App.radiusKm
-   * even when the Explore page does not
-   * contain a radius control.
-   */
-  if (
-    Number.isFinite(radius) &&
-    radius > 0
-  ) {
-    App.radiusKm =
-      radius;
-
-    if (radiusFilter) {
-      radiusFilter.value =
-        String(radius);
+    if (
+      searchInput &&
+      query
+    ) {
+      searchInput.value =
+        query;
     }
+
+
+    if (
+      categoryFilter &&
+      category
+    ) {
+      categoryFilter.value =
+        category;
+    }
+
+
+    if (
+      stateFilter &&
+      state
+    ) {
+      stateFilter.value =
+        state;
+    }
+
+
+    if (
+      state
+    ) {
+      updateCityOptions(
+        state
+      );
+    }
+
+
+    if (
+      cityFilter &&
+      city
+    ) {
+      cityFilter.value =
+        city;
+    }
+
+
+    /*
+     * Apply URL radius to App.radiusKm
+     * even when there is no radius control.
+     */
+    if (
+      Number.isFinite(radius) &&
+      radius > 0
+    ) {
+      App.radiusKm =
+        radius;
+
+      if (radiusFilter) {
+        radiusFilter.value =
+          String(radius);
+      }
+    }
+
+
+    App.currentQuery =
+      query;
+
+    App.currentCategory =
+      category;
+
+    App.currentState =
+      state;
+
+    App.currentCity =
+      city;
+
+
+    if (
+      nearby
+    ) {
+      /*
+       * Nearby takes control over geographic filtering.
+       *
+       * State and City from the URL must not survive
+       * into the Nearby search.
+       */
+      App.nearbyMode =
+        true;
+
+      clearStateCityFilters();
+
+      getRadiusKm();
+
+      return true;
+    }
+
+    return false;
   }
 
-
-  App.currentQuery =
-    query;
-
-  App.currentCategory =
-    category;
-
-  App.currentState =
-    state;
-
-  App.currentCity =
-    city;
-
-
-  if (
-    nearby
-  ) {
-    App.nearbyMode =
-      true;
-
-    getRadiusKm();
-
-    return true;
-  }
-
-  return false;
-}
 
   function syncUrl() {
-  if (!isExplorePage()) {
-    return;
-  }
-
-  try {
-    const url =
-      new URL(
-        window.location.href
-      );
-
-    const entries = [
-      [
-        "q",
-        App.currentQuery
-      ],
-      [
-        "category",
-        App.currentCategory
-      ],
-      [
-        "state",
-        App.currentState
-      ],
-      [
-        "city",
-        App.currentCity
-      ]
-    ];
-
-    entries.forEach(
-      function (
-        [
-          key,
-          value
-        ]
-      ) {
-        if (clean(value)) {
-          url.searchParams.set(
-            key,
-            value
-          );
-        } else {
-          url.searchParams.delete(
-            key
-          );
-        }
-      }
-    );
-
-    if (App.nearbyMode) {
-      url.searchParams.set(
-        "nearby",
-        "1"
-      );
-
-      url.searchParams.set(
-        "radius",
-        String(
-          App.radiusKm
-        )
-      );
-    } else {
-      url.searchParams.delete(
-        "nearby"
-      );
-
-      url.searchParams.delete(
-        "radius"
-      );
+    if (!isExplorePage()) {
+      return;
     }
 
-    window.history.replaceState(
-      {},
-      "",
-      url.toString()
-    );
+    try {
+      const url =
+        new URL(
+          window.location.href
+        );
 
-  } catch (error) {
-    console.warn(
-      "NearAfrica URL sync failed:",
-      error
-    );
+      /*
+       * Nearby must never write State/City into the URL.
+       */
+      const entries = [
+        [
+          "q",
+          App.currentQuery
+        ],
+        [
+          "category",
+          App.currentCategory
+        ],
+        [
+          "state",
+          App.nearbyMode
+            ? ""
+            : App.currentState
+        ],
+        [
+          "city",
+          App.nearbyMode
+            ? ""
+            : App.currentCity
+        ]
+      ];
+
+      entries.forEach(
+        function (
+          [
+            key,
+            value
+          ]
+        ) {
+          if (clean(value)) {
+            url.searchParams.set(
+              key,
+              value
+            );
+          } else {
+            url.searchParams.delete(
+              key
+            );
+          }
+        }
+      );
+
+      if (
+        App.nearbyMode
+      ) {
+        url.searchParams.set(
+          "nearby",
+          "1"
+        );
+
+        url.searchParams.set(
+          "radius",
+          String(
+            App.radiusKm
+          )
+        );
+      } else {
+        url.searchParams.delete(
+          "nearby"
+        );
+
+        url.searchParams.delete(
+          "radius"
+        );
+      }
+
+      window.history.replaceState(
+        {},
+        "",
+        url.toString()
+      );
+
+    } catch (error) {
+      console.warn(
+        "NearAfrica URL sync failed:",
+        error
+      );
+    }
   }
-}
+
 
   /* ============================================================
      FILTERING
@@ -2005,6 +2029,19 @@
       getCityFilter();
 
 
+    /*
+     * Nearby mode owns geographic filtering.
+     *
+     * Even if a user changes State/City while Nearby
+     * is active, immediately clear those values.
+     */
+    if (
+      App.nearbyMode
+    ) {
+      clearStateCityFilters();
+    }
+
+
     App.currentQuery =
       clean(
         searchInput
@@ -2022,22 +2059,31 @@
 
 
     App.currentState =
-      clean(
-        stateFilter
-          ? stateFilter.value
-          : App.currentState
-      );
+      App.nearbyMode
+        ? ""
+        : clean(
+            stateFilter
+              ? stateFilter.value
+              : App.currentState
+          );
 
 
     App.currentCity =
-      clean(
-        cityFilter
-          ? cityFilter.value
-          : App.currentCity
-      );
+      App.nearbyMode
+        ? ""
+        : clean(
+            cityFilter
+              ? cityFilter.value
+              : App.currentCity
+          );
 
 
+    /*
+     * Only update City options for normal
+     * manual State filtering.
+     */
     if (
+      !App.nearbyMode &&
       stateFilter &&
       App.currentState
     ) {
@@ -2102,6 +2148,11 @@
               null;
 
 
+            /*
+             * Calculate real GPS distance only when
+             * the user has a valid location and the
+             * business has real coordinates.
+             */
             if (
               App.userLocation &&
               business.latitude !== null &&
@@ -2134,6 +2185,9 @@
               entry.business;
 
 
+            /*
+             * SEARCH
+             */
             if (
               query &&
               !entry.searchable.includes(
@@ -2144,6 +2198,9 @@
             }
 
 
+            /*
+             * CATEGORY
+             */
             if (
               category &&
               clean(
@@ -2156,11 +2213,14 @@
 
 
             /*
-             * These remain normal manual filters.
-             * They are NOT automatically populated by
-             * GPS location anymore.
+             * STATE / CITY
+             *
+             * These are normal manual filters.
+             * They are intentionally ignored while
+             * Nearby mode is active.
              */
             if (
+              !App.nearbyMode &&
               state &&
               clean(
                 business.state
@@ -2172,6 +2232,7 @@
 
 
             if (
+              !App.nearbyMode &&
               city &&
               clean(
                 business.city
@@ -2183,9 +2244,9 @@
 
 
             /*
-             * Nearby mode is controlled by GPS distance.
-             * Businesses without usable coordinates cannot
-             * be considered "nearby".
+             * NEARBY
+             *
+             * Nearby is purely GPS-distance based.
              */
             if (
               App.nearbyMode
@@ -2213,6 +2274,10 @@
             a,
             b
           ) {
+            /*
+             * Nearby:
+             * nearest business first.
+             */
             if (
               App.nearbyMode
             ) {
@@ -2229,6 +2294,10 @@
             }
 
 
+            /*
+             * Normal Explore:
+             * Featured first, then alphabetical.
+             */
             const featuredA =
               Number(
                 a.business.featured ||
@@ -2930,7 +2999,7 @@
           <p>
             ${
               App.nearbyMode
-                ? "Try increasing your search radius or clearing a filter."
+                ? "No businesses with usable coordinates were found within your selected radius. Try increasing the radius."
                 : "Try a different search or filter."
             }
           </p>
@@ -3326,15 +3395,7 @@
 
 
       /*
-       * Nearby mode is GPS-based.
-       *
-       * IMPORTANT:
-       * We deliberately do NOT call
-       * applyLocationToFilters() here.
-       *
-       * The user's actual coordinates determine
-       * nearby businesses. Reverse-geocoded State
-       * and City are informational only.
+       * Nearby mode is strictly GPS-based.
        */
       App.nearbyMode =
         true;
@@ -3343,6 +3404,9 @@
       getRadiusKm();
 
 
+      /*
+       * Store the actual GPS coordinates.
+       */
       saveStoredLocation(
         location,
         App.locationInfo
@@ -3361,10 +3425,9 @@
 
 
       /*
-       * Clear accidental State/City filters when
-       * the user intentionally enters Nearby mode.
+       * Remove any normal geographic filters.
        *
-       * Search and Category are preserved.
+       * Search and Category remain available.
        */
       clearStateCityFilters();
 
@@ -3376,6 +3439,9 @@
       syncUrl();
 
 
+      /*
+       * Filter immediately if businesses are already loaded.
+       */
       if (
         App.allBusinesses.length
       ) {
@@ -3443,8 +3509,10 @@
 
 
     /*
-     * Clearing location must also remove the
-     * nearby URL state immediately.
+     * Remove nearby URL state.
+     *
+     * Keep normal Search/State/City/Category values
+     * unless the user already changed them manually.
      */
     try {
       const url =
@@ -3471,6 +3539,38 @@
     }
 
 
+    /*
+     * Rebuild normal State/City values from the UI.
+     */
+    const stateFilter =
+      getStateFilter();
+
+    const cityFilter =
+      getCityFilter();
+
+
+    if (stateFilter) {
+      App.currentState =
+        clean(
+          stateFilter.value
+        );
+    } else {
+      App.currentState =
+        "";
+    }
+
+
+    if (cityFilter) {
+      App.currentCity =
+        clean(
+          cityFilter.value
+        );
+    } else {
+      App.currentCity =
+        "";
+    }
+
+
     filterBusinesses();
 
     dispatchLocationChange();
@@ -3489,8 +3589,8 @@
   /* ============================================================
      HOME LOCATION
      IMPORTANT:
-     Home redirects to Explore with nearby mode only.
-     It does NOT pass State/City filters.
+     Home redirects to Explore with Nearby mode only.
+     It does not pass State/City filters.
   ============================================================ */
 
   async function handleHomeLocation() {
@@ -3525,11 +3625,10 @@
 
 
     /*
-     * DO NOT pass reverse-geocoded state/city here.
+     * Search/Category are not carried from the home
+     * location button.
      *
-     * Nearby search should be based on GPS distance.
-     * This prevents a location like Lagos from becoming
-     * an additional hard filter.
+     * State/City are deliberately not passed.
      */
     window.location.href =
       url.toString();
@@ -3718,7 +3817,7 @@
       stateFilter &&
       stateFilter.dataset
         .nearafricaCityBound !==
-        "1"
+      "1"
     ) {
       stateFilter.dataset
         .nearafricaCityBound =
@@ -3728,9 +3827,19 @@
       stateFilter.addEventListener(
         "change",
         function () {
-          updateCityOptions(
-            stateFilter.value
-          );
+          /*
+           * If Nearby is active, filterBusinesses()
+           * will immediately clear the State/City value.
+           */
+          if (
+            !App.nearbyMode
+          ) {
+            updateCityOptions(
+              stateFilter.value
+            );
+          }
+
+          filterBusinesses();
         }
       );
     }
@@ -3750,7 +3859,7 @@
       container &&
       container.dataset
         .nearafricaResultsBound !==
-        "1"
+      "1"
     ) {
       container.dataset
         .nearafricaResultsBound =
@@ -3809,7 +3918,7 @@
       pagination &&
       pagination.dataset
         .nearafricaBound !==
-        "1"
+      "1"
     ) {
       pagination.dataset
         .nearafricaBound =
@@ -3889,7 +3998,7 @@
       !nav ||
       toggle.dataset
         .nearafricaMenuBound ===
-        "1"
+      "1"
     ) {
       return;
     }
@@ -4083,7 +4192,9 @@
 
     if (
       params.get("nearby") ===
-      "1"
+      "1" ||
+      params.get("nearby") ===
+      "true"
     ) {
       nearbyFromStorage =
         true;
@@ -4110,10 +4221,12 @@
 
 
       /*
-       * IMPORTANT:
-       * Do not convert stored reverse-geocoded
-       * State/City into hard filters.
+       * Nearby restoration must not restore
+       * State/City as geographic hard filters.
        */
+      clearStateCityFilters();
+
+
       updateLocationUi();
 
 
@@ -4157,19 +4270,20 @@
 
 
     /*
-     * Rebuild City options now that businesses exist.
+     * Rebuild normal City options.
      *
-     * Only preserve a manually selected State.
-     * Nearby location itself does not populate these.
+     * When Nearby is active, App.currentState is ""
+     * so this becomes an unrestricted city list.
      */
     updateCityOptions(
-      App.currentState
+      App.nearbyMode
+        ? ""
+        : App.currentState
     );
 
 
     /*
-     * Only apply location info to UI.
-     * Never automatically force State/City filters.
+     * Reverse-geocoded location is informational only.
      */
     if (
       App.locationInfo
@@ -4184,6 +4298,8 @@
     ) {
       App.nearbyMode =
         true;
+
+      clearStateCityFilters();
 
       updateLocationUi();
     }
