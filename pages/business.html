@@ -916,17 +916,17 @@ footer a{
 <header class="site-header">
   <div class="container header-inner">
 
-<a class="logo" href="index.html">
-  <div class="logo-mark">NA</div>
-  Near<span>Africa</span>
-</a>
+    <a class="logo" href="index.html">
+      <div class="logo-mark">NA</div>
+      Near<span>Africa</span>
+    </a>
 
-<nav class="nav" id="mainNav">
-  <a href="index.html">Home</a>
-  <a href="search.html">Explore</a>
-  <a href="list-business.html">List Your Business</a>
-  <a href="claim-business.html">Claim Business</a>
-</nav>
+    <nav class="nav" id="mainNav">
+      <a href="index.html">Home</a>
+      <a href="search.html">Explore</a>
+      <a href="list-business.html">List Your Business</a>
+      <a href="claim-business.html">Claim Business</a>
+    </nav>
 
     <button
       class="mobile-menu"
@@ -971,12 +971,12 @@ footer a{
         This business could not be loaded.
       </p>
 
-     <a
-  class="btn btn-primary"
-  href="search.html"
->
-  Back to Explore
-</a>
+      <a
+        class="btn btn-primary"
+        href="search.html"
+      >
+        Back to Explore
+      </a>
 
     </div>
 
@@ -1004,7 +1004,7 @@ footer a{
 
 <!-- ========================================================
      MODAL
-======================================================== -->
+========================================================= -->
 
 <div
   class="modal-overlay"
@@ -1208,7 +1208,11 @@ async function apiRequest(
     ...(options.headers || {})
   };
 
-  if (options.body && !headers["Content-Type"]) {
+  if(
+    options.body &&
+    !headers["Content-Type"]
+  ){
+
     headers["Content-Type"] =
       "application/json";
   }
@@ -1587,6 +1591,7 @@ function openReviewModal(){
           id="reviewRating"
           required
         >
+
           <option value="">
             Rating
           </option>
@@ -2778,6 +2783,79 @@ function setupClaimForm(
 }
 
 /* =========================================================
+   ANALYTICS 2.0 — CUSTOMER ACTION TRACKING
+========================================================= */
+
+async function trackAnalyticsEvent(
+  eventType,
+  metadata = {}
+){
+
+  if(
+    !activeBusiness?.id ||
+    !eventType
+  ){
+
+    return;
+  }
+
+  try{
+
+    await fetch(
+      `${API_URL}/analytics/events`,
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify({
+            business_id:
+              activeBusiness.id,
+
+            event_type:
+              eventType,
+
+            visitor_key:
+              getVisitorKey(),
+
+            metadata:{
+              ...metadata,
+
+              page:
+                window.location.pathname
+            }
+          }),
+
+        /*
+         * Helps the analytics request finish even
+         * when the browser immediately follows the
+         * link to a phone, email client, WhatsApp,
+         * or external website.
+         */
+        keepalive:true,
+
+        cache:"no-store"
+      }
+    );
+
+  }catch(error){
+
+    /*
+     * Analytics must never break a normal
+     * customer action.
+     */
+    console.warn(
+      "Analytics event tracking failed:",
+      error
+    );
+  }
+}
+
+/* =========================================================
    VIEW TRACKING
 ========================================================= */
 
@@ -2973,6 +3051,36 @@ function getEmail(
   );
 }
 
+function getDirectionsUrl(
+  business
+){
+
+  const latitude =
+    Number(
+      business.latitude
+    );
+
+  const longitude =
+    Number(
+      business.longitude
+    );
+
+  if(
+    !Number.isFinite(latitude) ||
+    !Number.isFinite(longitude)
+  ){
+
+    return "";
+  }
+
+  return (
+    "https://www.google.com/maps/dir/?api=1" +
+    `&destination=${encodeURIComponent(
+      `${latitude},${longitude}`
+    )}`
+  );
+}
+
 function getBusinessName(
   business
 ){
@@ -3158,6 +3266,11 @@ function displayBusiness(
 
   const email =
     getEmail(
+      business
+    );
+
+  const directionsUrl =
+    getDirectionsUrl(
       business
     );
 
@@ -3361,6 +3474,8 @@ function displayBusiness(
                   <a
                     class="btn btn-primary"
                     href="tel:${escapeAttribute(phone)}"
+                    data-analytics-event="phone_click"
+                    data-analytics-placement="hero"
                   >
                     Call
                   </a>
@@ -3381,6 +3496,8 @@ function displayBusiness(
                     )}"
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-analytics-event="whatsapp_click"
+                    data-analytics-placement="hero"
                   >
                     WhatsApp
                   </a>
@@ -3394,6 +3511,8 @@ function displayBusiness(
                   <a
                     class="btn"
                     href="mailto:${escapeAttribute(email)}"
+                    data-analytics-event="email_click"
+                    data-analytics-placement="hero"
                   >
                     Email
                   </a>
@@ -3409,6 +3528,8 @@ function displayBusiness(
                     href="${escapeAttribute(website)}"
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-analytics-event="website_click"
+                    data-analytics-placement="hero"
                   >
                     Website
                   </a>
@@ -3764,6 +3885,30 @@ function displayBusiness(
               : ""
           }
 
+          ${
+            directionsUrl
+              ? `
+                <div
+                  class="contact-actions"
+                  style="margin-bottom:14px"
+                >
+
+                  <a
+                    class="btn btn-primary"
+                    href="${escapeAttribute(directionsUrl)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-analytics-event="directions_click"
+                    data-analytics-placement="location"
+                  >
+                    Get Directions
+                  </a>
+
+                </div>
+              `
+              : ""
+          }
+
           <div id="businessMap"></div>
 
         </section>
@@ -3836,6 +3981,8 @@ function displayBusiness(
                       <a
                         class="btn"
                         href="tel:${escapeAttribute(phone)}"
+                        data-analytics-event="phone_click"
+                        data-analytics-placement="business_information"
                       >
                         Call Us
                       </a>
@@ -3868,6 +4015,8 @@ function displayBusiness(
                         )}"
                         target="_blank"
                         rel="noopener noreferrer"
+                        data-analytics-event="whatsapp_click"
+                        data-analytics-placement="business_information"
                       >
                         WhatsApp Us
                       </a>
@@ -3893,6 +4042,8 @@ function displayBusiness(
                       <a
                         class="btn"
                         href="mailto:${escapeAttribute(email)}"
+                        data-analytics-event="email_click"
+                        data-analytics-placement="business_information"
                       >
                         Email Us
                       </a>
@@ -3920,6 +4071,8 @@ function displayBusiness(
                         href="${escapeAttribute(website)}"
                         target="_blank"
                         rel="noopener noreferrer"
+                        data-analytics-event="website_click"
+                        data-analytics-placement="business_information"
                       >
                         Visit Website
                       </a>
@@ -4366,6 +4519,43 @@ function displayBusiness(
 }
 
 /* =========================================================
+   ANALYTICS 2.0 — ACTION CLICK LISTENER
+========================================================= */
+
+document.addEventListener(
+  "click",
+  event => {
+
+    const target =
+      event.target.closest(
+        "[data-analytics-event]"
+      );
+
+    if(
+      !target ||
+      !activeBusiness?.id
+    ){
+
+      return;
+    }
+
+    const eventType =
+      target.dataset.analyticsEvent;
+
+    const placement =
+      target.dataset.analyticsPlacement ||
+      "unknown";
+
+    trackAnalyticsEvent(
+      eventType,
+      {
+        placement
+      }
+    );
+  }
+);
+
+/* =========================================================
    NOT FOUND
 ========================================================= */
 
@@ -4562,4 +4752,4 @@ loadBusiness();
 </script>
 
 </body>
-  </html>
+</html>
