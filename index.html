@@ -1199,6 +1199,7 @@
           Home
         </a>
 
+
         <a
           href="explore.html"
           data-i18n="nav.explore"
@@ -1206,12 +1207,13 @@
           Explore
         </a>
 
-        <!-- HELP WANTED -->
+
         <a
           href="help-wanted.html"
         >
           Help Wanted
         </a>
+
 
         <a
           href="list-business.html"
@@ -1220,6 +1222,7 @@
           List Your Business
         </a>
 
+
         <a
           href="claim-business.html"
           data-i18n="nav.claimBusiness"
@@ -1227,11 +1230,14 @@
           Claim Business
         </a>
 
+
+        <!-- OWNER DASHBOARD -->
         <a
-          href="/pages/owner-dashboard.html"
+          href="pages/owner-dashboard.html"
         >
-          Owner Login
+          Owner Dashboard
         </a>
+
 
         <a
           href="#about"
@@ -1239,6 +1245,7 @@
         >
           About
         </a>
+
 
         <a
           href="contact.html"
@@ -1298,6 +1305,7 @@
         Home
       </a>
 
+
       <a
         href="explore.html"
         data-i18n="nav.explore"
@@ -1305,12 +1313,13 @@
         Explore
       </a>
 
-      <!-- HELP WANTED -->
+
       <a
         href="help-wanted.html"
       >
         Help Wanted
       </a>
+
 
       <a
         href="list-business.html"
@@ -1319,6 +1328,7 @@
         List Your Business
       </a>
 
+
       <a
         href="claim-business.html"
         data-i18n="nav.claimBusiness"
@@ -1326,11 +1336,14 @@
         Claim Business
       </a>
 
+
+      <!-- OWNER DASHBOARD -->
       <a
-        href="/pages/owner-dashboard.html"
+        href="pages/owner-dashboard.html"
       >
-        Owner Login
+        Owner Dashboard
       </a>
+
 
       <a
         href="#about"
@@ -1338,6 +1351,7 @@
       >
         About
       </a>
+
 
       <a
         href="contact.html"
@@ -1795,8 +1809,9 @@
           <p>
             Get your business discovered by people
             searching for products and services near
-            them. Add your business to NearAfrica or
-            claim an existing listing.
+            them. Add your business to NearAfrica,
+            claim an existing listing, or manage a
+            business you already own.
           </p>
 
         </div>
@@ -1812,12 +1827,21 @@
             List Your Business
           </a>
 
+
           <a
             href="claim-business.html"
             class="owner-button secondary"
             data-i18n="nav.claimBusiness"
           >
             Claim Business
+          </a>
+
+
+          <a
+            href="pages/owner-dashboard.html"
+            class="owner-button secondary"
+          >
+            Owner Dashboard
           </a>
 
         </div>
@@ -2025,12 +2049,14 @@
 
           <h3>NearAfrica</h3>
 
+
           <a
             href="index.html"
             data-i18n="nav.home"
           >
             Home
           </a>
+
 
           <a
             href="explore.html"
@@ -2039,12 +2065,13 @@
             Explore
           </a>
 
-          <!-- HELP WANTED -->
+
           <a
             href="help-wanted.html"
           >
             Help Wanted
           </a>
+
 
           <a
             href="list-business.html"
@@ -2053,11 +2080,19 @@
             List Your Business
           </a>
 
+
           <a
             href="claim-business.html"
             data-i18n="nav.claimBusiness"
           >
             Claim Business
+          </a>
+
+
+          <a
+            href="pages/owner-dashboard.html"
+          >
+            Owner Dashboard
           </a>
 
         </div>
@@ -2067,12 +2102,14 @@
 
           <h3>Information</h3>
 
+
           <a
             href="#about"
             data-i18n="nav.about"
           >
             About
           </a>
+
 
           <a
             href="contact.html"
@@ -2081,6 +2118,7 @@
             Contact
           </a>
 
+
           <a
             href="privacy.html"
             data-i18n="footer.privacy"
@@ -2088,12 +2126,14 @@
             Privacy Policy
           </a>
 
+
           <a
             href="terms.html"
             data-i18n="footer.terms"
           >
             Terms of Service
           </a>
+
 
           <a
             href="listing-policy.html"
@@ -2112,6 +2152,7 @@
         <span>
           © 2026 NearAfrica
         </span>
+
 
         <span>
           Find Great Businesses Near You.
@@ -2156,14 +2197,22 @@
             "mobileMenuToggle"
           );
 
+
         const mobileNav =
           document.getElementById(
             "mobileNav"
           );
 
-        if (!toggle || !mobileNav) {
+
+        if (
+          !toggle ||
+          !mobileNav
+        ) {
+
           return;
+
         }
+
 
         toggle.addEventListener(
           "click",
@@ -2174,10 +2223,12 @@
                 "open"
               );
 
+
             toggle.setAttribute(
               "aria-expanded",
               String(isOpen)
             );
+
 
             toggle.setAttribute(
               "aria-label",
@@ -2185,6 +2236,7 @@
                 ? "Close menu"
                 : "Open menu"
             );
+
 
             toggle.textContent =
               isOpen
@@ -2208,15 +2260,18 @@
                     "open"
                   );
 
+
                   toggle.setAttribute(
                     "aria-expanded",
                     "false"
                   );
 
+
                   toggle.setAttribute(
                     "aria-label",
                     "Open menu"
                   );
+
 
                   toggle.textContent =
                     "☰";
