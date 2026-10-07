@@ -619,6 +619,12 @@
     }
 
 
+    .button-secondary:hover {
+      border-color:
+        #555;
+    }
+
+
     .button-danger {
       background:
         #311717;
@@ -3379,13 +3385,23 @@
         };
 
 
+        const fetchOptions = {
+
+          ...options,
+
+          headers,
+
+          cache:
+            options.cache ||
+            "no-store"
+
+        };
+
+
         const response =
           await fetch(
             `${API_BASE}${path}`,
-            {
-              ...options,
-              headers
-            }
+            fetchOptions
           );
 
 
@@ -5906,36 +5922,30 @@
                 "helpTitle"
               ).value.trim(),
 
-
             type:
               document.getElementById(
                 "helpType"
               ).value.trim(),
-
 
             category:
               document.getElementById(
                 "helpCategory"
               ).value.trim(),
 
-
             location:
               document.getElementById(
                 "helpLocation"
               ).value.trim(),
-
 
             application_contact:
               document.getElementById(
                 "helpContact"
               ).value.trim(),
 
-
             deadline:
               document.getElementById(
                 "helpDeadline"
               ).value.trim(),
-
 
             description:
               document.getElementById(
@@ -6127,13 +6137,38 @@
         "click",
         async () => {
 
-          await loadHelpWanted();
+          const originalText =
+            refreshHelpButton.textContent;
 
 
-          showStatus(
-            "Help Wanted posts refreshed.",
-            "success"
-          );
+          refreshHelpButton.disabled =
+            true;
+
+
+          refreshHelpButton.textContent =
+            "Refreshing...";
+
+
+          try {
+
+            await loadHelpWanted();
+
+
+            showStatus(
+              "Help Wanted posts refreshed.",
+              "success"
+            );
+
+          } finally {
+
+            refreshHelpButton.disabled =
+              false;
+
+
+            refreshHelpButton.textContent =
+              originalText;
+
+          }
 
         }
       );
@@ -6297,11 +6332,17 @@
 
       async function loadAnalytics() {
 
+        const analyticsEvents =
+          document.getElementById(
+            "analyticsEvents"
+          );
+
+
         try {
 
           const data =
             await apiRequest(
-              "/owner/business/analytics"
+              `/owner/business/analytics?_=${Date.now()}`
             );
 
 
@@ -6416,128 +6457,131 @@
             );
 
 
-          const analyticsEvents =
-            document.getElementById(
-              "analyticsEvents"
-            );
-
-
           if (
-            events.length
+            analyticsEvents
           ) {
 
-            analyticsEvents.innerHTML =
-              `
-                <div class="analytics-events-title">
-                  Activity
-                </div>
+            if (
+              events.length
+            ) {
 
-                ${events
-                  .map(
-                    event => {
+              analyticsEvents.innerHTML =
+                `
+                  <div class="analytics-events-title">
+                    Activity
+                  </div>
 
-                      const type =
-                        String(
-                          event?.event_type ||
-                          "unknown"
-                        );
+                  ${events
+                    .map(
+                      event => {
 
-
-                      const count =
-                        Number(
-                          event?.count ||
-                          0
-                        );
+                        const type =
+                          String(
+                            event?.event_type ||
+                            "unknown"
+                          );
 
 
-                      let label =
-                        type;
+                        const count =
+                          Number(
+                            event?.count ||
+                            0
+                          );
 
 
-                      if (
-                        type ===
-                        "business_view"
-                      ) {
+                        let label =
+                          type;
 
-                        label =
-                          "Business Views";
 
-                      } else if (
-                        type ===
-                        "favorite_added"
-                      ) {
+                        if (
+                          type ===
+                          "business_view"
+                        ) {
 
-                        label =
-                          "Favorites Added";
+                          label =
+                            "Business Views";
 
-                      } else if (
-                        type ===
-                        "favorite_removed"
-                      ) {
+                        } else if (
+                          type ===
+                          "favorite_added"
+                        ) {
 
-                        label =
-                          "Favorites Removed";
+                          label =
+                            "Favorites Added";
 
-                      } else {
+                        } else if (
+                          type ===
+                          "favorite_removed"
+                        ) {
 
-                        label =
-                          type
-                            .replaceAll(
-                              "_",
-                              " "
-                            )
-                            .replace(
-                              /\b\w/g,
-                              letter =>
-                                letter.toUpperCase()
-                            );
+                          label =
+                            "Favorites Removed";
+
+                        } else {
+
+                          label =
+                            type
+                              .replaceAll(
+                                "_",
+                                " "
+                              )
+                              .replace(
+                                /\b\w/g,
+                                letter =>
+                                  letter.toUpperCase()
+                              );
+
+                        }
+
+
+                        return `
+                          <div
+                            class="analytics-event-row"
+                          >
+
+                            <span
+                              class="analytics-event-label"
+                            >
+                              ${escapeHTML(
+                                label
+                              )}
+                            </span>
+
+                            <span
+                              class="analytics-event-count"
+                            >
+                              ${formatNumber(
+                                count
+                              )}
+                            </span>
+
+                          </div>
+                        `;
 
                       }
+                    )
+                    .join("")}
+                `;
 
+            } else {
 
-                      return `
-                        <div
-                          class="analytics-event-row"
-                        >
+              analyticsEvents.innerHTML =
+                `
+                  <div class="analytics-events-title">
+                    Activity
+                  </div>
 
-                          <span
-                            class="analytics-event-label"
-                          >
-                            ${escapeHTML(
-                              label
-                            )}
-                          </span>
+                  <div class="analytics-events-empty">
+                    No tracked activity yet.
+                  </div>
+                `;
 
-                          <span
-                            class="analytics-event-count"
-                          >
-                            ${formatNumber(
-                              count
-                            )}
-                          </span>
-
-                        </div>
-                      `;
-
-                    }
-                  )
-                  .join("")}
-              `;
-
-          } else {
-
-            analyticsEvents.innerHTML =
-              `
-                <div class="analytics-events-title">
-                  Activity
-                </div>
-
-                <div class="analytics-events-empty">
-                  No tracked activity yet.
-                </div>
-              `;
+            }
 
           }
+
+
+          return true;
 
 
         } catch (error) {
@@ -6546,12 +6590,6 @@
             "OWNER ANALYTICS LOAD ERROR:",
             error
           );
-
-
-          const analyticsEvents =
-            document.getElementById(
-              "analyticsEvents"
-            );
 
 
           if (
@@ -6578,24 +6616,79 @@
             "error"
           );
 
+
+          return false;
+
         }
 
       }
 
 
-      document.getElementById(
-        "refreshAnalyticsButton"
-      ).addEventListener(
+      /* =================================================
+         ANALYTICS REFRESH
+      ================================================= */
+
+      const refreshAnalyticsButton =
+        document.getElementById(
+          "refreshAnalyticsButton"
+        );
+
+
+      refreshAnalyticsButton.addEventListener(
         "click",
         async () => {
 
-          await loadAnalytics();
+          if (
+            refreshAnalyticsButton.disabled
+          ) {
+
+            return;
+
+          }
 
 
-          showStatus(
-            "Analytics refreshed.",
-            "success"
-          );
+          const originalText =
+            refreshAnalyticsButton.textContent;
+
+
+          refreshAnalyticsButton.disabled =
+            true;
+
+
+          refreshAnalyticsButton.textContent =
+            "Refreshing...";
+
+
+          clearStatus();
+
+
+          try {
+
+            const success =
+              await loadAnalytics();
+
+
+            if (
+              success
+            ) {
+
+              showStatus(
+                "Analytics refreshed successfully.",
+                "success"
+              );
+
+            }
+
+          } finally {
+
+            refreshAnalyticsButton.disabled =
+              false;
+
+
+            refreshAnalyticsButton.textContent =
+              originalText;
+
+          }
 
         }
       );
