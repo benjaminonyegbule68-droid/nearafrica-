@@ -967,10 +967,14 @@
 
         if (query && !searchable.includes(query)) return false;
 
+       
         if (
-          category &&
-          business.category.toLowerCase() !== category
-        ) return false;
+  category &&
+  business.category.trim().toLowerCase() !==
+    category.trim().toLowerCase()
+) {
+  return false;
+}
 
         if (
           !App.nearbyMode &&
