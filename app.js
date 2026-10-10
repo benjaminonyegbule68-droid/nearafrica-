@@ -1431,11 +1431,21 @@ const ratingBadge = `
 
         </div>
 
+     
       </div>
     `;
 
+    const ratingElement =
+      card.querySelector(".business-rating-display");
+
+    loadBusinessRating(
+      business,
+      ratingElement
+    );
+
     return card;
   }
+
 
 
   function getBusinessInitial(
