@@ -1,16 +1,13 @@
+
 /*
  * NearAfrica — app-new.js
- * Compatible with the supplied explore.html.
+ * Category matching fix + Explore functionality.
  *
- * Features:
- * - Loads real businesses from the existing API.
- * - Search, category, state and city filters.
- * - GPS-based Nearby mode and adjustable radius.
- * - Pagination, saved businesses and profile links.
- * - URL filter restoration and home-page search.
- * - Clear filters and accurate result counts.
- *
- * Does not create fictional business listings.
+ * - Matches category labels, slugs, hyphens and underscores.
+ * - Supports all 12 Home-page categories.
+ * - Preserves real API data, search, location filters,
+ *   Nearby/GPS, pagination, saved businesses and profile links.
+ * - Does not create fictional business listings.
  */
 
 (function () {
@@ -22,6 +19,102 @@
   const LOCATION_KEY = "nearafrica_user_location";
   const NEARBY_KEY = "nearafrica_nearby_mode";
   const SAVED_KEY = "nearafrica_saved_businesses";
+
+  /*
+   * Canonical category labels used by the Home page.
+   * All category comparisons go through this registry.
+   */
+  const HOME_CATEGORIES = [
+    "Restaurants & Food",
+    "Hotels & Accommodation",
+    "Beauty & Spa",
+    "Health & Medical",
+    "Shopping & Retail",
+    "Supermarkets",
+    "Professional Services",
+    "Education",
+    "Real Estate",
+    "Automotive",
+    "Travel & Tourism",
+    "Technology"
+  ];
+
+  /*
+   * Equivalent names for categories that may appear
+   * differently in the database or categories endpoint.
+   */
+  const CATEGORY_ALIASES = {
+    "restaurants and food": "Restaurants & Food",
+    "restaurant and food": "Restaurants & Food",
+    "restaurant food": "Restaurants & Food",
+    "restaurants food": "Restaurants & Food",
+    "food and drink": "Restaurants & Food",
+    "food drink": "Restaurants & Food",
+    "restaurant": "Restaurants & Food",
+    "restaurants": "Restaurants & Food",
+
+    "hotel and accommodation": "Hotels & Accommodation",
+    "hotels and accommodation": "Hotels & Accommodation",
+    "hotel accommodation": "Hotels & Accommodation",
+    "hotels accommodation": "Hotels & Accommodation",
+    "hotel": "Hotels & Accommodation",
+    "hotels": "Hotels & Accommodation",
+    "accommodation": "Hotels & Accommodation",
+
+    "beauty and spa": "Beauty & Spa",
+    "beauty spa": "Beauty & Spa",
+    "beauty salon": "Beauty & Spa",
+    "beauty salons": "Beauty & Spa",
+    "salon and spa": "Beauty & Spa",
+    "salons and spa": "Beauty & Spa",
+    "spa": "Beauty & Spa",
+    "salon": "Beauty & Spa",
+
+    "health and medical": "Health & Medical",
+    "health medical": "Health & Medical",
+    "healthcare": "Health & Medical",
+    "health care": "Health & Medical",
+    "medical": "Health & Medical",
+    "health": "Health & Medical",
+
+    "shopping and retail": "Shopping & Retail",
+    "shopping retail": "Shopping & Retail",
+    "retail": "Shopping & Retail",
+    "shopping": "Shopping & Retail",
+
+    "supermarket": "Supermarkets",
+    "supermarkets": "Supermarkets",
+
+    "professional service": "Professional Services",
+    "professional services": "Professional Services",
+    "professional service providers": "Professional Services",
+
+    "education": "Education",
+    "educational services": "Education",
+    "schools": "Education",
+    "school": "Education",
+
+    "real estate": "Real Estate",
+    "property": "Real Estate",
+    "property services": "Real Estate",
+    "properties": "Real Estate",
+
+    "automotive": "Automotive",
+    "automotive services": "Automotive",
+    "auto services": "Automotive",
+    "car services": "Automotive",
+    "cars": "Automotive",
+
+    "travel and tourism": "Travel & Tourism",
+    "travel tourism": "Travel & Tourism",
+    "tourism": "Travel & Tourism",
+    "travel": "Travel & Tourism",
+
+    "technology": "Technology",
+    "technologies": "Technology",
+    "tech": "Technology",
+    "information technology": "Technology"
+  };
 
   const App = {
     allBusinesses: [],
@@ -68,6 +161,62 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+  }
+
+  /*
+   * Convert equivalent category formats into one comparison key.
+   *
+   * Examples:
+   * professional-services -> professional services
+   * professional_services -> professional services
+   * Professional Services -> professional services
+   * Restaurants & Food -> restaurants and food
+   */
+  function categoryKey(value) {
+    return String(value ?? "")
+      .trim()
+      .toLowerCase()
+      .replace(/&/g, " and ")
+      .replace(/[-_]+/g, " ")
+      .replace(/[^\p{L}\p{N}\s]/gu, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  /*
+   * Return the preferred display label for a category.
+   * Unknown categories are retained rather than discarded.
+   */
+  function categoryLabel(value) {
+    const key = categoryKey(value);
+
+    if (!key) return "";
+
+    if (CATEGORY_ALIASES[key]) {
+      return CATEGORY_ALIASES[key];
+    }
+
+    const homeMatch = HOME_CATEGORIES.find(
+      (item) => categoryKey(item) === key
+    );
+
+    if (homeMatch) return homeMatch;
+
+    return String(value)
+      .trim()
+      .replace(/[-_]+/g, " ")
+      .replace(/\s+/g, " ");
+  }
+
+  /*
+   * Category equality is centralized here so all filters
+   * use the same comparison logic.
+   */
+  function categoriesMatch(first, second) {
+    if (!clean(first) || !clean(second)) return false;
+
+    return categoryKey(categoryLabel(first)) ===
+      categoryKey(categoryLabel(second));
   }
 
   function config() {
@@ -275,6 +424,11 @@
       b.is_claimed === true ||
       Number(b.claimed || b.is_claimed || 0) === 1;
 
+    const rawCategory =
+      typeof b.category === "object"
+        ? b.category?.name
+        : b.category;
+
     return {
       ...b,
       id,
@@ -283,11 +437,7 @@
         b.business_name || b.name || b.title,
         "Unnamed Business"
       ),
-      category: clean(
-        typeof b.category === "object"
-          ? b.category.name
-          : b.category
-      ),
+      category: categoryLabel(rawCategory),
       address: clean(
         b.address || b.address_line || b.location
       ),
@@ -325,23 +475,15 @@
   }
 
   function extractBusinesses(payload) {
-    if (Array.isArray(payload)) {
-      return payload;
-    }
+    if (Array.isArray(payload)) return payload;
 
-    if (!payload || typeof payload !== "object") {
-      return [];
-    }
+    if (!payload || typeof payload !== "object") return [];
 
     for (const key of ["businesses", "results", "items"]) {
-      if (Array.isArray(payload[key])) {
-        return payload[key];
-      }
+      if (Array.isArray(payload[key])) return payload[key];
     }
 
-    if (Array.isArray(payload.data)) {
-      return payload.data;
-    }
+    if (Array.isArray(payload.data)) return payload.data;
 
     if (
       payload.data &&
@@ -350,9 +492,7 @@
       return payload.data.businesses;
     }
 
-    if (payload.business) {
-      return [payload.business];
-    }
+    if (payload.business) return [payload.business];
 
     return [];
   }
@@ -361,7 +501,7 @@
     const seen = new Set();
 
     return list.filter((business) => {
-      const key = (
+      const key = String(
         business.id ||
         `${business.name}|${business.city}|${business.state}`
       ).toLowerCase();
@@ -425,6 +565,11 @@
     }
   }
 
+  /*
+   * Fetch categories when the API supports it.
+   * Failure is harmless because Home categories and business
+   * categories are also used to build the filter.
+   */
   async function loadCategories() {
     const filter = categoryFilter();
     if (!filter) return;
@@ -447,24 +592,29 @@
       const previous = filter.value;
 
       items.forEach((item) => {
-        const value = clean(
+        const rawValue = clean(
           typeof item === "string" ? item : item.name
         );
 
-        if (
-          value &&
-          !Array.from(filter.options).some(
-            (option) =>
-              option.value.toLowerCase() === value.toLowerCase()
-          )
-        ) {
+        if (!rawValue) return;
+
+        const value = categoryLabel(rawValue);
+
+        const exists = Array.from(filter.options).some(
+          (option) => categoriesMatch(option.value, value)
+        );
+
+        if (!exists) {
           filter.add(new Option(value, value));
         }
       });
 
-      if (previous) filter.value = previous;
+      if (previous) selectCategoryOption(previous);
     } catch (error) {
-      console.warn("NearAfrica: category endpoint unavailable.", error);
+      console.warn(
+        "NearAfrica: category endpoint unavailable.",
+        error
+      );
     }
   }
 
@@ -497,30 +647,96 @@
     );
   }
 
+  /*
+   * Select a category by equivalent name, even when the URL
+   * uses a different format from the database.
+   */
+  function selectCategoryOption(requestedValue) {
+    const filter = categoryFilter();
+    if (!filter) return false;
+
+    const requested = clean(requestedValue);
+
+    if (!requested) {
+      filter.value = "";
+      return true;
+    }
+
+    const matchingOption = Array.from(filter.options).find(
+      (option) =>
+        option.value &&
+        categoriesMatch(option.value, requested)
+    );
+
+    if (matchingOption) {
+      filter.value = matchingOption.value;
+      return true;
+    }
+
+    return false;
+  }
+
+  /*
+   * Always include all 12 Home categories, even if some currently
+   * have zero matching businesses. Also preserve additional API
+   * categories that are not in the Home-page list.
+   */
   function populateCategoryOptions() {
     const filter = categoryFilter();
     if (!filter) return;
 
-    const values = uniqueSorted(
-      App.allBusinesses.map((b) => b.category)
-    );
+    const previous = clean(filter.value);
+    const options = new Map();
 
-    const existing = Array.from(filter.options)
-      .map((option) => option.value);
+    HOME_CATEGORIES.forEach((category) => {
+      options.set(categoryKey(category), category);
+    });
 
-    const selected = filter.value;
+    App.allBusinesses.forEach((business) => {
+      const category = clean(business.category);
+      if (!category) return;
 
-    values.forEach((value) => {
-      if (
-        !existing.some(
-          (item) => item.toLowerCase() === value.toLowerCase()
-        )
-      ) {
-        filter.add(new Option(value, value));
+      const label = categoryLabel(category);
+      const key = categoryKey(label);
+
+      if (!options.has(key)) {
+        options.set(key, label);
       }
     });
 
-    filter.value = selected;
+    /*
+     * Keep extra categories supplied by the API endpoint too.
+     */
+    Array.from(filter.options).forEach((option) => {
+      if (!option.value) return;
+
+      const label = categoryLabel(option.value);
+      const key = categoryKey(label);
+
+      if (!options.has(key)) {
+        options.set(key, label);
+      }
+    });
+
+    filter.replaceChildren(new Option("All categories", ""));
+
+    [...options.values()]
+      .sort((a, b) => {
+        const aHome = HOME_CATEGORIES.includes(a);
+        const bHome = HOME_CATEGORIES.includes(b);
+
+        if (aHome && !bHome) return -1;
+        if (!aHome && bHome) return 1;
+
+        return a.localeCompare(b);
+      })
+      .forEach((category) => {
+        filter.add(new Option(category, category));
+      });
+
+    if (previous) {
+      selectCategoryOption(previous);
+    }
   }
 
   function populateCityOptions() {
@@ -628,9 +844,7 @@
 
       const payload = await fetchJson(url.toString());
 
-      if (payload?.location) {
-        return payload.location;
-      }
+      if (payload?.location) return payload.location;
     } catch (error) {
       console.warn("NearAfrica: reverse geocoding failed.", error);
     }
@@ -651,9 +865,7 @@
       );
 
       sessionStorage.setItem(NEARBY_KEY, "1");
-    } catch (_) {
-      // Storage may be unavailable in private browsing.
-    }
+    } catch (_) {}
   }
 
   function restoreLocation() {
@@ -677,9 +889,7 @@
 
         return true;
       }
-    } catch (_) {
-      // Ignore invalid stored data.
-    }
+    } catch (_) {}
 
     return false;
   }
@@ -700,6 +910,7 @@
     App.locationLoading = true;
 
     const button = $("#nearbyButton");
+
     if (button) {
       button.disabled = true;
       button.textContent = "Finding location…";
@@ -718,6 +929,7 @@
       applyFilters();
 
       const info = App.locationInfo || {};
+
       const label = [
         info.area,
         info.city,
@@ -736,9 +948,7 @@
     } finally {
       App.locationLoading = false;
 
-      if (button) {
-        button.disabled = false;
-      }
+      if (button) button.disabled = false;
 
       updateNearbyControls();
     }
@@ -781,8 +991,10 @@
     if (!panel) return;
 
     const wrapper = document.createElement("div");
+
     wrapper.id = "nearafricaNearbyControls";
     wrapper.className = "filter-group";
+
     wrapper.style.cssText =
       "grid-column:1/-1;display:flex;flex-direction:row;gap:10px;align-items:center;flex-wrap:wrap;";
 
@@ -817,11 +1029,11 @@
     panel.appendChild(wrapper);
 
     $("#nearbyButton").addEventListener("click", enableNearby);
-
     $("#clearNearby").addEventListener("click", clearNearby);
 
     $("#radiusFilter").addEventListener("change", () => {
       radiusValue();
+
       if (App.nearbyMode) applyFilters();
     });
 
@@ -861,7 +1073,7 @@
     }
 
     if (categoryFilter()) {
-      categoryFilter().value = params.get("category") || "";
+      selectCategoryOption(params.get("category") || "");
     }
 
     if (stateFilter()) {
@@ -890,11 +1102,14 @@
 
     try {
       const url = new URL(location.href);
+
       const query = clean(searchInput()?.value);
       const category = clean(categoryFilter()?.value);
+
       const state = App.nearbyMode
         ? ""
         : clean(stateFilter()?.value);
+
       const city = App.nearbyMode
         ? ""
         : clean(cityFilter()?.value);
@@ -925,10 +1140,12 @@
 
   function applyFilters() {
     const query = clean(searchInput()?.value).toLowerCase();
-    const category = clean(categoryFilter()?.value).toLowerCase();
+    const category = clean(categoryFilter()?.value);
+
     const state = App.nearbyMode
       ? ""
       : clean(stateFilter()?.value).toLowerCase();
+
     const city = App.nearbyMode
       ? ""
       : clean(cityFilter()?.value).toLowerCase();
@@ -965,28 +1182,35 @@
           business.website
         ].filter(Boolean).join(" ").toLowerCase();
 
-        if (query && !searchable.includes(query)) return false;
+        if (query && !searchable.includes(query)) {
+          return false;
+        }
 
-       
+        /*
+         * All categories use the same alias-aware comparison.
+         */
         if (
-  category &&
-  business.category.trim().toLowerCase() !==
-    category.trim().toLowerCase()
-) {
-  return false;
-}
+          category &&
+          !categoriesMatch(business.category, category)
+        ) {
+          return false;
+        }
 
         if (
           !App.nearbyMode &&
           state &&
           business.state.toLowerCase() !== state
-        ) return false;
+        ) {
+          return false;
+        }
 
         if (
           !App.nearbyMode &&
           city &&
           business.city.toLowerCase() !== city
-        ) return false;
+        ) {
+          return false;
+        }
 
         if (App.nearbyMode) {
           if (business.distanceKm === null) return false;
@@ -1044,8 +1268,13 @@
 
   function getSavedIds() {
     try {
-      const value = JSON.parse(localStorage.getItem(SAVED_KEY) || "[]");
-      return new Set(Array.isArray(value) ? value.map(String) : []);
+      const value = JSON.parse(
+        localStorage.getItem(SAVED_KEY) || "[]"
+      );
+
+      return new Set(
+        Array.isArray(value) ? value.map(String) : []
+      );
     } catch (_) {
       return new Set();
     }
@@ -1064,15 +1293,24 @@
     }
 
     try {
-      localStorage.setItem(SAVED_KEY, JSON.stringify([...saved]));
-    } catch (error) {
-      setStatus("Your browser could not save this business.", "error");
+      localStorage.setItem(
+        SAVED_KEY,
+        JSON.stringify([...saved])
+      );
+    } catch (_) {
+      setStatus(
+        "Your browser could not save this business.",
+        "error"
+      );
       return;
     }
 
     renderResults();
+
     setStatus(
-      saved.has(key) ? "Business saved." : "Business removed from saved items.",
+      saved.has(key)
+        ? "Business saved."
+        : "Business removed from saved items.",
       "success"
     );
   }
@@ -1131,11 +1369,12 @@
          <div class="card-image-placeholder" hidden>NA</div>`
       : `<div class="card-image-placeholder">NA</div>`;
 
-    const stars = "★".repeat(
-      Math.max(0, Math.min(5, Math.round(business.rating || 0)))
-    ) + "☆".repeat(
-      5 - Math.max(0, Math.min(5, Math.round(business.rating || 0)))
+    const rating = Math.max(
+      0,
+      Math.min(5, Math.round(business.rating || 0))
     );
+
+    const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
 
     return `
       <article class="business-card" data-business-id="${escapeHtml(business.id)}">
@@ -1249,11 +1488,12 @@
     const count = countElement();
 
     if (count) {
-      count.textContent = App.loading && !App.allBusinesses.length
-        ? "Loading businesses..."
-        : total === 1
-          ? "1 business found"
-          : `${total.toLocaleString()} businesses found`;
+      count.textContent =
+        App.loading && !App.allBusinesses.length
+          ? "Loading businesses..."
+          : total === 1
+            ? "1 business found"
+            : `${total.toLocaleString()} businesses found`;
     }
 
     renderPagination();
@@ -1302,15 +1542,16 @@
     if (!id) return;
 
     try {
-      await fetch(apiUrl(
-        `businesses/${encodeURIComponent(id)}/view`
-      ), {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        keepalive: true
-      });
+      await fetch(
+        apiUrl(`businesses/${encodeURIComponent(id)}/view`),
+        {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          keepalive: true
+        }
+      );
     } catch (_) {
-      // Viewing a profile should work even if analytics fail.
+      // Profile navigation should work if analytics fail.
     }
   }
 
@@ -1345,6 +1586,7 @@
     }
 
     const clear = $("#clearFilters");
+
     if (clear) {
       clear.addEventListener("click", clearFilters);
     }
@@ -1374,6 +1616,7 @@
     if (pagination) {
       pagination.addEventListener("click", (event) => {
         const button = event.target.closest("[data-page]");
+
         if (!button || button.disabled) return;
 
         const page = Number(button.dataset.page);
@@ -1402,6 +1645,7 @@
 
     searchForms.forEach((form) => {
       if (form.dataset.nearafricaBound === "1") return;
+
       form.dataset.nearafricaBound = "1";
 
       form.addEventListener("submit", (event) => {
@@ -1427,7 +1671,9 @@
         event.ctrlKey ||
         event.metaKey ||
         event.altKey
-      ) return;
+      ) {
+        return;
+      }
 
       const tag = event.target?.tagName?.toLowerCase();
 
@@ -1450,15 +1696,7 @@
 
     applyUrlParameters();
 
-    const restored = restoreLocation();
-
-    if (
-      App.nearbyMode &&
-      !App.userLocation &&
-      restored
-    ) {
-      App.nearbyMode = true;
-    }
+    restoreLocation();
 
     updateNearbyControls();
 
@@ -1470,7 +1708,8 @@
     populateCityOptions();
 
     /*
-     * Reapply URL filter values after option lists have been built.
+     * Restore URL filters AFTER the category options exist.
+     * Category aliases allow slugs and display labels to match.
      */
     applyUrlParameters();
 
@@ -1504,9 +1743,11 @@
           App.userLocation = await getBrowserLocation();
           App.locationInfo = await reverseGeocode(App.userLocation);
           App.nearbyMode = true;
+
           saveLocation();
 
           const target = new URL("explore.html", location.href);
+
           target.searchParams.set("nearby", "1");
           target.searchParams.set("radius", String(App.radiusKm));
 
