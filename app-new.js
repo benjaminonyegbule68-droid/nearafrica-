@@ -1,4 +1,3 @@
-
 /*
  * NearAfrica — app-new.js
  * Category matching fix + Explore functionality.
