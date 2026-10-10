@@ -43,9 +43,13 @@
   const App = {
     initialized: false,
 
-    allBusinesses: [],
+   allBusinesses: [],
 
-    filteredBusinesses: [],
+filteredBusinesses: [],
+
+reviewStatsCache: Object.create(null),
+
+reviewStatsRequests: Object.create(null),
 
     userLocation: null,
 
