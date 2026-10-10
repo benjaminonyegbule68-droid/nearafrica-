@@ -1339,19 +1339,13 @@ reviewStatsRequests: Object.create(null),
         : "";
 
 
-    const ratingBadge =
-      business.rating !== null &&
-      business.rating !== undefined
-        ? `
-          <span class="badge rating-badge">
-            ★ ${escapeHtml(
-              Number(
-                business.rating
-              ).toFixed(1)
-            )}
-          </span>
-        `
-        : "";
+   
+const ratingBadge = `
+  <span class="badge rating-badge business-rating-display">
+    ☆☆☆☆☆ No rating (0)
+  </span>
+`;
+
 
 
     const locationParts = [
