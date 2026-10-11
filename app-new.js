@@ -835,7 +835,9 @@
   async function reverseGeocode(location) {
     try {
       const url = new URL(
-        apiUrl(endpoint("location", "location"))
+        
+apiUrl(endpoint("location", "location/reverse"))
+
       );
 
       url.searchParams.set("latitude", location.latitude);
