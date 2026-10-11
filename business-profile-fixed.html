@@ -1,8 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
 <title>Business Profile | NearAfrica</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -111,14 +113,24 @@ button:disabled{cursor:not-allowed;opacity:.65}
   border:1px solid #363636;background:#202020;color:#eee;
   padding:10px 15px;border-radius:9px;text-decoration:none;
   display:inline-flex;align-items:center;justify-content:center;gap:7px;
-  transition:.2s;
+  transition:background .2s,border-color .2s,color .2s,transform .2s;
 }
 .btn:hover{border-color:var(--gold);color:var(--gold2)}
 .btn-primary{
   background:linear-gradient(135deg,var(--gold2),var(--gold));
   color:#111;border-color:var(--gold2);font-weight:800;
 }
+.btn-primary:hover{color:#111;background:var(--gold2);transform:translateY(-1px)}
 .btn-danger{border-color:#65312f;color:#ffb7b4;background:#211212}
+.directions-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:12px 17px;min-height:46px;border-radius:10px;
+  border:1px solid var(--gold2);
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  color:#111;text-decoration:none;font-weight:800;
+}
+.directions-btn:hover{background:var(--gold2);color:#111;transform:translateY(-1px)}
+.directions-note{margin:9px 0 16px;color:#888;font-size:12px;line-height:1.6}
 
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px}
 .stat{
@@ -145,7 +157,7 @@ button:disabled{cursor:not-allowed;opacity:.65}
 
 .product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .product{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#101010}
-.product img{width:100%;height:180px;object-fit:cover}
+.product img{width:100%;height:180px;object-fit:cover;display:block}
 .product-body{padding:15px}
 .product-body h3{margin:0 0 6px}
 .product-body p{color:#aaa;margin:0 0 10px}
@@ -215,6 +227,7 @@ footer a{color:var(--gold2);text-decoration:none}
   .photo-grid img{height:145px}
   #businessMap{height:280px}
   .review-header{flex-direction:column;gap:3px}
+  .directions-btn{width:100%}
 }
 </style>
 </head>
@@ -242,7 +255,7 @@ footer a{color:var(--gold2);text-decoration:none}
 
 <main class="page">
   <div class="container">
-    <div id="statusMessage"></div>
+    <div id="statusMessage" role="status" aria-live="polite"></div>
 
     <div id="loadingState" class="loading">
       <div>
@@ -386,6 +399,86 @@ footer a{color:var(--gold2);text-decoration:none}
     ].map(clean).filter(Boolean).join(", ");
   }
 
+  /*
+   * Read valid GPS coordinates when the business listing has them.
+   * Blank coordinates are not treated as zero.
+   */
+  function getBusinessCoordinates(business){
+    if(!business || typeof business !== "object"){
+      return null;
+    }
+
+    const rawLatitude =
+      business.latitude ??
+      business.lat ??
+      business.location_latitude;
+
+    const rawLongitude =
+      business.longitude ??
+      business.lng ??
+      business.lon ??
+      business.location_longitude;
+
+    if(
+      rawLatitude === null ||
+      rawLatitude === undefined ||
+      String(rawLatitude).trim() === "" ||
+      rawLongitude === null ||
+      rawLongitude === undefined ||
+      String(rawLongitude).trim() === ""
+    ){
+      return null;
+    }
+
+    const latitude = Number(rawLatitude);
+    const longitude = Number(rawLongitude);
+
+    if(
+      !Number.isFinite(latitude) ||
+      !Number.isFinite(longitude) ||
+      latitude < -90 ||
+      latitude > 90 ||
+      longitude < -180 ||
+      longitude > 180
+    ){
+      return null;
+    }
+
+    return {latitude,longitude};
+  }
+
+  /*
+   * Build a Google Maps directions URL.
+   * Coordinates are preferred because they identify the exact map point.
+   * If coordinates are missing, use the business name and available address.
+   */
+  function buildBusinessDirectionsUrl(business){
+    if(!business) return "";
+
+    const coordinates = getBusinessCoordinates(business);
+    const location = getLocation(business);
+    const name = clean(getBusinessName(business));
+
+    let destination = "";
+
+    if(coordinates){
+      destination =
+        `${coordinates.latitude},${coordinates.longitude}`;
+    }else if(location){
+      destination = [name,location].filter(Boolean).join(", ");
+    }
+
+    if(!destination) return "";
+
+    const url = new URL("https://www.google.com/maps/dir/");
+    url.searchParams.set("api","1");
+    url.searchParams.set("destination",destination);
+    url.searchParams.set("travelmode","driving");
+    url.searchParams.set("dir_action","navigate");
+
+    return url.toString();
+  }
+
   function getImage(business){
     const candidates = [
       business.logo_url,
@@ -458,18 +551,13 @@ footer a{color:var(--gold2);text-decoration:none}
 
     if(!mapElement || typeof L === "undefined") return;
 
-    const latitude = Number(business.latitude);
-    const longitude = Number(business.longitude);
+    const coordinates = getBusinessCoordinates(business);
 
-    if(
-      !Number.isFinite(latitude) ||
-      !Number.isFinite(longitude) ||
-      latitude < -90 || latitude > 90 ||
-      longitude < -180 || longitude > 180
-    ){
+    if(!coordinates){
       mapElement.innerHTML = `
         <div style="height:100%;display:grid;place-items:center;background:#111;color:#777;text-align:center;padding:20px">
-          Location coordinates are not available.
+          Precise map coordinates are not available for this listing.
+          Use the directions button above if an address is available.
         </div>`;
       return;
     }
@@ -479,13 +567,16 @@ footer a{color:var(--gold2);text-decoration:none}
       activeMap = null;
     }
 
-    activeMap = L.map(mapElement).setView([latitude,longitude],15);
+    activeMap = L.map(mapElement).setView(
+      [coordinates.latitude,coordinates.longitude],
+      15
+    );
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
       attribution:"© OpenStreetMap contributors"
     }).addTo(activeMap);
 
-    L.marker([latitude,longitude])
+    L.marker([coordinates.latitude,coordinates.longitude])
       .addTo(activeMap)
       .bindPopup(escapeHtml(getBusinessName(business)))
       .openPopup();
@@ -684,6 +775,7 @@ footer a{color:var(--gold2);text-decoration:none}
 
     const name = getBusinessName(business);
     const location = getLocation(business);
+    const directionsUrl = buildBusinessDirectionsUrl(business);
     const category = clean(business.category);
     const description = clean(business.description);
     const phone = clean(business.phone);
@@ -758,6 +850,19 @@ footer a{color:var(--gold2);text-decoration:none}
               ${websiteUrl ? `
                 <a class="btn" href="${escapeAttribute(websiteUrl)}"
                   target="_blank" rel="noopener noreferrer">Website</a>` : ""}
+              ${
+                directionsUrl
+                  ? `
+                    <a class="directions-btn"
+                      href="${escapeAttribute(directionsUrl)}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Get GPS directions to ${escapeAttribute(name)}">
+                      🧭 Get GPS Directions
+                    </a>
+                  `
+                  : ""
+              }
             </div>
           </div>
         </div>
@@ -792,7 +897,35 @@ footer a{color:var(--gold2);text-decoration:none}
 
           <section class="profile-card">
             <h2>Location</h2>
+
             ${location ? `<p style="color:#aaa">${escapeHtml(location)}</p>` : ""}
+
+            ${
+              directionsUrl
+                ? `
+                  <a class="directions-btn"
+                    href="${escapeAttribute(directionsUrl)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Navigate to ${escapeAttribute(name)} using Google Maps">
+                    🧭 Get GPS Directions
+                  </a>
+
+                  <p class="directions-note">
+                    Directions open in Google Maps. Your device or Maps app
+                    can use your current location to guide you to this business.
+                    Location permission may be requested by your browser or Maps.
+                  </p>
+                `
+                : `
+                  <p class="directions-note">
+                    Directions are unavailable because this listing does not
+                    have enough location information. Please check the address
+                    before travelling.
+                  </p>
+                `
+            }
+
             <div id="businessMap"></div>
           </section>
         </div>
