@@ -537,27 +537,27 @@ function getDiscoveryRunnerMarkup() {
             <h3>Run OpenStreetMap Discovery</h3>
             <p>
                 Search a specific area for possible business listings.
-                Results are imported as discovery candidates for manual review;
-                they are not automatically approved as public businesses.
+                Results are imported as <strong>pending discovery candidates</strong> for manual review.
+                They are <strong>not</strong> automatically published as public businesses.
             </p>
 
             <form id="discoveryRunForm">
                 <div class="discovery-form-grid">
 
                     <div class="discovery-field">
-                        <label for="discoveryLatitude">Latitude *</label>
+                        <label for="discoveryLatitude">Search center latitude *</label>
                         <input id="discoveryLatitude" name="latitude"
                                type="number" step="any" min="-90" max="90"
                                placeholder="Enter latitude" required>
-                        <span class="discovery-help">Between -90 and 90.</span>
+                        <span class="discovery-help">Search area only. Between -90 and 90. Not used as a business address.</span>
                     </div>
 
                     <div class="discovery-field">
-                        <label for="discoveryLongitude">Longitude *</label>
+                        <label for="discoveryLongitude">Search center longitude *</label>
                         <input id="discoveryLongitude" name="longitude"
                                type="number" step="any" min="-180" max="180"
                                placeholder="Enter longitude" required>
-                        <span class="discovery-help">Between -180 and 180.</span>
+                        <span class="discovery-help">Search area only. Between -180 and 180. Not used as a business address.</span>
                     </div>
 
                     <div class="discovery-field">
@@ -577,25 +577,28 @@ function getDiscoveryRunnerMarkup() {
                     </div>
 
                     <div class="discovery-field">
-                        <label for="discoveryCountry">Country *</label>
+                        <label for="discoveryCountry">Search country *</label>
                         <input id="discoveryCountry" name="country"
                                type="text" maxlength="100" value="Nigeria" required>
+                        <span class="discovery-help">Search context only — not proof of each business address.</span>
                     </div>
 
                     <div class="discovery-field">
-                        <label for="discoveryState">State / Region</label>
+                        <label for="discoveryState">Search state / region</label>
                         <input id="discoveryState" name="state"
                                type="text" maxlength="100" placeholder="e.g. Rivers">
+                        <span class="discovery-help">Search context only — not copied as the business state.</span>
                     </div>
 
                     <div class="discovery-field">
-                        <label for="discoveryCity">City</label>
+                        <label for="discoveryCity">Search city</label>
                         <input id="discoveryCity" name="city"
                                type="text" maxlength="100" placeholder="e.g. Port Harcourt">
+                        <span class="discovery-help">Search context only — not copied as the business city.</span>
                     </div>
 
                     <div class="discovery-field">
-                        <label for="discoveryCategory">Category (optional)</label>
+                        <label for="discoveryCategory">Category filter (optional)</label>
                         <input id="discoveryCategory" name="category"
                                type="text" maxlength="120" placeholder="e.g. Restaurants &amp; Food">
                         <span class="discovery-help">Leave blank to search without a category filter.</span>
@@ -603,9 +606,10 @@ function getDiscoveryRunnerMarkup() {
                 </div>
 
                 <div class="discovery-warning">
-                    This action can add actual records to the discovery queue.
-                    Imported candidates may be incomplete, incorrectly categorized,
-                    or duplicated. Review each candidate before approving it.
+                    This action can add real pending records to the discovery queue.
+                    Imported candidates may be incomplete, mis-categorized, or missing coordinates.
+                    Always review name, coordinates, address, category, and source before approving.
+                    Never approve a record that has missing or invalid latitude/longitude if it should appear in Nearby results.
                 </div>
 
                 <div class="discovery-submit-row">
@@ -748,7 +752,7 @@ async function runDiscoveryFromAdmin(event) {
    DISCOVERY MODERATION
 ========================================================= */
 
-async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
+async async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
     if (!discoveryId) {
         alert("This discovery does not have a valid ID.");
         return;
@@ -756,9 +760,26 @@ async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
 
     if (action !== "approve" && action !== "reject") return;
 
-    if (!confirm(action === "approve"
-        ? "Approve this discovery?"
-        : "Reject this discovery?")) return;
+    if (action === "approve") {
+        const row = button ? button.closest("tr") : null;
+        const coordStatus = row
+            ? (row.getAttribute("data-coord-status") || "")
+            : "";
+
+        if (coordStatus === "missing" || coordStatus === "invalid") {
+            const proceed = confirm(
+                "WARNING: This discovery has missing or invalid coordinates.\n\n" +
+                "Approving it will publish a business that cannot be used reliably in Nearby / GPS search.\n\n" +
+                "Only approve if you intentionally accept that limitation.\n\n" +
+                "Continue with approval?"
+            );
+            if (!proceed) return;
+        } else if (!confirm("Approve this discovery and publish it as a public business?")) {
+            return;
+        }
+    } else {
+        if (!confirm("Reject this discovery?")) return;
+    }
 
     const actionButtons = document.querySelectorAll(
         `.discovery-action[data-discovery-id="${CSS.escape(String(discoveryId))}"]`
@@ -794,6 +815,46 @@ async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
     }
 }
 
+function assessCoordinates(discovery) {
+    const rawLat = discovery.latitude ?? discovery.lat ?? discovery.location_latitude;
+    const rawLng = discovery.longitude ?? discovery.lng ?? discovery.lon ?? discovery.location_longitude;
+
+    const hasLat = rawLat !== null && rawLat !== undefined && String(rawLat).trim() !== "";
+    const hasLng = rawLng !== null && rawLng !== undefined && String(rawLng).trim() !== "";
+
+    if (!hasLat && !hasLng) {
+        return { status: "missing", label: "Missing coords", lat: null, lng: null };
+    }
+
+    if (!hasLat || !hasLng) {
+        return {
+            status: "invalid",
+            label: "Incomplete pair",
+            lat: hasLat ? Number(rawLat) : null,
+            lng: hasLng ? Number(rawLng) : null
+        };
+    }
+
+    const lat = Number(rawLat);
+    const lng = Number(rawLng);
+
+    if (
+        !Number.isFinite(lat) ||
+        !Number.isFinite(lng) ||
+        lat < -90 || lat > 90 ||
+        lng < -180 || lng > 180
+    ) {
+        return { status: "invalid", label: "Out of range", lat, lng };
+    }
+
+    return {
+        status: "ok",
+        label: "OK",
+        lat,
+        lng
+    };
+}
+
 function renderDiscoveries(discoveries) {
     const runner = getDiscoveryRunnerMarkup();
 
@@ -811,14 +872,30 @@ function renderDiscoveries(discoveries) {
         const category = discovery.category || "—";
 
         const location = [
+            discovery.address || "",
             discovery.city || "",
             discovery.state || "",
             discovery.country || ""
         ].filter(value => value && value !== "—").join(", ") || "—";
 
         const sourceUrl = discovery.source_url || discovery.url || "";
+        const sourceId = discovery.source_id || discovery.osm_id || "";
         const status = String(discovery.status || "pending").trim().toLowerCase();
         const isPending = !["approved", "rejected"].includes(status);
+
+        const coords = assessCoordinates(discovery);
+
+        const coordBadgeColor =
+            coords.status === "ok" ? "#4ade80" :
+            coords.status === "missing" ? "#fbbf24" :
+            "#f87171";
+
+        const coordCell = `
+            <div style="font-family:Consolas,Monaco,monospace;font-size:11px;line-height:1.5">
+                <div style="color:${coordBadgeColor};font-weight:800;margin-bottom:4px">${escapeHtml(coords.label)}</div>
+                <div>lat: ${coords.lat === null || coords.lat === undefined ? "—" : escapeHtml(String(coords.lat))}</div>
+                <div>lng: ${coords.lng === null || coords.lng === undefined ? "—" : escapeHtml(String(coords.lng))}</div>
+            </div>`;
 
         const actions = isPending && id ? `
             <div class="actions">
@@ -839,12 +916,16 @@ function renderDiscoveries(discoveries) {
         const safeSource = /^https?:\/\//i.test(String(sourceUrl)) ? sourceUrl : "";
 
         return `
-            <tr>
-                <td><strong>${escapeHtml(title)}</strong>
-                    <div class="business-id" style="margin-top:6px">${escapeHtml(id)}</div></td>
+            <tr data-coord-status="${escapeAttribute(coords.status)}">
+                <td>
+                    <strong>${escapeHtml(title)}</strong>
+                    <div class="business-id" style="margin-top:6px">${escapeHtml(id)}</div>
+                    ${sourceId ? `<div class="business-id" style="margin-top:4px">source: ${escapeHtml(String(sourceId))}</div>` : ""}
+                </td>
                 <td>${escapeHtml(category)}</td>
                 <td>${escapeHtml(location)}</td>
-                <td><div style="max-width:300px;white-space:normal;line-height:1.5;color:#aaa">${escapeHtml(description)}</div></td>
+                <td>${coordCell}</td>
+                <td><div style="max-width:260px;white-space:normal;line-height:1.5;color:#aaa">${escapeHtml(description)}</div></td>
                 <td><span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span></td>
                 <td>${safeSource
                     ? `<a href="${escapeAttribute(safeSource)}" target="_blank" rel="noopener noreferrer" style="color:#d4af37;text-decoration:none;font-weight:700">Open Source</a>`
@@ -855,13 +936,21 @@ function renderDiscoveries(discoveries) {
 
     content.innerHTML = runner + `
         <div class="section-caption">
-            ${discoveries.length} candidate(s) loaded. Review names, categories, locations and sources before approving.
+            ${discoveries.length} candidate(s) loaded.
+            Review name, category, address, <strong>coordinates</strong>, and source before approving.
+            Records with missing or invalid coordinates will show a warning on Approve.
         </div>
         <div class="table-wrap">
             <table>
                 <thead><tr>
-                    <th>Discovery</th><th>Category</th><th>Location</th>
-                    <th>Description</th><th>Status</th><th>Source</th><th>Actions</th>
+                    <th>Discovery</th>
+                    <th>Category</th>
+                    <th>Address / Locality</th>
+                    <th>Coordinates</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Source</th>
+                    <th>Actions</th>
                 </tr></thead>
                 <tbody>${rows}</tbody>
             </table>
@@ -1468,4 +1557,4 @@ async function initialize() {
 initialize();
 </script>
 </body>
-</html>
+    </html>
