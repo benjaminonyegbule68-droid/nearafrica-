@@ -431,14 +431,18 @@
       position: relative;
     }
 
-    .country-track {
-      display: flex;
-      width: max-content;
+   .country-track {
+  display: flex;
+  width: max-content;
+  animation: countryMarquee 38s linear infinite;
+  will-change: transform;
+}
 
-      animation: countryMarquee 38s linear infinite;
-
-      will-change: transform;
-    }
+@media (min-width: 761px) {
+  .country-track {
+    animation-duration: 60s;
+  }
+}
 
     .country-list {
       display: flex;
