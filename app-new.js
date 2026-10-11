@@ -785,23 +785,61 @@
    * results. High accuracy is requested, cached browser positions
    * are avoided, and readings worse than 5 km are rejected.
    */
-  function getBrowserLocation() {
-    return new Promise((resolve, reject) => {
-      if (!window.isSecureContext) {
-        reject(new Error("Location access requires HTTPS."));
-        return;
+  
+function getBrowserLocation() {
+  return new Promise((resolve, reject) => {
+    if (!window.isSecureContext) {
+      reject(new Error("Location access requires HTTPS."));
+      return;
+    }
+
+    if (!navigator.geolocation) {
+      reject(
+        new Error(
+          "This browser does not support location services."
+        )
+      );
+      return;
+    }
+
+    let watchId = null;
+    let timerId = null;
+    let finished = false;
+    let bestAccuracy = null;
+
+    function finish(error, position) {
+      if (finished) return;
+      finished = true;
+
+      if (timerId !== null) {
+        clearTimeout(timerId);
       }
 
-      if (!navigator.geolocation) {
-        reject(
-          new Error(
-            "This browser does not support location services."
-          )
-        );
-        return;
+      if (watchId !== null) {
+        try {
+          navigator.geolocation.clearWatch(watchId);
+        } catch (_) {}
       }
 
-      navigator.geolocation.getCurrentPosition(
+      if (error) {
+        reject(error);
+      } else {
+        resolve(position);
+      }
+    }
+
+    // Give the browser up to 45 seconds to obtain
+    // a location with accuracy of 5 km or better.
+    timerId = setTimeout(() => {
+      const message = bestAccuracy !== null
+        ? `Your browser could not obtain a precise enough location. Its best reported accuracy was ${Math.round(bestAccuracy)} metres. Try again or check your device's location settings.`
+        : "Your device could not determine your location. Check location services and try again.";
+
+      finish(new Error(message));
+    }, 45000);
+
+    try {
+      watchId = navigator.geolocation.watchPosition(
         (position) => {
           const latitude = number(
             position.coords.latitude
@@ -821,56 +859,56 @@
             latitude < -90 ||
             latitude > 90 ||
             longitude < -180 ||
-            longitude > 180
+            longitude > 180 ||
+            accuracy === null ||
+            accuracy < 0
           ) {
-            reject(
-              new Error(
-                "Your browser returned invalid location coordinates. Please try again."
-              )
-            );
             return;
           }
 
           if (
-            accuracy === null ||
-            accuracy > MAX_LOCATION_ACCURACY_METERS
+            bestAccuracy === null ||
+            accuracy < bestAccuracy
           ) {
-            reject(
-              new Error(
-                "Your location is too approximate for Nearby search. Turn on your device's location services and try again."
-              )
-            );
-            return;
+            bestAccuracy = accuracy;
           }
 
-          resolve({
-            latitude,
-            longitude,
-            accuracy
-          });
+          // Accept only a sufficiently accurate reading.
+          if (accuracy <= MAX_LOCATION_ACCURACY_METERS) {
+            finish(null, {
+              latitude,
+              longitude,
+              accuracy
+            });
+          }
         },
         (error) => {
-          const messages = {
-            1: "Location permission was denied. Allow location access and try again.",
-            2: "Your device could not determine your location. Check location services.",
-            3: "The location request timed out. Please try again."
-          };
+          // Permission denial cannot be fixed by retrying.
+          if (error.code === 1) {
+            finish(
+              new Error(
+                "Location permission was denied. Allow location access and try again."
+              )
+            );
+          }
 
-          reject(
-            new Error(
-              messages[error.code] ||
-              "Unable to get your location."
-            )
-          );
+          // Other temporary errors may recover while watching.
         },
         {
           enableHighAccuracy: true,
-          timeout: 30000,
+          timeout: 60000,
           maximumAge: 0
         }
       );
-    });
-  }
+    } catch (error) {
+      finish(
+        new Error(
+          error.message || "Unable to start location detection."
+        )
+      );
+    }
+  });
+}
 
   async function reverseGeocode(location) {
     try {
