@@ -6,6 +6,9 @@
  * - Supports all 12 Home-page categories.
  * - Preserves real API data, search, location filters,
  *   Nearby/GPS, pagination, saved businesses and profile links.
+ * - Requests a fresh browser location for Nearby searches.
+ * - Rejects inaccurate GPS readings above 5 km accuracy.
+ * - Rejects previously saved inaccurate location readings.
  * - Does not create fictional business listings.
  */
 
@@ -18,6 +21,9 @@
   const LOCATION_KEY = "nearafrica_user_location";
   const NEARBY_KEY = "nearafrica_nearby_mode";
   const SAVED_KEY = "nearafrica_saved_businesses";
+
+  // Do not use GPS readings whose reported accuracy is worse than 5 km.
+  const MAX_LOCATION_ACCURACY_METERS = 5000;
 
   /*
    * Canonical category labels used by the Home page.
@@ -150,6 +156,7 @@
     }
 
     const result = Number(value);
+
     return Number.isFinite(result) ? result : fallback;
   }
 
@@ -164,12 +171,6 @@
 
   /*
    * Convert equivalent category formats into one comparison key.
-   *
-   * Examples:
-   * professional-services -> professional services
-   * professional_services -> professional services
-   * Professional Services -> professional services
-   * Restaurants & Food -> restaurants and food
    */
   function categoryKey(value) {
     return String(value ?? "")
@@ -207,15 +208,13 @@
       .replace(/\s+/g, " ");
   }
 
-  /*
-   * Category equality is centralized here so all filters
-   * use the same comparison logic.
-   */
   function categoriesMatch(first, second) {
     if (!clean(first) || !clean(second)) return false;
 
-    return categoryKey(categoryLabel(first)) ===
-      categoryKey(categoryLabel(second));
+    return (
+      categoryKey(categoryLabel(first)) ===
+      categoryKey(categoryLabel(second))
+    );
   }
 
   function config() {
@@ -369,6 +368,7 @@
     App.loading = loading;
 
     const container = resultsContainer();
+
     if (!container) return;
 
     if (loading && !App.allBusinesses.length) {
@@ -571,6 +571,7 @@
    */
   async function loadCategories() {
     const filter = categoryFilter();
+
     if (!filter) return;
 
     try {
@@ -646,12 +647,9 @@
     );
   }
 
-  /*
-   * Select a category by equivalent name, even when the URL
-   * uses a different format from the database.
-   */
   function selectCategoryOption(requestedValue) {
     const filter = categoryFilter();
+
     if (!filter) return false;
 
     const requested = clean(requestedValue);
@@ -682,6 +680,7 @@
    */
   function populateCategoryOptions() {
     const filter = categoryFilter();
+
     if (!filter) return;
 
     const previous = clean(filter.value);
@@ -693,6 +692,7 @@
 
     App.allBusinesses.forEach((business) => {
       const category = clean(business.category);
+
       if (!category) return;
 
       const label = categoryLabel(category);
@@ -703,9 +703,6 @@
       }
     });
 
-    /*
-     * Keep extra categories supplied by the API endpoint too.
-     */
     Array.from(filter.options).forEach((option) => {
       if (!option.value) return;
 
@@ -759,7 +756,9 @@
   function distanceKm(lat1, lon1, lat2, lon2) {
     const values = [lat1, lon1, lat2, lon2].map(Number);
 
-    if (values.some((value) => !Number.isFinite(value))) {
+    if (
+      values.some((value) => !Number.isFinite(value))
+    ) {
       return null;
     }
 
@@ -779,6 +778,13 @@
     );
   }
 
+  /*
+   * Request a fresh browser location.
+   *
+   * A poor location estimate must not silently be used for Nearby
+   * results. High accuracy is requested, cached browser positions
+   * are avoided, and readings worse than 5 km are rejected.
+   */
   function getBrowserLocation() {
     return new Promise((resolve, reject) => {
       if (!window.isSecureContext) {
@@ -787,27 +793,60 @@
       }
 
       if (!navigator.geolocation) {
-        reject(new Error("This browser does not support location services."));
+        reject(
+          new Error(
+            "This browser does not support location services."
+          )
+        );
         return;
       }
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const latitude = position.coords.latitude;
-          const longitude = position.coords.longitude;
+          const latitude = number(
+            position.coords.latitude
+          );
+
+          const longitude = number(
+            position.coords.longitude
+          );
+
+          const accuracy = number(
+            position.coords.accuracy
+          );
 
           if (
-            !Number.isFinite(latitude) ||
-            !Number.isFinite(longitude)
+            latitude === null ||
+            longitude === null ||
+            latitude < -90 ||
+            latitude > 90 ||
+            longitude < -180 ||
+            longitude > 180
           ) {
-            reject(new Error("Your location could not be determined."));
+            reject(
+              new Error(
+                "Your browser returned invalid location coordinates. Please try again."
+              )
+            );
+            return;
+          }
+
+          if (
+            accuracy === null ||
+            accuracy > MAX_LOCATION_ACCURACY_METERS
+          ) {
+            reject(
+              new Error(
+                "Your location is too approximate for Nearby search. Turn on your device's location services and try again."
+              )
+            );
             return;
           }
 
           resolve({
             latitude,
             longitude,
-            accuracy: number(position.coords.accuracy)
+            accuracy
           });
         },
         (error) => {
@@ -819,14 +858,15 @@
 
           reject(
             new Error(
-              messages[error.code] || "Unable to get your location."
+              messages[error.code] ||
+              "Unable to get your location."
             )
           );
         },
         {
-          enableHighAccuracy: false,
-          timeout: 20000,
-          maximumAge: 60000
+          enableHighAccuracy: true,
+          timeout: 30000,
+          maximumAge: 0
         }
       );
     });
@@ -835,64 +875,142 @@
   async function reverseGeocode(location) {
     try {
       const url = new URL(
-        
-apiUrl(endpoint("location", "location/reverse"))
-
+        apiUrl(endpoint("location", "location/reverse"))
       );
 
-      url.searchParams.set("latitude", location.latitude);
-      url.searchParams.set("longitude", location.longitude);
+      url.searchParams.set(
+        "latitude",
+        location.latitude
+      );
+
+      url.searchParams.set(
+        "longitude",
+        location.longitude
+      );
 
       const payload = await fetchJson(url.toString());
 
-      if (payload?.location) return payload.location;
+      if (payload?.location) {
+        return payload.location;
+      }
     } catch (error) {
-      console.warn("NearAfrica: reverse geocoding failed.", error);
+      console.warn(
+        "NearAfrica: reverse geocoding failed.",
+        error
+      );
     }
 
     return null;
   }
 
+  /*
+   * Never persist an inaccurate location as the active Nearby
+   * position. The reader also validates previously saved data.
+   */
   function saveLocation() {
     if (!App.userLocation) return;
+
+    const latitude = number(App.userLocation.latitude);
+    const longitude = number(App.userLocation.longitude);
+    const accuracy = number(App.userLocation.accuracy);
+
+    const valid =
+      latitude !== null &&
+      longitude !== null &&
+      latitude >= -90 &&
+      latitude <= 90 &&
+      longitude >= -180 &&
+      longitude <= 180 &&
+      accuracy !== null &&
+      accuracy <= MAX_LOCATION_ACCURACY_METERS;
+
+    if (!valid) {
+      try {
+        sessionStorage.removeItem(LOCATION_KEY);
+        sessionStorage.removeItem(NEARBY_KEY);
+      } catch (_) {}
+
+      throw new Error(
+        "Your location is too approximate for Nearby search. Please try again."
+      );
+    }
 
     try {
       sessionStorage.setItem(
         LOCATION_KEY,
         JSON.stringify({
-          ...App.userLocation,
-          locationInfo: App.locationInfo
+          latitude,
+          longitude,
+          accuracy,
+          locationInfo: App.locationInfo,
+          savedAt: Date.now()
         })
       );
 
       sessionStorage.setItem(NEARBY_KEY, "1");
-    } catch (_) {}
-  }
-
-  function restoreLocation() {
-    try {
-      const saved = JSON.parse(
-        sessionStorage.getItem(LOCATION_KEY) || "null"
+    } catch (error) {
+      console.warn(
+        "NearAfrica: could not save location.",
+        error
       );
 
-      if (
-        saved &&
-        Number.isFinite(Number(saved.latitude)) &&
-        Number.isFinite(Number(saved.longitude))
-      ) {
-        App.userLocation = {
-          latitude: Number(saved.latitude),
-          longitude: Number(saved.longitude),
-          accuracy: number(saved.accuracy)
-        };
+      throw new Error(
+        "Your browser could not save your location. Please check browser storage settings and try again."
+      );
+    }
+  }
 
-        App.locationInfo = saved.locationInfo || null;
+  /*
+   * Do not restore the previously saved 200 km-accuracy location.
+   * Older records without valid accuracy are rejected as well.
+   */
+  function restoreLocation() {
+    let saved = null;
 
-        return true;
-      }
-    } catch (_) {}
+    try {
+      saved = JSON.parse(
+        sessionStorage.getItem(LOCATION_KEY) || "null"
+      );
+    } catch (_) {
+      saved = null;
+    }
 
-    return false;
+    const latitude = number(saved?.latitude);
+    const longitude = number(saved?.longitude);
+    const accuracy = number(saved?.accuracy);
+
+    const valid =
+      saved &&
+      latitude !== null &&
+      longitude !== null &&
+      latitude >= -90 &&
+      latitude <= 90 &&
+      longitude >= -180 &&
+      longitude <= 180 &&
+      accuracy !== null &&
+      accuracy <= MAX_LOCATION_ACCURACY_METERS;
+
+    if (!valid) {
+      try {
+        sessionStorage.removeItem(LOCATION_KEY);
+        sessionStorage.removeItem(NEARBY_KEY);
+      } catch (_) {}
+
+      App.userLocation = null;
+      App.locationInfo = null;
+
+      return false;
+    }
+
+    App.userLocation = {
+      latitude,
+      longitude,
+      accuracy
+    };
+
+    App.locationInfo = saved.locationInfo || null;
+
+    return true;
   }
 
   function radiusValue() {
@@ -920,8 +1038,13 @@ apiUrl(endpoint("location", "location/reverse"))
     setStatus("Finding your current location…");
 
     try {
+      // Obtain and validate a new GPS position before saving it.
       App.userLocation = await getBrowserLocation();
+
+      // Reverse geocoding labels the coordinates; it does not
+      // replace the coordinates used in distance calculations.
       App.locationInfo = await reverseGeocode(App.userLocation);
+
       App.nearbyMode = true;
 
       saveLocation();
@@ -945,6 +1068,11 @@ apiUrl(endpoint("location", "location/reverse"))
         "success"
       );
     } catch (error) {
+      console.error(
+        "NearAfrica: unable to activate Nearby.",
+        error
+      );
+
       setStatus(error.message, "error");
     } finally {
       App.locationLoading = false;
@@ -978,6 +1106,7 @@ apiUrl(endpoint("location", "location/reverse"))
 
     updateNearbyControls();
     applyFilters();
+
     setStatus("Nearby mode turned off.");
   }
 
@@ -989,6 +1118,7 @@ apiUrl(endpoint("location", "location/reverse"))
     if ($("#nearafricaNearbyControls")) return;
 
     const panel = $(".filter-panel");
+
     if (!panel) return;
 
     const wrapper = document.createElement("div");
@@ -1029,13 +1159,22 @@ apiUrl(endpoint("location", "location/reverse"))
 
     panel.appendChild(wrapper);
 
-    $("#nearbyButton").addEventListener("click", enableNearby);
-    $("#clearNearby").addEventListener("click", clearNearby);
+    $("#nearbyButton").addEventListener(
+      "click",
+      enableNearby
+    );
+
+    $("#clearNearby").addEventListener(
+      "click",
+      clearNearby
+    );
 
     $("#radiusFilter").addEventListener("change", () => {
       radiusValue();
 
-      if (App.nearbyMode) applyFilters();
+      if (App.nearbyMode) {
+        applyFilters();
+      }
     });
 
     updateNearbyControls();
@@ -1115,7 +1254,12 @@ apiUrl(endpoint("location", "location/reverse"))
         ? ""
         : clean(cityFilter()?.value);
 
-      const values = { q: query, category, state, city };
+      const values = {
+        q: query,
+        category,
+        state,
+        city
+      };
 
       Object.entries(values).forEach(([key, value]) => {
         if (value) {
@@ -1127,7 +1271,10 @@ apiUrl(endpoint("location", "location/reverse"))
 
       if (App.nearbyMode) {
         url.searchParams.set("nearby", "1");
-        url.searchParams.set("radius", String(App.radiusKm));
+        url.searchParams.set(
+          "radius",
+          String(App.radiusKm)
+        );
       } else {
         url.searchParams.delete("nearby");
         url.searchParams.delete("radius");
@@ -1135,7 +1282,10 @@ apiUrl(endpoint("location", "location/reverse"))
 
       history.replaceState({}, "", url.toString());
     } catch (error) {
-      console.warn("NearAfrica: URL update failed.", error);
+      console.warn(
+        "NearAfrica: URL update failed.",
+        error
+      );
     }
   }
 
@@ -1168,7 +1318,10 @@ apiUrl(endpoint("location", "location/reverse"))
             )
           : null;
 
-        return { ...business, distanceKm: distance };
+        return {
+          ...business,
+          distanceKm: distance
+        };
       })
       .filter((business) => {
         const searchable = [
@@ -1181,15 +1334,15 @@ apiUrl(endpoint("location", "location/reverse"))
           business.description,
           business.phone,
           business.website
-        ].filter(Boolean).join(" ").toLowerCase();
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
 
         if (query && !searchable.includes(query)) {
           return false;
         }
 
-        /*
-         * All categories use the same alias-aware comparison.
-         */
         if (
           category &&
           !categoriesMatch(business.category, category)
@@ -1213,6 +1366,10 @@ apiUrl(endpoint("location", "location/reverse"))
           return false;
         }
 
+        /*
+         * Nearby mode must use real coordinates and enforce
+         * the selected radius. Unknown distances are excluded.
+         */
         if (App.nearbyMode) {
           if (business.distanceKm === null) return false;
           if (business.distanceKm > radius) return false;
@@ -1236,7 +1393,9 @@ apiUrl(endpoint("location", "location/reverse"))
 
     App.totalPages = Math.max(
       1,
-      Math.ceil(App.filteredBusinesses.length / App.pageSize)
+      Math.ceil(
+        App.filteredBusinesses.length / App.pageSize
+      )
     );
 
     syncUrl();
@@ -1274,7 +1433,9 @@ apiUrl(endpoint("location", "location/reverse"))
       );
 
       return new Set(
-        Array.isArray(value) ? value.map(String) : []
+        Array.isArray(value)
+          ? value.map(String)
+          : []
       );
     } catch (_) {
       return new Set();
@@ -1356,9 +1517,13 @@ apiUrl(endpoint("location", "location/reverse"))
       business.address,
       business.city,
       business.state
-    ].filter(Boolean).filter(
-      (value, index, array) => array.indexOf(value) === index
-    ).join(", ");
+    ]
+      .filter(Boolean)
+      .filter(
+        (value, index, array) =>
+          array.indexOf(value) === index
+      )
+      .join(", ");
 
     const image = business.image
       ? `<img
@@ -1375,7 +1540,9 @@ apiUrl(endpoint("location", "location/reverse"))
       Math.min(5, Math.round(business.rating || 0))
     );
 
-    const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
+    const stars =
+      "★".repeat(rating) +
+      "☆".repeat(5 - rating);
 
     return `
       <article class="business-card" data-business-id="${escapeHtml(business.id)}">
@@ -1448,6 +1615,7 @@ apiUrl(endpoint("location", "location/reverse"))
 
   function renderResults() {
     const container = resultsContainer();
+
     if (!container) return;
 
     const total = App.filteredBusinesses.length;
@@ -1475,7 +1643,7 @@ apiUrl(endpoint("location", "location/reverse"))
       const message = App.loading
         ? "Loading businesses..."
         : App.nearbyMode
-          ? "No businesses with usable GPS coordinates were found within this radius. Try increasing the radius."
+          ? "No businesses with usable GPS coordinates were found within this radius. Try increasing the radius or reporting a missing business."
           : "No businesses match your search. Try changing your search or filters.";
 
       container.innerHTML = `
@@ -1502,6 +1670,7 @@ apiUrl(endpoint("location", "location/reverse"))
 
   function renderPagination() {
     const container = paginationElement();
+
     if (!container) return;
 
     const total = App.filteredBusinesses.length;
@@ -1660,7 +1829,9 @@ apiUrl(endpoint("location", "location/reverse"))
         const query = clean(input?.value);
         const target = new URL("explore.html", location.href);
 
-        if (query) target.searchParams.set("q", query);
+        if (query) {
+          target.searchParams.set("q", query);
+        }
 
         location.href = target.toString();
       });
@@ -1697,6 +1868,7 @@ apiUrl(endpoint("location", "location/reverse"))
 
     applyUrlParameters();
 
+    // Invalid old saved GPS readings are removed here.
     restoreLocation();
 
     updateNearbyControls();
@@ -1716,7 +1888,7 @@ apiUrl(endpoint("location", "location/reverse"))
 
     if (App.nearbyMode && !App.userLocation) {
       setStatus(
-        "Nearby was requested, but no saved GPS location is available. Select Use My Location.",
+        "Nearby needs a fresh location. Select Use My Location to obtain one.",
         "info"
       );
 
@@ -1739,22 +1911,60 @@ apiUrl(endpoint("location", "location/reverse"))
     ].filter(Boolean);
 
     buttons.forEach((button) => {
+      // Prevent duplicate handlers if initialization is repeated.
+      if (button.dataset.nearafricaLocationBound === "1") {
+        return;
+      }
+
+      button.dataset.nearafricaLocationBound = "1";
+
       button.addEventListener("click", async () => {
+        if (App.locationLoading) return;
+
+        App.locationLoading = true;
+        button.disabled = true;
+
+        const originalText = button.textContent;
+
+        button.textContent = "Finding location…";
+        setStatus("Finding your current location…");
+
         try {
+          // Always request a fresh, validated GPS location.
           App.userLocation = await getBrowserLocation();
-          App.locationInfo = await reverseGeocode(App.userLocation);
+
+          App.locationInfo = await reverseGeocode(
+            App.userLocation
+          );
+
           App.nearbyMode = true;
 
+          // saveLocation throws if the location is not usable.
           saveLocation();
 
-          const target = new URL("explore.html", location.href);
+          const target = new URL(
+            "explore.html",
+            location.href
+          );
 
           target.searchParams.set("nearby", "1");
-          target.searchParams.set("radius", String(App.radiusKm));
+          target.searchParams.set(
+            "radius",
+            String(App.radiusKm)
+          );
 
           location.href = target.toString();
         } catch (error) {
+          console.error(
+            "NearAfrica: home location request failed.",
+            error
+          );
+
           setStatus(error.message, "error");
+          button.textContent = originalText;
+        } finally {
+          App.locationLoading = false;
+          button.disabled = false;
         }
       });
     });
@@ -1765,7 +1975,10 @@ apiUrl(endpoint("location", "location/reverse"))
 
     if (isExplorePage()) {
       initializeExplore().catch((error) => {
-        console.error("NearAfrica initialization failed:", error);
+        console.error(
+          "NearAfrica initialization failed:",
+          error
+        );
 
         setStatus(
           "NearAfrica could not initialize: " + error.message,
