@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,6 +100,8 @@ tbody tr:hover{background:#ffffff05}
 .discovery-message.success{color:#4ade80}
 .discovery-warning{margin-top:15px;padding:11px 12px;border:1px solid #5b481b;border-radius:7px;color:#e7cb77;background:#d4af3709;font-size:12px;line-height:1.5}
 .section-caption{padding:15px 18px;color:#aaa;font-size:13px;border-bottom:1px solid #252525}
+.correction-changes{max-width:450px;margin-top:8px;padding:12px;background:#080808;border:1px solid #292929;border-radius:8px;color:#ddd;font:12px/1.6 Consolas,Monaco,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
+.correction-review-hint{margin-top:10px;color:#aaa;font-size:12px;line-height:1.5}
 @media(max-width:700px){
 .topbar{padding:12px 15px}
 .brand-text span{display:none}
@@ -146,7 +149,7 @@ tbody tr:hover{background:#ffffff05}
     <main class="container">
         <div class="page-heading">
             <h1>Admin Dashboard</h1>
-            <p>Manage NearAfrica businesses, submissions, claims, reports and platform activity.</p>
+            <p>Manage NearAfrica businesses, submissions, claims, correction requests, reports and platform activity.</p>
         </div>
 
         <section id="statsGrid" class="stats-grid">
@@ -168,6 +171,7 @@ tbody tr:hover{background:#ffffff05}
                 <button class="tab" data-resource="help_wanted" type="button">Help Wanted</button>
                 <button class="tab" data-resource="subscriptions" type="button">Subscriptions</button>
                 <button class="tab" data-resource="discoveries" type="button">Discoveries</button>
+                <button class="tab" data-resource="correction_requests" type="button">Correction Requests</button>
             </div>
         </div>
 
@@ -286,6 +290,10 @@ async function apiRequest(path, options = {}) {
 function getAdminResourcePath(resource) {
     if (resource === "discoveries") {
         return "/admin/discovery?limit=100";
+    }
+
+    if (resource === "correction_requests") {
+        return "/admin/correction-requests?status=pending&limit=100";
     }
 
     return `/admin/${resource}?limit=100`;
@@ -414,13 +422,18 @@ async function loadResource(resource) {
 
     try {
         const data = await apiRequest(getAdminResourcePath(resource));
-        const records = getRecords(data);
+
+        const records =
+            resource === "correction_requests" && Array.isArray(data?.requests)
+                ? data.requests
+                : getRecords(data);
 
         if (resource === "businesses") return renderBusinesses(records);
         if (resource === "claims") return renderClaims(records);
         if (resource === "submissions") return renderSubmissions(records);
         if (resource === "reports") return renderReports(records);
         if (resource === "discoveries") return renderDiscoveries(records);
+        if (resource === "correction_requests") return renderCorrectionRequests(records);
 
         renderGeneric(records, resource);
     } catch (error) {
@@ -1174,6 +1187,190 @@ function renderSubmissions(submissions) {
 }
 
 /* =========================================================
+   CORRECTION REQUESTS
+========================================================= */
+
+function renderCorrectionRequests(requests) {
+    if (!Array.isArray(requests) || requests.length === 0) {
+        content.innerHTML = `
+            <div class="empty">
+                <h3>No pending correction requests</h3>
+                <p>New requests submitted through business profiles will appear here.</p>
+            </div>`;
+        return;
+    }
+
+    const rows = requests.map(item => {
+        const id = item.id || "";
+        const status = String(item.status || "pending").toLowerCase();
+        const businessName =
+            item.business_name ||
+            item.business_slug ||
+            item.business_id ||
+            "Business not found";
+
+        const location = [
+            item.city,
+            item.state,
+            item.country
+        ].filter(Boolean).join(", ") || "—";
+
+        const requesterName = item.requester_name || "Not provided";
+        const requesterEmail = item.requester_email || "Not provided";
+        const reason = item.reason || "No reason provided";
+        const createdAt = item.created_at || "—";
+
+        let requestedChanges = {};
+
+        if (item.requested_changes && typeof item.requested_changes === "object") {
+            requestedChanges = item.requested_changes;
+        } else {
+            try {
+                requestedChanges = JSON.parse(item.requested_changes_json || "{}");
+            } catch {
+                requestedChanges = { error: "Could not parse the requested changes." };
+            }
+        }
+
+        let changesText = "";
+
+        try {
+            changesText = JSON.stringify(requestedChanges, null, 2);
+        } catch {
+            changesText = "Unable to display requested changes.";
+        }
+
+        const actions = id && status === "pending" ? `
+            <div class="actions">
+                <button type="button"
+                    class="action-btn primary correction-action"
+                    data-correction-id="${escapeAttribute(id)}"
+                    data-action="approve">
+                    Approve
+                </button>
+                <button type="button"
+                    class="action-btn dismiss correction-action"
+                    data-correction-id="${escapeAttribute(id)}"
+                    data-action="reject">
+                    Reject
+                </button>
+            </div>
+        ` : `<span class="muted">Already processed</span>`;
+
+        return `
+            <tr>
+                <td>
+                    <strong>${escapeHtml(businessName)}</strong>
+                    <div class="business-id" style="margin-top:6px">${escapeHtml(item.business_id || "—")}</div>
+                    <div class="muted" style="margin-top:6px">${escapeHtml(location)}</div>
+                </td>
+                <td>
+                    <strong>${escapeHtml(requesterName)}</strong>
+                    <div style="margin-top:6px;word-break:break-word">${escapeHtml(requesterEmail)}</div>
+                </td>
+                <td>
+                    <div style="max-width:300px;white-space:normal;line-height:1.5">${escapeHtml(reason)}</div>
+                </td>
+                <td>
+                    <details>
+                        <summary style="color:#d4af37;cursor:pointer">View requested changes</summary>
+                        <pre class="correction-changes">${escapeHtml(changesText)}</pre>
+                    </details>
+                </td>
+                <td>
+                    <span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span>
+                    <div class="muted" style="margin-top:7px">${escapeHtml(createdAt)}</div>
+                </td>
+                <td>
+                    ${actions}
+                    ${status === "pending" ? `<div class="correction-review-hint">Approval records the decision only. Apply profile changes separately after reviewing them.</div>` : ""}
+                </td>
+            </tr>
+        `;
+    }).join("");
+
+    content.innerHTML = `
+        <div class="section-caption">
+            ${requests.length} pending correction request(s). Inspect the requested changes before deciding.
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Business</th>
+                        <th>Requester</th>
+                        <th>Reason</th>
+                        <th>Requested Changes</th>
+                        <th>Status / Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>
+        </div>`;
+
+    content.querySelectorAll(".correction-action").forEach(button => {
+        button.addEventListener("click", () => {
+            moderateCorrectionRequestFromAdmin(
+                button.dataset.correctionId,
+                button.dataset.action,
+                button
+            );
+        });
+    });
+}
+
+async function moderateCorrectionRequestFromAdmin(requestId, action, button) {
+    if (!requestId) {
+        alert("This correction request has no valid ID.");
+        return;
+    }
+
+    if (action !== "approve" && action !== "reject") {
+        return;
+    }
+
+    const decision = action === "approve" ? "approve" : "reject";
+    const question = action === "approve"
+        ? "Approve this correction request?\n\nThis records approval only. It will not automatically change the public business listing."
+        : "Reject this correction request?\n\nThe public business listing will not be changed.";
+
+    if (!confirm(question)) return;
+
+    const relatedButtons = [
+        ...content.querySelectorAll(".correction-action")
+    ].filter(item => item.dataset.correctionId === String(requestId));
+
+    relatedButtons.forEach(item => {
+        item.disabled = true;
+    });
+
+    if (button) {
+        button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
+    }
+
+    try {
+        const response = await apiRequest(
+            `/admin/correction-requests/${encodeURIComponent(requestId)}/${decision}`,
+            { method: "POST" }
+        );
+
+        alert(response.message || `Correction request ${action === "approve" ? "approved" : "rejected"}.`);
+        await loadResource("correction_requests");
+    } catch (error) {
+        relatedButtons.forEach(item => {
+            item.disabled = false;
+        });
+
+        if (button) {
+            button.textContent = action === "approve" ? "Approve" : "Reject";
+        }
+
+        alert(error.message || "Unable to process this correction request.");
+    }
+}
+
+/* =========================================================
    GENERIC TABLE
 ========================================================= */
 
@@ -1184,6 +1381,7 @@ function renderGeneric(records, resource) {
     }
 
     const keys = Object.keys(records[0]).slice(0, 8);
+
     const headers = keys.map(key =>
         `<th>${escapeHtml(key.replaceAll("_", " "))}</th>`
     ).join("");
