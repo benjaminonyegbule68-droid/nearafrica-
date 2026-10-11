@@ -76,6 +76,7 @@ button:disabled{cursor:not-allowed;opacity:.65}
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 .hidden{display:none!important}
+
 #statusMessage{
   display:none;padding:14px 16px;border-radius:10px;
   margin-bottom:22px;border:1px solid var(--border);background:var(--card);
@@ -122,6 +123,7 @@ button:disabled{cursor:not-allowed;opacity:.65}
 }
 .btn-primary:hover{color:#111;background:var(--gold2);transform:translateY(-1px)}
 .btn-danger{border-color:#65312f;color:#ffb7b4;background:#211212}
+
 .directions-btn{
   display:inline-flex;align-items:center;justify-content:center;gap:9px;
   padding:12px 17px;min-height:46px;border-radius:10px;
@@ -190,7 +192,80 @@ button:disabled{cursor:not-allowed;opacity:.65}
 .review-form-message.error{display:block;color:#ffb1ad;background:#211212;border:1px solid #65312f}
 .review-note{font-size:12px;color:#888;margin:8px 0 0}
 
-#businessMap{height:350px;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+/* Business map */
+#businessMap{
+  height:350px;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid var(--border);
+  background:#111;
+}
+
+/* New directions controls */
+.map-directions-tools{
+  display:grid;
+  gap:12px;
+  margin:16px 0;
+}
+
+.route-status{
+  margin:0;
+  padding:12px 13px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#111;
+  color:#bbb;
+  font-size:13px;
+  overflow-wrap:anywhere;
+}
+
+.route-status.success{
+  color:#9ee8b9;
+  border-color:#285b3d;
+}
+
+.route-status.error{
+  color:#ffb1ad;
+  border-color:#65312f;
+}
+
+.route-summary{
+  padding:13px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#111;
+  color:#ddd;
+  font-size:14px;
+}
+
+.route-steps{
+  margin:0;
+  padding-left:28px;
+  display:grid;
+  gap:9px;
+}
+
+.route-steps li{
+  padding:11px 12px;
+  background:#101010;
+  border:1px solid var(--border);
+  border-radius:9px;
+  color:#ddd;
+  font-size:14px;
+}
+
+.route-step-distance{
+  display:block;
+  margin-top:4px;
+  color:#aaa;
+  font-size:12px;
+}
+
+.leaflet-routing-note{
+  font-size:11px;
+  color:#888;
+  margin:9px 0 0;
+}
 
 .form{display:grid;gap:11px}
 .form label{display:grid;gap:5px;color:#bbb;font-size:14px}
@@ -228,6 +303,7 @@ footer a{color:var(--gold2);text-decoration:none}
   #businessMap{height:280px}
   .review-header{flex-direction:column;gap:3px}
   .directions-btn{width:100%}
+  .map-directions-tools .btn{width:100%}
 }
 </style>
 </head>
@@ -288,8 +364,16 @@ footer a{color:var(--gold2);text-decoration:none}
 
   const API_URL = "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
+  // Public OSRM demo routing service for initial testing.
+  // Do not use this demo server for heavy production traffic.
+  const ROUTING_URL = "https://router.project-osrm.org/route/v1/driving/";
+
   let activeBusiness = null;
   let activeMap = null;
+  let activeRouteLine = null;
+  let activeUserMarker = null;
+  let activeDestinationMarker = null;
+  let routeRequestInProgress = false;
 
   function clean(value){
     return String(value ?? "").trim();
@@ -400,8 +484,8 @@ footer a{color:var(--gold2);text-decoration:none}
   }
 
   /*
-   * Read valid GPS coordinates when the business listing has them.
-   * Blank coordinates are not treated as zero.
+   * Read valid GPS coordinates from a business listing.
+   * Blank or invalid values are never treated as coordinates.
    */
   function getBusinessCoordinates(business){
     if(!business || typeof business !== "object"){
@@ -449,10 +533,9 @@ footer a{color:var(--gold2);text-decoration:none}
 
   /*
    * Build a Google Maps directions URL.
-   * Coordinates are preferred because they identify the exact map point.
-   * If coordinates are missing, use the business name and available address.
+   * Use exact business coordinates whenever available.
    */
-  function buildBusinessDirectionsUrl(business){
+  function buildBusinessDirectionsUrl(business,origin = null){
     if(!business) return "";
 
     const coordinates = getBusinessCoordinates(business);
@@ -462,8 +545,7 @@ footer a{color:var(--gold2);text-decoration:none}
     let destination = "";
 
     if(coordinates){
-      destination =
-        `${coordinates.latitude},${coordinates.longitude}`;
+      destination = `${coordinates.latitude},${coordinates.longitude}`;
     }else if(location){
       destination = [name,location].filter(Boolean).join(", ");
     }
@@ -471,10 +553,22 @@ footer a{color:var(--gold2);text-decoration:none}
     if(!destination) return "";
 
     const url = new URL("https://www.google.com/maps/dir/");
+
     url.searchParams.set("api","1");
     url.searchParams.set("destination",destination);
     url.searchParams.set("travelmode","driving");
     url.searchParams.set("dir_action","navigate");
+
+    if(
+      origin &&
+      Number.isFinite(Number(origin.latitude)) &&
+      Number.isFinite(Number(origin.longitude))
+    ){
+      url.searchParams.set(
+        "origin",
+        `${origin.latitude},${origin.longitude}`
+      );
+    }
 
     return url.toString();
   }
@@ -546,6 +640,154 @@ footer a{color:var(--gold2);text-decoration:none}
     element.scrollIntoView({behavior:"smooth",block:"nearest"});
   }
 
+  function setRouteStatus(message,type = "info"){
+    const element = document.getElementById("routeStatus");
+    if(!element) return;
+
+    element.className = "route-status";
+
+    if(type === "success"){
+      element.classList.add("success");
+    }else if(type === "error"){
+      element.classList.add("error");
+    }
+
+    element.textContent = message;
+  }
+
+  function formatRouteDistance(metres){
+    const value = Number(metres);
+
+    if(!Number.isFinite(value) || value < 0) return "";
+
+    return value < 1000
+      ? `${Math.round(value)} m`
+      : `${(value / 1000).toFixed(value < 10000 ? 1 : 0)} km`;
+  }
+
+  function formatRouteDuration(seconds){
+    const value = Number(seconds);
+
+    if(!Number.isFinite(value) || value < 0) return "";
+
+    const minutes = Math.max(1,Math.round(value / 60));
+
+    if(minutes < 60) return `${minutes} min`;
+
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    return remainingMinutes
+      ? `${hours} hr ${remainingMinutes} min`
+      : `${hours} hr`;
+  }
+
+  function formatRouteInstruction(step){
+    const maneuver = step.maneuver || {};
+    const type = clean(maneuver.type).toLowerCase();
+    const modifier = clean(maneuver.modifier).replace(/_/g," ");
+    const road = clean(step.name);
+
+    switch(type){
+      case "depart":
+        return road ? `Start on ${road}` : "Start your journey";
+
+      case "arrive":
+        return "Arrive at your destination";
+
+      case "turn":
+        return `Turn ${modifier || "as directed"}${road ? " onto " + road : ""}`;
+
+      case "continue":
+      case "new name":
+        return road ? `Continue on ${road}` : "Continue straight";
+
+      case "merge":
+        return `Merge${modifier ? " " + modifier : ""}${road ? " onto " + road : ""}`;
+
+      case "fork":
+        return `At the fork, keep ${modifier || "on the main road"}${road ? " toward " + road : ""}`;
+
+      case "end of road":
+        return `At the end of the road, turn ${modifier || "as directed"}${road ? " onto " + road : ""}`;
+
+      case "on ramp":
+        return `Take the ramp${road ? " toward " + road : ""}`;
+
+      case "off ramp":
+        return `Take the exit ramp${road ? " toward " + road : ""}`;
+
+      case "roundabout":
+      case "rotary":
+        return `Enter the roundabout${road ? " toward " + road : ""}`;
+
+      case "exit roundabout":
+        return `Exit the roundabout${road ? " onto " + road : ""}`;
+
+      default:
+        return `${type ? type.replace(/_/g," ") : "Continue"}${road ? " on " + road : ""}`;
+    }
+  }
+
+  function displayRouteSteps(steps){
+    const element = document.getElementById("routeSteps");
+    if(!element) return;
+
+    if(!Array.isArray(steps) || !steps.length){
+      element.replaceChildren();
+      element.classList.add("hidden");
+      return;
+    }
+
+    element.innerHTML = steps.map(step => {
+      const instruction = formatRouteInstruction(step);
+      const distance = formatRouteDistance(step.distance);
+
+      return `
+        <li>
+          ${escapeHtml(instruction)}
+          ${distance
+            ? `<span class="route-step-distance">${escapeHtml(distance)}</span>`
+            : ""}
+        </li>
+      `;
+    }).join("");
+
+    element.classList.remove("hidden");
+  }
+
+  function clearCurrentRoute(){
+    if(activeMap && activeRouteLine){
+      activeMap.removeLayer(activeRouteLine);
+    }
+
+    if(activeMap && activeUserMarker){
+      activeMap.removeLayer(activeUserMarker);
+    }
+
+    activeRouteLine = null;
+    activeUserMarker = null;
+
+    const summary = document.getElementById("routeSummary");
+    const steps = document.getElementById("routeSteps");
+    const navigationLink = document.getElementById("openNavigationButton");
+
+    if(summary){
+      summary.textContent = "";
+      summary.classList.add("hidden");
+    }
+
+    if(steps){
+      steps.replaceChildren();
+      steps.classList.add("hidden");
+    }
+
+    if(navigationLink){
+      navigationLink.classList.add("hidden");
+      navigationLink.removeAttribute("href");
+    }
+  }
+
   function initializeMap(business){
     const mapElement = document.getElementById("businessMap");
 
@@ -557,7 +799,8 @@ footer a{color:var(--gold2);text-decoration:none}
       mapElement.innerHTML = `
         <div style="height:100%;display:grid;place-items:center;background:#111;color:#777;text-align:center;padding:20px">
           Precise map coordinates are not available for this listing.
-          Use the directions button above if an address is available.
+          An on-map route cannot be calculated until the business coordinates are corrected.
+          You can still try the Google Maps directions button if an address is available.
         </div>`;
       return;
     }
@@ -573,13 +816,288 @@ footer a{color:var(--gold2);text-decoration:none}
     );
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
-      attribution:"© OpenStreetMap contributors"
+      attribution:"© OpenStreetMap contributors",
+      maxZoom:19
     }).addTo(activeMap);
 
-    L.marker([coordinates.latitude,coordinates.longitude])
-      .addTo(activeMap)
-      .bindPopup(escapeHtml(getBusinessName(business)))
-      .openPopup();
+    activeDestinationMarker = L.marker([
+      coordinates.latitude,
+      coordinates.longitude
+    ]).addTo(activeMap)
+      .bindPopup(escapeHtml(getBusinessName(business)));
+
+    activeDestinationMarker.openPopup();
+
+    // Correct the map size after the profile content becomes visible.
+    setTimeout(() => {
+      if(activeMap){
+        activeMap.invalidateSize();
+      }
+    },100);
+  }
+
+  /*
+   * Request the browser location and draw a driving route
+   * from the visitor's position to the selected business.
+   */
+  async function showRouteFromCurrentLocation(){
+    if(routeRequestInProgress) return;
+
+    const button = document.getElementById("showRouteButton");
+    const summary = document.getElementById("routeSummary");
+    const navigationLink = document.getElementById("openNavigationButton");
+
+    if(!activeBusiness){
+      setRouteStatus("The business profile is not ready. Reload and try again.","error");
+      return;
+    }
+
+    if(!activeMap){
+      setRouteStatus(
+        "The map cannot calculate a route because valid business GPS coordinates are unavailable.",
+        "error"
+      );
+      return;
+    }
+
+    const destination = getBusinessCoordinates(activeBusiness);
+
+    if(!destination){
+      setRouteStatus(
+        "This business has no valid GPS coordinates. Please report or correct its location.",
+        "error"
+      );
+      return;
+    }
+
+    if(!window.isSecureContext || !navigator.geolocation){
+      setRouteStatus(
+        "This browser cannot provide location access here. Open the page over HTTPS or use Google Maps directions.",
+        "error"
+      );
+      return;
+    }
+
+    routeRequestInProgress = true;
+
+    if(button){
+      button.disabled = true;
+      button.textContent = "Finding your location…";
+    }
+
+    clearCurrentRoute();
+
+    // Keep a Google Maps fallback available even if our route service fails.
+    if(navigationLink){
+      navigationLink.href = buildBusinessDirectionsUrl(activeBusiness);
+    }
+
+    setRouteStatus("Requesting your current location…");
+
+    try{
+      const position = await new Promise((resolve,reject) => {
+        navigator.geolocation.getCurrentPosition(
+          resolve,
+          reject,
+          {
+            enableHighAccuracy:true,
+            timeout:30000,
+            maximumAge:10000
+          }
+        );
+      });
+
+      const origin = {
+        latitude:Number(position.coords.latitude),
+        longitude:Number(position.coords.longitude),
+        accuracy:Number(position.coords.accuracy)
+      };
+
+      if(
+        !Number.isFinite(origin.latitude) ||
+        !Number.isFinite(origin.longitude) ||
+        origin.latitude < -90 ||
+        origin.latitude > 90 ||
+        origin.longitude < -180 ||
+        origin.longitude > 180 ||
+        !Number.isFinite(origin.accuracy) ||
+        origin.accuracy < 0
+      ){
+        throw new Error("The browser returned invalid coordinates. Please try again.");
+      }
+
+      /*
+       * A broad IP-based location may be hundreds of kilometres away.
+       * Do not draw a misleading driving route from a very rough reading.
+       */
+      const MAX_ROUTE_ORIGIN_ACCURACY_METERS = 5000;
+
+      if(origin.accuracy > MAX_ROUTE_ORIGIN_ACCURACY_METERS){
+        throw new Error(
+          `Your location accuracy is approximately ${formatRouteDistance(origin.accuracy)}. ` +
+          "A more precise location is needed for an accurate route. " +
+          "You can still open Google Maps directions."
+        );
+      }
+
+      setRouteStatus("Calculating the driving route…");
+
+      const routeUrl = new URL(
+        ROUTING_URL +
+        `${origin.longitude},${origin.latitude};` +
+        `${destination.longitude},${destination.latitude}`
+      );
+
+      routeUrl.searchParams.set("overview","full");
+      routeUrl.searchParams.set("geometries","geojson");
+      routeUrl.searchParams.set("steps","true");
+
+      const response = await fetch(routeUrl.toString(),{
+        headers:{Accept:"application/json"},
+        cache:"no-store"
+      });
+
+      if(!response.ok){
+        throw new Error(
+          "The routing service is unavailable right now. Please try again or use Google Maps."
+        );
+      }
+
+      const payload = await response.json();
+
+      if(
+        payload.code !== "Ok" ||
+        !Array.isArray(payload.routes) ||
+        !payload.routes.length
+      ){
+        throw new Error(
+          "No driving route was found. Try Google Maps or check the business map pin."
+        );
+      }
+
+      const route = payload.routes[0];
+      const coordinatePairs = route.geometry?.coordinates;
+
+      if(!Array.isArray(coordinatePairs) || coordinatePairs.length < 2){
+        throw new Error("The routing service returned an invalid route.");
+      }
+
+      // GeoJSON coordinates are [longitude, latitude].
+      const routeLatLngs = coordinatePairs
+        .map(pair => [Number(pair[1]),Number(pair[0])])
+        .filter(pair =>
+          Number.isFinite(pair[0]) &&
+          Number.isFinite(pair[1]) &&
+          pair[0] >= -90 &&
+          pair[0] <= 90 &&
+          pair[1] >= -180 &&
+          pair[1] <= 180
+        );
+
+      if(routeLatLngs.length < 2){
+        throw new Error("The route contains insufficient valid map points.");
+      }
+
+      activeRouteLine = L.polyline(routeLatLngs,{
+        color:"#d4af37",
+        weight:6,
+        opacity:0.92,
+        lineCap:"round",
+        lineJoin:"round"
+      }).addTo(activeMap);
+
+      activeUserMarker = L.circleMarker(
+        [origin.latitude,origin.longitude],
+        {
+          radius:8,
+          color:"#ffffff",
+          weight:3,
+          fillColor:"#2585ff",
+          fillOpacity:1
+        }
+      ).addTo(activeMap)
+        .bindPopup("Your starting point");
+
+      if(activeDestinationMarker){
+        activeDestinationMarker.setPopupContent(
+          escapeHtml(getBusinessName(activeBusiness))
+        );
+      }
+
+      // Display the start and destination within the same map view.
+      activeMap.fitBounds(
+        activeRouteLine.getBounds(),
+        {
+          padding:[30,30],
+          maxZoom:15
+        }
+      );
+
+      const distanceText = formatRouteDistance(route.distance);
+      const durationText = formatRouteDuration(route.duration);
+
+      if(summary){
+        summary.textContent =
+          `Estimated driving distance: ${distanceText}. ` +
+          `Estimated driving time: ${durationText}. ` +
+          "Actual time may vary with traffic and road conditions.";
+
+        summary.classList.remove("hidden");
+      }
+
+      const routeSteps = Array.isArray(route.legs)
+        ? route.legs.flatMap(leg =>
+            Array.isArray(leg.steps) ? leg.steps : []
+          )
+        : [];
+
+      displayRouteSteps(routeSteps);
+
+      // Provide the exact GPS origin and business destination to Google Maps.
+      if(navigationLink){
+        navigationLink.href = buildBusinessDirectionsUrl(
+          activeBusiness,
+          origin
+        );
+
+        navigationLink.classList.remove("hidden");
+      }
+
+      setRouteStatus(
+        "Your driving route is displayed on the map. Use the navigation button to open turn-by-turn directions in Google Maps.",
+        "success"
+      );
+
+    }catch(error){
+      let message = error.message || "Unable to calculate the route.";
+
+      if(typeof error.code === "number"){
+        if(error.code === 1){
+          message = "Location permission was denied. Allow location access and try again, or open Google Maps directions.";
+        }else if(error.code === 2){
+          message = "Your device could not determine your location. Try again or open Google Maps directions.";
+        }else if(error.code === 3){
+          message = "Getting your current location timed out. Try again in an area with better location reception.";
+        }
+      }
+
+      console.error("NearAfrica directions error:",error);
+      setRouteStatus(message,"error");
+
+      // The Google Maps fallback can still be used if a route fails.
+      if(navigationLink){
+        navigationLink.href = buildBusinessDirectionsUrl(activeBusiness);
+        navigationLink.classList.remove("hidden");
+      }
+
+    }finally{
+      routeRequestInProgress = false;
+
+      if(button){
+        button.disabled = false;
+        button.textContent = "Show Route From My Location";
+      }
+    }
   }
 
   function renderProducts(products){
@@ -775,6 +1293,7 @@ footer a{color:var(--gold2);text-decoration:none}
 
     const name = getBusinessName(business);
     const location = getLocation(business);
+    const coordinates = getBusinessCoordinates(business);
     const directionsUrl = buildBusinessDirectionsUrl(business);
     const category = clean(business.category);
     const description = clean(business.description);
@@ -896,7 +1415,7 @@ footer a{color:var(--gold2);text-decoration:none}
           ${renderReviews(reviews)}
 
           <section class="profile-card">
-            <h2>Location</h2>
+            <h2>Location &amp; Directions</h2>
 
             ${location ? `<p style="color:#aaa">${escapeHtml(location)}</p>` : ""}
 
@@ -907,14 +1426,13 @@ footer a{color:var(--gold2);text-decoration:none}
                     href="${escapeAttribute(directionsUrl)}"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Navigate to ${escapeAttribute(name)} using Google Maps">
+                    aria-label="Get GPS directions to ${escapeAttribute(name)} using Google Maps">
                     🧭 Get GPS Directions
                   </a>
 
                   <p class="directions-note">
-                    Directions open in Google Maps. Your device or Maps app
-                    can use your current location to guide you to this business.
-                    Location permission may be requested by your browser or Maps.
+                    Open Google Maps for navigation, or use the route tool below
+                    to display the driving route on the NearAfrica map.
                   </p>
                 `
                 : `
@@ -926,7 +1444,49 @@ footer a{color:var(--gold2);text-decoration:none}
                 `
             }
 
+            <div class="map-directions-tools">
+              <button
+                type="button"
+                class="directions-btn"
+                id="showRouteButton"
+                ${coordinates ? "" : "disabled"}
+              >
+                🧭 Show Route From My Location
+              </button>
+
+              <a
+                id="openNavigationButton"
+                class="btn hidden"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Open Turn-by-Turn Navigation
+              </a>
+
+              <p
+                id="routeStatus"
+                class="route-status"
+                role="status"
+                aria-live="polite"
+              >${
+                coordinates
+                  ? "Tap the button to use your current location and calculate a driving route to this business."
+                  : "An on-map route requires valid GPS coordinates for this business."
+              }</p>
+
+              <div id="routeSummary" class="route-summary hidden"></div>
+
+              <ol id="routeSteps" class="route-steps hidden"></ol>
+            </div>
+
             <div id="businessMap"></div>
+
+            <p class="leaflet-routing-note">
+              Map data © OpenStreetMap contributors. Routes are calculated
+              by an external routing service. Your coordinates are sent to
+              that service when you request a route.
+            </p>
           </section>
         </div>
 
@@ -992,7 +1552,15 @@ footer a{color:var(--gold2);text-decoration:none}
   function setupActions(){
     const reportButton = document.getElementById("reportButton");
     const correctionButton = document.getElementById("correctionButton");
+    const showRouteButton = document.getElementById("showRouteButton");
     const reviewForm = document.getElementById("reviewForm");
+
+    if(showRouteButton){
+      showRouteButton.addEventListener(
+        "click",
+        showRouteFromCurrentLocation
+      );
+    }
 
     if(reportButton){
       reportButton.addEventListener("click",() => {
@@ -1159,8 +1727,8 @@ footer a{color:var(--gold2);text-decoration:none}
       }
 
       /*
-       * Load public reviews separately. If the reviews endpoint fails,
-       * the main business profile will still be displayed.
+       * Load public reviews separately.
+       * If reviews fail, the main business profile still loads.
        */
       try{
         const reviewIdentifier = result.business.id || identifier;
@@ -1182,6 +1750,7 @@ footer a{color:var(--gold2);text-decoration:none}
       recordView(result.business.id || identifier);
     }catch(error){
       console.error("Business loading failed:",error);
+
       showNotFound(
         error.message || "Unable to load this business right now."
       );
@@ -1206,3 +1775,4 @@ footer a{color:var(--gold2);text-decoration:none}
 
 </body>
 </html>
+
