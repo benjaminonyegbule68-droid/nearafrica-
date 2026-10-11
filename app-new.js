@@ -7,8 +7,8 @@
  * - Preserves real API data, search, location filters,
  *   Nearby/GPS, pagination, saved businesses and profile links.
  * - Requests a fresh browser location for Nearby searches.
- * - Rejects inaccurate GPS readings above 5 km accuracy.
- * - Rejects previously saved inaccurate location readings.
+ * - Accepts GPS readings up to 25 km accuracy (realistic for most devices).
+ * - On timeout, uses the best available position instead of failing hard.
  * - Does not create fictional business listings.
  */
 
@@ -22,8 +22,9 @@
   const NEARBY_KEY = "nearafrica_nearby_mode";
   const SAVED_KEY = "nearafrica_saved_businesses";
 
-  // Do not use GPS readings whose reported accuracy is worse than 5 km.
-  const MAX_LOCATION_ACCURACY_METERS = 5000;
+  // Accept GPS readings whose reported accuracy is 25 km or better.
+  // (Previously 5 km — that was too strict for most real devices.)
+  const MAX_LOCATION_ACCURACY_METERS = 25000;
 
   /*
    * Canonical category labels used by the Home page.
@@ -502,7 +503,7 @@
     return list.filter((business) => {
       const key = String(
         business.id ||
-        `${business.name}|${business.city}|${business.state}`
+        `\( {business.name}| \){business.city}|${business.state}`
       ).toLowerCase();
 
       if (seen.has(key)) return false;
@@ -781,134 +782,132 @@
   /*
    * Request a fresh browser location.
    *
-   * A poor location estimate must not silently be used for Nearby
-   * results. High accuracy is requested, cached browser positions
-   * are avoided, and readings worse than 5 km are rejected.
+   * High accuracy is preferred. Readings up to 25 km accuracy
+   * are accepted. If the timer expires, the best position
+   * found so far is used instead of failing completely.
    */
-  
-function getBrowserLocation() {
-  return new Promise((resolve, reject) => {
-    if (!window.isSecureContext) {
-      reject(new Error("Location access requires HTTPS."));
-      return;
-    }
-
-    if (!navigator.geolocation) {
-      reject(
-        new Error(
-          "This browser does not support location services."
-        )
-      );
-      return;
-    }
-
-    let watchId = null;
-    let timerId = null;
-    let finished = false;
-    let bestAccuracy = null;
-
-    function finish(error, position) {
-      if (finished) return;
-      finished = true;
-
-      if (timerId !== null) {
-        clearTimeout(timerId);
+  function getBrowserLocation() {
+    return new Promise((resolve, reject) => {
+      if (!window.isSecureContext) {
+        reject(new Error("Location access requires HTTPS."));
+        return;
       }
 
-      if (watchId !== null) {
-        try {
-          navigator.geolocation.clearWatch(watchId);
-        } catch (_) {}
+      if (!navigator.geolocation) {
+        reject(
+          new Error(
+            "This browser does not support location services."
+          )
+        );
+        return;
       }
 
-      if (error) {
-        reject(error);
-      } else {
-        resolve(position);
-      }
-    }
+      let watchId = null;
+      let timerId = null;
+      let finished = false;
+      let bestAccuracy = null;
+      let bestPosition = null;
 
-    // Give the browser up to 45 seconds to obtain
-    // a location with accuracy of 5 km or better.
-    timerId = setTimeout(() => {
-      const message = bestAccuracy !== null
-        ? `Your browser could not obtain a precise enough location. Its best reported accuracy was ${Math.round(bestAccuracy)} metres. Try again or check your device's location settings.`
-        : "Your device could not determine your location. Check location services and try again.";
+      function finish(error, position) {
+        if (finished) return;
+        finished = true;
 
-      finish(new Error(message));
-    }, 45000);
-
-    try {
-      watchId = navigator.geolocation.watchPosition(
-        (position) => {
-          const latitude = number(
-            position.coords.latitude
-          );
-
-          const longitude = number(
-            position.coords.longitude
-          );
-
-          const accuracy = number(
-            position.coords.accuracy
-          );
-
-          if (
-            latitude === null ||
-            longitude === null ||
-            latitude < -90 ||
-            latitude > 90 ||
-            longitude < -180 ||
-            longitude > 180 ||
-            accuracy === null ||
-            accuracy < 0
-          ) {
-            return;
-          }
-
-          if (
-            bestAccuracy === null ||
-            accuracy < bestAccuracy
-          ) {
-            bestAccuracy = accuracy;
-          }
-
-          // Accept only a sufficiently accurate reading.
-          if (accuracy <= MAX_LOCATION_ACCURACY_METERS) {
-            finish(null, {
-              latitude,
-              longitude,
-              accuracy
-            });
-          }
-        },
-        (error) => {
-          // Permission denial cannot be fixed by retrying.
-          if (error.code === 1) {
-            finish(
-              new Error(
-                "Location permission was denied. Allow location access and try again."
-              )
-            );
-          }
-
-          // Other temporary errors may recover while watching.
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 60000,
-          maximumAge: 0
+        if (timerId !== null) {
+          clearTimeout(timerId);
         }
-      );
-    } catch (error) {
-      finish(
-        new Error(
-          error.message || "Unable to start location detection."
-        )
-      );
-    }
-  });
-}
+
+        if (watchId !== null) {
+          try {
+            navigator.geolocation.clearWatch(watchId);
+          } catch (_) {}
+        }
+
+        if (error) {
+          reject(error);
+        } else {
+          resolve(position);
+        }
+      }
+
+      // Give the browser up to 30 seconds.
+      // If we have any valid position by then, accept the best one.
+      timerId = setTimeout(() => {
+        if (bestPosition) {
+          finish(null, bestPosition);
+          return;
+        }
+
+        const message = bestAccuracy !== null
+          ? `Your browser could not obtain a usable location. Its best reported accuracy was ${Math.round(bestAccuracy)} metres. Try again outdoors or check your device's location settings.`
+          : "Your device could not determine your location. Check location services and try again.";
+
+        finish(new Error(message));
+      }, 30000);
+
+      try {
+        watchId = navigator.geolocation.watchPosition(
+          (position) => {
+            const latitude = number(position.coords.latitude);
+            const longitude = number(position.coords.longitude);
+            const accuracy = number(position.coords.accuracy);
+
+            if (
+              latitude === null ||
+              longitude === null ||
+              latitude < -90 ||
+              latitude > 90 ||
+              longitude < -180 ||
+              longitude > 180 ||
+              accuracy === null ||
+              accuracy < 0
+            ) {
+              return;
+            }
+
+            // Keep the best (most accurate) reading seen so far
+            if (
+              bestAccuracy === null ||
+              accuracy < bestAccuracy
+            ) {
+              bestAccuracy = accuracy;
+              bestPosition = {
+                latitude,
+                longitude,
+                accuracy
+              };
+            }
+
+            // Accept immediately when accuracy is good enough
+            if (accuracy <= MAX_LOCATION_ACCURACY_METERS) {
+              finish(null, bestPosition);
+            }
+          },
+          (error) => {
+            // Permission denial cannot be fixed by retrying.
+            if (error.code === 1) {
+              finish(
+                new Error(
+                  "Location permission was denied. Allow location access and try again."
+                )
+              );
+            }
+            // Other temporary errors may recover while watching.
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 60000,
+            maximumAge: 0
+          }
+        );
+      } catch (error) {
+        finish(
+          new Error(
+            error.message || "Unable to start location detection."
+          )
+        );
+      }
+    });
+  }
 
   async function reverseGeocode(location) {
     try {
@@ -916,15 +915,8 @@ function getBrowserLocation() {
         apiUrl(endpoint("location", "location/reverse"))
       );
 
-      url.searchParams.set(
-        "latitude",
-        location.latitude
-      );
-
-      url.searchParams.set(
-        "longitude",
-        location.longitude
-      );
+      url.searchParams.set("latitude", location.latitude);
+      url.searchParams.set("longitude", location.longitude);
 
       const payload = await fetchJson(url.toString());
 
@@ -942,8 +934,7 @@ function getBrowserLocation() {
   }
 
   /*
-   * Never persist an inaccurate location as the active Nearby
-   * position. The reader also validates previously saved data.
+   * Persist a usable location for Nearby mode.
    */
   function saveLocation() {
     if (!App.userLocation) return;
@@ -999,8 +990,7 @@ function getBrowserLocation() {
   }
 
   /*
-   * Do not restore the previously saved 200 km-accuracy location.
-   * Older records without valid accuracy are rejected as well.
+   * Restore a previously saved location if it is still usable.
    */
   function restoreLocation() {
     let saved = null;
@@ -1081,6 +1071,7 @@ function getBrowserLocation() {
 
       // Reverse geocoding labels the coordinates; it does not
       // replace the coordinates used in distance calculations.
+      // Failure is non-blocking.
       App.locationInfo = await reverseGeocode(App.userLocation);
 
       App.nearbyMode = true;
