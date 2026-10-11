@@ -1702,3 +1702,59 @@ html[dir="rtl"] .business-card {
         scroll-behavior: auto !important;
     }
    }
+
+/* African countries moving strip */
+.countries-marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.countries-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: countries-scroll 45s linear infinite;
+  will-change: transform;
+}
+
+.countries-marquee-group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 30px;
+  padding-right: 30px;
+}
+
+.country-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.country-flag {
+  display: inline-block;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji",
+               "Noto Color Emoji", sans-serif;
+  font-size: 1.25em;
+  line-height: 1;
+}
+
+.countries-marquee:hover .countries-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes countries-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .countries-marquee-track {
+    animation: none;
+  }
+}
