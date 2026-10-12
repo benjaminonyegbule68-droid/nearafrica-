@@ -1053,7 +1053,10 @@ const NearAfricaConfig = {
       "fr",
       "ar",
       "pt",
-      "sw"
+      "sw",
+      "ha",
+      "yo",
+      "ig"
     ],
 
     names: {
@@ -1066,7 +1069,13 @@ const NearAfricaConfig = {
 
       pt: "Português",
 
-      sw: "Kiswahili"
+      sw: "Kiswahili",
+
+      ha: "Hausa",
+
+      yo: "Yorùbá",
+
+      ig: "Igbo"
     },
 
     direction: {
@@ -1079,7 +1088,13 @@ const NearAfricaConfig = {
 
       pt: "ltr",
 
-      sw: "ltr"
+      sw: "ltr",
+
+      ha: "ltr",
+
+      yo: "ltr",
+
+      ig: "ltr"
     },
 
     detectBrowserLanguage: true,
@@ -1088,15 +1103,17 @@ const NearAfricaConfig = {
 
     storageKey: "nearafrica_language",
 
-    translationVersion: "1.1",
+    translationVersion: "1.2",
 
     future: [
       "es",
       "de",
       "it",
-      "ha",
-      "yo",
-      "ig"
+      "am",
+      "zu",
+      "af",
+      "so",
+      "rw"
     ]
   },
 
@@ -1229,4 +1246,4 @@ if (
   module.exports
 ) {
   module.exports = NearAfricaConfig;
-  }
+      }
