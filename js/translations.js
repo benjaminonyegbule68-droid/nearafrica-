@@ -4,11 +4,14 @@
  * Interface translations for the NearAfrica platform.
  *
  * Languages:
- * en = English
+ * en = English (default)
  * fr = French
  * ar = Arabic
  * pt = Portuguese
  * sw = Swahili
+ * ha = Hausa
+ * yo = Yoruba
+ * ig = Igbo
  */
 
 const NearAfricaTranslations = {
@@ -1295,11 +1298,672 @@ const NearAfricaTranslations = {
       notFound:
         "Biashara uliyoomba haikupatikana."
     }
+  },
+
+  // HAUSA
+  // =========================================================
+
+  ha: {
+    siteName: "NearAfrica",
+    tagline: "Nemo Manyan Kasuwancin da ke Kusa da Kai.",
+    description: "Gano kasuwancin da ake amincewa da su, ayyuka, shaguna da wurare a duk fadin Afirka.",
+    nav: {
+      home: "Gida",
+      explore: "Bincika",
+      listBusiness: "Jera Kasuwancinka",
+      claimBusiness: "Yi Da'awar Kasuwanci",
+      helpWanted: "Ana Bukatar Taimako",
+      about: "Game da Mu",
+      contact: "Tuntube Mu"
+    },
+    search: {
+      title: "Gano Afirka. Fara Daga Gida.",
+      whatLookingFor: "Me kake nema?",
+      location: "Wuri",
+      searchPlaceholder: "misali: wanzami, otal, gidan abinci...",
+      locationPlaceholder: "misali: Aba, Lagos, Abuja...",
+      search: "Nema",
+      useMyLocation: "Yi amfani da wurina",
+      usingYourLocation: "Ana amfani da wurinka...",
+      locationAccessDenied: "An hana damar samun wuri.",
+      locationUnavailable: "Ba a iya samun wurinka ba.",
+      locationError: "An sami kuskure wajen samun wuri.",
+      locationNotSupported: "Mai bincikenka baya tallafawa wurin GPS."
+    },
+    explore: {
+      title: "Bincika Kasuwanni",
+      subtitle: "Nemo kasuwancin da ake amincewa da su a kusa da kai.",
+      businesses: "Kasuwanni",
+      businessesFound: "kasuwanni da aka samo",
+      businessesFoundNearby: "kasuwanni da aka samo a kusa",
+      businessesNearYou: "Kasuwanni a kusa da kai",
+      allBusinesses: "Duk kasuwanni",
+      noBusinesses: "Ba a sami kasuwanci ba.",
+      noBusinessesNearby: "Babu kasuwanci a kusa da wurinka.",
+      distanceUnavailable: "Ba a iya kididdige nisa ba",
+      away: "nisa",
+      clearLocation: "Share wuri",
+      filters: "Tacewa",
+      category: "Rukuni",
+      state: "Jiha",
+      rating: "Kima",
+      verifiedOnly: "Tabbatattu kawai",
+      allCategories: "Duk rukunoni",
+      allStates: "Duk jihohi",
+      anyRating: "Kowace kima",
+      fourPlus: "4+ taurari",
+      threePlus: "3+ taurari",
+      twoPlus: "2+ taurari",
+      verified: "An tabbatar",
+      previous: "Na baya",
+      next: "Na gaba"
+    },
+    categories: {
+      restaurants: "Gidajen Abinci",
+      hotels: "Otaloli",
+      beauty: "Kyau & Kula da Kai",
+      health: "Lafiya",
+      gyms: "Wuraren motsa jiki",
+      shopping: "Saye da Sayarwa",
+      supermarkets: "Manyan Kanti",
+      banks: "Bankuna",
+      professional: "Ayyukan Kwararru",
+      education: "Ilimi",
+      realEstate: "Kayan Gida",
+      automotive: "Motoci",
+      travel: "Tafiya",
+      logistics: "Sauraro & Safara",
+      technology: "Fasaha",
+      entertainment: "Nishadi",
+      fitness: "Motsa jiki",
+      construction: "Gine-gine",
+      fashion: "Salon Tufafi",
+      agriculture: "Noma",
+      religious: "Addini",
+      government: "Gwamnati",
+      other: "Sauran"
+    },
+    business: {
+      verified: "An tabbatar",
+      unverified: "Ba a tabbatar ba",
+      claimed: "An yi da'awa",
+      unclaimed: "Ba a yi da'awa ba",
+      viewBusiness: "Duba Kasuwanci",
+      call: "Kira",
+      whatsapp: "WhatsApp",
+      website: "Gidan yanar gizo",
+      directions: "Hanyoyi",
+      reviews: "Ra'ayoyi",
+      review: "Ra'ayi",
+      hours: "Lokutan aiki",
+      services: "Ayyuka",
+      products: "Kayayyaki",
+      about: "Game da",
+      contact: "Tuntuba",
+      address: "Adireshi",
+      phone: "Waya",
+      email: "Imel",
+      openNow: "A bude yanzu",
+      closedNow: "A rufe yanzu",
+      openingSoon: "Zai bude nan ba da jimawa ba",
+      closingSoon: "Zai rufe nan ba da jimawa ba"
+    },
+    owner: {
+      listBusiness: "Jera Kasuwancinka",
+      claimBusiness: "Yi Da'awar Kasuwanci",
+      ownerDashboard: "Allon Mai shi",
+      manageBusiness: "Sarrafa Kasuwanci",
+      editBusiness: "Gyara Kasuwanci",
+      businessAnalytics: "Nazari na Kasuwanci"
+    },
+    reviews: {
+      title: "Ra'ayoyi",
+      writeReview: "Rubuta Ra'ayi",
+      rating: "Kima",
+      comment: "Sharhi",
+      submit: "Aika",
+      report: "Kai rahoto",
+      noReviews: "Babu ra'ayoyi tukuna.",
+      reviewSubmitted: "An aika ra'ayinka."
+    },
+    helpWanted: {
+      title: "Ana Bukatar Taimako",
+      subtitle: "Nemo damar aiki da ayyuka a Afirka.",
+      postOpportunity: "Buga Dama",
+      viewOpportunity: "Duba Dama",
+      apply: "Nema",
+      location: "Wuri",
+      type: "Nau'i",
+      description: "Bayani"
+    },
+    account: {
+      login: "Shiga",
+      logout: "Fita",
+      register: "Yi rijista",
+      profile: "Bayanan sirri",
+      favorites: "Abubuwan da aka fi so",
+      savedSearches: "Neman da aka adana",
+      recentlyViewed: "Wanda aka duba kwanan nan",
+      notifications: "Sanarwa"
+    },
+    payments: {
+      free: "Kyauta",
+      pro: "Pro",
+      premium: "Premium",
+      monthly: "Kowane wata",
+      subscribe: "Yi rajista",
+      manageSubscription: "Sarrafa rajista",
+      paymentSuccessful: "An biya cikin nasara",
+      paymentFailed: "Biyan kudi ya gaza",
+      subscriptionActive: "Rajista tana aiki"
+    },
+    contact: {
+      title: "Tuntube Mu",
+      subtitle: "Muna nan don taimaka maka.",
+      emailTitle: "Imel",
+      emailDescription: "Aika mana sako ta imel.",
+      emailAction: "Aika imel",
+      businessTitle: "Kasuwanci",
+      businessDescription: "Tambayoyi game da jera ko da'awar kasuwanci.",
+      businessAction: "Tuntubi tallafi",
+      supportTitle: "Tallafi",
+      supportDescription: "Samu taimako da amsa tambayoyi.",
+      supportAction: "Nemi tallafi",
+      formTitle: "Aika mana sako",
+      name: "Suna",
+      email: "Imel",
+      subject: "Jigo",
+      message: "Sako",
+      namePlaceholder: "Sunan ka",
+      emailPlaceholder: "imel@misali.com",
+      subjectPlaceholder: "Me game da?",
+      messagePlaceholder: "Rubuta sakonka nan...",
+      sendMessage: "Aika Sako",
+      formNote: "Za mu mayar da martani da wuri-wuri.",
+      success: "An aika sakonka. Na gode!",
+      validation: "Da fatan za a cika duk filayen da ake bukata.",
+      backHome: "Koma gida"
+    },
+    actions: {
+      save: "Ajiye",
+      cancel: "Soke",
+      close: "Rufe",
+      back: "Baya",
+      continue: "Ci gaba",
+      submit: "Aika",
+      confirm: "Tabbatar",
+      delete: "Share",
+      edit: "Gyara",
+      report: "Kai rahoto",
+      viewMore: "Duba kari",
+      learnMore: "Kara koyo",
+      loading: "Ana lodawa...",
+      retry: "Sake gwadawa"
+    },
+    legal: {
+      privacy: "Kebantawa",
+      terms: "Sharudda",
+      listingPolicy: "Manufar Jerawa",
+      cookiePolicy: "Manufar Cookie",
+      reviewGuidelines: "Jagororin Ra'ayi"
+    },
+    footer: {
+      copyright: "© NearAfrica. Duk hakkoki sun kebe.",
+      discover: "Gano",
+      contactUs: "Tuntube mu"
+    },
+    errors: {
+      somethingWentWrong: "Wani abu ya yi kuskure.",
+      unableToLoad: "An kasa lodawa.",
+      network: "Matsalar hanyar sadarwa. Da fatan za a sake gwadawa.",
+      notFound: "Ba a samu ba."
+    }
+  },
+
+  // =========================================================
+  // YORUBA
+  // =========================================================
+
+  yo: {
+    siteName: "NearAfrica",
+    tagline: "Wa Awọn Iṣowo Nla Nitosi Rẹ.",
+    description: "Ṣawari awọn iṣowo to ni igbẹkẹle, awọn iṣẹ, awọn ile itaja ati awọn ibi kọja Afirika.",
+    nav: {
+      home: "Ile",
+      explore: "Ṣawari",
+      listBusiness: "Ṣe Akojọ Iṣowo Rẹ",
+      claimBusiness: "Beere Iṣowo",
+      helpWanted: "A Nilo Iranlọwọ",
+      about: "Nipa Wa",
+      contact: "Kan Si Wa"
+    },
+    search: {
+      title: "Ṣawari Afirika. Bẹrẹ Lati Ile.",
+      whatLookingFor: "Kini o n wa?",
+      location: "Ibi",
+      searchPlaceholder: "fun apẹẹrẹ: onirun, hotẹẹli, ile ounjẹ...",
+      locationPlaceholder: "fun apẹẹrẹ: Aba, Lagos, Abuja...",
+      search: "Wa",
+      useMyLocation: "Lo ibi mi",
+      usingYourLocation: "Nlo ibi rẹ...",
+      locationAccessDenied: "A kọ iraye si ibi.",
+      locationUnavailable: "Ko le ri ibi rẹ.",
+      locationError: "Aṣiṣe kan ṣẹlẹ nigbati a n wa ibi.",
+      locationNotSupported: "Aṣàwákiri rẹ ko ṣe atilẹyin GPS."
+    },
+    explore: {
+      title: "Ṣawari Awọn Iṣowo",
+      subtitle: "Wa awọn iṣowo to ni igbẹkẹle nitosi rẹ.",
+      businesses: "Awọn iṣowo",
+      businessesFound: "awọn iṣowo ti a ri",
+      businessesFoundNearby: "awọn iṣowo ti a ri nitosi",
+      businessesNearYou: "Awọn iṣowo nitosi rẹ",
+      allBusinesses: "Gbogbo awọn iṣowo",
+      noBusinesses: "Ko si iṣowo ti a ri.",
+      noBusinessesNearby: "Ko si iṣowo nitosi ibi rẹ.",
+      distanceUnavailable: "A ko le ṣe iṣiro ijinna",
+      away: "jinna",
+      clearLocation: "Pa ibi rẹ",
+      filters: "Alẹmọ",
+      category: "Ẹka",
+      state: "Ipinle",
+      rating: "Iye",
+      verifiedOnly: "Ti a jẹrisi nikan",
+      allCategories: "Gbogbo awọn ẹka",
+      allStates: "Gbogbo awọn ipinle",
+      anyRating: "Eyikeyi iye",
+      fourPlus: "Irawọ 4+",
+      threePlus: "Irawọ 3+",
+      twoPlus: "Irawọ 2+",
+      verified: "Ti a jẹrisi",
+      previous: "Ti tẹlẹ",
+      next: "Eyi ti nbọ"
+    },
+    categories: {
+      restaurants: "Awọn Ile Ounjẹ",
+      hotels: "Awọn Hotẹẹli",
+      beauty: "Ẹwa & Itọju Ara",
+      health: "Ilera",
+      gyms: "Ile idaraya",
+      shopping: "Rira",
+      supermarkets: "Awọn Supermarket",
+      banks: "Awọn Banki",
+      professional: "Awọn Iṣẹ Ọjọgbọn",
+      education: "Ẹkọ",
+      realEstate: "Ile ati Ilẹ",
+      automotive: "Mọto",
+      travel: "Irin-ajo",
+      logistics: "Eto gbigbe",
+      technology: "Imọ-ẹrọ",
+      entertainment: "Idanilaraya",
+      fitness: "Idaraya",
+      construction: "Ikole",
+      fashion: "Aṣa Aṣọ",
+      agriculture: "Iṣẹ-ogbin",
+      religious: "Ẹsin",
+      government: "Ijoba",
+      other: "Miiran"
+    },
+    business: {
+      verified: "Ti a jẹrisi",
+      unverified: "Ti a ko jẹrisi",
+      claimed: "Ti a beere",
+      unclaimed: "Ti a ko beere",
+      viewBusiness: "Wo Iṣowo",
+      call: "Pe",
+      whatsapp: "WhatsApp",
+      website: "Oju-opo wẹẹbu",
+      directions: "Itọsọna",
+      reviews: "Awọn atunwo",
+      review: "Atunwo",
+      hours: "Awọn wakati iṣẹ",
+      services: "Awọn iṣẹ",
+      products: "Awọn ọja",
+      about: "Nipa",
+      contact: "Kan si",
+      address: "Adirẹsi",
+      phone: "Foonu",
+      email: "Imeeli",
+      openNow: "Ṣi silẹ bayi",
+      closedNow: "Ti di bayi",
+      openingSoon: "Yoo ṣi laipẹ",
+      closingSoon: "Yoo di laipẹ"
+    },
+    owner: {
+      listBusiness: "Ṣe Akojọ Iṣowo Rẹ",
+      claimBusiness: "Beere Iṣowo",
+      ownerDashboard: "Dasibodu Oniwun",
+      manageBusiness: "Ṣakoso Iṣowo",
+      editBusiness: "Ṣatunkọ Iṣowo",
+      businessAnalytics: "Itupalẹ Iṣowo"
+    },
+    reviews: {
+      title: "Awọn Atunwo",
+      writeReview: "Kọ Atunwo",
+      rating: "Iye",
+      comment: "Ọrọìwòye",
+      submit: "Fi ranṣẹ",
+      report: "Fi iroyin",
+      noReviews: "Ko si atunwo sibẹsibẹ.",
+      reviewSubmitted: "A ti fi atunwo rẹ ranṣẹ."
+    },
+    helpWanted: {
+      title: "A Nilo Iranlọwọ",
+      subtitle: "Wa awọn anfani iṣẹ kọja Afirika.",
+      postOpportunity: "Fi Anfani Silẹ",
+      viewOpportunity: "Wo Anfani",
+      apply: "Lo",
+      location: "Ibi",
+      type: "Iru",
+      description: "Apejuwe"
+    },
+    account: {
+      login: "Wọle",
+      logout: "Jade",
+      register: "Forukọsilẹ",
+      profile: "Profaili",
+      favorites: "Awọn ayanfẹ",
+      savedSearches: "Awọn wiwa ti a fipamọ",
+      recentlyViewed: "Ti a wo laipẹ",
+      notifications: "Awọn iwifunni"
+    },
+    payments: {
+      free: "Ọfẹ",
+      pro: "Pro",
+      premium: "Premium",
+      monthly: "Oṣooṣu",
+      subscribe: "Ṣe alabapin",
+      manageSubscription: "Ṣakoso alabapin",
+      paymentSuccessful: "Isanwo ṣaṣeyọri",
+      paymentFailed: "Isanwo kuna",
+      subscriptionActive: "Alabapin nṣiṣẹ"
+    },
+    contact: {
+      title: "Kan Si Wa",
+      subtitle: "A wa nibi lati ran ọ lọwọ.",
+      emailTitle: "Imeeli",
+      emailDescription: "Fi ifiranṣẹ imeeli ranṣẹ si wa.",
+      emailAction: "Fi imeeli ranṣẹ",
+      businessTitle: "Iṣowo",
+      businessDescription: "Awọn ibeere nipa akojọ tabi beere iṣowo.",
+      businessAction: "Kan si atilẹyin",
+      supportTitle: "Atilẹyin",
+      supportDescription: "Gba iranlọwọ ati awọn idahun.",
+      supportAction: "Wa atilẹyin",
+      formTitle: "Fi ifiranṣẹ ranṣẹ si wa",
+      name: "Orukọ",
+      email: "Imeeli",
+      subject: "Koko",
+      message: "Ifiranṣẹ",
+      namePlaceholder: "Orukọ rẹ",
+      emailPlaceholder: "imeeli@apeere.com",
+      subjectPlaceholder: "Nipa kini?",
+      messagePlaceholder: "Kọ ifiranṣẹ rẹ nibi...",
+      sendMessage: "Fi Ifiranṣẹ Ranṣẹ",
+      formNote: "A yoo dahun ni kiakia.",
+      success: "A ti fi ifiranṣẹ rẹ ranṣẹ. O ṣeun!",
+      validation: "Jọwọ kun gbogbo awọn aaye ti a nilo.",
+      backHome: "Pada si ile"
+    },
+    actions: {
+      save: "Fipamọ",
+      cancel: "Fagilee",
+      close: "Pa",
+      back: "Ẹhin",
+      continue: "Tẹsiwaju",
+      submit: "Fi ranṣẹ",
+      confirm: "Jẹrisi",
+      delete: "Paarẹ",
+      edit: "Ṣatunkọ",
+      report: "Fi iroyin",
+      viewMore: "Wo diẹ sii",
+      learnMore: "Kọ ẹkọ diẹ sii",
+      loading: "Nkojọpọ...",
+      retry: "Gbiyanju lẹẹkansi"
+    },
+    legal: {
+      privacy: "Aṣiri",
+      terms: "Awọn ofin",
+      listingPolicy: "Eto Akojọ",
+      cookiePolicy: "Eto Cookie",
+      reviewGuidelines: "Itọsọna Atunwo"
+    },
+    footer: {
+      copyright: "© NearAfrica. Gbogbo ẹtọ ni a pamọ.",
+      discover: "Ṣawari",
+      contactUs: "Kan si wa"
+    },
+    errors: {
+      somethingWentWrong: "Nkankan ko tọ.",
+      unableToLoad: "Ko le kojọpọ.",
+      network: "Aṣiṣe nẹtiwọọki. Jọwọ gbiyanju lẹẹkansi.",
+      notFound: "A ko ri."
+    }
+  },
+
+  // =========================================================
+  // IGBO
+  // =========================================================
+
+  ig: {
+    siteName: "NearAfrica",
+    tagline: "Chọta Azụmahịa Dị Mma Dị Nso Gị.",
+    description: "Chọpụta azụmahịa a pụrụ ịtụkwasị obi, ọrụ, ụlọ ahịa na ebe dị n'ofe Africa.",
+    nav: {
+      home: "Ụlọ",
+      explore: "Chọgharịa",
+      listBusiness: "Depụta Azụmahịa Gị",
+      claimBusiness: "Kwuo Azụmahịa",
+      helpWanted: "A Chọrọ Enyemaka",
+      about: "Banyere Anyị",
+      contact: "Kpọtụrụ Anyị"
+    },
+    search: {
+      title: "Chọpụta Africa. Malite n'Ụlọ.",
+      whatLookingFor: "Gịnị ka ị na-achọ?",
+      location: "Ebe",
+      searchPlaceholder: "dịka: onye na-akpụ isi, hotel, ụlọ nri...",
+      locationPlaceholder: "dịka: Aba, Lagos, Abuja...",
+      search: "Chọọ",
+      useMyLocation: "Jiri ebe m",
+      usingYourLocation: "Na-eji ebe gị...",
+      locationAccessDenied: "Ajụrụ ohere ebe.",
+      locationUnavailable: "Enweghị ike ịchọta ebe gị.",
+      locationError: "Njehie mere mgbe a na-achọta ebe.",
+      locationNotSupported: "Ihe nchọgharị gị anaghị akwado GPS."
+    },
+    explore: {
+      title: "Chọgharịa Azụmahịa",
+      subtitle: "Chọta azụmahịa a pụrụ ịtụkwasị obi dị nso gị.",
+      businesses: "Azụmahịa",
+      businessesFound: "azụmahịa achọtara",
+      businessesFoundNearby: "azụmahịa achọtara nso",
+      businessesNearYou: "Azụmahịa dị nso gị",
+      allBusinesses: "Azụmahịa niile",
+      noBusinesses: "Achọtaghị azụmahịa ọ bụla.",
+      noBusinessesNearby: "Enweghị azụmahịa dị nso ebe gị.",
+      distanceUnavailable: "Enweghị ike ịgbakọ anya",
+      away: "dị anya",
+      clearLocation: "Hichaa ebe",
+      filters: "Nzacha",
+      category: "Udi",
+      state: "Steeti",
+      rating: "Ọkwa",
+      verifiedOnly: "Naanị ndị e mere nkwenye",
+      allCategories: "Udi niile",
+      allStates: "Steeti niile",
+      anyRating: "Ọkwa ọ bụla",
+      fourPlus: "Kpakpando 4+",
+      threePlus: "Kpakpando 3+",
+      twoPlus: "Kpakpando 2+",
+      verified: "E mere nkwenye",
+      previous: "Nke gara aga",
+      next: "Osote"
+    },
+    categories: {
+      restaurants: "Ụlọ Nri",
+      hotels: "Hotel",
+      beauty: "Mma & Nlekọta Onwe",
+      health: "Ahụike",
+      gyms: "Ebe mmega ahụ",
+      shopping: "Ịzụ ahịa",
+      supermarkets: "Supermarket",
+      banks: "Ụlọ Akụ",
+      professional: "Ọrụ Ọkachamara",
+      education: "Agụmakwụkwọ",
+      realEstate: "Ala na Ụlọ",
+      automotive: "Ụgbọala",
+      travel: "Njem",
+      logistics: "Njem ngwaahịa",
+      technology: "Teknụzụ",
+      entertainment: "Ntụrụndụ",
+      fitness: "Mmega ahụ",
+      construction: "Owuwu",
+      fashion: "Ejiji",
+      agriculture: "Ọrụ ugbo",
+      religious: "Okpukpe",
+      government: "Gọọmentị",
+      other: "Ndị ọzọ"
+    },
+    business: {
+      verified: "E mere nkwenye",
+      unverified: "E meghị nkwenye",
+      claimed: "E kwuru ya",
+      unclaimed: "E kwughị ya",
+      viewBusiness: "Lee Azụmahịa",
+      call: "Kpọọ",
+      whatsapp: "WhatsApp",
+      website: "Weebụsaịtị",
+      directions: "Ụzọ",
+      reviews: "Nyocha",
+      review: "Nyocha",
+      hours: "Oge ọrụ",
+      services: "Ọrụ",
+      products: "Ngwaahịa",
+      about: "Banyere",
+      contact: "Kpọtụrụ",
+      address: "Adreesị",
+      phone: "Ekwentị",
+      email: "Email",
+      openNow: "Mepee ugbu a",
+      closedNow: "Emechiri ugbu a",
+      openingSoon: "Ga-emepe n'oge na-adịghị anya",
+      closingSoon: "Ga-emechi n'oge na-adịghị anya"
+    },
+    owner: {
+      listBusiness: "Depụta Azụmahịa Gị",
+      claimBusiness: "Kwuo Azụmahịa",
+      ownerDashboard: "Dashboard Onye Nwe",
+      manageBusiness: "Jikwaa Azụmahịa",
+      editBusiness: "Dezie Azụmahịa",
+      businessAnalytics: "Nyocha Azụmahịa"
+    },
+    reviews: {
+      title: "Nyocha",
+      writeReview: "Dee Nyocha",
+      rating: "Ọkwa",
+      comment: "Nkwupụta",
+      submit: "Zipu",
+      report: "Kọọ",
+      noReviews: "Enweghị nyocha ma.",
+      reviewSubmitted: "E zipụrụ nyocha gị."
+    },
+    helpWanted: {
+      title: "A Chọrọ Enyemaka",
+      subtitle: "Chọta ohere ọrụ n'ofe Africa.",
+      postOpportunity: "Tinye Ohere",
+      viewOpportunity: "Lee Ohere",
+      apply: "Tinye akwụkwọ",
+      location: "Ebe",
+      type: "Ụdị",
+      description: "Nkọwa"
+    },
+    account: {
+      login: "Banye",
+      logout: "Pụọ",
+      register: "Debanye aha",
+      profile: "Profaịlụ",
+      favorites: "Ọkacha mmasị",
+      savedSearches: "Nchọta echekwara",
+      recentlyViewed: "Nke a lere anya n'oge na-adịbeghị anya",
+      notifications: "Ịmaa ọkwa"
+    },
+    payments: {
+      free: "N'efu",
+      pro: "Pro",
+      premium: "Premium",
+      monthly: "Kwa ọnwa",
+      subscribe: "Debanye aha",
+      manageSubscription: "Jikwaa ndenye aha",
+      paymentSuccessful: "Ịkwụ ụgwọ gara nke ọma",
+      paymentFailed: "Ịkwụ ụgwọ dara",
+      subscriptionActive: "Ndenye aha na-arụ ọrụ"
+    },
+    contact: {
+      title: "Kpọtụrụ Anyị",
+      subtitle: "Anyị nọ ebe a iji nyere gị aka.",
+      emailTitle: "Email",
+      emailDescription: "Zipu anyị ozi email.",
+      emailAction: "Zipu email",
+      businessTitle: "Azụmahịa",
+      businessDescription: "Ajụjụ gbasara ndepụta ma ọ bụ ịkwuo azụmahịa.",
+      businessAction: "Kpọtụrụ nkwado",
+      supportTitle: "Nkwado",
+      supportDescription: "Nweta enyemaka na azịza.",
+      supportAction: "Chọọ nkwado",
+      formTitle: "Zipu anyị ozi",
+      name: "Aha",
+      email: "Email",
+      subject: "Isiokwu",
+      message: "Ozi",
+      namePlaceholder: "Aha gị",
+      emailPlaceholder: "email@omumaatu.com",
+      subjectPlaceholder: "Gbasara gịnị?",
+      messagePlaceholder: "Dee ozi gị ebe a...",
+      sendMessage: "Zipu Ozi",
+      formNote: "Anyị ga-aza ngwa ngwa.",
+      success: "E zipụrụ ozi gị. Daalụ!",
+      validation: "Biko jupụta oghere niile a chọrọ.",
+      backHome: "Laghachi n'ụlọ"
+    },
+    actions: {
+      save: "Chekwa",
+      cancel: "Kagbuo",
+      close: "Mechie",
+      back: "Azụ",
+      continue: "Gaa n'ihu",
+      submit: "Zipu",
+      confirm: "Kwenye",
+      delete: "Hichapụ",
+      edit: "Dezie",
+      report: "Kọọ",
+      viewMore: "Lee ọzọ",
+      learnMore: "Mụtakwuo",
+      loading: "Na-ebunye...",
+      retry: "Nwaa ọzọ"
+    },
+    legal: {
+      privacy: "Nzuzo",
+      terms: "Usoro",
+      listingPolicy: "Iwu Ndepụta",
+      cookiePolicy: "Iwu Cookie",
+      reviewGuidelines: "Ntuziaka Nyocha"
+    },
+    footer: {
+      copyright: "© NearAfrica. Ikike niile echekwara.",
+      discover: "Chọpụta",
+      contactUs: "Kpọtụrụ anyị"
+    },
+    errors: {
+      somethingWentWrong: "Ọ dịghị mma.",
+      unableToLoad: "Enweghị ike ibunye.",
+      network: "Njehie netwọk. Biko nwaa ọzọ.",
+      notFound: "Achọtaghị."
+    }
   }
 
 };
 
-// =============================================================
 // MAKE TRANSLATIONS AVAILABLE TO THE FRONTEND
 // =============================================================
 
@@ -1317,4 +1981,4 @@ if (
   module.exports
 ) {
   module.exports = NearAfricaTranslations;
-}
+      }
