@@ -1,20 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Owner Dashboard | NearAfrica</title>
-
-  <meta
-    name="description"
-    content="Manage your NearAfrica business profile."
-  >
+  <meta name="description" content="Manage your NearAfrica business profile, compare membership plans, and explore business growth benefits.">
 
   <style>
     :root {
@@ -22,22 +14,17 @@
       --bg-secondary: #151515;
       --bg-card: #1c1c1c;
       --bg-elevated: #242424;
-
       --text-primary: #ffffff;
       --text-secondary: #b8b8b8;
       --text-muted: #777777;
-
       --accent: #d4af37;
       --accent-hover: #e5c04a;
-
       --success: #35c46a;
       --danger: #e05252;
       --warning: #e0ad45;
-
-      --border: rgba(255, 255, 255, 0.08);
-
+      --border: rgba(255,255,255,0.08);
       --radius: 12px;
-      --shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+      --shadow: 0 12px 35px rgba(0,0,0,0.35);
     }
 
     * {
@@ -80,7 +67,7 @@
 
     .site-header {
       border-bottom: 1px solid var(--border);
-      background: rgba(13, 13, 13, 0.96);
+      background: rgba(13,13,13,0.96);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -92,7 +79,6 @@
       min-width: 0;
       margin: 0 auto;
       padding: 18px 0;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -269,7 +255,7 @@
       border: 1px solid var(--border);
     }
 
-    .btn-secondary:hover {
+    .btn-secondary:hover:not(:disabled) {
       border-color: var(--accent);
       color: var(--accent);
     }
@@ -277,21 +263,21 @@
     .btn-danger {
       background: transparent;
       color: var(--danger);
-      border: 1px solid rgba(224, 82, 82, 0.35);
+      border: 1px solid rgba(224,82,82,0.35);
     }
 
     .btn-danger:hover {
-      background: rgba(224, 82, 82, 0.08);
+      background: rgba(224,82,82,0.08);
     }
 
     .btn-warning {
       background: transparent;
       color: var(--warning);
-      border: 1px solid rgba(224, 173, 69, 0.35);
+      border: 1px solid rgba(224,173,69,0.35);
     }
 
     .btn-warning:hover {
-      background: rgba(224, 173, 69, 0.08);
+      background: rgba(224,173,69,0.08);
     }
 
     button:disabled {
@@ -317,20 +303,20 @@
 
     .status.success {
       color: var(--success);
-      background: rgba(53, 196, 106, 0.08);
-      border: 1px solid rgba(53, 196, 106, 0.25);
+      background: rgba(53,196,106,0.08);
+      border: 1px solid rgba(53,196,106,0.25);
     }
 
     .status.error {
       color: var(--danger);
-      background: rgba(224, 82, 82, 0.08);
-      border: 1px solid rgba(224, 82, 82, 0.25);
+      background: rgba(224,82,82,0.08);
+      border: 1px solid rgba(224,82,82,0.25);
     }
 
     .status.info {
       color: var(--warning);
-      background: rgba(224, 173, 69, 0.08);
-      border: 1px solid rgba(224, 173, 69, 0.25);
+      background: rgba(224,173,69,0.08);
+      border: 1px solid rgba(224,173,69,0.25);
     }
 
     .hidden {
@@ -339,7 +325,7 @@
 
     .business-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2,minmax(0,1fr));
       gap: 16px;
       margin-bottom: 24px;
       min-width: 0;
@@ -376,7 +362,7 @@
 
     .image-gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      grid-template-columns: repeat(auto-fill,minmax(190px,1fr));
       gap: 16px;
       margin-top: 24px;
       min-width: 0;
@@ -434,7 +420,7 @@
 
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(3,minmax(0,1fr));
       gap: 16px;
       min-width: 0;
     }
@@ -466,11 +452,190 @@
       overflow-wrap: anywhere;
     }
 
+    /* =====================================================
+       MEMBERSHIP PLANS
+       ===================================================== */
+
+    .membership-section {
+      border-color: rgba(212,175,55,0.22);
+    }
+
+    .membership-intro {
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin: 0 0 20px;
+      max-width: 760px;
+    }
+
+    .membership-grid {
+      display: grid;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .membership-plan {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-secondary);
+      gap: 14px;
+    }
+
+    .membership-plan.pro {
+      border-color: rgba(212,175,55,0.42);
+    }
+
+    .membership-plan.premium {
+      border-color: rgba(212,175,55,0.75);
+      background: linear-gradient(
+        160deg,
+        rgba(212,175,55,0.09),
+        var(--bg-secondary) 65%
+      );
+    }
+
+    .plan-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .plan-name {
+      margin: 0;
+      font-size: 21px;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+
+    .plan-label {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 9px;
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .plan-label.gold {
+      color: var(--accent);
+      border-color: rgba(212,175,55,0.45);
+    }
+
+    .plan-price {
+      color: var(--accent);
+      font-size: 27px;
+      line-height: 1.25;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .plan-period {
+      margin-top: 4px;
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .plan-summary {
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 0;
+      min-height: 60px;
+    }
+
+    .plan-feature-title {
+      font-size: 13px;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .plan-features {
+      display: grid;
+      gap: 11px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .plan-features li {
+      position: relative;
+      padding-left: 23px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    .plan-features li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .plan-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 2px 0;
+    }
+
+    .plan-status {
+      margin-top: auto;
+      padding: 11px;
+      border: 1px solid rgba(224,173,69,0.22);
+      border-radius: 8px;
+      background: rgba(224,173,69,0.05);
+      color: var(--warning);
+      font-size: 12px;
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    .plan-action {
+      width: 100%;
+      cursor: not-allowed;
+    }
+
+    .membership-note {
+      padding: 15px;
+      margin-top: 18px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+
+    .membership-note strong {
+      color: var(--accent);
+    }
+
+    .membership-config-status {
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 12px;
+    }
+
     /* ANALYTICS */
 
     .analytics-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(4,minmax(0,1fr));
       gap: 12px;
       margin-top: 18px;
       min-width: 0;
@@ -510,10 +675,10 @@
     .hours-row {
       display: grid;
       grid-template-columns:
-        minmax(90px, 1fr)
-        minmax(120px, 1.2fr)
-        minmax(110px, 1fr)
-        minmax(110px, 1fr);
+        minmax(90px,1fr)
+        minmax(120px,1.2fr)
+        minmax(110px,1fr)
+        minmax(110px,1fr);
       gap: 10px;
       width: 100%;
       min-width: 0;
@@ -573,7 +738,7 @@
 
     .product-form-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
       gap: 10px;
       margin-top: 10px;
       min-width: 0;
@@ -613,7 +778,7 @@
 
     .help-wanted-meta {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2,minmax(0,1fr));
       gap: 10px;
       margin-top: 14px;
     }
@@ -646,8 +811,8 @@
       align-items: center;
       padding: 5px 9px;
       border-radius: 999px;
-      background: rgba(53, 196, 106, 0.08);
-      border: 1px solid rgba(53, 196, 106, 0.25);
+      background: rgba(53,196,106,0.08);
+      border: 1px solid rgba(53,196,106,0.25);
       color: var(--success);
       font-size: 11px;
       font-weight: 700;
@@ -655,28 +820,23 @@
       margin-bottom: 12px;
     }
 
-    .help-wanted-status.closed {
+    .help-wanted-status.closed,
+    .help-wanted-status.rejected,
+    .help-wanted-status.removed {
       color: var(--danger);
-      background: rgba(224, 82, 82, 0.08);
-      border-color: rgba(224, 82, 82, 0.25);
+      background: rgba(224,82,82,0.08);
+      border-color: rgba(224,82,82,0.25);
     }
 
     .help-wanted-status.pending {
       color: var(--warning);
-      background: rgba(224, 173, 69, 0.08);
-      border-color: rgba(224, 173, 69, 0.25);
-    }
-
-    .help-wanted-status.rejected,
-    .help-wanted-status.removed {
-      color: var(--danger);
-      background: rgba(224, 82, 82, 0.08);
-      border-color: rgba(224, 82, 82, 0.25);
+      background: rgba(224,173,69,0.08);
+      border-color: rgba(224,173,69,0.25);
     }
 
     .help-wanted-form-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2,minmax(0,1fr));
       gap: 12px;
       min-width: 0;
     }
@@ -706,8 +866,8 @@
       margin-bottom: 16px;
       padding: 12px 14px;
       border-radius: 9px;
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      background: rgba(212, 175, 55, 0.07);
+      border: 1px solid rgba(212,175,55,0.25);
+      background: rgba(212,175,55,0.07);
       color: var(--text-secondary);
       line-height: 1.5;
       font-size: 13px;
@@ -731,8 +891,17 @@
       overflow-wrap: anywhere;
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 950px) {
+      .membership-grid {
+        grid-template-columns: 1fr 1fr;
+      }
 
+      .membership-plan:first-child {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 800px) {
       .header-inner {
         flex-direction: column;
         align-items: flex-start;
@@ -749,7 +918,7 @@
       }
 
       .analytics-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2,minmax(0,1fr));
       }
 
       .hero h1 {
@@ -757,17 +926,16 @@
       }
 
       .image-gallery {
-        grid-template-columns:
-          repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
       }
 
       .hours-header,
       .hours-row {
         grid-template-columns:
-          minmax(75px, 1fr)
-          minmax(105px, 1fr)
-          minmax(90px, 1fr)
-          minmax(90px, 1fr);
+          minmax(75px,1fr)
+          minmax(105px,1fr)
+          minmax(90px,1fr)
+          minmax(90px,1fr);
         gap: 8px;
       }
 
@@ -781,7 +949,6 @@
     }
 
     @media (max-width: 600px) {
-
       .header-inner {
         width: calc(100% - 24px);
         padding: 15px 0;
@@ -839,12 +1006,28 @@
         width: 100%;
       }
 
+      .membership-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .membership-plan:first-child {
+        grid-column: auto;
+      }
+
+      .membership-plan {
+        padding: 19px;
+      }
+
+      .plan-summary {
+        min-height: 0;
+      }
+
       .image-gallery {
         grid-template-columns: 1fr;
       }
 
       .analytics-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2,minmax(0,1fr));
         gap: 10px;
       }
 
@@ -880,10 +1063,7 @@
         padding-bottom: 2px;
       }
 
-      .product-form-grid {
-        grid-template-columns: 1fr;
-      }
-
+      .product-form-grid,
       .feature-grid {
         grid-template-columns: 1fr;
       }
@@ -906,7 +1086,6 @@
     }
 
     @media (max-width: 380px) {
-
       .header-inner {
         width: calc(100% - 20px);
       }
@@ -947,53 +1126,36 @@
 </head>
 
 <body>
-
   <header class="site-header">
     <div class="header-inner">
-
-      <a href="index.html" class="logo">
-        NearAfrica
-      </a>
+      <a href="index.html" class="logo">NearAfrica</a>
 
       <nav class="nav-links">
         <a href="index.html">Home</a>
         <a href="explore.html">Explore</a>
         <a href="list-business.html">List Your Business</a>
       </nav>
-
     </div>
   </header>
 
   <main>
     <div class="container">
-
       <section class="hero">
         <h1>Owner Dashboard</h1>
-
-        <p>
-          Manage your NearAfrica business profile.
-        </p>
+        <p>Manage your NearAfrica business profile and explore membership options for growing your business.</p>
       </section>
 
       <!-- LOGIN -->
-
       <section id="loginSection" class="card">
-
         <h2>Business Owner Login</h2>
 
         <p class="card-description">
-          Enter the business name and owner email associated
-          with your approved NearAfrica ownership claim.
+          Enter the business name and owner email associated with your approved NearAfrica ownership claim.
         </p>
 
         <form id="loginForm">
-
           <div class="form-group">
-
-            <label for="businessName">
-              Business Name
-            </label>
-
+            <label for="businessName">Business Name</label>
             <input
               type="text"
               id="businessName"
@@ -1002,15 +1164,10 @@
               autocomplete="organization"
               required
             >
-
           </div>
 
           <div class="form-group">
-
-            <label for="ownerEmail">
-              Owner Email
-            </label>
-
+            <label for="ownerEmail">Owner Email</label>
             <input
               type="email"
               id="ownerEmail"
@@ -1019,912 +1176,465 @@
               autocomplete="email"
               required
             >
-
           </div>
 
-          <button
-            type="submit"
-            id="loginButton"
-            class="btn btn-primary"
-          >
+          <button type="submit" id="loginButton" class="btn btn-primary">
             Login
           </button>
-
         </form>
 
-        <div
-          id="loginStatus"
-          class="status"
-        ></div>
+        <div id="loginStatus" class="status"></div>
 
         <p class="locked-note">
-          Your business must have an approved and verified
-          ownership claim before owner access is available.
+          Your business must have an approved and verified ownership claim before owner access is available.
         </p>
-
       </section>
 
-
       <!-- DASHBOARD -->
+      <section id="dashboardSection" class="hidden">
 
-      <section
-        id="dashboardSection"
-        class="hidden"
-      >
+        <!-- MEMBERSHIP COMPARISON -->
+        <section class="card membership-section" id="membershipPlans">
+          <h2>Grow Your Business with NearAfrica</h2>
 
-        <!-- BUSINESS PROFILE -->
-
-        <div class="card">
-
-          <h2 id="businessTitle">
-            Business Profile
-          </h2>
-
-          <p class="card-description">
-            Review and update the information you are allowed
-            to manage.
+          <p class="membership-intro">
+            Compare our membership levels and see the benefits planned for businesses on NearAfrica.
+            Our goal is to help business owners present their services, reach relevant customers and understand
+            how people interact with their listings.
           </p>
 
-          <div
-            id="dashboardStatus"
-            class="status"
-          ></div>
+          <div class="membership-grid">
+
+            <!-- FREE -->
+            <article class="membership-plan">
+              <div class="plan-topline">
+                <h3 class="plan-name">Free</h3>
+                <span class="plan-label">Starter</span>
+              </div>
+
+              <div>
+                <div class="plan-price" id="freePlanPrice">Free</div>
+                <div class="plan-period">No monthly subscription</div>
+              </div>
+
+              <p class="plan-summary">
+                Establish your business presence and make essential information available to visitors.
+              </p>
+
+              <div class="plan-divider"></div>
+              <h4 class="plan-feature-title">Included</h4>
+
+              <ul class="plan-features">
+                <li>Basic business listing</li>
+                <li>Standard eligibility for relevant search results</li>
+                <li>Available business contact and location details</li>
+                <li>Map directions where available</li>
+                <li>Existing business profile management tools</li>
+                <li>Access to currently available owner features</li>
+              </ul>
+
+              <div class="plan-status">
+                Your free listing remains available without a paid subscription.
+              </div>
+            </article>
+
+            <!-- PRO -->
+            <article class="membership-plan pro">
+              <div class="plan-topline">
+                <h3 class="plan-name">NearAfrica Pro</h3>
+                <span class="plan-label gold">Growth</span>
+              </div>
+
+              <div>
+                <div class="plan-price" id="proPlanPrice">Loading price...</div>
+                <div class="plan-period">Intended monthly price</div>
+              </div>
+
+              <p class="plan-summary">
+                Designed for businesses seeking a richer profile and additional opportunities to be discovered.
+              </p>
+
+              <div class="plan-divider"></div>
+              <h4 class="plan-feature-title">Planned benefits</h4>
+
+              <ul class="plan-features">
+                <li>Enhanced business profile presentation</li>
+                <li>Increased photo allowance when plan limits are implemented</li>
+                <li>Improved placement in eligible search results</li>
+                <li>Business performance insights based on available data</li>
+                <li>Pro membership badge distinct from verification</li>
+                <li>Promotional tools when made available for Pro</li>
+              </ul>
+
+              <div class="plan-status">
+                <strong>Coming soon:</strong> Paid membership activation and enforcement of Pro benefits are not yet confirmed as operational.
+              </div>
+
+              <button type="button" class="btn btn-secondary plan-action" disabled aria-disabled="true">
+                Pro Upgrade Coming Soon
+              </button>
+            </article>
+
+            <!-- PREMIUM -->
+            <article class="membership-plan premium">
+              <div class="plan-topline">
+                <h3 class="plan-name">NearAfrica Premium</h3>
+                <span class="plan-label gold">Advanced</span>
+              </div>
+
+              <div>
+                <div class="plan-price" id="premiumPlanPrice">Loading price...</div>
+                <div class="plan-period">Intended monthly price</div>
+              </div>
+
+              <p class="plan-summary">
+                Designed for businesses seeking greater promotional opportunities and an expanded business showcase.
+              </p>
+
+              <div class="plan-divider"></div>
+              <h4 class="plan-feature-title">Planned benefits</h4>
+
+              <ul class="plan-features">
+                <li>Pro benefits, plus additional promotional opportunities</li>
+                <li>Higher-priority featured placement where eligible</li>
+                <li>Expanded business photo showcase</li>
+                <li>Promotional offers when the feature is available</li>
+                <li>More detailed analytics when implemented</li>
+                <li>Premium membership badge distinct from verification</li>
+              </ul>
+
+              <div class="plan-status">
+                <strong>Coming soon:</strong> Premium checkout and the full set of Premium entitlements are not yet confirmed as operational.
+              </div>
+
+              <button type="button" class="btn btn-secondary plan-action" disabled aria-disabled="true">
+                Premium Upgrade Coming Soon
+              </button>
+            </article>
+          </div>
+
+          <div class="membership-note">
+            <strong>Our trust commitment:</strong>
+            Membership is separate from business verification. Paying for a plan does not automatically verify a business,
+            guarantee search placement in every situation, or guarantee customers or sales. Any paid promotion will be
+            subject to eligibility and clearly labelled where applicable.
+          </div>
+
+          <p id="membershipConfigStatus" class="membership-config-status" role="status" aria-live="polite"></p>
+        </section>
+
+        <!-- BUSINESS PROFILE -->
+        <div class="card">
+          <h2 id="businessTitle">Business Profile</h2>
+
+          <p class="card-description">
+            Review and update the information you are allowed to manage.
+          </p>
+
+          <div id="dashboardStatus" class="status"></div>
 
           <div class="business-grid">
-
             <div class="info-box">
               <div class="info-label">Business Name</div>
-              <div
-                id="displayBusinessName"
-                class="info-value"
-              >
-                —
-              </div>
+              <div id="displayBusinessName" class="info-value">—</div>
             </div>
 
             <div class="info-box">
               <div class="info-label">Category</div>
-              <div
-                id="displayCategory"
-                class="info-value"
-              >
-                —
-              </div>
+              <div id="displayCategory" class="info-value">—</div>
             </div>
 
             <div class="info-box">
               <div class="info-label">Country</div>
-              <div
-                id="displayCountry"
-                class="info-value"
-              >
-                —
-              </div>
+              <div id="displayCountry" class="info-value">—</div>
             </div>
 
             <div class="info-box">
               <div class="info-label">State</div>
-              <div
-                id="displayState"
-                class="info-value"
-              >
-                —
-              </div>
+              <div id="displayState" class="info-value">—</div>
             </div>
 
             <div class="info-box">
               <div class="info-label">City</div>
-              <div
-                id="displayCity"
-                class="info-value"
-              >
-                —
-              </div>
+              <div id="displayCity" class="info-value">—</div>
             </div>
 
             <div class="info-box">
               <div class="info-label">Phone</div>
-              <div
-                id="displayPhone"
-                class="info-value"
-              >
-                —
-              </div>
+              <div id="displayPhone" class="info-value">—</div>
             </div>
-
           </div>
-
 
           <div class="form-group">
-
-            <label for="whatsapp">
-              WhatsApp
-            </label>
-
-            <input
-              type="text"
-              id="whatsapp"
-              placeholder="WhatsApp number"
-            >
-
+            <label for="whatsapp">WhatsApp</label>
+            <input type="text" id="whatsapp" placeholder="WhatsApp number">
           </div>
-
 
           <div class="form-group">
-
-            <label for="website">
-              Website
-            </label>
-
-            <input
-              type="url"
-              id="website"
-              placeholder="https://example.com"
-            >
-
+            <label for="website">Website</label>
+            <input type="url" id="website" placeholder="https://example.com">
           </div>
-
 
           <div class="form-group">
-
-            <label for="address">
-              Address
-            </label>
-
-            <input
-              type="text"
-              id="address"
-              placeholder="Business address"
-            >
-
+            <label for="address">Address</label>
+            <input type="text" id="address" placeholder="Business address">
           </div>
-
 
           <div class="form-group">
-
-            <label for="description">
-              Description
-            </label>
-
-            <textarea
-              id="description"
-              placeholder="Describe your business..."
-            ></textarea>
-
+            <label for="description">Description</label>
+            <textarea id="description" placeholder="Describe your business..."></textarea>
           </div>
-
 
           <div class="btn-row">
-
-            <button
-              type="button"
-              id="saveButton"
-              class="btn btn-primary"
-            >
-              Save Changes
-            </button>
-
-            <button
-              type="button"
-              id="publicProfileButton"
-              class="btn btn-secondary"
-            >
-              View Public Profile
-            </button>
-
-            <button
-              type="button"
-              id="logoutButton"
-              class="btn btn-danger"
-            >
-              Logout
-            </button>
-
+            <button type="button" id="saveButton" class="btn btn-primary">Save Changes</button>
+            <button type="button" id="publicProfileButton" class="btn btn-secondary">View Public Profile</button>
+            <button type="button" id="logoutButton" class="btn btn-danger">Logout</button>
           </div>
-
         </div>
 
-
         <!-- PHOTOS -->
-
         <div class="card">
-
-          <h2>
-            Business Photos
-          </h2>
+          <h2>Business Photos</h2>
 
           <p class="card-description">
-            Add and manage photos displayed on your NearAfrica
-            business profile.
+            Add and manage photos displayed on your NearAfrica business profile.
           </p>
 
-
           <div class="form-group">
-
-            <label for="businessImage">
-              Select Photo
-            </label>
-
+            <label for="businessImage">Select Photo</label>
             <input
               type="file"
               id="businessImage"
               accept="image/jpeg,image/png,image/webp,image/gif"
             >
-
           </div>
-
 
           <div class="form-group">
-
-            <label for="imageType">
-              Photo Type
-            </label>
-
+            <label for="imageType">Photo Type</label>
             <select id="imageType">
-
-              <option value="gallery">
-                Gallery Photo
-              </option>
-
-              <option value="cover">
-                Cover Photo
-              </option>
-
-              <option value="logo">
-                Business Logo
-              </option>
-
+              <option value="gallery">Gallery Photo</option>
+              <option value="cover">Cover Photo</option>
+              <option value="logo">Business Logo</option>
             </select>
-
           </div>
-
 
           <div class="btn-row">
-
-            <button
-              type="button"
-              id="uploadImageButton"
-              class="btn btn-primary"
-            >
-              Upload Photo
-            </button>
-
+            <button type="button" id="uploadImageButton" class="btn btn-primary">Upload Photo</button>
           </div>
 
-
-          <div
-            id="imageStatus"
-            class="status"
-          ></div>
-
-
-          <div
-            id="imageGallery"
-            class="image-gallery"
-          ></div>
-
+          <div id="imageStatus" class="status"></div>
+          <div id="imageGallery" class="image-gallery"></div>
         </div>
 
-
         <!-- MORE FEATURES -->
-
         <div class="card">
-
-          <h2>
-            More Owner Features
-          </h2>
+          <h2>More Owner Features</h2>
 
           <p class="card-description">
-            Manage additional tools and features connected
-            to your business.
+            Manage additional tools and features connected to your business.
           </p>
-
 
           <div class="feature-grid">
 
             <!-- OPENING HOURS -->
+            <div class="feature-card" style="grid-column:1 / -1;">
+              <h3>Opening Hours</h3>
+              <p>Manage your business opening and closing hours.</p>
 
-            <div
-              class="feature-card"
-              style="grid-column: 1 / -1;"
-            >
+              <div id="hoursEditor" style="margin-top:18px;width:100%;min-width:0;"></div>
+              <div id="hoursStatus" class="status"></div>
 
-              <h3>
-                Opening Hours
-              </h3>
-
-              <p>
-                Manage your business opening and closing hours.
-              </p>
-
-
-              <div
-                id="hoursEditor"
-                style="margin-top: 18px; width: 100%; min-width: 0;"
-              ></div>
-
-
-              <div
-                id="hoursStatus"
-                class="status"
-              ></div>
-
-
-              <div
-                class="btn-row"
-                style="margin-top: 16px;"
-              >
-
-                <button
-                  type="button"
-                  id="saveHoursButton"
-                  class="btn btn-primary"
-                >
-                  Save Opening Hours
-                </button>
-
+              <div class="btn-row" style="margin-top:16px;">
+                <button type="button" id="saveHoursButton" class="btn btn-primary">Save Opening Hours</button>
               </div>
-
             </div>
-
 
             <!-- PRODUCTS & SERVICES -->
+            <div class="feature-card" style="grid-column:1 / -1;">
+              <h3>Products &amp; Services</h3>
+              <p>Add products or services that customers can view.</p>
 
-            <div
-              class="feature-card"
-              style="grid-column: 1 / -1;"
-            >
+              <div id="productsStatus" class="status"></div>
+              <div id="productsList" class="products-list"></div>
 
-              <h3>
-                Products &amp; Services
-              </h3>
+              <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);width:100%;min-width:0;">
+                <h4 style="margin:0 0 14px;">Add Product or Service</h4>
 
-              <p>
-                Add products or services that customers can view.
-              </p>
+                <input type="text" id="productName" placeholder="Product or service name" maxlength="150">
 
-
-              <div
-                id="productsStatus"
-                class="status"
-              ></div>
-
-
-              <div
-                id="productsList"
-                class="products-list"
-              ></div>
-
-
-              <div
-                style="
-                  margin-top: 20px;
-                  padding-top: 20px;
-                  border-top: 1px solid var(--border);
-                  width: 100%;
-                  min-width: 0;
-                "
-              >
-
-                <h4 style="margin: 0 0 14px;">
-                  Add Product or Service
-                </h4>
-
-
-                <input
-                  type="text"
-                  id="productName"
-                  placeholder="Product or service name"
-                  maxlength="150"
-                >
-
-
-                <textarea
-                  id="productDescription"
-                  placeholder="Description"
-                  maxlength="2000"
-                  style="margin-top: 10px;"
-                ></textarea>
-
+                <textarea id="productDescription" placeholder="Description" maxlength="2000" style="margin-top:10px;"></textarea>
 
                 <div class="product-form-grid">
-
-                  <input
-                    type="number"
-                    id="productPrice"
-                    placeholder="Price"
-                    min="0"
-                    step="0.01"
-                  >
-
-
-                  <input
-                    type="text"
-                    id="productCurrency"
-                    value="NGN"
-                    placeholder="Currency"
-                    maxlength="10"
-                  >
-
+                  <input type="number" id="productPrice" placeholder="Price" min="0" step="0.01">
+                  <input type="text" id="productCurrency" value="NGN" placeholder="Currency" maxlength="10">
                 </div>
 
+                <input type="text" id="productCategory" placeholder="Category (optional)" maxlength="150" style="margin-top:10px;">
 
-                <input
-                  type="text"
-                  id="productCategory"
-                  placeholder="Category (optional)"
-                  maxlength="150"
-                  style="margin-top: 10px;"
-                >
-
-
-                <select
-                  id="productType"
-                  style="margin-top: 10px;"
-                >
-
-                  <option value="product">
-                    Product
-                  </option>
-
-                  <option value="service">
-                    Service
-                  </option>
-
+                <select id="productType" style="margin-top:10px;">
+                  <option value="product">Product</option>
+                  <option value="service">Service</option>
                 </select>
 
-
-                <div
-                  style="
-                    margin-top: 12px;
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                    min-width: 0;
-                  "
-                >
-
-                  <input
-                    type="checkbox"
-                    id="productAvailable"
-                    checked
-                    style="width: auto; flex-shrink: 0;"
-                  >
-
-
-                  <label
-                    for="productAvailable"
-                    style="margin: 0;"
-                  >
-                    Currently available
-                  </label>
-
+                <div style="margin-top:12px;display:flex;align-items:center;gap:8px;min-width:0;">
+                  <input type="checkbox" id="productAvailable" checked style="width:auto;flex-shrink:0;">
+                  <label for="productAvailable" style="margin:0;">Currently available</label>
                 </div>
 
-
-                <div
-                  class="btn-row"
-                  style="margin-top: 16px;"
-                >
-
-                  <button
-                    type="button"
-                    id="addProductButton"
-                    class="btn btn-primary"
-                  >
-                    Add Product / Service
-                  </button>
-
+                <div class="btn-row" style="margin-top:16px;">
+                  <button type="button" id="addProductButton" class="btn btn-primary">Add Product / Service</button>
                 </div>
-
               </div>
-
             </div>
 
-
             <!-- HELP WANTED -->
-
-            <div
-              class="feature-card"
-              style="grid-column: 1 / -1;"
-            >
-
-              <h3>
-                Help Wanted
-              </h3>
+            <div class="feature-card" style="grid-column:1 / -1;">
+              <h3>Help Wanted</h3>
 
               <p>
-                Create and manage job, staff, contract,
-                internship, volunteer, or other business
-                opportunity postings.
+                Create and manage job, staff, contract, internship,
+                volunteer, or other business opportunity postings.
               </p>
 
+              <div id="helpWantedStatus" class="status"></div>
 
-              <div
-                id="helpWantedStatus"
-                class="status"
-              ></div>
-
-
-              <div
-                id="helpWantedList"
-                class="help-wanted-list"
-              >
-                <div class="image-empty">
-                  Loading Help Wanted posts...
-                </div>
+              <div id="helpWantedList" class="help-wanted-list">
+                <div class="image-empty">Loading Help Wanted posts...</div>
               </div>
 
-
-              <div
-                style="
-                  margin-top: 20px;
-                  padding-top: 20px;
-                  border-top: 1px solid var(--border);
-                  width: 100%;
-                  min-width: 0;
-                "
-              >
-
-                <h4 style="margin: 0 0 14px;">
-                  <span id="helpWantedFormTitle">
-                    Create Help Wanted Post
-                  </span>
+              <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);width:100%;min-width:0;">
+                <h4 style="margin:0 0 14px;">
+                  <span id="helpWantedFormTitle">Create Help Wanted Post</span>
                 </h4>
 
-
-                <div
-                  id="helpWantedEditBanner"
-                  class="edit-banner"
-                >
+                <div id="helpWantedEditBanner" class="edit-banner">
                   <strong>Editing Help Wanted post.</strong>
                   Update the fields below and save the changes.
                 </div>
 
-
                 <div class="help-wanted-form-grid">
-
                   <div class="form-group">
-
-                    <label for="helpWantedTitle">
-                      Opportunity Title
-                    </label>
-
-                    <input
-                      type="text"
-                      id="helpWantedTitle"
-                      placeholder="e.g. Sales Assistant"
-                      maxlength="150"
-                    >
-
+                    <label for="helpWantedTitle">Opportunity Title</label>
+                    <input type="text" id="helpWantedTitle" placeholder="e.g. Sales Assistant" maxlength="150">
                   </div>
 
-
                   <div class="form-group">
-
-                    <label for="helpWantedType">
-                      Opportunity Type
-                    </label>
-
+                    <label for="helpWantedType">Opportunity Type</label>
                     <select id="helpWantedType">
-
-                      <option value="job">
-                        Job
-                      </option>
-
-                      <option value="part_time">
-                        Part-time
-                      </option>
-
-                      <option value="contract">
-                        Contract
-                      </option>
-
-                      <option value="freelance">
-                        Freelance
-                      </option>
-
-                      <option value="internship">
-                        Internship
-                      </option>
-
-                      <option value="apprenticeship">
-                        Apprenticeship
-                      </option>
-
-                      <option value="temporary">
-                        Temporary
-                      </option>
-
-                      <option value="volunteer">
-                        Volunteer
-                      </option>
-
-                      <option value="other">
-                        Other
-                      </option>
-
+                      <option value="job">Job</option>
+                      <option value="part_time">Part-time</option>
+                      <option value="contract">Contract</option>
+                      <option value="freelance">Freelance</option>
+                      <option value="internship">Internship</option>
+                      <option value="apprenticeship">Apprenticeship</option>
+                      <option value="temporary">Temporary</option>
+                      <option value="volunteer">Volunteer</option>
+                      <option value="other">Other</option>
                     </select>
-
                   </div>
-
 
                   <div class="form-group">
-
-                    <label for="helpWantedCategory">
-                      Category
-                    </label>
-
-                    <input
-                      type="text"
-                      id="helpWantedCategory"
-                      placeholder="e.g. Sales, IT, Hospitality"
-                      maxlength="100"
-                    >
-
+                    <label for="helpWantedCategory">Category</label>
+                    <input type="text" id="helpWantedCategory" placeholder="e.g. Sales, IT, Hospitality" maxlength="100">
                   </div>
-
 
                   <div class="form-group">
-
-                    <label for="helpWantedLocation">
-                      Location
-                    </label>
-
-                    <input
-                      type="text"
-                      id="helpWantedLocation"
-                      placeholder="e.g. Aba, Abia"
-                      maxlength="200"
-                    >
-
+                    <label for="helpWantedLocation">Location</label>
+                    <input type="text" id="helpWantedLocation" placeholder="e.g. Aba, Abia" maxlength="200">
                   </div>
-
 
                   <div class="form-group full">
-
-                    <label for="helpWantedDescription">
-                      Description
-                    </label>
-
-                    <textarea
-                      id="helpWantedDescription"
-                      placeholder="Describe the opportunity, responsibilities, requirements, and other important information..."
-                      maxlength="5000"
-                    ></textarea>
-
+                    <label for="helpWantedDescription">Description</label>
+                    <textarea id="helpWantedDescription" placeholder="Describe the opportunity, responsibilities, requirements, and other important information..." maxlength="5000"></textarea>
                   </div>
-
 
                   <div class="form-group">
-
-                    <label for="helpWantedContact">
-                      Application / Contact Method
-                    </label>
-
-                    <input
-                      type="text"
-                      id="helpWantedContact"
-                      placeholder="Email, WhatsApp, phone number, or application instructions"
-                      maxlength="500"
-                    >
-
+                    <label for="helpWantedContact">Application / Contact Method</label>
+                    <input type="text" id="helpWantedContact" placeholder="Email, WhatsApp, phone number, or application instructions" maxlength="500">
                   </div>
-
 
                   <div class="form-group">
-
-                    <label for="helpWantedDeadline">
-                      Application Deadline
-                    </label>
-
-                    <input
-                      type="date"
-                      id="helpWantedDeadline"
-                    >
-
+                    <label for="helpWantedDeadline">Application Deadline</label>
+                    <input type="date" id="helpWantedDeadline">
                   </div>
-
                 </div>
-
 
                 <div class="btn-row">
-
-                  <button
-                    type="button"
-                    id="createHelpWantedButton"
-                    class="btn btn-primary"
-                  >
-                    Create Help Wanted Post
-                  </button>
-
-
-                  <button
-                    type="button"
-                    id="clearHelpWantedButton"
-                    class="btn btn-secondary"
-                  >
-                    Clear Form
-                  </button>
-
-
-                  <button
-                    type="button"
-                    id="refreshHelpWantedButton"
-                    class="btn btn-secondary"
-                  >
-                    Refresh Posts
-                  </button>
-
+                  <button type="button" id="createHelpWantedButton" class="btn btn-primary">Create Help Wanted Post</button>
+                  <button type="button" id="clearHelpWantedButton" class="btn btn-secondary">Clear Form</button>
+                  <button type="button" id="refreshHelpWantedButton" class="btn btn-secondary">Refresh Posts</button>
                 </div>
-
 
                 <p class="help-wanted-note">
-                  Help Wanted posts are saved through the authenticated
-                  NearAfrica Worker and associated with your business
-                  from your owner session. New posts may require moderation.
+                  Help Wanted posts are saved through the authenticated NearAfrica Worker
+                  and associated with your business from your owner session. New posts may require moderation.
                 </p>
-
               </div>
-
             </div>
-
 
             <!-- ANALYTICS -->
+            <div class="feature-card" style="grid-column:1 / -1;">
+              <h3>Analytics</h3>
+              <p>See how many people are viewing your business profile.</p>
 
-            <div
-              class="feature-card"
-              style="grid-column: 1 / -1;"
-            >
-
-              <h3>
-                Analytics
-              </h3>
-
-              <p>
-                See how many people are viewing your business profile.
-              </p>
-
-
-              <div
-                id="analyticsStatus"
-                class="status"
-              ></div>
-
+              <div id="analyticsStatus" class="status"></div>
 
               <div class="analytics-grid">
-
                 <div class="analytics-stat">
-
-                  <div
-                    id="analyticsTotalViews"
-                    class="analytics-value"
-                  >
-                    —
-                  </div>
-
-                  <div class="analytics-label">
-                    Total Views
-                  </div>
-
+                  <div id="analyticsTotalViews" class="analytics-value">—</div>
+                  <div class="analytics-label">Total Views</div>
                 </div>
 
-
                 <div class="analytics-stat">
-
-                  <div
-                    id="analyticsToday"
-                    class="analytics-value"
-                  >
-                    —
-                  </div>
-
-                  <div class="analytics-label">
-                    Today
-                  </div>
-
+                  <div id="analyticsToday" class="analytics-value">—</div>
+                  <div class="analytics-label">Today</div>
                 </div>
 
-
                 <div class="analytics-stat">
-
-                  <div
-                    id="analytics7Days"
-                    class="analytics-value"
-                  >
-                    —
-                  </div>
-
-                  <div class="analytics-label">
-                    Last 7 Days
-                  </div>
-
+                  <div id="analytics7Days" class="analytics-value">—</div>
+                  <div class="analytics-label">Last 7 Days</div>
                 </div>
 
-
                 <div class="analytics-stat">
-
-                  <div
-                    id="analytics30Days"
-                    class="analytics-value"
-                  >
-                    —
-                  </div>
-
-                  <div class="analytics-label">
-                    Last 30 Days
-                  </div>
-
+                  <div id="analytics30Days" class="analytics-value">—</div>
+                  <div class="analytics-label">Last 30 Days</div>
                 </div>
-
               </div>
 
-
-              <div
-                class="btn-row"
-                style="margin-top: 16px;"
-              >
-
-                <button
-                  type="button"
-                  id="refreshAnalyticsButton"
-                  class="btn btn-secondary"
-                >
-                  Refresh Analytics
-                </button>
-
+              <div class="btn-row" style="margin-top:16px;">
+                <button type="button" id="refreshAnalyticsButton" class="btn btn-secondary">Refresh Analytics</button>
               </div>
-
             </div>
-
 
             <!-- REVIEWS -->
-
             <div class="feature-card">
-
-              <h3>
-                Reviews
-              </h3>
-
-              <p>
-                View and manage customer reviews when owner tools
-                are enabled.
-              </p>
-
+              <h3>Reviews</h3>
+              <p>View and manage customer reviews when owner tools are enabled.</p>
             </div>
 
-
             <!-- OFFERS & EVENTS -->
-
             <div class="feature-card">
-
-              <h3>
-                Offers &amp; Events
-              </h3>
-
+              <h3>Offers &amp; Events</h3>
               <p>
-                Future tools for promoting offers and business events.
+                Promotional offer and business-event tools are planned.
+                Availability will depend on the implemented feature and membership rules.
               </p>
-
             </div>
 
           </div>
-
         </div>
-
       </section>
-
     </div>
   </main>
-
 
   <footer class="footer">
     NearAfrica — Find Great Businesses Near You.
   </footer>
 
+  <!-- Load the central, non-secret frontend configuration before this page's JavaScript. -->
+  <script src="config.js"></script>
 
   <script>
-
     /*
       ============================================================
       NEARAFRICA OWNER DASHBOARD
@@ -1932,6 +1642,9 @@
     */
 
     const API_BASE =
+      (window.NearAfricaConfig &&
+        window.NearAfricaConfig.api &&
+        window.NearAfricaConfig.api.baseUrl) ||
       "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
     const OWNER_TOKEN_STORAGE_KEY =
@@ -1939,7 +1652,6 @@
 
     let ownerToken = null;
     let currentBusiness = null;
-
     let currentHelpWantedPosts = [];
     let editingHelpWantedId = null;
 
@@ -1949,143 +1661,122 @@
       ============================================================
     */
 
-    const loginSection =
-      document.getElementById("loginSection");
+    const loginSection = document.getElementById("loginSection");
+    const dashboardSection = document.getElementById("dashboardSection");
+    const loginForm = document.getElementById("loginForm");
+    const loginButton = document.getElementById("loginButton");
+    const loginStatus = document.getElementById("loginStatus");
+    const dashboardStatus = document.getElementById("dashboardStatus");
+    const saveButton = document.getElementById("saveButton");
+    const publicProfileButton = document.getElementById("publicProfileButton");
+    const logoutButton = document.getElementById("logoutButton");
+    const businessImage = document.getElementById("businessImage");
+    const imageType = document.getElementById("imageType");
+    const uploadImageButton = document.getElementById("uploadImageButton");
+    const imageStatus = document.getElementById("imageStatus");
+    const imageGallery = document.getElementById("imageGallery");
 
-    const dashboardSection =
-      document.getElementById("dashboardSection");
+    const analyticsStatus = document.getElementById("analyticsStatus");
+    const analyticsTotalViews = document.getElementById("analyticsTotalViews");
+    const analyticsToday = document.getElementById("analyticsToday");
+    const analytics7Days = document.getElementById("analytics7Days");
+    const analytics30Days = document.getElementById("analytics30Days");
+    const refreshAnalyticsButton = document.getElementById("refreshAnalyticsButton");
 
-    const loginForm =
-      document.getElementById("loginForm");
+    const hoursEditor = document.getElementById("hoursEditor");
+    const hoursStatus = document.getElementById("hoursStatus");
+    const saveHoursButton = document.getElementById("saveHoursButton");
 
-    const loginButton =
-      document.getElementById("loginButton");
+    const addProductButton = document.getElementById("addProductButton");
+    const productsStatus = document.getElementById("productsStatus");
+    const productsList = document.getElementById("productsList");
 
-    const loginStatus =
-      document.getElementById("loginStatus");
-
-    const dashboardStatus =
-      document.getElementById("dashboardStatus");
-
-    const saveButton =
-      document.getElementById("saveButton");
-
-    const publicProfileButton =
-      document.getElementById("publicProfileButton");
-
-    const logoutButton =
-      document.getElementById("logoutButton");
-
-    const businessImage =
-      document.getElementById("businessImage");
-
-    const imageType =
-      document.getElementById("imageType");
-
-    const uploadImageButton =
-      document.getElementById("uploadImageButton");
-
-    const imageStatus =
-      document.getElementById("imageStatus");
-
-    const imageGallery =
-      document.getElementById("imageGallery");
+    const helpWantedStatus = document.getElementById("helpWantedStatus");
+    const helpWantedList = document.getElementById("helpWantedList");
+    const createHelpWantedButton = document.getElementById("createHelpWantedButton");
+    const clearHelpWantedButton = document.getElementById("clearHelpWantedButton");
+    const refreshHelpWantedButton = document.getElementById("refreshHelpWantedButton");
+    const helpWantedFormTitle = document.getElementById("helpWantedFormTitle");
+    const helpWantedEditBanner = document.getElementById("helpWantedEditBanner");
 
     /*
-      ANALYTICS
+      ============================================================
+      MEMBERSHIP PLAN DISPLAY
+
+      This section only displays configured plans and their prices.
+      It does NOT activate a subscription, prove payment, or grant
+      paid entitlements. The backend must enforce those features.
+      ============================================================
     */
 
-    const analyticsStatus =
-      document.getElementById("analyticsStatus");
+    function renderMembershipPrices() {
+      const config = window.NearAfricaConfig;
+      const status = document.getElementById("membershipConfigStatus");
 
-    const analyticsTotalViews =
-      document.getElementById("analyticsTotalViews");
+      const priceElements = {
+        free: document.getElementById("freePlanPrice"),
+        pro: document.getElementById("proPlanPrice"),
+        premium: document.getElementById("premiumPlanPrice")
+      };
 
-    const analyticsToday =
-      document.getElementById("analyticsToday");
+      if (!config) {
+        priceElements.free.textContent = "Free";
+        priceElements.pro.textContent = "Price unavailable";
+        priceElements.premium.textContent = "Price unavailable";
 
-    const analytics7Days =
-      document.getElementById("analytics7Days");
+        if (status) {
+          status.textContent =
+            "Membership prices could not be loaded. Check that config.js is available.";
+        }
 
-    const analytics30Days =
-      document.getElementById("analytics30Days");
+        console.warn("NearAfricaConfig was not found.");
+        return;
+      }
 
-    const refreshAnalyticsButton =
-      document.getElementById(
-        "refreshAnalyticsButton"
-      );
+      const freePlan = config.freePlan || null;
+      const proPlan = config.plans && config.plans.pro;
+      const premiumPlan = config.plans && config.plans.premium;
 
-    /*
-      OPENING HOURS
-    */
+      function formatPlanPrice(plan, fallback) {
+        if (!plan || typeof plan.priceNGN !== "number") {
+          return fallback;
+        }
 
-    const hoursEditor =
-      document.getElementById("hoursEditor");
+        if (plan.priceNGN === 0) {
+          return "Free";
+        }
 
-    const hoursStatus =
-      document.getElementById("hoursStatus");
+        if (typeof plan.priceLabel === "string" && plan.priceLabel.trim()) {
+          return plan.priceLabel;
+        }
 
-    const saveHoursButton =
-      document.getElementById("saveHoursButton");
+        return new Intl.NumberFormat("en-NG", {
+          style: "currency",
+          currency: "NGN",
+          maximumFractionDigits: 0
+        }).format(plan.priceNGN) + "/month";
+      }
 
-    /*
-      PRODUCTS
-    */
+      priceElements.free.textContent =
+        formatPlanPrice(freePlan, "Free");
 
-    const addProductButton =
-      document.getElementById(
-        "addProductButton"
-      );
+      priceElements.pro.textContent =
+        formatPlanPrice(proPlan, "Price unavailable");
 
-    const productsStatus =
-      document.getElementById(
-        "productsStatus"
-      );
+      priceElements.premium.textContent =
+        formatPlanPrice(premiumPlan, "Price unavailable");
 
-    const productsList =
-      document.getElementById(
-        "productsList"
-      );
-
-    /*
-      HELP WANTED
-    */
-
-    const helpWantedStatus =
-      document.getElementById(
-        "helpWantedStatus"
-      );
-
-    const helpWantedList =
-      document.getElementById(
-        "helpWantedList"
-      );
-
-    const createHelpWantedButton =
-      document.getElementById(
-        "createHelpWantedButton"
-      );
-
-    const clearHelpWantedButton =
-      document.getElementById(
-        "clearHelpWantedButton"
-      );
-
-    const refreshHelpWantedButton =
-      document.getElementById(
-        "refreshHelpWantedButton"
-      );
-
-    const helpWantedFormTitle =
-      document.getElementById(
-        "helpWantedFormTitle"
-      );
-
-    const helpWantedEditBanner =
-      document.getElementById(
-        "helpWantedEditBanner"
-      );
-
+      if (
+        status &&
+        (!proPlan || !premiumPlan)
+      ) {
+        status.textContent =
+          "One or more paid-plan prices are missing from config.js. Review the central plan configuration.";
+      } else if (status) {
+        status.textContent =
+          "Prices are read from config.js. Paid upgrades remain unavailable until checkout and server-side entitlements are ready.";
+      }
+    }
 
     /*
       ============================================================
@@ -2093,126 +1784,55 @@
       ============================================================
     */
 
-    function showStatus(
-      element,
-      message,
-      type
-    ) {
+    function showStatus(element, message, type) {
+      if (!element) return;
 
-      if (!element) {
-        return;
-      }
-
-      element.textContent =
-        message || "";
-
-      element.className =
-        "status show " +
-        (type || "info");
+      element.textContent = message || "";
+      element.className = "status show " + (type || "info");
     }
 
+    function hideStatus(element) {
+      if (!element) return;
 
-    function hideStatus(
-      element
-    ) {
-
-      if (!element) {
-        return;
-      }
-
-      element.textContent =
-        "";
-
-      element.className =
-        "status";
+      element.textContent = "";
+      element.className = "status";
     }
 
+    function setDashboardValue(id, value) {
+      const element = document.getElementById(id);
+      if (!element) return;
 
-    function setDashboardValue(
-      id,
-      value
-    ) {
-
-      const element =
-        document.getElementById(id);
-
-      if (!element) {
-        return;
-      }
-
-      element.textContent =
-        value ||
-        "—";
+      element.textContent = value || "—";
     }
 
-
-    function cleanString(
-      value
-    ) {
-
-      if (
-        value === null ||
-        value === undefined
-      ) {
-
-        return "";
-
-      }
-
+    function cleanString(value) {
+      if (value === null || value === undefined) return "";
       return String(value).trim();
     }
 
-
-    async function readResponseBody(
-      response
-    ) {
-
-      const text =
-        await response.text();
-
-      if (!text) {
-
-        return null;
-
-      }
+    async function readResponseBody(response) {
+      const text = await response.text();
+      if (!text) return null;
 
       try {
-
         return JSON.parse(text);
-
       } catch {
-
-        return {
-          raw: text
-        };
-
+        return { raw: text };
       }
-
     }
 
-
-    function getResponseMessage(
-      result,
-      fallback
-    ) {
-
-      if (
-        result &&
-        typeof result === "object"
-      ) {
-
+    function getResponseMessage(result, fallback) {
+      if (result && typeof result === "object") {
         return cleanString(
           result.message ||
           result.error ||
           result.detail ||
           result.raw
         ) || fallback;
-
       }
 
       return fallback;
     }
-
 
     /*
       ============================================================
@@ -2220,79 +1840,36 @@
       ============================================================
     */
 
-    function saveOwnerToken(
-      token
-    ) {
-
-      if (!token) {
-        return;
-      }
+    function saveOwnerToken(token) {
+      if (!token) return;
 
       try {
-
-        localStorage.setItem(
-          OWNER_TOKEN_STORAGE_KEY,
-          token
-        );
-
+        localStorage.setItem(OWNER_TOKEN_STORAGE_KEY, token);
       } catch (error) {
-
-        console.warn(
-          "Unable to persist owner session:",
-          error
-        );
-
+        console.warn("Unable to persist owner session:", error);
       }
-
     }
-
 
     function getStoredOwnerToken() {
-
       try {
-
         return cleanString(
-          localStorage.getItem(
-            OWNER_TOKEN_STORAGE_KEY
-          )
+          localStorage.getItem(OWNER_TOKEN_STORAGE_KEY)
         );
-
       } catch (error) {
-
-        console.warn(
-          "Unable to read stored owner session:",
-          error
-        );
-
+        console.warn("Unable to read stored owner session:", error);
         return "";
-
       }
-
     }
-
 
     function clearStoredOwnerToken() {
-
       try {
-
-        localStorage.removeItem(
-          OWNER_TOKEN_STORAGE_KEY
-        );
-
+        localStorage.removeItem(OWNER_TOKEN_STORAGE_KEY);
       } catch (error) {
-
-        console.warn(
-          "Unable to clear stored owner session:",
-          error
-        );
-
+        console.warn("Unable to clear stored owner session:", error);
       }
-
     }
 
-
     function handleOwnerUnauthorized() {
-
       clearStoredOwnerToken();
 
       ownerToken = null;
@@ -2307,9 +1884,7 @@
         "Your owner session has expired or is no longer authorized. Please log in again.",
         "error"
       );
-
     }
-
 
     /*
       ============================================================
@@ -2317,94 +1892,41 @@
       ============================================================
     */
 
-    async function ownerFetch(
-      path,
-      options = {}
-    ) {
-
+    async function ownerFetch(path, options = {}) {
       if (!ownerToken) {
-
-        throw new Error(
-          "Owner session is missing."
-        );
-
+        throw new Error("Owner session is missing.");
       }
 
+      const requestOptions = { ...options };
+      const headers = new Headers(options.headers || {});
 
-      const requestOptions = {
-        ...options
-      };
+      headers.set("Authorization", "Bearer " + ownerToken);
 
-
-      const headers =
-        new Headers(
-          options.headers || {}
-        );
-
-
-      headers.set(
-        "Authorization",
-        "Bearer " + ownerToken
-      );
-
-
-      if (
-        !headers.has("Accept")
-      ) {
-
-        headers.set(
-          "Accept",
-          "application/json"
-        );
-
+      if (!headers.has("Accept")) {
+        headers.set("Accept", "application/json");
       }
 
-
-      requestOptions.headers =
-        headers;
-
+      requestOptions.headers = headers;
 
       let response;
 
       try {
-
-        response =
-          await fetch(
-            API_BASE + path,
-            requestOptions
-          );
-
+        response = await fetch(API_BASE + path, requestOptions);
       } catch (error) {
-
-        console.error(
-          "Owner API network error:",
-          path,
-          error
-        );
-
+        console.error("Owner API network error:", path, error);
         throw error;
-
       }
 
-
-      if (
-        response.status === 401 ||
-        response.status === 403
-      ) {
-
+      if (response.status === 401 || response.status === 403) {
         handleOwnerUnauthorized();
 
         throw new Error(
           "Your owner session is no longer authorized. Please log in again."
         );
-
       }
 
-
       return response;
-
     }
-
 
     /*
       ============================================================
@@ -2413,40 +1935,19 @@
     */
 
     async function restoreOwnerSession() {
+      const storedToken = getStoredOwnerToken();
 
-      const storedToken =
-        getStoredOwnerToken();
+      if (!storedToken) return false;
 
+      ownerToken = storedToken;
 
-      if (!storedToken) {
+      showStatus(loginStatus, "Restoring your owner session...", "info");
 
-        return false;
-
-      }
-
-
-      ownerToken =
-        storedToken;
-
-
-      showStatus(
-        loginStatus,
-        "Restoring your owner session...",
-        "info"
-      );
-
-
-      loginButton.disabled =
-        true;
-
-      loginButton.textContent =
-        "Restoring...";
-
+      loginButton.disabled = true;
+      loginButton.textContent = "Restoring...";
 
       try {
-
         await loadOwnerBusiness();
-
 
         await Promise.all([
           loadOwnerImages(),
@@ -2456,49 +1957,22 @@
           loadOwnerHelpWanted()
         ]);
 
-
-        loginSection.classList.add(
-          "hidden"
-        );
-
-
-        dashboardSection.classList.remove(
-          "hidden"
-        );
-
-
-        hideStatus(
-          loginStatus
-        );
-
+        loginSection.classList.add("hidden");
+        dashboardSection.classList.remove("hidden");
+        hideStatus(loginStatus);
 
         return true;
-
       } catch (error) {
-
-        console.error(
-          "Owner session restoration failed:",
-          error
-        );
-
+        console.error("Owner session restoration failed:", error);
 
         clearStoredOwnerToken();
-
 
         ownerToken = null;
         currentBusiness = null;
         currentHelpWantedPosts = [];
 
-
-        dashboardSection.classList.add(
-          "hidden"
-        );
-
-
-        loginSection.classList.remove(
-          "hidden"
-        );
-
+        dashboardSection.classList.add("hidden");
+        loginSection.classList.remove("hidden");
 
         showStatus(
           loginStatus,
@@ -2507,21 +1981,12 @@
           "error"
         );
 
-
         return false;
-
       } finally {
-
-        loginButton.disabled =
-          false;
-
-        loginButton.textContent =
-          "Login";
-
+        loginButton.disabled = false;
+        loginButton.textContent = "Login";
       }
-
     }
-
 
     /*
       ============================================================
@@ -2539,546 +2004,223 @@
       "Saturday"
     ];
 
-
     let ownerHours = [];
 
-
     function createDefaultHours() {
-
-      return DAYS_OF_WEEK.map(
-        function(dayName, index) {
-
-          return {
-            day_of_week: index,
-            is_closed: 1,
-            is_24_hours: 0,
-            opening_time: null,
-            closing_time: null
-          };
-
-        }
-      );
-
+      return DAYS_OF_WEEK.map(function(dayName, index) {
+        return {
+          day_of_week: index,
+          is_closed: 1,
+          is_24_hours: 0,
+          opening_time: null,
+          closing_time: null
+        };
+      });
     }
 
+    function normalizeHours(hours) {
+      const defaults = createDefaultHours();
 
-    function normalizeHours(
-      hours
-    ) {
+      if (!Array.isArray(hours)) return defaults;
 
-      const defaults =
-        createDefaultHours();
+      hours.forEach(function(item) {
+        const day = Number(item.day_of_week);
 
+        if (!Number.isInteger(day) || day < 0 || day > 6) return;
 
-      if (!Array.isArray(hours)) {
-
-        return defaults;
-
-      }
-
-
-      hours.forEach(
-        function(item) {
-
-          const day =
-            Number(
-              item.day_of_week
-            );
-
-
-          if (
-            !Number.isInteger(day) ||
-            day < 0 ||
-            day > 6
-          ) {
-
-            return;
-
-          }
-
-
-          defaults[day] = {
-
-            day_of_week:
-              day,
-
-            is_closed:
-              Number(
-                item.is_closed || 0
-              ),
-
-            is_24_hours:
-              Number(
-                item.is_24_hours || 0
-              ),
-
-            opening_time:
-              item.opening_time ||
-              null,
-
-            closing_time:
-              item.closing_time ||
-              null
-
-          };
-
-        }
-      );
-
+        defaults[day] = {
+          day_of_week: day,
+          is_closed: Number(item.is_closed || 0),
+          is_24_hours: Number(item.is_24_hours || 0),
+          opening_time: item.opening_time || null,
+          closing_time: item.closing_time || null
+        };
+      });
 
       return defaults;
-
     }
 
+    function renderHoursEditor(hours) {
+      ownerHours = normalizeHours(hours);
+      hoursEditor.innerHTML = "";
 
-    function renderHoursEditor(
-      hours
-    ) {
-
-      ownerHours =
-        normalizeHours(hours);
-
-
-      hoursEditor.innerHTML =
-        "";
-
-
-      const header =
-        document.createElement(
-          "div"
-        );
-
-
-      header.className =
-        "hours-header";
-
-
+      const header = document.createElement("div");
+      header.className = "hours-header";
       header.innerHTML = `
         <div>Day</div>
         <div>Status</div>
         <div>Opens</div>
         <div>Closes</div>
       `;
+      hoursEditor.appendChild(header);
 
+      ownerHours.forEach(function(item, index) {
+        const row = document.createElement("div");
+        row.className = "hours-row";
 
-      hoursEditor.appendChild(
-        header
-      );
+        const day = document.createElement("div");
+        day.className = "hours-day";
+        day.textContent = DAYS_OF_WEEK[index];
 
+        const status = document.createElement("select");
+        status.dataset.day = String(index);
+        status.innerHTML = `
+          <option value="open">Open</option>
+          <option value="closed">Closed</option>
+          <option value="24">24 Hours</option>
+        `;
 
-      ownerHours.forEach(
-        function(item, index) {
-
-          const row =
-            document.createElement(
-              "div"
-            );
-
-
-          row.className =
-            "hours-row";
-
-
-          const day =
-            document.createElement(
-              "div"
-            );
-
-
-          day.className =
-            "hours-day";
-
-
-          day.textContent =
-            DAYS_OF_WEEK[index];
-
-
-          const status =
-            document.createElement(
-              "select"
-            );
-
-
-          status.dataset.day =
-            String(index);
-
-
-          status.innerHTML = `
-            <option value="open">Open</option>
-            <option value="closed">Closed</option>
-            <option value="24">24 Hours</option>
-          `;
-
-
-          if (
-            Number(item.is_closed) === 1
-          ) {
-
-            status.value =
-              "closed";
-
-          } else if (
-            Number(item.is_24_hours) === 1
-          ) {
-
-            status.value =
-              "24";
-
-          } else {
-
-            status.value =
-              "open";
-
-          }
-
-
-          const opening =
-            document.createElement(
-              "input"
-            );
-
-
-          opening.type =
-            "time";
-
-
-          opening.dataset.day =
-            String(index);
-
-
-          opening.dataset.field =
-            "opening";
-
-
-          opening.value =
-            item.opening_time ||
-            "";
-
-
-          opening.disabled =
-            status.value !== "open";
-
-
-          const closing =
-            document.createElement(
-              "input"
-            );
-
-
-          closing.type =
-            "time";
-
-
-          closing.dataset.day =
-            String(index);
-
-
-          closing.dataset.field =
-            "closing";
-
-
-          closing.value =
-            item.closing_time ||
-            "";
-
-
-          closing.disabled =
-            status.value !== "open";
-
-
-          status.addEventListener(
-            "change",
-            function() {
-
-              const isOpen =
-                status.value === "open";
-
-
-              opening.disabled =
-                !isOpen;
-
-              closing.disabled =
-                !isOpen;
-
-            }
-          );
-
-
-          row.appendChild(day);
-          row.appendChild(status);
-          row.appendChild(opening);
-          row.appendChild(closing);
-
-
-          hoursEditor.appendChild(
-            row
-          );
-
+        if (Number(item.is_closed) === 1) {
+          status.value = "closed";
+        } else if (Number(item.is_24_hours) === 1) {
+          status.value = "24";
+        } else {
+          status.value = "open";
         }
-      );
 
+        const opening = document.createElement("input");
+        opening.type = "time";
+        opening.dataset.day = String(index);
+        opening.dataset.field = "opening";
+        opening.value = item.opening_time || "";
+        opening.disabled = status.value !== "open";
+
+        const closing = document.createElement("input");
+        closing.type = "time";
+        closing.dataset.day = String(index);
+        closing.dataset.field = "closing";
+        closing.value = item.closing_time || "";
+        closing.disabled = status.value !== "open";
+
+        status.addEventListener("change", function() {
+          const isOpen = status.value === "open";
+          opening.disabled = !isOpen;
+          closing.disabled = !isOpen;
+        });
+
+        row.appendChild(day);
+        row.appendChild(status);
+        row.appendChild(opening);
+        row.appendChild(closing);
+        hoursEditor.appendChild(row);
+      });
     }
 
-
     async function loadOwnerHours() {
+      if (!ownerToken) return;
 
-      if (!ownerToken) {
-        return;
-      }
-
-
-      showStatus(
-        hoursStatus,
-        "Loading opening hours...",
-        "info"
-      );
-
+      showStatus(hoursStatus, "Loading opening hours...", "info");
 
       try {
+        const response = await ownerFetch("/owner/business/hours", {
+          method: "GET"
+        });
 
-        const response =
-          await ownerFetch(
-            "/owner/business/hours",
-            {
-              method: "GET"
-            }
-          );
+        const result = await readResponseBody(response);
 
-
-        const result =
-          await readResponseBody(
-            response
-          );
-
-
-        if (
-          !response.ok ||
-          result?.status !== "ok"
-        ) {
-
+        if (!response.ok || result?.status !== "ok") {
           throw new Error(
-            getResponseMessage(
-              result,
-              "Unable to load opening hours."
-            )
+            getResponseMessage(result, "Unable to load opening hours.")
           );
-
         }
 
-
-        renderHoursEditor(
-          result.hours || []
-        );
-
-
-        hideStatus(
-          hoursStatus
-        );
-
-
+        renderHoursEditor(result.hours || []);
+        hideStatus(hoursStatus);
       } catch (error) {
-
-        console.error(
-          "Loading owner hours failed:",
-          error
-        );
-
+        console.error("Loading owner hours failed:", error);
 
         renderHoursEditor([]);
 
-
         showStatus(
           hoursStatus,
-          error.message ||
-            "Unable to load opening hours.",
+          error.message || "Unable to load opening hours.",
           "error"
         );
-
       }
-
     }
 
-
     async function saveOwnerHours() {
-
       if (!ownerToken) {
-
         showStatus(
           hoursStatus,
           "Your owner session has expired. Please log in again.",
           "error"
         );
-
         return;
-
       }
-
 
       const hours = [];
 
+      for (let day = 0; day <= 6; day++) {
+        const status = hoursEditor.querySelector(
+          `select[data-day="${day}"]`
+        );
 
-      for (
-        let day = 0;
-        day <= 6;
-        day++
-      ) {
+        const opening = hoursEditor.querySelector(
+          `input[data-day="${day}"][data-field="opening"]`
+        );
 
-        const status =
-          hoursEditor.querySelector(
-            `select[data-day="${day}"]`
-          );
+        const closing = hoursEditor.querySelector(
+          `input[data-day="${day}"][data-field="closing"]`
+        );
 
-
-        const opening =
-          hoursEditor.querySelector(
-            `input[data-day="${day}"][data-field="opening"]`
-          );
-
-
-        const closing =
-          hoursEditor.querySelector(
-            `input[data-day="${day}"][data-field="closing"]`
-          );
-
-
-        if (
-          !status ||
-          !opening ||
-          !closing
-        ) {
-
+        if (!status || !opening || !closing) {
           showStatus(
             hoursStatus,
             "Unable to prepare the opening hours schedule.",
             "error"
           );
-
           return;
-
         }
-
 
         hours.push({
-
-          day_of_week:
-            day,
-
-          is_closed:
-            status.value === "closed",
-
-          is_24_hours:
-            status.value === "24",
-
-          opening_time:
-            status.value === "open"
-              ? opening.value || null
-              : null,
-
-          closing_time:
-            status.value === "open"
-              ? closing.value || null
-              : null
-
+          day_of_week: day,
+          is_closed: status.value === "closed",
+          is_24_hours: status.value === "24",
+          opening_time: status.value === "open" ? opening.value || null : null,
+          closing_time: status.value === "open" ? closing.value || null : null
         });
-
       }
 
-
-      saveHoursButton.disabled =
-        true;
-
-
-      saveHoursButton.textContent =
-        "Saving...";
-
-
-      hideStatus(
-        hoursStatus
-      );
-
+      saveHoursButton.disabled = true;
+      saveHoursButton.textContent = "Saving...";
+      hideStatus(hoursStatus);
 
       try {
+        const response = await ownerFetch("/owner/business/hours", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ hours })
+        });
 
-        const response =
-          await ownerFetch(
-            "/owner/business/hours",
-            {
-              method: "PATCH",
+        const result = await readResponseBody(response);
 
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-
-              body:
-                JSON.stringify({
-                  hours
-                })
-            }
-          );
-
-
-        const result =
-          await readResponseBody(
-            response
-          );
-
-
-        if (
-          !response.ok ||
-          result?.status !== "ok"
-        ) {
-
+        if (!response.ok || result?.status !== "ok") {
           throw new Error(
-            getResponseMessage(
-              result,
-              "Unable to save opening hours."
-            )
+            getResponseMessage(result, "Unable to save opening hours.")
           );
-
         }
 
-
-        renderHoursEditor(
-          result.hours || hours
-        );
-
+        renderHoursEditor(result.hours || hours);
 
         showStatus(
           hoursStatus,
           "Opening hours updated successfully.",
           "success"
         );
-
-
       } catch (error) {
-
-        console.error(
-          "Saving owner hours failed:",
-          error
-        );
-
+        console.error("Saving owner hours failed:", error);
 
         showStatus(
           hoursStatus,
-          error.message ||
-            "Unable to save opening hours.",
+          error.message || "Unable to save opening hours.",
           "error"
         );
-
-
       } finally {
-
-        saveHoursButton.disabled =
-          false;
-
-        saveHoursButton.textContent =
-          "Save Opening Hours";
-
+        saveHoursButton.disabled = false;
+        saveHoursButton.textContent = "Save Opening Hours";
       }
-
     }
-
 
     /*
       ============================================================
@@ -3087,128 +2229,51 @@
     */
 
     async function loadOwnerAnalytics() {
+      if (!ownerToken) return;
 
-      if (!ownerToken) {
-        return;
-      }
-
-
-      hideStatus(
-        analyticsStatus
-      );
-
+      hideStatus(analyticsStatus);
 
       try {
+        const response = await ownerFetch("/owner/business/analytics", {
+          method: "GET"
+        });
 
-        const response =
-          await ownerFetch(
-            "/owner/business/analytics",
-            {
-              method: "GET"
-            }
-          );
+        const result = await readResponseBody(response);
 
-
-        const result =
-          await readResponseBody(
-            response
-          );
-
-
-        if (
-          !response.ok ||
-          result?.status !== "ok"
-        ) {
-
+        if (!response.ok || result?.status !== "ok") {
           throw new Error(
-            getResponseMessage(
-              result,
-              "Unable to load analytics."
-            )
+            getResponseMessage(result, "Unable to load analytics.")
           );
-
         }
 
-
-        const analytics =
-          result.analytics || {};
-
-
-        const totalViews =
-          Number(
-            analytics.total_views || 0
-          );
-
-
-        const viewsToday =
-          Number(
-            analytics.views_today || 0
-          );
-
-
-        const viewsLast7Days =
-          Number(
-            analytics.views_last_7_days || 0
-          );
-
-
-        const viewsLast30Days =
-          Number(
-            analytics.views_last_30_days || 0
-          );
-
+        const analytics = result.analytics || {};
 
         analyticsTotalViews.textContent =
-          totalViews.toLocaleString();
-
+          Number(analytics.total_views || 0).toLocaleString();
 
         analyticsToday.textContent =
-          viewsToday.toLocaleString();
-
+          Number(analytics.views_today || 0).toLocaleString();
 
         analytics7Days.textContent =
-          viewsLast7Days.toLocaleString();
-
+          Number(analytics.views_last_7_days || 0).toLocaleString();
 
         analytics30Days.textContent =
-          viewsLast30Days.toLocaleString();
-
-
+          Number(analytics.views_last_30_days || 0).toLocaleString();
       } catch (error) {
+        console.error("Loading owner analytics failed:", error);
 
-        console.error(
-          "Loading owner analytics failed:",
-          error
-        );
-
-
-        analyticsTotalViews.textContent =
-          "—";
-
-
-        analyticsToday.textContent =
-          "—";
-
-
-        analytics7Days.textContent =
-          "—";
-
-
-        analytics30Days.textContent =
-          "—";
-
+        analyticsTotalViews.textContent = "—";
+        analyticsToday.textContent = "—";
+        analytics7Days.textContent = "—";
+        analytics30Days.textContent = "—";
 
         showStatus(
           analyticsStatus,
-          error.message ||
-            "Unable to load analytics.",
+          error.message || "Unable to load analytics.",
           "error"
         );
-
       }
-
     }
-
 
     /*
       ============================================================
@@ -3216,147 +2281,63 @@
       ============================================================
     */
 
-    async function loginOwner(
-      event
-    ) {
-
+    async function loginOwner(event) {
       event.preventDefault();
 
+      const businessName = document
+        .getElementById("businessName")
+        .value
+        .trim();
 
-      const businessName =
-        document
-          .getElementById(
-            "businessName"
-          )
-          .value
-          .trim();
-
-
-      const ownerEmail =
-        document
-          .getElementById(
-            "ownerEmail"
-          )
-          .value
-          .trim();
-
+      const ownerEmail = document
+        .getElementById("ownerEmail")
+        .value
+        .trim();
 
       if (!businessName) {
-
-        showStatus(
-          loginStatus,
-          "Business name is required.",
-          "error"
-        );
-
+        showStatus(loginStatus, "Business name is required.", "error");
         return;
-
       }
-
 
       if (!ownerEmail) {
-
-        showStatus(
-          loginStatus,
-          "Owner email is required.",
-          "error"
-        );
-
+        showStatus(loginStatus, "Owner email is required.", "error");
         return;
-
       }
 
+      hideStatus(loginStatus);
 
-      hideStatus(
-        loginStatus
-      );
-
-
-      loginButton.disabled =
-        true;
-
-
-      loginButton.textContent =
-        "Signing In...";
-
+      loginButton.disabled = true;
+      loginButton.textContent = "Signing In...";
 
       try {
+        const response = await fetch(API_BASE + "/owner/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            business_name: businessName,
+            email: ownerEmail,
+            owner_email: ownerEmail
+          })
+        });
 
-        const response =
-          await fetch(
-            API_BASE +
-            "/owner/login",
-            {
-              method: "POST",
+        const result = await readResponseBody(response);
 
-              headers: {
-                "Content-Type":
-                  "application/json",
-
-                "Accept":
-                  "application/json"
-              },
-
-              body:
-                JSON.stringify({
-
-                  business_name:
-                    businessName,
-
-                  email:
-                    ownerEmail,
-
-                  owner_email:
-                    ownerEmail
-
-                })
-            }
-          );
-
-
-        const result =
-          await readResponseBody(
-            response
-          );
-
-
-        if (
-          !response.ok ||
-          result?.status !== "ok"
-        ) {
-
-          throw new Error(
-            getResponseMessage(
-              result,
-              "Unable to sign in."
-            )
-          );
-
+        if (!response.ok || result?.status !== "ok") {
+          throw new Error(getResponseMessage(result, "Unable to sign in."));
         }
 
-
-        ownerToken =
-          cleanString(
-            result.token
-          );
-
+        ownerToken = cleanString(result.token);
 
         if (!ownerToken) {
-
-          throw new Error(
-            "Owner session was not created."
-          );
-
+          throw new Error("Owner session was not created.");
         }
 
-
-        saveOwnerToken(
-          ownerToken
-        );
-
+        saveOwnerToken(ownerToken);
 
         await loadOwnerBusiness();
-
 
         await Promise.all([
           loadOwnerImages(),
@@ -3366,59 +2347,28 @@
           loadOwnerHelpWanted()
         ]);
 
-
-        loginSection.classList.add(
-          "hidden"
-        );
-
-
-        dashboardSection.classList.remove(
-          "hidden"
-        );
-
-
-        hideStatus(
-          loginStatus
-        );
-
-
+        loginSection.classList.add("hidden");
+        dashboardSection.classList.remove("hidden");
+        hideStatus(loginStatus);
       } catch (error) {
-
-        console.error(
-          "Owner login failed:",
-          error
-        );
-
+        console.error("Owner login failed:", error);
 
         clearStoredOwnerToken();
-
 
         ownerToken = null;
         currentBusiness = null;
         currentHelpWantedPosts = [];
 
-
         showStatus(
           loginStatus,
-          error.message ||
-            "Unable to sign in.",
+          error.message || "Unable to sign in.",
           "error"
         );
-
-
       } finally {
-
-        loginButton.disabled =
-          false;
-
-
-        loginButton.textContent =
-          "Login";
-
+        loginButton.disabled = false;
+        loginButton.textContent = "Login";
       }
-
     }
-
 
     /*
       ============================================================
@@ -3427,147 +2377,55 @@
     */
 
     async function loadOwnerBusiness() {
-
       if (!ownerToken) {
-
-        throw new Error(
-          "Owner session is missing."
-        );
-
+        throw new Error("Owner session is missing.");
       }
 
+      const response = await ownerFetch("/owner/business", {
+        method: "GET"
+      });
 
-      const response =
-        await ownerFetch(
-          "/owner/business",
-          {
-            method: "GET"
-          }
-        );
+      const result = await readResponseBody(response);
 
-
-      const result =
-        await readResponseBody(
-          response
-        );
-
-
-      if (
-        !response.ok ||
-        result?.status !== "ok"
-      ) {
-
+      if (!response.ok || result?.status !== "ok") {
         throw new Error(
-          getResponseMessage(
-            result,
-            "Unable to load your business."
-          )
+          getResponseMessage(result, "Unable to load your business.")
         );
-
       }
 
-
-      currentBusiness =
-        result.business ||
-        result.data ||
-        null;
-
+      currentBusiness = result.business || result.data || null;
 
       if (!currentBusiness) {
-
         throw new Error(
           "The server did not return your business information."
         );
-
       }
 
-
-      renderBusiness(
-        currentBusiness
-      );
-
+      renderBusiness(currentBusiness);
     }
 
-
-    function renderBusiness(
-      business
-    ) {
-
-      if (!business) {
-        return;
-      }
-
+    function renderBusiness(business) {
+      if (!business) return;
 
       setDashboardValue(
         "displayBusinessName",
-        business.business_name ||
-          business.name
+        business.business_name || business.name
       );
 
+      setDashboardValue("displayCategory", business.category);
+      setDashboardValue("displayCountry", business.country);
+      setDashboardValue("displayState", business.state);
+      setDashboardValue("displayCity", business.city);
+      setDashboardValue("displayPhone", business.phone);
 
-      setDashboardValue(
-        "displayCategory",
-        business.category
-      );
+      document.getElementById("businessTitle").textContent =
+        business.business_name || business.name || "Business Profile";
 
-
-      setDashboardValue(
-        "displayCountry",
-        business.country
-      );
-
-
-      setDashboardValue(
-        "displayState",
-        business.state
-      );
-
-
-      setDashboardValue(
-        "displayCity",
-        business.city
-      );
-
-
-      setDashboardValue(
-        "displayPhone",
-        business.phone
-      );
-
-
-      document.getElementById(
-        "businessTitle"
-      ).textContent =
-        business.business_name ||
-        business.name ||
-        "Business Profile";
-
-
-      document.getElementById(
-        "whatsapp"
-      ).value =
-        business.whatsapp || "";
-
-
-      document.getElementById(
-        "website"
-      ).value =
-        business.website || "";
-
-
-      document.getElementById(
-        "address"
-      ).value =
-        business.address || "";
-
-
-      document.getElementById(
-        "description"
-      ).value =
-        business.description || "";
-
+      document.getElementById("whatsapp").value = business.whatsapp || "";
+      document.getElementById("website").value = business.website || "";
+      document.getElementById("address").value = business.address || "";
+      document.getElementById("description").value = business.description || "";
     }
-
 
     /*
       ============================================================
@@ -3576,164 +2434,66 @@
     */
 
     async function saveBusiness() {
-
       if (!ownerToken) {
-
         showStatus(
           dashboardStatus,
           "Your owner session has expired. Please log in again.",
           "error"
         );
-
         return;
-
       }
 
-
       const payload = {
-
-        whatsapp:
-          document
-            .getElementById(
-              "whatsapp"
-            )
-            .value
-            .trim(),
-
-        website:
-          document
-            .getElementById(
-              "website"
-            )
-            .value
-            .trim(),
-
-        address:
-          document
-            .getElementById(
-              "address"
-            )
-            .value
-            .trim(),
-
-        description:
-          document
-            .getElementById(
-              "description"
-            )
-            .value
-            .trim()
-
+        whatsapp: document.getElementById("whatsapp").value.trim(),
+        website: document.getElementById("website").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        description: document.getElementById("description").value.trim()
       };
 
-
-      saveButton.disabled =
-        true;
-
-
-      saveButton.textContent =
-        "Saving...";
-
-
-      hideStatus(
-        dashboardStatus
-      );
-
+      saveButton.disabled = true;
+      saveButton.textContent = "Saving...";
+      hideStatus(dashboardStatus);
 
       try {
+        const response = await ownerFetch("/owner/business", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
 
-        const response =
-          await ownerFetch(
-            "/owner/business",
-            {
-              method: "PATCH",
+        const result = await readResponseBody(response);
 
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-
-              body:
-                JSON.stringify(
-                  payload
-                )
-            }
-          );
-
-
-        const result =
-          await readResponseBody(
-            response
-          );
-
-
-        if (
-          !response.ok ||
-          result?.status !== "ok"
-        ) {
-
+        if (!response.ok || result?.status !== "ok") {
           throw new Error(
-            getResponseMessage(
-              result,
-              "Unable to save changes."
-            )
+            getResponseMessage(result, "Unable to save changes.")
           );
-
         }
-
 
         if (result.business) {
-
-          currentBusiness =
-            result.business;
-
-
-          renderBusiness(
-            currentBusiness
-          );
-
+          currentBusiness = result.business;
+          renderBusiness(currentBusiness);
         } else {
-
           await loadOwnerBusiness();
-
         }
-
 
         showStatus(
           dashboardStatus,
           "Business profile updated successfully.",
           "success"
         );
-
-
       } catch (error) {
-
-        console.error(
-          "Business update failed:",
-          error
-        );
-
+        console.error("Business update failed:", error);
 
         showStatus(
           dashboardStatus,
-          error.message ||
-            "Unable to save changes.",
+          error.message || "Unable to save changes.",
           "error"
         );
-
-
       } finally {
-
-        saveButton.disabled =
-          false;
-
-        saveButton.textContent =
-          "Save Changes";
-
+        saveButton.disabled = false;
+        saveButton.textContent = "Save Changes";
       }
-
     }
-
 
     /*
       ============================================================
@@ -3742,273 +2502,108 @@
     */
 
     async function loadOwnerImages() {
-
-      if (!ownerToken) {
-        return;
-      }
-
+      if (!ownerToken) return;
 
       imageGallery.innerHTML =
         '<div class="image-empty">Loading photos...</div>';
 
-
       try {
+        const response = await ownerFetch("/owner/business/images", {
+          method: "GET"
+        });
 
-        const response =
-          await ownerFetch(
-            "/owner/business/images",
-            {
-              method: "GET"
-            }
-          );
+        const result = await readResponseBody(response);
 
-
-        const result =
-          await readResponseBody(
-            response
-          );
-
-
-        if (
-          !response.ok ||
-          result?.status !== "ok"
-        ) {
-
+        if (!response.ok || result?.status !== "ok") {
           throw new Error(
-            getResponseMessage(
-              result,
-              "Unable to load business photos."
-            )
+            getResponseMessage(result, "Unable to load business photos.")
           );
-
         }
 
-
-        renderImages(
-          result.images || []
-        );
-
-
+        renderImages(result.images || []);
       } catch (error) {
-
-        console.error(
-          "Loading owner images failed:",
-          error
-        );
-
+        console.error("Loading owner images failed:", error);
 
         imageGallery.innerHTML =
           '<div class="image-empty">Unable to load business photos.</div>';
 
-
         showStatus(
           imageStatus,
-          error.message ||
-            "Unable to load business photos.",
+          error.message || "Unable to load business photos.",
           "error"
         );
-
       }
-
     }
 
+    function renderImages(images) {
+      imageGallery.innerHTML = "";
 
-    function renderImages(
-      images
-    ) {
-
-      imageGallery.innerHTML =
-        "";
-
-
-      if (
-        !Array.isArray(images) ||
-        !images.length
-      ) {
-
+      if (!Array.isArray(images) || !images.length) {
         imageGallery.innerHTML =
           '<div class="image-empty">No business photos have been uploaded yet.</div>';
-
         return;
-
       }
 
+      images.forEach(function(image) {
+        const card = document.createElement("div");
+        card.className = "image-card";
 
-      images.forEach(
-        function(image) {
+        const preview = document.createElement("img");
+        preview.className = "image-preview";
+        preview.src = image.image_url || "";
+        preview.alt =
+          image.alt_text ||
+          currentBusiness?.business_name ||
+          "Business photo";
+        preview.loading = "lazy";
 
-          const card =
-            document.createElement(
-              "div"
-            );
+        const body = document.createElement("div");
+        body.className = "image-card-body";
 
+        const type = document.createElement("div");
+        type.className = "image-type";
+        type.textContent = image.image_type || "gallery";
 
-          card.className =
-            "image-card";
+        const url = document.createElement("div");
+        url.className = "image-url";
+        url.textContent = image.image_url || "Image URL unavailable";
 
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "btn btn-danger";
+        deleteButton.textContent = "Delete";
 
-          const preview =
-            document.createElement(
-              "img"
-            );
+        deleteButton.addEventListener("click", function() {
+          deleteOwnerImage(image.id);
+        });
 
+        body.appendChild(type);
+        body.appendChild(url);
+        body.appendChild(deleteButton);
 
-          preview.className =
-            "image-preview";
+        card.appendChild(preview);
+        card.appendChild(body);
 
-
-          preview.src =
-            image.image_url ||
-            "";
-
-
-          preview.alt =
-            image.alt_text ||
-            currentBusiness?.business_name ||
-            "Business photo";
-
-
-          preview.loading =
-            "lazy";
-
-
-          const body =
-            document.createElement(
-              "div"
-            );
-
-
-          body.className =
-            "image-card-body";
-
-
-          const type =
-            document.createElement(
-              "div"
-            );
-
-
-          type.className =
-            "image-type";
-
-
-          type.textContent =
-            image.image_type ||
-            "gallery";
-
-
-          const url =
-            document.createElement(
-              "div"
-            );
-
-
-          url.className =
-            "image-url";
-
-
-          url.textContent =
-            image.image_url ||
-            "Image URL unavailable";
-
-
-          const deleteButton =
-            document.createElement(
-              "button"
-            );
-
-
-          deleteButton.type =
-            "button";
-
-
-          deleteButton.className =
-            "btn btn-danger";
-
-
-          deleteButton.textContent =
-            "Delete";
-
-
-          deleteButton.addEventListener(
-            "click",
-            function() {
-
-              deleteOwnerImage(
-                image.id
-              );
-
-            }
-          );
-
-
-          body.appendChild(
-            type
-          );
-
-
-          body.appendChild(
-            url
-          );
-
-
-          body.appendChild(
-            deleteButton
-          );
-
-
-          card.appendChild(
-            preview
-          );
-
-
-          card.appendChild(
-            body
-          );
-
-
-          imageGallery.appendChild(
-            card
-          );
-
-        }
-      );
-
+        imageGallery.appendChild(card);
+      });
     }
 
-
     async function uploadOwnerImage() {
-
       if (!ownerToken) {
-
         showStatus(
           imageStatus,
           "Your owner session has expired. Please log in again.",
           "error"
         );
-
         return;
-
       }
 
-
-      const file =
-        businessImage.files &&
-        businessImage.files[0];
-
+      const file = businessImage.files && businessImage.files[0];
 
       if (!file) {
-
-        showStatus(
-          imageStatus,
-          "Please select an image first.",
-          "error"
-        );
-
+        showStatus(imageStatus, "Please select an image first.", "error");
         return;
-
       }
-
 
       const allowedTypes = [
         "image/jpeg",
@@ -4017,259 +2612,113 @@
         "image/gif"
       ];
 
-
-      if (
-        !allowedTypes.includes(
-          file.type
-        )
-      ) {
-
+      if (!allowedTypes.includes(file.type)) {
         showStatus(
           imageStatus,
           "Please select a JPG, PNG, WebP, or GIF image.",
           "error"
         );
-
         return;
-
       }
 
-
-      if (
-        file.size >
-        10 * 1024 * 1024
-      ) {
-
+      if (file.size > 10 * 1024 * 1024) {
         showStatus(
           imageStatus,
           "The selected image is larger than the 10 MB owner upload limit.",
           "error"
         );
-
         return;
-
       }
 
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("image_type", imageType.value);
 
-      const formData =
-        new FormData();
-
-
-      formData.append(
-        "image",
-        file
-      );
-
-
-      formData.append(
-        "image_type",
-        imageType.value
-      );
-
-
-      uploadImageButton.disabled =
-        true;
-
-
-      uploadImageButton.textContent =
-        "Uploading...";
-
-
-      hideStatus(
-        imageStatus
-      );
-
+      uploadImageButton.disabled = true;
+      uploadImageButton.textContent = "Uploading...";
+      hideStatus(imageStatus);
 
       try {
+        const response = await ownerFetch("/owner/business/images", {
+          method: "POST",
+          body: formData
+        });
 
-        const response =
-          await ownerFetch(
-            "/owner/business/images",
-            {
-              method: "POST",
-              body:
-                formData
-            }
-          );
+        const result = await readResponseBody(response);
 
-
-        const result =
-          await readResponseBody(
-            response
-          );
-
-
-        if (
-          !response.ok ||
-          result?.status !== "ok"
-        ) {
-
+        if (!response.ok || result?.status !== "ok") {
           throw new Error(
-            getResponseMessage(
-              result,
-              "Unable to upload the image."
-            )
+            getResponseMessage(result, "Unable to upload the image.")
           );
-
         }
 
-
-        businessImage.value =
-          "";
-
-
+        businessImage.value = "";
         await loadOwnerImages();
 
-
-        showStatus(
-          imageStatus,
-          "Photo uploaded successfully.",
-          "success"
-        );
-
-
+        showStatus(imageStatus, "Photo uploaded successfully.", "success");
       } catch (error) {
-
-        console.error(
-          "Owner image upload failed:",
-          error
-        );
-
+        console.error("Owner image upload failed:", error);
 
         showStatus(
           imageStatus,
-          error.message ||
-            "Unable to upload the image.",
+          error.message || "Unable to upload the image.",
           "error"
         );
-
-
       } finally {
-
-        uploadImageButton.disabled =
-          false;
-
-
-        uploadImageButton.textContent =
-          "Upload Photo";
-
+        uploadImageButton.disabled = false;
+        uploadImageButton.textContent = "Upload Photo";
       }
-
     }
 
-
-    async function deleteOwnerImage(
-      imageId
-    ) {
-
+    async function deleteOwnerImage(imageId) {
       if (!ownerToken) {
-
         showStatus(
           imageStatus,
           "Your owner session has expired. Please log in again.",
           "error"
         );
-
         return;
-
       }
 
-
       if (!imageId) {
-
         showStatus(
           imageStatus,
           "This image cannot be deleted because its ID is missing.",
           "error"
         );
-
-        return;
-
-      }
-
-
-      const confirmed =
-        window.confirm(
-          "Delete this business photo?"
-        );
-
-
-      if (!confirmed) {
         return;
       }
 
+      if (!window.confirm("Delete this business photo?")) return;
 
       try {
+        showStatus(imageStatus, "Deleting photo...", "info");
 
-        showStatus(
-          imageStatus,
-          "Deleting photo...",
-          "info"
+        const response = await ownerFetch(
+          "/owner/business/images/" + encodeURIComponent(imageId),
+          { method: "DELETE" }
         );
 
+        const result = await readResponseBody(response);
 
-        const response =
-          await ownerFetch(
-            "/owner/business/images/" +
-            encodeURIComponent(
-              imageId
-            ),
-            {
-              method: "DELETE"
-            }
-          );
-
-
-        const result =
-          await readResponseBody(
-            response
-          );
-
-
-        if (
-          !response.ok ||
-          result?.status !== "ok"
-        ) {
-
+        if (!response.ok || result?.status !== "ok") {
           throw new Error(
-            getResponseMessage(
-              result,
-              "Unable to delete the image."
-            )
+            getResponseMessage(result, "Unable to delete the image.")
           );
-
         }
 
-
         await loadOwnerImages();
-
-
-        showStatus(
-          imageStatus,
-          "Photo deleted successfully.",
-          "success"
-        );
-
-
+        showStatus(imageStatus, "Photo deleted successfully.", "success");
       } catch (error) {
-
-        console.error(
-          "Owner image deletion failed:",
-          error
-        );
-
+        console.error("Owner image deletion failed:", error);
 
         showStatus(
           imageStatus,
-          error.message ||
-            "Unable to delete the image.",
+          error.message || "Unable to delete the image.",
           "error"
         );
-
       }
-
     }
-
 
     /*
       ============================================================
@@ -4278,526 +2727,197 @@
     */
 
     async function loadOwnerProducts() {
-
-      if (!ownerToken) {
-        return;
-      }
-
+      if (!ownerToken) return;
 
       productsList.innerHTML =
         '<div class="image-empty">Loading products and services...</div>';
 
-
       try {
+        const response = await ownerFetch("/owner/business/products", {
+          method: "GET"
+        });
 
-        const response =
-          await ownerFetch(
-            "/owner/business/products",
-            {
-              method: "GET"
-            }
-          );
+        const result = await readResponseBody(response);
 
-
-        const result =
-          await readResponseBody(
-            response
-          );
-
-
-        if (
-          !response.ok ||
-          result?.status !== "ok"
-        ) {
-
+        if (!response.ok || result?.status !== "ok") {
           throw new Error(
-            getResponseMessage(
-              result,
-              "Unable to load products and services."
-            )
+            getResponseMessage(result, "Unable to load products and services.")
           );
-
         }
 
-
-        renderOwnerProducts(
-          result.products || []
-        );
-
-
-        hideStatus(
-          productsStatus
-        );
-
-
+        renderOwnerProducts(result.products || []);
+        hideStatus(productsStatus);
       } catch (error) {
-
-        console.error(
-          "Loading owner products failed:",
-          error
-        );
-
+        console.error("Loading owner products failed:", error);
 
         productsList.innerHTML =
           '<div class="image-empty">Unable to load products and services.</div>';
 
-
         showStatus(
           productsStatus,
-          error.message ||
-            "Unable to load products and services.",
+          error.message || "Unable to load products and services.",
           "error"
         );
-
       }
-
     }
 
+    function renderOwnerProducts(products) {
+      productsList.innerHTML = "";
 
-    function renderOwnerProducts(
-      products
-    ) {
-
-      productsList.innerHTML =
-        "";
-
-
-      if (
-        !Array.isArray(products) ||
-        !products.length
-      ) {
-
+      if (!Array.isArray(products) || !products.length) {
         productsList.innerHTML =
           '<div class="image-empty">No products or services have been added yet.</div>';
-
         return;
-
       }
 
+      products.forEach(function(product) {
+        const card = document.createElement("div");
+        card.className = "product-card";
 
-      products.forEach(
-        function(product) {
+        const title = document.createElement("h4");
+        title.textContent = product.name || "Unnamed item";
+        title.style.margin = "0 0 8px";
 
-          const card =
-            document.createElement(
-              "div"
-            );
+        const type = document.createElement("div");
+        type.textContent =
+          product.item_type === "service" ? "Service" : "Product";
+        type.style.color = "var(--accent)";
+        type.style.fontSize = "12px";
+        type.style.fontWeight = "700";
+        type.style.textTransform = "uppercase";
+        type.style.marginBottom = "8px";
 
+        const description = document.createElement("p");
+        description.textContent =
+          product.description || "No description provided.";
+        description.style.color = "var(--text-secondary)";
+        description.style.margin = "0 0 10px";
 
-          card.className =
-            "product-card";
+        const price = document.createElement("div");
 
-
-          const title =
-            document.createElement(
-              "h4"
-            );
-
-
-          title.textContent =
-            product.name ||
-            "Unnamed item";
-
-
-          title.style.margin =
-            "0 0 8px";
-
-
-          const type =
-            document.createElement(
-              "div"
-            );
-
-
-          type.textContent =
-            product.item_type === "service"
-              ? "Service"
-              : "Product";
-
-
-          type.style.color =
-            "var(--accent)";
-
-
-          type.style.fontSize =
-            "12px";
-
-
-          type.style.fontWeight =
-            "700";
-
-
-          type.style.textTransform =
-            "uppercase";
-
-
-          type.style.marginBottom =
-            "8px";
-
-
-          const description =
-            document.createElement(
-              "p"
-            );
-
-
-          description.textContent =
-            product.description ||
-            "No description provided.";
-
-
-          description.style.color =
-            "var(--text-secondary)";
-
-
-          description.style.margin =
-            "0 0 10px";
-
-
-          const price =
-            document.createElement(
-              "div"
-            );
-
-
-          if (
-            product.price !== null &&
-            product.price !== undefined &&
-            product.price !== ""
-          ) {
-
-            price.textContent =
-              (
-                product.currency ||
-                "NGN"
-              ) +
-              " " +
-              Number(
-                product.price
-              ).toLocaleString();
-
-          } else {
-
-            price.textContent =
-              "Price not specified";
-
-          }
-
-
-          price.style.marginBottom =
-            "10px";
-
-
-          price.style.fontWeight =
-            "700";
-
-
-          const availability =
-            document.createElement(
-              "div"
-            );
-
-
-          availability.textContent =
-            Number(product.available) === 1
-              ? "Available"
-              : "Unavailable";
-
-
-          availability.style.color =
-            Number(product.available) === 1
-              ? "var(--success)"
-              : "var(--danger)";
-
-
-          availability.style.fontSize =
-            "13px";
-
-
-          card.appendChild(type);
-          card.appendChild(title);
-          card.appendChild(description);
-          card.appendChild(price);
-          card.appendChild(availability);
-
-
-          productsList.appendChild(
-            card
-          );
-
+        if (
+          product.price !== null &&
+          product.price !== undefined &&
+          product.price !== ""
+        ) {
+          price.textContent =
+            (product.currency || "NGN") +
+            " " +
+            Number(product.price).toLocaleString();
+        } else {
+          price.textContent = "Price not specified";
         }
-      );
 
+        price.style.marginBottom = "10px";
+        price.style.fontWeight = "700";
+
+        const availability = document.createElement("div");
+        availability.textContent =
+          Number(product.available) === 1 ? "Available" : "Unavailable";
+        availability.style.color =
+          Number(product.available) === 1
+            ? "var(--success)"
+            : "var(--danger)";
+        availability.style.fontSize = "13px";
+
+        card.appendChild(type);
+        card.appendChild(title);
+        card.appendChild(description);
+        card.appendChild(price);
+        card.appendChild(availability);
+
+        productsList.appendChild(card);
+      });
     }
 
-
     async function addOwnerProduct() {
-
       if (!ownerToken) {
-
         showStatus(
           productsStatus,
           "Your owner session has expired. Please log in again.",
           "error"
         );
-
         return;
-
       }
 
-
-      const name =
-        document
-          .getElementById(
-            "productName"
-          )
-          .value
-          .trim();
-
-
-      const description =
-        document
-          .getElementById(
-            "productDescription"
-          )
-          .value
-          .trim();
-
-
-      const priceValue =
-        document
-          .getElementById(
-            "productPrice"
-          )
-          .value
-          .trim();
-
-
-      const currency =
-        document
-          .getElementById(
-            "productCurrency"
-          )
-          .value
-          .trim();
-
-
-      const category =
-        document
-          .getElementById(
-            "productCategory"
-          )
-          .value
-          .trim();
-
-
-      const itemType =
-        document
-          .getElementById(
-            "productType"
-          )
-          .value;
-
-
-      const available =
-        document
-          .getElementById(
-            "productAvailable"
-          )
-          .checked;
-
+      const name = document.getElementById("productName").value.trim();
+      const description = document.getElementById("productDescription").value.trim();
+      const priceValue = document.getElementById("productPrice").value.trim();
+      const currency = document.getElementById("productCurrency").value.trim();
+      const category = document.getElementById("productCategory").value.trim();
+      const itemType = document.getElementById("productType").value;
+      const available = document.getElementById("productAvailable").checked;
 
       if (!name) {
-
-        showStatus(
-          productsStatus,
-          "Product or service name is required.",
-          "error"
-        );
-
+        showStatus(productsStatus, "Product or service name is required.", "error");
         return;
-
       }
-
 
       let price = null;
 
-
       if (priceValue !== "") {
+        price = Number(priceValue);
 
-        price =
-          Number(
-            priceValue
-          );
-
-
-        if (
-          !Number.isFinite(price) ||
-          price < 0
-        ) {
-
-          showStatus(
-            productsStatus,
-            "Please enter a valid price.",
-            "error"
-          );
-
+        if (!Number.isFinite(price) || price < 0) {
+          showStatus(productsStatus, "Please enter a valid price.", "error");
           return;
-
         }
-
       }
 
-
-      addProductButton.disabled =
-        true;
-
-
-      addProductButton.textContent =
-        "Adding...";
-
-
-      hideStatus(
-        productsStatus
-      );
-
+      addProductButton.disabled = true;
+      addProductButton.textContent = "Adding...";
+      hideStatus(productsStatus);
 
       try {
+        const response = await ownerFetch("/owner/business/products", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            description: description || null,
+            price,
+            currency: currency || "NGN",
+            category: category || null,
+            item_type: itemType,
+            available: available ? 1 : 0
+          })
+        });
 
-        const response =
-          await ownerFetch(
-            "/owner/business/products",
-            {
-              method: "POST",
+        const result = await readResponseBody(response);
 
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-
-              body:
-                JSON.stringify({
-
-                  name,
-
-                  description:
-                    description ||
-                    null,
-
-                  price,
-
-                  currency:
-                    currency ||
-                    "NGN",
-
-                  category:
-                    category ||
-                    null,
-
-                  item_type:
-                    itemType,
-
-                  available:
-                    available ? 1 : 0
-
-                })
-
-            }
-          );
-
-
-        const result =
-          await readResponseBody(
-            response
-          );
-
-
-        if (
-          !response.ok ||
-          result?.status !== "ok"
-        ) {
-
+        if (!response.ok || result?.status !== "ok") {
           throw new Error(
-            getResponseMessage(
-              result,
-              "Unable to add product or service."
-            )
+            getResponseMessage(result, "Unable to add product or service.")
           );
-
         }
 
-
-        document.getElementById(
-          "productName"
-        ).value = "";
-
-
-        document.getElementById(
-          "productDescription"
-        ).value = "";
-
-
-        document.getElementById(
-          "productPrice"
-        ).value = "";
-
-
-        document.getElementById(
-          "productCategory"
-        ).value = "";
-
-
-        document.getElementById(
-          "productType"
-        ).value =
-          "product";
-
-
-        document.getElementById(
-          "productAvailable"
-        ).checked =
-          true;
-
+        document.getElementById("productName").value = "";
+        document.getElementById("productDescription").value = "";
+        document.getElementById("productPrice").value = "";
+        document.getElementById("productCategory").value = "";
+        document.getElementById("productType").value = "product";
+        document.getElementById("productAvailable").checked = true;
 
         await loadOwnerProducts();
-
 
         showStatus(
           productsStatus,
           "Product or service added successfully.",
           "success"
         );
-
-
       } catch (error) {
-
-        console.error(
-          "Adding owner product failed:",
-          error
-        );
-
+        console.error("Adding owner product failed:", error);
 
         showStatus(
           productsStatus,
-          error.message ||
-            "Unable to add product or service.",
+          error.message || "Unable to add product or service.",
           "error"
         );
-
-
       } finally {
-
-        addProductButton.disabled =
-          false;
-
-
-        addProductButton.textContent =
-          "Add Product / Service";
-
+        addProductButton.disabled = false;
+        addProductButton.textContent = "Add Product / Service";
       }
-
     }
-
 
     /*
       ============================================================
@@ -4806,100 +2926,35 @@
     */
 
     function clearHelpWantedForm() {
+      editingHelpWantedId = null;
 
-      editingHelpWantedId =
-        null;
+      document.getElementById("helpWantedTitle").value = "";
+      document.getElementById("helpWantedType").value = "job";
+      document.getElementById("helpWantedCategory").value = "";
+      document.getElementById("helpWantedLocation").value = "";
+      document.getElementById("helpWantedDescription").value = "";
+      document.getElementById("helpWantedContact").value = "";
+      document.getElementById("helpWantedDeadline").value = "";
 
+      helpWantedFormTitle.textContent = "Create Help Wanted Post";
+      helpWantedEditBanner.classList.remove("show");
+      createHelpWantedButton.textContent = "Create Help Wanted Post";
 
-      document.getElementById(
-        "helpWantedTitle"
-      ).value =
-        "";
-
-
-      document.getElementById(
-        "helpWantedType"
-      ).value =
-        "job";
-
-
-      document.getElementById(
-        "helpWantedCategory"
-      ).value =
-        "";
-
-
-      document.getElementById(
-        "helpWantedLocation"
-      ).value =
-        "";
-
-
-      document.getElementById(
-        "helpWantedDescription"
-      ).value =
-        "";
-
-
-      document.getElementById(
-        "helpWantedContact"
-      ).value =
-        "";
-
-
-      document.getElementById(
-        "helpWantedDeadline"
-      ).value =
-        "";
-
-
-      helpWantedFormTitle.textContent =
-        "Create Help Wanted Post";
-
-
-      helpWantedEditBanner.classList.remove(
-        "show"
-      );
-
-
-      createHelpWantedButton.textContent =
-        "Create Help Wanted Post";
-
-
-      hideStatus(
-        helpWantedStatus
-      );
-
+      hideStatus(helpWantedStatus);
     }
 
-
     async function loadOwnerHelpWanted() {
-
-      if (!ownerToken) {
-        return;
-      }
-
+      if (!ownerToken) return;
 
       helpWantedList.innerHTML =
         '<div class="image-empty">Loading Help Wanted posts...</div>';
 
-
       try {
+        const response = await ownerFetch("/owner/help-wanted", {
+          method: "GET"
+        });
 
-        const response =
-          await ownerFetch(
-            "/owner/help-wanted",
-            {
-              method: "GET"
-            }
-          );
-
-
-        const result =
-          await readResponseBody(
-            response
-          );
-
+        const result = await readResponseBody(response);
 
         console.log(
           "OWNER HELP WANTED GET RESPONSE:",
@@ -4907,21 +2962,11 @@
           result
         );
 
-
-        if (
-          !response.ok ||
-          result?.status !== "ok"
-        ) {
-
+        if (!response.ok || result?.status !== "ok") {
           throw new Error(
-            getResponseMessage(
-              result,
-              "Unable to load your Help Wanted posts."
-            )
+            getResponseMessage(result, "Unable to load your Help Wanted posts.")
           );
-
         }
-
 
         const posts =
           result.help_wanted ||
@@ -4929,817 +2974,291 @@
           result.data ||
           [];
 
+        currentHelpWantedPosts = Array.isArray(posts) ? posts : [];
 
-        currentHelpWantedPosts =
-          Array.isArray(posts)
-            ? posts
-            : [];
-
-
-        renderHelpWantedPosts(
-          currentHelpWantedPosts
-        );
-
-
-        hideStatus(
-          helpWantedStatus
-        );
-
-
+        renderHelpWantedPosts(currentHelpWantedPosts);
+        hideStatus(helpWantedStatus);
       } catch (error) {
-
-        console.error(
-          "Loading owner Help Wanted failed:",
-          error
-        );
-
+        console.error("Loading owner Help Wanted failed:", error);
 
         helpWantedList.innerHTML =
           '<div class="image-empty">Unable to load your Help Wanted posts.</div>';
 
-
         showStatus(
           helpWantedStatus,
-          error.message ||
-            "Unable to load your Help Wanted posts.",
+          error.message || "Unable to load your Help Wanted posts.",
           "error"
         );
-
       }
-
     }
 
+    function renderHelpWantedPosts(posts) {
+      helpWantedList.innerHTML = "";
 
-    function renderHelpWantedPosts(
-      posts
-    ) {
-
-      helpWantedList.innerHTML =
-        "";
-
-
-      if (
-        !Array.isArray(posts) ||
-        !posts.length
-      ) {
-
+      if (!Array.isArray(posts) || !posts.length) {
         helpWantedList.innerHTML =
           '<div class="image-empty">No Help Wanted posts have been submitted for this business.</div>';
-
         return;
-
       }
 
-
-      posts.forEach(
-        function(post) {
-
-          const card =
-            document.createElement(
-              "div"
-            );
-
-
-          card.className =
-            "help-wanted-card";
-
-
-          /*
-            STATUS
-          */
-
-          const statusBadge =
-            document.createElement(
-              "div"
-            );
-
-
-          const moderationStatus =
-            String(
-              post.moderation_status ||
-              "pending"
-            ).toLowerCase();
-
-
-          const postStatus =
-            String(
-              post.status ||
-              "open"
-            ).toLowerCase();
-
-
-          statusBadge.className =
-            "help-wanted-status";
-
-
-          if (
-            postStatus === "closed"
-          ) {
-
-            statusBadge.classList.add(
-              "closed"
-            );
-
-
-            statusBadge.textContent =
-              "Closed";
-
-          } else if (
-            moderationStatus === "approved"
-          ) {
-
-            statusBadge.textContent =
-              "Approved";
-
-          } else if (
-            moderationStatus === "rejected"
-          ) {
-
-            statusBadge.classList.add(
-              "rejected"
-            );
-
-
-            statusBadge.textContent =
-              "Rejected";
-
-          } else if (
-            moderationStatus === "removed"
-          ) {
-
-            statusBadge.classList.add(
-              "removed"
-            );
-
-
-            statusBadge.textContent =
-              "Removed";
-
-          } else {
-
-            statusBadge.classList.add(
-              "pending"
-            );
-
-
-            statusBadge.textContent =
-              "Pending Moderation";
-
-          }
-
-
-          /*
-            TITLE
-          */
-
-          const title =
-            document.createElement(
-              "h4"
-            );
-
-
-          title.textContent =
-            post.title ||
-            "Untitled opportunity";
-
-
-          /*
-            DESCRIPTION
-          */
-
-          const description =
-            document.createElement(
-              "p"
-            );
-
-
-          description.textContent =
-            post.description ||
-            "No description provided.";
-
-
-          description.style.margin =
-            "0";
-
-
-          /*
-            META
-          */
-
-          const meta =
-            document.createElement(
-              "div"
-            );
-
-
-          meta.className =
-            "help-wanted-meta";
-
-
-          meta.appendChild(
-            createHelpWantedMetaBox(
-              "Type",
-              formatHelpWantedType(
-                post.type ||
-                post.employment_type
-              )
-            )
-          );
-
-
-          meta.appendChild(
-            createHelpWantedMetaBox(
-              "Category",
-              post.category ||
-                "Not specified"
-            )
-          );
-
-
-          meta.appendChild(
-            createHelpWantedMetaBox(
-              "Location",
-              post.location ||
-                "Not specified"
-            )
-          );
-
-
-          meta.appendChild(
-            createHelpWantedMetaBox(
-              "Deadline",
-              post.deadline ||
-              post.expires_at
-                ? formatHelpWantedDate(
-                    post.deadline ||
-                    post.expires_at
-                  )
-                : "No deadline"
-            )
-          );
-
-
-          meta.appendChild(
-            createHelpWantedMetaBox(
-              "Moderation",
-              formatHelpWantedModerationStatus(
-                moderationStatus
-              )
-            )
-          );
-
-
-          if (
-            post.application_contact ||
-            post.contact
-          ) {
-
-            meta.appendChild(
-              createHelpWantedMetaBox(
-                "Application / Contact",
-                post.application_contact ||
-                  post.contact
-              )
-            );
-
-          }
-
-
-          if (
-            post.id
-          ) {
-
-            meta.appendChild(
-              createHelpWantedMetaBox(
-                "Post ID",
-                String(post.id)
-              )
-            );
-
-          }
-
-
-          /*
-            NOTE
-          */
-
-          const note =
-            document.createElement(
-              "p"
-            );
-
-
-          note.className =
-            "help-wanted-note";
-
-
-          if (
-            moderationStatus === "pending"
-          ) {
-
-            note.textContent =
-              "This listing has been submitted and is waiting for moderation approval.";
-
-          } else if (
-            moderationStatus === "approved" &&
-            postStatus === "open"
-          ) {
-
-            note.textContent =
-              "This listing is approved and currently open.";
-
-          } else if (
-            postStatus === "closed"
-          ) {
-
-            note.textContent =
-              "This listing is closed and is no longer accepting applications.";
-
-          } else if (
-            moderationStatus === "rejected"
-          ) {
-
-            note.textContent =
-              "This listing was rejected during moderation.";
-
-          } else if (
-            moderationStatus === "removed"
-          ) {
-
-            note.textContent =
-              "This listing has been removed from public discovery.";
-
-          } else {
-
-            note.textContent =
-              "This listing is currently not eligible for public discovery.";
-
-          }
-
-
-          /*
-            ACTIONS
-          */
-
-          const actions =
-            document.createElement(
-              "div"
-            );
-
-
-          actions.className =
-            "help-wanted-actions";
-
-
-          if (
-            post.id &&
-            moderationStatus !== "removed"
-          ) {
-
-            const editButton =
-              document.createElement(
-                "button"
-              );
-
-
-            editButton.type =
-              "button";
-
-
-            editButton.className =
-              "btn btn-secondary";
-
-
-            editButton.textContent =
-              "Edit";
-
-
-            editButton.addEventListener(
-              "click",
-              function() {
-
-                startHelpWantedEdit(
-                  post
-                );
-
-              }
-            );
-
-
-            actions.appendChild(
-              editButton
-            );
-
-
-            const toggleButton =
-              document.createElement(
-                "button"
-              );
-
-
-            toggleButton.type =
-              "button";
-
-
-            toggleButton.className =
-              "btn btn-warning";
-
-
-            toggleButton.textContent =
-              postStatus === "closed"
-                ? "Reopen"
-                : "Close";
-
-
-            toggleButton.addEventListener(
-              "click",
-              function() {
-
-                toggleHelpWantedStatus(
-                  post
-                );
-
-              }
-            );
-
-
-            actions.appendChild(
-              toggleButton
-            );
-
-
-            const deleteButton =
-              document.createElement(
-                "button"
-              );
-
-
-            deleteButton.type =
-              "button";
-
-
-            deleteButton.className =
-              "btn btn-danger";
-
-
-            deleteButton.textContent =
-              "Delete";
-
-
-            deleteButton.addEventListener(
-              "click",
-              function() {
-
-                deleteOwnerHelpWanted(
-                  post.id
-                );
-
-              }
-            );
-
-
-            actions.appendChild(
-              deleteButton
-            );
-
-          }
-
-
-          card.appendChild(
-            statusBadge
-          );
-
-
-          card.appendChild(
-            title
-          );
-
-
-          card.appendChild(
-            description
-          );
-
-
-          card.appendChild(
-            meta
-          );
-
-
-          card.appendChild(
-            note
-          );
-
-
-          if (
-            actions.children.length
-          ) {
-
-            card.appendChild(
-              actions
-            );
-
-          }
-
-
-          helpWantedList.appendChild(
-            card
-          );
-
+      posts.forEach(function(post) {
+        const card = document.createElement("div");
+        card.className = "help-wanted-card";
+
+        const statusBadge = document.createElement("div");
+
+        const moderationStatus = String(
+          post.moderation_status || "pending"
+        ).toLowerCase();
+
+        const postStatus = String(
+          post.status || "open"
+        ).toLowerCase();
+
+        statusBadge.className = "help-wanted-status";
+
+        if (postStatus === "closed") {
+          statusBadge.classList.add("closed");
+          statusBadge.textContent = "Closed";
+        } else if (moderationStatus === "approved") {
+          statusBadge.textContent = "Approved";
+        } else if (moderationStatus === "rejected") {
+          statusBadge.classList.add("rejected");
+          statusBadge.textContent = "Rejected";
+        } else if (moderationStatus === "removed") {
+          statusBadge.classList.add("removed");
+          statusBadge.textContent = "Removed";
+        } else {
+          statusBadge.classList.add("pending");
+          statusBadge.textContent = "Pending Moderation";
         }
-      );
 
+        const title = document.createElement("h4");
+        title.textContent = post.title || "Untitled opportunity";
+
+        const description = document.createElement("p");
+        description.textContent = post.description || "No description provided.";
+        description.style.margin = "0";
+
+        const meta = document.createElement("div");
+        meta.className = "help-wanted-meta";
+
+        meta.appendChild(
+          createHelpWantedMetaBox(
+            "Type",
+            formatHelpWantedType(post.type || post.employment_type)
+          )
+        );
+
+        meta.appendChild(
+          createHelpWantedMetaBox(
+            "Category",
+            post.category || "Not specified"
+          )
+        );
+
+        meta.appendChild(
+          createHelpWantedMetaBox(
+            "Location",
+            post.location || "Not specified"
+          )
+        );
+
+        meta.appendChild(
+          createHelpWantedMetaBox(
+            "Deadline",
+            post.deadline || post.expires_at
+              ? formatHelpWantedDate(post.deadline || post.expires_at)
+              : "No deadline"
+          )
+        );
+
+        meta.appendChild(
+          createHelpWantedMetaBox(
+            "Moderation",
+            formatHelpWantedModerationStatus(moderationStatus)
+          )
+        );
+
+        if (post.application_contact || post.contact) {
+          meta.appendChild(
+            createHelpWantedMetaBox(
+              "Application / Contact",
+              post.application_contact || post.contact
+            )
+          );
+        }
+
+        if (post.id) {
+          meta.appendChild(
+            createHelpWantedMetaBox("Post ID", String(post.id))
+          );
+        }
+
+        const note = document.createElement("p");
+        note.className = "help-wanted-note";
+
+        if (moderationStatus === "pending") {
+          note.textContent =
+            "This listing has been submitted and is waiting for moderation approval.";
+        } else if (moderationStatus === "approved" && postStatus === "open") {
+          note.textContent = "This listing is approved and currently open.";
+        } else if (postStatus === "closed") {
+          note.textContent =
+            "This listing is closed and is no longer accepting applications.";
+        } else if (moderationStatus === "rejected") {
+          note.textContent = "This listing was rejected during moderation.";
+        } else if (moderationStatus === "removed") {
+          note.textContent = "This listing has been removed from public discovery.";
+        } else {
+          note.textContent =
+            "This listing is currently not eligible for public discovery.";
+        }
+
+        const actions = document.createElement("div");
+        actions.className = "help-wanted-actions";
+
+        if (post.id && moderationStatus !== "removed") {
+          const editButton = document.createElement("button");
+          editButton.type = "button";
+          editButton.className = "btn btn-secondary";
+          editButton.textContent = "Edit";
+
+          editButton.addEventListener("click", function() {
+            startHelpWantedEdit(post);
+          });
+
+          actions.appendChild(editButton);
+
+          const toggleButton = document.createElement("button");
+          toggleButton.type = "button";
+          toggleButton.className = "btn btn-warning";
+          toggleButton.textContent =
+            postStatus === "closed" ? "Reopen" : "Close";
+
+          toggleButton.addEventListener("click", function() {
+            toggleHelpWantedStatus(post);
+          });
+
+          actions.appendChild(toggleButton);
+
+          const deleteButton = document.createElement("button");
+          deleteButton.type = "button";
+          deleteButton.className = "btn btn-danger";
+          deleteButton.textContent = "Delete";
+
+          deleteButton.addEventListener("click", function() {
+            deleteOwnerHelpWanted(post.id);
+          });
+
+          actions.appendChild(deleteButton);
+        }
+
+        card.appendChild(statusBadge);
+        card.appendChild(title);
+        card.appendChild(description);
+        card.appendChild(meta);
+        card.appendChild(note);
+
+        if (actions.children.length) {
+          card.appendChild(actions);
+        }
+
+        helpWantedList.appendChild(card);
+      });
     }
 
+    function createHelpWantedMetaBox(label, value) {
+      const box = document.createElement("div");
+      box.className = "help-wanted-meta-box";
 
-    function createHelpWantedMetaBox(
-      label,
-      value
-    ) {
+      const labelElement = document.createElement("div");
+      labelElement.className = "help-wanted-meta-label";
+      labelElement.textContent = label;
 
-      const box =
-        document.createElement(
-          "div"
-        );
+      const valueElement = document.createElement("div");
+      valueElement.className = "help-wanted-meta-value";
+      valueElement.textContent = value || "—";
 
-
-      box.className =
-        "help-wanted-meta-box";
-
-
-      const labelElement =
-        document.createElement(
-          "div"
-        );
-
-
-      labelElement.className =
-        "help-wanted-meta-label";
-
-
-      labelElement.textContent =
-        label;
-
-
-      const valueElement =
-        document.createElement(
-          "div"
-        );
-
-
-      valueElement.className =
-        "help-wanted-meta-value";
-
-
-      valueElement.textContent =
-        value ||
-        "—";
-
-
-      box.appendChild(
-        labelElement
-      );
-
-
-      box.appendChild(
-        valueElement
-      );
-
+      box.appendChild(labelElement);
+      box.appendChild(valueElement);
 
       return box;
-
     }
 
-
-    function formatHelpWantedType(
-      type
-    ) {
-
-      const normalized =
-        cleanString(
-          type
-        ).toLowerCase();
-
+    function formatHelpWantedType(type) {
+      const normalized = cleanString(type).toLowerCase();
 
       const labels = {
-
-        job:
-          "Job",
-
-        part_time:
-          "Part-time",
-
-        contract:
-          "Contract",
-
-        freelance:
-          "Freelance",
-
-        internship:
-          "Internship",
-
-        apprenticeship:
-          "Apprenticeship",
-
-        temporary:
-          "Temporary",
-
-        volunteer:
-          "Volunteer",
-
-        other:
-          "Other"
-
+        job: "Job",
+        part_time: "Part-time",
+        contract: "Contract",
+        freelance: "Freelance",
+        internship: "Internship",
+        apprenticeship: "Apprenticeship",
+        temporary: "Temporary",
+        volunteer: "Volunteer",
+        other: "Other"
       };
 
-
-      return (
-        labels[normalized] ||
-        type ||
-        "Other"
-      );
-
+      return labels[normalized] || type || "Other";
     }
 
-
-    function formatHelpWantedModerationStatus(
-      status
-    ) {
-
-      const normalized =
-        cleanString(
-          status
-        ).toLowerCase();
-
+    function formatHelpWantedModerationStatus(status) {
+      const normalized = cleanString(status).toLowerCase();
 
       const labels = {
-
-        pending:
-          "Pending",
-
-        approved:
-          "Approved",
-
-        rejected:
-          "Rejected",
-
-        removed:
-          "Removed"
-
+        pending: "Pending",
+        approved: "Approved",
+        rejected: "Rejected",
+        removed: "Removed"
       };
 
-
-      return (
-        labels[normalized] ||
-        "Pending"
-      );
-
+      return labels[normalized] || "Pending";
     }
 
+    function formatHelpWantedDate(value) {
+      if (!value) return "No deadline";
 
-    function formatHelpWantedDate(
-      value
-    ) {
-
-      if (!value) {
-        return "No deadline";
-      }
-
-
-      const raw =
-        cleanString(
-          value
-        );
-
-
-      if (!raw) {
-        return "No deadline";
-      }
-
+      const raw = cleanString(value);
+      if (!raw) return "No deadline";
 
       try {
-
-        const date =
-          new Date(
-            raw.length === 10
-              ? raw + "T00:00:00"
-              : raw
-          );
-
-
-        if (
-          Number.isNaN(
-            date.getTime()
-          )
-        ) {
-
-          return raw;
-
-        }
-
-
-        return date.toLocaleDateString(
-          undefined,
-          {
-            year: "numeric",
-            month: "short",
-            day: "numeric"
-          }
+        const date = new Date(
+          raw.length === 10 ? raw + "T00:00:00" : raw
         );
 
+        if (Number.isNaN(date.getTime())) return raw;
 
+        return date.toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        });
       } catch {
-
         return raw;
-
       }
-
     }
 
+    function startHelpWantedEdit(post) {
+      if (!post || !post.id) return;
 
-    function startHelpWantedEdit(
-      post
-    ) {
+      editingHelpWantedId = String(post.id);
 
-      if (!post || !post.id) {
+      document.getElementById("helpWantedTitle").value = post.title || "";
+      document.getElementById("helpWantedType").value =
+        normalizeHelpWantedTypeValue(post.type || post.employment_type);
+      document.getElementById("helpWantedCategory").value = post.category || "";
+      document.getElementById("helpWantedLocation").value = post.location || "";
+      document.getElementById("helpWantedDescription").value = post.description || "";
+      document.getElementById("helpWantedContact").value =
+        post.application_contact || post.contact || "";
+      document.getElementById("helpWantedDeadline").value =
+        normalizeDateInputValue(post.deadline || post.expires_at || "");
 
-        return;
-
-      }
-
-
-      editingHelpWantedId =
-        String(
-          post.id
-        );
-
-
-      document.getElementById(
-        "helpWantedTitle"
-      ).value =
-        post.title ||
-        "";
-
-
-      document.getElementById(
-        "helpWantedType"
-      ).value =
-        normalizeHelpWantedTypeValue(
-          post.type ||
-          post.employment_type
-        );
-
-
-      document.getElementById(
-        "helpWantedCategory"
-      ).value =
-        post.category ||
-        "";
-
-
-      document.getElementById(
-        "helpWantedLocation"
-      ).value =
-        post.location ||
-        "";
-
-
-      document.getElementById(
-        "helpWantedDescription"
-      ).value =
-        post.description ||
-        "";
-
-
-      document.getElementById(
-        "helpWantedContact"
-      ).value =
-        post.application_contact ||
-        post.contact ||
-        "";
-
-
-      document.getElementById(
-        "helpWantedDeadline"
-      ).value =
-        normalizeDateInputValue(
-          post.deadline ||
-          post.expires_at ||
-          ""
-        );
-
-
-      helpWantedFormTitle.textContent =
-        "Edit Help Wanted Post";
-
-
-      helpWantedEditBanner.classList.add(
-        "show"
-      );
-
-
-      createHelpWantedButton.textContent =
-        "Save Help Wanted Changes";
-
+      helpWantedFormTitle.textContent = "Edit Help Wanted Post";
+      helpWantedEditBanner.classList.add("show");
+      createHelpWantedButton.textContent = "Save Help Wanted Changes";
 
       showStatus(
         helpWantedStatus,
@@ -5747,28 +3266,14 @@
         "info"
       );
 
-
-      document
-        .getElementById(
-          "helpWantedTitle"
-        )
-        .scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
-
+      document.getElementById("helpWantedTitle").scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
     }
 
-
-    function normalizeHelpWantedTypeValue(
-      type
-    ) {
-
-      const normalized =
-        cleanString(
-          type
-        ).toLowerCase();
-
+    function normalizeHelpWantedTypeValue(type) {
+      const normalized = cleanString(type).toLowerCase();
 
       const allowed = [
         "job",
@@ -5782,803 +3287,317 @@
         "other"
       ];
 
-
-      return allowed.includes(
-        normalized
-      )
-        ? normalized
-        : "other";
-
+      return allowed.includes(normalized) ? normalized : "other";
     }
 
+    function normalizeDateInputValue(value) {
+      const raw = cleanString(value);
+      if (!raw) return "";
 
-    function normalizeDateInputValue(
-      value
-    ) {
-
-      const raw =
-        cleanString(
-          value
-        );
-
-
-      if (!raw) {
-        return "";
-      }
-
-
-      if (
-        /^\d{4}-\d{2}-\d{2}$/.test(
-          raw
-        )
-      ) {
-
+      if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
         return raw;
-
       }
 
+      const date = new Date(raw);
+      if (Number.isNaN(date.getTime())) return "";
 
-      const date =
-        new Date(raw);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
 
-
-      if (
-        Number.isNaN(
-          date.getTime()
-        )
-      ) {
-
-        return "";
-
-      }
-
-
-      const year =
-        date.getFullYear();
-
-
-      const month =
-        String(
-          date.getMonth() + 1
-        ).padStart(
-          2,
-          "0"
-        );
-
-
-      const day =
-        String(
-          date.getDate()
-        ).padStart(
-          2,
-          "0"
-        );
-
-
-      return (
-        year +
-        "-" +
-        month +
-        "-" +
-        day
-      );
-
+      return year + "-" + month + "-" + day;
     }
-
 
     function getHelpWantedFormValues() {
-
       return {
-
-        title:
-          cleanString(
-            document.getElementById(
-              "helpWantedTitle"
-            ).value
-          ),
-
-        type:
-          cleanString(
-            document.getElementById(
-              "helpWantedType"
-            ).value
-          ),
-
-        category:
-          cleanString(
-            document.getElementById(
-              "helpWantedCategory"
-            ).value
-          ),
-
-        location:
-          cleanString(
-            document.getElementById(
-              "helpWantedLocation"
-            ).value
-          ),
-
-        description:
-          cleanString(
-            document.getElementById(
-              "helpWantedDescription"
-            ).value
-          ),
-
-        contact:
-          cleanString(
-            document.getElementById(
-              "helpWantedContact"
-            ).value
-          ),
-
-        deadline:
-          cleanString(
-            document.getElementById(
-              "helpWantedDeadline"
-            ).value
-          )
-
+        title: cleanString(document.getElementById("helpWantedTitle").value),
+        type: cleanString(document.getElementById("helpWantedType").value),
+        category: cleanString(document.getElementById("helpWantedCategory").value),
+        location: cleanString(document.getElementById("helpWantedLocation").value),
+        description: cleanString(document.getElementById("helpWantedDescription").value),
+        contact: cleanString(document.getElementById("helpWantedContact").value),
+        deadline: cleanString(document.getElementById("helpWantedDeadline").value)
       };
-
     }
 
-
-    function validateHelpWantedForm(
-      data
-    ) {
-
+    function validateHelpWantedForm(data) {
       if (!data.title) {
-
         return "Opportunity title is required.";
-
       }
-
 
       if (!data.description) {
-
         return "Please provide a description of the opportunity.";
-
       }
-
 
       if (!data.contact) {
-
         return "Please provide an application or contact method.";
-
       }
-
 
       if (data.deadline) {
+        const deadlineDate = new Date(data.deadline + "T23:59:59");
 
-        const deadlineDate =
-          new Date(
-            data.deadline +
-            "T23:59:59"
-          );
-
-
-        if (
-          Number.isNaN(
-            deadlineDate.getTime()
-          )
-        ) {
-
+        if (Number.isNaN(deadlineDate.getTime())) {
           return "Please enter a valid application deadline.";
-
         }
 
-
-        if (
-          deadlineDate <
-          new Date()
-        ) {
-
+        if (deadlineDate < new Date()) {
           return "The application deadline cannot be in the past.";
-
         }
-
       }
 
-
       return null;
-
     }
 
-
     async function createHelpWantedDraft() {
-
       if (!ownerToken) {
-
         showStatus(
           helpWantedStatus,
           "Your owner session has expired. Please log in again.",
           "error"
         );
-
         return;
-
       }
 
-
       if (!currentBusiness) {
-
         showStatus(
           helpWantedStatus,
           "Your business information has not loaded yet.",
           "error"
         );
-
         return;
-
       }
 
-
-      const data =
-        getHelpWantedFormValues();
-
-
-      const validationError =
-        validateHelpWantedForm(
-          data
-        );
-
+      const data = getHelpWantedFormValues();
+      const validationError = validateHelpWantedForm(data);
 
       if (validationError) {
-
-        showStatus(
-          helpWantedStatus,
-          validationError,
-          "error"
-        );
-
+        showStatus(helpWantedStatus, validationError, "error");
         return;
-
       }
 
-
-      createHelpWantedButton.disabled =
-        true;
-
-
+      createHelpWantedButton.disabled = true;
       createHelpWantedButton.textContent =
-        editingHelpWantedId
-          ? "Saving..."
-          : "Submitting...";
+        editingHelpWantedId ? "Saving..." : "Submitting...";
 
-
-      hideStatus(
-        helpWantedStatus
-      );
-
+      hideStatus(helpWantedStatus);
 
       try {
-
         if (editingHelpWantedId) {
-
-          await updateOwnerHelpWanted(
-            editingHelpWantedId,
-            data
-          );
-
+          await updateOwnerHelpWanted(editingHelpWantedId, data);
         } else {
+          const response = await ownerFetch("/owner/help-wanted", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              title: data.title,
+              description: data.description,
+              type: data.type,
+              category: data.category || null,
+              location: data.location || null,
+              application_contact: data.contact,
+              deadline: data.deadline || null,
+              contact: data.contact,
+              employment_type: data.type,
+              expires_at: data.deadline || null
+            })
+          });
 
-          /*
-            IMPORTANT:
-            This MUST use the authenticated owner endpoint.
-          */
+          const result = await readResponseBody(response);
 
-          console.log(
-            "SUBMITTING OWNER HELP WANTED:",
-            API_BASE +
-            "/owner/help-wanted"
-          );
-
-
-          const response =
-            await ownerFetch(
-              "/owner/help-wanted",
-              {
-                method: "POST",
-
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-
-                body:
-                  JSON.stringify({
-
-                    title:
-                      data.title,
-
-                    description:
-                      data.description,
-
-                    type:
-                      data.type,
-
-                    category:
-                      data.category ||
-                      null,
-
-                    location:
-                      data.location ||
-                      null,
-
-                    application_contact:
-                      data.contact,
-
-                    deadline:
-                      data.deadline ||
-                      null,
-
-                    /*
-                      Compatibility aliases for the
-                      current Worker implementation.
-                    */
-
-                    contact:
-                      data.contact,
-
-                    employment_type:
-                      data.type,
-
-                    expires_at:
-                      data.deadline ||
-                      null
-
-                  })
-              }
-            );
-
-
-          const result =
-            await readResponseBody(
-              response
-            );
-
-
-          console.log(
-            "OWNER HELP WANTED POST RESPONSE:",
-            response.status,
-            result
-          );
-
-
-          if (
-            !response.ok ||
-            result?.status !== "ok"
-          ) {
-
+          if (!response.ok || result?.status !== "ok") {
             throw new Error(
               getResponseMessage(
                 result,
                 `Unable to create Help Wanted post (HTTP ${response.status}).`
               )
             );
-
           }
 
-
           clearHelpWantedForm();
-
-
           await loadOwnerHelpWanted();
-
 
           showStatus(
             helpWantedStatus,
             "Help Wanted post submitted successfully. It is now waiting for moderation approval.",
             "success"
           );
-
         }
-
       } catch (error) {
-
-        console.error(
-          "Creating or updating Help Wanted post failed:",
-          error
-        );
-
+        console.error("Creating or updating Help Wanted post failed:", error);
 
         showStatus(
           helpWantedStatus,
-          error.message ||
-            "Unable to save the Help Wanted post.",
+          error.message || "Unable to save the Help Wanted post.",
           "error"
         );
-
-
       } finally {
-
-        createHelpWantedButton.disabled =
-          false;
-
-
+        createHelpWantedButton.disabled = false;
         createHelpWantedButton.textContent =
           editingHelpWantedId
             ? "Save Help Wanted Changes"
             : "Create Help Wanted Post";
-
       }
-
     }
 
-
-    async function updateOwnerHelpWanted(
-      postId,
-      data
-    ) {
-
+    async function updateOwnerHelpWanted(postId, data) {
       if (!postId) {
-
-        throw new Error(
-          "Help Wanted post ID is missing."
-        );
-
+        throw new Error("Help Wanted post ID is missing.");
       }
 
-
-      const response =
-        await ownerFetch(
-          "/owner/help-wanted/" +
-          encodeURIComponent(
-            postId
-          ),
-          {
-            method: "PATCH",
-
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
-
-            body:
-              JSON.stringify({
-
-                title:
-                  data.title,
-
-                description:
-                  data.description,
-
-                type:
-                  data.type,
-
-                category:
-                  data.category ||
-                  null,
-
-                location:
-                  data.location ||
-                  null,
-
-                application_contact:
-                  data.contact,
-
-                deadline:
-                  data.deadline ||
-                  null,
-
-                contact:
-                  data.contact,
-
-                employment_type:
-                  data.type,
-
-                expires_at:
-                  data.deadline ||
-                  null
-
-              })
-          }
-        );
-
-
-      const result =
-        await readResponseBody(
-          response
-        );
-
-
-      console.log(
-        "OWNER HELP WANTED PATCH RESPONSE:",
-        response.status,
-        result
+      const response = await ownerFetch(
+        "/owner/help-wanted/" + encodeURIComponent(postId),
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: data.title,
+            description: data.description,
+            type: data.type,
+            category: data.category || null,
+            location: data.location || null,
+            application_contact: data.contact,
+            deadline: data.deadline || null,
+            contact: data.contact,
+            employment_type: data.type,
+            expires_at: data.deadline || null
+          })
+        }
       );
 
+      const result = await readResponseBody(response);
 
-      if (
-        !response.ok ||
-        result?.status !== "ok"
-      ) {
-
+      if (!response.ok || result?.status !== "ok") {
         throw new Error(
           getResponseMessage(
             result,
             `Unable to update Help Wanted post (HTTP ${response.status}).`
           )
         );
-
       }
 
-
-      editingHelpWantedId =
-        null;
-
-
+      editingHelpWantedId = null;
       clearHelpWantedForm();
-
-
       await loadOwnerHelpWanted();
-
 
       showStatus(
         helpWantedStatus,
         "Help Wanted post updated successfully.",
         "success"
       );
-
     }
 
+    async function toggleHelpWantedStatus(post) {
+      if (!post || !post.id) return;
 
-    async function toggleHelpWantedStatus(
-      post
-    ) {
+      const currentStatus = String(post.status || "open").toLowerCase();
+      const nextStatus = currentStatus === "closed" ? "open" : "closed";
+      const label = nextStatus === "closed" ? "close" : "reopen";
 
-      if (
-        !post ||
-        !post.id
-      ) {
-
-        return;
-
-      }
-
-
-      const currentStatus =
-        String(
-          post.status ||
-          "open"
-        ).toLowerCase();
-
-
-      const nextStatus =
-        currentStatus === "closed"
-          ? "open"
-          : "closed";
-
-
-      const label =
-        nextStatus === "closed"
-          ? "close"
-          : "reopen";
-
-
-      const confirmed =
-        window.confirm(
-          `Are you sure you want to ${label} this Help Wanted post?`
-        );
-
-
-      if (!confirmed) {
+      if (!window.confirm(`Are you sure you want to ${label} this Help Wanted post?`)) {
         return;
       }
-
 
       try {
-
         showStatus(
           helpWantedStatus,
           `${nextStatus === "closed" ? "Closing" : "Reopening"} Help Wanted post...`,
           "info"
         );
 
-
-        const response =
-          await ownerFetch(
-            "/owner/help-wanted/" +
-            encodeURIComponent(
-              post.id
-            ) +
+        const response = await ownerFetch(
+          "/owner/help-wanted/" +
+            encodeURIComponent(post.id) +
             "/status",
-            {
-              method: "PATCH",
-
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-
-              body:
-                JSON.stringify({
-                  status:
-                    nextStatus
-                })
-            }
-          );
-
-
-        const result =
-          await readResponseBody(
-            response
-          );
-
-
-        console.log(
-          "OWNER HELP WANTED STATUS RESPONSE:",
-          response.status,
-          result
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: nextStatus })
+          }
         );
 
+        const result = await readResponseBody(response);
 
-        if (
-          !response.ok ||
-          result?.status !== "ok"
-        ) {
-
+        if (!response.ok || result?.status !== "ok") {
           throw new Error(
             getResponseMessage(
               result,
               `Unable to update Help Wanted status (HTTP ${response.status}).`
             )
           );
-
         }
 
-
         await loadOwnerHelpWanted();
-
 
         showStatus(
           helpWantedStatus,
           `Help Wanted post ${nextStatus === "closed" ? "closed" : "reopened"} successfully.`,
           "success"
         );
-
-
       } catch (error) {
-
-        console.error(
-          "Updating Help Wanted status failed:",
-          error
-        );
-
+        console.error("Updating Help Wanted status failed:", error);
 
         showStatus(
           helpWantedStatus,
-          error.message ||
-            "Unable to update Help Wanted status.",
+          error.message || "Unable to update Help Wanted status.",
           "error"
         );
-
       }
-
     }
 
-
-    async function deleteOwnerHelpWanted(
-      postId
-    ) {
-
+    async function deleteOwnerHelpWanted(postId) {
       if (!postId) {
-
         showStatus(
           helpWantedStatus,
           "This Help Wanted post cannot be deleted because its ID is missing.",
           "error"
         );
-
-        return;
-
-      }
-
-
-      const confirmed =
-        window.confirm(
-          "Delete this Help Wanted post permanently?"
-        );
-
-
-      if (!confirmed) {
         return;
       }
 
+      if (!window.confirm("Delete this Help Wanted post permanently?")) {
+        return;
+      }
 
       try {
+        showStatus(helpWantedStatus, "Deleting Help Wanted post...", "info");
 
-        showStatus(
-          helpWantedStatus,
-          "Deleting Help Wanted post...",
-          "info"
+        const response = await ownerFetch(
+          "/owner/help-wanted/" + encodeURIComponent(postId),
+          { method: "DELETE" }
         );
 
+        const result = await readResponseBody(response);
 
-        const response =
-          await ownerFetch(
-            "/owner/help-wanted/" +
-            encodeURIComponent(
-              postId
-            ),
-            {
-              method: "DELETE"
-            }
-          );
-
-
-        const result =
-          await readResponseBody(
-            response
-          );
-
-
-        console.log(
-          "OWNER HELP WANTED DELETE RESPONSE:",
-          response.status,
-          result
-        );
-
-
-        if (
-          !response.ok ||
-          result?.status !== "ok"
-        ) {
-
+        if (!response.ok || result?.status !== "ok") {
           throw new Error(
             getResponseMessage(
               result,
               `Unable to delete Help Wanted post (HTTP ${response.status}).`
             )
           );
-
         }
 
-
-        if (
-          String(
-            editingHelpWantedId
-          ) ===
-          String(
-            postId
-          )
-        ) {
-
+        if (String(editingHelpWantedId) === String(postId)) {
           clearHelpWantedForm();
-
         }
-
 
         await loadOwnerHelpWanted();
-
 
         showStatus(
           helpWantedStatus,
           "Help Wanted post deleted successfully.",
           "success"
         );
-
-
       } catch (error) {
-
-        console.error(
-          "Deleting Help Wanted post failed:",
-          error
-        );
-
+        console.error("Deleting Help Wanted post failed:", error);
 
         showStatus(
           helpWantedStatus,
-          error.message ||
-            "Unable to delete Help Wanted post.",
+          error.message || "Unable to delete Help Wanted post.",
           "error"
         );
-
       }
-
     }
-
 
     /*
       ============================================================
@@ -6587,86 +3606,38 @@
     */
 
     async function logoutOwner() {
-
-      const token =
-        ownerToken;
-
-
-      /*
-        Attempt to revoke the server-side session.
-        Local logout still succeeds even if the network
-        request fails.
-      */
+      const token = ownerToken;
 
       if (token) {
-
         try {
-
-          await fetch(
-            API_BASE +
-            "/owner/logout",
-            {
-              method: "POST",
-
-              headers: {
-                "Accept":
-                  "application/json",
-
-                "Authorization":
-                  "Bearer " +
-                  token
-              }
+          await fetch(API_BASE + "/owner/logout", {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Authorization": "Bearer " + token
             }
-          );
-
+          });
         } catch (error) {
-
-          console.warn(
-            "Owner logout request failed:",
-            error
-          );
-
+          console.warn("Owner logout request failed:", error);
         }
-
       }
-
 
       clearStoredOwnerToken();
 
-
-      ownerToken =
-        null;
-
-
-      currentBusiness =
-        null;
-
-
-      currentHelpWantedPosts =
-        [];
-
-
-      editingHelpWantedId =
-        null;
-
+      ownerToken = null;
+      currentBusiness = null;
+      currentHelpWantedPosts = [];
+      editingHelpWantedId = null;
 
       resetDashboard();
 
-
-      showStatus(
-        loginStatus,
-        "You have been logged out.",
-        "success"
-      );
-
+      showStatus(loginStatus, "You have been logged out.", "success");
 
       window.scrollTo({
         top: 0,
         behavior: "smooth"
       });
-
     }
-
 
     /*
       ============================================================
@@ -6675,94 +3646,34 @@
     */
 
     function resetDashboard() {
-
-      dashboardSection.classList.add(
-        "hidden"
-      );
-
-
-      loginSection.classList.remove(
-        "hidden"
-      );
-
+      dashboardSection.classList.add("hidden");
+      loginSection.classList.remove("hidden");
 
       loginForm.reset();
+      businessImage.value = "";
+      imageGallery.innerHTML = "";
+      hoursEditor.innerHTML = "";
+      productsList.innerHTML = "";
 
-
-      businessImage.value =
-        "";
-
-
-      imageGallery.innerHTML =
-        "";
-
-
-      hoursEditor.innerHTML =
-        "";
-
-
-      productsList.innerHTML =
-        "";
-
-
-      currentHelpWantedPosts =
-        [];
-
+      currentHelpWantedPosts = [];
 
       helpWantedList.innerHTML =
         '<div class="image-empty">No Help Wanted posts have been submitted for this business.</div>';
 
-
-      analyticsTotalViews.textContent =
-        "—";
-
-
-      analyticsToday.textContent =
-        "—";
-
-
-      analytics7Days.textContent =
-        "—";
-
-
-      analytics30Days.textContent =
-        "—";
-
+      analyticsTotalViews.textContent = "—";
+      analyticsToday.textContent = "—";
+      analytics7Days.textContent = "—";
+      analytics30Days.textContent = "—";
 
       clearHelpWantedForm();
 
-
-      hideStatus(
-        dashboardStatus
-      );
-
-
-      hideStatus(
-        imageStatus
-      );
-
-
-      hideStatus(
-        hoursStatus
-      );
-
-
-      hideStatus(
-        productsStatus
-      );
-
-
-      hideStatus(
-        analyticsStatus
-      );
-
-
-      hideStatus(
-        helpWantedStatus
-      );
-
+      hideStatus(dashboardStatus);
+      hideStatus(imageStatus);
+      hideStatus(hoursStatus);
+      hideStatus(productsStatus);
+      hideStatus(analyticsStatus);
+      hideStatus(helpWantedStatus);
     }
-
 
     /*
       ============================================================
@@ -6770,46 +3681,26 @@
       ============================================================
     */
 
-    publicProfileButton.addEventListener(
-      "click",
-      function() {
+    publicProfileButton.addEventListener("click", function() {
+      if (!currentBusiness) return;
 
-        if (
-          !currentBusiness
-        ) {
+      const businessId =
+        currentBusiness.id ||
+        currentBusiness.business_id;
 
-          return;
-
-        }
-
-
-        const businessId =
-          currentBusiness.id ||
-          currentBusiness.business_id;
-
-
-        if (!businessId) {
-
-          showStatus(
-            dashboardStatus,
-            "The business ID is unavailable.",
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        window.location.href =
-          "/pages/business.html?id=" +
-          encodeURIComponent(
-            businessId
-          );
-
+      if (!businessId) {
+        showStatus(
+          dashboardStatus,
+          "The business ID is unavailable.",
+          "error"
+        );
+        return;
       }
-    );
 
+      window.location.href =
+        "/pages/business.html?id=" +
+        encodeURIComponent(businessId);
+    });
 
     /*
       ============================================================
@@ -6817,65 +3708,16 @@
       ============================================================
     */
 
-    loginForm.addEventListener(
-      "submit",
-      loginOwner
-    );
-
-
-    saveButton.addEventListener(
-      "click",
-      saveBusiness
-    );
-
-
-    saveHoursButton.addEventListener(
-      "click",
-      saveOwnerHours
-    );
-
-
-    uploadImageButton.addEventListener(
-      "click",
-      uploadOwnerImage
-    );
-
-
-    refreshAnalyticsButton.addEventListener(
-      "click",
-      loadOwnerAnalytics
-    );
-
-
-    addProductButton.addEventListener(
-      "click",
-      addOwnerProduct
-    );
-
-
-    createHelpWantedButton.addEventListener(
-      "click",
-      createHelpWantedDraft
-    );
-
-
-    clearHelpWantedButton.addEventListener(
-      "click",
-      clearHelpWantedForm
-    );
-
-
-    refreshHelpWantedButton.addEventListener(
-      "click",
-      loadOwnerHelpWanted
-    );
-
-
-    logoutButton.addEventListener(
-      "click",
-      logoutOwner
-    );
-
+    loginForm.addEventListener("submit", loginOwner);
+    saveButton.addEventListener("click", saveBusiness);
+    saveHoursButton.addEventListener("click", saveOwnerHours);
+    uploadImageButton.addEventListener("click", uploadOwnerImage);
+    refreshAnalyticsButton.addEventListener("click", loadOwnerAnalytics);
+    addProductButton.addEventListener("click", addOwnerProduct);
+    createHelpWantedButton.addEventListener("click", createHelpWantedDraft);
+    clearHelpWantedButton.addEventListener("click", clearHelpWantedForm);
+    refreshHelpWantedButton.addEventListener("click", loadOwnerHelpWanted);
+    logoutButton.addEventListener("click", logoutOwner);
 
     /*
       ============================================================
@@ -6883,9 +3725,8 @@
       ============================================================
     */
 
+    renderMembershipPrices();
     restoreOwnerSession();
-
   </script>
-
 </body>
 </html>
