@@ -15,6 +15,31 @@
 (function () {
   "use strict";
 
+
+  /*
+   * UI translation helper.
+   * Uses NearAfricaI18n when available; otherwise returns the English fallback.
+   * Does not change business data — only interface strings.
+   */
+  function t(key, fallback) {
+    try {
+      if (
+        typeof window !== "undefined" &&
+        window.NearAfricaI18n &&
+        typeof window.NearAfricaI18n.translate === "function"
+      ) {
+        const value = window.NearAfricaI18n.translate(key, fallback);
+        if (value !== undefined && value !== null && value !== "") {
+          return value;
+        }
+      }
+    } catch (error) {
+      /* keep English fallback */
+    }
+    return fallback != null ? fallback : key || "";
+  }
+
+
   const API_FALLBACK =
     "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
@@ -374,7 +399,7 @@
 
     if (loading && !App.allBusinesses.length) {
       container.innerHTML =
-        '<div class="loading-state">Loading businesses...</div>';
+        '<div class="loading-state">' + t("actions.loading", "Loading businesses...") + '</div>';
     }
   }
 
@@ -555,7 +580,7 @@
       App.allBusinesses = [];
 
       setStatus(
-        "Unable to load businesses: " + error.message,
+        t("errors.unableToLoad", "Unable to load businesses") + ": " + error.message,
         "error"
       );
 
@@ -789,14 +814,14 @@
   function getBrowserLocation() {
     return new Promise((resolve, reject) => {
       if (!window.isSecureContext) {
-        reject(new Error("Location access requires HTTPS."));
+        reject(new Error(t("search.locationError", "Location access requires HTTPS.")));
         return;
       }
 
       if (!navigator.geolocation) {
         reject(
           new Error(
-            "This browser does not support location services."
+            t("search.locationNotSupported", "This browser does not support location services.")
           )
         );
         return;
@@ -839,7 +864,7 @@
 
         const message = bestAccuracy !== null
           ? `Your browser could not obtain a usable location. Its best reported accuracy was ${Math.round(bestAccuracy)} metres. Try again outdoors or check your device's location settings.`
-          : "Your device could not determine your location. Check location services and try again.";
+          : t("search.locationUnavailable", "Your device could not determine your location. Check location services and try again.");
 
         finish(new Error(message));
       }, 30000);
@@ -887,7 +912,7 @@
             if (error.code === 1) {
               finish(
                 new Error(
-                  "Location permission was denied. Allow location access and try again."
+                  t("search.locationAccessDenied", "Location permission was denied. Allow location access and try again.")
                 )
               );
             }
@@ -902,7 +927,7 @@
       } catch (error) {
         finish(
           new Error(
-            error.message || "Unable to start location detection."
+            error.message || t("search.locationError", "Unable to start location detection.")
           )
         );
       }
@@ -960,7 +985,7 @@
       } catch (_) {}
 
       throw new Error(
-        "Your location is too approximate for Nearby search. Please try again."
+        t("search.locationError", "Your location is too approximate for Nearby search. Please try again.")
       );
     }
 
@@ -984,7 +1009,7 @@
       );
 
       throw new Error(
-        "Your browser could not save your location. Please check browser storage settings and try again."
+        t("errors.somethingWentWrong", "Your browser could not save your location. Please check browser storage settings and try again.")
       );
     }
   }
@@ -1060,10 +1085,10 @@
 
     if (button) {
       button.disabled = true;
-      button.textContent = "Finding location…";
+      button.textContent = t("search.usingYourLocation", "Finding location…");
     }
 
-    setStatus("Finding your current location…");
+    setStatus(t("search.usingYourLocation", "Finding your current location…"));
 
     try {
       // Obtain and validate a new GPS position before saving it.
@@ -1092,8 +1117,8 @@
 
       setStatus(
         label
-          ? `Nearby is active. Your detected area: ${label}.`
-          : "Nearby is active. Businesses are sorted by GPS distance.",
+          ? `${t("explore.businessesNearYou", "Nearby is active")}. ${label}`
+          : t("explore.businessesNearYou", "Nearby is active. Businesses are sorted by GPS distance."),
         "success"
       );
     } catch (error) {
@@ -1136,7 +1161,7 @@
     updateNearbyControls();
     applyFilters();
 
-    setStatus("Nearby mode turned off.");
+    setStatus(t("explore.clearLocation", "Nearby mode turned off."));
   }
 
   /* ----------------------------------------------------------
@@ -1163,13 +1188,13 @@
         type="button"
         id="nearbyButton"
         class="filter-button"
-      >Use My Location</button>
+      >${t("search.useMyLocation", "Use My Location")}</button>
 
-      <label for="radiusFilter">Within</label>
+      <label for="radiusFilter">${t("explore.away", "Within")}</label>
 
       <select
         id="radiusFilter"
-        aria-label="Nearby search radius"
+        aria-label="${t("explore.businessesNearYou", "Nearby search radius")}"
         style="min-height:44px;padding:8px;border-radius:10px;"
       >
         <option value="5">5 km</option>
@@ -1183,7 +1208,7 @@
         type="button"
         id="clearNearby"
         class="filter-button"
-      >Turn Nearby Off</button>
+      >${t("explore.clearLocation", "Turn Nearby Off")}</button>
     `;
 
     panel.appendChild(wrapper);
@@ -1216,8 +1241,8 @@
 
     if (button) {
       button.textContent = App.nearbyMode
-        ? "Refresh My Location"
-        : "Use My Location";
+        ? t("search.useMyLocation", "Refresh My Location")
+        : t("search.useMyLocation", "Use My Location");
     }
 
     if (clear) {
@@ -1446,8 +1471,8 @@
 
     setStatus(
       App.nearbyMode
-        ? "Search and category filters cleared. Nearby remains active."
-        : "All filters cleared."
+        ? t("explore.filters", "Search and category filters cleared. Nearby remains active.")
+        : t("explore.filters", "All filters cleared.")
     );
   }
 
@@ -1490,7 +1515,7 @@
       );
     } catch (_) {
       setStatus(
-        "Your browser could not save this business.",
+        t("errors.somethingWentWrong", "Your browser could not save this business."),
         "error"
       );
       return;
@@ -1500,8 +1525,8 @@
 
     setStatus(
       saved.has(key)
-        ? "Business saved."
-        : "Business removed from saved items.",
+        ? t("actions.save", "Business saved.")
+        : t("actions.delete", "Business removed from saved items."),
       "success"
     );
   }
@@ -1670,14 +1695,14 @@
       container.innerHTML = items.map(renderCard).join("");
     } else {
       const message = App.loading
-        ? "Loading businesses..."
+        ? t("actions.loading", "Loading businesses...")
         : App.nearbyMode
-          ? "No businesses with usable GPS coordinates were found within this radius. Try increasing the radius or reporting a missing business."
-          : "No businesses match your search. Try changing your search or filters.";
+          ? t("explore.noBusinessesNearby", "No businesses with usable GPS coordinates were found within this radius. Try increasing the radius or reporting a missing business.")
+          : t("explore.noBusinesses", "No businesses match your search. Try changing your search or filters.");
 
       container.innerHTML = `
         <div class="empty-state" style="grid-column:1/-1">
-          <h2>${App.loading ? "Loading businesses" : "No businesses found"}</h2>
+          <h2>${App.loading ? t("actions.loading", "Loading businesses") : t("explore.noBusinesses", "No businesses found")}</h2>
           <p>${escapeHtml(message)}</p>
         </div>
       `;
@@ -1688,10 +1713,10 @@
     if (count) {
       count.textContent =
         App.loading && !App.allBusinesses.length
-          ? "Loading businesses..."
+          ? t("actions.loading", "Loading businesses...")
           : total === 1
-            ? "1 business found"
-            : `${total.toLocaleString()} businesses found`;
+            ? "1 " + t("explore.businesses", "business found")
+            : `${total.toLocaleString()} ${t("explore.businessesFound", "businesses found")}`;
     }
 
     renderPagination();
@@ -1917,7 +1942,7 @@
 
     if (App.nearbyMode && !App.userLocation) {
       setStatus(
-        "Nearby needs a fresh location. Select Use My Location to obtain one.",
+        t("search.useMyLocation", "Nearby needs a fresh location. Select Use My Location to obtain one."),
         "info"
       );
 
@@ -1955,8 +1980,8 @@
 
         const originalText = button.textContent;
 
-        button.textContent = "Finding location…";
-        setStatus("Finding your current location…");
+        button.textContent = t("search.usingYourLocation", "Finding location…");
+        setStatus(t("search.usingYourLocation", "Finding your current location…"));
 
         try {
           // Always request a fresh, validated GPS location.
@@ -2010,7 +2035,7 @@
         );
 
         setStatus(
-          "NearAfrica could not initialize: " + error.message,
+          t("errors.somethingWentWrong", "NearAfrica could not initialize") + ": " + error.message,
           "error"
         );
       });
@@ -2030,6 +2055,22 @@
       getBusinessUrl: businessUrl
     };
   }
+
+
+  window.addEventListener("nearafrica:languagechange", function () {
+    try {
+      if (typeof updateNearbyControls === "function") {
+        updateNearbyControls();
+      }
+      if (typeof applyFilters === "function") {
+        applyFilters();
+      } else if (typeof renderResults === "function") {
+        renderResults();
+      }
+    } catch (error) {
+      console.warn("NearAfrica: language change refresh failed.", error);
+    }
+  });
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initialize, {
