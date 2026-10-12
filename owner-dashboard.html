@@ -5,47 +5,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Owner Dashboard | NearAfrica</title>
-  <meta name="description" content="Manage your NearAfrica business profile, compare membership plans, and explore business growth benefits.">
+  <title>Membership Plans | NearAfrica</title>
+  <meta
+    name="description"
+    content="Compare NearAfrica Free, Pro and Premium business listing plans."
+  >
+  <meta name="theme-color" content="#0b0b0b">
 
   <style>
     :root {
-      --bg-primary: #0d0d0d;
-      --bg-secondary: #151515;
-      --bg-card: #1c1c1c;
-      --bg-elevated: #242424;
-      --text-primary: #ffffff;
-      --text-secondary: #b8b8b8;
-      --text-muted: #777777;
-      --accent: #d4af37;
-      --accent-hover: #e5c04a;
-      --success: #35c46a;
-      --danger: #e05252;
-      --warning: #e0ad45;
-      --border: rgba(255,255,255,0.08);
-      --radius: 12px;
-      --shadow: 0 12px 35px rgba(0,0,0,0.35);
+      --bg: #0b0b0b;
+      --panel: #151515;
+      --panel-hover: #1b1b1b;
+      --border: #303030;
+      --text: #f4f4f4;
+      --muted: #a5a5a5;
+      --gold: #d4af37;
+      --gold-light: #f0d878;
+      --green: #8be0a0;
     }
 
     * {
       box-sizing: border-box;
-      max-width: 100%;
-    }
-
-    html,
-    body {
-      width: 100%;
-      max-width: 100%;
       margin: 0;
       padding: 0;
-      overflow-x: hidden;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
       min-height: 100vh;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(
+          ellipse at top,
+          rgba(212, 175, 55, 0.09),
+          transparent 45%
+        ),
+        linear-gradient(135deg, #080808, #111111);
+      line-height: 1.6;
     }
 
     a {
@@ -53,3680 +54,675 @@
       text-decoration: none;
     }
 
-    button,
-    input,
-    textarea,
-    select {
+    button {
       font: inherit;
-      max-width: 100%;
     }
 
-    img {
-      max-width: 100%;
-    }
-
-    .site-header {
-      border-bottom: 1px solid var(--border);
-      background: rgba(13,13,13,0.96);
+    .topbar {
       position: sticky;
       top: 0;
-      z-index: 100;
-      width: 100%;
+      z-index: 10;
+      background: rgba(10, 10, 10, 0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
     }
 
-    .header-inner {
-      width: min(1200px, calc(100% - 32px));
-      min-width: 0;
-      margin: 0 auto;
-      padding: 18px 0;
+    .topbar-inner {
+      width: min(1160px, calc(100% - 36px));
+      min-height: 72px;
+      margin: auto;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      align-items: center;
+      gap: 18px;
     }
 
-    .logo {
-      color: var(--accent);
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      white-space: nowrap;
-      flex-shrink: 0;
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .brand-mark {
+      width: 39px;
+      height: 39px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      color: var(--gold-light);
+      background: #111;
+      font-size: 12px;
+      letter-spacing: 1px;
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      gap: 22px;
-      min-width: 0;
       flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .nav-links a {
-      color: var(--text-secondary);
-      font-size: 14px;
-      white-space: nowrap;
-    }
-
-    .nav-links a:hover {
-      color: var(--accent);
-    }
-
-    .container {
-      width: min(1100px, calc(100% - 32px));
-      min-width: 0;
-      margin: 0 auto;
-    }
-
-    main {
-      width: 100%;
-      min-width: 0;
-      padding: 55px 0 80px;
-    }
-
-    .hero {
-      width: 100%;
-      min-width: 0;
-      margin-bottom: 30px;
-    }
-
-    .hero h1 {
-      margin: 0 0 10px;
-      font-size: 38px;
-      line-height: 1.15;
-      color: var(--accent);
-      overflow-wrap: anywhere;
-    }
-
-    .hero p {
-      margin: 0;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    .card {
-      width: 100%;
-      min-width: 0;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 28px;
-      margin-bottom: 24px;
-      overflow: hidden;
-    }
-
-    .card h2 {
-      margin: 0 0 8px;
-      font-size: 22px;
-      overflow-wrap: anywhere;
-    }
-
-    .card-description {
-      color: var(--text-secondary);
-      line-height: 1.6;
-      margin: 0 0 24px;
-      overflow-wrap: anywhere;
-    }
-
-    .form-group {
-      width: 100%;
-      min-width: 0;
-      margin-bottom: 18px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--text-secondary);
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    input,
-    textarea,
-    select {
-      width: 100%;
-      min-width: 0;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-      padding: 13px 14px;
-      outline: none;
-    }
-
-    input:focus,
-    textarea:focus,
-    select:focus {
-      border-color: var(--accent);
-    }
-
-    input:disabled,
-    select:disabled,
-    textarea:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-
-    input[type="file"] {
-      cursor: pointer;
-      overflow: hidden;
-    }
-
-    textarea {
-      min-height: 130px;
-      resize: vertical;
-    }
-
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    button,
-    .btn {
-      border: 0;
-      border-radius: 9px;
-      padding: 12px 18px;
-      cursor: pointer;
-      font-weight: 700;
+    .nav-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 0;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #111111;
-    }
-
-    .btn-primary:hover {
-      background: var(--accent-hover);
-    }
-
-    .btn-secondary {
-      background: var(--bg-elevated);
-      color: var(--text-primary);
+      padding: 9px 13px;
       border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover:not(:disabled) {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .btn-danger {
-      background: transparent;
-      color: var(--danger);
-      border: 1px solid rgba(224,82,82,0.35);
-    }
-
-    .btn-danger:hover {
-      background: rgba(224,82,82,0.08);
-    }
-
-    .btn-warning {
-      background: transparent;
-      color: var(--warning);
-      border: 1px solid rgba(224,173,69,0.35);
-    }
-
-    .btn-warning:hover {
-      background: rgba(224,173,69,0.08);
-    }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .status {
-      display: none;
-      width: 100%;
-      min-width: 0;
-      margin-top: 18px;
-      padding: 12px 14px;
-      border-radius: 9px;
-      line-height: 1.5;
-      font-size: 14px;
-      overflow-wrap: anywhere;
-    }
-
-    .status.show {
-      display: block;
-    }
-
-    .status.success {
-      color: var(--success);
-      background: rgba(53,196,106,0.08);
-      border: 1px solid rgba(53,196,106,0.25);
-    }
-
-    .status.error {
-      color: var(--danger);
-      background: rgba(224,82,82,0.08);
-      border: 1px solid rgba(224,82,82,0.25);
-    }
-
-    .status.info {
-      color: var(--warning);
-      background: rgba(224,173,69,0.08);
-      border: 1px solid rgba(224,173,69,0.25);
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .business-grid {
-      display: grid;
-      grid-template-columns: repeat(2,minmax(0,1fr));
-      gap: 16px;
-      margin-bottom: 24px;
-      min-width: 0;
-    }
-
-    .info-box {
-      min-width: 0;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-    }
-
-    .info-label {
-      color: var(--text-muted);
-      font-size: 12px;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .info-value {
-      color: var(--text-primary);
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
-
-    .locked-note {
-      margin-top: 8px;
-      color: var(--text-muted);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .image-gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill,minmax(190px,1fr));
-      gap: 16px;
-      margin-top: 24px;
-      min-width: 0;
-    }
-
-    .image-card {
-      min-width: 0;
-      overflow: hidden;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-    }
-
-    .image-preview {
-      width: 100%;
-      max-width: 100%;
-      height: 180px;
-      display: block;
-      object-fit: cover;
-      background: #111111;
-    }
-
-    .image-card-body {
-      min-width: 0;
-      padding: 14px;
-    }
-
-    .image-type {
-      color: var(--accent);
-      font-size: 12px;
+      border-radius: 8px;
+      color: #ddd;
+      font-size: 13px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 10px;
+      transition: border-color 0.2s, color 0.2s;
     }
 
-    .image-url {
-      color: var(--text-muted);
-      font-size: 11px;
-      overflow-wrap: anywhere;
-      word-break: break-all;
-      margin-bottom: 12px;
-      line-height: 1.4;
+    .nav-link:hover {
+      border-color: var(--gold);
+      color: var(--gold-light);
     }
 
-    .image-empty {
-      border: 1px dashed var(--border);
-      border-radius: 10px;
-      padding: 30px 20px;
+    .nav-link.primary {
+      color: #111;
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .nav-link.primary:hover {
+      background: var(--gold-light);
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 36px));
+      margin: auto;
+    }
+
+    .hero {
+      padding: 74px 0 36px;
       text-align: center;
-      color: var(--text-muted);
-      grid-column: 1 / -1;
-      overflow-wrap: anywhere;
     }
 
-    .feature-grid {
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 15px;
+      padding: 6px 12px;
+      border: 1px solid rgba(212, 175, 55, 0.38);
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.07);
+      color: var(--gold-light);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 850px;
+      margin: 0 auto 17px;
+      font-size: clamp(34px, 6vw, 61px);
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+    }
+
+    h1 span {
+      color: var(--gold-light);
+    }
+
+    .hero-copy {
+      max-width: 690px;
+      margin: auto;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .plan-intro {
+      margin: 28px 0 18px;
+      text-align: center;
+    }
+
+    .plan-intro h2 {
+      margin-bottom: 7px;
+      font-size: clamp(23px, 4vw, 32px);
+    }
+
+    .plan-intro p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .plans-grid {
       display: grid;
-      grid-template-columns: repeat(3,minmax(0,1fr));
-      gap: 16px;
-      min-width: 0;
-    }
-
-    .feature-card {
-      min-width: 0;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px;
-      overflow: hidden;
-    }
-
-    .feature-card h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
-      overflow-wrap: anywhere;
-    }
-
-    .feature-card h4 {
-      overflow-wrap: anywhere;
-    }
-
-    .feature-card p {
-      margin: 0;
-      color: var(--text-secondary);
-      line-height: 1.5;
-      font-size: 14px;
-      overflow-wrap: anywhere;
-    }
-
-    /* =====================================================
-       MEMBERSHIP PLANS
-       ===================================================== */
-
-    .membership-section {
-      border-color: rgba(212,175,55,0.22);
-    }
-
-    .membership-intro {
-      color: var(--text-secondary);
-      line-height: 1.65;
-      margin: 0 0 20px;
-      max-width: 760px;
-    }
-
-    .membership-grid {
-      display: grid;
-      grid-template-columns: repeat(3,minmax(0,1fr));
-      gap: 16px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       align-items: stretch;
+      gap: 18px;
+      padding: 18px 0 36px;
     }
 
-    .membership-plan {
+    .plan-card {
+      position: relative;
       display: flex;
       flex-direction: column;
       min-width: 0;
-      padding: 22px;
+      padding: 26px 23px;
       border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--bg-secondary);
-      gap: 14px;
+      border-radius: 15px;
+      background: rgba(21, 21, 21, 0.94);
+      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.14);
     }
 
-    .membership-plan.pro {
-      border-color: rgba(212,175,55,0.42);
+    .plan-card.featured {
+      border-color: rgba(212, 175, 55, 0.75);
+      background:
+        linear-gradient(
+          160deg,
+          rgba(212, 175, 55, 0.10),
+          transparent 43%
+        ),
+        var(--panel);
     }
 
-    .membership-plan.premium {
-      border-color: rgba(212,175,55,0.75);
-      background: linear-gradient(
-        160deg,
-        rgba(212,175,55,0.09),
-        var(--bg-secondary) 65%
-      );
+    .plan-label {
+      margin-bottom: 8px;
+      color: var(--gold-light);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
-    .plan-topline {
+    .plan-card h3 {
+      margin-bottom: 9px;
+      font-size: 25px;
+    }
+
+    .plan-description {
+      min-height: 48px;
+      margin-bottom: 20px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .price {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      align-items: baseline;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 5px;
+      margin-bottom: 4px;
     }
 
-    .plan-name {
-      margin: 0;
-      font-size: 21px;
+    .price strong {
+      font-size: clamp(29px, 3vw, 37px);
       line-height: 1.3;
       overflow-wrap: anywhere;
     }
 
-    .plan-label {
-      display: inline-flex;
-      width: fit-content;
-      align-items: center;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 5px 9px;
-      color: var(--text-secondary);
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .plan-label.gold {
-      color: var(--accent);
-      border-color: rgba(212,175,55,0.45);
-    }
-
-    .plan-price {
-      color: var(--accent);
-      font-size: 27px;
-      line-height: 1.25;
-      font-weight: 700;
-      overflow-wrap: anywhere;
-    }
-
-    .plan-period {
-      margin-top: 4px;
-      color: var(--text-muted);
+    .price span {
+      color: var(--muted);
       font-size: 12px;
-      line-height: 1.5;
     }
 
-    .plan-summary {
-      color: var(--text-secondary);
-      font-size: 13px;
-      line-height: 1.6;
-      margin: 0;
-      min-height: 60px;
-    }
-
-    .plan-feature-title {
-      font-size: 13px;
-      color: var(--text-primary);
-      margin: 0;
-    }
-
-    .plan-features {
-      display: grid;
-      gap: 11px;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .plan-features li {
-      position: relative;
-      padding-left: 23px;
-      color: var(--text-secondary);
-      font-size: 13px;
-      line-height: 1.55;
-      overflow-wrap: anywhere;
-    }
-
-    .plan-features li::before {
-      content: "✓";
-      position: absolute;
-      left: 0;
-      top: 0;
-      color: var(--accent);
-      font-weight: 700;
+    .price-note {
+      min-height: 25px;
+      margin-bottom: 22px;
+      color: var(--muted);
+      font-size: 11px;
     }
 
     .plan-divider {
-      width: 100%;
       height: 1px;
+      margin-bottom: 19px;
       background: var(--border);
-      margin: 2px 0;
     }
 
-    .plan-status {
-      margin-top: auto;
-      padding: 11px;
-      border: 1px solid rgba(224,173,69,0.22);
-      border-radius: 8px;
-      background: rgba(224,173,69,0.05);
-      color: var(--warning);
+    .feature-heading {
+      margin-bottom: 12px;
       font-size: 12px;
-      line-height: 1.55;
-      overflow-wrap: anywhere;
+      font-weight: 800;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 23px;
+      list-style: none;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      color: #d0d0d0;
+      font-size: 12px;
+    }
+
+    .feature-icon {
+      flex: 0 0 auto;
+      color: var(--green);
+      font-weight: 900;
+    }
+
+    .planned {
+      color: #cdbb82 !important;
     }
 
     .plan-action {
       width: 100%;
-      cursor: not-allowed;
-    }
-
-    .membership-note {
-      padding: 15px;
-      margin-top: 18px;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      color: var(--text-secondary);
-      font-size: 13px;
-      line-height: 1.65;
-      overflow-wrap: anywhere;
-    }
-
-    .membership-note strong {
-      color: var(--accent);
-    }
-
-    .membership-config-status {
-      color: var(--text-muted);
-      font-size: 12px;
-      line-height: 1.5;
-      margin-top: 12px;
-    }
-
-    /* ANALYTICS */
-
-    .analytics-grid {
-      display: grid;
-      grid-template-columns: repeat(4,minmax(0,1fr));
-      gap: 12px;
-      margin-top: 18px;
-      min-width: 0;
-    }
-
-    .analytics-stat {
-      min-width: 0;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px 14px;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    .analytics-value {
-      color: var(--accent);
-      font-size: 28px;
-      line-height: 1.1;
-      font-weight: 700;
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
-
-    .analytics-label {
-      margin-top: 8px;
-      color: var(--text-muted);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      line-height: 1.4;
-    }
-
-    /* OPENING HOURS */
-
-    .hours-header,
-    .hours-row {
-      display: grid;
-      grid-template-columns:
-        minmax(90px,1fr)
-        minmax(120px,1.2fr)
-        minmax(110px,1fr)
-        minmax(110px,1fr);
-      gap: 10px;
-      width: 100%;
-      min-width: 0;
-    }
-
-    .hours-header {
-      margin-bottom: 8px;
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .hours-row {
-      align-items: center;
-      margin-bottom: 12px;
-      padding: 12px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 9px;
-    }
-
-    .hours-row > * {
-      min-width: 0;
-      width: 100%;
-    }
-
-    .hours-day {
-      font-weight: 700;
-      overflow-wrap: anywhere;
-    }
-
-    /* PRODUCTS */
-
-    .products-list {
-      width: 100%;
-      min-width: 0;
-      margin-top: 18px;
-    }
-
-    .product-card {
-      width: 100%;
-      min-width: 0;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px;
-      margin-bottom: 12px;
-      overflow: hidden;
-    }
-
-    .product-card h4,
-    .product-card p,
-    .product-card div {
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
-
-    .product-form-grid {
-      display: grid;
-      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
-      gap: 10px;
-      margin-top: 10px;
-      min-width: 0;
-    }
-
-    /* HELP WANTED */
-
-    .help-wanted-list {
-      width: 100%;
-      min-width: 0;
-      margin-top: 20px;
-    }
-
-    .help-wanted-card {
-      width: 100%;
-      min-width: 0;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px;
-      margin-bottom: 12px;
-      overflow: hidden;
-    }
-
-    .help-wanted-card h4 {
-      margin: 0 0 8px;
-      font-size: 17px;
-      overflow-wrap: anywhere;
-    }
-
-    .help-wanted-card p {
-      color: var(--text-secondary);
-      line-height: 1.55;
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
-
-    .help-wanted-meta {
-      display: grid;
-      grid-template-columns: repeat(2,minmax(0,1fr));
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .help-wanted-meta-box {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      min-width: 0;
-    }
-
-    .help-wanted-meta-label {
-      color: var(--text-muted);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 5px;
-    }
-
-    .help-wanted-meta-value {
-      color: var(--text-primary);
-      font-size: 13px;
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
-
-    .help-wanted-status {
+      min-height: 43px;
       display: inline-flex;
       align-items: center;
-      padding: 5px 9px;
-      border-radius: 999px;
-      background: rgba(53,196,106,0.08);
-      border: 1px solid rgba(53,196,106,0.25);
-      color: var(--success);
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .help-wanted-status.closed,
-    .help-wanted-status.rejected,
-    .help-wanted-status.removed {
-      color: var(--danger);
-      background: rgba(224,82,82,0.08);
-      border-color: rgba(224,82,82,0.25);
-    }
-
-    .help-wanted-status.pending {
-      color: var(--warning);
-      background: rgba(224,173,69,0.08);
-      border-color: rgba(224,173,69,0.25);
-    }
-
-    .help-wanted-form-grid {
-      display: grid;
-      grid-template-columns: repeat(2,minmax(0,1fr));
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .help-wanted-form-grid .full {
-      grid-column: 1 / -1;
-    }
-
-    .help-wanted-note {
-      margin-top: 12px;
-      color: var(--text-muted);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .help-wanted-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 16px;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
-    }
-
-    .edit-banner {
-      display: none;
-      margin-bottom: 16px;
-      padding: 12px 14px;
-      border-radius: 9px;
-      border: 1px solid rgba(212,175,55,0.25);
-      background: rgba(212,175,55,0.07);
-      color: var(--text-secondary);
-      line-height: 1.5;
-      font-size: 13px;
-    }
-
-    .edit-banner.show {
-      display: block;
-    }
-
-    .edit-banner strong {
-      color: var(--accent);
-    }
-
-    .footer {
-      width: 100%;
-      border-top: 1px solid var(--border);
-      padding: 25px 16px;
-      color: var(--text-muted);
+      justify-content: center;
+      margin-top: auto;
+      padding: 11px 13px;
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      background: var(--gold);
+      color: #111;
       text-align: center;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .plan-action:hover {
+      background: var(--gold-light);
+    }
+
+    .plan-action.secondary {
+      border-color: #444;
+      background: #222;
+      color: #eee;
+    }
+
+    .plan-action.secondary:hover {
+      border-color: var(--gold);
+    }
+
+    .plan-action:disabled {
+      border-color: #383838;
+      background: #202020;
+      color: #929292;
+      cursor: not-allowed;
+      opacity: 1;
+    }
+
+    .notice {
+      max-width: 900px;
+      margin: 0 auto 35px;
+      padding: 16px 18px;
+      border: 1px solid #34302a;
+      border-radius: 10px;
+      background: rgba(212, 175, 55, 0.045);
+      color: #c7c0ae;
+      font-size: 12px;
+    }
+
+    .notice strong {
+      color: var(--gold-light);
+    }
+
+    .bottom-cta {
+      margin: 12px 0 65px;
+      padding: 30px 23px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #121212;
+      text-align: center;
+    }
+
+    .bottom-cta h2 {
+      margin-bottom: 8px;
+      font-size: 25px;
+    }
+
+    .bottom-cta p {
+      margin-bottom: 19px;
+      color: var(--muted);
       font-size: 13px;
-      overflow-wrap: anywhere;
     }
 
-    @media (max-width: 950px) {
-      .membership-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .membership-plan:first-child {
-        grid-column: 1 / -1;
-      }
+    .bottom-cta .nav-link {
+      display: inline-flex;
     }
 
-    @media (max-width: 800px) {
-      .header-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .nav-links {
-        width: 100%;
-        justify-content: flex-start;
-      }
-
-      .business-grid,
-      .feature-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .analytics-grid {
-        grid-template-columns: repeat(2,minmax(0,1fr));
-      }
-
-      .hero h1 {
-        font-size: 31px;
-      }
-
-      .image-gallery {
-        grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
-      }
-
-      .hours-header,
-      .hours-row {
-        grid-template-columns:
-          minmax(75px,1fr)
-          minmax(105px,1fr)
-          minmax(90px,1fr)
-          minmax(90px,1fr);
-        gap: 8px;
-      }
-
-      .help-wanted-form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .help-wanted-form-grid .full {
-        grid-column: auto;
-      }
+    footer {
+      padding: 23px 0;
+      border-top: 1px solid var(--border);
+      color: #858585;
+      text-align: center;
+      font-size: 11px;
     }
 
-    @media (max-width: 600px) {
-      .header-inner {
-        width: calc(100% - 24px);
-        padding: 15px 0;
-        gap: 14px;
-      }
+    .page-message {
+      width: min(700px, calc(100% - 36px));
+      margin: 70px auto;
+      color: var(--muted);
+      text-align: center;
+    }
 
-      .logo {
-        font-size: 22px;
-      }
-
-      .nav-links {
-        gap: 12px 16px;
-      }
-
-      .nav-links a {
-        font-size: 13px;
-      }
-
-      .container {
-        width: calc(100% - 24px);
-      }
-
-      main {
-        padding: 35px 0 55px;
-      }
-
-      .hero {
-        margin-bottom: 22px;
-      }
-
-      .hero h1 {
-        font-size: 28px;
-      }
-
-      .card {
-        padding: 20px 16px;
-        border-radius: 10px;
-      }
-
-      .card h2 {
-        font-size: 20px;
-      }
-
-      .business-grid {
-        gap: 12px;
-      }
-
-      .btn-row {
-        flex-direction: column;
-        width: 100%;
-      }
-
-      .btn-row .btn,
-      .btn-row button {
-        width: 100%;
-      }
-
-      .membership-grid {
+    @media (max-width: 850px) {
+      .plans-grid {
         grid-template-columns: 1fr;
+        max-width: 560px;
+        margin: auto;
       }
 
-      .membership-plan:first-child {
-        grid-column: auto;
-      }
-
-      .membership-plan {
-        padding: 19px;
-      }
-
-      .plan-summary {
+      .plan-description {
         min-height: 0;
       }
 
-      .image-gallery {
-        grid-template-columns: 1fr;
+      .price-note {
+        min-height: 0;
       }
 
-      .analytics-grid {
-        grid-template-columns: repeat(2,minmax(0,1fr));
-        gap: 10px;
+      .plan-card.featured {
+        order: -1;
       }
 
-      .analytics-stat {
-        padding: 16px 10px;
-      }
-
-      .analytics-value {
-        font-size: 24px;
-      }
-
-      .hours-header {
-        display: none;
-      }
-
-      .hours-row {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 10px;
-        padding: 14px;
-        width: 100%;
-        min-width: 0;
-      }
-
-      .hours-row > * {
-        width: 100%;
-        min-width: 0;
-      }
-
-      .hours-day {
-        font-size: 15px;
-        color: var(--accent);
-        padding-bottom: 2px;
-      }
-
-      .product-form-grid,
-      .feature-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .help-wanted-meta {
-        grid-template-columns: 1fr;
-      }
-
-      .help-wanted-actions {
-        flex-direction: column;
-      }
-
-      .help-wanted-actions button {
-        width: 100%;
-      }
-
-      .footer {
-        padding: 22px 12px;
+      .hero {
+        padding-top: 52px;
       }
     }
 
-    @media (max-width: 380px) {
-      .header-inner {
-        width: calc(100% - 20px);
-      }
-
-      .container {
-        width: calc(100% - 20px);
-      }
-
-      .card {
-        padding: 17px 13px;
-      }
-
-      .hero h1 {
-        font-size: 25px;
+    @media (max-width: 500px) {
+      .topbar-inner {
+        padding: 12px 0;
+        align-items: flex-start;
+        flex-direction: column;
       }
 
       .nav-links {
-        gap: 10px 13px;
+        width: 100%;
       }
 
-      .nav-links a {
-        font-size: 12px;
+      .nav-link {
+        padding: 8px 10px;
       }
 
-      .analytics-grid {
-        gap: 8px;
+      .hero-copy {
+        font-size: 14px;
       }
 
-      .analytics-value {
-        font-size: 21px;
-      }
-
-      .analytics-label {
-        font-size: 10px;
+      .plan-card {
+        padding: 22px 18px;
       }
     }
   </style>
 </head>
 
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="logo">NearAfrica</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../index.html" aria-label="NearAfrica home">
+        <span class="brand-mark">NA</span>
+        <span>NearAfrica</span>
+      </a>
 
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="explore.html">Explore</a>
-        <a href="list-business.html">List Your Business</a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="nav-link" href="../index.html">Home</a>
+        <a class="nav-link" href="../explore.html">Explore</a>
+        <a class="nav-link primary" href="../owner-login.html">
+          Owner Login
+        </a>
       </nav>
     </div>
   </header>
 
-  <main>
-    <div class="container">
-      <section class="hero">
-        <h1>Owner Dashboard</h1>
-        <p>Manage your NearAfrica business profile and explore membership options for growing your business.</p>
-      </section>
+  <main id="membershipPage">
+    <section class="hero">
+      <div class="container">
+        <span class="eyebrow">NearAfrica for Business</span>
 
-      <!-- LOGIN -->
-      <section id="loginSection" class="card">
-        <h2>Business Owner Login</h2>
+        <h1>
+          Give your business<br>
+          <span>more room to grow.</span>
+        </h1>
 
-        <p class="card-description">
-          Enter the business name and owner email associated with your approved NearAfrica ownership claim.
+        <p class="hero-copy">
+          Start with a free business listing. Compare the membership plans
+          and see which options are planned for your business as NearAfrica
+          expands.
         </p>
+      </div>
+    </section>
 
-        <form id="loginForm">
-          <div class="form-group">
-            <label for="businessName">Business Name</label>
-            <input
-              type="text"
-              id="businessName"
-              name="business_name"
-              placeholder="Enter your business name"
-              autocomplete="organization"
-              required
-            >
+    <section class="container" aria-labelledby="plansHeading">
+      <div class="plan-intro">
+        <h2 id="plansHeading">Choose your membership</h2>
+        <p>Prices are shown in Nigerian naira.</p>
+      </div>
+
+      <div class="plans-grid">
+        <!-- FREE PLAN -->
+        <article class="plan-card">
+          <div class="plan-label">Get started</div>
+          <h3>Free</h3>
+
+          <p class="plan-description">
+            Establish your business presence on NearAfrica at no cost.
+          </p>
+
+          <div class="price">
+            <strong id="freePrice">Free</strong>
           </div>
 
-          <div class="form-group">
-            <label for="ownerEmail">Owner Email</label>
-            <input
-              type="email"
-              id="ownerEmail"
-              name="owner_email"
-              placeholder="Enter your owner email"
-              autocomplete="email"
-              required
-            >
+          <p class="price-note">No monthly membership fee</p>
+
+          <div class="plan-divider"></div>
+
+          <p class="feature-heading">Included</p>
+
+          <ul class="feature-list">
+            <li>
+              <span class="feature-icon">✓</span>
+              <span>Business listing and profile details</span>
+            </li>
+            <li>
+              <span class="feature-icon">✓</span>
+              <span>Business contact and location information</span>
+            </li>
+            <li>
+              <span class="feature-icon">✓</span>
+              <span>Manage your listing through the owner dashboard</span>
+            </li>
+            <li>
+              <span class="feature-icon">✓</span>
+              <span>Existing owner tools, subject to their current limits</span>
+            </li>
+          </ul>
+
+          <a class="plan-action" href="../owner-login.html">
+            Owner Login
+          </a>
+        </article>
+
+        <!-- PRO PLAN -->
+        <article class="plan-card featured">
+          <div class="plan-label">For growing businesses</div>
+          <h3>NearAfrica Pro</h3>
+
+          <p class="plan-description">
+            Planned tools for businesses seeking greater visibility.
+          </p>
+
+          <div class="price">
+            <strong id="proPrice">₦5,000</strong>
+            <span>/ month</span>
           </div>
 
-          <button type="submit" id="loginButton" class="btn btn-primary">
-            Login
+          <p class="price-note">Planned price — checkout is not available yet</p>
+
+          <div class="plan-divider"></div>
+
+          <p class="feature-heading">Planned benefits</p>
+
+          <ul class="feature-list">
+            <li class="planned">
+              <span class="feature-icon">◇</span>
+              <span>Priority listing visibility</span>
+            </li>
+            <li class="planned">
+              <span class="feature-icon">◇</span>
+              <span>Higher business photo allowance</span>
+            </li>
+            <li class="planned">
+              <span class="feature-icon">◇</span>
+              <span>Additional promotional opportunities</span>
+            </li>
+            <li class="planned">
+              <span class="feature-icon">◇</span>
+              <span>Membership-based promotion features</span>
+            </li>
+          </ul>
+
+          <button class="plan-action" type="button" disabled>
+            Upgrades Coming Soon
           </button>
-        </form>
+        </article>
 
-        <div id="loginStatus" class="status"></div>
+        <!-- PREMIUM PLAN -->
+        <article class="plan-card">
+          <div class="plan-label">For ambitious businesses</div>
+          <h3>NearAfrica Premium</h3>
 
-        <p class="locked-note">
-          Your business must have an approved and verified ownership claim before owner access is available.
+          <p class="plan-description">
+            Planned enhanced promotion options for businesses ready to grow.
+          </p>
+
+          <div class="price">
+            <strong id="premiumPrice">₦10,000</strong>
+            <span>/ month</span>
+          </div>
+
+          <p class="price-note">Planned price — checkout is not available yet</p>
+
+          <div class="plan-divider"></div>
+
+          <p class="feature-heading">Planned benefits</p>
+
+          <ul class="feature-list">
+            <li class="planned">
+              <span class="feature-icon">◇</span>
+              <span>Planned Pro benefits</span>
+            </li>
+            <li class="planned">
+              <span class="feature-icon">◇</span>
+              <span>Higher photo allowance options</span>
+            </li>
+            <li class="planned">
+              <span class="feature-icon">◇</span>
+              <span>Advanced promotional tools</span>
+            </li>
+            <li class="planned">
+              <span class="feature-icon">◇</span>
+              <span>Enhanced visibility opportunities</span>
+            </li>
+          </ul>
+
+          <button class="plan-action secondary" type="button" disabled>
+            Upgrades Coming Soon
+          </button>
+        </article>
+      </div>
+
+      <div class="notice" role="note">
+        <strong>Important:</strong>
+        Pro and Premium are displayed for comparison, but paid membership
+        checkout and enforcement of paid benefits are not yet available.
+        A displayed plan price is not a payment request, and choosing a
+        plan here will not charge you or activate paid benefits.
+      </div>
+
+      <section class="bottom-cta">
+        <h2>Ready to manage your business?</h2>
+        <p>
+          Sign in to access your existing owner dashboard and business tools.
         </p>
+        <a class="nav-link primary" href="../owner-login.html">
+          Continue to Owner Login
+        </a>
       </section>
-
-      <!-- DASHBOARD -->
-      <section id="dashboardSection" class="hidden">
-
-        <!-- MEMBERSHIP COMPARISON -->
-        <section class="card membership-section" id="membershipPlans">
-          <h2>Grow Your Business with NearAfrica</h2>
-
-          <p class="membership-intro">
-            Compare our membership levels and see the benefits planned for businesses on NearAfrica.
-            Our goal is to help business owners present their services, reach relevant customers and understand
-            how people interact with their listings.
-          </p>
-
-          <div class="membership-grid">
-
-            <!-- FREE -->
-            <article class="membership-plan">
-              <div class="plan-topline">
-                <h3 class="plan-name">Free</h3>
-                <span class="plan-label">Starter</span>
-              </div>
-
-              <div>
-                <div class="plan-price" id="freePlanPrice">Free</div>
-                <div class="plan-period">No monthly subscription</div>
-              </div>
-
-              <p class="plan-summary">
-                Establish your business presence and make essential information available to visitors.
-              </p>
-
-              <div class="plan-divider"></div>
-              <h4 class="plan-feature-title">Included</h4>
-
-              <ul class="plan-features">
-                <li>Basic business listing</li>
-                <li>Standard eligibility for relevant search results</li>
-                <li>Available business contact and location details</li>
-                <li>Map directions where available</li>
-                <li>Existing business profile management tools</li>
-                <li>Access to currently available owner features</li>
-              </ul>
-
-              <div class="plan-status">
-                Your free listing remains available without a paid subscription.
-              </div>
-            </article>
-
-            <!-- PRO -->
-            <article class="membership-plan pro">
-              <div class="plan-topline">
-                <h3 class="plan-name">NearAfrica Pro</h3>
-                <span class="plan-label gold">Growth</span>
-              </div>
-
-              <div>
-                <div class="plan-price" id="proPlanPrice">Loading price...</div>
-                <div class="plan-period">Intended monthly price</div>
-              </div>
-
-              <p class="plan-summary">
-                Designed for businesses seeking a richer profile and additional opportunities to be discovered.
-              </p>
-
-              <div class="plan-divider"></div>
-              <h4 class="plan-feature-title">Planned benefits</h4>
-
-              <ul class="plan-features">
-                <li>Enhanced business profile presentation</li>
-                <li>Increased photo allowance when plan limits are implemented</li>
-                <li>Improved placement in eligible search results</li>
-                <li>Business performance insights based on available data</li>
-                <li>Pro membership badge distinct from verification</li>
-                <li>Promotional tools when made available for Pro</li>
-              </ul>
-
-              <div class="plan-status">
-                <strong>Coming soon:</strong> Paid membership activation and enforcement of Pro benefits are not yet confirmed as operational.
-              </div>
-
-              <button type="button" class="btn btn-secondary plan-action" disabled aria-disabled="true">
-                Pro Upgrade Coming Soon
-              </button>
-            </article>
-
-            <!-- PREMIUM -->
-            <article class="membership-plan premium">
-              <div class="plan-topline">
-                <h3 class="plan-name">NearAfrica Premium</h3>
-                <span class="plan-label gold">Advanced</span>
-              </div>
-
-              <div>
-                <div class="plan-price" id="premiumPlanPrice">Loading price...</div>
-                <div class="plan-period">Intended monthly price</div>
-              </div>
-
-              <p class="plan-summary">
-                Designed for businesses seeking greater promotional opportunities and an expanded business showcase.
-              </p>
-
-              <div class="plan-divider"></div>
-              <h4 class="plan-feature-title">Planned benefits</h4>
-
-              <ul class="plan-features">
-                <li>Pro benefits, plus additional promotional opportunities</li>
-                <li>Higher-priority featured placement where eligible</li>
-                <li>Expanded business photo showcase</li>
-                <li>Promotional offers when the feature is available</li>
-                <li>More detailed analytics when implemented</li>
-                <li>Premium membership badge distinct from verification</li>
-              </ul>
-
-              <div class="plan-status">
-                <strong>Coming soon:</strong> Premium checkout and the full set of Premium entitlements are not yet confirmed as operational.
-              </div>
-
-              <button type="button" class="btn btn-secondary plan-action" disabled aria-disabled="true">
-                Premium Upgrade Coming Soon
-              </button>
-            </article>
-          </div>
-
-          <div class="membership-note">
-            <strong>Our trust commitment:</strong>
-            Membership is separate from business verification. Paying for a plan does not automatically verify a business,
-            guarantee search placement in every situation, or guarantee customers or sales. Any paid promotion will be
-            subject to eligibility and clearly labelled where applicable.
-          </div>
-
-          <p id="membershipConfigStatus" class="membership-config-status" role="status" aria-live="polite"></p>
-        </section>
-
-        <!-- BUSINESS PROFILE -->
-        <div class="card">
-          <h2 id="businessTitle">Business Profile</h2>
-
-          <p class="card-description">
-            Review and update the information you are allowed to manage.
-          </p>
-
-          <div id="dashboardStatus" class="status"></div>
-
-          <div class="business-grid">
-            <div class="info-box">
-              <div class="info-label">Business Name</div>
-              <div id="displayBusinessName" class="info-value">—</div>
-            </div>
-
-            <div class="info-box">
-              <div class="info-label">Category</div>
-              <div id="displayCategory" class="info-value">—</div>
-            </div>
-
-            <div class="info-box">
-              <div class="info-label">Country</div>
-              <div id="displayCountry" class="info-value">—</div>
-            </div>
-
-            <div class="info-box">
-              <div class="info-label">State</div>
-              <div id="displayState" class="info-value">—</div>
-            </div>
-
-            <div class="info-box">
-              <div class="info-label">City</div>
-              <div id="displayCity" class="info-value">—</div>
-            </div>
-
-            <div class="info-box">
-              <div class="info-label">Phone</div>
-              <div id="displayPhone" class="info-value">—</div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="whatsapp">WhatsApp</label>
-            <input type="text" id="whatsapp" placeholder="WhatsApp number">
-          </div>
-
-          <div class="form-group">
-            <label for="website">Website</label>
-            <input type="url" id="website" placeholder="https://example.com">
-          </div>
-
-          <div class="form-group">
-            <label for="address">Address</label>
-            <input type="text" id="address" placeholder="Business address">
-          </div>
-
-          <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description" placeholder="Describe your business..."></textarea>
-          </div>
-
-          <div class="btn-row">
-            <button type="button" id="saveButton" class="btn btn-primary">Save Changes</button>
-            <button type="button" id="publicProfileButton" class="btn btn-secondary">View Public Profile</button>
-            <button type="button" id="logoutButton" class="btn btn-danger">Logout</button>
-          </div>
-        </div>
-
-        <!-- PHOTOS -->
-        <div class="card">
-          <h2>Business Photos</h2>
-
-          <p class="card-description">
-            Add and manage photos displayed on your NearAfrica business profile.
-          </p>
-
-          <div class="form-group">
-            <label for="businessImage">Select Photo</label>
-            <input
-              type="file"
-              id="businessImage"
-              accept="image/jpeg,image/png,image/webp,image/gif"
-            >
-          </div>
-
-          <div class="form-group">
-            <label for="imageType">Photo Type</label>
-            <select id="imageType">
-              <option value="gallery">Gallery Photo</option>
-              <option value="cover">Cover Photo</option>
-              <option value="logo">Business Logo</option>
-            </select>
-          </div>
-
-          <div class="btn-row">
-            <button type="button" id="uploadImageButton" class="btn btn-primary">Upload Photo</button>
-          </div>
-
-          <div id="imageStatus" class="status"></div>
-          <div id="imageGallery" class="image-gallery"></div>
-        </div>
-
-        <!-- MORE FEATURES -->
-        <div class="card">
-          <h2>More Owner Features</h2>
-
-          <p class="card-description">
-            Manage additional tools and features connected to your business.
-          </p>
-
-          <div class="feature-grid">
-
-            <!-- OPENING HOURS -->
-            <div class="feature-card" style="grid-column:1 / -1;">
-              <h3>Opening Hours</h3>
-              <p>Manage your business opening and closing hours.</p>
-
-              <div id="hoursEditor" style="margin-top:18px;width:100%;min-width:0;"></div>
-              <div id="hoursStatus" class="status"></div>
-
-              <div class="btn-row" style="margin-top:16px;">
-                <button type="button" id="saveHoursButton" class="btn btn-primary">Save Opening Hours</button>
-              </div>
-            </div>
-
-            <!-- PRODUCTS & SERVICES -->
-            <div class="feature-card" style="grid-column:1 / -1;">
-              <h3>Products &amp; Services</h3>
-              <p>Add products or services that customers can view.</p>
-
-              <div id="productsStatus" class="status"></div>
-              <div id="productsList" class="products-list"></div>
-
-              <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);width:100%;min-width:0;">
-                <h4 style="margin:0 0 14px;">Add Product or Service</h4>
-
-                <input type="text" id="productName" placeholder="Product or service name" maxlength="150">
-
-                <textarea id="productDescription" placeholder="Description" maxlength="2000" style="margin-top:10px;"></textarea>
-
-                <div class="product-form-grid">
-                  <input type="number" id="productPrice" placeholder="Price" min="0" step="0.01">
-                  <input type="text" id="productCurrency" value="NGN" placeholder="Currency" maxlength="10">
-                </div>
-
-                <input type="text" id="productCategory" placeholder="Category (optional)" maxlength="150" style="margin-top:10px;">
-
-                <select id="productType" style="margin-top:10px;">
-                  <option value="product">Product</option>
-                  <option value="service">Service</option>
-                </select>
-
-                <div style="margin-top:12px;display:flex;align-items:center;gap:8px;min-width:0;">
-                  <input type="checkbox" id="productAvailable" checked style="width:auto;flex-shrink:0;">
-                  <label for="productAvailable" style="margin:0;">Currently available</label>
-                </div>
-
-                <div class="btn-row" style="margin-top:16px;">
-                  <button type="button" id="addProductButton" class="btn btn-primary">Add Product / Service</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- HELP WANTED -->
-            <div class="feature-card" style="grid-column:1 / -1;">
-              <h3>Help Wanted</h3>
-
-              <p>
-                Create and manage job, staff, contract, internship,
-                volunteer, or other business opportunity postings.
-              </p>
-
-              <div id="helpWantedStatus" class="status"></div>
-
-              <div id="helpWantedList" class="help-wanted-list">
-                <div class="image-empty">Loading Help Wanted posts...</div>
-              </div>
-
-              <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);width:100%;min-width:0;">
-                <h4 style="margin:0 0 14px;">
-                  <span id="helpWantedFormTitle">Create Help Wanted Post</span>
-                </h4>
-
-                <div id="helpWantedEditBanner" class="edit-banner">
-                  <strong>Editing Help Wanted post.</strong>
-                  Update the fields below and save the changes.
-                </div>
-
-                <div class="help-wanted-form-grid">
-                  <div class="form-group">
-                    <label for="helpWantedTitle">Opportunity Title</label>
-                    <input type="text" id="helpWantedTitle" placeholder="e.g. Sales Assistant" maxlength="150">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="helpWantedType">Opportunity Type</label>
-                    <select id="helpWantedType">
-                      <option value="job">Job</option>
-                      <option value="part_time">Part-time</option>
-                      <option value="contract">Contract</option>
-                      <option value="freelance">Freelance</option>
-                      <option value="internship">Internship</option>
-                      <option value="apprenticeship">Apprenticeship</option>
-                      <option value="temporary">Temporary</option>
-                      <option value="volunteer">Volunteer</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="helpWantedCategory">Category</label>
-                    <input type="text" id="helpWantedCategory" placeholder="e.g. Sales, IT, Hospitality" maxlength="100">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="helpWantedLocation">Location</label>
-                    <input type="text" id="helpWantedLocation" placeholder="e.g. Aba, Abia" maxlength="200">
-                  </div>
-
-                  <div class="form-group full">
-                    <label for="helpWantedDescription">Description</label>
-                    <textarea id="helpWantedDescription" placeholder="Describe the opportunity, responsibilities, requirements, and other important information..." maxlength="5000"></textarea>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="helpWantedContact">Application / Contact Method</label>
-                    <input type="text" id="helpWantedContact" placeholder="Email, WhatsApp, phone number, or application instructions" maxlength="500">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="helpWantedDeadline">Application Deadline</label>
-                    <input type="date" id="helpWantedDeadline">
-                  </div>
-                </div>
-
-                <div class="btn-row">
-                  <button type="button" id="createHelpWantedButton" class="btn btn-primary">Create Help Wanted Post</button>
-                  <button type="button" id="clearHelpWantedButton" class="btn btn-secondary">Clear Form</button>
-                  <button type="button" id="refreshHelpWantedButton" class="btn btn-secondary">Refresh Posts</button>
-                </div>
-
-                <p class="help-wanted-note">
-                  Help Wanted posts are saved through the authenticated NearAfrica Worker
-                  and associated with your business from your owner session. New posts may require moderation.
-                </p>
-              </div>
-            </div>
-
-            <!-- ANALYTICS -->
-            <div class="feature-card" style="grid-column:1 / -1;">
-              <h3>Analytics</h3>
-              <p>See how many people are viewing your business profile.</p>
-
-              <div id="analyticsStatus" class="status"></div>
-
-              <div class="analytics-grid">
-                <div class="analytics-stat">
-                  <div id="analyticsTotalViews" class="analytics-value">—</div>
-                  <div class="analytics-label">Total Views</div>
-                </div>
-
-                <div class="analytics-stat">
-                  <div id="analyticsToday" class="analytics-value">—</div>
-                  <div class="analytics-label">Today</div>
-                </div>
-
-                <div class="analytics-stat">
-                  <div id="analytics7Days" class="analytics-value">—</div>
-                  <div class="analytics-label">Last 7 Days</div>
-                </div>
-
-                <div class="analytics-stat">
-                  <div id="analytics30Days" class="analytics-value">—</div>
-                  <div class="analytics-label">Last 30 Days</div>
-                </div>
-              </div>
-
-              <div class="btn-row" style="margin-top:16px;">
-                <button type="button" id="refreshAnalyticsButton" class="btn btn-secondary">Refresh Analytics</button>
-              </div>
-            </div>
-
-            <!-- REVIEWS -->
-            <div class="feature-card">
-              <h3>Reviews</h3>
-              <p>View and manage customer reviews when owner tools are enabled.</p>
-            </div>
-
-            <!-- OFFERS & EVENTS -->
-            <div class="feature-card">
-              <h3>Offers &amp; Events</h3>
-              <p>
-                Promotional offer and business-event tools are planned.
-                Availability will depend on the implemented feature and membership rules.
-              </p>
-            </div>
-
-          </div>
-        </div>
-      </section>
-    </div>
+    </section>
   </main>
 
-  <footer class="footer">
-    NearAfrica — Find Great Businesses Near You.
+  <footer>
+    <div class="container">
+      NearAfrica — Find Great Businesses Near You.
+    </div>
   </footer>
 
-  <!-- Load the central, non-secret frontend configuration before this page's JavaScript. -->
-  <script src="config.js"></script>
+  <!--
+    Load the existing site configuration when available.
+    The page still works with the displayed fallback prices if it is absent.
+  -->
+  <script src="../config.js"></script>
 
   <script>
-    /*
-      ============================================================
-      NEARAFRICA OWNER DASHBOARD
-      ============================================================
-    */
+    (() => {
+      "use strict";
 
-    const API_BASE =
-      (window.NearAfricaConfig &&
-        window.NearAfricaConfig.api &&
-        window.NearAfricaConfig.api.baseUrl) ||
-      "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+      const OWNER_TOKEN_KEY = "nearafrica_owner_token";
 
-    const OWNER_TOKEN_STORAGE_KEY =
-      "nearafrica_owner_token";
+      /*
+       * IMPORTANT:
+       * This public page is the entry point at /pages/owner-dashboard.html.
+       * Once an owner session exists, open the existing root dashboard.
+       * Do not replace the root /owner-dashboard.html file with this page.
+       */
+      try {
+        const ownerToken = localStorage.getItem(OWNER_TOKEN_KEY);
 
-    let ownerToken = null;
-    let currentBusiness = null;
-    let currentHelpWantedPosts = [];
-    let editingHelpWantedId = null;
-
-    /*
-      ============================================================
-      DOM ELEMENTS
-      ============================================================
-    */
-
-    const loginSection = document.getElementById("loginSection");
-    const dashboardSection = document.getElementById("dashboardSection");
-    const loginForm = document.getElementById("loginForm");
-    const loginButton = document.getElementById("loginButton");
-    const loginStatus = document.getElementById("loginStatus");
-    const dashboardStatus = document.getElementById("dashboardStatus");
-    const saveButton = document.getElementById("saveButton");
-    const publicProfileButton = document.getElementById("publicProfileButton");
-    const logoutButton = document.getElementById("logoutButton");
-    const businessImage = document.getElementById("businessImage");
-    const imageType = document.getElementById("imageType");
-    const uploadImageButton = document.getElementById("uploadImageButton");
-    const imageStatus = document.getElementById("imageStatus");
-    const imageGallery = document.getElementById("imageGallery");
-
-    const analyticsStatus = document.getElementById("analyticsStatus");
-    const analyticsTotalViews = document.getElementById("analyticsTotalViews");
-    const analyticsToday = document.getElementById("analyticsToday");
-    const analytics7Days = document.getElementById("analytics7Days");
-    const analytics30Days = document.getElementById("analytics30Days");
-    const refreshAnalyticsButton = document.getElementById("refreshAnalyticsButton");
-
-    const hoursEditor = document.getElementById("hoursEditor");
-    const hoursStatus = document.getElementById("hoursStatus");
-    const saveHoursButton = document.getElementById("saveHoursButton");
-
-    const addProductButton = document.getElementById("addProductButton");
-    const productsStatus = document.getElementById("productsStatus");
-    const productsList = document.getElementById("productsList");
-
-    const helpWantedStatus = document.getElementById("helpWantedStatus");
-    const helpWantedList = document.getElementById("helpWantedList");
-    const createHelpWantedButton = document.getElementById("createHelpWantedButton");
-    const clearHelpWantedButton = document.getElementById("clearHelpWantedButton");
-    const refreshHelpWantedButton = document.getElementById("refreshHelpWantedButton");
-    const helpWantedFormTitle = document.getElementById("helpWantedFormTitle");
-    const helpWantedEditBanner = document.getElementById("helpWantedEditBanner");
-
-    /*
-      ============================================================
-      MEMBERSHIP PLAN DISPLAY
-
-      This section only displays configured plans and their prices.
-      It does NOT activate a subscription, prove payment, or grant
-      paid entitlements. The backend must enforce those features.
-      ============================================================
-    */
-
-    function renderMembershipPrices() {
-      const config = window.NearAfricaConfig;
-      const status = document.getElementById("membershipConfigStatus");
-
-      const priceElements = {
-        free: document.getElementById("freePlanPrice"),
-        pro: document.getElementById("proPlanPrice"),
-        premium: document.getElementById("premiumPlanPrice")
-      };
-
-      if (!config) {
-        priceElements.free.textContent = "Free";
-        priceElements.pro.textContent = "Price unavailable";
-        priceElements.premium.textContent = "Price unavailable";
-
-        if (status) {
-          status.textContent =
-            "Membership prices could not be loaded. Check that config.js is available.";
+        if (ownerToken) {
+          window.location.replace("../owner-dashboard.html");
+          return;
         }
-
-        console.warn("NearAfricaConfig was not found.");
-        return;
+      } catch (error) {
+        console.warn(
+          "Owner session could not be checked. Showing public membership plans.",
+          error
+        );
       }
 
-      const freePlan = config.freePlan || null;
-      const proPlan = config.plans && config.plans.pro;
-      const premiumPlan = config.plans && config.plans.premium;
+      /*
+       * Use current config prices if they are available.
+       * Fallbacks match the current NearAfrica plan catalogue.
+       */
+      const config = window.NearAfricaConfig || {};
 
-      function formatPlanPrice(plan, fallback) {
-        if (!plan || typeof plan.priceNGN !== "number") {
-          return fallback;
-        }
+      function readPrice(plan, fallback) {
+        const raw = plan && plan.priceNGN !== undefined
+          ? plan.priceNGN
+          : fallback;
 
-        if (plan.priceNGN === 0) {
-          return "Free";
-        }
+        const amount = Number(raw);
 
-        if (typeof plan.priceLabel === "string" && plan.priceLabel.trim()) {
-          return plan.priceLabel;
-        }
+        return Number.isFinite(amount) && amount >= 0
+          ? amount
+          : fallback;
+      }
 
-        return new Intl.NumberFormat("en-NG", {
-          style: "currency",
-          currency: "NGN",
+      function formatNaira(amount) {
+        if (amount === 0) return "Free";
+
+        return "₦" + amount.toLocaleString("en-NG", {
           maximumFractionDigits: 0
-        }).format(plan.priceNGN) + "/month";
-      }
-
-      priceElements.free.textContent =
-        formatPlanPrice(freePlan, "Free");
-
-      priceElements.pro.textContent =
-        formatPlanPrice(proPlan, "Price unavailable");
-
-      priceElements.premium.textContent =
-        formatPlanPrice(premiumPlan, "Price unavailable");
-
-      if (
-        status &&
-        (!proPlan || !premiumPlan)
-      ) {
-        status.textContent =
-          "One or more paid-plan prices are missing from config.js. Review the central plan configuration.";
-      } else if (status) {
-        status.textContent =
-          "Prices are read from config.js. Paid upgrades remain unavailable until checkout and server-side entitlements are ready.";
-      }
-    }
-
-    /*
-      ============================================================
-      GENERAL UI HELPERS
-      ============================================================
-    */
-
-    function showStatus(element, message, type) {
-      if (!element) return;
-
-      element.textContent = message || "";
-      element.className = "status show " + (type || "info");
-    }
-
-    function hideStatus(element) {
-      if (!element) return;
-
-      element.textContent = "";
-      element.className = "status";
-    }
-
-    function setDashboardValue(id, value) {
-      const element = document.getElementById(id);
-      if (!element) return;
-
-      element.textContent = value || "—";
-    }
-
-    function cleanString(value) {
-      if (value === null || value === undefined) return "";
-      return String(value).trim();
-    }
-
-    async function readResponseBody(response) {
-      const text = await response.text();
-      if (!text) return null;
-
-      try {
-        return JSON.parse(text);
-      } catch {
-        return { raw: text };
-      }
-    }
-
-    function getResponseMessage(result, fallback) {
-      if (result && typeof result === "object") {
-        return cleanString(
-          result.message ||
-          result.error ||
-          result.detail ||
-          result.raw
-        ) || fallback;
-      }
-
-      return fallback;
-    }
-
-    /*
-      ============================================================
-      OWNER SESSION MANAGEMENT
-      ============================================================
-    */
-
-    function saveOwnerToken(token) {
-      if (!token) return;
-
-      try {
-        localStorage.setItem(OWNER_TOKEN_STORAGE_KEY, token);
-      } catch (error) {
-        console.warn("Unable to persist owner session:", error);
-      }
-    }
-
-    function getStoredOwnerToken() {
-      try {
-        return cleanString(
-          localStorage.getItem(OWNER_TOKEN_STORAGE_KEY)
-        );
-      } catch (error) {
-        console.warn("Unable to read stored owner session:", error);
-        return "";
-      }
-    }
-
-    function clearStoredOwnerToken() {
-      try {
-        localStorage.removeItem(OWNER_TOKEN_STORAGE_KEY);
-      } catch (error) {
-        console.warn("Unable to clear stored owner session:", error);
-      }
-    }
-
-    function handleOwnerUnauthorized() {
-      clearStoredOwnerToken();
-
-      ownerToken = null;
-      currentBusiness = null;
-      currentHelpWantedPosts = [];
-      editingHelpWantedId = null;
-
-      resetDashboard();
-
-      showStatus(
-        loginStatus,
-        "Your owner session has expired or is no longer authorized. Please log in again.",
-        "error"
-      );
-    }
-
-    /*
-      ============================================================
-      CENTRAL OWNER API REQUEST HELPER
-      ============================================================
-    */
-
-    async function ownerFetch(path, options = {}) {
-      if (!ownerToken) {
-        throw new Error("Owner session is missing.");
-      }
-
-      const requestOptions = { ...options };
-      const headers = new Headers(options.headers || {});
-
-      headers.set("Authorization", "Bearer " + ownerToken);
-
-      if (!headers.has("Accept")) {
-        headers.set("Accept", "application/json");
-      }
-
-      requestOptions.headers = headers;
-
-      let response;
-
-      try {
-        response = await fetch(API_BASE + path, requestOptions);
-      } catch (error) {
-        console.error("Owner API network error:", path, error);
-        throw error;
-      }
-
-      if (response.status === 401 || response.status === 403) {
-        handleOwnerUnauthorized();
-
-        throw new Error(
-          "Your owner session is no longer authorized. Please log in again."
-        );
-      }
-
-      return response;
-    }
-
-    /*
-      ============================================================
-      RESTORE OWNER SESSION
-      ============================================================
-    */
-
-    async function restoreOwnerSession() {
-      const storedToken = getStoredOwnerToken();
-
-      if (!storedToken) return false;
-
-      ownerToken = storedToken;
-
-      showStatus(loginStatus, "Restoring your owner session...", "info");
-
-      loginButton.disabled = true;
-      loginButton.textContent = "Restoring...";
-
-      try {
-        await loadOwnerBusiness();
-
-        await Promise.all([
-          loadOwnerImages(),
-          loadOwnerHours(),
-          loadOwnerProducts(),
-          loadOwnerAnalytics(),
-          loadOwnerHelpWanted()
-        ]);
-
-        loginSection.classList.add("hidden");
-        dashboardSection.classList.remove("hidden");
-        hideStatus(loginStatus);
-
-        return true;
-      } catch (error) {
-        console.error("Owner session restoration failed:", error);
-
-        clearStoredOwnerToken();
-
-        ownerToken = null;
-        currentBusiness = null;
-        currentHelpWantedPosts = [];
-
-        dashboardSection.classList.add("hidden");
-        loginSection.classList.remove("hidden");
-
-        showStatus(
-          loginStatus,
-          error.message ||
-            "Unable to restore your owner session. Please log in again.",
-          "error"
-        );
-
-        return false;
-      } finally {
-        loginButton.disabled = false;
-        loginButton.textContent = "Login";
-      }
-    }
-
-    /*
-      ============================================================
-      OPENING HOURS
-      ============================================================
-    */
-
-    const DAYS_OF_WEEK = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday"
-    ];
-
-    let ownerHours = [];
-
-    function createDefaultHours() {
-      return DAYS_OF_WEEK.map(function(dayName, index) {
-        return {
-          day_of_week: index,
-          is_closed: 1,
-          is_24_hours: 0,
-          opening_time: null,
-          closing_time: null
-        };
-      });
-    }
-
-    function normalizeHours(hours) {
-      const defaults = createDefaultHours();
-
-      if (!Array.isArray(hours)) return defaults;
-
-      hours.forEach(function(item) {
-        const day = Number(item.day_of_week);
-
-        if (!Number.isInteger(day) || day < 0 || day > 6) return;
-
-        defaults[day] = {
-          day_of_week: day,
-          is_closed: Number(item.is_closed || 0),
-          is_24_hours: Number(item.is_24_hours || 0),
-          opening_time: item.opening_time || null,
-          closing_time: item.closing_time || null
-        };
-      });
-
-      return defaults;
-    }
-
-    function renderHoursEditor(hours) {
-      ownerHours = normalizeHours(hours);
-      hoursEditor.innerHTML = "";
-
-      const header = document.createElement("div");
-      header.className = "hours-header";
-      header.innerHTML = `
-        <div>Day</div>
-        <div>Status</div>
-        <div>Opens</div>
-        <div>Closes</div>
-      `;
-      hoursEditor.appendChild(header);
-
-      ownerHours.forEach(function(item, index) {
-        const row = document.createElement("div");
-        row.className = "hours-row";
-
-        const day = document.createElement("div");
-        day.className = "hours-day";
-        day.textContent = DAYS_OF_WEEK[index];
-
-        const status = document.createElement("select");
-        status.dataset.day = String(index);
-        status.innerHTML = `
-          <option value="open">Open</option>
-          <option value="closed">Closed</option>
-          <option value="24">24 Hours</option>
-        `;
-
-        if (Number(item.is_closed) === 1) {
-          status.value = "closed";
-        } else if (Number(item.is_24_hours) === 1) {
-          status.value = "24";
-        } else {
-          status.value = "open";
-        }
-
-        const opening = document.createElement("input");
-        opening.type = "time";
-        opening.dataset.day = String(index);
-        opening.dataset.field = "opening";
-        opening.value = item.opening_time || "";
-        opening.disabled = status.value !== "open";
-
-        const closing = document.createElement("input");
-        closing.type = "time";
-        closing.dataset.day = String(index);
-        closing.dataset.field = "closing";
-        closing.value = item.closing_time || "";
-        closing.disabled = status.value !== "open";
-
-        status.addEventListener("change", function() {
-          const isOpen = status.value === "open";
-          opening.disabled = !isOpen;
-          closing.disabled = !isOpen;
-        });
-
-        row.appendChild(day);
-        row.appendChild(status);
-        row.appendChild(opening);
-        row.appendChild(closing);
-        hoursEditor.appendChild(row);
-      });
-    }
-
-    async function loadOwnerHours() {
-      if (!ownerToken) return;
-
-      showStatus(hoursStatus, "Loading opening hours...", "info");
-
-      try {
-        const response = await ownerFetch("/owner/business/hours", {
-          method: "GET"
-        });
-
-        const result = await readResponseBody(response);
-
-        if (!response.ok || result?.status !== "ok") {
-          throw new Error(
-            getResponseMessage(result, "Unable to load opening hours.")
-          );
-        }
-
-        renderHoursEditor(result.hours || []);
-        hideStatus(hoursStatus);
-      } catch (error) {
-        console.error("Loading owner hours failed:", error);
-
-        renderHoursEditor([]);
-
-        showStatus(
-          hoursStatus,
-          error.message || "Unable to load opening hours.",
-          "error"
-        );
-      }
-    }
-
-    async function saveOwnerHours() {
-      if (!ownerToken) {
-        showStatus(
-          hoursStatus,
-          "Your owner session has expired. Please log in again.",
-          "error"
-        );
-        return;
-      }
-
-      const hours = [];
-
-      for (let day = 0; day <= 6; day++) {
-        const status = hoursEditor.querySelector(
-          `select[data-day="${day}"]`
-        );
-
-        const opening = hoursEditor.querySelector(
-          `input[data-day="${day}"][data-field="opening"]`
-        );
-
-        const closing = hoursEditor.querySelector(
-          `input[data-day="${day}"][data-field="closing"]`
-        );
-
-        if (!status || !opening || !closing) {
-          showStatus(
-            hoursStatus,
-            "Unable to prepare the opening hours schedule.",
-            "error"
-          );
-          return;
-        }
-
-        hours.push({
-          day_of_week: day,
-          is_closed: status.value === "closed",
-          is_24_hours: status.value === "24",
-          opening_time: status.value === "open" ? opening.value || null : null,
-          closing_time: status.value === "open" ? closing.value || null : null
         });
       }
 
-      saveHoursButton.disabled = true;
-      saveHoursButton.textContent = "Saving...";
-      hideStatus(hoursStatus);
-
-      try {
-        const response = await ownerFetch("/owner/business/hours", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ hours })
-        });
-
-        const result = await readResponseBody(response);
-
-        if (!response.ok || result?.status !== "ok") {
-          throw new Error(
-            getResponseMessage(result, "Unable to save opening hours.")
-          );
-        }
-
-        renderHoursEditor(result.hours || hours);
-
-        showStatus(
-          hoursStatus,
-          "Opening hours updated successfully.",
-          "success"
-        );
-      } catch (error) {
-        console.error("Saving owner hours failed:", error);
-
-        showStatus(
-          hoursStatus,
-          error.message || "Unable to save opening hours.",
-          "error"
-        );
-      } finally {
-        saveHoursButton.disabled = false;
-        saveHoursButton.textContent = "Save Opening Hours";
-      }
-    }
-
-    /*
-      ============================================================
-      OWNER ANALYTICS
-      ============================================================
-    */
-
-    async function loadOwnerAnalytics() {
-      if (!ownerToken) return;
-
-      hideStatus(analyticsStatus);
-
-      try {
-        const response = await ownerFetch("/owner/business/analytics", {
-          method: "GET"
-        });
-
-        const result = await readResponseBody(response);
-
-        if (!response.ok || result?.status !== "ok") {
-          throw new Error(
-            getResponseMessage(result, "Unable to load analytics.")
-          );
-        }
-
-        const analytics = result.analytics || {};
-
-        analyticsTotalViews.textContent =
-          Number(analytics.total_views || 0).toLocaleString();
-
-        analyticsToday.textContent =
-          Number(analytics.views_today || 0).toLocaleString();
-
-        analytics7Days.textContent =
-          Number(analytics.views_last_7_days || 0).toLocaleString();
-
-        analytics30Days.textContent =
-          Number(analytics.views_last_30_days || 0).toLocaleString();
-      } catch (error) {
-        console.error("Loading owner analytics failed:", error);
-
-        analyticsTotalViews.textContent = "—";
-        analyticsToday.textContent = "—";
-        analytics7Days.textContent = "—";
-        analytics30Days.textContent = "—";
-
-        showStatus(
-          analyticsStatus,
-          error.message || "Unable to load analytics.",
-          "error"
-        );
-      }
-    }
-
-    /*
-      ============================================================
-      OWNER LOGIN
-      ============================================================
-    */
-
-    async function loginOwner(event) {
-      event.preventDefault();
-
-      const businessName = document
-        .getElementById("businessName")
-        .value
-        .trim();
-
-      const ownerEmail = document
-        .getElementById("ownerEmail")
-        .value
-        .trim();
-
-      if (!businessName) {
-        showStatus(loginStatus, "Business name is required.", "error");
-        return;
-      }
-
-      if (!ownerEmail) {
-        showStatus(loginStatus, "Owner email is required.", "error");
-        return;
-      }
-
-      hideStatus(loginStatus);
-
-      loginButton.disabled = true;
-      loginButton.textContent = "Signing In...";
-
-      try {
-        const response = await fetch(API_BASE + "/owner/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: JSON.stringify({
-            business_name: businessName,
-            email: ownerEmail,
-            owner_email: ownerEmail
-          })
-        });
-
-        const result = await readResponseBody(response);
-
-        if (!response.ok || result?.status !== "ok") {
-          throw new Error(getResponseMessage(result, "Unable to sign in."));
-        }
-
-        ownerToken = cleanString(result.token);
-
-        if (!ownerToken) {
-          throw new Error("Owner session was not created.");
-        }
-
-        saveOwnerToken(ownerToken);
-
-        await loadOwnerBusiness();
-
-        await Promise.all([
-          loadOwnerImages(),
-          loadOwnerHours(),
-          loadOwnerProducts(),
-          loadOwnerAnalytics(),
-          loadOwnerHelpWanted()
-        ]);
-
-        loginSection.classList.add("hidden");
-        dashboardSection.classList.remove("hidden");
-        hideStatus(loginStatus);
-      } catch (error) {
-        console.error("Owner login failed:", error);
-
-        clearStoredOwnerToken();
-
-        ownerToken = null;
-        currentBusiness = null;
-        currentHelpWantedPosts = [];
-
-        showStatus(
-          loginStatus,
-          error.message || "Unable to sign in.",
-          "error"
-        );
-      } finally {
-        loginButton.disabled = false;
-        loginButton.textContent = "Login";
-      }
-    }
-
-    /*
-      ============================================================
-      LOAD OWNER BUSINESS
-      ============================================================
-    */
-
-    async function loadOwnerBusiness() {
-      if (!ownerToken) {
-        throw new Error("Owner session is missing.");
-      }
-
-      const response = await ownerFetch("/owner/business", {
-        method: "GET"
-      });
-
-      const result = await readResponseBody(response);
-
-      if (!response.ok || result?.status !== "ok") {
-        throw new Error(
-          getResponseMessage(result, "Unable to load your business.")
-        );
-      }
-
-      currentBusiness = result.business || result.data || null;
-
-      if (!currentBusiness) {
-        throw new Error(
-          "The server did not return your business information."
-        );
-      }
-
-      renderBusiness(currentBusiness);
-    }
-
-    function renderBusiness(business) {
-      if (!business) return;
-
-      setDashboardValue(
-        "displayBusinessName",
-        business.business_name || business.name
-      );
-
-      setDashboardValue("displayCategory", business.category);
-      setDashboardValue("displayCountry", business.country);
-      setDashboardValue("displayState", business.state);
-      setDashboardValue("displayCity", business.city);
-      setDashboardValue("displayPhone", business.phone);
-
-      document.getElementById("businessTitle").textContent =
-        business.business_name || business.name || "Business Profile";
-
-      document.getElementById("whatsapp").value = business.whatsapp || "";
-      document.getElementById("website").value = business.website || "";
-      document.getElementById("address").value = business.address || "";
-      document.getElementById("description").value = business.description || "";
-    }
-
-    /*
-      ============================================================
-      SAVE BUSINESS
-      ============================================================
-    */
-
-    async function saveBusiness() {
-      if (!ownerToken) {
-        showStatus(
-          dashboardStatus,
-          "Your owner session has expired. Please log in again.",
-          "error"
-        );
-        return;
-      }
-
-      const payload = {
-        whatsapp: document.getElementById("whatsapp").value.trim(),
-        website: document.getElementById("website").value.trim(),
-        address: document.getElementById("address").value.trim(),
-        description: document.getElementById("description").value.trim()
-      };
-
-      saveButton.disabled = true;
-      saveButton.textContent = "Saving...";
-      hideStatus(dashboardStatus);
-
-      try {
-        const response = await ownerFetch("/owner/business", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-
-        const result = await readResponseBody(response);
-
-        if (!response.ok || result?.status !== "ok") {
-          throw new Error(
-            getResponseMessage(result, "Unable to save changes.")
-          );
-        }
-
-        if (result.business) {
-          currentBusiness = result.business;
-          renderBusiness(currentBusiness);
-        } else {
-          await loadOwnerBusiness();
-        }
-
-        showStatus(
-          dashboardStatus,
-          "Business profile updated successfully.",
-          "success"
-        );
-      } catch (error) {
-        console.error("Business update failed:", error);
-
-        showStatus(
-          dashboardStatus,
-          error.message || "Unable to save changes.",
-          "error"
-        );
-      } finally {
-        saveButton.disabled = false;
-        saveButton.textContent = "Save Changes";
-      }
-    }
-
-    /*
-      ============================================================
-      OWNER IMAGES
-      ============================================================
-    */
-
-    async function loadOwnerImages() {
-      if (!ownerToken) return;
-
-      imageGallery.innerHTML =
-        '<div class="image-empty">Loading photos...</div>';
-
-      try {
-        const response = await ownerFetch("/owner/business/images", {
-          method: "GET"
-        });
-
-        const result = await readResponseBody(response);
-
-        if (!response.ok || result?.status !== "ok") {
-          throw new Error(
-            getResponseMessage(result, "Unable to load business photos.")
-          );
-        }
-
-        renderImages(result.images || []);
-      } catch (error) {
-        console.error("Loading owner images failed:", error);
-
-        imageGallery.innerHTML =
-          '<div class="image-empty">Unable to load business photos.</div>';
-
-        showStatus(
-          imageStatus,
-          error.message || "Unable to load business photos.",
-          "error"
-        );
-      }
-    }
-
-    function renderImages(images) {
-      imageGallery.innerHTML = "";
-
-      if (!Array.isArray(images) || !images.length) {
-        imageGallery.innerHTML =
-          '<div class="image-empty">No business photos have been uploaded yet.</div>';
-        return;
-      }
-
-      images.forEach(function(image) {
-        const card = document.createElement("div");
-        card.className = "image-card";
-
-        const preview = document.createElement("img");
-        preview.className = "image-preview";
-        preview.src = image.image_url || "";
-        preview.alt =
-          image.alt_text ||
-          currentBusiness?.business_name ||
-          "Business photo";
-        preview.loading = "lazy";
-
-        const body = document.createElement("div");
-        body.className = "image-card-body";
-
-        const type = document.createElement("div");
-        type.className = "image-type";
-        type.textContent = image.image_type || "gallery";
-
-        const url = document.createElement("div");
-        url.className = "image-url";
-        url.textContent = image.image_url || "Image URL unavailable";
-
-        const deleteButton = document.createElement("button");
-        deleteButton.type = "button";
-        deleteButton.className = "btn btn-danger";
-        deleteButton.textContent = "Delete";
-
-        deleteButton.addEventListener("click", function() {
-          deleteOwnerImage(image.id);
-        });
-
-        body.appendChild(type);
-        body.appendChild(url);
-        body.appendChild(deleteButton);
-
-        card.appendChild(preview);
-        card.appendChild(body);
-
-        imageGallery.appendChild(card);
-      });
-    }
-
-    async function uploadOwnerImage() {
-      if (!ownerToken) {
-        showStatus(
-          imageStatus,
-          "Your owner session has expired. Please log in again.",
-          "error"
-        );
-        return;
-      }
-
-      const file = businessImage.files && businessImage.files[0];
-
-      if (!file) {
-        showStatus(imageStatus, "Please select an image first.", "error");
-        return;
-      }
-
-      const allowedTypes = [
-        "image/jpeg",
-        "image/png",
-        "image/webp",
-        "image/gif"
-      ];
-
-      if (!allowedTypes.includes(file.type)) {
-        showStatus(
-          imageStatus,
-          "Please select a JPG, PNG, WebP, or GIF image.",
-          "error"
-        );
-        return;
-      }
-
-      if (file.size > 10 * 1024 * 1024) {
-        showStatus(
-          imageStatus,
-          "The selected image is larger than the 10 MB owner upload limit.",
-          "error"
-        );
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("image", file);
-      formData.append("image_type", imageType.value);
-
-      uploadImageButton.disabled = true;
-      uploadImageButton.textContent = "Uploading...";
-      hideStatus(imageStatus);
-
-      try {
-        const response = await ownerFetch("/owner/business/images", {
-          method: "POST",
-          body: formData
-        });
-
-        const result = await readResponseBody(response);
-
-        if (!response.ok || result?.status !== "ok") {
-          throw new Error(
-            getResponseMessage(result, "Unable to upload the image.")
-          );
-        }
-
-        businessImage.value = "";
-        await loadOwnerImages();
-
-        showStatus(imageStatus, "Photo uploaded successfully.", "success");
-      } catch (error) {
-        console.error("Owner image upload failed:", error);
-
-        showStatus(
-          imageStatus,
-          error.message || "Unable to upload the image.",
-          "error"
-        );
-      } finally {
-        uploadImageButton.disabled = false;
-        uploadImageButton.textContent = "Upload Photo";
-      }
-    }
-
-    async function deleteOwnerImage(imageId) {
-      if (!ownerToken) {
-        showStatus(
-          imageStatus,
-          "Your owner session has expired. Please log in again.",
-          "error"
-        );
-        return;
-      }
-
-      if (!imageId) {
-        showStatus(
-          imageStatus,
-          "This image cannot be deleted because its ID is missing.",
-          "error"
-        );
-        return;
-      }
-
-      if (!window.confirm("Delete this business photo?")) return;
-
-      try {
-        showStatus(imageStatus, "Deleting photo...", "info");
-
-        const response = await ownerFetch(
-          "/owner/business/images/" + encodeURIComponent(imageId),
-          { method: "DELETE" }
-        );
-
-        const result = await readResponseBody(response);
-
-        if (!response.ok || result?.status !== "ok") {
-          throw new Error(
-            getResponseMessage(result, "Unable to delete the image.")
-          );
-        }
-
-        await loadOwnerImages();
-        showStatus(imageStatus, "Photo deleted successfully.", "success");
-      } catch (error) {
-        console.error("Owner image deletion failed:", error);
-
-        showStatus(
-          imageStatus,
-          error.message || "Unable to delete the image.",
-          "error"
-        );
-      }
-    }
-
-    /*
-      ============================================================
-      OWNER PRODUCTS
-      ============================================================
-    */
-
-    async function loadOwnerProducts() {
-      if (!ownerToken) return;
-
-      productsList.innerHTML =
-        '<div class="image-empty">Loading products and services...</div>';
-
-      try {
-        const response = await ownerFetch("/owner/business/products", {
-          method: "GET"
-        });
-
-        const result = await readResponseBody(response);
-
-        if (!response.ok || result?.status !== "ok") {
-          throw new Error(
-            getResponseMessage(result, "Unable to load products and services.")
-          );
-        }
-
-        renderOwnerProducts(result.products || []);
-        hideStatus(productsStatus);
-      } catch (error) {
-        console.error("Loading owner products failed:", error);
-
-        productsList.innerHTML =
-          '<div class="image-empty">Unable to load products and services.</div>';
-
-        showStatus(
-          productsStatus,
-          error.message || "Unable to load products and services.",
-          "error"
-        );
-      }
-    }
-
-    function renderOwnerProducts(products) {
-      productsList.innerHTML = "";
-
-      if (!Array.isArray(products) || !products.length) {
-        productsList.innerHTML =
-          '<div class="image-empty">No products or services have been added yet.</div>';
-        return;
-      }
-
-      products.forEach(function(product) {
-        const card = document.createElement("div");
-        card.className = "product-card";
-
-        const title = document.createElement("h4");
-        title.textContent = product.name || "Unnamed item";
-        title.style.margin = "0 0 8px";
-
-        const type = document.createElement("div");
-        type.textContent =
-          product.item_type === "service" ? "Service" : "Product";
-        type.style.color = "var(--accent)";
-        type.style.fontSize = "12px";
-        type.style.fontWeight = "700";
-        type.style.textTransform = "uppercase";
-        type.style.marginBottom = "8px";
-
-        const description = document.createElement("p");
-        description.textContent =
-          product.description || "No description provided.";
-        description.style.color = "var(--text-secondary)";
-        description.style.margin = "0 0 10px";
-
-        const price = document.createElement("div");
-
-        if (
-          product.price !== null &&
-          product.price !== undefined &&
-          product.price !== ""
-        ) {
-          price.textContent =
-            (product.currency || "NGN") +
-            " " +
-            Number(product.price).toLocaleString();
-        } else {
-          price.textContent = "Price not specified";
-        }
-
-        price.style.marginBottom = "10px";
-        price.style.fontWeight = "700";
-
-        const availability = document.createElement("div");
-        availability.textContent =
-          Number(product.available) === 1 ? "Available" : "Unavailable";
-        availability.style.color =
-          Number(product.available) === 1
-            ? "var(--success)"
-            : "var(--danger)";
-        availability.style.fontSize = "13px";
-
-        card.appendChild(type);
-        card.appendChild(title);
-        card.appendChild(description);
-        card.appendChild(price);
-        card.appendChild(availability);
-
-        productsList.appendChild(card);
-      });
-    }
-
-    async function addOwnerProduct() {
-      if (!ownerToken) {
-        showStatus(
-          productsStatus,
-          "Your owner session has expired. Please log in again.",
-          "error"
-        );
-        return;
-      }
-
-      const name = document.getElementById("productName").value.trim();
-      const description = document.getElementById("productDescription").value.trim();
-      const priceValue = document.getElementById("productPrice").value.trim();
-      const currency = document.getElementById("productCurrency").value.trim();
-      const category = document.getElementById("productCategory").value.trim();
-      const itemType = document.getElementById("productType").value;
-      const available = document.getElementById("productAvailable").checked;
-
-      if (!name) {
-        showStatus(productsStatus, "Product or service name is required.", "error");
-        return;
-      }
-
-      let price = null;
-
-      if (priceValue !== "") {
-        price = Number(priceValue);
-
-        if (!Number.isFinite(price) || price < 0) {
-          showStatus(productsStatus, "Please enter a valid price.", "error");
-          return;
-        }
-      }
-
-      addProductButton.disabled = true;
-      addProductButton.textContent = "Adding...";
-      hideStatus(productsStatus);
-
-      try {
-        const response = await ownerFetch("/owner/business/products", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name,
-            description: description || null,
-            price,
-            currency: currency || "NGN",
-            category: category || null,
-            item_type: itemType,
-            available: available ? 1 : 0
-          })
-        });
-
-        const result = await readResponseBody(response);
-
-        if (!response.ok || result?.status !== "ok") {
-          throw new Error(
-            getResponseMessage(result, "Unable to add product or service.")
-          );
-        }
-
-        document.getElementById("productName").value = "";
-        document.getElementById("productDescription").value = "";
-        document.getElementById("productPrice").value = "";
-        document.getElementById("productCategory").value = "";
-        document.getElementById("productType").value = "product";
-        document.getElementById("productAvailable").checked = true;
-
-        await loadOwnerProducts();
-
-        showStatus(
-          productsStatus,
-          "Product or service added successfully.",
-          "success"
-        );
-      } catch (error) {
-        console.error("Adding owner product failed:", error);
-
-        showStatus(
-          productsStatus,
-          error.message || "Unable to add product or service.",
-          "error"
-        );
-      } finally {
-        addProductButton.disabled = false;
-        addProductButton.textContent = "Add Product / Service";
-      }
-    }
-
-    /*
-      ============================================================
-      HELP WANTED
-      ============================================================
-    */
-
-    function clearHelpWantedForm() {
-      editingHelpWantedId = null;
-
-      document.getElementById("helpWantedTitle").value = "";
-      document.getElementById("helpWantedType").value = "job";
-      document.getElementById("helpWantedCategory").value = "";
-      document.getElementById("helpWantedLocation").value = "";
-      document.getElementById("helpWantedDescription").value = "";
-      document.getElementById("helpWantedContact").value = "";
-      document.getElementById("helpWantedDeadline").value = "";
-
-      helpWantedFormTitle.textContent = "Create Help Wanted Post";
-      helpWantedEditBanner.classList.remove("show");
-      createHelpWantedButton.textContent = "Create Help Wanted Post";
-
-      hideStatus(helpWantedStatus);
-    }
-
-    async function loadOwnerHelpWanted() {
-      if (!ownerToken) return;
-
-      helpWantedList.innerHTML =
-        '<div class="image-empty">Loading Help Wanted posts...</div>';
-
-      try {
-        const response = await ownerFetch("/owner/help-wanted", {
-          method: "GET"
-        });
-
-        const result = await readResponseBody(response);
-
-        console.log(
-          "OWNER HELP WANTED GET RESPONSE:",
-          response.status,
-          result
-        );
-
-        if (!response.ok || result?.status !== "ok") {
-          throw new Error(
-            getResponseMessage(result, "Unable to load your Help Wanted posts.")
-          );
-        }
-
-        const posts =
-          result.help_wanted ||
-          result.posts ||
-          result.data ||
-          [];
-
-        currentHelpWantedPosts = Array.isArray(posts) ? posts : [];
-
-        renderHelpWantedPosts(currentHelpWantedPosts);
-        hideStatus(helpWantedStatus);
-      } catch (error) {
-        console.error("Loading owner Help Wanted failed:", error);
-
-        helpWantedList.innerHTML =
-          '<div class="image-empty">Unable to load your Help Wanted posts.</div>';
-
-        showStatus(
-          helpWantedStatus,
-          error.message || "Unable to load your Help Wanted posts.",
-          "error"
-        );
-      }
-    }
-
-    function renderHelpWantedPosts(posts) {
-      helpWantedList.innerHTML = "";
-
-      if (!Array.isArray(posts) || !posts.length) {
-        helpWantedList.innerHTML =
-          '<div class="image-empty">No Help Wanted posts have been submitted for this business.</div>';
-        return;
-      }
-
-      posts.forEach(function(post) {
-        const card = document.createElement("div");
-        card.className = "help-wanted-card";
-
-        const statusBadge = document.createElement("div");
-
-        const moderationStatus = String(
-          post.moderation_status || "pending"
-        ).toLowerCase();
-
-        const postStatus = String(
-          post.status || "open"
-        ).toLowerCase();
-
-        statusBadge.className = "help-wanted-status";
-
-        if (postStatus === "closed") {
-          statusBadge.classList.add("closed");
-          statusBadge.textContent = "Closed";
-        } else if (moderationStatus === "approved") {
-          statusBadge.textContent = "Approved";
-        } else if (moderationStatus === "rejected") {
-          statusBadge.classList.add("rejected");
-          statusBadge.textContent = "Rejected";
-        } else if (moderationStatus === "removed") {
-          statusBadge.classList.add("removed");
-          statusBadge.textContent = "Removed";
-        } else {
-          statusBadge.classList.add("pending");
-          statusBadge.textContent = "Pending Moderation";
-        }
-
-        const title = document.createElement("h4");
-        title.textContent = post.title || "Untitled opportunity";
-
-        const description = document.createElement("p");
-        description.textContent = post.description || "No description provided.";
-        description.style.margin = "0";
-
-        const meta = document.createElement("div");
-        meta.className = "help-wanted-meta";
-
-        meta.appendChild(
-          createHelpWantedMetaBox(
-            "Type",
-            formatHelpWantedType(post.type || post.employment_type)
-          )
-        );
-
-        meta.appendChild(
-          createHelpWantedMetaBox(
-            "Category",
-            post.category || "Not specified"
-          )
-        );
-
-        meta.appendChild(
-          createHelpWantedMetaBox(
-            "Location",
-            post.location || "Not specified"
-          )
-        );
-
-        meta.appendChild(
-          createHelpWantedMetaBox(
-            "Deadline",
-            post.deadline || post.expires_at
-              ? formatHelpWantedDate(post.deadline || post.expires_at)
-              : "No deadline"
-          )
-        );
-
-        meta.appendChild(
-          createHelpWantedMetaBox(
-            "Moderation",
-            formatHelpWantedModerationStatus(moderationStatus)
-          )
-        );
-
-        if (post.application_contact || post.contact) {
-          meta.appendChild(
-            createHelpWantedMetaBox(
-              "Application / Contact",
-              post.application_contact || post.contact
-            )
-          );
-        }
-
-        if (post.id) {
-          meta.appendChild(
-            createHelpWantedMetaBox("Post ID", String(post.id))
-          );
-        }
-
-        const note = document.createElement("p");
-        note.className = "help-wanted-note";
-
-        if (moderationStatus === "pending") {
-          note.textContent =
-            "This listing has been submitted and is waiting for moderation approval.";
-        } else if (moderationStatus === "approved" && postStatus === "open") {
-          note.textContent = "This listing is approved and currently open.";
-        } else if (postStatus === "closed") {
-          note.textContent =
-            "This listing is closed and is no longer accepting applications.";
-        } else if (moderationStatus === "rejected") {
-          note.textContent = "This listing was rejected during moderation.";
-        } else if (moderationStatus === "removed") {
-          note.textContent = "This listing has been removed from public discovery.";
-        } else {
-          note.textContent =
-            "This listing is currently not eligible for public discovery.";
-        }
-
-        const actions = document.createElement("div");
-        actions.className = "help-wanted-actions";
-
-        if (post.id && moderationStatus !== "removed") {
-          const editButton = document.createElement("button");
-          editButton.type = "button";
-          editButton.className = "btn btn-secondary";
-          editButton.textContent = "Edit";
-
-          editButton.addEventListener("click", function() {
-            startHelpWantedEdit(post);
-          });
-
-          actions.appendChild(editButton);
-
-          const toggleButton = document.createElement("button");
-          toggleButton.type = "button";
-          toggleButton.className = "btn btn-warning";
-          toggleButton.textContent =
-            postStatus === "closed" ? "Reopen" : "Close";
-
-          toggleButton.addEventListener("click", function() {
-            toggleHelpWantedStatus(post);
-          });
-
-          actions.appendChild(toggleButton);
-
-          const deleteButton = document.createElement("button");
-          deleteButton.type = "button";
-          deleteButton.className = "btn btn-danger";
-          deleteButton.textContent = "Delete";
-
-          deleteButton.addEventListener("click", function() {
-            deleteOwnerHelpWanted(post.id);
-          });
-
-          actions.appendChild(deleteButton);
-        }
-
-        card.appendChild(statusBadge);
-        card.appendChild(title);
-        card.appendChild(description);
-        card.appendChild(meta);
-        card.appendChild(note);
-
-        if (actions.children.length) {
-          card.appendChild(actions);
-        }
-
-        helpWantedList.appendChild(card);
-      });
-    }
-
-    function createHelpWantedMetaBox(label, value) {
-      const box = document.createElement("div");
-      box.className = "help-wanted-meta-box";
-
-      const labelElement = document.createElement("div");
-      labelElement.className = "help-wanted-meta-label";
-      labelElement.textContent = label;
-
-      const valueElement = document.createElement("div");
-      valueElement.className = "help-wanted-meta-value";
-      valueElement.textContent = value || "—";
-
-      box.appendChild(labelElement);
-      box.appendChild(valueElement);
-
-      return box;
-    }
-
-    function formatHelpWantedType(type) {
-      const normalized = cleanString(type).toLowerCase();
-
-      const labels = {
-        job: "Job",
-        part_time: "Part-time",
-        contract: "Contract",
-        freelance: "Freelance",
-        internship: "Internship",
-        apprenticeship: "Apprenticeship",
-        temporary: "Temporary",
-        volunteer: "Volunteer",
-        other: "Other"
-      };
-
-      return labels[normalized] || type || "Other";
-    }
-
-    function formatHelpWantedModerationStatus(status) {
-      const normalized = cleanString(status).toLowerCase();
-
-      const labels = {
-        pending: "Pending",
-        approved: "Approved",
-        rejected: "Rejected",
-        removed: "Removed"
-      };
-
-      return labels[normalized] || "Pending";
-    }
-
-    function formatHelpWantedDate(value) {
-      if (!value) return "No deadline";
-
-      const raw = cleanString(value);
-      if (!raw) return "No deadline";
-
-      try {
-        const date = new Date(
-          raw.length === 10 ? raw + "T00:00:00" : raw
-        );
-
-        if (Number.isNaN(date.getTime())) return raw;
-
-        return date.toLocaleDateString(undefined, {
-          year: "numeric",
-          month: "short",
-          day: "numeric"
-        });
-      } catch {
-        return raw;
-      }
-    }
-
-    function startHelpWantedEdit(post) {
-      if (!post || !post.id) return;
-
-      editingHelpWantedId = String(post.id);
-
-      document.getElementById("helpWantedTitle").value = post.title || "";
-      document.getElementById("helpWantedType").value =
-        normalizeHelpWantedTypeValue(post.type || post.employment_type);
-      document.getElementById("helpWantedCategory").value = post.category || "";
-      document.getElementById("helpWantedLocation").value = post.location || "";
-      document.getElementById("helpWantedDescription").value = post.description || "";
-      document.getElementById("helpWantedContact").value =
-        post.application_contact || post.contact || "";
-      document.getElementById("helpWantedDeadline").value =
-        normalizeDateInputValue(post.deadline || post.expires_at || "");
-
-      helpWantedFormTitle.textContent = "Edit Help Wanted Post";
-      helpWantedEditBanner.classList.add("show");
-      createHelpWantedButton.textContent = "Save Help Wanted Changes";
-
-      showStatus(
-        helpWantedStatus,
-        "Editing the selected Help Wanted post.",
-        "info"
-      );
-
-      document.getElementById("helpWantedTitle").scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-    }
-
-    function normalizeHelpWantedTypeValue(type) {
-      const normalized = cleanString(type).toLowerCase();
-
-      const allowed = [
-        "job",
-        "part_time",
-        "contract",
-        "freelance",
-        "internship",
-        "apprenticeship",
-        "temporary",
-        "volunteer",
-        "other"
-      ];
-
-      return allowed.includes(normalized) ? normalized : "other";
-    }
-
-    function normalizeDateInputValue(value) {
-      const raw = cleanString(value);
-      if (!raw) return "";
-
-      if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
-        return raw;
-      }
-
-      const date = new Date(raw);
-      if (Number.isNaN(date.getTime())) return "";
-
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-
-      return year + "-" + month + "-" + day;
-    }
-
-    function getHelpWantedFormValues() {
-      return {
-        title: cleanString(document.getElementById("helpWantedTitle").value),
-        type: cleanString(document.getElementById("helpWantedType").value),
-        category: cleanString(document.getElementById("helpWantedCategory").value),
-        location: cleanString(document.getElementById("helpWantedLocation").value),
-        description: cleanString(document.getElementById("helpWantedDescription").value),
-        contact: cleanString(document.getElementById("helpWantedContact").value),
-        deadline: cleanString(document.getElementById("helpWantedDeadline").value)
-      };
-    }
-
-    function validateHelpWantedForm(data) {
-      if (!data.title) {
-        return "Opportunity title is required.";
-      }
-
-      if (!data.description) {
-        return "Please provide a description of the opportunity.";
-      }
-
-      if (!data.contact) {
-        return "Please provide an application or contact method.";
-      }
-
-      if (data.deadline) {
-        const deadlineDate = new Date(data.deadline + "T23:59:59");
-
-        if (Number.isNaN(deadlineDate.getTime())) {
-          return "Please enter a valid application deadline.";
-        }
-
-        if (deadlineDate < new Date()) {
-          return "The application deadline cannot be in the past.";
-        }
-      }
-
-      return null;
-    }
-
-    async function createHelpWantedDraft() {
-      if (!ownerToken) {
-        showStatus(
-          helpWantedStatus,
-          "Your owner session has expired. Please log in again.",
-          "error"
-        );
-        return;
-      }
-
-      if (!currentBusiness) {
-        showStatus(
-          helpWantedStatus,
-          "Your business information has not loaded yet.",
-          "error"
-        );
-        return;
-      }
-
-      const data = getHelpWantedFormValues();
-      const validationError = validateHelpWantedForm(data);
-
-      if (validationError) {
-        showStatus(helpWantedStatus, validationError, "error");
-        return;
-      }
-
-      createHelpWantedButton.disabled = true;
-      createHelpWantedButton.textContent =
-        editingHelpWantedId ? "Saving..." : "Submitting...";
-
-      hideStatus(helpWantedStatus);
-
-      try {
-        if (editingHelpWantedId) {
-          await updateOwnerHelpWanted(editingHelpWantedId, data);
-        } else {
-          const response = await ownerFetch("/owner/help-wanted", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              title: data.title,
-              description: data.description,
-              type: data.type,
-              category: data.category || null,
-              location: data.location || null,
-              application_contact: data.contact,
-              deadline: data.deadline || null,
-              contact: data.contact,
-              employment_type: data.type,
-              expires_at: data.deadline || null
-            })
-          });
-
-          const result = await readResponseBody(response);
-
-          if (!response.ok || result?.status !== "ok") {
-            throw new Error(
-              getResponseMessage(
-                result,
-                `Unable to create Help Wanted post (HTTP ${response.status}).`
-              )
-            );
-          }
-
-          clearHelpWantedForm();
-          await loadOwnerHelpWanted();
-
-          showStatus(
-            helpWantedStatus,
-            "Help Wanted post submitted successfully. It is now waiting for moderation approval.",
-            "success"
-          );
-        }
-      } catch (error) {
-        console.error("Creating or updating Help Wanted post failed:", error);
-
-        showStatus(
-          helpWantedStatus,
-          error.message || "Unable to save the Help Wanted post.",
-          "error"
-        );
-      } finally {
-        createHelpWantedButton.disabled = false;
-        createHelpWantedButton.textContent =
-          editingHelpWantedId
-            ? "Save Help Wanted Changes"
-            : "Create Help Wanted Post";
-      }
-    }
-
-    async function updateOwnerHelpWanted(postId, data) {
-      if (!postId) {
-        throw new Error("Help Wanted post ID is missing.");
-      }
-
-      const response = await ownerFetch(
-        "/owner/help-wanted/" + encodeURIComponent(postId),
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: data.title,
-            description: data.description,
-            type: data.type,
-            category: data.category || null,
-            location: data.location || null,
-            application_contact: data.contact,
-            deadline: data.deadline || null,
-            contact: data.contact,
-            employment_type: data.type,
-            expires_at: data.deadline || null
-          })
-        }
-      );
-
-      const result = await readResponseBody(response);
-
-      if (!response.ok || result?.status !== "ok") {
-        throw new Error(
-          getResponseMessage(
-            result,
-            `Unable to update Help Wanted post (HTTP ${response.status}).`
-          )
-        );
-      }
-
-      editingHelpWantedId = null;
-      clearHelpWantedForm();
-      await loadOwnerHelpWanted();
-
-      showStatus(
-        helpWantedStatus,
-        "Help Wanted post updated successfully.",
-        "success"
-      );
-    }
-
-    async function toggleHelpWantedStatus(post) {
-      if (!post || !post.id) return;
-
-      const currentStatus = String(post.status || "open").toLowerCase();
-      const nextStatus = currentStatus === "closed" ? "open" : "closed";
-      const label = nextStatus === "closed" ? "close" : "reopen";
-
-      if (!window.confirm(`Are you sure you want to ${label} this Help Wanted post?`)) {
-        return;
-      }
-
-      try {
-        showStatus(
-          helpWantedStatus,
-          `${nextStatus === "closed" ? "Closing" : "Reopening"} Help Wanted post...`,
-          "info"
-        );
-
-        const response = await ownerFetch(
-          "/owner/help-wanted/" +
-            encodeURIComponent(post.id) +
-            "/status",
-          {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status: nextStatus })
-          }
-        );
-
-        const result = await readResponseBody(response);
-
-        if (!response.ok || result?.status !== "ok") {
-          throw new Error(
-            getResponseMessage(
-              result,
-              `Unable to update Help Wanted status (HTTP ${response.status}).`
-            )
-          );
-        }
-
-        await loadOwnerHelpWanted();
-
-        showStatus(
-          helpWantedStatus,
-          `Help Wanted post ${nextStatus === "closed" ? "closed" : "reopened"} successfully.`,
-          "success"
-        );
-      } catch (error) {
-        console.error("Updating Help Wanted status failed:", error);
-
-        showStatus(
-          helpWantedStatus,
-          error.message || "Unable to update Help Wanted status.",
-          "error"
-        );
-      }
-    }
-
-    async function deleteOwnerHelpWanted(postId) {
-      if (!postId) {
-        showStatus(
-          helpWantedStatus,
-          "This Help Wanted post cannot be deleted because its ID is missing.",
-          "error"
-        );
-        return;
-      }
-
-      if (!window.confirm("Delete this Help Wanted post permanently?")) {
-        return;
-      }
-
-      try {
-        showStatus(helpWantedStatus, "Deleting Help Wanted post...", "info");
-
-        const response = await ownerFetch(
-          "/owner/help-wanted/" + encodeURIComponent(postId),
-          { method: "DELETE" }
-        );
-
-        const result = await readResponseBody(response);
-
-        if (!response.ok || result?.status !== "ok") {
-          throw new Error(
-            getResponseMessage(
-              result,
-              `Unable to delete Help Wanted post (HTTP ${response.status}).`
-            )
-          );
-        }
-
-        if (String(editingHelpWantedId) === String(postId)) {
-          clearHelpWantedForm();
-        }
-
-        await loadOwnerHelpWanted();
-
-        showStatus(
-          helpWantedStatus,
-          "Help Wanted post deleted successfully.",
-          "success"
-        );
-      } catch (error) {
-        console.error("Deleting Help Wanted post failed:", error);
-
-        showStatus(
-          helpWantedStatus,
-          error.message || "Unable to delete Help Wanted post.",
-          "error"
-        );
-      }
-    }
-
-    /*
-      ============================================================
-      LOGOUT
-      ============================================================
-    */
-
-    async function logoutOwner() {
-      const token = ownerToken;
-
-      if (token) {
-        try {
-          await fetch(API_BASE + "/owner/logout", {
-            method: "POST",
-            headers: {
-              "Accept": "application/json",
-              "Authorization": "Bearer " + token
-            }
-          });
-        } catch (error) {
-          console.warn("Owner logout request failed:", error);
-        }
-      }
-
-      clearStoredOwnerToken();
-
-      ownerToken = null;
-      currentBusiness = null;
-      currentHelpWantedPosts = [];
-      editingHelpWantedId = null;
-
-      resetDashboard();
-
-      showStatus(loginStatus, "You have been logged out.", "success");
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    }
-
-    /*
-      ============================================================
-      RESET DASHBOARD
-      ============================================================
-    */
-
-    function resetDashboard() {
-      dashboardSection.classList.add("hidden");
-      loginSection.classList.remove("hidden");
-
-      loginForm.reset();
-      businessImage.value = "";
-      imageGallery.innerHTML = "";
-      hoursEditor.innerHTML = "";
-      productsList.innerHTML = "";
-
-      currentHelpWantedPosts = [];
-
-      helpWantedList.innerHTML =
-        '<div class="image-empty">No Help Wanted posts have been submitted for this business.</div>';
-
-      analyticsTotalViews.textContent = "—";
-      analyticsToday.textContent = "—";
-      analytics7Days.textContent = "—";
-      analytics30Days.textContent = "—";
-
-      clearHelpWantedForm();
-
-      hideStatus(dashboardStatus);
-      hideStatus(imageStatus);
-      hideStatus(hoursStatus);
-      hideStatus(productsStatus);
-      hideStatus(analyticsStatus);
-      hideStatus(helpWantedStatus);
-    }
-
-    /*
-      ============================================================
-      PUBLIC PROFILE
-      ============================================================
-    */
-
-    publicProfileButton.addEventListener("click", function() {
-      if (!currentBusiness) return;
-
-      const businessId =
-        currentBusiness.id ||
-        currentBusiness.business_id;
-
-      if (!businessId) {
-        showStatus(
-          dashboardStatus,
-          "The business ID is unavailable.",
-          "error"
-        );
-        return;
-      }
-
-      window.location.href =
-        "/pages/business.html?id=" +
-        encodeURIComponent(businessId);
-    });
-
-    /*
-      ============================================================
-      EVENT LISTENERS
-      ============================================================
-    */
-
-    loginForm.addEventListener("submit", loginOwner);
-    saveButton.addEventListener("click", saveBusiness);
-    saveHoursButton.addEventListener("click", saveOwnerHours);
-    uploadImageButton.addEventListener("click", uploadOwnerImage);
-    refreshAnalyticsButton.addEventListener("click", loadOwnerAnalytics);
-    addProductButton.addEventListener("click", addOwnerProduct);
-    createHelpWantedButton.addEventListener("click", createHelpWantedDraft);
-    clearHelpWantedButton.addEventListener("click", clearHelpWantedForm);
-    refreshHelpWantedButton.addEventListener("click", loadOwnerHelpWanted);
-    logoutButton.addEventListener("click", logoutOwner);
-
-    /*
-      ============================================================
-      PAGE STARTUP
-      ============================================================
-    */
-
-    renderMembershipPrices();
-    restoreOwnerSession();
+      const freePlan = config.freePlan || {};
+      const plans = config.plans || {};
+      const proPlan = plans.pro || {};
+      const premiumPlan = plans.premium || {};
+
+      document.getElementById("freePrice").textContent =
+        formatNaira(readPrice(freePlan, 0));
+
+      document.getElementById("proPrice").textContent =
+        formatNaira(readPrice(proPlan, 5000));
+
+      document.getElementById("premiumPrice").textContent =
+        formatNaira(readPrice(premiumPlan, 10000));
+    })();
   </script>
 </body>
 </html>
