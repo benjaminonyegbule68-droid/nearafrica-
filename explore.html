@@ -284,6 +284,21 @@
 
     }
 
+  
+    .explore-language {
+      display: inline-flex;
+      align-items: center;
+    }
+    .explore-language select {
+      min-height: 36px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #51431c;
+      background: #080808;
+      color: #d4af37;
+      font: inherit;
+    }
+
   </style>
 
 </head>
@@ -303,6 +318,7 @@
       <a
         href="index.html"
         class="logo"
+        data-i18n="siteName"
       >
         NearAfrica
       </a>
@@ -312,20 +328,38 @@
         aria-label="Main navigation"
       >
 
-        <a href="index.html">
+        <a href="index.html" data-i18n="nav.home">
           Home
         </a>
 
         <a
           href="explore.html"
           aria-current="page"
+          data-i18n="nav.explore"
         >
           Explore
         </a>
 
-        <a href="help-wanted.html">
+        <a href="help-wanted.html" data-i18n="nav.helpWanted">
           Help Wanted
         </a>
+
+        <div class="explore-language">
+          <select
+            id="languageSelector"
+            data-language-selector
+            aria-label="Language"
+          >
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="ar">العربية</option>
+            <option value="pt">Português</option>
+            <option value="sw">Kiswahili</option>
+            <option value="ha">Hausa</option>
+            <option value="yo">Yorùbá</option>
+            <option value="ig">Igbo</option>
+          </select>
+        </div>
 
       </nav>
 
@@ -347,11 +381,11 @@
 
     <section class="explore-hero">
 
-      <h1>
+      <h1 data-i18n="explore.title">
         Explore Businesses
       </h1>
 
-      <p>
+      <p data-i18n="explore.subtitle">
         Discover businesses, services, and opportunities across Africa.
       </p>
 
@@ -368,7 +402,7 @@
 
         <div class="filter-group">
 
-          <label for="searchInput">
+          <label for="searchInput" data-i18n="search.search">
             Search
           </label>
 
@@ -376,6 +410,7 @@
             id="searchInput"
             type="search"
             placeholder="Search businesses..."
+            data-i18n-placeholder="search.searchPlaceholder"
             autocomplete="off"
           >
 
@@ -384,13 +419,13 @@
 
         <div class="filter-group">
 
-          <label for="categoryFilter">
+          <label for="categoryFilter" data-i18n="explore.category">
             Category
           </label>
 
           <select id="categoryFilter">
 
-            <option value="">
+            <option value="" data-i18n="explore.allCategories">
               All categories
             </option>
 
@@ -401,13 +436,13 @@
 
         <div class="filter-group">
 
-          <label for="stateFilter">
+          <label for="stateFilter" data-i18n="explore.state">
             State
           </label>
 
           <select id="stateFilter">
 
-            <option value="">
+            <option value="" data-i18n="explore.allStates">
               All states
             </option>
 
@@ -437,6 +472,7 @@
           id="clearFilters"
           type="button"
           class="filter-button"
+          data-i18n="actions.cancel"
         >
           Clear
         </button>
@@ -452,16 +488,14 @@
 
     <section class="results-header">
 
-      <h2 id="resultsTitle">
+      <h2 id="resultsTitle" data-i18n="explore.businesses">
         Businesses
       </h2>
 
      <div
-  id="resultCount"
+  id="resultCount" data-i18n="actions.loading"
   class="result-count"
->
-  Loading businesses...
-</div>
+>Loading businesses...</div>
 
     </section>
 
@@ -476,7 +510,7 @@
       aria-live="polite"
     >
 
-      <div class="loading-state">
+      <div class="loading-state" data-i18n="actions.loading">
         Loading businesses...
       </div>
 
@@ -501,6 +535,8 @@
        ======================================================= -->
 
   <script src="config.js"></script>
+  <script src="js/translations.js"></script>
+  <script src="js/i18n.js"></script>
 
 
   <!-- =======================================================
