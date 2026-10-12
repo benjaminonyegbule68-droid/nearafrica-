@@ -7,7 +7,8 @@
  *   js/translations.js
  *
  * Supported languages currently:
- *   English, French, Arabic, Portuguese, Swahili
+ *   English (default), French, Arabic, Portuguese, Swahili,
+ *   Hausa, Yoruba, Igbo
  */
 
 (function () {
