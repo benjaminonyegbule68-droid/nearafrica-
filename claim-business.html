@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Claim a business listing on NearAfrica. Verify your relationship with the business and request authorized listing access.">
+  <meta name="robots" content="noindex, follow">
+  <title>Claim a Business | NearAfrica</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <style>
+    :root {
+      --bg: #090909;
+      --panel: #141414;
+      --panel-soft: #1b1b1b;
+      --gold: #d4af37;
+      --gold-light: #f0d477;
+      --text: #f5f5f5;
+      --muted: #b5b5b5;
+      --border: rgba(212,175,55,.25);
+      --danger: #ff8888;
+      --success: #8ee0ad;
+      --radius: 15px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at top, rgba(212,175,55,.09), transparent 42%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    a { color: var(--gold-light); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(9,9,9,.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      width: min(100% - 32px, 1100px);
+      min-height: 70px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .brand img { width: 38px; height: 38px; object-fit: contain; }
+
+    nav { display: flex; gap: 20px; align-items: center; }
+    nav a { color: var(--muted); font-size: .9rem; }
+
+    main {
+      width: min(100% - 32px, 760px);
+      margin: 0 auto;
+      padding: 48px 0 75px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--gold-light);
+      background: rgba(212,175,55,.06);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin-top: 16px;
+      font-size: clamp(2rem, 6vw, 3.1rem);
+      line-height: 1.12;
+      letter-spacing: -.04em;
+    }
+
+    h1 span { color: var(--gold); }
+
+    .intro {
+      color: var(--muted);
+      margin: 14px 0 26px;
+      max-width: 650px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: rgba(20,20,20,.96);
+      border-radius: var(--radius);
+      padding: clamp(19px, 4vw, 30px);
+      margin-bottom: 20px;
+      box-shadow: 0 12px 35px rgba(0,0,0,.15);
+    }
+
+    .card h2 { font-size: 1.25rem; margin-bottom: 7px; }
+    .subtext { color: var(--muted); font-size: .92rem; margin-bottom: 20px; }
+
+    .business-name {
+      color: var(--gold-light);
+      font-size: 1.2rem;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .business-meta { color: var(--muted); font-size: .9rem; margin-top: 5px; }
+    .hidden { display: none !important; }
+
+    .notice {
+      border-left: 3px solid var(--gold);
+      background: rgba(212,175,55,.055);
+      padding: 13px 15px;
+      border-radius: 0 9px 9px 0;
+      color: var(--muted);
+      font-size: .9rem;
+      margin: 17px 0;
+    }
+
+    .notice strong { color: var(--text); }
+
+    .field { margin-bottom: 17px; }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: .91rem;
+      font-weight: 700;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid #393939;
+      border-radius: 9px;
+      padding: 12px 13px;
+      background: #0d0d0d;
+      color: var(--text);
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212,175,55,.09);
+    }
+
+    input::placeholder, textarea::placeholder { color: #777; }
+    textarea { min-height: 115px; resize: vertical; }
+    select option { background: #111; }
+
+    .hint { color: #999; font-size: .82rem; margin-top: 5px; }
+
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 18px 0;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .check-row input { width: auto; margin-top: 6px; accent-color: var(--gold); }
+
+    button, .button-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 45px;
+      padding: 11px 17px;
+      border: 1px solid var(--gold);
+      border-radius: 9px;
+      background: var(--gold);
+      color: #090909;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    button:hover, .button-link:hover { background: var(--gold-light); text-decoration: none; }
+    button:disabled { opacity: .55; cursor: not-allowed; }
+
+    .button-secondary {
+      background: transparent;
+      color: var(--gold-light);
+      border-color: var(--border);
+    }
+
+    .button-secondary:hover { background: rgba(212,175,55,.08); }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .actions button { flex: 1 1 180px; }
+
+    .message {
+      padding: 13px 15px;
+      margin: 15px 0;
+      border: 1px solid #444;
+      border-radius: 9px;
+      color: var(--muted);
+      overflow-wrap: anywhere;
+      white-space: pre-line;
+    }
+
+    .message.error { border-color: rgba(255,136,136,.4); color: var(--danger); background: rgba(255,0,0,.045); }
+    .message.success { border-color: rgba(142,224,173,.35); color: var(--success); background: rgba(0,255,100,.04); }
+    .message.info { border-color: var(--border); }
+
+    .small { font-size: .85rem; color: var(--muted); }
+    .footer-note { text-align: center; margin-top: 25px; color: #888; font-size: .85rem; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 16px;
+      text-align: center;
+      color: #888;
+      font-size: .85rem;
+    }
+
+    footer a { margin: 0 8px; }
+
+    @media (max-width: 600px) {
+      .header-inner { width: calc(100% - 22px); }
+      nav { gap: 12px; }
+      nav a:not(.nav-cta) { display: none; }
+      main { width: calc(100% - 22px); padding-top: 32px; }
+      .actions { flex-direction: column; }
+      .actions button, .actions a { width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand" aria-label="NearAfrica home">
+        <img src="logo.png" alt="">
+        <span>NearAfrica</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="explore.html">Explore</a>
+        <a href="list-business.html">List a Business</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <span class="eyebrow">Business ownership</span>
+    <h1>Claim <span>your business</span></h1>
+    <p class="intro">
+      Are you authorized to represent this business? Submit a claim and verify
+      access using the code sent to the business email currently listed on NearAfrica.
+    </p>
+
+    <section class="card" aria-labelledby="businessHeading">
+      <h2 id="businessHeading">Business listing</h2>
+      <p class="subtext">Check that this is the correct business before continuing.</p>
+      <div id="businessLoading" class="message info" role="status">Loading business details…</div>
+      <div id="businessDetails" class="hidden">
+        <div id="businessName" class="business-name"></div>
+        <div id="businessMeta" class="business-meta"></div>
+        <div id="businessStatus" class="notice hidden"></div>
+        <div class="actions">
+          <a id="viewListing" class="button-link button-secondary" href="explore.html">View listing</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="claimSection" class="card hidden" aria-labelledby="claimHeading">
+      <h2 id="claimHeading">Claim information</h2>
+      <p class="subtext">
+        Enter your own contact details and explain your relationship to the business.
+      </p>
+
+      <div id="claimMessage" class="message hidden" role="status" aria-live="polite"></div>
+
+      <form id="claimForm">
+        <div class="field">
+          <label for="claimantName">Your full name *</label>
+          <input id="claimantName" name="claimant_name" autocomplete="name" maxlength="150" required>
+        </div>
+
+        <div class="field">
+          <label for="claimantEmail">Your email address *</label>
+          <input id="claimantEmail" name="claimant_email" type="email" autocomplete="email" maxlength="254" required>
+          <p class="hint">NearAfrica uses this to identify the claimant and communicate about the request. The verification code is sent to the business email on the listing.</p>
+        </div>
+
+        <div class="field">
+          <label for="claimantPhone">Your phone number</label>
+          <input id="claimantPhone" name="claimant_phone" type="tel" autocomplete="tel" maxlength="40" placeholder="e.g. +234…">
+        </div>
+
+        <div class="field">
+          <label for="relationship">Your relationship to the business *</label>
+          <select id="relationship" required>
+            <option value="">Select your role</option>
+            <option value="Owner">Business owner</option>
+            <option value="Director or partner">Director or partner</option>
+            <option value="Manager">Authorized manager</option>
+            <option value="Employee">Authorized employee</option>
+            <option value="Agency or representative">Authorized agency or representative</option>
+            <option value="Other authorized role">Other authorized role</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="evidenceType">Supporting evidence type</label>
+          <select id="evidenceType">
+            <option value="">Select if applicable</option>
+            <option value="Business email">Access to the listed business email</option>
+            <option value="Business phone">Business telephone contact</option>
+            <option value="Business registration">Business registration or official record</option>
+            <option value="Authorization letter">Authorization letter</option>
+            <option value="Other">Other relevant evidence</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="evidenceDetails">Explain your relationship to the business *</label>
+          <textarea id="evidenceDetails" maxlength="5000" required placeholder="Explain your role and why you are authorized to manage this listing. Do not include passwords or verification codes."></textarea>
+          <p class="hint">Do not enter passwords, payment information, or unnecessary sensitive personal information.</p>
+        </div>
+
+        <label class="check-row">
+          <input id="honestClaim" type="checkbox" required>
+          <span>I confirm that I am authorized to represent this business, that the information I have provided is accurate, and that I am not attempting to gain unauthorized access to another business's listing.</span>
+        </label>
+
+        <div class="notice">
+          <strong>Before you submit:</strong>
+          The verification code will be sent to the email already recorded on this business listing.
+          If you cannot access that mailbox, do not submit a claim expecting the code to arrive at your personal email.
+        </div>
+
+        <button id="submitClaim" type="submit" disabled>Submit claim</button>
+      </form>
+    </section>
+
+    <section id="verifySection" class="card hidden" aria-labelledby="verifyHeading">
+      <h2 id="verifyHeading">Verify business email</h2>
+      <p class="subtext">
+        Enter the six-digit code sent to the business email address shown below.
+      </p>
+
+      <div id="verificationDestination" class="notice"></div>
+      <div id="verifyMessage" class="message hidden" role="status" aria-live="polite"></div>
+
+      <form id="verifyForm">
+        <div class="field">
+          <label for="verificationCode">Six-digit verification code *</label>
+          <input
+            id="verificationCode"
+            name="code"
+            type="text"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            pattern="[0-9]{6}"
+            minlength="6"
+            maxlength="6"
+            placeholder="000000"
+            required
+          >
+          <p class="hint">The code expires after 10 minutes. Never share it with anyone.</p>
+        </div>
+
+        <div class="actions">
+          <button id="verifyButton" type="submit">Verify code</button>
+          <button id="resendButton" class="button-secondary" type="button">Resend code</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="resultSection" class="card hidden" aria-labelledby="resultHeading">
+      <h2 id="resultHeading">Claim update</h2>
+      <div id="resultMessage" class="message success" role="status" aria-live="polite"></div>
+      <p class="small">
+        You can return to the business listing. Keep any claim reference information in a safe place.
+      </p>
+      <div class="actions">
+        <a id="resultListingLink" class="button-link" href="explore.html">Return to listing</a>
+        <a class="button-link button-secondary" href="contact.html">Contact NearAfrica</a>
+      </div>
+    </section>
+
+    <p class="footer-note">
+      By submitting a claim, you acknowledge the
+      <a href="claim-business-policy.html">Claim Business Policy</a>,
+      <a href="privacy.html">Privacy Policy</a>, and
+      <a href="terms.html">Terms of Service</a>.
+    </p>
+  </main>
+
+  <footer>
+    <div>© <span id="year"></span> NearAfrica. Discover businesses and opportunities across Africa.</div>
+    <div style="margin-top:8px">
+      <a href="index.html">Home</a>
+      <a href="listing-policy.html">Listing Policy</a>
+      <a href="claim-business-policy.html">Claim Policy</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const API_BASE = "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+
+      const params = new URLSearchParams(window.location.search);
+      const businessIdentifier = (
+        params.get("business_id") ||
+        params.get("id") ||
+        params.get("slug") ||
+        ""
+      ).trim();
+
+      let business = null;
+      let claimId = "";
+      let claimInProgress = false;
+      let verifyInProgress = false;
+      let resendInProgress = false;
+
+      const $ = (id) => document.getElementById(id);
+
+      $("year").textContent = new Date().getFullYear();
+
+      function showMessage(element, message, type = "info") {
+        element.textContent = message;
+        element.className = "message " + type;
+        element.classList.remove("hidden");
+      }
+
+      function hideMessage(element) {
+        element.textContent = "";
+        element.classList.add("hidden");
+      }
+
+      function show(element) {
+        element.classList.remove("hidden");
+      }
+
+      function hide(element) {
+        element.classList.add("hidden");
+      }
+
+      async function api(path, options = {}) {
+        const response = await fetch(API_BASE + path, {
+          ...options,
+          headers: {
+            "Content-Type": "application/json",
+            ...(options.headers || {})
+          }
+        });
+
+        const raw = await response.text();
+        let data = {};
+
+        try {
+          data = raw ? JSON.parse(raw) : {};
+        } catch {
+          data = { message: raw || "The server returned an unreadable response." };
+        }
+
+        if (!response.ok || data.status === "error") {
+          const error = new Error(
+            data.message || `Request failed (HTTP ${response.status}).`
+          );
+          error.status = response.status;
+          error.data = data;
+          throw error;
+        }
+
+        return data;
+      }
+
+      function unwrapBusiness(payload) {
+        if (!payload || typeof payload !== "object") return null;
+
+        const candidates = [
+          payload.business,
+          payload.data && payload.data.business,
+          payload.data,
+          payload.result,
+          payload
+        ];
+
+        for (const candidate of candidates) {
+          if (
+            candidate &&
+            typeof candidate === "object" &&
+            (candidate.id || candidate.business_id || candidate.name || candidate.business_name)
+          ) {
+            return candidate;
+          }
+        }
+
+        return null;
+      }
+
+      function safeText(value) {
+        return value == null ? "" : String(value).trim();
+      }
+
+      function getBusinessName(item) {
+        return safeText(item.name || item.business_name) || "Business listing";
+      }
+
+      function getBusinessId(item) {
+        return safeText(item.id || item.business_id);
+      }
+
+      function businessIsClaimed(item) {
+        return Number(item.claimed ?? 0) === 1;
+      }
+
+      async function loadBusiness() {
+        const loading = $("businessLoading");
+
+        if (!businessIdentifier) {
+          showMessage(
+            loading,
+            "No business was selected. Open a business profile and use its Claim This Business button to start.",
+            "error"
+          );
+          return;
+        }
+
+        try {
+          const result = await api(
+            "/businesses/" + encodeURIComponent(businessIdentifier)
+          );
+
+          business = unwrapBusiness(result);
+
+          if (!business) {
+            throw new Error("The server did not return usable business details.");
+          }
+
+          const name = getBusinessName(business);
+          const category = safeText(business.category);
+          const location = [
+            safeText(business.city),
+            safeText(business.state),
+            safeText(business.country)
+          ].filter(Boolean).join(", ");
+
+          $("businessName").textContent = name;
+          $("businessMeta").textContent = [category, location].filter(Boolean).join(" · ") || "Business listing";
+          $("viewListing").href = "business-profile-fixed.html?id=" + encodeURIComponent(
+            getBusinessId(business) || businessIdentifier
+          );
+
+          hide(loading);
+          show($("businessDetails"));
+
+          if (businessIsClaimed(business)) {
+            showMessage(
+              $("businessStatus"),
+              "This listing is already marked as claimed. New claims are not accepted through this form. If you believe this is incorrect, contact NearAfrica.",
+              "info"
+            );
+            show($("businessStatus"));
+            hide($("claimSection"));
+            return;
+          }
+
+          hide($("businessStatus"));
+          show($("claimSection"));
+          $("submitClaim").disabled = false;
+
+        } catch (error) {
+          showMessage(
+            loading,
+            "We could not load this business. Check the link and try again. " + error.message,
+            "error"
+          );
+        }
+      }
+
+      function setBusy(button, busy, busyText, normalText) {
+        button.disabled = busy;
+        button.textContent = busy ? busyText : normalText;
+      }
+
+      $("claimForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!business || claimInProgress) return;
+
+        if (businessIsClaimed(business)) {
+          showMessage(
+            $("claimMessage"),
+            "This business is already claimed and cannot start another claim through this form.",
+            "error"
+          );
+          return;
+        }
+
+        const claimantName = $("claimantName").value.trim();
+        const claimantEmail = $("claimantEmail").value.trim();
+        const claimantPhone = $("claimantPhone").value.trim();
+        const relationship = $("relationship").value;
+        const evidenceType = $("evidenceType").value;
+        const evidenceDetails = $("evidenceDetails").value.trim();
+
+        if (!claimantName || !claimantEmail || !relationship || !evidenceDetails) {
+          showMessage($("claimMessage"), "Please complete all required fields.", "error");
+          return;
+        }
+
+        if (!$("honestClaim").checked) {
+          showMessage($("claimMessage"), "Please confirm that you are authorized to represent this business.", "error");
+          return;
+        }
+
+        claimInProgress = true;
+        setBusy($("submitClaim"), true, "Submitting claim…", "Submit claim");
+        hideMessage($("claimMessage"));
+
+        try {
+          const result = await api(
+            "/businesses/" + encodeURIComponent(getBusinessId(business) || businessIdentifier) + "/claim",
+            {
+              method: "POST",
+              body: JSON.stringify({
+                claimant_name: claimantName,
+                claimant_email: claimantEmail,
+                claimant_phone: claimantPhone,
+                evidence_type: evidenceType,
+                evidence_details:
+                  "Claimant relationship: " + relationship +
+                  "\nAdditional details: " + evidenceDetails
+              })
+            }
+          );
+
+          claimId = safeText(result.claim_id);
+
+          if (!claimId) {
+            throw new Error("The server did not return a claim reference. Contact NearAfrica before submitting another claim.");
+          }
+
+          $("verificationDestination").textContent =
+            "A verification code was requested for " +
+            (result.verification_email || "the business email currently listed on NearAfrica") +
+            ". The code is not sent to your personal email unless that is also the listed business email.";
+
+          hide($("claimSection"));
+          show($("verifySection"));
+
+          showMessage(
+            $("verifyMessage"),
+            result.message || "Your claim was submitted. Enter the verification code sent to the listed business email.",
+            "success"
+          );
+
+          $("verificationCode").focus();
+
+        } catch (error) {
+          const extra = error.data && error.data.claim_id
+            ? "\nExisting claim reference: " + error.data.claim_id
+            : "";
+
+          showMessage(
+            $("claimMessage"),
+            error.message + extra,
+            "error"
+          );
+        } finally {
+          claimInProgress = false;
+          setBusy($("submitClaim"), false, "Submitting claim…", "Submit claim");
+        }
+      });
+
+      $("verifyForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!claimId || verifyInProgress) return;
+
+        const code = $("verificationCode").value.trim();
+
+        if (!/^\d{6}$/.test(code)) {
+          showMessage($("verifyMessage"), "Enter the six-digit verification code.", "error");
+          return;
+        }
+
+        verifyInProgress = true;
+        setBusy($("verifyButton"), true, "Verifying…", "Verify code");
+        hideMessage($("verifyMessage"));
+
+        try {
+          const result = await api(
+            "/claims/" + encodeURIComponent(claimId) + "/verify",
+            {
+              method: "POST",
+              body: JSON.stringify({ code })
+            }
+          );
+
+          hide($("verifySection"));
+          show($("resultSection"));
+
+          $("resultListingLink").href =
+            "business-profile-fixed.html?id=" +
+            encodeURIComponent(getBusinessId(business) || businessIdentifier);
+
+          $("resultMessage").textContent =
+            result.message ||
+            "Your business email has been verified. The claim is awaiting the next step in NearAfrica's ownership process.";
+
+        } catch (error) {
+          showMessage($("verifyMessage"), error.message, "error");
+        } finally {
+          verifyInProgress = false;
+          setBusy($("verifyButton"), false, "Verifying…", "Verify code");
+        }
+      });
+
+      $("resendButton").addEventListener("click", async () => {
+        if (!claimId || resendInProgress) return;
+
+        resendInProgress = true;
+        setBusy($("resendButton"), true, "Requesting code…", "Resend code");
+        hideMessage($("verifyMessage"));
+
+        try {
+          const result = await api(
+            "/claims/" + encodeURIComponent(claimId) + "/resend",
+            {
+              method: "POST",
+              body: JSON.stringify({})
+            }
+          );
+
+          showMessage(
+            $("verifyMessage"),
+            result.message || "A new verification code was requested. Check the listed business email.",
+            "success"
+          );
+        } catch (error) {
+          const retry = error.data && error.data.retry_after
+            ? " Please wait " + error.data.retry_after + " seconds before trying again."
+            : "";
+
+          showMessage($("verifyMessage"), error.message + retry, "error");
+        } finally {
+          resendInProgress = false;
+          setBusy($("resendButton"), false, "Requesting code…", "Resend code");
+        }
+      });
+
+      loadBusiness();
+    })();
+  </script>
+</body>
+</html>
