@@ -5,158 +5,65 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#080808">
 <title>Business Profile | NearAfrica</title>
-
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
-:root{
-  --bg:#080808;
-  --card:#151515;
-  --card2:#1b1b1b;
-  --gold:#d4af37;
-  --gold2:#f0c75e;
-  --white:#f5f5f5;
-  --muted:#a7a7a7;
-  --border:#292929;
-  --danger:#d9534f;
-  --success:#39b96a;
-}
-
+:root{--bg:#080808;--card:#151515;--gold:#d4af37;--gold2:#f0c75e;--white:#f5f5f5;--muted:#a7a7a7;--border:#292929}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  margin:0;
-  background:radial-gradient(circle at top right,rgba(212,175,55,.08),transparent 32%),var(--bg);
-  color:var(--white);
-  font-family:Arial,Helvetica,sans-serif;
-  line-height:1.6;
-}
-a{color:inherit}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-button:disabled{cursor:not-allowed;opacity:.65}
-.container{width:min(1180px,92%);margin:0 auto}
-
-.site-header{
-  position:sticky;top:0;z-index:1000;
-  background:rgba(8,8,8,.95);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(12px);
-}
-.header-inner{
-  min-height:72px;display:flex;align-items:center;
-  justify-content:space-between;gap:20px;
-}
-.logo{
-  text-decoration:none;display:flex;align-items:center;
-  gap:10px;font-size:22px;font-weight:800;white-space:nowrap;
-}
-.logo-mark{
-  width:38px;height:38px;border-radius:12px;
-  display:grid;place-items:center;color:#111;
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  font-weight:900;
-}
+body{margin:0;background:radial-gradient(circle at top right,rgba(212,175,55,.08),transparent 32%),var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif;line-height:1.6}
+a{color:inherit}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.6;cursor:not-allowed}
+.container{width:min(1180px,92%);margin:auto}
+.site-header{position:sticky;top:0;z-index:1000;background:rgba(8,8,8,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.header-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:22px;font-weight:800;white-space:nowrap}
+.logo-mark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#111;background:linear-gradient(135deg,var(--gold2),var(--gold));font-weight:900}
 .logo span{color:var(--gold2)}
 .nav{display:flex;align-items:center;gap:22px}
-.nav a{text-decoration:none;color:#d7d7d7;font-size:14px}
+.nav a{text-decoration:none;color:#ddd;font-size:14px}
 .nav a:hover{color:var(--gold2)}
-.mobile-menu{
-  display:none;background:none;border:1px solid var(--border);
-  color:white;border-radius:8px;padding:8px 11px;
-}
-
+.mobile-menu{display:none;background:none;border:1px solid var(--border);color:white;border-radius:8px;padding:8px 11px}
 .page{padding:40px 0 80px}
 .loading{min-height:60vh;display:grid;place-items:center;text-align:center}
-.spinner{
-  width:42px;height:42px;border:3px solid #333;
-  border-top-color:var(--gold);border-radius:50%;
-  animation:spin .8s linear infinite;margin:0 auto 15px;
-}
+.spinner{width:42px;height:42px;border:3px solid #333;border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 15px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .hidden{display:none!important}
-
-#statusMessage{
-  display:none;padding:14px 16px;border-radius:10px;
-  margin-bottom:22px;border:1px solid var(--border);background:var(--card);
-}
+#statusMessage{display:none;padding:14px 16px;border-radius:10px;margin-bottom:22px;border:1px solid var(--border);background:var(--card)}
 .empty{padding:35px 20px;text-align:center;color:#888}
 .empty h2{color:#ddd}
-
-.profile-hero{
-  border:1px solid var(--border);border-radius:22px;
-  background:radial-gradient(circle at 85% 15%,rgba(212,175,55,.16),transparent 28%),linear-gradient(145deg,#171717,#0e0e0e);
-  padding:30px;margin-bottom:25px;
-}
+.profile-hero{border:1px solid var(--border);border-radius:22px;background:radial-gradient(circle at 85% 15%,rgba(212,175,55,.16),transparent 28%),linear-gradient(145deg,#171717,#0e0e0e);padding:30px;margin-bottom:25px}
 .profile-top{display:flex;align-items:flex-start;gap:24px}
-.business-logo{
-  width:130px;height:130px;flex:0 0 130px;border-radius:18px;
-  overflow:hidden;background:#222;border:1px solid #333;
-  display:grid;place-items:center;color:var(--gold2);
-  font-size:40px;font-weight:800;
-}
+.business-logo{width:130px;height:130px;flex:0 0 130px;border-radius:18px;overflow:hidden;background:#222;border:1px solid #333;display:grid;place-items:center;color:var(--gold2);font-size:40px;font-weight:800}
 .business-logo img{width:100%;height:100%;object-fit:cover;display:block}
 .profile-main{flex:1;min-width:0}
-.profile-main h1{margin:0 0 8px;font-size:clamp(30px,5vw,48px);line-height:1.1}
+.profile-main h1{margin:0 0 8px;font-size:clamp(30px,5vw,48px);line-height:1.1;overflow-wrap:anywhere}
 .meta{display:flex;flex-wrap:wrap;gap:10px;color:var(--muted);margin:10px 0 15px}
 .badges{display:flex;flex-wrap:wrap;gap:8px}
-.badge{
-  display:inline-flex;align-items:center;padding:6px 10px;
-  border-radius:999px;font-size:12px;font-weight:700;
-  background:#202020;border:1px solid #333;
-}
+.badge{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;background:#202020;border:1px solid #333}
 .badge.gold{color:#111;background:var(--gold2);border-color:var(--gold2)}
 .badge.green{color:#a9f0c4;border-color:#285b3d;background:#122319}
 .profile-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
-
-.btn{
-  border:1px solid #363636;background:#202020;color:#eee;
-  padding:10px 15px;border-radius:9px;text-decoration:none;
-  display:inline-flex;align-items:center;justify-content:center;gap:7px;
-  transition:background .2s,border-color .2s,color .2s,transform .2s;
-}
+.btn{border:1px solid #363636;background:#202020;color:#eee;padding:10px 15px;border-radius:9px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:background .2s,border-color .2s,color .2s,transform .2s}
 .btn:hover{border-color:var(--gold);color:var(--gold2)}
-.btn-primary{
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#111;border-color:var(--gold2);font-weight:800;
-}
+.btn-primary{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#111;border-color:var(--gold2);font-weight:800}
 .btn-primary:hover{color:#111;background:var(--gold2);transform:translateY(-1px)}
-.btn-danger{border-color:#65312f;color:#ffb7b4;background:#211212}
-
-.directions-btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:9px;
-  padding:12px 17px;min-height:46px;border-radius:10px;
-  border:1px solid var(--gold2);
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#111;text-decoration:none;font-weight:800;
-}
-.directions-btn:hover{background:var(--gold2);color:#111;transform:translateY(-1px)}
-.directions-note{margin:9px 0 16px;color:#888;font-size:12px;line-height:1.6}
-
+.directions-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 17px;min-height:46px;border-radius:10px;border:1px solid var(--gold2);background:linear-gradient(135deg,var(--gold2),var(--gold));color:#111;text-decoration:none;font-weight:800}
+.directions-note{margin:9px 0 16px;color:#888;font-size:12px}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px}
-.stat{
-  background:rgba(255,255,255,.035);border:1px solid var(--border);
-  border-radius:12px;padding:15px;text-align:center;
-}
+.stat{background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:12px;padding:15px;text-align:center}
 .stat strong{display:block;font-size:24px;color:var(--gold2)}
 .stat span{color:var(--muted);font-size:12px}
-
-.profile-grid{
-  display:grid;grid-template-columns:minmax(0,2fr) minmax(280px,1fr);gap:22px;
-}
-.profile-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:16px;padding:24px;margin-bottom:22px;
-}
+.profile-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(280px,1fr);gap:22px}
+.profile-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:22px;min-width:0}
 .profile-card h2{margin:0 0 18px;color:var(--gold2);font-size:22px}
 .profile-card h3{color:#eee}
-.description{color:#ccc;white-space:pre-line}
+.description{color:#ccc;white-space:pre-line;overflow-wrap:anywhere}
 .info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.info-item{padding:15px;border:1px solid var(--border);border-radius:11px;background:#111}
+.info-item{padding:15px;border:1px solid var(--border);border-radius:11px;background:#111;min-width:0}
 .info-label{color:#888;font-size:12px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
 .info-value{color:#eee;word-break:break-word}
-
 .product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .product{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#101010}
 .product img{width:100%;height:180px;object-fit:cover;display:block}
@@ -164,20 +71,11 @@ button:disabled{cursor:not-allowed;opacity:.65}
 .product-body h3{margin:0 0 6px}
 .product-body p{color:#aaa;margin:0 0 10px}
 .price{color:var(--gold2);font-weight:800}
-
 .hours{display:grid;gap:7px}
-.hours-row{
-  display:flex;justify-content:space-between;gap:15px;
-  padding:10px 12px;border-radius:8px;background:#111;border:1px solid #202020;
-}
+.hours-row{display:flex;justify-content:space-between;gap:15px;padding:10px 12px;border-radius:8px;background:#111;border:1px solid #202020}
 .hours-time{color:#aaa;text-align:right}
-
 .photo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-.photo-grid img{
-  width:100%;height:180px;object-fit:cover;
-  border-radius:10px;border:1px solid var(--border);cursor:pointer;
-}
-
+.photo-grid img{width:100%;height:180px;object-fit:cover;border-radius:10px;border:1px solid var(--border);cursor:pointer}
 .review-list{display:grid;gap:13px}
 .review{padding:15px;border:1px solid var(--border);border-radius:11px;background:#101010}
 .review-header{display:flex;justify-content:space-between;gap:15px}
@@ -191,1588 +89,781 @@ button:disabled{cursor:not-allowed;opacity:.65}
 .review-form-message.success{display:block;color:#9ee8b9;background:#122319;border:1px solid #285b3d}
 .review-form-message.error{display:block;color:#ffb1ad;background:#211212;border:1px solid #65312f}
 .review-note{font-size:12px;color:#888;margin:8px 0 0}
-
-/* Business map */
-#businessMap{
-  height:350px;
-  border-radius:12px;
-  overflow:hidden;
-  border:1px solid var(--border);
-  background:#111;
-}
-
-/* New directions controls */
-.map-directions-tools{
-  display:grid;
-  gap:12px;
-  margin:16px 0;
-}
-
-.route-status{
-  margin:0;
-  padding:12px 13px;
-  border:1px solid var(--border);
-  border-radius:9px;
-  background:#111;
-  color:#bbb;
-  font-size:13px;
-  overflow-wrap:anywhere;
-}
-
-.route-status.success{
-  color:#9ee8b9;
-  border-color:#285b3d;
-}
-
-.route-status.error{
-  color:#ffb1ad;
-  border-color:#65312f;
-}
-
-.route-summary{
-  padding:13px;
-  border:1px solid var(--border);
-  border-radius:9px;
-  background:#111;
-  color:#ddd;
-  font-size:14px;
-}
-
-.route-steps{
-  margin:0;
-  padding-left:28px;
-  display:grid;
-  gap:9px;
-}
-
-.route-steps li{
-  padding:11px 12px;
-  background:#101010;
-  border:1px solid var(--border);
-  border-radius:9px;
-  color:#ddd;
-  font-size:14px;
-}
-
-.route-step-distance{
-  display:block;
-  margin-top:4px;
-  color:#aaa;
-  font-size:12px;
-}
-
-.leaflet-routing-note{
-  font-size:11px;
-  color:#888;
-  margin:9px 0 0;
-}
-
+#businessMap{height:350px;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:#111}
+.map-directions-tools{display:grid;gap:12px;margin:16px 0}
+.route-status,.route-summary{margin:0;padding:12px 13px;border:1px solid var(--border);border-radius:9px;background:#111;color:#bbb;font-size:13px;overflow-wrap:anywhere}
+.route-status.success{color:#9ee8b9;border-color:#285b3d}
+.route-status.error{color:#ffb1ad;border-color:#65312f}
+.route-summary{color:#ddd;font-size:14px}
+.route-steps{margin:0;padding-left:28px;display:grid;gap:9px}
+.route-steps li{padding:11px 12px;background:#101010;border:1px solid var(--border);border-radius:9px;color:#ddd;font-size:14px}
+.route-step-distance{display:block;margin-top:4px;color:#aaa;font-size:12px}
+.leaflet-routing-note{font-size:11px;color:#888;margin:9px 0 0}
 .form{display:grid;gap:11px}
 .form label{display:grid;gap:5px;color:#bbb;font-size:14px}
-.form input,.form textarea,.form select{
-  width:100%;background:#090909;color:#eee;
-  border:1px solid #333;border-radius:8px;padding:12px;outline:none;
-}
+.form input,.form textarea,.form select{width:100%;background:#090909;color:#eee;border:1px solid #333;border-radius:8px;padding:12px;outline:none}
 .form textarea{min-height:120px;resize:vertical}
 .form input:focus,.form textarea:focus,.form select:focus{border-color:var(--gold)}
 .form select option{background:#111;color:#eee}
-
 footer{border-top:1px solid var(--border);padding:28px 0;color:#777;text-align:center}
 footer a{color:var(--gold2);text-decoration:none}
-
 @media(max-width:850px){
-  .nav{
-    display:none;position:absolute;top:72px;left:0;right:0;
-    padding:15px;background:#0c0c0c;border-bottom:1px solid var(--border);
-    flex-direction:column;
-  }
-  .nav.open{display:flex}
-  .mobile-menu{display:block}
-  .profile-grid{grid-template-columns:1fr}
-  .profile-top{flex-direction:column}
-  .business-logo{width:105px;height:105px;flex-basis:105px}
-  .info-grid,.product-grid{grid-template-columns:1fr}
-  .photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.nav{display:none;position:absolute;top:72px;left:0;right:0;padding:15px;background:#0c0c0c;border-bottom:1px solid var(--border);flex-direction:column}
+.nav.open{display:flex}.mobile-menu{display:block}
+.profile-grid{grid-template-columns:1fr}.profile-top{flex-direction:column}
+.business-logo{width:105px;height:105px;flex-basis:105px}
+.info-grid,.product-grid{grid-template-columns:1fr}
+.photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:550px){
-  .page{padding-top:22px}
-  .profile-hero{padding:20px}
-  .profile-card{padding:18px}
-  .stats{grid-template-columns:1fr}
-  .photo-grid img{height:145px}
-  #businessMap{height:280px}
-  .review-header{flex-direction:column;gap:3px}
-  .directions-btn{width:100%}
-  .map-directions-tools .btn{width:100%}
+.page{padding-top:22px}.profile-hero{padding:20px}.profile-card{padding:18px}
+.stats{grid-template-columns:1fr}.photo-grid img{height:145px}
+#businessMap{height:280px}.review-header{flex-direction:column;gap:3px}
+.directions-btn{width:100%}.map-directions-tools .btn{width:100%}
 }
 </style>
 </head>
 
 <body>
-
 <header class="site-header">
   <div class="container header-inner">
     <a class="logo" href="index.html">
       <div class="logo-mark">NA</div>
       Near<span>Africa</span>
     </a>
-
     <nav class="nav" id="mainNav">
       <a href="index.html">Home</a>
       <a href="explore.html">Explore</a>
       <a href="list-business.html">List Your Business</a>
       <a href="claim-business.html">Claim Business</a>
     </nav>
-
-    <button class="mobile-menu" id="mobileMenuButton" type="button"
-      aria-label="Open menu" aria-expanded="false">☰</button>
+    <button class="mobile-menu" id="mobileMenuButton" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
   </div>
 </header>
 
 <main class="page">
   <div class="container">
     <div id="statusMessage" role="status" aria-live="polite"></div>
-
     <div id="loadingState" class="loading">
-      <div>
-        <div class="spinner"></div>
-        <div>Loading business profile...</div>
-      </div>
+      <div><div class="spinner"></div><div>Loading business profile...</div></div>
     </div>
-
     <div id="notFoundState" class="empty hidden">
       <h2>Business Not Found</h2>
       <p id="notFoundMessage">This business could not be loaded.</p>
       <a class="btn btn-primary" href="explore.html">Back to Explore</a>
     </div>
-
     <div id="businessContent" class="hidden"></div>
   </div>
 </main>
 
-<footer>
-  <div class="container">
-    © <span id="year"></span> NearAfrica. Find Great Businesses Near You.
-  </div>
-</footer>
+<footer><div class="container">© <span id="year"></span> NearAfrica. Find Great Businesses Near You.</div></footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script>
 (() => {
-  "use strict";
+"use strict";
 
-  const API_URL = "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+const API_URL = "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+const ROUTING_URL = "https://router.project-osrm.org/route/v1/driving/";
 
-  // Public OSRM demo routing service for initial testing.
-  // Do not use this demo server for heavy production traffic.
-  const ROUTING_URL = "https://router.project-osrm.org/route/v1/driving/";
+let activeBusiness = null;
+let activeMap = null;
+let activeRouteLine = null;
+let activeUserMarker = null;
+let activeDestinationMarker = null;
+let routeRequestInProgress = false;
 
-  let activeBusiness = null;
-  let activeMap = null;
-  let activeRouteLine = null;
-  let activeUserMarker = null;
-  let activeDestinationMarker = null;
-  let routeRequestInProgress = false;
+const clean = value => String(value ?? "").trim();
 
-  function clean(value){
-    return String(value ?? "").trim();
+function escapeHtml(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+const escapeAttribute = escapeHtml;
+
+function safeUrl(value){
+  const input = clean(value);
+  if(!input) return "";
+  try{
+    const parsed = new URL(/^https?:\/\//i.test(input) ? input : "https://" + input);
+    return ["https:","http:"].includes(parsed.protocol) ? parsed.href : "";
+  }catch{return "";}
+}
+
+function formatNumber(value){
+  const n = Number(value);
+  return Number.isFinite(n) ? n.toLocaleString() : "0";
+}
+
+function stars(rating){
+  const n = Math.max(0,Math.min(5,Math.round(Number(rating)||0)));
+  return "★".repeat(n) + "☆".repeat(5-n);
+}
+
+function getIdentifier(){
+  const params = new URLSearchParams(location.search);
+  return (params.get("id") || params.get("business_id") || params.get("slug") || "").trim();
+}
+
+async function apiRequest(path,options={}){
+  let response;
+  try{
+    response = await fetch(API_URL + path,{
+      ...options,
+      cache:"no-store",
+      headers:{Accept:"application/json",...(options.headers||{})}
+    });
+  }catch{
+    throw new Error("Unable to connect to NearAfrica right now. Please check your connection.");
   }
 
-  function escapeHtml(value){
-    return String(value ?? "")
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#039;");
+  let data={};
+  try{data=await response.json();}catch{}
+
+  if(!response.ok || data.status==="error"){
+    throw new Error(data.message || data.error || `Request failed (${response.status})`);
   }
+  return data;
+}
 
-  function escapeAttribute(value){
-    return escapeHtml(value);
-  }
+function getBusinessName(business){
+  return business.business_name || business.name || "Business";
+}
 
-  function safeUrl(value){
-    const url = clean(value);
-    if(!url) return "";
+function getLocation(business){
+  return [business.address,business.area,business.city,business.state,business.country]
+    .map(clean).filter(Boolean).join(", ");
+}
 
-    try{
-      const parsed = new URL(
-        /^https?:\/\//i.test(url) ? url : "https://" + url
-      );
+function getBusinessCoordinates(business){
+  if(!business || typeof business!=="object") return null;
+  const rawLat=business.latitude ?? business.lat ?? business.location_latitude;
+  const rawLng=business.longitude ?? business.lng ?? business.lon ?? business.location_longitude;
 
-      if(parsed.protocol !== "https:" && parsed.protocol !== "http:"){
-        return "";
+  if(rawLat==null || rawLng==null || String(rawLat).trim()==="" || String(rawLng).trim()==="") return null;
+
+  const latitude=Number(rawLat), longitude=Number(rawLng);
+  if(!Number.isFinite(latitude)||!Number.isFinite(longitude)||
+     latitude < -90||latitude > 90||longitude < -180||longitude > 180) return null;
+  return {latitude,longitude};
+}
+
+function buildBusinessDirectionsUrl(business,origin=null){
+  if(!business) return "";
+  const coords=getBusinessCoordinates(business);
+  const location=getLocation(business);
+  const destination=coords ? `${coords.latitude},${coords.longitude}` :
+    [getBusinessName(business),location].filter(Boolean).join(", ");
+  if(!destination.trim()) return "";
+
+  const url=new URL("https://www.google.com/maps/dir/");
+  url.searchParams.set("api","1");
+  url.searchParams.set("destination",destination);
+  url.searchParams.set("travelmode","driving");
+  url.searchParams.set("dir_action","navigate");
+
+  if(origin) url.searchParams.set("origin",`${origin.latitude},${origin.longitude}`);
+  return url.toString();
+}
+
+function getImage(business){
+  const candidates=[business.logo_url,business.logo,business.image_url,business.image,business.imageUrl];
+  for(const value of candidates) if(clean(value)) return clean(value);
+
+  if(Array.isArray(business.images)){
+    for(const image of business.images){
+      if(typeof image==="string" && clean(image)) return clean(image);
+      if(image && typeof image==="object"){
+        const value=image.url||image.image_url||image.public_url||image.src;
+        if(clean(value)) return clean(value);
       }
-
-      return parsed.href;
-    }catch(error){
-      return "";
     }
   }
+  return "";
+}
 
-  function formatNumber(value){
-    const number = Number(value);
-    return Number.isFinite(number) ? number.toLocaleString() : "0";
+function getImageUrl(image){
+  if(typeof image==="string") return clean(image);
+  if(!image||typeof image!=="object") return "";
+  return clean(image.url||image.image_url||image.public_url||image.src||"");
+}
+
+function showStatus(message,type="info"){
+  const element=document.getElementById("statusMessage");
+  if(!element) return;
+  if(!message){element.style.display="none";element.textContent="";return;}
+
+  element.style.display="block";
+  element.textContent=message;
+  element.style.color=type==="error"?"#ffb1ad":type==="success"?"#9ee8b9":"#ccc";
+  element.style.borderColor=type==="error"?"#65312f":type==="success"?"#285b3d":"#292929";
+}
+
+function setRouteStatus(message,type="info"){
+  const element=document.getElementById("routeStatus");
+  if(!element) return;
+  element.className="route-status"+(type==="success"?" success":type==="error"?" error":"");
+  element.textContent=message;
+}
+
+function formatRouteDistance(metres){
+  const n=Number(metres);
+  if(!Number.isFinite(n)||n<0) return "";
+  return n<1000?`${Math.round(n)} m`:`${(n/1000).toFixed(n<10000?1:0)} km`;
+}
+
+function formatRouteDuration(seconds){
+  const n=Number(seconds);
+  if(!Number.isFinite(n)||n<0) return "";
+  const minutes=Math.max(1,Math.round(n/60));
+  if(minutes<60) return `${minutes} min`;
+  const hours=Math.floor(minutes/60), remaining=minutes%60;
+  return remaining?`${hours} hr ${remaining} min`:`${hours} hr`;
+}
+
+function formatRouteInstruction(step){
+  const m=step.maneuver||{};
+  const type=clean(m.type).toLowerCase();
+  const modifier=clean(m.modifier).replace(/_/g," ");
+  const road=clean(step.name);
+  switch(type){
+    case "depart": return road?`Start on ${road}`:"Start your journey";
+    case "arrive": return "Arrive at your destination";
+    case "turn": return `Turn ${modifier||"as directed"}${road?" onto "+road:""}`;
+    case "continue":
+    case "new name": return road?`Continue on ${road}`:"Continue straight";
+    case "merge": return `Merge${modifier?" "+modifier:""}${road?" onto "+road:""}`;
+    case "fork": return `At the fork, keep ${modifier||"on the main road"}${road?" toward "+road:""}`;
+    case "end of road": return `At the end of the road, turn ${modifier||"as directed"}${road?" onto "+road:""}`;
+    case "on ramp": return `Take the ramp${road?" toward "+road:""}`;
+    case "off ramp": return `Take the exit ramp${road?" toward "+road:""}`;
+    case "roundabout":
+    case "rotary": return `Enter the roundabout${road?" toward "+road:""}`;
+    case "exit roundabout": return `Exit the roundabout${road?" onto "+road:""}`;
+    default: return `${type?type.replace(/_/g," "):"Continue"}${road?" on "+road:""}`;
+  }
+}
+
+function displayRouteSteps(steps){
+  const element=document.getElementById("routeSteps");
+  if(!element) return;
+  if(!Array.isArray(steps)||!steps.length){
+    element.replaceChildren();element.classList.add("hidden");return;
+  }
+  element.innerHTML=steps.map(step=>{
+    const instruction=formatRouteInstruction(step);
+    const distance=formatRouteDistance(step.distance);
+    return `<li>${escapeHtml(instruction)}${distance?`<span class="route-step-distance">${escapeHtml(distance)}</span>`:""}</li>`;
+  }).join("");
+  element.classList.remove("hidden");
+}
+
+function clearCurrentRoute(){
+  if(activeMap&&activeRouteLine) activeMap.removeLayer(activeRouteLine);
+  if(activeMap&&activeUserMarker) activeMap.removeLayer(activeUserMarker);
+  activeRouteLine=null;activeUserMarker=null;
+
+  const summary=document.getElementById("routeSummary");
+  const steps=document.getElementById("routeSteps");
+  const navigation=document.getElementById("openNavigationButton");
+  if(summary){summary.textContent="";summary.classList.add("hidden");}
+  if(steps){steps.replaceChildren();steps.classList.add("hidden");}
+  if(navigation){navigation.classList.add("hidden");navigation.removeAttribute("href");}
+}
+
+function initializeMap(business){
+  const element=document.getElementById("businessMap");
+  if(!element||typeof L==="undefined") return;
+
+  const coords=getBusinessCoordinates(business);
+  if(!coords){
+    element.innerHTML='<div style="height:100%;display:grid;place-items:center;background:#111;color:#aaa;text-align:center;padding:20px">Precise map coordinates are not available for this listing. Please report or correct the business location. You can still try Google Maps directions if an address is available.</div>';
+    return;
   }
 
-  function stars(rating){
-    const value = Math.max(0,Math.min(5,Math.round(Number(rating)||0)));
-    return "★".repeat(value) + "☆".repeat(5-value);
+  if(activeMap){activeMap.remove();activeMap=null;}
+  activeMap=L.map(element).setView([coords.latitude,coords.longitude],15);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+    attribution:"© OpenStreetMap contributors",maxZoom:19
+  }).addTo(activeMap);
+  activeDestinationMarker=L.marker([coords.latitude,coords.longitude]).addTo(activeMap)
+    .bindPopup(escapeHtml(getBusinessName(business)));
+  activeDestinationMarker.openPopup();
+  setTimeout(()=>{if(activeMap)activeMap.invalidateSize();},100);
+}
+
+async function showRouteFromCurrentLocation(){
+  if(routeRequestInProgress) return;
+  const button=document.getElementById("showRouteButton");
+  const summary=document.getElementById("routeSummary");
+  const navigation=document.getElementById("openNavigationButton");
+
+  if(!activeBusiness){setRouteStatus("The business profile is not ready. Reload and try again.","error");return;}
+  if(!activeMap){setRouteStatus("A route on this map requires valid business GPS coordinates.","error");return;}
+
+  const destination=getBusinessCoordinates(activeBusiness);
+  if(!destination){setRouteStatus("This business has no valid GPS coordinates. Please report or correct its location.","error");return;}
+  if(!window.isSecureContext||!navigator.geolocation){
+    setRouteStatus("Location access is unavailable. Open the page over HTTPS or use Google Maps directions.","error");return;
   }
 
-  function getIdentifier(){
-    const params = new URLSearchParams(window.location.search);
-    return (
-      params.get("id") ||
-      params.get("business_id") ||
-      params.get("slug") ||
-      ""
-    ).trim();
-  }
+  routeRequestInProgress=true;
+  if(button){button.disabled=true;button.textContent="Finding your location…";}
+  clearCurrentRoute();
+  setRouteStatus("Requesting your current location…");
 
-  async function apiRequest(path, options = {}){
-    let response;
-
-    try{
-      response = await fetch(API_URL + path,{
-        ...options,
-        cache:"no-store",
-        headers:{
-          Accept:"application/json",
-          ...(options.headers || {})
-        }
+  try{
+    const position=await new Promise((resolve,reject)=>{
+      navigator.geolocation.getCurrentPosition(resolve,reject,{
+        enableHighAccuracy:true,timeout:30000,maximumAge:10000
       });
-    }catch(error){
-      throw new Error("Unable to connect to NearAfrica right now. Please check your connection.");
+    });
+
+    const origin={
+      latitude:Number(position.coords.latitude),
+      longitude:Number(position.coords.longitude),
+      accuracy:Number(position.coords.accuracy)
+    };
+
+    if(!Number.isFinite(origin.latitude)||!Number.isFinite(origin.longitude)||
+       origin.latitude < -90||origin.latitude > 90||
+       origin.longitude < -180||origin.longitude > 180||
+       !Number.isFinite(origin.accuracy)||origin.accuracy<0){
+      throw new Error("The browser returned invalid coordinates. Please try again.");
     }
 
-    let data = {};
-    try{
-      data = await response.json();
-    }catch(error){
-      data = {};
+    if(origin.accuracy>5000){
+      throw new Error(`Your location accuracy is approximately ${formatRouteDistance(origin.accuracy)}. A more precise location is needed. You can still use Google Maps directions.`);
     }
 
-    if(!response.ok){
-      throw new Error(
-        data.message ||
-        data.error ||
-        `Request failed (${response.status})`
-      );
+    setRouteStatus("Calculating the driving route…");
+    const routeUrl=new URL(ROUTING_URL+
+      `${origin.longitude},${origin.latitude};${destination.longitude},${destination.latitude}`);
+    routeUrl.searchParams.set("overview","full");
+    routeUrl.searchParams.set("geometries","geojson");
+    routeUrl.searchParams.set("steps","true");
+
+    const response=await fetch(routeUrl.toString(),{
+      headers:{Accept:"application/json"},cache:"no-store"
+    });
+    if(!response.ok) throw new Error("The routing service is unavailable. Please try again or use Google Maps.");
+
+    const payload=await response.json();
+    if(payload.code!=="Ok"||!Array.isArray(payload.routes)||!payload.routes.length){
+      throw new Error("No driving route was found. Try Google Maps or check the business map pin.");
     }
 
-    if(data.status === "error"){
-      throw new Error(data.message || "Request failed.");
-    }
+    const route=payload.routes[0];
+    const pairs=route.geometry?.coordinates;
+    if(!Array.isArray(pairs)||pairs.length<2) throw new Error("The routing service returned an invalid route.");
 
-    return data;
-  }
-
-  function getBusinessName(business){
-    return business.business_name || business.name || "Business";
-  }
-
-  function getLocation(business){
-    return [
-      business.address,
-      business.area,
-      business.city,
-      business.state,
-      business.country
-    ].map(clean).filter(Boolean).join(", ");
-  }
-
-  /*
-   * Read valid GPS coordinates from a business listing.
-   * Blank or invalid values are never treated as coordinates.
-   */
-  function getBusinessCoordinates(business){
-    if(!business || typeof business !== "object"){
-      return null;
-    }
-
-    const rawLatitude =
-      business.latitude ??
-      business.lat ??
-      business.location_latitude;
-
-    const rawLongitude =
-      business.longitude ??
-      business.lng ??
-      business.lon ??
-      business.location_longitude;
-
-    if(
-      rawLatitude === null ||
-      rawLatitude === undefined ||
-      String(rawLatitude).trim() === "" ||
-      rawLongitude === null ||
-      rawLongitude === undefined ||
-      String(rawLongitude).trim() === ""
-    ){
-      return null;
-    }
-
-    const latitude = Number(rawLatitude);
-    const longitude = Number(rawLongitude);
-
-    if(
-      !Number.isFinite(latitude) ||
-      !Number.isFinite(longitude) ||
-      latitude < -90 ||
-      latitude > 90 ||
-      longitude < -180 ||
-      longitude > 180
-    ){
-      return null;
-    }
-
-    return {latitude,longitude};
-  }
-
-  /*
-   * Build a Google Maps directions URL.
-   * Use exact business coordinates whenever available.
-   */
-  function buildBusinessDirectionsUrl(business,origin = null){
-    if(!business) return "";
-
-    const coordinates = getBusinessCoordinates(business);
-    const location = getLocation(business);
-    const name = clean(getBusinessName(business));
-
-    let destination = "";
-
-    if(coordinates){
-      destination = `${coordinates.latitude},${coordinates.longitude}`;
-    }else if(location){
-      destination = [name,location].filter(Boolean).join(", ");
-    }
-
-    if(!destination) return "";
-
-    const url = new URL("https://www.google.com/maps/dir/");
-
-    url.searchParams.set("api","1");
-    url.searchParams.set("destination",destination);
-    url.searchParams.set("travelmode","driving");
-    url.searchParams.set("dir_action","navigate");
-
-    if(
-      origin &&
-      Number.isFinite(Number(origin.latitude)) &&
-      Number.isFinite(Number(origin.longitude))
-    ){
-      url.searchParams.set(
-        "origin",
-        `${origin.latitude},${origin.longitude}`
-      );
-    }
-
-    return url.toString();
-  }
-
-  function getImage(business){
-    const candidates = [
-      business.logo_url,
-      business.logo,
-      business.image_url,
-      business.image,
-      business.imageUrl
-    ];
-
-    for(const value of candidates){
-      if(clean(value)) return clean(value);
-    }
-
-    if(Array.isArray(business.images)){
-      for(const image of business.images){
-        if(typeof image === "string" && clean(image)) return clean(image);
-
-        if(image && typeof image === "object"){
-          const value = image.url || image.image_url || image.public_url || image.src;
-          if(clean(value)) return clean(value);
-        }
-      }
-    }
-
-    return "";
-  }
-
-  function getImageUrl(image){
-    if(typeof image === "string") return clean(image);
-    if(!image || typeof image !== "object") return "";
-
-    return clean(
-      image.url ||
-      image.image_url ||
-      image.public_url ||
-      image.src ||
-      ""
+    const points=pairs.map(pair=>[Number(pair[1]),Number(pair[0])]).filter(pair=>
+      Number.isFinite(pair[0])&&Number.isFinite(pair[1])&&
+      pair[0]>=-90&&pair[0]<=90&&pair[1]>=-180&&pair[1]<=180
     );
-  }
+    if(points.length<2) throw new Error("The route contains insufficient valid map points.");
 
-  function showStatus(message,type = "info"){
-    const element = document.getElementById("statusMessage");
-    if(!element) return;
-
-    if(!message){
-      element.style.display = "none";
-      element.textContent = "";
-      return;
-    }
-
-    element.style.display = "block";
-    element.textContent = message;
-
-    if(type === "error"){
-      element.style.color = "#ffb1ad";
-      element.style.borderColor = "#65312f";
-    }else if(type === "success"){
-      element.style.color = "#9ee8b9";
-      element.style.borderColor = "#285b3d";
-    }else{
-      element.style.color = "#ccc";
-      element.style.borderColor = "#292929";
-    }
-
-    element.scrollIntoView({behavior:"smooth",block:"nearest"});
-  }
-
-  function setRouteStatus(message,type = "info"){
-    const element = document.getElementById("routeStatus");
-    if(!element) return;
-
-    element.className = "route-status";
-
-    if(type === "success"){
-      element.classList.add("success");
-    }else if(type === "error"){
-      element.classList.add("error");
-    }
-
-    element.textContent = message;
-  }
-
-  function formatRouteDistance(metres){
-    const value = Number(metres);
-
-    if(!Number.isFinite(value) || value < 0) return "";
-
-    return value < 1000
-      ? `${Math.round(value)} m`
-      : `${(value / 1000).toFixed(value < 10000 ? 1 : 0)} km`;
-  }
-
-  function formatRouteDuration(seconds){
-    const value = Number(seconds);
-
-    if(!Number.isFinite(value) || value < 0) return "";
-
-    const minutes = Math.max(1,Math.round(value / 60));
-
-    if(minutes < 60) return `${minutes} min`;
-
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-
-    return remainingMinutes
-      ? `${hours} hr ${remainingMinutes} min`
-      : `${hours} hr`;
-  }
-
-  function formatRouteInstruction(step){
-    const maneuver = step.maneuver || {};
-    const type = clean(maneuver.type).toLowerCase();
-    const modifier = clean(maneuver.modifier).replace(/_/g," ");
-    const road = clean(step.name);
-
-    switch(type){
-      case "depart":
-        return road ? `Start on ${road}` : "Start your journey";
-
-      case "arrive":
-        return "Arrive at your destination";
-
-      case "turn":
-        return `Turn ${modifier || "as directed"}${road ? " onto " + road : ""}`;
-
-      case "continue":
-      case "new name":
-        return road ? `Continue on ${road}` : "Continue straight";
-
-      case "merge":
-        return `Merge${modifier ? " " + modifier : ""}${road ? " onto " + road : ""}`;
-
-      case "fork":
-        return `At the fork, keep ${modifier || "on the main road"}${road ? " toward " + road : ""}`;
-
-      case "end of road":
-        return `At the end of the road, turn ${modifier || "as directed"}${road ? " onto " + road : ""}`;
-
-      case "on ramp":
-        return `Take the ramp${road ? " toward " + road : ""}`;
-
-      case "off ramp":
-        return `Take the exit ramp${road ? " toward " + road : ""}`;
-
-      case "roundabout":
-      case "rotary":
-        return `Enter the roundabout${road ? " toward " + road : ""}`;
-
-      case "exit roundabout":
-        return `Exit the roundabout${road ? " onto " + road : ""}`;
-
-      default:
-        return `${type ? type.replace(/_/g," ") : "Continue"}${road ? " on " + road : ""}`;
-    }
-  }
-
-  function displayRouteSteps(steps){
-    const element = document.getElementById("routeSteps");
-    if(!element) return;
-
-    if(!Array.isArray(steps) || !steps.length){
-      element.replaceChildren();
-      element.classList.add("hidden");
-      return;
-    }
-
-    element.innerHTML = steps.map(step => {
-      const instruction = formatRouteInstruction(step);
-      const distance = formatRouteDistance(step.distance);
-
-      return `
-        <li>
-          ${escapeHtml(instruction)}
-          ${distance
-            ? `<span class="route-step-distance">${escapeHtml(distance)}</span>`
-            : ""}
-        </li>
-      `;
-    }).join("");
-
-    element.classList.remove("hidden");
-  }
-
-  function clearCurrentRoute(){
-    if(activeMap && activeRouteLine){
-      activeMap.removeLayer(activeRouteLine);
-    }
-
-    if(activeMap && activeUserMarker){
-      activeMap.removeLayer(activeUserMarker);
-    }
-
-    activeRouteLine = null;
-    activeUserMarker = null;
-
-    const summary = document.getElementById("routeSummary");
-    const steps = document.getElementById("routeSteps");
-    const navigationLink = document.getElementById("openNavigationButton");
-
-    if(summary){
-      summary.textContent = "";
-      summary.classList.add("hidden");
-    }
-
-    if(steps){
-      steps.replaceChildren();
-      steps.classList.add("hidden");
-    }
-
-    if(navigationLink){
-      navigationLink.classList.add("hidden");
-      navigationLink.removeAttribute("href");
-    }
-  }
-
-  function initializeMap(business){
-    const mapElement = document.getElementById("businessMap");
-
-    if(!mapElement || typeof L === "undefined") return;
-
-    const coordinates = getBusinessCoordinates(business);
-
-    if(!coordinates){
-      mapElement.innerHTML = `
-        <div style="height:100%;display:grid;place-items:center;background:#111;color:#777;text-align:center;padding:20px">
-          Precise map coordinates are not available for this listing.
-          An on-map route cannot be calculated until the business coordinates are corrected.
-          You can still try the Google Maps directions button if an address is available.
-        </div>`;
-      return;
-    }
-
-    if(activeMap){
-      activeMap.remove();
-      activeMap = null;
-    }
-
-    activeMap = L.map(mapElement).setView(
-      [coordinates.latitude,coordinates.longitude],
-      15
-    );
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
-      attribution:"© OpenStreetMap contributors",
-      maxZoom:19
+    activeRouteLine=L.polyline(points,{
+      color:"#d4af37",weight:6,opacity:.92,lineCap:"round",lineJoin:"round"
     }).addTo(activeMap);
 
-    activeDestinationMarker = L.marker([
-      coordinates.latitude,
-      coordinates.longitude
-    ]).addTo(activeMap)
-      .bindPopup(escapeHtml(getBusinessName(business)));
+    activeUserMarker=L.circleMarker([origin.latitude,origin.longitude],{
+      radius:8,color:"#fff",weight:3,fillColor:"#2585ff",fillOpacity:1
+    }).addTo(activeMap).bindPopup("Your starting point");
 
-    activeDestinationMarker.openPopup();
+    activeMap.fitBounds(activeRouteLine.getBounds(),{padding:[30,30],maxZoom:15});
 
-    // Correct the map size after the profile content becomes visible.
-    setTimeout(() => {
-      if(activeMap){
-        activeMap.invalidateSize();
-      }
-    },100);
+    if(summary){
+      summary.textContent=`Estimated driving distance: ${formatRouteDistance(route.distance)}. Estimated driving time: ${formatRouteDuration(route.duration)}. Actual time may vary with traffic and road conditions.`;
+      summary.classList.remove("hidden");
+    }
+
+    const steps=Array.isArray(route.legs)?route.legs.flatMap(leg=>Array.isArray(leg.steps)?leg.steps:[]):[];
+    displayRouteSteps(steps);
+
+    if(navigation){
+      navigation.href=buildBusinessDirectionsUrl(activeBusiness,origin);
+      navigation.classList.remove("hidden");
+    }
+    setRouteStatus("Your driving route is displayed on the map. Use the navigation button to open directions in Google Maps.","success");
+  }catch(error){
+    let message=error.message||"Unable to calculate the route.";
+    if(typeof error.code==="number"){
+      if(error.code===1) message="Location permission was denied. Allow location access and try again, or use Google Maps directions.";
+      if(error.code===2) message="Your device could not determine your location. Try again or use Google Maps directions.";
+      if(error.code===3) message="Getting your location timed out. Try again in an area with better reception.";
+    }
+    console.error("NearAfrica directions error:",error);
+    setRouteStatus(message,"error");
+    if(navigation){
+      navigation.href=buildBusinessDirectionsUrl(activeBusiness);
+      navigation.classList.remove("hidden");
+    }
+  }finally{
+    routeRequestInProgress=false;
+    if(button){button.disabled=false;button.textContent="🧭 Show Route From My Location";}
   }
+}
+
+function renderProducts(products){
+  if(!Array.isArray(products)||!products.length) return "";
+  return `<section class="profile-card"><h2>Products &amp; Services</h2><div class="product-grid">
+    ${products.map(product=>{
+      const image=getImageUrl(product.image_url||product.image||product.public_url);
+      const name=product.name||product.title||"Product";
+      const description=product.description||"";
+      const price=product.price;
+      return `<article class="product">
+        ${image?`<img src="${escapeAttribute(image)}" alt="${escapeAttribute(name)}" loading="lazy" onerror="this.style.display='none'">`:""}
+        <div class="product-body"><h3>${escapeHtml(name)}</h3>
+        ${description?`<p>${escapeHtml(description)}</p>`:""}
+        ${price!==undefined&&price!==null&&clean(price)?`<div class="price">${escapeHtml(product.currency||"NGN")} ${escapeHtml(price)}</div>`:""}
+        </div></article>`;
+    }).join("")}
+  </div></section>`;
+}
+
+function renderImages(images,businessName){
+  if(!Array.isArray(images)||!images.length) return "";
+  const html=images.map(image=>{
+    const source=getImageUrl(image);
+    if(!source||!safeUrl(source)) return "";
+    return `<a href="${escapeAttribute(safeUrl(source))}" target="_blank" rel="noopener noreferrer">
+      <img src="${escapeAttribute(safeUrl(source))}" alt="${escapeAttribute(businessName)}" loading="lazy" onerror="this.style.display='none'">
+    </a>`;
+  }).join("");
+  if(!html) return "";
+  return `<section class="profile-card"><h2>Photos</h2><div class="photo-grid">${html}</div></section>`;
+}
+
+function renderHours(hours){
+  if(!Array.isArray(hours)||!hours.length) return "";
+  return `<section class="profile-card"><h2>Opening Hours</h2><div class="hours">
+    ${hours.map(hour=>{
+      const day=hour.day||hour.day_name||hour.weekday||"";
+      const open=hour.open||hour.open_time||"";
+      const close=hour.close||hour.close_time||"";
+      const closed=hour.closed===true||hour.is_closed===true||Number(hour.closed)===1||Number(hour.is_closed)===1;
+      return `<div class="hours-row"><strong>${escapeHtml(day)}</strong><span class="hours-time">${closed?"Closed":escapeHtml([open,close].filter(Boolean).join(" — ")||"Hours unavailable")}</span></div>`;
+    }).join("")}
+  </div></section>`;
+}
+
+function renderReviews(reviews){
+  const list=Array.isArray(reviews)?reviews:[];
+  return `<section class="profile-card" id="reviewsSection">
+    <h2>Customer Reviews (${list.length})</h2>
+    ${list.length?`<div class="review-list">${list.map(review=>{
+      const name=review.name||review.reviewer_name||"Customer";
+      const comment=review.comment||review.review||"";
+      let dateText="";
+      if(review.created_at){
+        const date=new Date(review.created_at);
+        if(!Number.isNaN(date.getTime())) dateText=date.toLocaleDateString();
+      }
+      return `<article class="review">
+        <div class="review-header"><div class="review-name">${escapeHtml(name)}</div>
+        <div class="review-rating" aria-label="${Number(review.rating)||0} out of 5 stars">${stars(review.rating)}</div></div>
+        <div class="review-comment">${escapeHtml(comment)}</div>
+        ${dateText?`<div class="review-date">${escapeHtml(dateText)}</div>`:""}
+      </article>`;
+    }).join("")}</div>`:`<div class="empty">No approved reviews yet. Be the first to share your experience.</div>`}
+
+    <div class="review-form-wrap">
+      <h3>Write a Review</h3>
+      <p style="color:#999;font-size:14px;margin-top:-6px">Share an honest experience to help other people make informed decisions.</p>
+      <div id="reviewFormMessage" class="review-form-message" role="status" aria-live="polite"></div>
+      <form id="reviewForm" class="form">
+        <label for="reviewerName">Your name
+          <input id="reviewerName" name="name" type="text" maxlength="150" autocomplete="name" required placeholder="Enter your name">
+        </label>
+        <label for="reviewRating">Your rating
+          <select id="reviewRating" name="rating" required>
+            <option value="">Choose a rating</option>
+            <option value="5">★★★★★ — Excellent</option>
+            <option value="4">★★★★☆ — Very good</option>
+            <option value="3">★★★☆☆ — Good</option>
+            <option value="2">★★☆☆☆ — Fair</option>
+            <option value="1">★☆☆☆☆ — Poor</option>
+          </select>
+        </label>
+        <label for="reviewComment">Your review
+          <textarea id="reviewComment" name="comment" minlength="3" maxlength="5000" required placeholder="Describe your experience with this business..."></textarea>
+        </label>
+        <button id="submitReviewButton" class="btn btn-primary" type="submit">Submit Review</button>
+      </form>
+      <p class="review-note">Reviews are checked by NearAfrica before appearing publicly. Please do not include private or sensitive information.</p>
+    </div>
+  </section>`;
+}
+
+function displayBusiness(business,result){
+  activeBusiness=business;
+  const name=getBusinessName(business);
+  const location=getLocation(business);
+  const coordinates=getBusinessCoordinates(business);
+  const directionsUrl=buildBusinessDirectionsUrl(business);
+  const category=clean(business.category);
+  const description=clean(business.description);
+  const phone=clean(business.phone);
+  const whatsapp=clean(business.whatsapp).replace(/[^\d+]/g,"");
+  const email=clean(business.email);
+  const website=clean(business.website);
+  const websiteUrl=safeUrl(website);
+  const image=getImage(business);
+  const verified=Number(business.verified)===1;
+  const claimed=Number(business.claimed)===1;
+  const featured=Number(business.featured)===1;
+  const statistics=result.statistics||{};
+  const views=Number(statistics.views??business.views??0);
+  const reviews=Array.isArray(result.reviews)?result.reviews:[];
+  const averageRating=Number(statistics.average_rating??business.average_rating??(
+    reviews.length?reviews.reduce((sum,review)=>sum+(Number(review.rating)||0),0)/reviews.length:0
+  ));
+  const reviewCount=Number(statistics.review_count??(Array.isArray(result.reviews)?result.reviews.length:business.review_count||0));
+  const products=Array.isArray(result.products)?result.products:[];
+  const hours=Array.isArray(result.hours)?result.hours:[];
+  const images=Array.isArray(result.images)?result.images:Array.isArray(business.images)?business.images:[];
+  const initial=name.charAt(0).toUpperCase()||"B";
+  const content=document.getElementById("businessContent");
 
   /*
-   * Request the browser location and draw a driving route
-   * from the visitor's position to the selected business.
+   * CLAIM BUTTON:
+   * Unclaimed listings link to claim-business.html with the business ID.
+   * Claimed listings do not show the claim button.
    */
-  async function showRouteFromCurrentLocation(){
-    if(routeRequestInProgress) return;
+  const claimIdentifier=business.id||business.business_id||business.slug||"";
 
-    const button = document.getElementById("showRouteButton");
-    const summary = document.getElementById("routeSummary");
-    const navigationLink = document.getElementById("openNavigationButton");
-
-    if(!activeBusiness){
-      setRouteStatus("The business profile is not ready. Reload and try again.","error");
-      return;
-    }
-
-    if(!activeMap){
-      setRouteStatus(
-        "The map cannot calculate a route because valid business GPS coordinates are unavailable.",
-        "error"
-      );
-      return;
-    }
-
-    const destination = getBusinessCoordinates(activeBusiness);
-
-    if(!destination){
-      setRouteStatus(
-        "This business has no valid GPS coordinates. Please report or correct its location.",
-        "error"
-      );
-      return;
-    }
-
-    if(!window.isSecureContext || !navigator.geolocation){
-      setRouteStatus(
-        "This browser cannot provide location access here. Open the page over HTTPS or use Google Maps directions.",
-        "error"
-      );
-      return;
-    }
-
-    routeRequestInProgress = true;
-
-    if(button){
-      button.disabled = true;
-      button.textContent = "Finding your location…";
-    }
-
-    clearCurrentRoute();
-
-    // Keep a Google Maps fallback available even if our route service fails.
-    if(navigationLink){
-      navigationLink.href = buildBusinessDirectionsUrl(activeBusiness);
-    }
-
-    setRouteStatus("Requesting your current location…");
-
-    try{
-      const position = await new Promise((resolve,reject) => {
-        navigator.geolocation.getCurrentPosition(
-          resolve,
-          reject,
-          {
-            enableHighAccuracy:true,
-            timeout:30000,
-            maximumAge:10000
-          }
-        );
-      });
-
-      const origin = {
-        latitude:Number(position.coords.latitude),
-        longitude:Number(position.coords.longitude),
-        accuracy:Number(position.coords.accuracy)
-      };
-
-      if(
-        !Number.isFinite(origin.latitude) ||
-        !Number.isFinite(origin.longitude) ||
-        origin.latitude < -90 ||
-        origin.latitude > 90 ||
-        origin.longitude < -180 ||
-        origin.longitude > 180 ||
-        !Number.isFinite(origin.accuracy) ||
-        origin.accuracy < 0
-      ){
-        throw new Error("The browser returned invalid coordinates. Please try again.");
-      }
-
-      /*
-       * A broad IP-based location may be hundreds of kilometres away.
-       * Do not draw a misleading driving route from a very rough reading.
-       */
-      const MAX_ROUTE_ORIGIN_ACCURACY_METERS = 5000;
-
-      if(origin.accuracy > MAX_ROUTE_ORIGIN_ACCURACY_METERS){
-        throw new Error(
-          `Your location accuracy is approximately ${formatRouteDistance(origin.accuracy)}. ` +
-          "A more precise location is needed for an accurate route. " +
-          "You can still open Google Maps directions."
-        );
-      }
-
-      setRouteStatus("Calculating the driving route…");
-
-      const routeUrl = new URL(
-        ROUTING_URL +
-        `${origin.longitude},${origin.latitude};` +
-        `${destination.longitude},${destination.latitude}`
-      );
-
-      routeUrl.searchParams.set("overview","full");
-      routeUrl.searchParams.set("geometries","geojson");
-      routeUrl.searchParams.set("steps","true");
-
-      const response = await fetch(routeUrl.toString(),{
-        headers:{Accept:"application/json"},
-        cache:"no-store"
-      });
-
-      if(!response.ok){
-        throw new Error(
-          "The routing service is unavailable right now. Please try again or use Google Maps."
-        );
-      }
-
-      const payload = await response.json();
-
-      if(
-        payload.code !== "Ok" ||
-        !Array.isArray(payload.routes) ||
-        !payload.routes.length
-      ){
-        throw new Error(
-          "No driving route was found. Try Google Maps or check the business map pin."
-        );
-      }
-
-      const route = payload.routes[0];
-      const coordinatePairs = route.geometry?.coordinates;
-
-      if(!Array.isArray(coordinatePairs) || coordinatePairs.length < 2){
-        throw new Error("The routing service returned an invalid route.");
-      }
-
-      // GeoJSON coordinates are [longitude, latitude].
-      const routeLatLngs = coordinatePairs
-        .map(pair => [Number(pair[1]),Number(pair[0])])
-        .filter(pair =>
-          Number.isFinite(pair[0]) &&
-          Number.isFinite(pair[1]) &&
-          pair[0] >= -90 &&
-          pair[0] <= 90 &&
-          pair[1] >= -180 &&
-          pair[1] <= 180
-        );
-
-      if(routeLatLngs.length < 2){
-        throw new Error("The route contains insufficient valid map points.");
-      }
-
-      activeRouteLine = L.polyline(routeLatLngs,{
-        color:"#d4af37",
-        weight:6,
-        opacity:0.92,
-        lineCap:"round",
-        lineJoin:"round"
-      }).addTo(activeMap);
-
-      activeUserMarker = L.circleMarker(
-        [origin.latitude,origin.longitude],
-        {
-          radius:8,
-          color:"#ffffff",
-          weight:3,
-          fillColor:"#2585ff",
-          fillOpacity:1
-        }
-      ).addTo(activeMap)
-        .bindPopup("Your starting point");
-
-      if(activeDestinationMarker){
-        activeDestinationMarker.setPopupContent(
-          escapeHtml(getBusinessName(activeBusiness))
-        );
-      }
-
-      // Display the start and destination within the same map view.
-      activeMap.fitBounds(
-        activeRouteLine.getBounds(),
-        {
-          padding:[30,30],
-          maxZoom:15
-        }
-      );
-
-      const distanceText = formatRouteDistance(route.distance);
-      const durationText = formatRouteDuration(route.duration);
-
-      if(summary){
-        summary.textContent =
-          `Estimated driving distance: ${distanceText}. ` +
-          `Estimated driving time: ${durationText}. ` +
-          "Actual time may vary with traffic and road conditions.";
-
-        summary.classList.remove("hidden");
-      }
-
-      const routeSteps = Array.isArray(route.legs)
-        ? route.legs.flatMap(leg =>
-            Array.isArray(leg.steps) ? leg.steps : []
-          )
-        : [];
-
-      displayRouteSteps(routeSteps);
-
-      // Provide the exact GPS origin and business destination to Google Maps.
-      if(navigationLink){
-        navigationLink.href = buildBusinessDirectionsUrl(
-          activeBusiness,
-          origin
-        );
-
-        navigationLink.classList.remove("hidden");
-      }
-
-      setRouteStatus(
-        "Your driving route is displayed on the map. Use the navigation button to open turn-by-turn directions in Google Maps.",
-        "success"
-      );
-
-    }catch(error){
-      let message = error.message || "Unable to calculate the route.";
-
-      if(typeof error.code === "number"){
-        if(error.code === 1){
-          message = "Location permission was denied. Allow location access and try again, or open Google Maps directions.";
-        }else if(error.code === 2){
-          message = "Your device could not determine your location. Try again or open Google Maps directions.";
-        }else if(error.code === 3){
-          message = "Getting your current location timed out. Try again in an area with better location reception.";
-        }
-      }
-
-      console.error("NearAfrica directions error:",error);
-      setRouteStatus(message,"error");
-
-      // The Google Maps fallback can still be used if a route fails.
-      if(navigationLink){
-        navigationLink.href = buildBusinessDirectionsUrl(activeBusiness);
-        navigationLink.classList.remove("hidden");
-      }
-
-    }finally{
-      routeRequestInProgress = false;
-
-      if(button){
-        button.disabled = false;
-        button.textContent = "Show Route From My Location";
-      }
-    }
-  }
-
-  function renderProducts(products){
-    if(!Array.isArray(products) || !products.length) return "";
-
-    return `
-      <section class="profile-card">
-        <h2>Products &amp; Services</h2>
-        <div class="product-grid">
-          ${products.map(product => {
-            const image = getImageUrl(
-              product.image_url || product.image || product.public_url
-            );
-            const name = product.name || product.title || "Product";
-            const description = product.description || "";
-            const price = product.price;
-
-            return `
-              <article class="product">
-                ${image ? `
-                  <img src="${escapeAttribute(image)}"
-                    alt="${escapeAttribute(name)}"
-                    loading="lazy"
-                    onerror="this.style.display='none'">
-                ` : ""}
-                <div class="product-body">
-                  <h3>${escapeHtml(name)}</h3>
-                  ${description ? `<p>${escapeHtml(description)}</p>` : ""}
-                  ${price !== undefined && price !== null && clean(price) ? `
-                    <div class="price">
-                      ${escapeHtml(product.currency || "NGN")}
-                      ${escapeHtml(price)}
-                    </div>
-                  ` : ""}
-                </div>
-              </article>`;
-          }).join("")}
+  content.innerHTML=`
+    <section class="profile-hero">
+      <div class="profile-top">
+        <div class="business-logo">
+          ${image&&safeUrl(image)?`<img src="${escapeAttribute(safeUrl(image))}" alt="${escapeAttribute(name)}" onerror="this.onerror=null;this.style.display='none';this.parentElement.textContent='${escapeAttribute(initial)}'">`:escapeHtml(initial)}
         </div>
-      </section>`;
-  }
-
-  function renderImages(images,businessName){
-    if(!Array.isArray(images) || !images.length) return "";
-
-    const html = images.map(image => {
-      const source = getImageUrl(image);
-      if(!source) return "";
-
-      return `
-        <a href="${escapeAttribute(source)}" target="_blank" rel="noopener noreferrer">
-          <img src="${escapeAttribute(source)}"
-            alt="${escapeAttribute(businessName)}"
-            loading="lazy"
-            onerror="this.style.display='none'">
-        </a>`;
-    }).join("");
-
-    if(!html) return "";
-
-    return `
-      <section class="profile-card">
-        <h2>Photos</h2>
-        <div class="photo-grid">${html}</div>
-      </section>`;
-  }
-
-  function renderHours(hours){
-    if(!Array.isArray(hours) || !hours.length) return "";
-
-    return `
-      <section class="profile-card">
-        <h2>Opening Hours</h2>
-        <div class="hours">
-          ${hours.map(hour => {
-            const day = hour.day || hour.day_name || hour.weekday || "";
-            const open = hour.open || hour.open_time || "";
-            const close = hour.close || hour.close_time || "";
-            const closed =
-              hour.closed === true ||
-              hour.is_closed === true ||
-              Number(hour.closed) === 1 ||
-              Number(hour.is_closed) === 1;
-
-            return `
-              <div class="hours-row">
-                <strong>${escapeHtml(day)}</strong>
-                <span class="hours-time">
-                  ${closed ? "Closed" : escapeHtml([open,close].filter(Boolean).join(" — ") || "Hours unavailable")}
-                </span>
-              </div>`;
-          }).join("")}
-        </div>
-      </section>`;
-  }
-
-  function renderReviews(reviews){
-    const list = Array.isArray(reviews) ? reviews : [];
-
-    return `
-      <section class="profile-card" id="reviewsSection">
-        <h2>Customer Reviews (${list.length})</h2>
-
-        ${
-          list.length
-            ? `<div class="review-list">
-                ${list.map(review => {
-                  const name = review.name || review.reviewer_name || "Customer";
-                  const comment = review.comment || review.review || "";
-                  let dateText = "";
-
-                  if(review.created_at){
-                    const date = new Date(review.created_at);
-                    if(!Number.isNaN(date.getTime())){
-                      dateText = date.toLocaleDateString();
-                    }
-                  }
-
-                  return `
-                    <article class="review">
-                      <div class="review-header">
-                        <div class="review-name">${escapeHtml(name)}</div>
-                        <div class="review-rating"
-                          aria-label="${Number(review.rating)||0} out of 5 stars">
-                          ${stars(review.rating)}
-                        </div>
-                      </div>
-                      <div class="review-comment">${escapeHtml(comment)}</div>
-                      ${dateText ? `<div class="review-date">${escapeHtml(dateText)}</div>` : ""}
-                    </article>`;
-                }).join("")}
-              </div>`
-            : `<div class="empty">No approved reviews yet. Be the first to share your experience.</div>`
-        }
-
-        <div class="review-form-wrap">
-          <h3>Write a Review</h3>
-          <p style="color:#999;font-size:14px;margin-top:-6px">
-            Share an honest experience to help other people make informed decisions.
-          </p>
-
-          <div id="reviewFormMessage" class="review-form-message" role="status" aria-live="polite"></div>
-
-          <form id="reviewForm" class="form">
-            <label for="reviewerName">
-              Your name
-              <input
-                id="reviewerName"
-                name="name"
-                type="text"
-                maxlength="150"
-                autocomplete="name"
-                required
-                placeholder="Enter your name">
-            </label>
-
-            <label for="reviewRating">
-              Your rating
-              <select id="reviewRating" name="rating" required>
-                <option value="">Choose a rating</option>
-                <option value="5">★★★★★ — Excellent</option>
-                <option value="4">★★★★☆ — Very good</option>
-                <option value="3">★★★☆☆ — Good</option>
-                <option value="2">★★☆☆☆ — Fair</option>
-                <option value="1">★☆☆☆☆ — Poor</option>
-              </select>
-            </label>
-
-            <label for="reviewComment">
-              Your review
-              <textarea
-                id="reviewComment"
-                name="comment"
-                minlength="3"
-                maxlength="5000"
-                required
-                placeholder="Describe your experience with this business..."></textarea>
-            </label>
-
-            <button id="submitReviewButton" class="btn btn-primary" type="submit">
-              Submit Review
-            </button>
-          </form>
-
-          <p class="review-note">
-            Reviews are checked by NearAfrica before appearing publicly. Please do not include private or sensitive information.
-          </p>
-        </div>
-      </section>`;
-  }
-
-  function displayBusiness(business,result){
-    activeBusiness = business;
-
-    const name = getBusinessName(business);
-    const location = getLocation(business);
-    const coordinates = getBusinessCoordinates(business);
-    const directionsUrl = buildBusinessDirectionsUrl(business);
-    const category = clean(business.category);
-    const description = clean(business.description);
-    const phone = clean(business.phone);
-    const whatsapp = clean(business.whatsapp).replace(/[^\d+]/g,"");
-    const email = clean(business.email);
-    const website = clean(business.website);
-    const websiteUrl = safeUrl(website);
-    const image = getImage(business);
-
-    const verified = Number(business.verified) === 1;
-    const claimed = Number(business.claimed) === 1;
-    const featured = Number(business.featured) === 1;
-
-    const statistics = result.statistics || {};
-    const views = Number(statistics.views ?? business.views ?? 0);
-
-    const reviews = Array.isArray(result.reviews) ? result.reviews : [];
-    const averageRating = Number(
-      statistics.average_rating ??
-      business.average_rating ??
-      (reviews.length
-        ? reviews.reduce((sum,review) => sum + (Number(review.rating)||0),0) / reviews.length
-        : 0)
-    );
-
-    const reviewCount = Number(
-      statistics.review_count ??
-      (Array.isArray(result.reviews) ? result.reviews.length : business.review_count || 0)
-    );
-
-    const products = Array.isArray(result.products) ? result.products : [];
-    const hours = Array.isArray(result.hours) ? result.hours : [];
-    const images = Array.isArray(result.images)
-      ? result.images
-      : Array.isArray(business.images) ? business.images : [];
-
-    const initial = name.charAt(0).toUpperCase() || "B";
-    const content = document.getElementById("businessContent");
-
-    content.innerHTML = `
-      <section class="profile-hero">
-        <div class="profile-top">
-          <div class="business-logo">
-            ${image ? `
-              <img src="${escapeAttribute(image)}"
-                alt="${escapeAttribute(name)}"
-                onerror="this.onerror=null;this.style.display='none';this.parentElement.textContent='${escapeAttribute(initial)}'">
-            ` : escapeHtml(initial)}
+        <div class="profile-main">
+          <h1>${escapeHtml(name)}</h1>
+          <div class="meta">${category?`<span>${escapeHtml(category)}</span>`:""}${location?`<span>•</span><span>${escapeHtml(location)}</span>`:""}</div>
+          <div class="badges">
+            ${verified?'<span class="badge green">✓ Verified</span>':""}
+            ${claimed?'<span class="badge gold">✓ Claimed</span>':""}
+            ${featured?'<span class="badge gold">Featured</span>':""}
           </div>
-
-          <div class="profile-main">
-            <h1>${escapeHtml(name)}</h1>
-
-            <div class="meta">
-              ${category ? `<span>${escapeHtml(category)}</span>` : ""}
-              ${location ? `<span>•</span><span>${escapeHtml(location)}</span>` : ""}
-            </div>
-
-            <div class="badges">
-              ${verified ? `<span class="badge green">✓ Verified</span>` : ""}
-              ${claimed ? `<span class="badge gold">✓ Claimed</span>` : ""}
-              ${featured ? `<span class="badge gold">Featured</span>` : ""}
-            </div>
-
-            <div class="profile-actions">
-              ${phone ? `<a class="btn btn-primary" href="tel:${escapeAttribute(phone)}">Call</a>` : ""}
-              ${whatsapp ? `
-                <a class="btn"
-                  href="https://wa.me/${escapeAttribute(whatsapp.replace(/^\+/,""))}"
-                  target="_blank" rel="noopener noreferrer">WhatsApp</a>` : ""}
-              ${email ? `<a class="btn" href="mailto:${escapeAttribute(email)}">Email</a>` : ""}
-              ${websiteUrl ? `
-                <a class="btn" href="${escapeAttribute(websiteUrl)}"
-                  target="_blank" rel="noopener noreferrer">Website</a>` : ""}
-              ${
-                directionsUrl
-                  ? `
-                    <a class="directions-btn"
-                      href="${escapeAttribute(directionsUrl)}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Get GPS directions to ${escapeAttribute(name)}">
-                      🧭 Get GPS Directions
-                    </a>
-                  `
-                  : ""
-              }
-            </div>
+          <div class="profile-actions">
+            ${phone?`<a class="btn btn-primary" href="tel:${escapeAttribute(phone)}">Call</a>`:""}
+            ${whatsapp?`<a class="btn" href="https://wa.me/${escapeAttribute(whatsapp.replace(/^\+/,""))}" target="_blank" rel="noopener noreferrer">WhatsApp</a>`:""}
+            ${email?`<a class="btn" href="mailto:${escapeAttribute(email)}">Email</a>`:""}
+            ${websiteUrl?`<a class="btn" href="${escapeAttribute(websiteUrl)}" target="_blank" rel="noopener noreferrer">Website</a>`:""}
+            ${directionsUrl?`<a class="directions-btn" href="${escapeAttribute(directionsUrl)}" target="_blank" rel="noopener noreferrer">🧭 Get GPS Directions</a>`:""}
           </div>
         </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><strong>${formatNumber(views)}</strong><span>Views</span></div>
+        <div class="stat"><strong>${averageRating>0?averageRating.toFixed(1):"—"}</strong><span>${averageRating>0?stars(averageRating):"No rating yet"}</span></div>
+        <div class="stat"><strong>${formatNumber(reviewCount)}</strong><span>Reviews</span></div>
+      </div>
+    </section>
 
-        <div class="stats">
-          <div class="stat">
-            <strong>${formatNumber(views)}</strong>
-            <span>Views</span>
+    <div class="profile-grid">
+      <div>
+        ${description?`<section class="profile-card"><h2>About</h2><div class="description">${escapeHtml(description)}</div></section>`:""}
+        ${renderProducts(products)}
+        ${renderImages(images,name)}
+        ${renderReviews(reviews)}
+
+        <section class="profile-card">
+          <h2>Location &amp; Directions</h2>
+          ${location?`<p style="color:#aaa">${escapeHtml(location)}</p>`:""}
+          ${directionsUrl?`<a class="directions-btn" href="${escapeAttribute(directionsUrl)}" target="_blank" rel="noopener noreferrer">🧭 Get GPS Directions</a>
+            <p class="directions-note">Open Google Maps for navigation, or display the driving route on the NearAfrica map below.</p>`:
+            `<p class="directions-note">Directions are unavailable because this listing does not have enough location information. Please check the address before travelling.</p>`}
+
+          <div class="map-directions-tools">
+            <button type="button" class="directions-btn" id="showRouteButton" ${coordinates?"":"disabled"}>🧭 Show Route From My Location</button>
+            <a id="openNavigationButton" class="btn hidden" href="#" target="_blank" rel="noopener noreferrer">Open Turn-by-Turn Navigation</a>
+            <p id="routeStatus" class="route-status" role="status" aria-live="polite">${coordinates?"Tap the button to use your current location and calculate a driving route.":"An on-map route requires valid GPS coordinates for this business."}</p>
+            <div id="routeSummary" class="route-summary hidden"></div>
+            <ol id="routeSteps" class="route-steps hidden"></ol>
           </div>
-          <div class="stat">
-            <strong>${averageRating > 0 ? averageRating.toFixed(1) : "—"}</strong>
-            <span>${averageRating > 0 ? stars(averageRating) : "No rating yet"}</span>
+          <div id="businessMap"></div>
+          <p class="leaflet-routing-note">Map data © OpenStreetMap contributors. Routes are calculated by an external routing service. Your coordinates are sent to that service when you request a route.</p>
+        </section>
+      </div>
+
+      <aside>
+        <section class="profile-card">
+          <h2>Business Information</h2>
+          <div class="info-grid">
+            ${category?`<div class="info-item"><div class="info-label">Category</div><div class="info-value">${escapeHtml(category)}</div></div>`:""}
+            ${location?`<div class="info-item"><div class="info-label">Address</div><div class="info-value">${escapeHtml(location)}</div></div>`:""}
+            ${phone?`<div class="info-item"><div class="info-label">Phone</div><div class="info-value">${escapeHtml(phone)}</div></div>`:""}
+            ${email?`<div class="info-item"><div class="info-label">Email</div><div class="info-value">${escapeHtml(email)}</div></div>`:""}
+            ${website?`<div class="info-item"><div class="info-label">Website</div><div class="info-value">${escapeHtml(website)}</div></div>`:""}
           </div>
-          <div class="stat">
-            <strong>${formatNumber(reviewCount)}</strong>
-            <span>Reviews</span>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <div class="profile-grid">
-        <div>
-          ${description ? `
-            <section class="profile-card">
-              <h2>About</h2>
-              <div class="description">${escapeHtml(description)}</div>
-            </section>` : ""}
+        ${renderHours(hours)}
 
-          ${renderProducts(products)}
-          ${renderImages(images,name)}
-          ${renderReviews(reviews)}
-
-          <section class="profile-card">
-            <h2>Location &amp; Directions</h2>
-
-            ${location ? `<p style="color:#aaa">${escapeHtml(location)}</p>` : ""}
-
-            ${
-              directionsUrl
-                ? `
-                  <a class="directions-btn"
-                    href="${escapeAttribute(directionsUrl)}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Get GPS directions to ${escapeAttribute(name)} using Google Maps">
-                    🧭 Get GPS Directions
-                  </a>
-
-                  <p class="directions-note">
-                    Open Google Maps for navigation, or use the route tool below
-                    to display the driving route on the NearAfrica map.
-                  </p>
-                `
-                : `
-                  <p class="directions-note">
-                    Directions are unavailable because this listing does not
-                    have enough location information. Please check the address
-                    before travelling.
-                  </p>
-                `
-            }
-
-            <div class="map-directions-tools">
-              <button
-                type="button"
-                class="directions-btn"
-                id="showRouteButton"
-                ${coordinates ? "" : "disabled"}
-              >
-                🧭 Show Route From My Location
-              </button>
-
-              <a
-                id="openNavigationButton"
-                class="btn hidden"
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Open Turn-by-Turn Navigation
+        <section class="profile-card">
+          <h2>Listing Actions</h2>
+          <div style="display:grid;gap:9px">
+            ${!claimed?`
+              <a class="btn btn-primary" href="claim-business.html?business_id=${encodeURIComponent(claimIdentifier)}" aria-label="Claim ${escapeAttribute(name)} on NearAfrica">
+                Claim This Business
               </a>
+              <p style="font-size:12px;color:#999;margin:0">Are you the owner or an authorized representative? Start a claim to request control of this listing.</p>
+            `:`
+              <div class="badge green" style="justify-content:center;padding:10px">✓ This listing is already marked as claimed</div>
+            `}
+            <button type="button" class="btn" id="reportButton">Report Listing</button>
+            <button type="button" class="btn" id="correctionButton">Suggest a Correction</button>
+          </div>
+        </section>
+      </aside>
+    </div>`;
 
-              <p
-                id="routeStatus"
-                class="route-status"
-                role="status"
-                aria-live="polite"
-              >${
-                coordinates
-                  ? "Tap the button to use your current location and calculate a driving route to this business."
-                  : "An on-map route requires valid GPS coordinates for this business."
-              }</p>
+  document.getElementById("loadingState").classList.add("hidden");
+  content.classList.remove("hidden");
+  initializeMap(business);
+  setupActions();
+}
 
-              <div id="routeSummary" class="route-summary hidden"></div>
+function showReviewMessage(message,type){
+  const element=document.getElementById("reviewFormMessage");
+  if(!element) return;
+  element.className="review-form-message "+type;
+  element.textContent=message;
+}
 
-              <ol id="routeSteps" class="route-steps hidden"></ol>
-            </div>
+function setupActions(){
+  const reportButton=document.getElementById("reportButton");
+  const correctionButton=document.getElementById("correctionButton");
+  const showRouteButton=document.getElementById("showRouteButton");
+  const reviewForm=document.getElementById("reviewForm");
 
-            <div id="businessMap"></div>
+  if(showRouteButton) showRouteButton.addEventListener("click",showRouteFromCurrentLocation);
 
-            <p class="leaflet-routing-note">
-              Map data © OpenStreetMap contributors. Routes are calculated
-              by an external routing service. Your coordinates are sent to
-              that service when you request a route.
-            </p>
-          </section>
-        </div>
-
-        <aside>
-          <section class="profile-card">
-            <h2>Business Information</h2>
-            <div class="info-grid">
-              ${category ? `
-                <div class="info-item">
-                  <div class="info-label">Category</div>
-                  <div class="info-value">${escapeHtml(category)}</div>
-                </div>` : ""}
-              ${location ? `
-                <div class="info-item">
-                  <div class="info-label">Address</div>
-                  <div class="info-value">${escapeHtml(location)}</div>
-                </div>` : ""}
-              ${phone ? `
-                <div class="info-item">
-                  <div class="info-label">Phone</div>
-                  <div class="info-value">${escapeHtml(phone)}</div>
-                </div>` : ""}
-              ${email ? `
-                <div class="info-item">
-                  <div class="info-label">Email</div>
-                  <div class="info-value">${escapeHtml(email)}</div>
-                </div>` : ""}
-              ${website ? `
-                <div class="info-item">
-                  <div class="info-label">Website</div>
-                  <div class="info-value">${escapeHtml(website)}</div>
-                </div>` : ""}
-            </div>
-          </section>
-
-          ${renderHours(hours)}
-
-          <section class="profile-card">
-            <h2>Listing Actions</h2>
-            <div style="display:grid;gap:9px">
-              <button type="button" class="btn" id="reportButton">Report Listing</button>
-              <button type="button" class="btn" id="correctionButton">Suggest a Correction</button>
-            </div>
-          </section>
-        </aside>
-      </div>`;
-
-    document.getElementById("loadingState").classList.add("hidden");
-    content.classList.remove("hidden");
-
-    initializeMap(business);
-    setupActions();
-  }
-
-  function showReviewMessage(message,type){
-    const element = document.getElementById("reviewFormMessage");
-    if(!element) return;
-
-    element.className = "review-form-message " + type;
-    element.textContent = message;
-  }
-
-  function setupActions(){
-    const reportButton = document.getElementById("reportButton");
-    const correctionButton = document.getElementById("correctionButton");
-    const showRouteButton = document.getElementById("showRouteButton");
-    const reviewForm = document.getElementById("reviewForm");
-
-    if(showRouteButton){
-      showRouteButton.addEventListener(
-        "click",
-        showRouteFromCurrentLocation
-      );
-    }
-
-    if(reportButton){
-      reportButton.addEventListener("click",() => {
-        const reason = window.prompt("Why are you reporting this listing?");
-        if(!reason || !reason.trim()) return;
-        submitReport(reason.trim());
-      });
-    }
-
-    if(correctionButton){
-      correctionButton.addEventListener("click",() => {
-        const correction = window.prompt("What information should be corrected?");
-        if(!correction || !correction.trim()) return;
-        submitCorrection(correction.trim());
-      });
-    }
-
-    if(reviewForm){
-      reviewForm.addEventListener("submit",async event => {
-        event.preventDefault();
-
-        const name = clean(document.getElementById("reviewerName").value);
-        const rating = Number(document.getElementById("reviewRating").value);
-        const comment = clean(document.getElementById("reviewComment").value);
-        const button = document.getElementById("submitReviewButton");
-
-        if(!name){
-          showReviewMessage("Please enter your name.","error");
-          return;
-        }
-
-        if(!Number.isInteger(rating) || rating < 1 || rating > 5){
-          showReviewMessage("Please choose a rating from 1 to 5 stars.","error");
-          return;
-        }
-
-        if(comment.length < 3){
-          showReviewMessage("Please write a little more about your experience.","error");
-          return;
-        }
-
-        if(!activeBusiness || !activeBusiness.id){
-          showReviewMessage("The business ID is unavailable. Please reload the page and try again.","error");
-          return;
-        }
-
-        button.disabled = true;
-        button.textContent = "Submitting...";
-
-        try{
-          await apiRequest(
-            `/businesses/${encodeURIComponent(activeBusiness.id)}/reviews`,
-            {
-              method:"POST",
-              headers:{"Content-Type":"application/json"},
-              body:JSON.stringify({name,rating,comment})
-            }
-          );
-
-          reviewForm.reset();
-
-          showReviewMessage(
-            "Thank you! Your review was submitted and is awaiting moderation. It will appear publicly after approval.",
-            "success"
-          );
-        }catch(error){
-          showReviewMessage(
-            error.message || "We could not submit your review. Please try again.",
-            "error"
-          );
-        }finally{
-          button.disabled = false;
-          button.textContent = "Submit Review";
-        }
-      });
-    }
-  }
-
-  async function submitReport(reason){
-    if(!activeBusiness || !activeBusiness.id){
-      showStatus("The business ID is unavailable.","error");
-      return;
-    }
-
-    try{
-      await apiRequest("/reports",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          business_id:activeBusiness.id,
-          report_type:"listing_report",
-          reason
-        })
-      });
-
-      showStatus("Report submitted successfully.","success");
-    }catch(error){
-      showStatus(error.message || "Unable to submit report.","error");
-    }
-  }
-
-  async function submitCorrection(correction){
-    if(!activeBusiness || !activeBusiness.id){
-      showStatus("The business ID is unavailable.","error");
-      return;
-    }
-
-    try{
-      await apiRequest(
-        `/businesses/${encodeURIComponent(activeBusiness.id)}/corrections`,
-        {
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({
-            requested_changes:{description:correction}
-          })
-        }
-      );
-
-      showStatus("Correction request submitted.","success");
-    }catch(error){
-      showStatus(error.message || "Unable to submit correction.","error");
-    }
-  }
-
-  async function recordView(id){
-    try{
-      await fetch(
-        `${API_URL}/businesses/${encodeURIComponent(id)}/view`,
-        {method:"POST",cache:"no-store"}
-      );
-    }catch(error){
-      console.warn("Business view tracking failed:",error);
-    }
-  }
-
-  function showNotFound(message){
-    document.getElementById("loadingState").classList.add("hidden");
-    document.getElementById("businessContent").classList.add("hidden");
-
-    const state = document.getElementById("notFoundState");
-    state.classList.remove("hidden");
-
-    document.getElementById("notFoundMessage").textContent =
-      message || "This business could not be found.";
-  }
-
-  async function loadBusiness(){
-    const identifier = getIdentifier();
-
-    if(!identifier){
-      showNotFound("No business ID or slug was provided.");
-      return;
-    }
-
-    try{
-      const result = await apiRequest(
-        `/businesses/${encodeURIComponent(identifier)}?_=${Date.now()}`
-      );
-
-      if(!result.business){
-        showNotFound(result.message || "This business could not be found.");
-        return;
-      }
-
-      /*
-       * Load public reviews separately.
-       * If reviews fail, the main business profile still loads.
-       */
-      try{
-        const reviewIdentifier = result.business.id || identifier;
-
-        const reviewResult = await apiRequest(
-          `/businesses/${encodeURIComponent(reviewIdentifier)}/reviews`
-        );
-
-        result.reviews = Array.isArray(reviewResult.reviews)
-          ? reviewResult.reviews
-          : [];
-      }catch(reviewError){
-        console.error("Reviews could not be loaded:",reviewError);
-        result.reviews = [];
-      }
-
-      displayBusiness(result.business,result);
-
-      recordView(result.business.id || identifier);
-    }catch(error){
-      console.error("Business loading failed:",error);
-
-      showNotFound(
-        error.message || "Unable to load this business right now."
-      );
-    }
-  }
-
-  const mobileMenuButton = document.getElementById("mobileMenuButton");
-  const mainNav = document.getElementById("mainNav");
-
-  if(mobileMenuButton && mainNav){
-    mobileMenuButton.addEventListener("click",() => {
-      const open = mainNav.classList.toggle("open");
-      mobileMenuButton.setAttribute("aria-expanded",String(open));
+  if(reportButton){
+    reportButton.addEventListener("click",()=>{
+      const reason=window.prompt("Why are you reporting this listing?");
+      if(!reason||!reason.trim()) return;
+      submitReport(reason.trim());
     });
   }
 
-  document.getElementById("year").textContent = new Date().getFullYear();
+  if(correctionButton){
+    correctionButton.addEventListener("click",()=>{
+      const correction=window.prompt("What information should be corrected?");
+      if(!correction||!correction.trim()) return;
+      submitCorrection(correction.trim());
+    });
+  }
 
-  loadBusiness();
+  if(reviewForm){
+    reviewForm.addEventListener("submit",async event=>{
+      event.preventDefault();
+      const name=clean(document.getElementById("reviewerName").value);
+      const rating=Number(document.getElementById("reviewRating").value);
+      const comment=clean(document.getElementById("reviewComment").value);
+      const button=document.getElementById("submitReviewButton");
+
+      if(!name){showReviewMessage("Please enter your name.","error");return;}
+      if(!Number.isInteger(rating)||rating<1||rating>5){showReviewMessage("Please choose a rating from 1 to 5 stars.","error");return;}
+      if(comment.length<3){showReviewMessage("Please write a little more about your experience.","error");return;}
+      if(!activeBusiness||!activeBusiness.id){showReviewMessage("The business ID is unavailable. Please reload and try again.","error");return;}
+
+      button.disabled=true;button.textContent="Submitting...";
+      try{
+        await apiRequest(`/businesses/${encodeURIComponent(activeBusiness.id)}/reviews`,{
+          method:"POST",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({name,rating,comment})
+        });
+        reviewForm.reset();
+        showReviewMessage("Thank you! Your review was submitted and is awaiting moderation. It will appear publicly after approval.","success");
+      }catch(error){
+        showReviewMessage(error.message||"We could not submit your review. Please try again.","error");
+      }finally{
+        button.disabled=false;button.textContent="Submit Review";
+      }
+    });
+  }
+}
+
+async function submitReport(reason){
+  if(!activeBusiness||!activeBusiness.id){showStatus("The business ID is unavailable.","error");return;}
+  try{
+    await apiRequest("/reports",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({business_id:activeBusiness.id,report_type:"listing_report",reason})
+    });
+    showStatus("Report submitted successfully.","success");
+  }catch(error){showStatus(error.message||"Unable to submit report.","error");}
+}
+
+async function submitCorrection(correction){
+  if(!activeBusiness||!activeBusiness.id){showStatus("The business ID is unavailable.","error");return;}
+  try{
+    await apiRequest(`/businesses/${encodeURIComponent(activeBusiness.id)}/corrections`,{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({requested_changes:{description:correction}})
+    });
+    showStatus("Correction request submitted.","success");
+  }catch(error){showStatus(error.message||"Unable to submit correction.","error");}
+}
+
+async function recordView(id){
+  try{
+    await fetch(`${API_URL}/businesses/${encodeURIComponent(id)}/view`,{method:"POST",cache:"no-store"});
+  }catch(error){console.warn("Business view tracking failed:",error);}
+}
+
+function showNotFound(message){
+  document.getElementById("loadingState").classList.add("hidden");
+  document.getElementById("businessContent").classList.add("hidden");
+  document.getElementById("notFoundState").classList.remove("hidden");
+  document.getElementById("notFoundMessage").textContent=message||"This business could not be found.";
+}
+
+async function loadBusiness(){
+  const identifier=getIdentifier();
+  if(!identifier){showNotFound("No business ID or slug was provided.");return;}
+
+  try{
+    const result=await apiRequest(`/businesses/${encodeURIComponent(identifier)}?_=${Date.now()}`);
+    if(!result.business){showNotFound(result.message||"This business could not be found.");return;}
+
+    try{
+      const reviewIdentifier=result.business.id||identifier;
+      const reviewResult=await apiRequest(`/businesses/${encodeURIComponent(reviewIdentifier)}/reviews`);
+      result.reviews=Array.isArray(reviewResult.reviews)?reviewResult.reviews:[];
+    }catch(error){
+      console.error("Reviews could not be loaded:",error);
+      result.reviews=[];
+    }
+
+    displayBusiness(result.business,result);
+    recordView(result.business.id||identifier);
+  }catch(error){
+    console.error("Business loading failed:",error);
+    showNotFound(error.message||"Unable to load this business right now.");
+  }
+}
+
+const mobileMenuButton=document.getElementById("mobileMenuButton");
+const mainNav=document.getElementById("mainNav");
+
+if(mobileMenuButton&&mainNav){
+  mobileMenuButton.addEventListener("click",()=>{
+    const open=mainNav.classList.toggle("open");
+    mobileMenuButton.setAttribute("aria-expanded",String(open));
+  });
+}
+
+document.getElementById("year").textContent=new Date().getFullYear();
+loadBusiness();
 })();
 </script>
-
 </body>
 </html>
-
