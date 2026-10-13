@@ -642,7 +642,7 @@
 
         try {
           const result = await api(
-            "/businesses/" + encodeURIComponent(getBusinessId(business) || businessIdentifier) + "/claim",
+            /claims,
             {
               method: "POST",
               body: JSON.stringify({
