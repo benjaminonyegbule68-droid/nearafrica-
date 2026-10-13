@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +7,6 @@
   <meta name="robots" content="noindex, follow">
   <title>Claim a Business | NearAfrica</title>
 
-  <!-- Use the existing NearAfrica logo instead of a missing favicon.ico file. -->
   <link rel="icon" type="image/png" href="Imagelogo.png">
   <link rel="shortcut icon" type="image/png" href="Imagelogo.png">
 
@@ -27,20 +25,34 @@
       --radius: 15px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       min-height: 100vh;
       background:
-        radial-gradient(ellipse at top, rgba(212,175,55,.09), transparent 42%),
+        radial-gradient(
+          ellipse at top,
+          rgba(212,175,55,.09),
+          transparent 42%
+        ),
         var(--bg);
       color: var(--text);
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
       line-height: 1.6;
     }
 
-    a { color: var(--gold-light); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a {
+      color: var(--gold-light);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
 
     header {
       position: sticky;
@@ -76,8 +88,16 @@
       object-fit: contain;
     }
 
-    nav { display: flex; gap: 20px; align-items: center; }
-    nav a { color: var(--muted); font-size: .9rem; }
+    nav {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--muted);
+      font-size: .9rem;
+    }
 
     main {
       width: min(100% - 32px, 760px);
@@ -105,7 +125,9 @@
       letter-spacing: -.04em;
     }
 
-    h1 span { color: var(--gold); }
+    h1 span {
+      color: var(--gold);
+    }
 
     .intro {
       color: var(--muted);
@@ -122,8 +144,16 @@
       box-shadow: 0 12px 35px rgba(0,0,0,.15);
     }
 
-    .card h2 { font-size: 1.25rem; margin-bottom: 7px; }
-    .subtext { color: var(--muted); font-size: .92rem; margin-bottom: 20px; }
+    .card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 7px;
+    }
+
+    .subtext {
+      color: var(--muted);
+      font-size: .92rem;
+      margin-bottom: 20px;
+    }
 
     .business-name {
       color: var(--gold-light);
@@ -132,8 +162,15 @@
       overflow-wrap: anywhere;
     }
 
-    .business-meta { color: var(--muted); font-size: .9rem; margin-top: 5px; }
-    .hidden { display: none !important; }
+    .business-meta {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-top: 5px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
 
     .notice {
       border-left: 3px solid var(--gold);
@@ -143,11 +180,16 @@
       color: var(--muted);
       font-size: .9rem;
       margin: 17px 0;
+      overflow-wrap: anywhere;
     }
 
-    .notice strong { color: var(--text); }
+    .notice strong {
+      color: var(--text);
+    }
 
-    .field { margin-bottom: 17px; }
+    .field {
+      margin-bottom: 17px;
+    }
 
     label {
       display: block;
@@ -156,7 +198,9 @@
       font-weight: 700;
     }
 
-    input, select, textarea {
+    input,
+    select,
+    textarea {
       width: 100%;
       border: 1px solid #393939;
       border-radius: 9px;
@@ -167,16 +211,32 @@
       outline: none;
     }
 
-    input:focus, select:focus, textarea:focus {
+    input:focus,
+    select:focus,
+    textarea:focus {
       border-color: var(--gold);
       box-shadow: 0 0 0 3px rgba(212,175,55,.09);
     }
 
-    input::placeholder, textarea::placeholder { color: #777; }
-    textarea { min-height: 115px; resize: vertical; }
-    select option { background: #111; }
+    input::placeholder,
+    textarea::placeholder {
+      color: #777;
+    }
 
-    .hint { color: #999; font-size: .82rem; margin-top: 5px; }
+    textarea {
+      min-height: 115px;
+      resize: vertical;
+    }
+
+    select option {
+      background: #111;
+    }
+
+    .hint {
+      color: #999;
+      font-size: .82rem;
+      margin-top: 5px;
+    }
 
     .check-row {
       display: flex;
@@ -194,7 +254,8 @@
       flex-shrink: 0;
     }
 
-    button, .button-link {
+    button,
+    .button-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -211,7 +272,8 @@
       text-align: center;
     }
 
-    button:hover, .button-link:hover {
+    button:hover,
+    .button-link:hover {
       background: var(--gold-light);
       text-decoration: none;
     }
@@ -227,7 +289,9 @@
       border-color: var(--border);
     }
 
-    .button-secondary:hover { background: rgba(212,175,55,.08); }
+    .button-secondary:hover {
+      background: rgba(212,175,55,.08);
+    }
 
     .actions {
       display: flex;
@@ -236,7 +300,9 @@
       margin-top: 20px;
     }
 
-    .actions button { flex: 1 1 180px; }
+    .actions button {
+      flex: 1 1 180px;
+    }
 
     .message {
       padding: 13px 15px;
@@ -264,8 +330,17 @@
       border-color: var(--border);
     }
 
-    .small { font-size: .85rem; color: var(--muted); }
-    .footer-note { text-align: center; margin-top: 25px; color: #888; font-size: .85rem; }
+    .small {
+      font-size: .85rem;
+      color: var(--muted);
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 25px;
+      color: #888;
+      font-size: .85rem;
+    }
 
     footer {
       border-top: 1px solid var(--border);
@@ -275,15 +350,36 @@
       font-size: .85rem;
     }
 
-    footer a { margin: 0 8px; }
+    footer a {
+      margin: 0 8px;
+    }
 
     @media (max-width: 600px) {
-      .header-inner { width: calc(100% - 22px); }
-      nav { gap: 12px; }
-      nav a:not(.nav-cta) { display: none; }
-      main { width: calc(100% - 22px); padding-top: 32px; }
-      .actions { flex-direction: column; }
-      .actions button, .actions a { width: 100%; }
+      .header-inner {
+        width: calc(100% - 22px);
+      }
+
+      nav {
+        gap: 12px;
+      }
+
+      nav a:not(.nav-cta) {
+        display: none;
+      }
+
+      main {
+        width: calc(100% - 22px);
+        padding-top: 32px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .actions button,
+      .actions a {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -316,7 +412,9 @@
 
     <section class="card" aria-labelledby="businessHeading">
       <h2 id="businessHeading">Business listing</h2>
-      <p class="subtext">Check that this is the correct business before continuing.</p>
+      <p class="subtext">
+        Check that this is the correct business before continuing.
+      </p>
 
       <div id="businessLoading" class="message info" role="status">
         Loading business details…
@@ -465,12 +563,16 @@
             placeholder="000000"
             required
           >
-          <p class="hint">The code expires after 10 minutes. Never share it with anyone.</p>
+          <p class="hint">
+            The code expires after 10 minutes. Never share it with anyone.
+          </p>
         </div>
 
         <div class="actions">
           <button id="verifyButton" type="submit">Verify code</button>
-          <button id="resendButton" class="button-secondary" type="button">Resend code</button>
+          <button id="resendButton" class="button-secondary" type="button">
+            Resend code
+          </button>
         </div>
       </form>
     </section>
@@ -485,8 +587,12 @@
       </p>
 
       <div class="actions">
-        <a id="resultListingLink" class="button-link" href="explore.html">Return to listing</a>
-        <a class="button-link button-secondary" href="contact.html">Contact NearAfrica</a>
+        <a id="resultListingLink" class="button-link" href="explore.html">
+          Return to listing
+        </a>
+        <a class="button-link button-secondary" href="contact.html">
+          Contact NearAfrica
+        </a>
       </div>
     </section>
 
@@ -515,9 +621,11 @@
     (() => {
       "use strict";
 
-      const API_BASE = "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+      const API_BASE =
+        "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
-      const params = new URLSearchParams(window.location.search);
+      const params =
+        new URLSearchParams(window.location.search);
 
       const businessIdentifier = (
         params.get("business_id") ||
@@ -562,7 +670,9 @@
           response = await fetch(API_BASE + path, {
             ...options,
             headers: {
-              ...(options.body ? { "Content-Type": "application/json" } : {}),
+              ...(options.body
+                ? { "Content-Type": "application/json" }
+                : {}),
               ...(options.headers || {})
             }
           });
@@ -570,6 +680,7 @@
           const error = new Error(
             "Could not connect to NearAfrica. Check your internet connection and try again."
           );
+
           error.cause = networkError;
           throw error;
         }
@@ -634,7 +745,8 @@
       }
 
       function getBusinessName(item) {
-        return safeText(item.name || item.business_name) || "Business listing";
+        return safeText(item.name || item.business_name) ||
+          "Business listing";
       }
 
       function getBusinessId(item) {
@@ -666,7 +778,9 @@
           business = unwrapBusiness(result);
 
           if (!business) {
-            throw new Error("The server did not return usable business details.");
+            throw new Error(
+              "The server did not return usable business details."
+            );
           }
 
           const name = getBusinessName(business);
@@ -681,9 +795,11 @@
           $("businessName").textContent = name;
 
           $("businessMeta").textContent =
-            [category, location].filter(Boolean).join(" · ") || "Business listing";
+            [category, location].filter(Boolean).join(" · ") ||
+            "Business listing";
 
-          const listingIdentifier = getBusinessId(business) || businessIdentifier;
+          const listingIdentifier =
+            getBusinessId(business) || businessIdentifier;
 
           $("viewListing").href =
             "business-profile-fixed.html?id=" +
@@ -716,7 +832,7 @@
           showMessage(
             loading,
             "We could not load this business. Check the link and try again. " +
-            error.message,
+              error.message,
             "error"
           );
         }
@@ -730,8 +846,9 @@
       /*
        * CREATE CLAIM
        *
-       * The Worker supports POST /claims.
-       * business_id must be included in the JSON body.
+       * If an existing pending claim is returned,
+       * recover its ID and open the verification form
+       * instead of leaving the user on the claim form.
        */
       $("claimForm").addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -749,12 +866,23 @@
           return;
         }
 
-        const claimantName = $("claimantName").value.trim();
-        const claimantEmail = $("claimantEmail").value.trim();
-        const claimantPhone = $("claimantPhone").value.trim();
-        const relationship = $("relationship").value;
-        const evidenceType = $("evidenceType").value;
-        const evidenceDetails = $("evidenceDetails").value.trim();
+        const claimantName =
+          $("claimantName").value.trim();
+
+        const claimantEmail =
+          $("claimantEmail").value.trim();
+
+        const claimantPhone =
+          $("claimantPhone").value.trim();
+
+        const relationship =
+          $("relationship").value;
+
+        const evidenceType =
+          $("evidenceType").value;
+
+        const evidenceDetails =
+          $("evidenceDetails").value.trim();
 
         if (
           !claimantName ||
@@ -779,7 +907,8 @@
           return;
         }
 
-        const businessId = getBusinessId(business) || businessIdentifier;
+        const businessId =
+          getBusinessId(business) || businessIdentifier;
 
         if (!businessId) {
           showMessage(
@@ -791,7 +920,14 @@
         }
 
         claimInProgress = true;
-        setBusy($("submitClaim"), true, "Submitting claim…", "Submit claim");
+
+        setBusy(
+          $("submitClaim"),
+          true,
+          "Submitting claim…",
+          "Submit claim"
+        );
+
         hideMessage($("claimMessage"));
 
         try {
@@ -834,23 +970,61 @@
           showMessage(
             $("verifyMessage"),
             result.message ||
-            "Your claim was submitted. Enter the verification code sent to the listed business email.",
+              "Your claim was submitted. Enter the verification code sent to the listed business email.",
             "success"
           );
 
           $("verificationCode").focus();
 
         } catch (error) {
-          const extra =
+          /*
+           * FIX:
+           * The Worker returns HTTP 409 and claim_id when
+           * the same claimant already has a pending claim.
+           * Resume that claim instead of showing only an error.
+           */
+          const existingClaimId = safeText(
             error.data && error.data.claim_id
-              ? "\nExisting claim reference: " + error.data.claim_id
+          );
+
+          const isPendingClaim =
+            error.status === 409 &&
+            !!existingClaimId &&
+            /already have a pending ownership claim/i.test(
+              error.message || ""
+            );
+
+          if (isPendingClaim) {
+            claimId = existingClaimId;
+
+            $("verificationDestination").textContent =
+              "An ownership claim is already pending for this business. " +
+              "Enter the code sent to the business email listed on NearAfrica. " +
+              "If you did not receive it, use Resend code. " +
+              "Claim reference: " + claimId;
+
+            hide($("claimSection"));
+            show($("verifySection"));
+
+            showMessage(
+              $("verifyMessage"),
+              "Your existing claim has been recovered. You do not need to submit another claim. Enter your six-digit verification code, or use Resend code if necessary.",
+              "info"
+            );
+
+            $("verificationCode").focus();
+
+          } else {
+            const extra = existingClaimId
+              ? "\nExisting claim reference: " + existingClaimId
               : "";
 
-          showMessage(
-            $("claimMessage"),
-            error.message + extra,
-            "error"
-          );
+            showMessage(
+              $("claimMessage"),
+              error.message + extra,
+              "error"
+            );
+          }
 
         } finally {
           claimInProgress = false;
@@ -874,7 +1048,8 @@
           return;
         }
 
-        const code = $("verificationCode").value.trim();
+        const code =
+          $("verificationCode").value.trim();
 
         if (!/^\d{6}$/.test(code)) {
           showMessage(
@@ -886,7 +1061,14 @@
         }
 
         verifyInProgress = true;
-        setBusy($("verifyButton"), true, "Verifying…", "Verify code");
+
+        setBusy(
+          $("verifyButton"),
+          true,
+          "Verifying…",
+          "Verify code"
+        );
+
         hideMessage($("verifyMessage"));
 
         try {
@@ -955,7 +1137,7 @@
           showMessage(
             $("verifyMessage"),
             result.message ||
-            "A new verification code was requested. Check the listed business email.",
+              "A new verification code was requested. Check the listed business email.",
             "success"
           );
 
