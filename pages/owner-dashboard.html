@@ -6623,6 +6623,129 @@
 
       }
 
+async function loadReferrals() {
+  const status = document.getElementById("referralsStatus");
+
+  try {
+    if (status) status.textContent = "Loading referral information...";
+
+    const data = await apiRequest(
+      `/owner/referrals?_=${Date.now()}`
+    );
+
+    const code = String(data?.referral_code || "");
+    const url = String(data?.referral_url || "");
+    const total = Number(data?.total_referrals || 0);
+    const qualified = Number(data?.qualified_referrals || 0);
+    const pending = Number(data?.pending_referrals || 0);
+    const progress = Number(data?.qualified_toward_next_reward || 0);
+    const remaining = Number(data?.referrals_until_next_reward || 3);
+    const rule = data?.reward_rule || {};
+    const history = Array.isArray(data?.reward_history)
+      ? data.reward_history
+      : [];
+
+    const setText = (id, value) => {
+      const element = document.getElementById(id);
+      if (element) element.textContent = String(value);
+    };
+
+    setText("referralCode", code || "Not available");
+    setText("referralLink", url);
+    setText("referralTotal", total);
+    setText("referralQualified", qualified);
+    setText("referralPending", pending);
+    setText("referralProgress", `${Math.min(progress, 3)} / 3`);
+    setText("referralRemaining", Math.max(remaining, 0));
+    setText(
+      "referralRewardRule",
+      `${Number(rule.qualifying_referrals || 3)} qualifying referrals earn ${
+        Number(rule.reward_days || 30)
+      } days of ${String(rule.reward_plan || "pro").toUpperCase()}.`
+    );
+
+    const progressBar = document.getElementById("referralProgressBar");
+    if (progressBar) {
+      progressBar.style.width =
+        `${Math.min(100, Math.max(0, progress / 3 * 100))}%`;
+    }
+
+    const historyElement = document.getElementById("referralHistory");
+
+    if (historyElement) {
+      if (!history.length) {
+        historyElement.textContent = "No referral rewards recorded yet.";
+      } else {
+        historyElement.replaceChildren();
+
+        history.forEach((reward) => {
+          const row = document.createElement("div");
+          row.className = "referral-history-row";
+
+          const description = document.createElement("span");
+          description.textContent =
+            `${String(reward.plan || "Pro").toUpperCase()} reward`;
+
+          const details = document.createElement("span");
+          details.textContent = [
+            reward.status || "Recorded",
+            reward.created_at || reward.awarded_at || ""
+          ].filter(Boolean).join(" · ");
+
+          row.append(description, details);
+          historyElement.appendChild(row);
+        });
+      }
+    }
+
+    if (status) status.textContent = "Referral information loaded.";
+    return true;
+  } catch (error) {
+    console.error("OWNER REFERRALS LOAD ERROR:", error);
+
+    if (status) {
+      status.textContent =
+        error.message || "Unable to load referral information.";
+    }
+
+    showStatus(
+      error.message || "Unable to load referrals.",
+      "error"
+    );
+
+    return false;
+  }
+}
+
+async function copyReferralLink() {
+  const field = document.getElementById("referralLink");
+  const url = field?.value || field?.textContent || "";
+
+  if (!url) {
+    showStatus("Your referral link is not available yet.", "error");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(url);
+    showStatus("Referral link copied.", "success");
+  } catch (error) {
+    if (field && typeof field.select === "function") {
+      field.focus();
+      field.select();
+
+      const copied = document.execCommand("copy");
+      showStatus(
+        copied ? "Referral link copied." : "Select and copy the referral link manually.",
+        copied ? "success" : "error"
+      );
+    } else {
+      showStatus("Copy unavailable. Please copy the link manually.", "error");
+    }
+  }
+}
+
+
 
       /* =================================================
          ANALYTICS REFRESH
