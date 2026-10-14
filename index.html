@@ -1,2282 +1,971 @@
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>NearAfrica — Discover Businesses Near You</title>
+  <meta name="description" content="Discover businesses, services, shops, restaurants, hotels and opportunities near you across Africa.">
+  <meta name="theme-color" content="#111111">
 
-  <meta
-    name="description"
-    content="Discover businesses, services, shops, restaurants, hotels and opportunities near you across Africa."
-  >
-
-  <link
-    rel="icon"
-    type="image/png"
-    href="logo.png"
-  >
-
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-  >
-
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-    crossorigin
-  >
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
-
-  <link
-    rel="stylesheet"
-    href="styles.css"
-  >
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 
   <style>
+    * { box-sizing: border-box; }
 
-    /* =====================================================
-       HOME PAGE
-       ===================================================== */
-
-    .home-page {
-      background: #f7f7f5;
-      color: #171717;
-    }
-
-
-    /* =====================================================
-       HEADER
-       ===================================================== */
+    .home-page { background:#f7f7f5; color:#171717; }
 
     .home-header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(12px);
-
-      border-bottom: 1px solid #e8e8e8;
+      position:sticky; top:0; z-index:1000;
+      background:rgba(255,255,255,.97);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid #e8e8e8;
     }
 
     .home-header-inner {
-      width: min(1200px, calc(100% - 32px));
-      min-height: 64px;
-
-      margin: 0 auto;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 18px;
+      width:min(1400px,calc(100% - 32px));
+      min-height:68px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px;
     }
 
     .home-logo {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-
-      color: #111;
-
-      font-size: 20px;
-      font-weight: 800;
-
-      white-space: nowrap;
-      flex-shrink: 0;
+      display:inline-flex; align-items:center; gap:9px;
+      color:#111; font-size:20px; font-weight:800;
+      white-space:nowrap; flex-shrink:0;
     }
 
-    .home-logo img {
-      width: 38px;
-      height: 38px;
-
-      object-fit: contain;
-
-      display: block;
-    }
-
-    .home-logo-text {
-      color: #111;
-      font-weight: 800;
-    }
+    .home-logo img { width:38px; height:38px; object-fit:contain; }
+    .home-logo-text { color:#111; font-weight:800; }
 
     .home-nav {
-      display: flex;
-      align-items: center;
-
-      gap: 18px;
-
-      font-size: 13px;
-      font-weight: 600;
+      display:flex; align-items:center; gap:15px;
+      font-size:12px; font-weight:600;
     }
 
-    .home-nav a {
-      color: #555;
-      transition: 0.2s ease;
-    }
-
-    .home-nav a:hover,
-    .home-nav a.active {
-      color: #111;
-    }
+    .home-nav a { color:#555; transition:color .2s; white-space:nowrap; }
+    .home-nav a:hover,.home-nav a.active { color:#111; }
 
     .home-language {
-      display: flex;
-      align-items: center;
-
-      gap: 6px;
-
-      flex-shrink: 0;
+      display:flex; align-items:center; gap:6px; flex-shrink:0;
     }
 
     .home-language select {
-      height: 36px;
-
-      padding: 0 8px;
-
-      border: 1px solid #ddd;
-      border-radius: 8px;
-
-      background: #fff;
-      color: #222;
-
-      font-size: 12px;
-      font-weight: 600;
-
-      outline: none;
-    }
-
-    .home-language select:focus {
-      border-color: #d4af37;
+      height:36px; padding:0 8px;
+      border:1px solid #ddd; border-radius:8px;
+      background:#fff; color:#222; font-size:12px; font-weight:600;
     }
 
     .mobile-menu-toggle {
-      display: none;
-
-      width: 40px;
-      height: 40px;
-
-      border: 1px solid #ddd;
-      border-radius: 8px;
-
-      background: #fff;
-      color: #111;
-
-      font-size: 20px;
-      line-height: 1;
+      display:none; width:40px; height:40px;
+      border:1px solid #ddd; border-radius:8px;
+      background:#fff; color:#111; font-size:20px; cursor:pointer;
     }
 
     .home-mobile-nav {
-      display: none;
-
-      border-top: 1px solid #eee;
-
-      background: #fff;
-
-      padding: 8px 16px 14px;
+      display:none; border-top:1px solid #eee;
+      background:#fff; padding:8px 16px 14px;
     }
 
-    .home-mobile-nav.open {
-      display: block;
-    }
+    .home-mobile-nav.open { display:block; }
 
     .home-mobile-nav a {
-      display: block;
-
-      padding: 11px 8px;
-
-      border-bottom: 1px solid #f0f0f0;
-
-      color: #555;
-
-      font-size: 14px;
-      font-weight: 600;
+      display:block; padding:11px 8px;
+      border-bottom:1px solid #f0f0f0;
+      color:#555; font-size:14px; font-weight:600;
     }
 
-    .home-mobile-nav a:last-child {
-      border-bottom: 0;
+    .home-mobile-nav a:last-of-type { border-bottom:0; }
+    .home-mobile-nav a.active { color:#111; }
+
+    /* Google account interface */
+    .na-auth-area {
+      display:flex; flex-direction:column;
+      align-items:flex-end; justify-content:center;
+      gap:4px; flex-shrink:0; min-width:0;
     }
 
-    .home-mobile-nav a.active {
-      color: #111;
+    #naGoogleSignIn { min-height:40px; }
+    #naGoogleSignInMobile { min-height:40px; }
+
+    #naSignedIn {
+      align-items:center; justify-content:flex-end;
+      gap:8px; max-width:220px;
+      color:#222; font-size:12px; font-weight:700;
     }
 
+    #naSignedIn:not([hidden]) { display:flex; }
 
-    /* =====================================================
-       HERO
-       ===================================================== */
+    #naUserName {
+      max-width:120px; overflow:hidden;
+      text-overflow:ellipsis; white-space:nowrap;
+    }
 
+    .na-signout {
+      border:1px solid #ddd; border-radius:7px;
+      background:#fff; color:#222;
+      padding:8px 10px; font-size:12px;
+      font-weight:700; cursor:pointer;
+    }
+
+    .na-signout:hover { border-color:#d4af37; }
+
+    .na-auth-message {
+      max-width:240px; margin:0;
+      color:#9a6700; font-size:11px;
+      line-height:1.4;
+    }
+
+    .na-mobile-auth {
+      display:none; padding:12px 8px;
+      border-top:1px solid #eee;
+    }
+
+    #naMobileSignedIn {
+      align-items:center; justify-content:space-between;
+      gap:8px; color:#222; font-size:13px; font-weight:700;
+    }
+
+    #naMobileSignedIn:not([hidden]) { display:flex; }
+
+    /* Hero */
     .home-hero {
-      padding: 75px 20px 60px;
-
-      background:
-        radial-gradient(
-          circle at 20% 15%,
-          rgba(212,175,55,0.08),
-          transparent 28%
-        ),
-        #111;
-
-      color: #fff;
-
-      text-align: center;
+      padding:75px 20px 60px;
+      background:radial-gradient(circle at 20% 15%,rgba(212,175,55,.08),transparent 28%),#111;
+      color:#fff; text-align:center;
     }
 
-    .home-hero-inner {
-      width: min(1000px, 100%);
-      margin: 0 auto;
-    }
+    .home-hero-inner { width:min(1000px,100%); margin:0 auto; }
 
     .home-eyebrow {
-      display: inline-block;
-
-      margin-bottom: 18px;
-
-      color: #d4af37;
-
-      font-size: 12px;
-      font-weight: 800;
-
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      display:inline-block; margin-bottom:18px;
+      color:#d4af37; font-size:12px; font-weight:800;
+      letter-spacing:2px; text-transform:uppercase;
     }
 
     .home-hero h1 {
-      max-width: 900px;
-
-      margin: 0 auto 18px;
-
-      font-size: clamp(38px, 7vw, 72px);
-      line-height: 1.02;
-
-      letter-spacing: -2.5px;
+      max-width:900px; margin:0 auto 18px;
+      font-size:clamp(38px,7vw,72px);
+      line-height:1.02; letter-spacing:-2.5px;
     }
 
-    .home-hero h1 .gold {
-      color: #d4af37;
-    }
+    .home-hero h1 .gold { color:#d4af37; }
 
     .home-hero p {
-      max-width: 740px;
-
-      margin: 0 auto;
-
-      color: #bcbcbc;
-
-      font-size: 17px;
-      line-height: 1.75;
+      max-width:740px; margin:0 auto;
+      color:#bcbcbc; font-size:17px; line-height:1.75;
     }
 
-
-    /* =====================================================
-       SEARCH
-       ===================================================== */
-
-    .home-search-wrapper {
-      width: min(950px, 100%);
-
-      margin: 38px auto 0;
-    }
+    /* Search */
+    .home-search-wrapper { width:min(950px,100%); margin:38px auto 0; }
 
     .home-search {
-      display: grid;
-
-      grid-template-columns:
-        minmax(0, 1fr)
-        minmax(0, 1fr)
-        auto;
-
-      gap: 10px;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;
+      gap:10px;
     }
 
-    .home-search-field {
-      text-align: left;
-    }
+    .home-search-field { text-align:left; }
 
     .home-search-field label {
-      display: block;
-
-      margin: 0 0 7px 3px;
-
-      color: #999;
-
-      font-size: 12px;
-      font-weight: 700;
+      display:block; margin:0 0 7px 3px;
+      color:#999; font-size:12px; font-weight:700;
     }
 
     .home-search-field input {
-      width: 100%;
-      height: 54px;
-
-      padding: 0 16px;
-
-      border: 1px solid #333;
-      border-radius: 10px;
-
-      background: #181818;
-      color: #fff;
-
-      outline: none;
-
-      box-sizing: border-box;
+      width:100%; height:54px; padding:0 16px;
+      border:1px solid #333; border-radius:10px;
+      background:#181818; color:#fff; outline:none;
     }
 
-    .home-search-field input::placeholder {
-      color: #777;
-    }
-
-    .home-search-field input:focus {
-      border-color: #d4af37;
-    }
+    .home-search-field input::placeholder { color:#777; }
+    .home-search-field input:focus { border-color:#d4af37; }
 
     .home-search-button {
-      align-self: end;
-
-      height: 54px;
-
-      padding: 0 26px;
-
-      border: 0;
-      border-radius: 10px;
-
-      background: #d4af37;
-      color: #111;
-
-      font-weight: 800;
-
-      cursor: pointer;
-
-      transition: 0.2s ease;
+      align-self:end; height:54px; padding:0 26px;
+      border:0; border-radius:10px;
+      background:#d4af37; color:#111;
+      font-weight:800; cursor:pointer; transition:.2s;
     }
 
-    .home-search-button:hover {
-      background: #e2c35c;
-    }
+    .home-search-button:hover { background:#e2c35c; }
 
     .home-location {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      flex-wrap: wrap;
-
-      gap: 10px;
-
-      margin-top: 14px;
+      display:flex; align-items:center; justify-content:center;
+      flex-wrap:wrap; gap:10px; margin-top:14px;
     }
 
     .home-location-button {
-      min-height: 42px;
-
-      padding: 9px 16px;
-
-      border: 1px solid #444;
-      border-radius: 9px;
-
-      background: #181818;
-      color: #fff;
-
-      font-size: 13px;
-      font-weight: 700;
-
-      cursor: pointer;
-
-      transition: 0.2s ease;
+      min-height:42px; padding:9px 16px;
+      border:1px solid #444; border-radius:9px;
+      background:#181818; color:#fff;
+      font-size:13px; font-weight:700; cursor:pointer;
     }
 
-    .home-location-button:hover,
-    .home-location-button.active {
-      border-color: #d4af37;
-      color: #d4af37;
+    .home-location-button:hover,.home-location-button.active {
+      border-color:#d4af37; color:#d4af37;
     }
 
-    .home-location-message {
-      color: #aaa;
+    .home-location-message { color:#aaa; font-size:13px; }
+    .home-location-message.success { color:#d4af37; }
+    .home-location-message.error { color:#ff9999; }
 
-      font-size: 13px;
-    }
-
-    .home-location-message.success {
-      color: #d4af37;
-    }
-
-    .home-location-message.error {
-      color: #ff9999;
-    }
-
-
-    /* =====================================================
-       MOVING COUNTRY FLAGS (FIXED)
-       ===================================================== */
-
+    /* Country flags */
     .countries-marquee {
-      overflow: hidden;
-      background: #0b0b0b;
-      border-top: 1px solid #1a1a1a;
-      border-bottom: 1px solid #1a1a1a;
-      position: relative;
+      overflow:hidden; background:#0b0b0b;
+      border-top:1px solid #1a1a1a;
+      border-bottom:1px solid #1a1a1a;
     }
 
     .countries-marquee-track {
-      display: flex;
-      width: max-content;
-      animation: countryMarquee 45s linear infinite;
-      will-change: transform;
-    }
-
-    @media (min-width: 761px) {
-      .countries-marquee-track {
-        animation-duration: 70s;
-      }
+      display:flex; width:max-content;
+      animation:countryMarquee 45s linear infinite;
+      will-change:transform;
     }
 
     .countries-marquee-group {
-      display: flex;
-      align-items: center;
-      gap: 36px;
-      padding: 14px 20px;
-      white-space: nowrap;
+      display:flex; align-items:center; gap:36px;
+      padding:14px 20px; white-space:nowrap;
     }
 
     .country-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #cfcfcf;
-      font-size: 13px;
-      font-weight: 600;
-      white-space: nowrap;
+      display:inline-flex; align-items:center; gap:8px;
+      color:#cfcfcf; font-size:13px; font-weight:600;
     }
 
     .country-item img {
-      width: 22px;
-      height: 16px;
-      object-fit: cover;
-      border-radius: 2px;
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
-      flex-shrink: 0;
+      width:22px; height:16px; object-fit:cover;
+      border-radius:2px; box-shadow:0 0 0 1px rgba(255,255,255,.08);
+      flex-shrink:0;
     }
 
     .country-item::after {
-      content: "•";
-      margin-left: 28px;
-      color: #d4af37;
-      font-size: 11px;
+      content:"•"; margin-left:28px;
+      color:#d4af37; font-size:11px;
     }
 
-    .countries-marquee-group .country-item:last-child::after {
-      content: none;
-    }
+    .countries-marquee-group .country-item:last-child::after { content:none; }
 
     @keyframes countryMarquee {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      0% { transform:translateX(0); }
+      100% { transform:translateX(-50%); }
     }
 
-    .countries-marquee:hover .countries-marquee-track {
-      animation-play-state: paused;
-    }
+    .countries-marquee:hover .countries-marquee-track { animation-play-state:paused; }
 
-
-    /* =====================================================
-       GENERAL SECTIONS
-       ===================================================== */
-
+    /* General sections */
     .home-section {
-      width: min(1150px, calc(100% - 32px));
-
-      margin: 0 auto;
-
-      padding: 75px 0;
+      width:min(1150px,calc(100% - 32px));
+      margin:0 auto; padding:75px 0;
     }
 
-    .home-section-heading {
-      margin-bottom: 30px;
-    }
+    .home-section-heading { margin-bottom:30px; }
 
     .home-section-heading h2 {
-      margin: 0 0 9px;
-
-      font-size: clamp(28px, 4vw, 40px);
-
-      letter-spacing: -1px;
+      margin:0 0 9px; font-size:clamp(28px,4vw,40px);
+      letter-spacing:-1px;
     }
 
-    .home-section-heading p {
-      max-width: 680px;
+    .home-section-heading p { max-width:680px; color:#777; line-height:1.7; }
 
-      color: #777;
-
-      line-height: 1.7;
-    }
-
-
-    /* =====================================================
-       CATEGORY SECTION
-       ===================================================== */
-
-    .categories-section {
-      background: #0d0d0d;
-      color: #fff;
-
-      width: 100%;
-    }
+    /* Categories */
+    .categories-section { width:100%; background:#0d0d0d; color:#fff; }
 
     .categories-section-inner {
-      width: min(1150px, calc(100% - 32px));
-
-      margin: 0 auto;
-
-      padding: 75px 0;
+      width:min(1150px,calc(100% - 32px));
+      margin:0 auto; padding:75px 0;
     }
 
-    .categories-section .home-section-heading h2 {
-      color: #fff;
-    }
-
-    .categories-section .home-section-heading p {
-      color: #999;
-    }
+    .categories-section .home-section-heading h2 { color:#fff; }
+    .categories-section .home-section-heading p { color:#999; }
 
     .category-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-      gap: 14px;
+      display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px;
     }
 
     .category-card {
-      display: block;
-
-      min-height: 145px;
-
-      padding: 22px;
-
-      border: 1px solid #292929;
-      border-radius: 12px;
-
-      background:
-        linear-gradient(
-          145deg,
-          #181818,
-          #101010
-        );
-
-      color: #fff;
-
-      transition: 0.2s ease;
+      display:block; min-height:145px; padding:22px;
+      border:1px solid #292929; border-radius:12px;
+      background:linear-gradient(145deg,#181818,#101010);
+      color:#fff; transition:.2s;
     }
 
     .category-card:hover {
-      transform: translateY(-3px);
-
-      border-color: #d4af37;
-
-      box-shadow:
-        0 10px 30px
-        rgba(212,175,55,0.10);
+      transform:translateY(-3px); border-color:#d4af37;
+      box-shadow:0 10px 30px rgba(212,175,55,.1);
     }
 
-    .category-icon {
-      margin-bottom: 12px;
+    .category-icon { margin-bottom:12px; font-size:25px; }
+    .category-card h3 { margin:0 0 7px; color:#fff; font-size:15px; }
+    .category-card p { margin:0; color:#999; font-size:12px; line-height:1.5; }
 
-      font-size: 25px;
-    }
-
-    .category-card h3 {
-      margin: 0 0 7px;
-
-      color: #fff;
-      font-size: 15px;
-    }
-
-    .category-card p {
-      margin: 0;
-
-      color: #999;
-
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-
-    /* =====================================================
-       OWNER CTA
-       ===================================================== */
-
-    .owner-section {
-      background: #111;
-      color: #fff;
-    }
+    /* Business owner */
+    .owner-section { background:#111; color:#fff; }
 
     .owner-inner {
-      width: min(1150px, calc(100% - 32px));
-
-      margin: 0 auto;
-
-      padding: 70px 0;
-
-      display: grid;
-
-      grid-template-columns:
-        minmax(0, 1.3fr)
-        minmax(280px, 0.7fr);
-
-      gap: 45px;
-
-      align-items: center;
+      width:min(1150px,calc(100% - 32px));
+      margin:0 auto; padding:70px 0;
+      display:grid; grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr);
+      gap:45px; align-items:center;
     }
 
     .owner-content h2 {
-      margin: 0 0 14px;
-
-      font-size: clamp(28px, 4vw, 42px);
-
-      letter-spacing: -1px;
+      margin:0 0 14px; font-size:clamp(28px,4vw,42px); letter-spacing:-1px;
     }
 
-    .owner-content p {
-      max-width: 650px;
-
-      color: #bbb;
-
-      line-height: 1.75;
-    }
+    .owner-content p { max-width:650px; color:#bbb; line-height:1.75; }
 
     .owner-actions {
-      display: flex;
-
-      justify-content: flex-end;
-
-      gap: 10px;
-
-      flex-wrap: wrap;
+      display:flex; justify-content:flex-end;
+      gap:10px; flex-wrap:wrap;
     }
 
     .owner-button {
-      display: inline-block;
-
-      padding: 13px 18px;
-
-      border-radius: 9px;
-
-      font-size: 13px;
-      font-weight: 800;
+      display:inline-block; padding:13px 18px;
+      border-radius:9px; font-size:13px; font-weight:800;
     }
 
-    .owner-button.primary {
-      background: #d4af37;
-      color: #111;
-    }
+    .owner-button.primary { background:#d4af37; color:#111; }
 
     .owner-button.secondary {
-      border: 1px solid #444;
-
-      background: #181818;
-      color: #fff;
+      border:1px solid #444; background:#181818; color:#fff;
     }
 
-    .owner-button:hover {
-      opacity: 0.9;
-    }
+    .owner-button:hover { opacity:.9; }
 
-
-    /* =====================================================
-       WEBSITE SERVICES
-       ===================================================== */
-
-    .website-section {
-      background: #f7f7f5;
-    }
+    /* Website services */
+    .website-section { background:#f7f7f5; }
 
     .website-card {
-      display: grid;
-
-      grid-template-columns:
-        minmax(0, 1fr)
-        minmax(280px, 0.8fr);
-
-      gap: 35px;
-
-      padding: 42px;
-
-      border-radius: 16px;
-
-      background: #161616;
-      color: #fff;
-
-      overflow: hidden;
-
-      border: 1px solid #292929;
+      display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.8fr);
+      gap:35px; padding:42px; border-radius:16px;
+      background:#161616; color:#fff; overflow:hidden;
+      border:1px solid #292929;
     }
 
     .website-card h2 {
-      margin: 0 0 12px;
-
-      color: #fff;
-
-      font-size: clamp(28px, 4vw, 40px);
+      margin:0 0 12px; color:#fff; font-size:clamp(28px,4vw,40px);
     }
 
-    .website-card p {
-      max-width: 650px;
-
-      color: #bbb;
-
-      line-height: 1.75;
-    }
+    .website-card p { max-width:650px; color:#bbb; line-height:1.75; }
 
     .website-points {
-      display: grid;
-
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-      gap: 12px;
-
-      margin-top: 24px;
+      display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px; margin-top:24px;
     }
 
     .website-point {
-      padding: 14px;
-
-      border: 1px solid #303030;
-      border-radius: 10px;
-
-      background: #1e1e1e;
-
-      color: #ddd;
-
-      font-size: 12px;
-      font-weight: 600;
+      padding:14px; border:1px solid #303030;
+      border-radius:10px; background:#1e1e1e;
+      color:#ddd; font-size:12px; font-weight:600;
     }
 
     .website-visual {
-      min-height: 250px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border: 1px solid #303030;
-      border-radius: 14px;
-
-      background:
-        radial-gradient(
-          circle at 30% 25%,
-          rgba(212,175,55,0.16),
-          transparent 30%
-        ),
-        linear-gradient(
-          135deg,
-          #202020,
-          #111
-        );
-
-      color: #d4af37;
-
-      font-size: 64px;
-      font-weight: 800;
+      min-height:250px; display:flex; align-items:center;
+      justify-content:center; border:1px solid #303030;
+      border-radius:14px;
+      background:radial-gradient(circle at 30% 25%,rgba(212,175,55,.16),transparent 30%),linear-gradient(135deg,#202020,#111);
+      color:#d4af37; font-size:64px; font-weight:800;
     }
 
     .website-action {
-      display: inline-block;
-
-      margin-top: 25px;
-
-      padding: 13px 20px;
-
-      border-radius: 9px;
-
-      background: #d4af37;
-      color: #111;
-
-      font-size: 13px;
-      font-weight: 800;
-
-      transition: 0.2s ease;
+      display:inline-block; margin-top:25px; padding:13px 20px;
+      border-radius:9px; background:#d4af37; color:#111;
+      font-size:13px; font-weight:800; transition:.2s;
     }
 
-    .website-action:hover {
-      background: #e2c35c;
-      transform: translateY(-1px);
-    }
+    .website-action:hover { background:#e2c35c; transform:translateY(-1px); }
 
-
-    /* =====================================================
-       ABOUT
-       ===================================================== */
-
-    .about-section {
-      background: #fff;
-    }
+    /* About */
+    .about-section { background:#fff; }
 
     .about-grid {
-      display: grid;
-
-      grid-template-columns:
-        minmax(0, 0.8fr)
-        minmax(0, 1.2fr);
-
-      gap: 45px;
-
-      align-items: center;
+      display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);
+      gap:45px; align-items:center;
     }
 
     .about-mark {
-      min-height: 280px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 16px;
-
-      background:
-        radial-gradient(
-          circle at center,
-          rgba(212,175,55,0.15),
-          transparent 55%
-        ),
-        #111;
-
-      color: #d4af37;
-
-      font-size: 90px;
-      font-weight: 800;
+      min-height:280px; display:flex; align-items:center;
+      justify-content:center; border-radius:16px;
+      background:radial-gradient(circle at center,rgba(212,175,55,.15),transparent 55%),#111;
+      color:#d4af37; font-size:90px; font-weight:800;
     }
 
     .about-copy h2 {
-      margin: 0 0 14px;
-
-      font-size: clamp(28px, 4vw, 40px);
-
-      letter-spacing: -1px;
+      margin:0 0 14px; font-size:clamp(28px,4vw,40px); letter-spacing:-1px;
     }
 
-    .about-copy p {
-      margin-bottom: 14px;
-
-      color: #666;
-
-      line-height: 1.8;
-    }
+    .about-copy p { margin-bottom:14px; color:#666; line-height:1.8; }
 
     .about-button {
-      display: inline-block;
-
-      margin-top: 8px;
-
-      padding: 12px 18px;
-
-      border: 1px solid #ddd;
-      border-radius: 9px;
-
-      background: #fff;
-
-      font-size: 13px;
-      font-weight: 800;
+      display:inline-block; margin-top:8px; padding:12px 18px;
+      border:1px solid #ddd; border-radius:9px;
+      background:#fff; font-size:13px; font-weight:800;
     }
 
-    .about-button:hover {
-      border-color: #d4af37;
-    }
+    .about-button:hover { border-color:#d4af37; }
 
-
-    /* =====================================================
-       FOOTER
-       ===================================================== */
-
-    .home-footer {
-      border-top: 1px solid #e5e5e5;
-
-      background: #111;
-      color: #fff;
-    }
+    /* Footer */
+    .home-footer { border-top:1px solid #e5e5e5; background:#111; color:#fff; }
 
     .home-footer-inner {
-      width: min(1150px, calc(100% - 32px));
-
-      margin: 0 auto;
-
-      padding: 45px 0 25px;
+      width:min(1150px,calc(100% - 32px));
+      margin:0 auto; padding:45px 0 25px;
     }
 
     .footer-top {
-      display: grid;
-
-      grid-template-columns:
-        1.2fr 1fr 1fr;
-
-      gap: 30px;
-
-      padding-bottom: 30px;
+      display:grid; grid-template-columns:1.2fr 1fr 1fr;
+      gap:30px; padding-bottom:30px;
     }
 
     .footer-brand {
-      display: flex;
-      align-items: center;
-
-      gap: 9px;
-
-      font-size: 20px;
-      font-weight: 800;
+      display:flex; align-items:center; gap:9px;
+      font-size:20px; font-weight:800;
     }
 
-    .footer-brand img {
-      width: 34px;
-      height: 34px;
-
-      object-fit: contain;
-    }
+    .footer-brand img { width:34px; height:34px; object-fit:contain; }
 
     .footer-description {
-      max-width: 360px;
-
-      margin-top: 10px;
-
-      color: #aaa;
-
-      font-size: 13px;
-      line-height: 1.7;
+      max-width:360px; margin-top:10px;
+      color:#aaa; font-size:13px; line-height:1.7;
     }
 
     .footer-column h3 {
-      margin: 0 0 12px;
-
-      color: #d4af37;
-
-      font-size: 12px;
-      font-weight: 800;
-
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      margin:0 0 12px; color:#d4af37;
+      font-size:12px; font-weight:800;
+      letter-spacing:1px; text-transform:uppercase;
     }
 
     .footer-column a {
-      display: block;
-
-      margin-bottom: 8px;
-
-      color: #aaa;
-
-      font-size: 13px;
+      display:block; margin-bottom:8px;
+      color:#aaa; font-size:13px;
     }
 
-    .footer-column a:hover {
-      color: #fff;
-    }
+    .footer-column a:hover { color:#fff; }
 
     .footer-bottom {
-      padding-top: 20px;
-
-      border-top: 1px solid #292929;
-
-      display: flex;
-
-      justify-content: space-between;
-
-      gap: 20px;
-
-      color: #777;
-
-      font-size: 12px;
+      padding-top:20px; border-top:1px solid #292929;
+      display:flex; justify-content:space-between;
+      gap:20px; color:#777; font-size:12px;
     }
 
+    /* Right-to-left languages */
+    html[dir="rtl"] body { text-align:right; }
+    html[dir="rtl"] .home-logo { flex-direction:row-reverse; }
+    html[dir="rtl"] .home-search-field { text-align:right; }
+    html[dir="rtl"] .owner-actions { justify-content:flex-start; }
 
-    /* =====================================================
-       RTL
-       ===================================================== */
-
-    html[dir="rtl"] body {
-      text-align: right;
+    /* Responsive */
+    @media (min-width:761px) {
+      .countries-marquee-track { animation-duration:70s; }
     }
 
-    html[dir="rtl"] .home-logo {
-      flex-direction: row-reverse;
+    @media (max-width:1150px) {
+      .home-nav { gap:9px; font-size:11px; }
+      .home-header-inner { gap:10px; }
     }
 
-    html[dir="rtl"] .home-search-field {
-      text-align: right;
+    @media (max-width:1000px) {
+      .category-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .owner-inner,.website-card,.about-grid { grid-template-columns:1fr; }
+      .owner-actions { justify-content:flex-start; }
+      .about-mark { min-height:220px; }
+      .footer-top { grid-template-columns:repeat(2,minmax(0,1fr)); }
     }
 
-    html[dir="rtl"] .owner-actions {
-      justify-content: flex-start;
+    @media (max-width:760px) {
+      .home-header-inner { min-height:62px; }
+      .home-nav { display:none; }
+      .mobile-menu-toggle { display:block; }
+      .home-language { margin-left:auto; }
+      .na-auth-area { display:none; }
+      .na-mobile-auth { display:block; }
+      .home-search { grid-template-columns:1fr; }
+      .home-search-button { width:100%; }
+      .category-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .website-points { grid-template-columns:1fr; }
+      .footer-top { grid-template-columns:1fr; }
+      .footer-bottom { flex-direction:column; }
+      .countries-marquee-track { animation-duration:30s; }
     }
 
-
-    /* =====================================================
-       RESPONSIVE
-       ===================================================== */
-
-    @media (max-width: 1000px) {
-
-      .category-grid {
-        grid-template-columns:
-          repeat(3, minmax(0, 1fr));
+    @media (max-width:480px) {
+      .home-header-inner { width:calc(100% - 20px); }
+      .home-logo { font-size:18px; }
+      .home-logo img { width:33px; height:33px; }
+      .home-language select { max-width:105px; }
+      .home-section,.categories-section-inner,.owner-inner {
+        width:calc(100% - 20px);
       }
-
-      .home-nav {
-        gap: 10px;
-      }
-
-      .owner-inner,
-      .website-card,
-      .about-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .owner-actions {
-        justify-content: flex-start;
-      }
-
-      .about-mark {
-        min-height: 220px;
-      }
-
-      .footer-top {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-      }
-
+      .category-grid { grid-template-columns:1fr; }
+      .website-card { padding:26px; }
+      .countries-marquee-group { gap:22px; }
     }
-
-
-    @media (max-width: 760px) {
-
-      .home-header-inner {
-        min-height: 62px;
-      }
-
-      .home-nav {
-        display: none;
-      }
-
-      .mobile-menu-toggle {
-        display: block;
-      }
-
-      .home-language {
-        margin-left: auto;
-      }
-
-      .home-search {
-        grid-template-columns: 1fr;
-      }
-
-      .home-search-button {
-        width: 100%;
-      }
-
-      .category-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-      }
-
-      .website-points {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-top {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-bottom {
-        flex-direction: column;
-      }
-
-      .countries-marquee-track {
-        animation-duration: 30s;
-      }
-
-    }
-
-
-    @media (max-width: 480px) {
-
-      .home-header-inner {
-        width: min(100% - 20px, 1200px);
-      }
-
-      .home-logo {
-        font-size: 18px;
-      }
-
-      .home-logo img {
-        width: 33px;
-        height: 33px;
-      }
-
-      .home-language select {
-        max-width: 105px;
-      }
-
-      .home-section {
-        width: min(100% - 20px, 1150px);
-      }
-
-      .categories-section-inner {
-        width: min(100% - 20px, 1150px);
-      }
-
-      .category-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .website-card {
-        padding: 26px;
-      }
-
-      .owner-inner {
-        width: min(100% - 20px, 1150px);
-      }
-
-      .countries-marquee-group {
-        gap: 22px;
-      }
-
-    }
-
   </style>
-
 </head>
-
 
 <body class="home-page">
 
+<header class="home-header">
+  <div class="home-header-inner">
+    <a href="index.html" class="home-logo" aria-label="NearAfrica Home">
+      <img src="logo.png" alt="NearAfrica">
+      <span class="home-logo-text">NearAfrica</span>
+    </a>
 
-  <!-- =====================================================
-       HEADER
-       ===================================================== -->
-
-  <header class="home-header">
-
-    <div class="home-header-inner">
-
-      <a
-        href="index.html"
-        class="home-logo"
-        aria-label="NearAfrica Home"
-      >
-
-        <img
-          src="logo.png"
-          alt="NearAfrica"
-        >
-
-        <span class="home-logo-text">
-          NearAfrica
-        </span>
-
-      </a>
-
-
-      <nav
-        class="home-nav"
-        aria-label="Main navigation"
-      >
-
-        <a
-          href="index.html"
-          class="active"
-          data-i18n="nav.home"
-        >
-          Home
-        </a>
-
-
-        <a
-          href="explore.html"
-          data-i18n="nav.explore"
-        >
-          Explore
-        </a>
-
-
-        <a
-          href="help-wanted.html"
-        >
-          Help Wanted
-        </a>
-
-
-        <a
-          href="list-business.html"
-          data-i18n="nav.listBusiness"
-        >
-          List Your Business
-        </a>
-
-
-        <a
-          href="claim-business.html"
-          data-i18n="nav.claimBusiness"
-        >
-          Claim Business
-        </a>
-
-
-        <!-- OWNER DASHBOARD -->
-        <a
-          href="pages/owner-dashboard.html"
-        >
-          Owner Dashboard
-        </a>
-
-
-        <a
-          href="#about"
-          data-i18n="nav.about"
-        >
-          About
-        </a>
-
-
-        <a
-          href="contact.html"
-          data-i18n="nav.contact"
-        >
-          Contact
-        </a>
-
-      </nav>
-
-
-      <div class="home-language">
-
-        <span aria-hidden="true">🌐</span>
-
-        <select
-          id="languageSelector"
-          data-language-selector
-          aria-label="Language"
-        >
-
-          <option value="en">English</option>
-          <option value="fr">Français</option>
-          <option value="ar">العربية</option>
-          <option value="pt">Português</option>
-          <option value="sw">Kiswahili</option>
-          <option value="ha">Hausa</option>
-          <option value="yo">Yorùbá</option>
-          <option value="ig">Igbo</option>
-
-        </select>
-
-      </div>
-
-
-      <button
-        id="mobileMenuToggle"
-        class="mobile-menu-toggle"
-        type="button"
-        aria-label="Open menu"
-        aria-expanded="false"
-      >
-        ☰
-      </button>
-
-    </div>
-
-
-    <nav
-      id="mobileNav"
-      class="home-mobile-nav"
-      aria-label="Mobile navigation"
-    >
-
-      <a
-        href="index.html"
-        class="active"
-        data-i18n="nav.home"
-      >
-        Home
-      </a>
-
-
-      <a
-        href="explore.html"
-        data-i18n="nav.explore"
-      >
-        Explore
-      </a>
-
-
-      <a
-        href="help-wanted.html"
-      >
-        Help Wanted
-      </a>
-
-
-      <a
-        href="list-business.html"
-        data-i18n="nav.listBusiness"
-      >
-        List Your Business
-      </a>
-
-
-      <a
-        href="claim-business.html"
-        data-i18n="nav.claimBusiness"
-      >
-        Claim Business
-      </a>
-
-
-      <!-- OWNER DASHBOARD -->
-      <a
-        href="pages/owner-dashboard.html"
-      >
-        Owner Dashboard
-      </a>
-
-
-      <a
-        href="#about"
-        data-i18n="nav.about"
-      >
-        About
-      </a>
-
-
-      <a
-        href="contact.html"
-        data-i18n="nav.contact"
-      >
-        Contact
-      </a>
-
+    <nav class="home-nav" aria-label="Main navigation">
+      <a href="index.html" class="active" data-i18n="nav.home">Home</a>
+      <a href="explore.html" data-i18n="nav.explore">Explore</a>
+      <a href="help-wanted.html">Help Wanted</a>
+      <a href="list-business.html" data-i18n="nav.listBusiness">List Your Business</a>
+      <a href="claim-business.html" data-i18n="nav.claimBusiness">Claim Business</a>
+      <a href="pages/owner-dashboard.html">Owner Dashboard</a>
+      <a href="#about" data-i18n="nav.about">About</a>
+      <a href="contact.html" data-i18n="nav.contact">Contact</a>
     </nav>
 
-  </header>
-
-
-  <!-- =====================================================
-       HERO
-       ===================================================== -->
-
-  <main>
-
-    <section class="home-hero">
-
-      <div class="home-hero-inner">
-
-        <span class="home-eyebrow">
-          DISCOVER AFRICA. START LOCAL.
-        </span>
-
-
-        <h1>
-          Find Great Businesses
-          <span class="gold">Near You.</span>
-        </h1>
-
-
-        <p>
-          Discover businesses, services, shops,
-          restaurants, hotels and opportunities near
-          you across Africa.
-        </p>
-
-
-        <div class="home-search-wrapper">
-
-          <form
-            id="searchForm"
-            class="home-search"
-            action="explore.html"
-            method="get"
-          >
-
-            <div class="home-search-field">
-
-              <label
-                for="search"
-                data-i18n="search.whatLookingFor"
-              >
-                What are you looking for?
-              </label>
-
-              <input
-                id="search"
-                name="search"
-                type="text"
-                data-i18n-placeholder="search.searchPlaceholder"
-                placeholder="e.g. barber, hotel, restaurant..."
-                autocomplete="off"
-              >
-
-            </div>
-
-
-            <div class="home-search-field">
-
-              <label
-                for="location"
-                data-i18n="search.location"
-              >
-                Location
-              </label>
-
-              <input
-                id="location"
-                name="location"
-                type="text"
-                data-i18n-placeholder="search.locationPlaceholder"
-                placeholder="e.g. Aba, Lagos, Abuja..."
-                autocomplete="off"
-              >
-
-            </div>
-
-
-            <button
-              type="submit"
-              class="home-search-button"
-              data-i18n="search.search"
-            >
-              Search
-            </button>
-
-          </form>
-
-
-          <div class="home-location">
-
-            <button
-              id="useLocation"
-              class="home-location-button"
-              type="button"
-              data-i18n="search.useMyLocation"
-            >
-              📍 Use My Location
-            </button>
-
-
-            <span
-              id="locationMessage"
-              class="home-location-message"
-              aria-live="polite"
-            >
-              Search by area or use your current location.
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         MOVING COUNTRY FLAGS
-         =================================================== -->
-
-    <section class="countries-marquee" aria-label="Explore African countries">
-      <div class="countries-marquee-track">
-
-        <!-- First set -->
-        <div class="countries-marquee-group">
-          <span class="country-item"><img src="https://flagcdn.com/w40/ng.png" alt="Nigeria" width="22" height="16"> Nigeria</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/gh.png" alt="Ghana" width="22" height="16"> Ghana</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/za.png" alt="South Africa" width="22" height="16"> South Africa</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/ke.png" alt="Kenya" width="22" height="16"> Kenya</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/ug.png" alt="Uganda" width="22" height="16"> Uganda</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/tz.png" alt="Tanzania" width="22" height="16"> Tanzania</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/rw.png" alt="Rwanda" width="22" height="16"> Rwanda</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/eg.png" alt="Egypt" width="22" height="16"> Egypt</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/ma.png" alt="Morocco" width="22" height="16"> Morocco</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/et.png" alt="Ethiopia" width="22" height="16"> Ethiopia</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/sn.png" alt="Senegal" width="22" height="16"> Senegal</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/cm.png" alt="Cameroon" width="22" height="16"> Cameroon</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/ci.png" alt="Côte d'Ivoire" width="22" height="16"> Côte d'Ivoire</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/zm.png" alt="Zambia" width="22" height="16"> Zambia</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/zw.png" alt="Zimbabwe" width="22" height="16"> Zimbabwe</span>
-        </div>
-
-        <!-- Duplicate set for seamless scrolling -->
-        <div class="countries-marquee-group" aria-hidden="true">
-          <span class="country-item"><img src="https://flagcdn.com/w40/ng.png" alt="" width="22" height="16"> Nigeria</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/gh.png" alt="" width="22" height="16"> Ghana</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/za.png" alt="" width="22" height="16"> South Africa</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/ke.png" alt="" width="22" height="16"> Kenya</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/ug.png" alt="" width="22" height="16"> Uganda</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/tz.png" alt="" width="22" height="16"> Tanzania</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/rw.png" alt="" width="22" height="16"> Rwanda</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/eg.png" alt="" width="22" height="16"> Egypt</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/ma.png" alt="" width="22" height="16"> Morocco</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/et.png" alt="" width="22" height="16"> Ethiopia</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/sn.png" alt="" width="22" height="16"> Senegal</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/cm.png" alt="" width="22" height="16"> Cameroon</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/ci.png" alt="" width="22" height="16"> Côte d'Ivoire</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/zm.png" alt="" width="22" height="16"> Zambia</span>
-          <span class="country-item"><img src="https://flagcdn.com/w40/zw.png" alt="" width="22" height="16"> Zimbabwe</span>
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- ===================================================
-         CATEGORIES
-         =================================================== -->
-
-    <section class="categories-section">
-
-      <div class="categories-section-inner">
-
-        <div class="home-section-heading">
-
-          <h2>
-            Explore Categories
-          </h2>
-
-          <p>
-            Find the businesses and services you need,
-            organized into easy-to-browse categories.
-          </p>
-
-        </div>
-
-
-        <div class="category-grid">
-
-
-          <a
-            class="category-card"
-            href="explore.html?category=Restaurants%20%26%20Food"
-          >
-
-            <div class="category-icon">🍽️</div>
-
-            <h3 data-i18n="categories.restaurants">
-              Restaurants & Food
-            </h3>
-
-            <p>
-              Food, restaurants and dining.
-            </p>
-
-          </a>
-
-
-          <a
-            class="category-card"
-            href="explore.html?category=Hotels%20%26%20Accommodation"
-          >
-
-            <div class="category-icon">🏨</div>
-
-            <h3 data-i18n="categories.hotels">
-              Hotels & Accommodation
-            </h3>
-
-            <p>
-              Hotels, lodges and places to stay.
-            </p>
-
-          </a>
-
-
-          <a
-            class="category-card"
-            href="explore.html?category=Beauty%20%26%20Spa"
-          >
-
-            <div class="category-icon">💆</div>
-
-            <h3 data-i18n="categories.beauty">
-              Beauty & Spa
-            </h3>
-
-            <p>
-              Salons, spas and beauty services.
-            </p>
-
-          </a>
-
-
-          <a
-            class="category-card"
-            href="explore.html?category=Health%20%26%20Medical"
-          >
-
-            <div class="category-icon">🏥</div>
-
-            <h3 data-i18n="categories.health">
-              Health & Medical
-            </h3>
-
-            <p>
-              Healthcare and medical services.
-            </p>
-
-          </a>
-
-
-          <a
-            class="category-card"
-            href="explore.html?category=Shopping%20%26%20Retail"
-          >
-
-            <div class="category-icon">🛍️</div>
-
-            <h3 data-i18n="categories.shopping">
-              Shopping & Retail
-            </h3>
-
-            <p>
-              Shops, stores and retail businesses.
-            </p>
-
-          </a>
-
-
-          <a
-            class="category-card"
-            href="explore.html?category=Supermarkets"
-          >
-
-            <div class="category-icon">🛒</div>
-
-            <h3 data-i18n="categories.supermarkets">
-              Supermarkets
-            </h3>
-
-            <p>
-              Supermarkets and everyday shopping.
-            </p>
-
-          </a>
-
-
-          <a
-            class="category-card"
-            href="explore.html?category=Professional%20Services"
-          >
-
-            <div class="category-icon">💼</div>
-
-            <h3 data-i18n="categories.professional">
-              Professional Services
-            </h3>
-
-            <p>
-              Businesses and professional services.
-            </p>
-
-          </a>
-
-
-          <a
-            class="category-card"
-            href="explore.html?category=Education"
-          >
-
-            <div class="category-icon">🎓</div>
-
-            <h3 data-i18n="categories.education">
-              Education
-            </h3>
-
-            <p>
-              Schools, training and education.
-            </p>
-
-          </a>
-
-
-          <a
-            class="category-card"
-            href="explore.html?category=Real%20Estate"
-          >
-
-            <div class="category-icon">🏠</div>
-
-            <h3 data-i18n="categories.realEstate">
-              Real Estate
-            </h3>
-
-            <p>
-              Property and real estate services.
-            </p>
-
-          </a>
-
-
-          <a
-            class="category-card"
-            href="explore.html?category=Automotive"
-          >
-
-            <div class="category-icon">🚗</div>
-
-            <h3 data-i18n="categories.automotive">
-              Automotive
-            </h3>
-
-            <p>
-              Cars, repairs and automotive services.
-            </p>
-
-          </a>
-
-
-          <a
-            class="category-card"
-            href="explore.html?category=Travel%20%26%20Tourism"
-          >
-
-            <div class="category-icon">✈️</div>
-
-            <h3 data-i18n="categories.travel">
-              Travel & Tourism
-            </h3>
-
-            <p>
-              Travel businesses and tourism.
-            </p>
-
-          </a>
-
-
-          <a
-            class="category-card"
-            href="explore.html?category=Technology"
-          >
-
-            <div class="category-icon">💻</div>
-
-            <h3 data-i18n="categories.technology">
-              Technology
-            </h3>
-
-            <p>
-              Technology companies and services.
-            </p>
-
-          </a>
-
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         BUSINESS OWNER
-         =================================================== -->
-
-    <section class="owner-section">
-
-      <div class="owner-inner">
-
-        <div class="owner-content">
-
-          <h2>
-            Own a Business?
-          </h2>
-
-          <p>
-            Get your business discovered by people
-            searching for products and services near
-            them. Add your business to NearAfrica,
-            claim an existing listing, or manage a
-            business you already own.
-          </p>
-
-        </div>
-
-
-        <div class="owner-actions">
-
-          <a
-            href="list-business.html"
-            class="owner-button primary"
-            data-i18n="nav.listBusiness"
-          >
-            List Your Business
-          </a>
-
-
-          <a
-            href="claim-business.html"
-            class="owner-button secondary"
-            data-i18n="nav.claimBusiness"
-          >
-            Claim Business
-          </a>
-
-
-          <a
-            href="pages/owner-dashboard.html"
-            class="owner-button secondary"
-          >
-            Owner Dashboard
-          </a>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         WEBSITE SERVICES
-         =================================================== -->
-
-    <section class="home-section website-section">
-
-      <div class="website-card">
-
-        <div>
-
-          <h2>
-            Need a Website?
-          </h2>
-
-          <p>
-            Want a professional website for your
-            business? We design and build modern,
-            mobile-friendly websites for small
-            businesses, brands and entrepreneurs.
-          </p>
-
-
-          <div class="website-points">
-
-            <div class="website-point">
-              📱 Mobile responsive
-            </div>
-
-            <div class="website-point">
-              ⚡ Fast loading
-            </div>
-
-            <div class="website-point">
-              🎨 Professional design
-            </div>
-
-            <div class="website-point">
-              📈 Built to grow
-            </div>
-
-          </div>
-
-
-          <a
-            href="https://wa.me/2349134827121"
-            class="website-action"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Order a Website
-          </a>
-
-        </div>
-
-
-        <div
-          class="website-visual"
-          aria-hidden="true"
-        >
-          &lt;/&gt;
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         ABOUT
-         =================================================== -->
-
-    <section
-      class="home-section about-section"
-      id="about"
-    >
-
-      <div class="about-grid">
-
-        <div
-          class="about-mark"
-          aria-hidden="true"
-        >
-          N
-        </div>
-
-
-        <div class="about-copy">
-
-          <h2>
-            About NearAfrica
-          </h2>
-
-          <p>
-            NearAfrica is a business discovery platform
-            designed to help people find businesses,
-            services and opportunities around them.
-          </p>
-
-          <p>
-            We are starting with Nigeria and building
-            toward a broader African discovery platform.
-          </p>
-
-
-          <a
-            href="explore.html"
-            class="about-button"
-            data-i18n="nav.explore"
-          >
-            Start Exploring
-          </a>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         FINAL CTA
-         =================================================== -->
-
-    <section class="home-hero">
-
-      <div class="home-hero-inner">
-
-        <span class="home-eyebrow">
-          YOUR NEXT DISCOVERY IS HERE
-        </span>
-
-
-        <h2
-          style="
-            max-width:800px;
-            margin:0 auto 16px;
-            font-size:clamp(30px,5vw,52px);
-            line-height:1.08;
-            letter-spacing:-1.5px;
-          "
-        >
-          Start discovering businesses near you.
-        </h2>
-
-
-        <p
-          style="
-            margin:0 auto;
-            max-width:680px;
-          "
-        >
-          Search by business, service or location
-          and discover what is around you.
-        </p>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- =====================================================
-       FOOTER
-       ===================================================== -->
-
-  <footer class="home-footer">
-
-    <div class="home-footer-inner">
-
-      <div class="footer-top">
-
-        <div>
-
-          <div class="footer-brand">
-
-            <img
-              src="logo.png"
-              alt="NearAfrica"
-            >
-
-            <span>
-              NearAfrica
-            </span>
-
-          </div>
-
-          <p class="footer-description">
-            Find Great Businesses Near You.
-          </p>
-
-        </div>
-
-
-        <div class="footer-column">
-
-          <h3>NearAfrica</h3>
-
-
-          <a
-            href="index.html"
-            data-i18n="nav.home"
-          >
-            Home
-          </a>
-
-
-          <a
-            href="explore.html"
-            data-i18n="nav.explore"
-          >
-            Explore
-          </a>
-
-
-          <a
-            href="help-wanted.html"
-          >
-            Help Wanted
-          </a>
-
-
-          <a
-            href="list-business.html"
-            data-i18n="nav.listBusiness"
-          >
-            List Your Business
-          </a>
-
-
-          <a
-            href="claim-business.html"
-            data-i18n="nav.claimBusiness"
-          >
-            Claim Business
-          </a>
-
-
-          <a
-            href="pages/owner-dashboard.html"
-          >
-            Owner Dashboard
-          </a>
-
-        </div>
-
-
-        <div class="footer-column">
-
-          <h3>Information</h3>
-
-
-          <a
-            href="#about"
-            data-i18n="nav.about"
-          >
-            About
-          </a>
-
-
-          <a
-            href="contact.html"
-            data-i18n="nav.contact"
-          >
-            Contact
-          </a>
-
-
-          <a
-            href="privacy.html"
-            data-i18n="footer.privacy"
-          >
-            Privacy Policy
-          </a>
-
-
-          <a
-            href="terms.html"
-            data-i18n="footer.terms"
-          >
-            Terms of Service
-          </a>
-
-
-          <a
-            href="listing-policy.html"
-            data-i18n="footer.listingPolicy"
-          >
-            Listing Policy
-          </a>
-
-        </div>
-
-      </div>
-
-
-      <div class="footer-bottom">
-
-        <span>
-          © 2026 NearAfrica
-        </span>
-
-
-        <span>
-          Find Great Businesses Near You.
-        </span>
-
-      </div>
-
+    <div class="home-language">
+      <span aria-hidden="true">🌐</span>
+      <select id="languageSelector" data-language-selector aria-label="Language">
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="ar">العربية</option>
+        <option value="pt">Português</option>
+        <option value="sw">Kiswahili</option>
+        <option value="ha">Hausa</option>
+        <option value="yo">Yorùbá</option>
+        <option value="ig">Igbo</option>
+      </select>
     </div>
 
-  </footer>
+    <div class="na-auth-area">
+      <div id="naGoogleSignIn"></div>
+      <div id="naSignedIn" hidden>
+        <span id="naUserName"></span>
+        <button id="naSignOut" class="na-signout" type="button">Sign out</button>
+      </div>
+      <p id="naAuthMessage" class="na-auth-message" role="status" aria-live="polite"></p>
+    </div>
 
+    <button id="mobileMenuToggle" class="mobile-menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
 
-  <!-- =====================================================
-       JAVASCRIPT
-       ===================================================== -->
+  <nav id="mobileNav" class="home-mobile-nav" aria-label="Mobile navigation">
+    <a href="index.html" class="active" data-i18n="nav.home">Home</a>
+    <a href="explore.html" data-i18n="nav.explore">Explore</a>
+    <a href="help-wanted.html">Help Wanted</a>
+    <a href="list-business.html" data-i18n="nav.listBusiness">List Your Business</a>
+    <a href="claim-business.html" data-i18n="nav.claimBusiness">Claim Business</a>
+    <a href="pages/owner-dashboard.html">Owner Dashboard</a>
+    <a href="#about" data-i18n="nav.about">About</a>
+    <a href="contact.html" data-i18n="nav.contact">Contact</a>
 
-  <script src="config.js"></script>
+    <div class="na-mobile-auth">
+      <div id="naGoogleSignInMobile"></div>
+      <div id="naMobileSignedIn" hidden>
+        <span id="naMobileUserName"></span>
+        <button id="naMobileSignOut" class="na-signout" type="button">Sign out</button>
+      </div>
+      <p id="naMobileAuthMessage" class="na-auth-message" role="status" aria-live="polite"></p>
+    </div>
+  </nav>
+</header>
 
-  <script src="js/translations.js"></script>
+<main>
+  <section class="home-hero">
+    <div class="home-hero-inner">
+      <span class="home-eyebrow">DISCOVER AFRICA. START LOCAL.</span>
+      <h1>Find Great Businesses <span class="gold">Near You.</span></h1>
+      <p>Discover businesses, services, shops, restaurants, hotels and opportunities near you across Africa.</p>
 
-  <script src="js/i18n.js"></script>
+      <div class="home-search-wrapper">
+        <form id="searchForm" class="home-search" action="explore.html" method="get">
+          <div class="home-search-field">
+            <label for="search" data-i18n="search.whatLookingFor">What are you looking for?</label>
+            <input id="search" name="search" type="text" data-i18n-placeholder="search.searchPlaceholder" placeholder="e.g. barber, hotel, restaurant..." autocomplete="off">
+          </div>
+          <div class="home-search-field">
+            <label for="location" data-i18n="search.location">Location</label>
+            <input id="location" name="location" type="text" data-i18n-placeholder="search.locationPlaceholder" placeholder="e.g. Aba, Lagos, Abuja..." autocomplete="off">
+          </div>
+          <button type="submit" class="home-search-button" data-i18n="search.search">Search</button>
+        </form>
 
-  <script src="utils.js"></script>
+        <div class="home-location">
+          <button id="useLocation" class="home-location-button" type="button" data-i18n="search.useMyLocation">📍 Use My Location</button>
+          <span id="locationMessage" class="home-location-message" aria-live="polite">Search by area or use your current location.</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <script src="map.js"></script>
+  <section class="countries-marquee" aria-label="Explore African countries">
+    <div class="countries-marquee-track">
+      <div class="countries-marquee-group">
+        <span class="country-item"><img src="https://flagcdn.com/w40/ng.png" alt="Nigeria" width="22" height="16"> Nigeria</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/gh.png" alt="Ghana" width="22" height="16"> Ghana</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/za.png" alt="South Africa" width="22" height="16"> South Africa</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/ke.png" alt="Kenya" width="22" height="16"> Kenya</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/ug.png" alt="Uganda" width="22" height="16"> Uganda</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/tz.png" alt="Tanzania" width="22" height="16"> Tanzania</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/rw.png" alt="Rwanda" width="22" height="16"> Rwanda</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/eg.png" alt="Egypt" width="22" height="16"> Egypt</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/ma.png" alt="Morocco" width="22" height="16"> Morocco</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/et.png" alt="Ethiopia" width="22" height="16"> Ethiopia</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/sn.png" alt="Senegal" width="22" height="16"> Senegal</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/cm.png" alt="Cameroon" width="22" height="16"> Cameroon</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/ci.png" alt="Côte d'Ivoire" width="22" height="16"> Côte d'Ivoire</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/zm.png" alt="Zambia" width="22" height="16"> Zambia</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/zw.png" alt="Zimbabwe" width="22" height="16"> Zimbabwe</span>
+      </div>
 
-  <script src="/app-new.js"></script>
+      <div class="countries-marquee-group" aria-hidden="true">
+        <span class="country-item"><img src="https://flagcdn.com/w40/ng.png" alt="" width="22" height="16"> Nigeria</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/gh.png" alt="" width="22" height="16"> Ghana</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/za.png" alt="" width="22" height="16"> South Africa</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/ke.png" alt="" width="22" height="16"> Kenya</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/ug.png" alt="" width="22" height="16"> Uganda</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/tz.png" alt="" width="22" height="16"> Tanzania</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/rw.png" alt="" width="22" height="16"> Rwanda</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/eg.png" alt="" width="22" height="16"> Egypt</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/ma.png" alt="" width="22" height="16"> Morocco</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/et.png" alt="" width="22" height="16"> Ethiopia</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/sn.png" alt="" width="22" height="16"> Senegal</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/cm.png" alt="" width="22" height="16"> Cameroon</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/ci.png" alt="" width="22" height="16"> Côte d'Ivoire</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/zm.png" alt="" width="22" height="16"> Zambia</span>
+        <span class="country-item"><img src="https://flagcdn.com/w40/zw.png" alt="" width="22" height="16"> Zimbabwe</span>
+      </div>
+    </div>
+  </section>
 
+  <section class="categories-section">
+    <div class="categories-section-inner">
+      <div class="home-section-heading">
+        <h2>Explore Categories</h2>
+        <p>Find the businesses and services you need, organized into easy-to-browse categories.</p>
+      </div>
 
-  <!-- =====================================================
-       MOBILE MENU
-       ===================================================== -->
+      <div class="category-grid">
+        <a class="category-card" href="explore.html?category=Restaurants%20%26%20Food"><div class="category-icon">🍽️</div><h3 data-i18n="categories.restaurants">Restaurants &amp; Food</h3><p>Food, restaurants and dining.</p></a>
+        <a class="category-card" href="explore.html?category=Hotels%20%26%20Accommodation"><div class="category-icon">🏨</div><h3 data-i18n="categories.hotels">Hotels &amp; Accommodation</h3><p>Hotels, lodges and places to stay.</p></a>
+        <a class="category-card" href="explore.html?category=Beauty%20%26%20Spa"><div class="category-icon">💆</div><h3 data-i18n="categories.beauty">Beauty &amp; Spa</h3><p>Salons, spas and beauty services.</p></a>
+        <a class="category-card" href="explore.html?category=Health%20%26%20Medical"><div class="category-icon">🏥</div><h3 data-i18n="categories.health">Health &amp; Medical</h3><p>Healthcare and medical services.</p></a>
+        <a class="category-card" href="explore.html?category=Shopping%20%26%20Retail"><div class="category-icon">🛍️</div><h3 data-i18n="categories.shopping">Shopping &amp; Retail</h3><p>Shops, stores and retail businesses.</p></a>
+        <a class="category-card" href="explore.html?category=Supermarkets"><div class="category-icon">🛒</div><h3 data-i18n="categories.supermarkets">Supermarkets</h3><p>Supermarkets and everyday shopping.</p></a>
+        <a class="category-card" href="explore.html?category=Professional%20Services"><div class="category-icon">💼</div><h3 data-i18n="categories.professional">Professional Services</h3><p>Businesses and professional services.</p></a>
+        <a class="category-card" href="explore.html?category=Education"><div class="category-icon">🎓</div><h3 data-i18n="categories.education">Education</h3><p>Schools, training and education.</p></a>
+        <a class="category-card" href="explore.html?category=Real%20Estate"><div class="category-icon">🏠</div><h3 data-i18n="categories.realEstate">Real Estate</h3><p>Property and real estate services.</p></a>
+        <a class="category-card" href="explore.html?category=Automotive"><div class="category-icon">🚗</div><h3 data-i18n="categories.automotive">Automotive</h3><p>Cars, repairs and automotive services.</p></a>
+        <a class="category-card" href="explore.html?category=Travel%20%26%20Tourism"><div class="category-icon">✈️</div><h3 data-i18n="categories.travel">Travel &amp; Tourism</h3><p>Travel businesses and tourism.</p></a>
+        <a class="category-card" href="explore.html?category=Technology"><div class="category-icon">💻</div><h3 data-i18n="categories.technology">Technology</h3><p>Technology companies and services.</p></a>
+      </div>
+    </div>
+  </section>
 
-  <script>
+  <section class="owner-section">
+    <div class="owner-inner">
+      <div class="owner-content">
+        <h2>Own a Business?</h2>
+        <p>Get your business discovered by people searching for products and services near them. Add your business to NearAfrica, claim an existing listing, or manage a business you already own.</p>
+      </div>
+      <div class="owner-actions">
+        <a href="list-business.html" class="owner-button primary" data-i18n="nav.listBusiness">List Your Business</a>
+        <a href="claim-business.html" class="owner-button secondary" data-i18n="nav.claimBusiness">Claim Business</a>
+        <a href="pages/owner-dashboard.html" class="owner-button secondary">Owner Dashboard</a>
+      </div>
+    </div>
+  </section>
 
-    document.addEventListener(
-      "DOMContentLoaded",
-      function () {
+  <section class="home-section website-section">
+    <div class="website-card">
+      <div>
+        <h2>Need a Website?</h2>
+        <p>Want a professional website for your business? We design and build modern, mobile-friendly websites for small businesses, brands and entrepreneurs.</p>
+        <div class="website-points">
+          <div class="website-point">📱 Mobile responsive</div>
+          <div class="website-point">⚡ Fast loading</div>
+          <div class="website-point">🎨 Professional design</div>
+          <div class="website-point">📈 Built to grow</div>
+        </div>
+        <a href="https://wa.me/2349134827121" class="website-action" target="_blank" rel="noopener noreferrer">Order a Website</a>
+      </div>
+      <div class="website-visual" aria-hidden="true">&lt;/&gt;</div>
+    </div>
+  </section>
 
-        const toggle =
-          document.getElementById(
-            "mobileMenuToggle"
-          );
+  <section class="home-section about-section" id="about">
+    <div class="about-grid">
+      <div class="about-mark" aria-hidden="true">N</div>
+      <div class="about-copy">
+        <h2>About NearAfrica</h2>
+        <p>NearAfrica is a business discovery platform designed to help people find businesses, services and opportunities around them.</p>
+        <p>We are starting with Nigeria and building toward a broader African discovery platform.</p>
+        <a href="explore.html" class="about-button" data-i18n="nav.explore">Start Exploring</a>
+      </div>
+    </div>
+  </section>
 
+  <section class="home-hero">
+    <div class="home-hero-inner">
+      <span class="home-eyebrow">YOUR NEXT DISCOVERY IS HERE</span>
+      <h2 style="max-width:800px;margin:0 auto 16px;font-size:clamp(30px,5vw,52px);line-height:1.08;letter-spacing:-1.5px;">Start discovering businesses near you.</h2>
+      <p style="margin:0 auto;max-width:680px;">Search by business, service or location and discover what is around you.</p>
+    </div>
+  </section>
+</main>
 
-        const mobileNav =
-          document.getElementById(
-            "mobileNav"
-          );
+<footer class="home-footer">
+  <div class="home-footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <img src="logo.png" alt="NearAfrica">
+          <span>NearAfrica</span>
+        </div>
+        <p class="footer-description">Find Great Businesses Near You.</p>
+      </div>
 
+      <div class="footer-column">
+        <h3>NearAfrica</h3>
+        <a href="index.html" data-i18n="nav.home">Home</a>
+        <a href="explore.html" data-i18n="nav.explore">Explore</a>
+        <a href="help-wanted.html">Help Wanted</a>
+        <a href="list-business.html" data-i18n="nav.listBusiness">List Your Business</a>
+        <a href="claim-business.html" data-i18n="nav.claimBusiness">Claim Business</a>
+        <a href="pages/owner-dashboard.html">Owner Dashboard</a>
+      </div>
 
-        if (
-          !toggle ||
-          !mobileNav
-        ) {
+      <div class="footer-column">
+        <h3>Information</h3>
+        <a href="#about" data-i18n="nav.about">About</a>
+        <a href="contact.html" data-i18n="nav.contact">Contact</a>
+        <a href="privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
+        <a href="terms.html" data-i18n="footer.terms">Terms of Service</a>
+        <a href="listing-policy.html" data-i18n="footer.listingPolicy">Listing Policy</a>
+      </div>
+    </div>
 
-          return;
+    <div class="footer-bottom">
+      <span>© 2026 NearAfrica</span>
+      <span>Find Great Businesses Near You.</span>
+    </div>
+  </div>
+</footer>
 
-        }
+<script src="config.js"></script>
+<script src="js/translations.js"></script>
+<script src="js/i18n.js"></script>
+<script src="utils.js"></script>
+<script src="map.js"></script>
+<script src="/app-new.js"></script>
 
+<script>
+(() => {
+  "use strict";
 
-        toggle.addEventListener(
-          "click",
-          function () {
+  const API = "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+  const CLIENT_ID = "983094097918-84tegpgd1llrjau0v8avm61v92a13108.apps.googleusercontent.com";
+  const TOKEN_KEY = "nearafrica_auth_token";
 
-            const isOpen =
-              mobileNav.classList.toggle(
-                "open"
-              );
+  const $ = (id) => document.getElementById(id);
 
+  function setMessage(text) {
+    ["naAuthMessage", "naMobileAuthMessage"].forEach((id) => {
+      const el = $(id);
+      if (el) el.textContent = text || "";
+    });
+    const mobileMessage = $("naMobileAuthMessage");
+    if (mobileMessage) mobileMessage.id = "naMobileAuthMessage";
+  }
 
-            toggle.setAttribute(
-              "aria-expanded",
-              String(isOpen)
-            );
+  function token() {
+    try {
+      return localStorage.getItem(TOKEN_KEY) || "";
+    } catch {
+      return "";
+    }
+  }
 
+  function showSignedOut() {
+    if ($("naGoogleSignIn")) $("naGoogleSignIn").hidden = false;
+    if ($("naGoogleSignInMobile")) $("naGoogleSignInMobile").hidden = false;
+    if ($("naSignedIn")) $("naSignedIn").hidden = true;
+    if ($("naMobileSignedIn")) $("naMobileSignedIn").hidden = true;
+  }
 
-            toggle.setAttribute(
-              "aria-label",
-              isOpen
-                ? "Close menu"
-                : "Open menu"
-            );
+  function showSignedIn(user) {
+    if ($("naGoogleSignIn")) $("naGoogleSignIn").hidden = true;
+    if ($("naGoogleSignInMobile")) $("naGoogleSignInMobile").hidden = true;
 
+    if ($("naUserName")) $("naUserName").textContent = user.name || user.email || "Signed in";
+    if ($("naMobileUserName")) $("naMobileUserName").textContent = user.name || user.email || "Signed in";
 
-            toggle.textContent =
-              isOpen
-                ? "✕"
-                : "☰";
+    if ($("naSignedIn")) $("naSignedIn").hidden = false;
+    if ($("naMobileSignedIn")) $("naMobileSignedIn").hidden = false;
+  }
 
-          }
-        );
+  async function checkSession() {
+    const savedToken = token();
 
+    if (!savedToken) {
+      showSignedOut();
+      return;
+    }
 
-        mobileNav
-          .querySelectorAll("a")
-          .forEach(
-            function (link) {
+    try {
+      const response = await fetch(`${API}/auth/me`, {
+        headers: { Authorization: `Bearer ${savedToken}` }
+      });
 
-              link.addEventListener(
-                "click",
-                function () {
+      const data = await response.json();
 
-                  mobileNav.classList.remove(
-                    "open"
-                  );
-
-
-                  toggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                  );
-
-
-                  toggle.setAttribute(
-                    "aria-label",
-                    "Open menu"
-                  );
-
-
-                  toggle.textContent =
-                    "☰";
-
-                }
-              );
-
-            }
-          );
-
+      if (!response.ok || !data.user) {
+        localStorage.removeItem(TOKEN_KEY);
+        showSignedOut();
+        return;
       }
-    );
 
-  </script>
+      showSignedIn(data.user);
+    } catch {
+      setMessage("Unable to check your session. Refresh and try again.");
+    }
+  }
+
+  async function signInWithGoogle(credentialResponse) {
+    setMessage("Signing you in...");
+
+    try {
+      const response = await fetch(`${API}/auth/google`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ credential: credentialResponse.credential })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.token || !data.user) {
+        throw new Error(data.message || "Google sign-in failed.");
+      }
+
+      localStorage.setItem(TOKEN_KEY, data.token);
+      showSignedIn(data.user);
+      setMessage("");
+    } catch (error) {
+      setMessage(error.message || "Sign-in failed. Please try again.");
+    }
+  }
+
+  async function signOut() {
+    const savedToken = token();
+
+    try {
+      localStorage.removeItem(TOKEN_KEY);
+    } catch {}
+
+    showSignedOut();
+    setMessage("You have signed out.");
+
+    if (!savedToken) return;
+
+    try {
+      await fetch(`${API}/auth/logout`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${savedToken}` }
+      });
+    } catch {
+      // The browser is signed out locally even if the network is unavailable.
+    }
+  }
+
+  function initializeGoogle() {
+    if (!window.google || !window.google.accounts || !window.google.accounts.id) {
+      setMessage("Google sign-in is not available. Please refresh.");
+      return;
+    }
+
+    window.google.accounts.id.initialize({
+      client_id: CLIENT_ID,
+      callback: signInWithGoogle
+    });
+
+    [
+      { id: "naGoogleSignIn", width: 210 },
+      { id: "naGoogleSignInMobile", width: 240 }
+    ].forEach(({ id, width }) => {
+      const container = $(id);
+      if (!container) return;
+
+      container.replaceChildren();
+
+      window.google.accounts.id.renderButton(container, {
+        type: "standard",
+        theme: "outline",
+        size: "large",
+        text: "signin_with",
+        shape: "rectangular",
+        width
+      });
+    });
+  }
+
+  function loadGoogle() {
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.onload = initializeGoogle;
+    script.onerror = () => setMessage("Google sign-in could not load. Check your connection.");
+    document.head.appendChild(script);
+  }
+
+  function setupMobileMenu() {
+    const toggle = $("mobileMenuToggle");
+    const mobileNav = $("mobileNav");
+
+    if (!toggle || !mobileNav) return;
+
+    toggle.addEventListener("click", () => {
+      const open = mobileNav.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      toggle.textContent = open ? "✕" : "☰";
+    });
+
+    mobileNav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileNav.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "Open menu");
+        toggle.textContent = "☰";
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const desktopSignOut = $("naSignOut");
+    const mobileSignOut = $("naMobileSignOut");
+
+    if (desktopSignOut) desktopSignOut.addEventListener("click", signOut);
+    if (mobileSignOut) mobileSignOut.addEventListener("click", signOut);
+
+    setupMobileMenu();
+    checkSession();
+    loadGoogle();
+  });
+
+  window.NearAfricaAuth = {
+    getToken: token,
+    checkSession,
+    signOut
+  };
+})();
+</script>
 
 </body>
-
-          </html>
+</html>
