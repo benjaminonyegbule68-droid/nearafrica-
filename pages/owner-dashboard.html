@@ -954,33 +954,77 @@
 
 
     .hours-table input[type="time"] {
-      background:
-        var(--input);
-
-      color:
-        #fff;
-
-      border:
-        1px solid #333;
-
-      border-radius:
-        7px;
-
-      padding:
-        7px;
+      width: 125px;
+      min-width: 0;
+      background: var(--input);
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 7px;
+      padding: 8px;
+      color-scheme: dark;
     }
 
+    .check-cell { text-align: center; }
+    .check-cell input { width: 16px; height: 16px; }
 
-    .check-cell {
-      text-align:
-        center;
+    .hours-timezone {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      gap: 12px;
+      align-items: end;
+      padding: 15px;
+      margin-bottom: 16px;
+      border: 1px solid #292929;
+      border-radius: 10px;
+      background: #101010;
     }
 
+    .hours-timezone label {
+      display: block;
+      color: #bbb;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
 
-    .check-cell input {
-      width: 16px;
+    .hours-timezone input {
+      width: 100%;
+      min-width: 0;
+      background: var(--input);
+      color: #fff;
+      border: 1px solid #343434;
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
 
-      height: 16px;
+    .hours-help { color: #888; font-size: 11px; margin-top: 5px; }
+    .referral-link-box,.referral-progress-box,.referral-history-box { background:#101010;border:1px solid var(--border);border-radius:12px;padding:16px;margin:16px 0; }
+    .referral-link-box label { display:block;color:#bbb;font-size:12px;font-weight:700;margin-bottom:8px; }
+    .referral-link-row { display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px; }
+    .referral-link-row input { width:100%;min-width:0;background:var(--input);color:#fff;border:1px solid #343434;border-radius:8px;padding:11px; }
+    .referral-stats-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0; }
+    .referral-progress-heading { display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px; }
+    .referral-progress-heading span { color:var(--gold-light);font-weight:800; }
+    .referral-progress-track { height:10px;background:#292929;border-radius:999px;overflow:hidden; }
+    .referral-progress-bar { height:100%;background:var(--gold);border-radius:999px;transition:width .2s ease; }
+    #referralRemaining { margin-top:8px;color:#bbb;font-size:12px; }
+    #referralRewardRule { margin-top:8px;color:#aaa;font-size:12px; }
+    .referral-history-list { display:grid;gap:8px;margin-top:12px;color:#aaa;font-size:12px; }
+    .referral-history-row { display:flex;justify-content:space-between;gap:12px;padding:10px;background:#171717;border-radius:8px; }
+    .referral-status { color:#999;font-size:12px;margin:8px 0; }
+    .product-actions { display:flex;gap:7px;flex-wrap:wrap; }
+    @media(max-width:640px) { .referral-link-row,.referral-stats-grid { grid-template-columns:1fr; } .referral-history-row { flex-direction:column; } }
+    .hours-periods { min-width: 240px; display: grid; gap: 8px; }
+    .hours-period { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+    .hours-period span { color: #888; font-size: 11px; }
+    .hours-add-period { margin-top: 7px; }
+    .hours-remove-period { padding: 6px 9px; }
+    .hours-table td { vertical-align: top; }
+    .hours-day { white-space: nowrap; padding-top: 16px !important; }
+
+    @media (max-width: 650px) {
+      .hours-timezone { grid-template-columns: 1fr; }
+      .hours-periods { min-width: 250px; }
     }
 
 
@@ -2048,10 +2092,10 @@
             </p>
 
 
-            <div
-              id="summaryBadges"
-              class="badge-row"
-            ></div>
+            <div id="summaryBadges" class="badge-row"></div>
+            <div class="button-row">
+              <a id="publicProfileLink" class="button button-secondary" href="../business-profile.html" target="_blank" rel="noopener">View Public Profile</a>
+            </div>
 
           </div>
 
@@ -2217,21 +2261,95 @@
 
             <div class="form-group full">
 
-              <label for="description">
-                Description
-              </label>
-
-              <textarea
-                id="description"
-                name="description"
-                maxlength="5000"
-              ></textarea>
+              <label for="description">Short Description</label>
+              <textarea id="description" name="description" maxlength="5000"></textarea>
 
             </div>
 
+            <div class="form-group full">
+              <label for="about">About the Business</label>
+              <textarea id="about" name="about" maxlength="10000" placeholder="Tell customers about your business, experience and what makes it different."></textarea>
+            </div>
 
             <div class="form-group">
+              <label for="subcategory">Subcategory</label>
+              <input id="subcategory" name="subcategory" type="text" maxlength="150">
+            </div>
 
+            <div class="form-group">
+              <label for="postal_code">Postal Code</label>
+              <input id="postal_code" name="postal_code" type="text" maxlength="30">
+            </div>
+
+            <div class="form-group full">
+              <label for="precise_address">Precise Address / Landmark Details</label>
+              <input id="precise_address" name="precise_address" type="text" maxlength="500" placeholder="Building, floor, shop number or directions customers need">
+            </div>
+
+            <div class="form-group">
+              <label for="instagram">Instagram URL</label>
+              <input id="instagram" name="instagram" type="url" placeholder="https://instagram.com/yourbusiness">
+            </div>
+
+            <div class="form-group">
+              <label for="facebook">Facebook URL</label>
+              <input id="facebook" name="facebook" type="url" placeholder="https://facebook.com/yourbusiness">
+            </div>
+
+            <div class="form-group">
+              <label for="tiktok">TikTok URL</label>
+              <input id="tiktok" name="tiktok" type="url" placeholder="https://tiktok.com/@yourbusiness">
+            </div>
+
+            <div class="form-group">
+              <label for="directions_url">Directions URL</label>
+              <input id="directions_url" name="directions_url" type="url" placeholder="https://maps.google.com/…">
+            </div>
+
+            <div class="form-group full">
+              <label for="services">Services (one per line or comma-separated)</label>
+              <textarea id="services" name="services" placeholder="Repairs, consultations, delivery"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="amenities">Amenities (one per line or comma-separated)</label>
+              <textarea id="amenities" name="amenities" placeholder="Parking, Wi-Fi, wheelchair access"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="payment_methods">Payment Methods (one per line or comma-separated)</label>
+              <textarea id="payment_methods" name="payment_methods" placeholder="Cash, bank transfer, card"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="languages">Languages (one per line or comma-separated)</label>
+              <textarea id="languages" name="languages" placeholder="English, Igbo, Yoruba"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="service_areas">Service Areas (one per line or comma-separated)</label>
+              <textarea id="service_areas" name="service_areas" placeholder="Aba, Umuahia, nearby communities"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="landmarks">Nearby Landmarks (one per line or comma-separated)</label>
+              <textarea id="landmarks" name="landmarks" placeholder="Opposite the market, near the bus stop"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="special_hours">Special Hours (JSON)</label>
+              <textarea id="special_hours" name="special_hours" placeholder='{"2026-12-25":"closed"}'></textarea>
+              <p class="hours-help">Optional JSON object for holiday or exceptional opening hours. Leave blank if unused.</p>
+            </div>
+
+            <div class="form-group full">
+              <label style="display:flex;align-items:flex-start;gap:9px;font-weight:600;">
+                <input id="confirm_information" name="confirm_information" type="checkbox" style="width:auto;margin-top:3px;">
+                I confirm that the business information is accurate and up to date.
+              </label>
+            </div>
+
+            <div class="form-group">
               <label for="latitude">
                 Latitude
               </label>
@@ -2404,43 +2522,33 @@
         </div>
 
 
+        <div class="hours-timezone">
+          <div>
+            <label for="businessTimezone">Business time zone (IANA)</label>
+            <input id="businessTimezone" type="text" list="businessTimezoneOptions"
+              value="Africa/Lagos" autocomplete="off" spellcheck="false"
+              placeholder="e.g. Africa/Lagos" aria-describedby="timezoneHelp">
+            <datalist id="businessTimezoneOptions"></datalist>
+            <p class="hours-help" id="timezoneHelp">Choose the time zone where this business operates. Example: Africa/Lagos.</p>
+          </div>
+          <div>
+            <strong style="display:block;font-size:12px;margin-bottom:5px;">How schedules work</strong>
+            <p class="hours-help">Add more than one period for breaks (09:00–13:00 and 16:00–21:00). Overnight periods such as 20:00–02:00 are allowed. Times use the 24-hour clock.</p>
+          </div>
+        </div>
+
         <div class="hours-scroll">
-
           <table class="hours-table">
-
             <thead>
-
               <tr>
-
-                <th>
-                  Day
-                </th>
-
-                <th>
-                  Closed
-                </th>
-
-                <th>
-                  24 Hours
-                </th>
-
-                <th>
-                  Opens
-                </th>
-
-                <th>
-                  Closes
-                </th>
-
+                <th>Day</th>
+                <th>Closed</th>
+                <th>24 Hours</th>
+                <th>Opening periods</th>
               </tr>
-
             </thead>
-
-
             <tbody id="hoursBody"></tbody>
-
           </table>
-
         </div>
 
 
@@ -3062,6 +3170,45 @@
 
     </section>
 
+    <!-- ===================================================
+         REFERRALS TAB
+    ==================================================== -->
+    <section id="tab-referrals" class="tab-content hidden">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Refer Businesses to NearAfrica</h2>
+            <p>Share your referral link with real businesses. Referrals count only after they meet NearAfrica's qualification rules; rewards are shown here when the backend records them.</p>
+          </div>
+          <button id="refreshReferralsButton" class="button button-secondary" type="button">Refresh</button>
+        </div>
+        <div id="referralsStatus" class="referral-status" role="status" aria-live="polite">Referral information will load when this tab opens.</div>
+        <div class="referral-link-box">
+          <label for="referralLink">Your referral link</label>
+          <div class="referral-link-row">
+            <input id="referralLink" type="url" readonly placeholder="Your referral link will appear here">
+            <button id="copyReferralButton" class="button button-primary" type="button">Copy link</button>
+          </div>
+          <p class="hours-help">Share this link with a business owner before they submit their listing.</p>
+          <p>Referral code: <strong id="referralCode">—</strong></p>
+        </div>
+        <div class="referral-stats-grid">
+          <div class="stat-card"><div class="stat-label">Total referrals</div><div class="stat-value" id="referralTotal">0</div></div>
+          <div class="stat-card"><div class="stat-label">Qualified referrals</div><div class="stat-value" id="referralQualified">0</div></div>
+          <div class="stat-card"><div class="stat-label">Pending referrals</div><div class="stat-value" id="referralPending">0</div></div>
+        </div>
+        <div class="referral-progress-box">
+          <div class="referral-progress-heading"><strong>Next reward progress</strong><span id="referralProgress">0 / 3</span></div>
+          <div class="referral-progress-track"><div id="referralProgressBar" class="referral-progress-bar" style="width:0%"></div></div>
+          <p id="referralRemaining">3</p>
+          <p id="referralRewardRule">Three qualifying referrals earn 30 days of PRO, once the reward system is active.</p>
+        </div>
+        <div class="referral-history-box">
+          <h3>Reward history</h3>
+          <div id="referralHistory" class="referral-history-list">No referral rewards recorded yet.</div>
+        </div>
+      </div>
+    </section>
 
   </main>
 
@@ -3103,6 +3250,8 @@
 
       let currentProducts =
         [];
+
+      let editingProductId = null;
 
 
       let currentHelpWanted =
@@ -3322,8 +3471,7 @@
       ) {
 
         return String(
-          business?.business_name ||
-          "N"
+          business?.business_name || business?.name || "N"
         )
           .trim()
           .charAt(0)
@@ -3617,12 +3765,33 @@
           "";
 
 
-        document.getElementById(
-          "description"
-        ).value =
-          business.description ||
-          "";
+        document.getElementById("description").value = business.description || "";
+        document.getElementById("about").value = business.about || "";
+        document.getElementById("subcategory").value = business.subcategory || "";
+        document.getElementById("postal_code").value = business.postal_code || "";
+        document.getElementById("precise_address").value = business.precise_address || "";
+        document.getElementById("instagram").value = business.instagram || "";
+        document.getElementById("facebook").value = business.facebook || "";
+        document.getElementById("tiktok").value = business.tiktok || "";
+        document.getElementById("directions_url").value = business.directions_url || "";
 
+        const asEditableList = value => {
+          if (Array.isArray(value)) return value.join("\n");
+          if (typeof value === "string") {
+            try { const parsed = JSON.parse(value); if (Array.isArray(parsed)) return parsed.join("\n"); if (parsed && typeof parsed === "object") return JSON.stringify(parsed, null, 2); } catch {}
+            return value;
+          }
+          return value && typeof value === "object" ? JSON.stringify(value, null, 2) : "";
+        };
+        ["services","amenities","payment_methods","languages","service_areas","landmarks"].forEach(field => {
+          const element = document.getElementById(field);
+          if (element) element.value = asEditableList(business[field] ?? business[`${field}_json`]);
+        });
+        const specialHours = business.special_hours ?? business.special_hours_json;
+        document.getElementById("special_hours").value = specialHours && typeof specialHours === "object"
+          ? JSON.stringify(specialHours, null, 2)
+          : (typeof specialHours === "string" ? (() => { try { return JSON.stringify(JSON.parse(specialHours), null, 2); } catch { return specialHours; } })() : "");
+        document.getElementById("confirm_information").checked = false;
 
         document.getElementById(
           "latitude"
@@ -3641,8 +3810,16 @@
         document.getElementById(
           "summaryBusinessName"
         ).textContent =
-          business.business_name ||
-          "Your Business";
+          business.business_name || business.name || "Your Business";
+        const profileLink = document.getElementById("publicProfileLink");
+        if (profileLink) {
+          const identifier = business.slug || business.id;
+          profileLink.href = identifier
+            ? (business.slug
+                ? `../business-profile-fixed.html?slug=${encodeURIComponent(business.slug)}`
+                : `../business-profile-fixed.html?id=${encodeURIComponent(business.id)}`)
+            : "../explore.html";
+        }
 
 
         document.getElementById(
@@ -3754,6 +3931,22 @@
             );
 
 
+          let parsedSpecialHours = [];
+          const specialHoursRaw = document.getElementById("special_hours").value.trim();
+          if (specialHoursRaw) {
+            try {
+              parsedSpecialHours = JSON.parse(specialHoursRaw);
+              if (parsedSpecialHours === null || typeof parsedSpecialHours !== "object") {
+                showStatus("Special Hours must be a JSON object or array.", "error");
+                return;
+              }
+            } catch {
+              showStatus("Special Hours must be valid JSON, or left blank.", "error");
+              document.getElementById("special_hours").focus();
+              return;
+            }
+          }
+
           const payload = {
 
             business_name:
@@ -3806,10 +3999,23 @@
                 "website"
               ).value.trim(),
 
-            description:
-              document.getElementById(
-                "description"
-              ).value.trim(),
+            description: document.getElementById("description").value.trim(),
+            about: document.getElementById("about").value.trim(),
+            subcategory: document.getElementById("subcategory").value.trim(),
+            postal_code: document.getElementById("postal_code").value.trim(),
+            precise_address: document.getElementById("precise_address").value.trim(),
+            instagram: document.getElementById("instagram").value.trim(),
+            facebook: document.getElementById("facebook").value.trim(),
+            tiktok: document.getElementById("tiktok").value.trim(),
+            directions_url: document.getElementById("directions_url").value.trim(),
+            services: document.getElementById("services").value.split(/[\n,]/).map(v => v.trim()).filter(Boolean),
+            amenities: document.getElementById("amenities").value.split(/[\n,]/).map(v => v.trim()).filter(Boolean),
+            payment_methods: document.getElementById("payment_methods").value.split(/[\n,]/).map(v => v.trim()).filter(Boolean),
+            languages: document.getElementById("languages").value.split(/[\n,]/).map(v => v.trim()).filter(Boolean),
+            service_areas: document.getElementById("service_areas").value.split(/[\n,]/).map(v => v.trim()).filter(Boolean),
+            landmarks: document.getElementById("landmarks").value.split(/[\n,]/).map(v => v.trim()).filter(Boolean),
+            special_hours: parsedSpecialHours,
+            confirm_information: document.getElementById("confirm_information").checked,
 
             latitude:
               document.getElementById(
@@ -4307,435 +4513,232 @@
       ];
 
 
-      function renderHours() {
-
-        hoursBody.innerHTML =
-          days
-            .map(
-              (
-                day,
-                index
-              ) => {
-
-                const existing =
-                  currentHours.find(
-                    item =>
-                      Number(
-                        item.day_of_week
-                      ) === index
-                  ) ||
-                  {};
-
-
-                return `
-                  <tr>
-
-                    <td class="hours-day">
-                      ${day}
-                    </td>
-
-                    <td class="check-cell">
-
-                      <input
-                        type="checkbox"
-                        class="closed-check"
-                        data-day="${index}"
-                        ${
-                          Number(
-                            existing.is_closed
-                          ) === 1
-                            ? "checked"
-                            : ""
-                        }
-                      >
-
-                    </td>
-
-                    <td class="check-cell">
-
-                      <input
-                        type="checkbox"
-                        class="hours24-check"
-                        data-day="${index}"
-                        ${
-                          Number(
-                            existing.is_24_hours
-                          ) === 1
-                            ? "checked"
-                            : ""
-                        }
-                      >
-
-                    </td>
-
-                    <td>
-
-                      <input
-                        type="time"
-                        class="opening-time"
-                        data-day="${index}"
-                        value="${escapeHTML(
-                          existing.opening_time ||
-                          ""
-                        )}"
-                      >
-
-                    </td>
-
-                    <td>
-
-                      <input
-                        type="time"
-                        class="closing-time"
-                        data-day="${index}"
-                        value="${escapeHTML(
-                          existing.closing_time ||
-                          ""
-                        )}"
-                      >
-
-                    </td>
-
-                  </tr>
-                `;
-
-              }
-            )
-            .join("");
-
-
-        hoursBody
-          .querySelectorAll(
-            ".closed-check"
-          )
-          .forEach(
-            checkbox => {
-
-              checkbox.addEventListener(
-                "change",
-                () => {
-
-                  const day =
-                    checkbox.dataset.day;
-
-
-                  const row =
-                    checkbox.closest(
-                      "tr"
-                    );
-
-
-                  const hours24 =
-                    row.querySelector(
-                      `.hours24-check[data-day="${day}"]`
-                    );
-
-
-                  if (
-                    checkbox.checked
-                  ) {
-
-                    hours24.checked =
-                      false;
-
-                  }
-
-                }
-              );
-
-            }
-          );
-
-
-        hoursBody
-          .querySelectorAll(
-            ".hours24-check"
-          )
-          .forEach(
-            checkbox => {
-
-              checkbox.addEventListener(
-                "change",
-                () => {
-
-                  const day =
-                    checkbox.dataset.day;
-
-
-                  const row =
-                    checkbox.closest(
-                      "tr"
-                    );
-
-
-                  const closed =
-                    row.querySelector(
-                      `.closed-check[data-day="${day}"]`
-                    );
-
-
-                  if (
-                    checkbox.checked
-                  ) {
-
-                    closed.checked =
-                      false;
-
-                  }
-
-                }
-              );
-
-            }
-          );
-
+      function parsePeriods(item) {
+        let periods = [];
+        const raw = item?.periods_json ?? item?.periods;
+        if (Array.isArray(raw)) {
+          periods = raw;
+        } else if (typeof raw === "string" && raw.trim()) {
+          try {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) periods = parsed;
+          } catch (error) {
+            console.warn("Could not parse saved opening periods:", error);
+          }
+        }
+        if (!periods.length && item?.opening_time && item?.closing_time) {
+          periods = [{ open: item.opening_time, close: item.closing_time }];
+        }
+        return periods.map(period => ({
+          open: String(period?.open ?? period?.opening_time ?? ""),
+          close: String(period?.close ?? period?.closing_time ?? "")
+        }));
       }
 
+      function makePeriodMarkup(dayIndex, period = {}) {
+        return `
+          <div class="hours-period">
+            <input type="time" class="opening-time" data-day="${dayIndex}"
+              aria-label="Opening time" step="60" value="${escapeHTML(period.open || "")}">
+            <span>to</span>
+            <input type="time" class="closing-time" data-day="${dayIndex}"
+              aria-label="Closing time" step="60" value="${escapeHTML(period.close || "")}">
+            <button type="button" class="button button-secondary hours-remove-period"
+              data-day="${dayIndex}" aria-label="Remove opening period">Remove</button>
+          </div>`;
+      }
+
+      function renderHours() {
+        hoursBody.innerHTML = days.map((day, index) => {
+          const existing = currentHours.find(item => Number(item.day_of_week) === index) || {};
+          const periods = parsePeriods(existing);
+          const closed = Number(existing.is_closed) === 1;
+          const hours24 = Number(existing.is_24_hours) === 1;
+          const periodMarkup = periods.map(period => makePeriodMarkup(index, period)).join("");
+          return `
+            <tr data-day="${index}">
+              <td class="hours-day">${day}</td>
+              <td class="check-cell"><input type="checkbox" class="closed-check" data-day="${index}"
+                aria-label="${day} closed" ${closed ? "checked" : ""}></td>
+              <td class="check-cell"><input type="checkbox" class="hours24-check" data-day="${index}"
+                aria-label="${day} open 24 hours" ${hours24 ? "checked" : ""}></td>
+              <td>
+                <div class="hours-periods" data-day="${index}">
+                  ${periodMarkup || (closed || hours24 ? "" : makePeriodMarkup(index))}
+                </div>
+                <button type="button" class="button button-secondary hours-add-period hours-add-period-button"
+                  data-day="${index}">+ Add period</button>
+              </td>
+            </tr>`;
+        }).join("");
+
+        hoursBody.querySelectorAll(".closed-check").forEach(checkbox => {
+          checkbox.addEventListener("change", () => {
+            const row = checkbox.closest("tr");
+            const hours24 = row.querySelector(".hours24-check");
+            if (checkbox.checked) hours24.checked = false;
+            setHoursRowMode(row);
+          });
+        });
+        hoursBody.querySelectorAll(".hours24-check").forEach(checkbox => {
+          checkbox.addEventListener("change", () => {
+            const row = checkbox.closest("tr");
+            const closed = row.querySelector(".closed-check");
+            if (checkbox.checked) closed.checked = false;
+            setHoursRowMode(row);
+          });
+        });
+        hoursBody.querySelectorAll(".hours-add-period-button").forEach(button => {
+          button.addEventListener("click", () => {
+            const dayIndex = Number(button.dataset.day);
+            const row = button.closest("tr");
+            row.querySelector(".closed-check").checked = false;
+            row.querySelector(".hours24-check").checked = false;
+            const periodsBox = row.querySelector(".hours-periods");
+            periodsBox.insertAdjacentHTML("beforeend", makePeriodMarkup(dayIndex));
+            setHoursRowMode(row);
+          });
+        });
+        hoursBody.querySelectorAll(".hours-periods").forEach(box => {
+          box.addEventListener("click", event => {
+            const button = event.target.closest(".hours-remove-period");
+            if (!button) return;
+            const row = button.closest("tr");
+            button.closest(".hours-period")?.remove();
+            if (!row.querySelector(".hours-period")) {
+              row.querySelector(".closed-check").checked = true;
+              row.querySelector(".hours24-check").checked = false;
+            }
+            setHoursRowMode(row);
+          });
+        });
+        const timezoneInput = document.getElementById("businessTimezone");
+        if (timezoneInput && !timezoneInput.value) timezoneInput.value = "Africa/Lagos";
+        populateTimezoneSuggestions();
+        hoursBody.querySelectorAll("tr").forEach(setHoursRowMode);
+      }
+
+      function setHoursRowMode(row) {
+        if (!row) return;
+        const closed = row.querySelector(".closed-check")?.checked;
+        const hours24 = row.querySelector(".hours24-check")?.checked;
+        const periodsBox = row.querySelector(".hours-periods");
+        const addButton = row.querySelector(".hours-add-period-button");
+        if (periodsBox) periodsBox.classList.toggle("hidden", closed || hours24);
+        if (addButton) addButton.classList.toggle("hidden", closed || hours24);
+      }
+
+      function populateTimezoneSuggestions() {
+        const list = document.getElementById("businessTimezoneOptions");
+        if (!list || list.childElementCount) return;
+        let zones = [
+          "Africa/Lagos", "Africa/Abidjan", "Africa/Accra", "Africa/Cairo",
+          "Africa/Casablanca", "Africa/Johannesburg", "Africa/Nairobi",
+          "America/Chicago", "America/Denver", "America/Los_Angeles", "America/New_York",
+          "Asia/Dubai", "Asia/Kolkata", "Asia/Singapore", "Asia/Tokyo",
+          "Australia/Sydney", "Europe/Berlin", "Europe/London", "Europe/Paris", "UTC"
+        ];
+        try {
+          if (typeof Intl.supportedValuesOf === "function") zones = [...new Set([...zones, ...Intl.supportedValuesOf("timeZone")])].sort();
+        } catch (error) {
+          console.warn("Full time-zone list unavailable; using common zones.", error);
+        }
+        list.innerHTML = zones.map(zone => `<option value="${escapeHTML(zone)}"></option>`).join("");
+      }
+
+      function isValidTimeZone(zone) {
+        try {
+          new Intl.DateTimeFormat("en-US", { timeZone: zone }).format(new Date());
+          return true;
+        } catch {
+          return false;
+        }
+      }
 
       async function loadHours() {
-
-        hoursBody.innerHTML =
-          `
-            <tr>
-
-              <td colspan="5">
-
-                <div class="loading">
-                  Loading hours...
-                </div>
-
-              </td>
-
-            </tr>
-          `;
-
-
+        hoursBody.innerHTML = `<tr><td colspan="4"><div class="loading">Loading hours...</div></td></tr>`;
         try {
-
-          const data =
-            await apiRequest(
-              "/owner/business/hours"
-            );
-
-
-          currentHours =
-            Array.isArray(
-              data?.hours
-            )
-              ? data.hours
-              : [];
-
-
+          const data = await apiRequest("/owner/business/hours");
+          currentHours = Array.isArray(data?.hours) ? data.hours : [];
+          const timezone = data?.business_timezone || currentBusiness?.business_timezone || "Africa/Lagos";
+          const timezoneInput = document.getElementById("businessTimezone");
+          if (timezoneInput) timezoneInput.value = timezone;
           renderHours();
-
-
         } catch (error) {
-
-          console.error(
-            "OWNER HOURS LOAD ERROR:",
-            error
-          );
-
-
-          hoursBody.innerHTML =
-            `
-              <tr>
-
-                <td colspan="5">
-
-                  <div class="empty">
-
-                    ${escapeHTML(
-                      error.message ||
-                      "Unable to load hours."
-                    )}
-
-                  </div>
-
-                </td>
-
-              </tr>
-            `;
-
+          console.error("OWNER HOURS LOAD ERROR:", error);
+          hoursBody.innerHTML = `<tr><td colspan="4"><div class="empty">${escapeHTML(error.message || "Unable to load hours.")}</div></td></tr>`;
         }
-
       }
 
-
-      document
-        .getElementById(
-          "saveHoursButton"
-        )
-        .addEventListener(
-          "click",
-          async () => {
-
-            const button =
-              document.getElementById(
-                "saveHoursButton"
-              );
-
-
-            const rows =
-              hoursBody.querySelectorAll(
-                "tr"
-              );
-
-
-            if (
-              rows.length !== 7
-            ) {
-
-              showStatus(
-                "Opening hours are not ready yet.",
-                "error"
-              );
-
-
+      document.getElementById("saveHoursButton").addEventListener("click", async () => {
+        const button = document.getElementById("saveHoursButton");
+        const rows = [...hoursBody.querySelectorAll("tr[data-day]")];
+        if (rows.length !== 7) {
+          showStatus("Opening hours are not ready yet.", "error");
+          return;
+        }
+        const timezone = document.getElementById("businessTimezone")?.value.trim() || "";
+        if (!isValidTimeZone(timezone)) {
+          showStatus("Enter a valid IANA time zone, for example Africa/Lagos.", "error");
+          document.getElementById("businessTimezone")?.focus();
+          return;
+        }
+        const hours = [];
+        for (let index = 0; index < 7; index++) {
+          const row = rows[index];
+          const closed = row.querySelector(".closed-check").checked;
+          const hours24 = row.querySelector(".hours24-check").checked;
+          const periods = [];
+          if (!closed && !hours24) {
+            const periodRows = [...row.querySelectorAll(".hours-period")];
+            if (!periodRows.length) {
+              showStatus(`Add at least one opening period for ${days[index]}, or mark it Closed / 24 Hours.`, "error");
               return;
-
             }
-
-
-            const hours =
-              days.map(
-                (
-                  day,
-                  index
-                ) => {
-
-                  const row =
-                    rows[index];
-
-
-                  const closed =
-                    row.querySelector(
-                      ".closed-check"
-                    ).checked;
-
-
-                  const hours24 =
-                    row.querySelector(
-                      ".hours24-check"
-                    ).checked;
-
-
-                  const opening =
-                    row.querySelector(
-                      ".opening-time"
-                    ).value;
-
-
-                  const closing =
-                    row.querySelector(
-                      ".closing-time"
-                    ).value;
-
-
-                  return {
-
-                    day_of_week:
-                      index,
-
-                    is_closed:
-                      closed
-                        ? 1
-                        : 0,
-
-                    is_24_hours:
-                      hours24
-                        ? 1
-                        : 0,
-
-                    opening_time:
-                      opening,
-
-                    closing_time:
-                      closing
-
-                  };
-
-                }
-              );
-
-
-            button.disabled =
-              true;
-
-
-            button.textContent =
-              "Saving...";
-
-
-            try {
-
-              const data =
-                await apiRequest(
-                  "/owner/business/hours",
-                  {
-                    method:
-                      "PUT",
-
-                    headers: {
-                      "Content-Type":
-                        "application/json"
-                    },
-
-                    body:
-                      JSON.stringify({
-                        hours
-                      })
-                  }
-                );
-
-
-              currentHours =
-                Array.isArray(
-                  data?.hours
-                )
-                  ? data.hours
-                  : hours;
-
-
-              renderHours();
-
-
-              showStatus(
-                data?.message ||
-                "Business hours updated successfully.",
-                "success"
-              );
-
-
-            } catch (error) {
-
-              console.error(
-                "OWNER HOURS UPDATE ERROR:",
-                error
-              );
-
-
-              showStatus(
-                error.message ||
-                "Unable to save opening hours.",
-                "error"
-              );
-
-
-            } finally {
-
-              button.disabled =
-                false;
-
-
-              button.textContent =
-                "Save Opening Hours";
-
+            for (const periodRow of periodRows) {
+              const opening = periodRow.querySelector(".opening-time").value;
+              const closing = periodRow.querySelector(".closing-time").value;
+              if (!opening || !closing) {
+                showStatus(`Enter both opening and closing times for every ${days[index]} period.`, "error");
+                return;
+              }
+              if (opening === closing) {
+                showStatus(`The opening and closing times for ${days[index]} cannot be identical. Use 24 Hours if the business never closes.`, "error");
+                return;
+              }
+              periods.push({ open: opening, close: closing });
             }
-
           }
-        );
-
+          hours.push({
+            day_of_week: index,
+            is_closed: closed ? 1 : 0,
+            is_24_hours: hours24 ? 1 : 0,
+            opening_time: periods[0]?.open || "",
+            closing_time: periods[0]?.close || "",
+            periods_json: periods.length ? JSON.stringify(periods) : null
+          });
+        }
+        button.disabled = true;
+        button.textContent = "Saving...";
+        try {
+          const data = await apiRequest("/owner/business/hours", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ business_timezone: timezone, hours })
+          });
+          currentHours = Array.isArray(data?.hours) ? data.hours : hours;
+          if (currentBusiness) currentBusiness.business_timezone = data?.business_timezone || timezone;
+          document.getElementById("businessTimezone").value = data?.business_timezone || timezone;
+          renderHours();
+          showStatus(data?.message || "Business hours updated successfully.", "success");
+        } catch (error) {
+          console.error("OWNER HOURS UPDATE ERROR:", error);
+          showStatus(error.message || "Unable to save opening hours.", "error");
+        } finally {
+          button.disabled = false;
+          button.textContent = "Save Opening Hours";
+        }
+      });
 
       /* =================================================
          PRODUCTS
@@ -4899,15 +4902,8 @@
 
                     <div class="product-actions">
 
-                      <button
-                        class="small-button delete"
-                        type="button"
-                        data-product-delete="${escapeHTML(
-                          id
-                        )}"
-                      >
-                        Delete
-                      </button>
+                      <button class="button button-secondary" type="button" data-product-edit="${escapeHTML(id)}">Edit</button>
+                      <button class="small-button delete" type="button" data-product-delete="${escapeHTML(id)}">Delete</button>
 
                     </div>
 
@@ -4918,6 +4914,10 @@
             )
             .join("");
 
+
+        productList.querySelectorAll("[data-product-edit]").forEach(button => {
+          button.addEventListener("click", () => editProduct(button.dataset.productEdit));
+        });
 
         productList
           .querySelectorAll(
@@ -5030,18 +5030,19 @@
             true;
 
 
-          button.textContent =
-            "Adding...";
+          button.textContent = editingProductId ? "Saving..." : "Adding...";
 
 
           try {
 
             const data =
               await apiRequest(
-                "/owner/business/products",
+                editingProductId
+                ? `/owner/business/products/${encodeURIComponent(editingProductId)}`
+                : "/owner/business/products",
                 {
                   method:
-                    "POST",
+                    editingProductId ? "PATCH" : "POST",
 
                   headers: {
                     "Content-Type":
@@ -5057,12 +5058,11 @@
 
 
             showStatus(
-              data?.message ||
-              "Product or service created successfully.",
+              data?.message || (editingProductId ? "Product or service updated successfully." : "Product or service created successfully."),
               "success"
             );
 
-
+            editingProductId = null;
             productForm.reset();
 
 
@@ -5109,13 +5109,33 @@
 
 
             button.textContent =
-              "Add Product / Service";
+              editingProductId ? "Save Product / Service" : "Add Product / Service";
 
           }
 
         }
       );
 
+
+      function editProduct(productId) {
+        const product = currentProducts.find(item => String(item.id) === String(productId));
+        if (!product) return;
+        editingProductId = String(product.id);
+        document.getElementById("productName").value = product.name || "";
+        document.getElementById("productType").value = product.item_type || "product";
+        document.getElementById("productPrice").value = product.price ?? "";
+        document.getElementById("productCurrency").value = product.currency || "NGN";
+        document.getElementById("productCategory").value = product.category || "";
+        document.getElementById("productSortOrder").value = product.sort_order ?? 0;
+        document.getElementById("productImageUrl").value = product.image_url || "";
+        document.getElementById("productAvailable").value = Number(product.available) === 0 ? "0" : "1";
+        document.getElementById("productDescription").value = product.description || "";
+        const submit = document.getElementById("addProductButton");
+        submit.textContent = "Save Product / Service";
+        document.getElementById("productName").focus();
+        showStatus("Editing product or service. Save the form to apply your changes.", "info");
+        productForm.scrollIntoView({behavior:"smooth", block:"center"});
+      }
 
       async function deleteProduct(
         productId
@@ -6646,8 +6666,8 @@ async function loadReferrals() {
     const total = Number(data?.total_referrals || 0);
     const qualified = Number(data?.qualified_referrals || 0);
     const pending = Number(data?.pending_referrals || 0);
-    const progress = Number(data?.qualified_toward_next_reward || 0);
-    const remaining = Number(data?.referrals_until_next_reward || 3);
+    const progress = Number(data?.qualified_toward_next_reward ?? (qualified % 3));
+    const remaining = Number(data?.referrals_until_next_reward ?? (3 - (qualified % 3)));
     const rule = data?.reward_rule || {};
     const history = Array.isArray(data?.reward_history)
       ? data.reward_history
@@ -6659,7 +6679,8 @@ async function loadReferrals() {
     };
 
     setText("referralCode", code || "Not available");
-    setText("referralLink", url);
+    const referralLinkField = document.getElementById("referralLink");
+    if (referralLinkField) referralLinkField.value = url;
     setText("referralTotal", total);
     setText("referralQualified", qualified);
     setText("referralPending", pending);
@@ -6667,9 +6688,9 @@ async function loadReferrals() {
     setText("referralRemaining", Math.max(remaining, 0));
     setText(
       "referralRewardRule",
-      `${Number(rule.qualifying_referrals || 3)} qualifying referrals earn ${
+      `${Number(rule.qualifying_referrals || 3)} qualifying referrals are intended to earn ${
         Number(rule.reward_days || 30)
-      } days of ${String(rule.reward_plan || "pro").toUpperCase()}.`
+      } days of ${String(rule.reward_plan || "pro").toUpperCase()} when the reward system is active.`
     );
 
     const progressBar = document.getElementById("referralProgressBar");
@@ -6754,6 +6775,15 @@ async function copyReferralLink() {
 }
 
 
+
+      const refreshReferralsButton = document.getElementById("refreshReferralsButton");
+      if (refreshReferralsButton) refreshReferralsButton.addEventListener("click", async () => {
+        refreshReferralsButton.disabled = true;
+        try { await loadReferrals(); }
+        finally { refreshReferralsButton.disabled = false; }
+      });
+      const copyReferralButton = document.getElementById("copyReferralButton");
+      if (copyReferralButton) copyReferralButton.addEventListener("click", copyReferralLink);
 
       /* =================================================
          ANALYTICS REFRESH
@@ -6932,13 +6962,12 @@ async function copyReferralLink() {
                 }
 
 
-                if (
-                  tab ===
-                  "help"
-                ) {
-
+                if (tab === "help") {
                   await loadHelpWanted();
+                }
 
+                if (tab === "referrals") {
+                  await loadReferrals();
                 }
 
               }
@@ -7045,3 +7074,5 @@ async function copyReferralLink() {
 </body>
 
 </html>
+
+
