@@ -90,8 +90,10 @@
       gap:4px; flex-shrink:0; min-width:0;
     }
 
-    #naGoogleSignIn { min-height:40px; }
-    #naGoogleSignInMobile { min-height:40px; }
+    #naGoogleSignIn,
+    #naGoogleSignInMobile {
+      min-height:40px;
+    }
 
     #naSignedIn {
       align-items:center; justify-content:flex-end;
@@ -207,7 +209,8 @@
       font-size:13px; font-weight:700; cursor:pointer;
     }
 
-    .home-location-button:hover,.home-location-button.active {
+    .home-location-button:hover,
+    .home-location-button.active {
       border-color:#d4af37; color:#d4af37;
     }
 
@@ -256,7 +259,9 @@
       100% { transform:translateX(-50%); }
     }
 
-    .countries-marquee:hover .countries-marquee-track { animation-play-state:paused; }
+    .countries-marquee:hover .countries-marquee-track {
+      animation-play-state:paused;
+    }
 
     /* General sections */
     .home-section {
@@ -505,6 +510,14 @@
       .category-grid { grid-template-columns:1fr; }
       .website-card { padding:26px; }
       .countries-marquee-group { gap:22px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .countries-marquee-track { animation:none; }
+      *, *::before, *::after {
+        scroll-behavior:auto !important;
+        transition:none !important;
+      }
     }
   </style>
 </head>
@@ -758,6 +771,7 @@
   </div>
 </footer>
 
+<!-- Keep these existing site scripts in place. -->
 <script src="config.js"></script>
 <script src="js/translations.js"></script>
 <script src="js/i18n.js"></script>
@@ -771,46 +785,98 @@
 
   const API = "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
   const CLIENT_ID = "983094097918-84tegpgd1llrjau0v8avm61v92a13108.apps.googleusercontent.com";
+
   const TOKEN_KEY = "nearafrica_auth_token";
+  const USER_KEY = "nearafrica_auth_user";
+  const GOOGLE_SCRIPT_URL = "https://accounts.google.com/gsi/client";
 
   const $ = (id) => document.getElementById(id);
 
-  function setMessage(text) {
+  let googleInitialized = false;
+  let sessionCheckInProgress = false;
+
+  function setMessage(message) {
+    const text = message || "";
+
     ["naAuthMessage", "naMobileAuthMessage"].forEach((id) => {
-      const el = $(id);
-      if (el) el.textContent = text || "";
+      const element = $(id);
+      if (element) element.textContent = text;
     });
-    const mobileMessage = $("naMobileAuthMessage");
-    if (mobileMessage) mobileMessage.id = "naMobileAuthMessage";
   }
 
   function token() {
     try {
       return localStorage.getItem(TOKEN_KEY) || "";
-    } catch {
+    } catch (error) {
+      console.warn("Unable to read the NearAfrica sign-in token.", error);
       return "";
     }
   }
 
+  function saveUser(user) {
+    if (!user || typeof user !== "object") return;
+
+    try {
+      localStorage.setItem(USER_KEY, JSON.stringify(user));
+    } catch (error) {
+      console.warn("Unable to save the NearAfrica user profile.", error);
+    }
+  }
+
+  function clearSavedSession() {
+    try {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
+    } catch (error) {
+      console.warn("Unable to clear all saved sign-in data.", error);
+    }
+  }
+
   function showSignedOut() {
-    if ($("naGoogleSignIn")) $("naGoogleSignIn").hidden = false;
-    if ($("naGoogleSignInMobile")) $("naGoogleSignInMobile").hidden = false;
-    if ($("naSignedIn")) $("naSignedIn").hidden = true;
-    if ($("naMobileSignedIn")) $("naMobileSignedIn").hidden = true;
+    const desktopGoogle = $("naGoogleSignIn");
+    const mobileGoogle = $("naGoogleSignInMobile");
+    const desktopUser = $("naSignedIn");
+    const mobileUser = $("naMobileSignedIn");
+
+    if (desktopGoogle) desktopGoogle.hidden = false;
+    if (mobileGoogle) mobileGoogle.hidden = false;
+    if (desktopUser) desktopUser.hidden = true;
+    if (mobileUser) mobileUser.hidden = true;
   }
 
   function showSignedIn(user) {
-    if ($("naGoogleSignIn")) $("naGoogleSignIn").hidden = true;
-    if ($("naGoogleSignInMobile")) $("naGoogleSignInMobile").hidden = true;
+    if (!user || typeof user !== "object") {
+      showSignedOut();
+      return;
+    }
 
-    if ($("naUserName")) $("naUserName").textContent = user.name || user.email || "Signed in";
-    if ($("naMobileUserName")) $("naMobileUserName").textContent = user.name || user.email || "Signed in";
+    const displayName = String(
+      user.name || user.email || "Signed in"
+    );
 
-    if ($("naSignedIn")) $("naSignedIn").hidden = false;
-    if ($("naMobileSignedIn")) $("naMobileSignedIn").hidden = false;
+    const desktopGoogle = $("naGoogleSignIn");
+    const mobileGoogle = $("naGoogleSignInMobile");
+    const desktopUser = $("naSignedIn");
+    const mobileUser = $("naMobileSignedIn");
+
+    if (desktopGoogle) desktopGoogle.hidden = true;
+    if (mobileGoogle) mobileGoogle.hidden = true;
+
+    if ($("naUserName")) {
+      $("naUserName").textContent = displayName;
+    }
+
+    if ($("naMobileUserName")) {
+      $("naMobileUserName").textContent = displayName;
+    }
+
+    if (desktopUser) desktopUser.hidden = false;
+    if (mobileUser) mobileUser.hidden = false;
   }
 
   async function checkSession() {
+    if (sessionCheckInProgress) return;
+
     const savedToken = token();
 
     if (!savedToken) {
@@ -818,109 +884,258 @@
       return;
     }
 
+    sessionCheckInProgress = true;
+
     try {
       const response = await fetch(`${API}/auth/me`, {
-        headers: { Authorization: `Bearer ${savedToken}` }
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${savedToken}`
+        }
       });
 
-      const data = await response.json();
+      let data;
 
-      if (!response.ok || !data.user) {
-        localStorage.removeItem(TOKEN_KEY);
+      try {
+        data = await response.json();
+      } catch {
+        data = null;
+      }
+
+      if (response.status === 401 || response.status === 403) {
+        clearSavedSession();
         showSignedOut();
+        setMessage("Your session has expired. Please sign in again.");
         return;
       }
 
+      if (!response.ok) {
+        setMessage("Unable to verify your session. Please try again.");
+        return;
+      }
+
+      if (!data || !data.user) {
+        clearSavedSession();
+        showSignedOut();
+        setMessage("Your session could not be verified. Please sign in again.");
+        return;
+      }
+
+      saveUser(data.user);
       showSignedIn(data.user);
-    } catch {
-      setMessage("Unable to check your session. Refresh and try again.");
+      setMessage("");
+    } catch (error) {
+      console.error("NearAfrica session check failed:", error);
+
+      /*
+       * A temporary network failure does not automatically erase
+       * the token. The server remains responsible for verifying it.
+       */
+      setMessage("Unable to check your session. Check your connection and refresh.");
+    } finally {
+      sessionCheckInProgress = false;
     }
   }
 
   async function signInWithGoogle(credentialResponse) {
+    const credential = credentialResponse && credentialResponse.credential;
+
+    if (!credential) {
+      setMessage("Google did not return a sign-in credential. Please try again.");
+      return;
+    }
+
     setMessage("Signing you in...");
+
+    const desktopButton = $("naGoogleSignIn");
+    const mobileButton = $("naGoogleSignInMobile");
+
+    if (desktopButton) desktopButton.setAttribute("aria-busy", "true");
+    if (mobileButton) mobileButton.setAttribute("aria-busy", "true");
 
     try {
       const response = await fetch(`${API}/auth/google`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ credential: credentialResponse.credential })
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ credential })
       });
 
-      const data = await response.json();
+      let data;
 
-      if (!response.ok || !data.token || !data.user) {
-        throw new Error(data.message || "Google sign-in failed.");
+      try {
+        data = await response.json();
+      } catch {
+        data = null;
       }
 
-      localStorage.setItem(TOKEN_KEY, data.token);
+      if (!response.ok || !data || !data.token || !data.user) {
+        throw new Error(
+          (data && data.message) ||
+          `Google sign-in failed (HTTP ${response.status}). Please try again.`
+        );
+      }
+
+      try {
+        localStorage.setItem(TOKEN_KEY, data.token);
+      } catch {
+        throw new Error(
+          "Your browser could not save the sign-in session. Check your browser storage settings and try again."
+        );
+      }
+
+      saveUser(data.user);
       showSignedIn(data.user);
       setMessage("");
     } catch (error) {
+      console.error("NearAfrica Google sign-in failed:", error);
       setMessage(error.message || "Sign-in failed. Please try again.");
+    } finally {
+      if (desktopButton) desktopButton.removeAttribute("aria-busy");
+      if (mobileButton) mobileButton.removeAttribute("aria-busy");
     }
   }
 
   async function signOut() {
     const savedToken = token();
 
-    try {
-      localStorage.removeItem(TOKEN_KEY);
-    } catch {}
-
+    /*
+     * Sign out locally first so the interface responds immediately.
+     * The server revocation request is then attempted separately.
+     */
+    clearSavedSession();
     showSignedOut();
     setMessage("You have signed out.");
 
     if (!savedToken) return;
 
     try {
-      await fetch(`${API}/auth/logout`, {
+      const response = await fetch(`${API}/auth/logout`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${savedToken}` }
+        headers: {
+          Authorization: `Bearer ${savedToken}`
+        }
       });
-    } catch {
-      // The browser is signed out locally even if the network is unavailable.
+
+      if (!response.ok) {
+        console.warn(
+          "The local session was cleared, but the server did not confirm token revocation."
+        );
+      }
+    } catch (error) {
+      console.warn(
+        "Signed out locally; server token revocation could not be confirmed.",
+        error
+      );
     }
   }
 
   function initializeGoogle() {
-    if (!window.google || !window.google.accounts || !window.google.accounts.id) {
-      setMessage("Google sign-in is not available. Please refresh.");
+    if (
+      !window.google ||
+      !window.google.accounts ||
+      !window.google.accounts.id
+    ) {
+      setMessage("Google sign-in is not available. Refresh the page and try again.");
       return;
     }
 
-    window.google.accounts.id.initialize({
-      client_id: CLIENT_ID,
-      callback: signInWithGoogle
-    });
+    if (googleInitialized) return;
 
-    [
-      { id: "naGoogleSignIn", width: 210 },
-      { id: "naGoogleSignInMobile", width: 240 }
-    ].forEach(({ id, width }) => {
-      const container = $(id);
-      if (!container) return;
-
-      container.replaceChildren();
-
-      window.google.accounts.id.renderButton(container, {
-        type: "standard",
-        theme: "outline",
-        size: "large",
-        text: "signin_with",
-        shape: "rectangular",
-        width
+    try {
+      window.google.accounts.id.initialize({
+        client_id: CLIENT_ID,
+        callback: signInWithGoogle
       });
-    });
+
+      const buttons = [
+        { id: "naGoogleSignIn", width: 210 },
+        { id: "naGoogleSignInMobile", width: 240 }
+      ];
+
+      buttons.forEach(({ id, width }) => {
+        const container = $(id);
+        if (!container) return;
+
+        /*
+         * Clear only this Google button container before rendering.
+         * Do not clear the whole header or navigation.
+         */
+        container.replaceChildren();
+
+        window.google.accounts.id.renderButton(container, {
+          type: "standard",
+          theme: "outline",
+          size: "large",
+          text: "signin_with",
+          shape: "rectangular",
+          width
+        });
+      });
+
+      googleInitialized = true;
+
+      /*
+       * Re-check the session after Google loads, too. This makes
+       * initialization resilient to differences in script timing.
+       */
+      checkSession();
+    } catch (error) {
+      console.error("Unable to initialize Google sign-in:", error);
+      setMessage("Google sign-in could not be initialized. Please refresh.");
+    }
   }
 
   function loadGoogle() {
+    /*
+     * If another script has already loaded Google Identity Services,
+     * reuse it instead of adding a duplicate script.
+     */
+    if (
+      window.google &&
+      window.google.accounts &&
+      window.google.accounts.id
+    ) {
+      initializeGoogle();
+      return;
+    }
+
+    const existingScript = document.querySelector(
+      'script[src="https://accounts.google.com/gsi/client"]'
+    );
+
+    if (existingScript) {
+      existingScript.addEventListener("load", initializeGoogle, { once: true });
+
+      existingScript.addEventListener("error", () => {
+        setMessage("Google sign-in could not load. Check your connection.");
+      }, { once: true });
+
+      /*
+       * A script might already have loaded between the first check
+       * and the event-listener registration.
+       */
+      if (
+        window.google &&
+        window.google.accounts &&
+        window.google.accounts.id
+      ) {
+        initializeGoogle();
+      }
+
+      return;
+    }
+
     const script = document.createElement("script");
-    script.src = "https://accounts.google.com/gsi/client";
+    script.src = GOOGLE_SCRIPT_URL;
     script.async = true;
     script.defer = true;
     script.onload = initializeGoogle;
-    script.onerror = () => setMessage("Google sign-in could not load. Check your connection.");
+    script.onerror = () => {
+      setMessage("Google sign-in could not load. Check your connection and refresh.");
+    };
+
     document.head.appendChild(script);
   }
 
@@ -932,6 +1147,7 @@
 
     toggle.addEventListener("click", () => {
       const open = mobileNav.classList.toggle("open");
+
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       toggle.textContent = open ? "✕" : "☰";
@@ -947,18 +1163,46 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  function setupSignOutButtons() {
     const desktopSignOut = $("naSignOut");
     const mobileSignOut = $("naMobileSignOut");
 
-    if (desktopSignOut) desktopSignOut.addEventListener("click", signOut);
-    if (mobileSignOut) mobileSignOut.addEventListener("click", signOut);
+    if (desktopSignOut) {
+      desktopSignOut.addEventListener("click", signOut);
+    }
 
+    if (mobileSignOut) {
+      mobileSignOut.addEventListener("click", signOut);
+    }
+  }
+
+  function start() {
     setupMobileMenu();
+    setupSignOutButtons();
+
+    /*
+     * Start checking the saved session and loading Google
+     * independently so a slow network request does not block
+     * the Google button from appearing.
+     */
     checkSession();
     loadGoogle();
-  });
+  }
 
+  /*
+   * The script is near the end of the document, but this guard also
+   * supports cases where the page has already finished loading.
+   */
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start, { once: true });
+  } else {
+    start();
+  }
+
+  /*
+   * Preserve this public helper for other homepage scripts that
+   * need the current token or want to re-check the session.
+   */
   window.NearAfricaAuth = {
     getToken: token,
     checkSession,
