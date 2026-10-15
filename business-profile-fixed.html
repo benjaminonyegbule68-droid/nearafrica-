@@ -14,7 +14,10 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:radial-gradient(circle at top right,rgba(212,175,55,.08),transparent 32%),var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif;line-height:1.6}
-a{color:inherit}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.6;cursor:not-allowed}
+a{color:inherit}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.6;cursor:not-allowed}
 .container{width:min(1180px,92%);margin:auto}
 .site-header{position:sticky;top:0;z-index:1000;background:rgba(8,8,8,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
 .header-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
@@ -109,17 +112,24 @@ footer{border-top:1px solid var(--border);padding:28px 0;color:#777;text-align:c
 footer a{color:var(--gold2);text-decoration:none}
 @media(max-width:850px){
 .nav{display:none;position:absolute;top:72px;left:0;right:0;padding:15px;background:#0c0c0c;border-bottom:1px solid var(--border);flex-direction:column}
-.nav.open{display:flex}.mobile-menu{display:block}
-.profile-grid{grid-template-columns:1fr}.profile-top{flex-direction:column}
+.nav.open{display:flex}
+.mobile-menu{display:block}
+.profile-grid{grid-template-columns:1fr}
+.profile-top{flex-direction:column}
 .business-logo{width:105px;height:105px;flex-basis:105px}
 .info-grid,.product-grid{grid-template-columns:1fr}
 .photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:550px){
-.page{padding-top:22px}.profile-hero{padding:20px}.profile-card{padding:18px}
-.stats{grid-template-columns:1fr}.photo-grid img{height:145px}
-#businessMap{height:280px}.review-header{flex-direction:column;gap:3px}
-.directions-btn{width:100%}.map-directions-tools .btn{width:100%}
+.page{padding-top:22px}
+.profile-hero{padding:20px}
+.profile-card{padding:18px}
+.stats{grid-template-columns:1fr}
+.photo-grid img{height:145px}
+#businessMap{height:280px}
+.review-header{flex-direction:column;gap:3px}
+.directions-btn{width:100%}
+.map-directions-tools .btn{width:100%}
 }
 </style>
 </head>
@@ -538,17 +548,95 @@ function renderImages(images,businessName){
   return `<section class="profile-card"><h2>Photos</h2><div class="photo-grid">${html}</div></section>`;
 }
 
+/*
+ * OPENING HOURS FIX:
+ * Supports the actual API fields:
+ * day_of_week, is_24_hours, opening_time,
+ * closing_time and is_closed.
+ */
 function renderHours(hours){
   if(!Array.isArray(hours)||!hours.length) return "";
-  return `<section class="profile-card"><h2>Opening Hours</h2><div class="hours">
-    ${hours.map(hour=>{
-      const day=hour.day||hour.day_name||hour.weekday||"";
-      const open=hour.open||hour.open_time||"";
-      const close=hour.close||hour.close_time||"";
-      const closed=hour.closed===true||hour.is_closed===true||Number(hour.closed)===1||Number(hour.is_closed)===1;
-      return `<div class="hours-row"><strong>${escapeHtml(day)}</strong><span class="hours-time">${closed?"Closed":escapeHtml([open,close].filter(Boolean).join(" — ")||"Hours unavailable")}</span></div>`;
-    }).join("")}
-  </div></section>`;
+
+  const weekdayNames=[
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ];
+
+  const normalizedHours=hours.map(hour=>{
+    const rawDay=hour.day_of_week;
+    const numericDay=Number(rawDay);
+
+    const day=clean(hour.day||hour.day_name||hour.weekday) ||
+      (rawDay!==undefined&&rawDay!==null&&rawDay!==""&&
+       Number.isInteger(numericDay)&&numericDay>=0&&numericDay<=6
+        ?weekdayNames[numericDay]:"");
+
+    return {...hour,_displayDay:day};
+  });
+
+  normalizedHours.sort((a,b)=>{
+    const dayOrder=weekdayNames.indexOf(a._displayDay);
+    const otherOrder=weekdayNames.indexOf(b._displayDay);
+    if(dayOrder===-1&&otherOrder===-1) return 0;
+    if(dayOrder===-1) return 1;
+    if(otherOrder===-1) return -1;
+    return dayOrder-otherOrder;
+  });
+
+  return `<section class="profile-card">
+    <h2>Opening Hours</h2>
+    <div class="hours">
+      ${normalizedHours.map(hour=>{
+        const day=hour._displayDay||"Day not specified";
+
+        const open=clean(
+          hour.open||
+          hour.open_time||
+          hour.opening_time||
+          ""
+        );
+
+        const close=clean(
+          hour.close||
+          hour.close_time||
+          hour.closing_time||
+          ""
+        );
+
+        const closed=
+          hour.closed===true||
+          hour.is_closed===true||
+          Number(hour.closed)===1||
+          Number(hour.is_closed)===1;
+
+        const open24Hours=
+          hour.is_24_hours===true||
+          Number(hour.is_24_hours)===1||
+          hour.is24Hours===true||
+          Number(hour.is24Hours)===1;
+
+        let displayHours="Hours unavailable";
+
+        if(closed){
+          displayHours="Closed";
+        }else if(open24Hours){
+          displayHours="Open 24 hours";
+        }else if(open&&close){
+          displayHours=`${open} — ${close}`;
+        }
+
+        return `<div class="hours-row">
+          <strong>${escapeHtml(day)}</strong>
+          <span class="hours-time">${escapeHtml(displayHours)}</span>
+        </div>`;
+      }).join("")}
+    </div>
+  </section>`;
 }
 
 function renderReviews(reviews){
@@ -629,11 +717,6 @@ function displayBusiness(business,result){
   const initial=name.charAt(0).toUpperCase()||"B";
   const content=document.getElementById("businessContent");
 
-  /*
-   * CLAIM BUTTON:
-   * Unclaimed listings link to claim-business.html with the business ID.
-   * Claimed listings do not show the claim button.
-   */
   const claimIdentifier=business.id||business.business_id||business.slug||"";
 
   content.innerHTML=`
