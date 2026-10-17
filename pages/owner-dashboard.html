@@ -1805,6 +1805,18 @@
     .membership-action { width: 100%; min-height: 42px; }
     @media (max-width: 800px) { .membership-grid { grid-template-columns: 1fr; } }
 
+    /* Referrals extras */
+    .referral-history-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #252525;
+      font-size: 12px;
+      color: #bbb;
+    }
+    .referral-history-row:last-child { border-bottom: none; }
+
   </style>
 
 </head>
@@ -2031,13 +2043,13 @@
         Help Wanted
       </button>
 
-<button
-  class="tab"
-  data-tab="referrals"
-  type="button"
->
-  Referrals
-</button>
+      <button
+        class="tab"
+        data-tab="referrals"
+        type="button"
+      >
+        Referrals
+      </button>
 
       <button class="tab" data-tab="membership" type="button">Membership</button>
 
@@ -3101,6 +3113,58 @@
 
     </section>
 
+
+    <!-- ===================================================
+         REFERRALS TAB
+    ==================================================== -->
+    <section id="tab-referrals" class="tab-content hidden">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Referrals</h2>
+            <p>Share your link. Qualifying referrals can unlock membership rewards.</p>
+          </div>
+          <button id="refreshReferralsButton" class="button button-secondary" type="button">Refresh</button>
+        </div>
+
+        <div id="referralsStatus" class="global-status info" style="display:block;margin-bottom:16px;">
+          Referral information will load when this tab opens.
+        </div>
+
+        <div class="form-grid" style="margin-bottom:20px;">
+          <div class="form-group">
+            <label for="referralCode">Your referral code</label>
+            <input id="referralCode" type="text" readonly value="">
+          </div>
+          <div class="form-group">
+            <label for="referralLink">Your referral link</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input id="referralLink" type="text" readonly value="" style="flex:1;">
+              <button id="copyReferralButton" class="button button-secondary" type="button">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="analytics-grid" style="margin-bottom:18px;">
+          <div class="analytics-box"><span>Total referrals</span><strong id="referralTotal">—</strong></div>
+          <div class="analytics-box"><span>Qualified</span><strong id="referralQualified">—</strong></div>
+          <div class="analytics-box"><span>Pending</span><strong id="referralPending">—</strong></div>
+          <div class="analytics-box"><span>Progress to next reward</span><strong id="referralProgress">—</strong></div>
+        </div>
+
+        <p id="referralRewardRule" class="membership-note" style="margin-top:0;"></p>
+        <p class="membership-note">Referrals remaining until next reward: <strong id="referralRemaining">—</strong></p>
+
+        <div style="height:8px;background:#222;border-radius:4px;overflow:hidden;margin:12px 0 20px;">
+          <div id="referralProgressBar" style="height:100%;width:0%;background:var(--gold);transition:width .3s ease;"></div>
+        </div>
+
+        <div class="analytics-events">
+          <div class="analytics-events-title">Reward history</div>
+          <div id="referralHistory" class="analytics-events-empty">No referral rewards recorded yet.</div>
+        </div>
+      </div>
+    </section>
 
 
     <!-- ===================================================
@@ -6523,128 +6587,147 @@
 
       }
 
-async function loadReferrals() {
-  const status = document.getElementById("referralsStatus");
 
-  try {
-    if (status) status.textContent = "Loading referral information...";
+      /* =================================================
+         REFERRALS
+      ================================================= */
 
-    const data = await apiRequest(
-      `/owner/referrals?_=${Date.now()}`
-    );
+      async function loadReferrals() {
+        const status = document.getElementById("referralsStatus");
 
-    const code = String(data?.referral_code || "");
-    const url = String(data?.referral_url || "");
-    const total = Number(data?.total_referrals || 0);
-    const qualified = Number(data?.qualified_referrals || 0);
-    const pending = Number(data?.pending_referrals || 0);
-    const progress = Number(data?.qualified_toward_next_reward || 0);
-    const remaining = Number(data?.referrals_until_next_reward || 3);
-    const rule = data?.reward_rule || {};
-    const history = Array.isArray(data?.reward_history)
-      ? data.reward_history
-      : [];
+        try {
+          if (status) {
+            status.style.display = "block";
+            status.className = "global-status info";
+            status.textContent = "Loading referral information...";
+          }
 
-    const setText = (id, value) => {
-      const element = document.getElementById(id);
-      if (element) element.textContent = String(value);
-    };
+          const data = await apiRequest(
+            `/owner/referrals?_=${Date.now()}`
+          );
 
-    setText("referralCode", code || "Not available");
-    setText("referralLink", url);
-    setText("referralTotal", total);
-    setText("referralQualified", qualified);
-    setText("referralPending", pending);
-    setText("referralProgress", `${Math.min(progress, 3)} / 3`);
-    setText("referralRemaining", Math.max(remaining, 0));
-    setText(
-      "referralRewardRule",
-      `${Number(rule.qualifying_referrals || 3)} qualifying referrals earn ${
-        Number(rule.reward_days || 30)
-      } days of ${String(rule.reward_plan || "pro").toUpperCase()}.`
-    );
+          const code = String(data?.referral_code || "");
+          const url = String(data?.referral_url || "");
+          const total = Number(data?.total_referrals || 0);
+          const qualified = Number(data?.qualified_referrals || 0);
+          const pending = Number(data?.pending_referrals || 0);
+          const progress = Number(data?.qualified_toward_next_reward || 0);
+          const remaining = Number(data?.referrals_until_next_reward || 3);
+          const rule = data?.reward_rule || {};
+          const history = Array.isArray(data?.reward_history)
+            ? data.reward_history
+            : [];
 
-    const progressBar = document.getElementById("referralProgressBar");
-    if (progressBar) {
-      progressBar.style.width =
-        `${Math.min(100, Math.max(0, progress / 3 * 100))}%`;
-    }
+          const setText = (id, value) => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = String(value);
+          };
 
-    const historyElement = document.getElementById("referralHistory");
+          const setValue = (id, value) => {
+            const element = document.getElementById(id);
+            if (element) element.value = String(value);
+          };
 
-    if (historyElement) {
-      if (!history.length) {
-        historyElement.textContent = "No referral rewards recorded yet.";
-      } else {
-        historyElement.replaceChildren();
+          setValue("referralCode", code || "Not available");
+          setValue("referralLink", url);
+          setText("referralTotal", total);
+          setText("referralQualified", qualified);
+          setText("referralPending", pending);
+          setText("referralProgress", `${Math.min(progress, 3)} / 3`);
+          setText("referralRemaining", Math.max(remaining, 0));
+          setText(
+            "referralRewardRule",
+            `${Number(rule.qualifying_referrals || 3)} qualifying referrals earn ${
+              Number(rule.reward_days || 30)
+            } days of ${String(rule.reward_plan || "pro").toUpperCase()}.`
+          );
 
-        history.forEach((reward) => {
-          const row = document.createElement("div");
-          row.className = "referral-history-row";
+          const progressBar = document.getElementById("referralProgressBar");
+          if (progressBar) {
+            progressBar.style.width =
+              `${Math.min(100, Math.max(0, progress / 3 * 100))}%`;
+          }
 
-          const description = document.createElement("span");
-          description.textContent =
-            `${String(reward.plan || "Pro").toUpperCase()} reward`;
+          const historyElement = document.getElementById("referralHistory");
 
-          const details = document.createElement("span");
-          details.textContent = [
-            reward.status || "Recorded",
-            reward.created_at || reward.awarded_at || ""
-          ].filter(Boolean).join(" · ");
+          if (historyElement) {
+            if (!history.length) {
+              historyElement.className = "analytics-events-empty";
+              historyElement.textContent = "No referral rewards recorded yet.";
+            } else {
+              historyElement.className = "";
+              historyElement.replaceChildren();
 
-          row.append(description, details);
-          historyElement.appendChild(row);
-        });
+              history.forEach((reward) => {
+                const row = document.createElement("div");
+                row.className = "referral-history-row";
+
+                const description = document.createElement("span");
+                description.textContent =
+                  `${String(reward.plan || "Pro").toUpperCase()} reward`;
+
+                const details = document.createElement("span");
+                details.textContent = [
+                  reward.status || "Recorded",
+                  reward.created_at || reward.awarded_at || ""
+                ].filter(Boolean).join(" · ");
+
+                row.append(description, details);
+                historyElement.appendChild(row);
+              });
+            }
+          }
+
+          if (status) {
+            status.className = "global-status success";
+            status.textContent = "Referral information loaded.";
+          }
+          return true;
+        } catch (error) {
+          console.error("OWNER REFERRALS LOAD ERROR:", error);
+
+          if (status) {
+            status.className = "global-status error";
+            status.textContent =
+              error.message || "Unable to load referral information.";
+          }
+
+          showStatus(
+            error.message || "Unable to load referrals.",
+            "error"
+          );
+
+          return false;
+        }
       }
-    }
 
-    if (status) status.textContent = "Referral information loaded.";
-    return true;
-  } catch (error) {
-    console.error("OWNER REFERRALS LOAD ERROR:", error);
+      async function copyReferralLink() {
+        const field = document.getElementById("referralLink");
+        const url = field?.value || field?.textContent || "";
 
-    if (status) {
-      status.textContent =
-        error.message || "Unable to load referral information.";
-    }
+        if (!url) {
+          showStatus("Your referral link is not available yet.", "error");
+          return;
+        }
 
-    showStatus(
-      error.message || "Unable to load referrals.",
-      "error"
-    );
+        try {
+          await navigator.clipboard.writeText(url);
+          showStatus("Referral link copied.", "success");
+        } catch (error) {
+          if (field && typeof field.select === "function") {
+            field.focus();
+            field.select();
 
-    return false;
-  }
-}
-
-async function copyReferralLink() {
-  const field = document.getElementById("referralLink");
-  const url = field?.value || field?.textContent || "";
-
-  if (!url) {
-    showStatus("Your referral link is not available yet.", "error");
-    return;
-  }
-
-  try {
-    await navigator.clipboard.writeText(url);
-    showStatus("Referral link copied.", "success");
-  } catch (error) {
-    if (field && typeof field.select === "function") {
-      field.focus();
-      field.select();
-
-      const copied = document.execCommand("copy");
-      showStatus(
-        copied ? "Referral link copied." : "Select and copy the referral link manually.",
-        copied ? "success" : "error"
-      );
-    } else {
-      showStatus("Copy unavailable. Please copy the link manually.", "error");
-    }
-  }
-}
-
+            const copied = document.execCommand("copy");
+            showStatus(
+              copied ? "Referral link copied." : "Select and copy the referral link manually.",
+              copied ? "success" : "error"
+            );
+          } else {
+            showStatus("Copy unavailable. Please copy the link manually.", "error");
+          }
+        }
+      }
 
 
       /* =================================================
@@ -6657,64 +6740,66 @@ async function copyReferralLink() {
         );
 
 
-      refreshAnalyticsButton.addEventListener(
-        "click",
-        async () => {
-
-          if (
-            refreshAnalyticsButton.disabled
-          ) {
-
-            return;
-
-          }
-
-
-          const originalText =
-            refreshAnalyticsButton.textContent;
-
-
-          refreshAnalyticsButton.disabled =
-            true;
-
-
-          refreshAnalyticsButton.textContent =
-            "Refreshing...";
-
-
-          clearStatus();
-
-
-          try {
-
-            const success =
-              await loadAnalytics();
-
+      if (refreshAnalyticsButton) {
+        refreshAnalyticsButton.addEventListener(
+          "click",
+          async () => {
 
             if (
-              success
+              refreshAnalyticsButton.disabled
             ) {
 
-              showStatus(
-                "Analytics refreshed successfully.",
-                "success"
-              );
+              return;
 
             }
 
-          } finally {
+
+            const originalText =
+              refreshAnalyticsButton.textContent;
+
 
             refreshAnalyticsButton.disabled =
-              false;
+              true;
 
 
             refreshAnalyticsButton.textContent =
-              originalText;
+              "Refreshing...";
+
+
+            clearStatus();
+
+
+            try {
+
+              const success =
+                await loadAnalytics();
+
+
+              if (
+                success
+              ) {
+
+                showStatus(
+                  "Analytics refreshed successfully.",
+                  "success"
+                );
+
+              }
+
+            } finally {
+
+              refreshAnalyticsButton.disabled =
+                false;
+
+
+              refreshAnalyticsButton.textContent =
+                originalText;
+
+            }
 
           }
-
-        }
-      );
+        );
+      }
 
 
       /* =================================================
@@ -6770,6 +6855,28 @@ async function copyReferralLink() {
 
 
       /* =================================================
+         REFERRALS BUTTONS
+      ================================================= */
+      const copyReferralButton = document.getElementById("copyReferralButton");
+      if (copyReferralButton) {
+        copyReferralButton.addEventListener("click", copyReferralLink);
+      }
+
+      const refreshReferralsButton = document.getElementById("refreshReferralsButton");
+      if (refreshReferralsButton) {
+        refreshReferralsButton.addEventListener("click", async () => {
+          refreshReferralsButton.disabled = true;
+          try {
+            await loadReferrals();
+            showStatus("Referrals refreshed.", "success");
+          } finally {
+            refreshReferralsButton.disabled = false;
+          }
+        });
+      }
+
+
+      /* =================================================
          TABS
       ================================================= */
 
@@ -6786,5 +6893,81 @@ async function copyReferralLink() {
 
                 // Avoid starting the same tab's loader multiple times from rapid clicks.
                 if (button.dataset.loading === "true") return;
-          
-Preview truncated for large file
+
+                const tabName = button.dataset.tab;
+                if (!tabName) return;
+
+                // Update active tab UI
+                document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+                button.classList.add("active");
+
+                // Hide all panels
+                document.querySelectorAll(".tab-content").forEach(panel => {
+                  panel.classList.add("hidden");
+                });
+
+                const target = document.getElementById(`tab-${tabName}`);
+                if (target) target.classList.remove("hidden");
+
+                // Lazy-load data for the selected tab
+                button.dataset.loading = "true";
+                try {
+                  if (tabName === "images") await loadImages();
+                  else if (tabName === "hours") await loadHours();
+                  else if (tabName === "products") await loadProducts();
+                  else if (tabName === "analytics") await loadAnalytics();
+                  else if (tabName === "help") await loadHelpWanted();
+                  else if (tabName === "referrals") await loadReferrals();
+                  // membership: status remains the safe static message until a Worker status endpoint exists
+                } catch (err) {
+                  console.error("TAB LOAD ERROR:", err);
+                } finally {
+                  button.dataset.loading = "false";
+                }
+              }
+            );
+          }
+        );
+
+
+      /* =================================================
+         LOGOUT
+      ================================================= */
+      if (logoutButton) {
+        logoutButton.addEventListener("click", () => {
+          try {
+            localStorage.removeItem(OWNER_TOKEN_KEY);
+          } catch {}
+          window.location.href = "owner-login.html";
+        });
+      }
+
+
+      /* =================================================
+         BOOTSTRAP
+      ================================================= */
+      async function init() {
+        if (!requireToken()) return;
+
+        clearStatus();
+        showStatus("Loading your dashboard…", "info");
+
+        await Promise.all([
+          loadBusiness(),
+          loadAnalytics()
+        ]);
+
+        clearStatus();
+      }
+
+      // Kick off
+      init().catch(err => {
+        console.error("DASHBOARD INIT ERROR:", err);
+        showStatus(err.message || "Unable to start dashboard.", "error");
+      });
+
+    })();
+  </script>
+
+</body>
+</html>
