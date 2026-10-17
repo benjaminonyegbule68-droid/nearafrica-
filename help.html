@@ -1,0 +1,1385 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111111">
+  <meta name="description" content="The official NearAfrica Help Centre. Learn how to find businesses, manage listings, claim businesses, understand admin approval and get support.">
+
+  <title>Need Help? | NearAfrica Help Centre</title>
+
+  <style>
+    :root {
+      --gold: #d4aa50;
+      --gold-light: #f0d48c;
+      --black: #101010;
+      --surface: #191919;
+      --surface-light: #222222;
+      --border: #353535;
+      --text: #f5f5f5;
+      --muted: #b6b6b6;
+      --green: #75d6a0;
+      --red: #ff8585;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 85px;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--black);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--gold-light);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: white;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 4px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(16, 16, 16, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      max-width: 1180px;
+      min-height: 72px;
+      margin: auto;
+      padding: 12px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: white;
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.6px;
+    }
+
+    .brand-mark {
+      width: 39px;
+      height: 39px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--gold);
+      border-radius: 12px;
+      color: var(--gold);
+      font-size: 22px;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 1.7px;
+      font-weight: 500;
+    }
+
+    .back-link {
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 9px 13px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .hero {
+      max-width: 900px;
+      margin: auto;
+      padding: 66px 22px 36px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      color: var(--gold);
+      border: 1px solid #5a4825;
+      background: #211b10;
+      border-radius: 100px;
+      padding: 5px 13px;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 17px;
+    }
+
+    h1 {
+      font-size: clamp(34px, 6vw, 56px);
+      line-height: 1.12;
+      letter-spacing: -1.8px;
+      margin-bottom: 17px;
+    }
+
+    h1 span {
+      color: var(--gold);
+    }
+
+    .hero > p {
+      max-width: 650px;
+      margin: auto;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .search-wrap {
+      max-width: 600px;
+      margin: 28px auto 0;
+      position: relative;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      padding: 17px 18px 17px 48px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: white;
+      outline: none;
+    }
+
+    .search-wrap input:focus {
+      border-color: var(--gold);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 17px;
+      top: 12px;
+      font-size: 20px;
+      color: var(--gold);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 12px 22px 65px;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin: 15px 0 25px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(24px, 4vw, 32px);
+      margin-bottom: 5px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      margin-bottom: 55px;
+    }
+
+    .audience-card {
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, #202020, #141414);
+      border-radius: 18px;
+      padding: 27px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .audience-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-3px);
+    }
+
+    .audience-icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: #302614;
+      color: var(--gold-light);
+      font-size: 25px;
+      margin-bottom: 17px;
+    }
+
+    .audience-card h3 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .audience-card p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 17px;
+      border: 1px solid var(--gold);
+      border-radius: 9px;
+      color: #111;
+      background: var(--gold);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .button:hover {
+      background: var(--gold-light);
+      color: #111;
+    }
+
+    .button-outline {
+      background: transparent;
+      color: var(--gold-light);
+    }
+
+    .button-outline:hover {
+      background: #302614;
+      color: white;
+    }
+
+    .guide-section {
+      margin-bottom: 52px;
+      scroll-margin-top: 90px;
+    }
+
+    .guide-title {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 20px;
+      padding-bottom: 17px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .guide-title .audience-icon {
+      flex-shrink: 0;
+      margin: 0;
+    }
+
+    .guide-title h2 {
+      font-size: 25px;
+      line-height: 1.3;
+    }
+
+    .guide-title p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .guide-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .guide {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .guide summary {
+      padding: 17px;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .guide summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .guide summary::after {
+      content: "+";
+      margin-left: auto;
+      color: var(--gold);
+      font-size: 21px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .guide[open] summary::after {
+      content: "−";
+    }
+
+    .guide summary:hover {
+      color: var(--gold-light);
+    }
+
+    .guide-number {
+      display: grid;
+      place-items: center;
+      min-width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #302614;
+      color: var(--gold-light);
+      font-size: 12px;
+    }
+
+    .guide-content {
+      padding: 0 19px 20px;
+      color: #dedede;
+      font-size: 13px;
+    }
+
+    .guide-content p {
+      margin-bottom: 11px;
+    }
+
+    .guide-content ol,
+    .guide-content ul {
+      padding-left: 21px;
+      margin: 10px 0 14px;
+    }
+
+    .guide-content li {
+      padding-left: 3px;
+      margin-bottom: 9px;
+    }
+
+    .note {
+      padding: 12px 14px;
+      border-left: 3px solid var(--gold);
+      border-radius: 4px;
+      background: #282113;
+      color: #e9dfc7;
+      font-size: 12px;
+      margin-top: 13px;
+    }
+
+    .warning {
+      border-left-color: #d78a59;
+      background: #291d16;
+      color: #f1d4c2;
+    }
+
+    .success-note {
+      border-left-color: var(--green);
+      background: #15251c;
+      color: #c9f1d8;
+    }
+
+    .guide[hidden],
+    .guide-section[hidden],
+    .audience-card[hidden] {
+      display: none !important;
+    }
+
+    .approval-status {
+      display: grid;
+      gap: 9px;
+      margin: 15px 0;
+    }
+
+    .status-row {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #141414;
+    }
+
+    .status-row strong {
+      display: block;
+      color: var(--gold-light);
+      margin-bottom: 3px;
+    }
+
+    .status-row p {
+      margin: 0;
+      font-size: 12px;
+    }
+
+    .support-panel {
+      padding: 32px;
+      border: 1px solid #5a4825;
+      border-radius: 17px;
+      background: linear-gradient(145deg, #241e13, #171511);
+      margin-top: 20px;
+      scroll-margin-top: 90px;
+    }
+
+    .support-panel h2 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .support-panel > p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .support-item {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 17px;
+      min-width: 0;
+    }
+
+    .support-item h3 {
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+
+    .support-item p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 11px;
+    }
+
+    .support-item a {
+      overflow-wrap: anywhere;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .faq {
+      margin-top: 50px;
+    }
+
+    .faq h2 {
+      font-size: 25px;
+      margin-bottom: 17px;
+    }
+
+    .empty-state {
+      display: none;
+      text-align: center;
+      color: var(--muted);
+      padding: 25px 10px;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 26px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    footer strong {
+      color: var(--gold);
+    }
+
+    footer p + p {
+      margin-top: 5px;
+    }
+
+    @media (max-width: 700px) {
+      .topbar-inner {
+        min-height: 63px;
+        padding: 10px 15px;
+      }
+
+      .brand {
+        font-size: 18px;
+      }
+
+      .brand-mark {
+        width: 35px;
+        height: 35px;
+      }
+
+      .back-link {
+        font-size: 12px;
+        padding: 8px 10px;
+      }
+
+      .hero {
+        padding: 46px 17px 28px;
+      }
+
+      .hero > p {
+        font-size: 14px;
+      }
+
+      .container {
+        padding: 10px 15px 45px;
+      }
+
+      .audience-grid,
+      .guide-list,
+      .support-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .audience-grid {
+        gap: 13px;
+        margin-bottom: 40px;
+      }
+
+      .audience-card {
+        padding: 21px;
+      }
+
+      .guide-title h2 {
+        font-size: 21px;
+      }
+
+      .support-panel {
+        padding: 22px 17px;
+      }
+
+      .support-panel h2 {
+        font-size: 24px;
+      }
+    }
+
+    @media print {
+      .topbar,
+      .search-wrap,
+      .button {
+        display: none !important;
+      }
+
+      body {
+        background: white;
+        color: black;
+      }
+
+      .guide,
+      .audience-card,
+      .support-item {
+        background: white;
+        color: black;
+        border-color: #ccc;
+        break-inside: avoid;
+      }
+
+      .guide-content,
+      .guide-content p,
+      .guide-content li,
+      .audience-card p,
+      .support-item p {
+        color: #222;
+      }
+
+      details > .guide-content {
+        display: block !important;
+      }
+
+      .guide summary::after {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="NearAfrica home">
+        <span class="brand-mark" aria-hidden="true">⌖</span>
+        <span>
+          NearAfrica
+          <small>HELP CENTRE</small>
+        </span>
+      </a>
+
+      <a class="back-link" href="index.html">← Back to Home</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="eyebrow">We're here to help</span>
+    <h1>Need <span>Help?</span></h1>
+    <p>
+      Whether you're looking for a great local business or managing your own,
+      follow our simple guides to find your way around NearAfrica.
+    </p>
+
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true">⌕</span>
+      <input
+        type="search"
+        id="helpSearch"
+        placeholder="Search for help, e.g. claim a business..."
+        aria-label="Search help guides"
+        autocomplete="off"
+      >
+    </div>
+  </section>
+
+  <main class="container">
+
+    <!-- AUDIENCE SELECTION -->
+    <section aria-labelledby="audienceHeading">
+      <div class="section-heading">
+        <h2 id="audienceHeading">How can we help you?</h2>
+        <p>Choose the option that best describes you.</p>
+      </div>
+
+      <div class="audience-grid">
+
+        <article class="audience-card" data-audience="user">
+          <div class="audience-icon" aria-hidden="true">⌕</div>
+          <h3>I'm a User</h3>
+          <p>
+            Learn how to find businesses, discover places near you, save
+            favourites, leave reviews, and report incorrect information.
+          </p>
+          <a class="button" href="#userGuides">
+            Explore User Guides →
+          </a>
+        </article>
+
+        <article class="audience-card" data-audience="owner">
+          <div class="audience-icon" aria-hidden="true">▣</div>
+          <h3>I'm a Business Owner</h3>
+          <p>
+            Learn how to claim your business, understand admin approval,
+            access your dashboard, update your listing, and manage subscriptions.
+          </p>
+          <a class="button" href="#ownerGuides">
+            Explore Owner Guides →
+          </a>
+        </article>
+
+      </div>
+    </section>
+
+    <div id="emptyState" class="empty-state" role="status">
+      No matching guides found. Try another search or contact NearAfrica support.
+    </div>
+
+    <!-- ================= USER GUIDES ================= -->
+    <section class="guide-section" id="userGuides" data-section="user">
+      <div class="guide-title">
+        <div class="audience-icon" aria-hidden="true">⌕</div>
+        <div>
+          <h2>User Help Guides</h2>
+          <p>Everything you need to use NearAfrica.</p>
+        </div>
+      </div>
+
+      <div class="guide-list">
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">01</span>
+            How to find a business
+          </summary>
+          <div class="guide-content">
+            <p>Looking for a restaurant, shop, hotel, or service?</p>
+            <ol>
+              <li>Open the NearAfrica homepage.</li>
+              <li>Use the search bar or choose a business category.</li>
+              <li>Select the available location filters to narrow your search.</li>
+              <li>Browse the results and select the business you want.</li>
+              <li>Review its available address, contact details, photos, and reviews.</li>
+              <li>Use the available contact or directions options to reach the business.</li>
+            </ol>
+            <div class="note">
+              Always confirm important details with the business before travelling
+              or making a payment.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">02</span>
+            How to find businesses near me
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Open the Explore or nearby-businesses section.</li>
+              <li>Select the location option if it is available.</li>
+              <li>Allow your browser to access your device's location.</li>
+              <li>Wait for the nearby results to load.</li>
+              <li>Open a result to inspect the business details and location.</li>
+            </ol>
+            <p><strong>If your location does not work:</strong></p>
+            <ul>
+              <li>Turn on location services on your device.</li>
+              <li>Check your browser's location permission for NearAfrica.</li>
+              <li>Ensure your internet connection is working.</li>
+              <li>Try searching by state, city, or area instead.</li>
+              <li>Reload the page and try again.</li>
+            </ul>
+            <div class="note">
+              Location accuracy and nearby results depend on your device and
+              the availability of business location data.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">03</span>
+            How to save a favourite business
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Find and open a business profile.</li>
+              <li>Look for the Save or Favourite option, if available.</li>
+              <li>Select it to save the business.</li>
+              <li>Open your saved-businesses section to find it again.</li>
+            </ol>
+            <div class="note">
+              If your saved list is missing, check whether you are using the
+              same browser and device. Saved businesses may be stored locally
+              rather than synchronised across devices.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">04</span>
+            How to leave a review
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Find and open the business profile.</li>
+              <li>Locate the ratings or reviews section.</li>
+              <li>Follow the displayed instructions to submit a rating or review.</li>
+              <li>Complete any sign-in or verification requirements shown.</li>
+              <li>Submit your honest feedback.</li>
+            </ol>
+            <div class="note">
+              Only review businesses based on genuine experiences. Review
+              submission depends on the features enabled on the website.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">05</span>
+            How to report a suspicious or incorrect listing
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Open the business profile in question.</li>
+              <li>Select Report Listing, if available.</li>
+              <li>Identify the problem, such as incorrect details, a duplicate,
+                a closed business, or potentially misleading information.</li>
+              <li>Explain the issue clearly and provide supporting information.</li>
+              <li>Submit the report using the available reporting process.</li>
+            </ol>
+            <p>
+              NearAfrica can review a report and take appropriate action based
+              on the available evidence and its listing policies.
+            </p>
+            <div class="note">
+              If the report button is unavailable, contact support using the
+              details at the bottom of this page.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">06</span>
+            How to request a correction or removal
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Identify the affected business listing.</li>
+              <li>Open the correction or removal request option, if available.</li>
+              <li>Provide the business name and listing link or other identifying details.</li>
+              <li>Explain the incorrect information or reason for the request.</li>
+              <li>Provide supporting evidence when necessary.</li>
+              <li>Submit the request and follow any confirmation instructions.</li>
+            </ol>
+            <p>
+              The NearAfrica team may need to review your request before
+              making changes or removing information.
+            </p>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">07</span>
+            How to stay safe when contacting a business
+          </summary>
+          <div class="guide-content">
+            <ul>
+              <li>Verify important business details before paying.</li>
+              <li>Be cautious of requests for unusual advance payments.</li>
+              <li>Do not share passwords, bank PINs, or one-time passwords.</li>
+              <li>Use trusted payment methods and keep transaction records.</li>
+              <li>Report suspicious listings or misleading information.</li>
+            </ul>
+            <div class="note warning">
+              A business appearing in a directory does not, by itself, guarantee
+              that the business has been independently verified by NearAfrica.
+            </div>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- ================= OWNER GUIDES ================= -->
+    <section class="guide-section" id="ownerGuides" data-section="owner">
+      <div class="guide-title">
+        <div class="audience-icon" aria-hidden="true">▣</div>
+        <div>
+          <h2>Business Owner Help Guides</h2>
+          <p>Manage your business presence on NearAfrica.</p>
+        </div>
+      </div>
+
+      <div class="guide-list">
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">01</span>
+            How to find your business listing
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Open the NearAfrica homepage.</li>
+              <li>Search for your business name.</li>
+              <li>Check the address and other details to identify the correct listing.</li>
+              <li>Open the profile and review the information displayed.</li>
+              <li>If you find your business, proceed to the claim process if available.</li>
+              <li>If it is missing, follow the available business-submission process
+                or contact NearAfrica support.</li>
+            </ol>
+            <div class="note">
+              Check for an existing listing before submitting another one.
+              This helps prevent duplicate business records.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">02</span>
+            How to claim your business
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Find the correct business profile.</li>
+              <li>Select Claim Business, if available.</li>
+              <li>Enter the requested owner and business contact information.</li>
+              <li>Complete the email OTP verification step if requested.</li>
+              <li>Provide any additional evidence of your authority to manage the business.</li>
+              <li>Submit the claim.</li>
+              <li>Follow the claim status and any further instructions provided.</li>
+              <li>After approval, use the supported owner login process to access
+                your dashboard.</li>
+            </ol>
+            <div class="note warning">
+              Verifying your email does not automatically prove ownership or
+              guarantee that your business claim will be approved.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">03</span>
+            How admin approval works
+          </summary>
+          <div class="guide-content">
+            <p>
+              Some requests may require an administrative review before the
+              requested action can be completed.
+            </p>
+
+            <ol>
+              <li><strong>Submit:</strong> Complete the relevant business claim
+                or request and provide the requested details.</li>
+              <li><strong>Verify:</strong> Complete email verification or any
+                other required checks.</li>
+              <li><strong>Review:</strong> The NearAfrica administration team
+                reviews the request and supporting information where applicable.</li>
+              <li><strong>Wait:</strong> Allow the review process to finish.
+                Avoid creating duplicate requests unnecessarily.</li>
+              <li><strong>Receive a decision:</strong> Follow any approval,
+                rejection, or additional-information instructions you receive.</li>
+              <li><strong>Continue:</strong> If approved, follow the instructions
+                for accessing the relevant features. If rejected, review the
+                reason and ask about available correction or appeal options.</li>
+            </ol>
+
+            <div class="approval-status">
+              <div class="status-row">
+                <strong>Pending</strong>
+                <p>The request has not yet reached a final decision.</p>
+              </div>
+              <div class="status-row">
+                <strong>Approved</strong>
+                <p>The request has been accepted. Complete any remaining
+                  instructions to use the relevant feature.</p>
+              </div>
+              <div class="status-row">
+                <strong>Rejected</strong>
+                <p>The request was not accepted. Check the reason provided and
+                  contact support if clarification is needed.</p>
+              </div>
+            </div>
+
+            <div class="note warning">
+              These status explanations are general guidance. The actual
+              status labels, notifications, and appeal options depend on the
+              functionality enabled in NearAfrica.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">04</span>
+            How to access the owner dashboard
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Open the NearAfrica homepage.</li>
+              <li>Find the Business Owner or Owner Login option.</li>
+              <li>Enter the credentials requested by the login page.</li>
+              <li>Complete any required verification.</li>
+              <li>After successful authentication, open your owner dashboard.</li>
+              <li>Select the relevant business and use the available management tools.</li>
+            </ol>
+            <p>
+              If you cannot access the dashboard, confirm your claim status
+              and contact details before trying again.
+            </p>
+            <a class="button button-outline" href="owner-dashboard.html">
+              Open Owner Dashboard →
+            </a>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">05</span>
+            How to update your business information
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Sign in to your owner dashboard.</li>
+              <li>Open the business management or listing-editing section.</li>
+              <li>Update the fields available to you, such as your description,
+                contact details, address, or opening hours.</li>
+              <li>Review your changes carefully.</li>
+              <li>Save or submit the changes.</li>
+              <li>Check your public business profile to confirm the result.</li>
+            </ol>
+            <div class="note">
+              Some changes may require review. Only fields and actions enabled
+              in your dashboard will be available.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">06</span>
+            How to upload business photos
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Open your owner dashboard.</li>
+              <li>Find the business images or photo-upload section, if available.</li>
+              <li>Select suitable images from your device.</li>
+              <li>Use clear photos relevant to your real business.</li>
+              <li>Upload and save your changes.</li>
+              <li>Review your public profile after the upload completes.</li>
+            </ol>
+            <div class="note warning">
+              Only upload photos you own or have permission to use. Do not
+              upload misleading photos or images containing private information.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">07</span>
+            How to upgrade to Pro or Premium
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Open the membership comparison section on NearAfrica.</li>
+              <li>Compare the Free, Pro, and Premium plans.</li>
+              <li>Select the plan you want, if subscriptions are available.</li>
+              <li>Review the price, billing interval, benefits, and terms shown.</li>
+              <li>Continue to the Paystack checkout when offered.</li>
+              <li>Complete the payment on the authorised payment page.</li>
+              <li>Return to NearAfrica and check your subscription status.</li>
+              <li>If payment succeeds but your membership does not activate,
+                contact support with your transaction reference.</li>
+            </ol>
+            <div class="note warning">
+              Always check the actual price shown at checkout. A successful
+              payment and the activation of membership benefits are separate
+              steps that should both be confirmed.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">08</span>
+            How to change or cancel a subscription
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Open your owner dashboard or subscription-management area.</li>
+              <li>Check your current plan and billing status.</li>
+              <li>Use the available change-plan or cancellation option, if provided.</li>
+              <li>Review any confirmation message and the effective date of the change.</li>
+              <li>Keep the confirmation for your records.</li>
+              <li>If no suitable option is available, contact NearAfrica support
+                before making another payment.</li>
+            </ol>
+            <div class="note">
+              The available plan-change, renewal, and cancellation options
+              depend on the subscription functionality currently enabled.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">09</span>
+            Login or email OTP problems
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Confirm that you are using the correct owner login page.</li>
+              <li>Check that your email address is entered correctly.</li>
+              <li>Check your inbox and spam or junk folder for the verification email.</li>
+              <li>Wait for any displayed cooldown period before requesting another code.</li>
+              <li>Request a new code if the option is available and the previous
+                code has expired.</li>
+              <li>If the problem continues, contact support with the error message
+                and business name.</li>
+            </ol>
+            <div class="note warning">
+              Never send your password or OTP to support or anyone claiming
+              to be an administrator.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">10</span>
+            How to improve your business visibility
+          </summary>
+          <div class="guide-content">
+            <ul>
+              <li>Keep your business information accurate and up to date.</li>
+              <li>Provide a useful description of your products or services.</li>
+              <li>Add clear, authorised business photos where supported.</li>
+              <li>Encourage genuine customers to leave honest feedback if reviews
+                are enabled.</li>
+              <li>Respond professionally to customer enquiries.</li>
+              <li>Explore analytics and paid membership benefits when available.</li>
+            </ul>
+            <div class="note">
+              Paid membership may offer additional visibility features, but
+              it does not guarantee customers, sales, or a particular search ranking.
+            </div>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>
+            <span class="guide-number">11</span>
+            Correction, removal, or business ownership disputes
+          </summary>
+          <div class="guide-content">
+            <ol>
+              <li>Identify the business profile and the issue.</li>
+              <li>Contact NearAfrica through an available correction, removal,
+                or support channel.</li>
+              <li>Explain the requested action and provide supporting evidence
+                when necessary.</li>
+              <li>Follow any further identity or authority checks requested.</li>
+              <li>Wait for the team to review the request.</li>
+            </ol>
+            <p>
+              Do not create another listing to bypass a pending ownership claim
+              or an administrative decision.
+            </p>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="commonQuestions">
+      <div class="section-heading">
+        <h2>Frequently Asked Questions</h2>
+        <p>Quick answers to common questions.</p>
+      </div>
+
+      <div class="guide-list">
+
+        <details class="guide">
+          <summary>Does a free listing mean a business is verified?</summary>
+          <div class="guide-content">
+            <p>
+              No. Being listed, having a claimed listing, and being independently
+              verified are different things. Check the status displayed on the
+              actual business profile.
+            </p>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>Does email verification guarantee claim approval?</summary>
+          <div class="guide-content">
+            <p>
+              No. Email verification confirms access to an email address.
+              Additional checks or administrative approval may be required.
+            </p>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>What if I paid but my plan is not active?</summary>
+          <div class="guide-content">
+            <p>
+              Keep your payment reference, check your subscription status,
+              and contact support. Avoid paying a second time until the first
+              transaction has been checked.
+            </p>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>Can I request a correction to a business listing?</summary>
+          <div class="guide-content">
+            <p>
+              Yes. Use the available correction or reporting process, or contact
+              support with the business name, profile link, and details of the
+              requested correction.
+            </p>
+          </div>
+        </details>
+
+        <details class="guide">
+          <summary>What information should I include when requesting help?</summary>
+          <div class="guide-content">
+            <p>
+              Include your issue, business name if relevant, the affected page,
+              the date it occurred, and any error message. For payment issues,
+              include the transaction reference. Never include passwords,
+              OTP codes, or full card details.
+            </p>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- CONTACT SUPPORT -->
+    <section class="support-panel" id="contactSupport">
+      <h2>Still Need Help?</h2>
+      <p>
+        If the guides above do not solve your problem, contact NearAfrica
+        using the details below.
+      </p>
+
+      <div class="support-grid">
+
+        <div class="support-item">
+          <h3>📞 Call NearAfrica</h3>
+          <p>For questions about listings, accounts, or general assistance.</p>
+          <a href="tel:+2349134827121">0913 482 7121</a>
+        </div>
+
+        <div class="support-item">
+          <h3>✉️ Email NearAfrica</h3>
+          <p>Describe your issue and include relevant details.</p>
+          <a
+            href="mailto:no-reply@nearafrica.com.ng?subject=NearAfrica%20Support%20Request"
+          >no-reply@nearafrica.com.ng</a>
+        </div>
+
+      </div>
+
+      <div class="note warning">
+        For account security, never email passwords, OTP codes, bank PINs,
+        or full payment-card details. For payment enquiries, use your
+        transaction reference instead.
+      </div>
+
+      <p style="margin-top:20px; margin-bottom:0; font-size:12px;">
+        When contacting support, explain what you were trying to do, what
+        happened, and what you expected to happen.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p><strong>NearAfrica</strong> — Find Great Businesses Near You.</p>
+    <p>Need help? Use the guides above or contact our support team.</p>
+    <p style="margin-top:12px;">
+      <a href="index.html">Home</a>
+      &nbsp;·&nbsp;
+      <a href="#userGuides">User Guides</a>
+      &nbsp;·&nbsp;
+      <a href="#ownerGuides">Owner Guides</a>
+      &nbsp;·&nbsp;
+      <a href="#contactSupport">Contact</a>
+    </p>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const searchInput = document.getElementById("helpSearch");
+      const guides = Array.from(document.querySelectorAll(".guide"));
+      const sections = Array.from(
+        document.querySelectorAll(".guide-section")
+      );
+      const audienceCards = Array.from(
+        document.querySelectorAll(".audience-card")
+      );
+      const emptyState = document.getElementById("emptyState");
+
+      function normalise(value) {
+        return String(value || "").toLowerCase().trim();
+      }
+
+      function filterGuides() {
+        const query = normalise(searchInput.value);
+        let visibleGuides = 0;
+
+        guides.forEach(function (guide) {
+          const matches = normalise(guide.textContent).includes(query);
+
+          guide.hidden = !matches;
+
+          if (!matches) {
+            guide.open = false;
+          } else {
+            visibleGuides++;
+          }
+        });
+
+        sections.forEach(function (section) {
+          const hasVisibleGuide = Array.from(
+            section.querySelectorAll(".guide")
+          ).some(function (guide) {
+            return !guide.hidden;
+          });
+
+          section.hidden = !hasVisibleGuide;
+        });
+
+        audienceCards.forEach(function (card) {
+          const section = document.getElementById(
+            card.dataset.audience === "user"
+              ? "userGuides"
+              : "ownerGuides"
+          );
+
+          card.hidden = Boolean(section && section.hidden);
+        });
+
+        emptyState.style.display =
+          query && visibleGuides === 0 ? "block" : "none";
+      }
+
+      searchInput.addEventListener("input", filterGuides);
+
+      // Open a guide when a direct link contains its section.
+      function openLinkedGuide() {
+        const hash = window.location.hash;
+
+        if (!hash) return;
+
+        const target = document.getElementById(
+          decodeURIComponent(hash.substring(1))
+        );
+
+        if (target && target.classList.contains("guide")) {
+          target.open = true;
+        }
+      }
+
+      window.addEventListener("hashchange", openLinkedGuide);
+      openLinkedGuide();
+    })();
+  </script>
+
+</body>
+</html>
