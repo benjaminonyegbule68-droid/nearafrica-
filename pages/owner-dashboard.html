@@ -998,22 +998,6 @@
     }
 
     .hours-help { color: #888; font-size: 11px; margin-top: 5px; }
-    .referral-link-box,.referral-progress-box,.referral-history-box { background:#101010;border:1px solid var(--border);border-radius:12px;padding:16px;margin:16px 0; }
-    .referral-link-box label { display:block;color:#bbb;font-size:12px;font-weight:700;margin-bottom:8px; }
-    .referral-link-row { display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px; }
-    .referral-link-row input { width:100%;min-width:0;background:var(--input);color:#fff;border:1px solid #343434;border-radius:8px;padding:11px; }
-    .referral-stats-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0; }
-    .referral-progress-heading { display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px; }
-    .referral-progress-heading span { color:var(--gold-light);font-weight:800; }
-    .referral-progress-track { height:10px;background:#292929;border-radius:999px;overflow:hidden; }
-    .referral-progress-bar { height:100%;background:var(--gold);border-radius:999px;transition:width .2s ease; }
-    #referralRemaining { margin-top:8px;color:#bbb;font-size:12px; }
-    #referralRewardRule { margin-top:8px;color:#aaa;font-size:12px; }
-    .referral-history-list { display:grid;gap:8px;margin-top:12px;color:#aaa;font-size:12px; }
-    .referral-history-row { display:flex;justify-content:space-between;gap:12px;padding:10px;background:#171717;border-radius:8px; }
-    .referral-status { color:#999;font-size:12px;margin:8px 0; }
-    .product-actions { display:flex;gap:7px;flex-wrap:wrap; }
-    @media(max-width:640px) { .referral-link-row,.referral-stats-grid { grid-template-columns:1fr; } .referral-history-row { flex-direction:column; } }
     .hours-periods { min-width: 240px; display: grid; gap: 8px; }
     .hours-period { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
     .hours-period span { color: #888; font-size: 11px; }
@@ -1802,6 +1786,25 @@
 
     }
 
+
+
+    /* =====================================================
+       MEMBERSHIP / PAYSTACK CHECKOUT
+    ===================================================== */
+    .membership-intro { color: var(--muted); font-size: 13px; max-width: 760px; }
+    .membership-status { border: 1px solid #383326; background: #17150e; color: #e6d59a; border-radius: 10px; padding: 14px 16px; margin: 16px 0 20px; font-size: 13px; }
+    .membership-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .membership-card { position: relative; display: flex; flex-direction: column; gap: 12px; background: #101010; border: 1px solid #303030; border-radius: 13px; padding: 20px; min-width: 0; }
+    .membership-card.featured { border-color: var(--gold); box-shadow: inset 0 0 0 1px rgba(212,175,55,.12); }
+    .membership-card h3 { font-size: 19px; }
+    .membership-price { color: var(--gold-light); font-size: 27px; font-weight: 800; line-height: 1.2; }
+    .membership-price small { color: var(--muted); font-size: 11px; font-weight: 500; }
+    .membership-card ul { list-style: none; display: grid; gap: 8px; color: #c7c7c7; font-size: 12px; flex: 1; }
+    .membership-card li::before { content: '✓'; color: var(--gold-light); margin-right: 8px; font-weight: 800; }
+    .membership-note { color: #888; font-size: 11px; margin-top: 14px; }
+    .membership-action { width: 100%; min-height: 42px; }
+    @media (max-width: 800px) { .membership-grid { grid-template-columns: 1fr; } }
+
   </style>
 
 </head>
@@ -2036,6 +2039,8 @@
   Referrals
 </button>
 
+      <button class="tab" data-tab="membership" type="button">Membership</button>
+
     </div>
 
 
@@ -2092,10 +2097,10 @@
             </p>
 
 
-            <div id="summaryBadges" class="badge-row"></div>
-            <div class="button-row">
-              <a id="publicProfileLink" class="button button-secondary" href="../business-profile.html" target="_blank" rel="noopener">View Public Profile</a>
-            </div>
+            <div
+              id="summaryBadges"
+              class="badge-row"
+            ></div>
 
           </div>
 
@@ -2261,95 +2266,21 @@
 
             <div class="form-group full">
 
-              <label for="description">Short Description</label>
-              <textarea id="description" name="description" maxlength="5000"></textarea>
-
-            </div>
-
-            <div class="form-group full">
-              <label for="about">About the Business</label>
-              <textarea id="about" name="about" maxlength="10000" placeholder="Tell customers about your business, experience and what makes it different."></textarea>
-            </div>
-
-            <div class="form-group">
-              <label for="subcategory">Subcategory</label>
-              <input id="subcategory" name="subcategory" type="text" maxlength="150">
-            </div>
-
-            <div class="form-group">
-              <label for="postal_code">Postal Code</label>
-              <input id="postal_code" name="postal_code" type="text" maxlength="30">
-            </div>
-
-            <div class="form-group full">
-              <label for="precise_address">Precise Address / Landmark Details</label>
-              <input id="precise_address" name="precise_address" type="text" maxlength="500" placeholder="Building, floor, shop number or directions customers need">
-            </div>
-
-            <div class="form-group">
-              <label for="instagram">Instagram URL</label>
-              <input id="instagram" name="instagram" type="url" placeholder="https://instagram.com/yourbusiness">
-            </div>
-
-            <div class="form-group">
-              <label for="facebook">Facebook URL</label>
-              <input id="facebook" name="facebook" type="url" placeholder="https://facebook.com/yourbusiness">
-            </div>
-
-            <div class="form-group">
-              <label for="tiktok">TikTok URL</label>
-              <input id="tiktok" name="tiktok" type="url" placeholder="https://tiktok.com/@yourbusiness">
-            </div>
-
-            <div class="form-group">
-              <label for="directions_url">Directions URL</label>
-              <input id="directions_url" name="directions_url" type="url" placeholder="https://maps.google.com/…">
-            </div>
-
-            <div class="form-group full">
-              <label for="services">Services (one per line or comma-separated)</label>
-              <textarea id="services" name="services" placeholder="Repairs, consultations, delivery"></textarea>
-            </div>
-
-            <div class="form-group full">
-              <label for="amenities">Amenities (one per line or comma-separated)</label>
-              <textarea id="amenities" name="amenities" placeholder="Parking, Wi-Fi, wheelchair access"></textarea>
-            </div>
-
-            <div class="form-group full">
-              <label for="payment_methods">Payment Methods (one per line or comma-separated)</label>
-              <textarea id="payment_methods" name="payment_methods" placeholder="Cash, bank transfer, card"></textarea>
-            </div>
-
-            <div class="form-group full">
-              <label for="languages">Languages (one per line or comma-separated)</label>
-              <textarea id="languages" name="languages" placeholder="English, Igbo, Yoruba"></textarea>
-            </div>
-
-            <div class="form-group full">
-              <label for="service_areas">Service Areas (one per line or comma-separated)</label>
-              <textarea id="service_areas" name="service_areas" placeholder="Aba, Umuahia, nearby communities"></textarea>
-            </div>
-
-            <div class="form-group full">
-              <label for="landmarks">Nearby Landmarks (one per line or comma-separated)</label>
-              <textarea id="landmarks" name="landmarks" placeholder="Opposite the market, near the bus stop"></textarea>
-            </div>
-
-            <div class="form-group full">
-              <label for="special_hours">Special Hours (JSON)</label>
-              <textarea id="special_hours" name="special_hours" placeholder='{"2026-12-25":"closed"}'></textarea>
-              <p class="hours-help">Optional JSON object for holiday or exceptional opening hours. Leave blank if unused.</p>
-            </div>
-
-            <div class="form-group full">
-              <label style="display:flex;align-items:flex-start;gap:9px;font-weight:600;">
-                <input id="confirm_information" name="confirm_information" type="checkbox" style="width:auto;margin-top:3px;">
-                I confirm that the business information is accurate and up to date.
+              <label for="description">
+                Description
               </label>
+
+              <textarea
+                id="description"
+                name="description"
+                maxlength="5000"
+              ></textarea>
+
             </div>
 
+
             <div class="form-group">
+
               <label for="latitude">
                 Latitude
               </label>
@@ -3170,45 +3101,62 @@
 
     </section>
 
+
+
     <!-- ===================================================
-         REFERRALS TAB
+         MEMBERSHIP TAB
     ==================================================== -->
-    <section id="tab-referrals" class="tab-content hidden">
+    <section id="tab-membership" class="tab-content hidden">
       <div class="panel">
         <div class="panel-header">
           <div>
-            <h2>Refer Businesses to NearAfrica</h2>
-            <p>Share your referral link with real businesses. Referrals count only after they meet NearAfrica's qualification rules; rewards are shown here when the backend records them.</p>
+            <h2>NearAfrica Membership</h2>
+            <p class="membership-intro">Choose a plan to promote and grow your business. Payments are processed securely on Paystack.</p>
           </div>
-          <button id="refreshReferralsButton" class="button button-secondary" type="button">Refresh</button>
         </div>
-        <div id="referralsStatus" class="referral-status" role="status" aria-live="polite">Referral information will load when this tab opens.</div>
-        <div class="referral-link-box">
-          <label for="referralLink">Your referral link</label>
-          <div class="referral-link-row">
-            <input id="referralLink" type="url" readonly placeholder="Your referral link will appear here">
-            <button id="copyReferralButton" class="button button-primary" type="button">Copy link</button>
-          </div>
-          <p class="hours-help">Share this link with a business owner before they submit their listing.</p>
-          <p>Referral code: <strong id="referralCode">—</strong></p>
+
+        <div id="membershipStatus" class="membership-status" role="status" aria-live="polite">
+          Your current membership status is not yet available from the Worker status API. Starting checkout does not activate a plan; the verified payment webhook must confirm payment first.
         </div>
-        <div class="referral-stats-grid">
-          <div class="stat-card"><div class="stat-label">Total referrals</div><div class="stat-value" id="referralTotal">0</div></div>
-          <div class="stat-card"><div class="stat-label">Qualified referrals</div><div class="stat-value" id="referralQualified">0</div></div>
-          <div class="stat-card"><div class="stat-label">Pending referrals</div><div class="stat-value" id="referralPending">0</div></div>
+
+        <div class="membership-grid">
+          <article class="membership-card">
+            <h3>Free</h3>
+            <div class="membership-price">₦0 <small>/ forever</small></div>
+            <ul>
+              <li>Basic business listing</li>
+              <li>Manage your business details</li>
+              <li>Access available owner tools</li>
+            </ul>
+            <button class="button button-secondary membership-action" type="button" disabled>Current free access</button>
+          </article>
+
+          <article class="membership-card featured">
+            <h3>Pro</h3>
+            <div class="membership-price">₦5,000 <small>/ month</small></div>
+            <ul>
+              <li>Everything in Free</li>
+              <li>Pro membership benefits</li>
+              <li>Monthly subscription through Paystack</li>
+            </ul>
+            <button class="button button-primary membership-action" type="button" data-subscribe-plan="pro">Upgrade to Pro</button>
+          </article>
+
+          <article class="membership-card">
+            <h3>Premium</h3>
+            <div class="membership-price">₦15,000 <small>/ month</small></div>
+            <ul>
+              <li>Everything in Pro</li>
+              <li>Premium membership benefits</li>
+              <li>Monthly subscription through Paystack</li>
+            </ul>
+            <button class="button button-primary membership-action" type="button" data-subscribe-plan="premium">Upgrade to Premium</button>
+          </article>
         </div>
-        <div class="referral-progress-box">
-          <div class="referral-progress-heading"><strong>Next reward progress</strong><span id="referralProgress">0 / 3</span></div>
-          <div class="referral-progress-track"><div id="referralProgressBar" class="referral-progress-bar" style="width:0%"></div></div>
-          <p id="referralRemaining">3</p>
-          <p id="referralRewardRule">Three qualifying referrals earn 30 days of PRO, once the reward system is active.</p>
-        </div>
-        <div class="referral-history-box">
-          <h3>Reward history</h3>
-          <div id="referralHistory" class="referral-history-list">No referral rewards recorded yet.</div>
-        </div>
+        <p class="membership-note">Prices shown here are the intended NearAfrica prices. Before accepting real payments, confirm the matching Pro and Premium plan codes and monthly prices in Paystack. Membership benefits must also be enforced by the Worker before they can be guaranteed.</p>
       </div>
     </section>
+
 
   </main>
 
@@ -3250,8 +3198,6 @@
 
       let currentProducts =
         [];
-
-      let editingProductId = null;
 
 
       let currentHelpWanted =
@@ -3471,7 +3417,8 @@
       ) {
 
         return String(
-          business?.business_name || business?.name || "N"
+          business?.business_name ||
+          "N"
         )
           .trim()
           .charAt(0)
@@ -3765,33 +3712,12 @@
           "";
 
 
-        document.getElementById("description").value = business.description || "";
-        document.getElementById("about").value = business.about || "";
-        document.getElementById("subcategory").value = business.subcategory || "";
-        document.getElementById("postal_code").value = business.postal_code || "";
-        document.getElementById("precise_address").value = business.precise_address || "";
-        document.getElementById("instagram").value = business.instagram || "";
-        document.getElementById("facebook").value = business.facebook || "";
-        document.getElementById("tiktok").value = business.tiktok || "";
-        document.getElementById("directions_url").value = business.directions_url || "";
+        document.getElementById(
+          "description"
+        ).value =
+          business.description ||
+          "";
 
-        const asEditableList = value => {
-          if (Array.isArray(value)) return value.join("\n");
-          if (typeof value === "string") {
-            try { const parsed = JSON.parse(value); if (Array.isArray(parsed)) return parsed.join("\n"); if (parsed && typeof parsed === "object") return JSON.stringify(parsed, null, 2); } catch {}
-            return value;
-          }
-          return value && typeof value === "object" ? JSON.stringify(value, null, 2) : "";
-        };
-        ["services","amenities","payment_methods","languages","service_areas","landmarks"].forEach(field => {
-          const element = document.getElementById(field);
-          if (element) element.value = asEditableList(business[field] ?? business[`${field}_json`]);
-        });
-        const specialHours = business.special_hours ?? business.special_hours_json;
-        document.getElementById("special_hours").value = specialHours && typeof specialHours === "object"
-          ? JSON.stringify(specialHours, null, 2)
-          : (typeof specialHours === "string" ? (() => { try { return JSON.stringify(JSON.parse(specialHours), null, 2); } catch { return specialHours; } })() : "");
-        document.getElementById("confirm_information").checked = false;
 
         document.getElementById(
           "latitude"
@@ -3810,16 +3736,8 @@
         document.getElementById(
           "summaryBusinessName"
         ).textContent =
-          business.business_name || business.name || "Your Business";
-        const profileLink = document.getElementById("publicProfileLink");
-        if (profileLink) {
-          const identifier = business.slug || business.id;
-          profileLink.href = identifier
-            ? (business.slug
-                ? `../business-profile-fixed.html?slug=${encodeURIComponent(business.slug)}`
-                : `../business-profile-fixed.html?id=${encodeURIComponent(business.id)}`)
-            : "../explore.html";
-        }
+          business.business_name ||
+          "Your Business";
 
 
         document.getElementById(
@@ -3931,22 +3849,6 @@
             );
 
 
-          let parsedSpecialHours = [];
-          const specialHoursRaw = document.getElementById("special_hours").value.trim();
-          if (specialHoursRaw) {
-            try {
-              parsedSpecialHours = JSON.parse(specialHoursRaw);
-              if (parsedSpecialHours === null || typeof parsedSpecialHours !== "object") {
-                showStatus("Special Hours must be a JSON object or array.", "error");
-                return;
-              }
-            } catch {
-              showStatus("Special Hours must be valid JSON, or left blank.", "error");
-              document.getElementById("special_hours").focus();
-              return;
-            }
-          }
-
           const payload = {
 
             business_name:
@@ -3999,23 +3901,10 @@
                 "website"
               ).value.trim(),
 
-            description: document.getElementById("description").value.trim(),
-            about: document.getElementById("about").value.trim(),
-            subcategory: document.getElementById("subcategory").value.trim(),
-            postal_code: document.getElementById("postal_code").value.trim(),
-            precise_address: document.getElementById("precise_address").value.trim(),
-            instagram: document.getElementById("instagram").value.trim(),
-            facebook: document.getElementById("facebook").value.trim(),
-            tiktok: document.getElementById("tiktok").value.trim(),
-            directions_url: document.getElementById("directions_url").value.trim(),
-            services: document.getElementById("services").value.split(/[\n,]/).map(v => v.trim()).filter(Boolean),
-            amenities: document.getElementById("amenities").value.split(/[\n,]/).map(v => v.trim()).filter(Boolean),
-            payment_methods: document.getElementById("payment_methods").value.split(/[\n,]/).map(v => v.trim()).filter(Boolean),
-            languages: document.getElementById("languages").value.split(/[\n,]/).map(v => v.trim()).filter(Boolean),
-            service_areas: document.getElementById("service_areas").value.split(/[\n,]/).map(v => v.trim()).filter(Boolean),
-            landmarks: document.getElementById("landmarks").value.split(/[\n,]/).map(v => v.trim()).filter(Boolean),
-            special_hours: parsedSpecialHours,
-            confirm_information: document.getElementById("confirm_information").checked,
+            description:
+              document.getElementById(
+                "description"
+              ).value.trim(),
 
             latitude:
               document.getElementById(
@@ -4902,8 +4791,15 @@
 
                     <div class="product-actions">
 
-                      <button class="button button-secondary" type="button" data-product-edit="${escapeHTML(id)}">Edit</button>
-                      <button class="small-button delete" type="button" data-product-delete="${escapeHTML(id)}">Delete</button>
+                      <button
+                        class="small-button delete"
+                        type="button"
+                        data-product-delete="${escapeHTML(
+                          id
+                        )}"
+                      >
+                        Delete
+                      </button>
 
                     </div>
 
@@ -4914,10 +4810,6 @@
             )
             .join("");
 
-
-        productList.querySelectorAll("[data-product-edit]").forEach(button => {
-          button.addEventListener("click", () => editProduct(button.dataset.productEdit));
-        });
 
         productList
           .querySelectorAll(
@@ -5030,19 +4922,18 @@
             true;
 
 
-          button.textContent = editingProductId ? "Saving..." : "Adding...";
+          button.textContent =
+            "Adding...";
 
 
           try {
 
             const data =
               await apiRequest(
-                editingProductId
-                ? `/owner/business/products/${encodeURIComponent(editingProductId)}`
-                : "/owner/business/products",
+                "/owner/business/products",
                 {
                   method:
-                    editingProductId ? "PATCH" : "POST",
+                    "POST",
 
                   headers: {
                     "Content-Type":
@@ -5058,11 +4949,12 @@
 
 
             showStatus(
-              data?.message || (editingProductId ? "Product or service updated successfully." : "Product or service created successfully."),
+              data?.message ||
+              "Product or service created successfully.",
               "success"
             );
 
-            editingProductId = null;
+
             productForm.reset();
 
 
@@ -5109,33 +5001,13 @@
 
 
             button.textContent =
-              editingProductId ? "Save Product / Service" : "Add Product / Service";
+              "Add Product / Service";
 
           }
 
         }
       );
 
-
-      function editProduct(productId) {
-        const product = currentProducts.find(item => String(item.id) === String(productId));
-        if (!product) return;
-        editingProductId = String(product.id);
-        document.getElementById("productName").value = product.name || "";
-        document.getElementById("productType").value = product.item_type || "product";
-        document.getElementById("productPrice").value = product.price ?? "";
-        document.getElementById("productCurrency").value = product.currency || "NGN";
-        document.getElementById("productCategory").value = product.category || "";
-        document.getElementById("productSortOrder").value = product.sort_order ?? 0;
-        document.getElementById("productImageUrl").value = product.image_url || "";
-        document.getElementById("productAvailable").value = Number(product.available) === 0 ? "0" : "1";
-        document.getElementById("productDescription").value = product.description || "";
-        const submit = document.getElementById("addProductButton");
-        submit.textContent = "Save Product / Service";
-        document.getElementById("productName").focus();
-        showStatus("Editing product or service. Save the form to apply your changes.", "info");
-        productForm.scrollIntoView({behavior:"smooth", block:"center"});
-      }
 
       async function deleteProduct(
         productId
@@ -6666,8 +6538,8 @@ async function loadReferrals() {
     const total = Number(data?.total_referrals || 0);
     const qualified = Number(data?.qualified_referrals || 0);
     const pending = Number(data?.pending_referrals || 0);
-    const progress = Number(data?.qualified_toward_next_reward ?? (qualified % 3));
-    const remaining = Number(data?.referrals_until_next_reward ?? (3 - (qualified % 3)));
+    const progress = Number(data?.qualified_toward_next_reward || 0);
+    const remaining = Number(data?.referrals_until_next_reward || 3);
     const rule = data?.reward_rule || {};
     const history = Array.isArray(data?.reward_history)
       ? data.reward_history
@@ -6679,8 +6551,7 @@ async function loadReferrals() {
     };
 
     setText("referralCode", code || "Not available");
-    const referralLinkField = document.getElementById("referralLink");
-    if (referralLinkField) referralLinkField.value = url;
+    setText("referralLink", url);
     setText("referralTotal", total);
     setText("referralQualified", qualified);
     setText("referralPending", pending);
@@ -6688,9 +6559,9 @@ async function loadReferrals() {
     setText("referralRemaining", Math.max(remaining, 0));
     setText(
       "referralRewardRule",
-      `${Number(rule.qualifying_referrals || 3)} qualifying referrals are intended to earn ${
+      `${Number(rule.qualifying_referrals || 3)} qualifying referrals earn ${
         Number(rule.reward_days || 30)
-      } days of ${String(rule.reward_plan || "pro").toUpperCase()} when the reward system is active.`
+      } days of ${String(rule.reward_plan || "pro").toUpperCase()}.`
     );
 
     const progressBar = document.getElementById("referralProgressBar");
@@ -6776,15 +6647,6 @@ async function copyReferralLink() {
 
 
 
-      const refreshReferralsButton = document.getElementById("refreshReferralsButton");
-      if (refreshReferralsButton) refreshReferralsButton.addEventListener("click", async () => {
-        refreshReferralsButton.disabled = true;
-        try { await loadReferrals(); }
-        finally { refreshReferralsButton.disabled = false; }
-      });
-      const copyReferralButton = document.getElementById("copyReferralButton");
-      if (copyReferralButton) copyReferralButton.addEventListener("click", copyReferralLink);
-
       /* =================================================
          ANALYTICS REFRESH
       ================================================= */
@@ -6856,6 +6718,58 @@ async function copyReferralLink() {
 
 
       /* =================================================
+         PAYSTACK MEMBERSHIP CHECKOUT
+      ================================================= */
+      async function startSubscriptionCheckout(plan, button) {
+        const status = document.getElementById("membershipStatus");
+        if (!status) return;
+        if (plan !== "pro" && plan !== "premium") {
+          status.textContent = "That membership plan is not supported.";
+          return;
+        }
+        const originalText = button.textContent;
+        button.disabled = true;
+        button.textContent = "Connecting to Paystack…";
+        status.textContent = `Preparing secure Paystack checkout for ${plan.toUpperCase()}…`;
+        try {
+          const data = await apiRequest("/subscriptions/initialize", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ plan })
+          });
+          const checkoutUrl = String(data?.authorization_url || "");
+          if (data?.status !== "ok" || !checkoutUrl || !/^https:\/\/checkout\.paystack\.com\//i.test(checkoutUrl)) {
+            throw new Error("The server did not return a valid Paystack checkout URL. Please try again or contact support.");
+          }
+          status.textContent = "Checkout is ready. You are being redirected to Paystack. Your plan will only activate after the server verifies successful payment.";
+          window.location.assign(checkoutUrl);
+        } catch (error) {
+          status.textContent = error?.message || "Unable to start checkout. Please try again.";
+          showStatus(status.textContent, "error");
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      }
+
+      document.querySelectorAll("[data-subscribe-plan]").forEach(button => {
+        button.addEventListener("click", () => {
+          startSubscriptionCheckout(button.dataset.subscribePlan, button);
+        });
+      });
+
+      // A Paystack return URL is not proof of payment. Show a safe pending message only.
+      const paymentQuery = new URLSearchParams(window.location.search);
+      if (paymentQuery.has("reference") || paymentQuery.has("trxref")) {
+        const membershipStatus = document.getElementById("membershipStatus");
+        if (membershipStatus) {
+          membershipStatus.textContent = "Payment return detected. This page cannot confirm payment by itself. Your membership should change only after the Worker verifies the transaction and processes the webhook. If your plan does not update, refresh later or contact NearAfrica support.";
+        }
+        const membershipTab = document.querySelector('[data-tab="membership"]');
+        if (membershipTab) membershipTab.click();
+      }
+
+
+      /* =================================================
          TABS
       ================================================= */
 
@@ -6870,209 +6784,7 @@ async function copyReferralLink() {
               "click",
               async () => {
 
-                const tab =
-                  button.dataset.tab;
-
-
-                document
-                  .querySelectorAll(
-                    ".tab"
-                  )
-                  .forEach(
-                    item => {
-
-                      item.classList.toggle(
-                        "active",
-                        item === button
-                      );
-
-                    }
-                  );
-
-
-                document
-                  .querySelectorAll(
-                    ".tab-content"
-                  )
-                  .forEach(
-                    content => {
-
-                      content.classList.add(
-                        "hidden"
-                      );
-
-                    }
-                  );
-
-
-                const target =
-                  document.getElementById(
-                    `tab-${tab}`
-                  );
-
-
-                if (
-                  target
-                ) {
-
-                  target.classList.remove(
-                    "hidden"
-                  );
-
-                }
-
-
-                if (
-                  tab ===
-                  "images"
-                ) {
-
-                  await loadImages();
-
-                }
-
-
-                if (
-                  tab ===
-                  "hours"
-                ) {
-
-                  await loadHours();
-
-                }
-
-
-                if (
-                  tab ===
-                  "products"
-                ) {
-
-                  await loadProducts();
-
-                }
-
-
-                if (
-                  tab ===
-                  "analytics"
-                ) {
-
-                  await loadAnalytics();
-
-                }
-
-
-                if (tab === "help") {
-                  await loadHelpWanted();
-                }
-
-                if (tab === "referrals") {
-                  await loadReferrals();
-                }
-
-              }
-            );
-
-          }
-        );
-
-
-      /* =================================================
-         LOGOUT
-      ================================================= */
-
-      logoutButton.addEventListener(
-        "click",
-        async () => {
-
-          const confirmed =
-            window.confirm(
-              "Log out of your NearAfrica owner account?"
-            );
-
-
-          if (
-            !confirmed
-          ) {
-
-            return;
-
-          }
-
-
-          try {
-
-            await apiRequest(
-              "/owner/logout",
-              {
-                method:
-                  "POST"
-              }
-            );
-
-          } catch (error) {
-
-            console.warn(
-              "Owner logout request failed:",
-              error
-            );
-
-          } finally {
-
-            try {
-
-              localStorage.removeItem(
-                OWNER_TOKEN_KEY
-              );
-
-            } catch {}
-
-
-            window.location.href =
-              "owner-login.html";
-
-          }
-
-        }
-      );
-
-
-      /* =================================================
-         INITIAL LOAD
-      ================================================= */
-
-      async function initialize() {
-
-        if (
-          !requireToken()
-        ) {
-
-          return;
-
-        }
-
-
-        clearStatus();
-
-
-        await Promise.all([
-          loadBusiness(),
-          loadAnalytics()
-        ]);
-
-      }
-
-
-      initialize();
-
-
-    })();
-
-  </script>
-
-
-</body>
-
-</html>
-
-
+                // Avoid starting the same tab's loader multiple times from rapid clicks.
+                if (button.dataset.loading === "true") return;
+          
+Preview truncated for large file
