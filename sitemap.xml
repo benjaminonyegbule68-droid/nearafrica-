@@ -1,9 +1,16 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.nearafrica.com.ng/</loc>
+    <loc>https://nearafrica.com.ng/</loc>
   </url>
   <url>
-    <loc>https://www.nearafrica.com.ng/explore.html</loc>
+    <loc>https://nearafrica.com.ng/explore.html</loc>
+  </url>
+  <url>
+    <loc>https://nearafrica.com.ng/about.html</loc>
+  </url>
+  <url>
+    <loc>https://nearafrica.com.ng/contact.html</loc>
   </url>
 </urlset>
