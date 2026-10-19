@@ -6903,6 +6903,66 @@
         });
       });
 
+            /* =================================================
+         PAYSTACK SPONSORED AD CHECKOUT (one-time)
+      ================================================= */
+      async function startAdCheckout(placement, button) {
+        const status = document.getElementById("promoteStatus");
+        if (!status) return;
+
+        if (placement !== "home" && placement !== "explore") {
+          status.textContent = "That placement is not supported.";
+          return;
+        }
+
+        const originalText = button.textContent;
+        button.disabled = true;
+        button.textContent = "Connecting to Paystack…";
+        status.textContent =
+          "Preparing secure Paystack checkout for sponsored " +
+          placement +
+          "…";
+
+        try {
+          const data = await apiRequest("/ads/initialize", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ placement })
+          });
+
+          const checkoutUrl = String(data?.authorization_url || "");
+
+          if (
+            data?.status !== "ok" ||
+            !checkoutUrl ||
+            !/^https:\/\/checkout\.paystack\.com\//i.test(checkoutUrl)
+          ) {
+            throw new Error(
+              data?.message ||
+                "The server did not return a valid Paystack checkout URL."
+            );
+          }
+
+          status.textContent =
+            "Checkout is ready. Redirecting to Paystack. Your sponsored listing activates only after the server verifies payment.";
+          window.location.assign(checkoutUrl);
+        } catch (error) {
+          status.textContent =
+            error?.message || "Unable to start ad checkout. Please try again.";
+          showStatus(status.textContent, "error");
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      }
+
+      document
+        .querySelectorAll("[data-promote-placement]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            startAdCheckout(button.dataset.promotePlacement, button);
+          });
+        });
+
       // A Paystack return URL is not proof of payment. Show a safe pending message only.
       const paymentQuery = new URLSearchParams(window.location.search);
       if (paymentQuery.has("reference") || paymentQuery.has("trxref")) {
