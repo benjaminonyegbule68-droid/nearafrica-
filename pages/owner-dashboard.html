@@ -3707,19 +3707,22 @@
       }
 
 
-      apiRequest("/subscriptions/status", {
+     
+apiRequest("/subscriptions/status", {
   method: "GET"
 })
   .then(data => {
-    console.log("SUBSCRIPTION STATUS:", data);
-    const status = document.getElementById("membershipStatus");
-    if (status) {
-      status.textContent = JSON.stringify(data.membership, null, 2);
-    }
+    console.log("Membership details:", {
+      plan: data?.membership?.plan,
+      status: data?.membership?.status,
+      is_paid_active: data?.membership?.is_paid_active,
+      expires_at: data?.membership?.expires_at
+    });
   })
   .catch(error => {
-    console.error("SUBSCRIPTION STATUS TEST FAILED:", error);
+    console.error("Membership status test failed:", error);
   });
+
 
 
       /* =================================================
