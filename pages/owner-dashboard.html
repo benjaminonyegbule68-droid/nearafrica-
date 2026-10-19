@@ -3220,7 +3220,68 @@
         <p class="membership-note">Prices shown here are the intended NearAfrica prices. Before accepting real payments, confirm the matching Pro and Premium plan codes and monthly prices in Paystack. Membership benefits must also be enforced by the Worker before they can be guaranteed.</p>
       </div>
     </section>
+    
+    <!-- ===================================================
+         PROMOTE / SPONSORED LISTING (one-time ads)
+    ==================================================== -->
+    <section id="tab-promote" class="tab-content hidden">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Promote your listing</h2>
+            <p class="membership-intro">
+              Buy a 7-day sponsored placement. This is a one-time payment, separate from Pro/Premium membership.
+              Your ad only goes live after Paystack payment is verified by the server.
+            </p>
+          </div>
+        </div>
 
+        <div id="promoteStatus" class="membership-status" role="status" aria-live="polite">
+          Sponsored listing: ₦2,000 for 7 days. Choose Home, Explore, or both (two checkouts if both).
+        </div>
+
+        <div class="membership-grid">
+          <article class="membership-card featured">
+            <h3>Homepage</h3>
+            <div class="membership-price">₦2,000 <small>/ 7 days</small></div>
+            <ul>
+              <li>Shown on the NearAfrica homepage</li>
+              <li>Clearly labelled Sponsored</li>
+              <li>One-time Paystack payment</li>
+            </ul>
+            <button
+              class="button button-primary membership-action"
+              type="button"
+              data-promote-placement="home"
+            >
+              Promote on Home
+            </button>
+          </article>
+
+          <article class="membership-card featured">
+            <h3>Explore</h3>
+            <div class="membership-price">₦2,000 <small>/ 7 days</small></div>
+            <ul>
+              <li>Shown on the Explore page</li>
+              <li>Clearly labelled Sponsored</li>
+              <li>One-time Paystack payment</li>
+            </ul>
+            <button
+              class="button button-primary membership-action"
+              type="button"
+              data-promote-placement="explore"
+            >
+              Promote on Explore
+            </button>
+          </article>
+        </div>
+
+        <p class="membership-note">
+          Only claimed businesses can purchase. Price and duration are set by the server.
+          Completing Paystack checkout does not by itself prove activation — the webhook must confirm payment.
+        </p>
+      </div>
+    </section>
 
   </main>
 
