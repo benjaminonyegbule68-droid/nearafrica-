@@ -1856,31 +1856,44 @@ function renderPagination() {
       });
     }
 
-    const pagination = paginationElement();
+    
+const pagination = paginationElement();
 
-    if (pagination) {
-      pagination.addEventListener("click", (event) => {
-        const button = event.target.closest("[data-page]");
+if (pagination && pagination.dataset.nearafricaPaginationBound !== "1") {
+  pagination.dataset.nearafricaPaginationBound = "1";
 
-        if (!button || button.disabled) return;
+  pagination.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-page]");
 
-        const page = Number(button.dataset.page);
+    if (!button || button.disabled || !pagination.contains(button)) {
+      return;
+    }
 
-        if (
-          Number.isInteger(page) &&
-          page >= 1 &&
-          page <= App.totalPages
-        ) {
-          App.currentPage = page;
-          renderResults();
+    const page = Number(button.dataset.page);
 
-          resultsContainer()?.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-        }
+    if (
+      !Number.isInteger(page) ||
+      page < 1 ||
+      page > App.totalPages ||
+      page === App.currentPage
+    ) {
+      return;
+    }
+
+    App.currentPage = page;
+    renderResults();
+
+    const results = resultsContainer();
+
+    if (results) {
+      results.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
       });
     }
+  });
+}
+
 
     const searchForms = [
       $("#homeSearchForm"),
