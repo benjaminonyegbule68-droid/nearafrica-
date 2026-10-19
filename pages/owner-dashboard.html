@@ -3707,6 +3707,21 @@
       }
 
 
+      apiRequest("/subscriptions/status", {
+  method: "GET"
+})
+  .then(data => {
+    console.log("SUBSCRIPTION STATUS:", data);
+    const status = document.getElementById("membershipStatus");
+    if (status) {
+      status.textContent = JSON.stringify(data.membership, null, 2);
+    }
+  })
+  .catch(error => {
+    console.error("SUBSCRIPTION STATUS TEST FAILED:", error);
+  });
+
+
       /* =================================================
          BUSINESS
       ================================================= */
