@@ -3708,20 +3708,67 @@
 
 
      
-apiRequest("/subscriptions/status", {
-  method: "GET"
-})
-  .then(data => {
-    console.log("Membership details:", {
-      plan: data?.membership?.plan,
-      status: data?.membership?.status,
-      is_paid_active: data?.membership?.is_paid_active,
-      expires_at: data?.membership?.expires_at
+
+async function loadMembershipStatus() {
+  const statusElement = document.getElementById("membershipStatus");
+
+  if (!statusElement) return;
+
+  statusElement.textContent = "Checking your membership status…";
+
+  try {
+    const data = await apiRequest("/subscriptions/status", {
+      method: "GET"
     });
-  })
-  .catch(error => {
-    console.error("Membership status test failed:", error);
-  });
+
+    if (data?.status !== "ok" || !data?.membership) {
+      throw new Error("Membership status is unavailable.");
+    }
+
+    const membership = data.membership;
+    const plan = String(membership.plan || "free").toLowerCase();
+    const status = String(membership.status || "unknown").toLowerCase();
+    const isPaidActive = membership.is_paid_active === true;
+
+    const planName = {
+      free: "Free",
+      pro: "Pro",
+      premium: "Premium"
+    }[plan] || "Free";
+
+    let message = "";
+
+    if (isPaidActive && (plan === "pro" || plan === "premium")) {
+      let expiryText = "";
+
+      if (membership.expires_at) {
+        const expiryDate = new Date(membership.expires_at);
+
+        if (!Number.isNaN(expiryDate.getTime())) {
+          expiryText = ` Your membership expires on ${expiryDate.toLocaleDateString()}.`;
+        }
+      }
+
+      message = `${planName} membership is active.${expiryText}`;
+    } else if (status === "pending") {
+      message = `${planName} membership payment is pending. Your paid benefits will activate after NearAfrica verifies your payment.`;
+    } else if (status === "expired") {
+      message = `Your ${planName} membership has expired. Renew your membership to restore paid benefits.`;
+    } else if (status === "cancelled" || status === "canceled") {
+      message = `Your ${planName} membership is cancelled. You can select a plan if you want to subscribe again.`;
+    } else {
+      message = "You are currently on the Free membership plan. You can upgrade to Pro or Premium whenever you are ready.";
+    }
+
+    statusElement.textContent = message;
+  } catch (error) {
+    console.error("Membership status could not be loaded:", error);
+    statusElement.textContent =
+      "We couldn't load your membership status. Please refresh the page and try again.";
+  }
+}
+
+loadMembershipStatus();
 
 
 
