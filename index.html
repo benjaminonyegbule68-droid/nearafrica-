@@ -1248,5 +1248,53 @@
 })();
 </script>
 
+  <script>
+(function () {
+  var API = "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+  var section = document.getElementById("homeSponsoredSection");
+  var grid = document.getElementById("homeSponsoredGrid");
+  if (!section || !grid) return;
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function profileUrl(b) {
+    if (b.slug) return "pages/business.html?slug=" + encodeURIComponent(b.slug);
+    if (b.id) return "pages/business.html?id=" + encodeURIComponent(b.id);
+    return "explore.html";
+  }
+
+  fetch(API + "/ads/active?placement=home&limit=6")
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var ads = (data && data.ads) || [];
+      if (!ads.length) return;
+
+      grid.innerHTML = ads.map(function (ad) {
+        var b = ad.business || {};
+        var name = b.business_name || "Business";
+        var meta = [b.category, b.city, b.state].filter(Boolean).join(" · ");
+        return (
+          '<a class="sponsored-card" href="' + esc(profileUrl(b)) + '">' +
+            '<span class="sponsored-badge">Sponsored</span>' +
+            "<h3>" + esc(name) + "</h3>" +
+            (meta ? '<p class="sponsored-meta">' + esc(meta) + "</p>" : "") +
+          "</a>"
+        );
+      }).join("");
+
+      section.hidden = false;
+    })
+    .catch(function () {
+      /* keep section hidden */
+    });
+})();
+</script>
+
 </body>
 </html>
