@@ -1,26 +1,25 @@
 /*
  * NearAfrica — app-new.js
- * Category matching fix + Explore functionality.
+ * Category matching, Explore functionality and pagination fixes.
  *
- * - Matches category labels, slugs, hyphens and underscores.
- * - Supports all 12 Home-page categories.
- * - Preserves real API data, search, location filters,
- *   Nearby/GPS, pagination, saved businesses and profile links.
- * - Requests a fresh browser location for Nearby searches.
- * - Accepts GPS readings up to 25 km accuracy (realistic for most devices).
- * - On timeout, uses the best available position instead of failing hard.
- * - Does not create fictional business listings.
+ * Preserves:
+ * - API business data; no fictional listings
+ * - Search and category/state/city filters
+ * - Nearby/GPS location search
+ * - Pagination
+ * - Saved businesses
+ * - Business profile links and view tracking
+ * - URL filters and language-change refreshes
+ * - The existing NearAfrica API and configuration
  */
 
 (function () {
   "use strict";
 
+  /* ----------------------------------------------------------
+     TRANSLATION
+  ---------------------------------------------------------- */
 
-  /*
-   * UI translation helper.
-   * Uses NearAfricaI18n when available; otherwise returns the English fallback.
-   * Does not change business data — only interface strings.
-   */
   function t(key, fallback) {
     try {
       if (
@@ -29,16 +28,15 @@
         typeof window.NearAfricaI18n.translate === "function"
       ) {
         const value = window.NearAfricaI18n.translate(key, fallback);
+
         if (value !== undefined && value !== null && value !== "") {
           return value;
         }
       }
-    } catch (error) {
-      /* keep English fallback */
-    }
+    } catch (_) {}
+
     return fallback != null ? fallback : key || "";
   }
-
 
   const API_FALLBACK =
     "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
@@ -47,14 +45,8 @@
   const NEARBY_KEY = "nearafrica_nearby_mode";
   const SAVED_KEY = "nearafrica_saved_businesses";
 
-  // Accept GPS readings whose reported accuracy is 25 km or better.
-  // (Previously 5 km — that was too strict for most real devices.)
   const MAX_LOCATION_ACCURACY_METERS = 25000;
 
-  /*
-   * Canonical category labels used by the Home page.
-   * All category comparisons go through this registry.
-   */
   const HOME_CATEGORIES = [
     "Restaurants & Food",
     "Hotels & Accommodation",
@@ -70,10 +62,6 @@
     "Technology"
   ];
 
-  /*
-   * Equivalent names for categories that may appear
-   * differently in the database or categories endpoint.
-   */
   const CATEGORY_ALIASES = {
     "restaurants and food": "Restaurants & Food",
     "restaurant and food": "Restaurants & Food",
@@ -195,9 +183,10 @@
       .replace(/'/g, "&#039;");
   }
 
-  /*
-   * Convert equivalent category formats into one comparison key.
-   */
+  /* ----------------------------------------------------------
+     CATEGORY NORMALIZATION
+  ---------------------------------------------------------- */
+
   function categoryKey(value) {
     return String(value ?? "")
       .trim()
@@ -209,10 +198,6 @@
       .trim();
   }
 
-  /*
-   * Return the preferred display label for a category.
-   * Unknown categories are retained rather than discarded.
-   */
   function categoryLabel(value) {
     const key = categoryKey(value);
 
@@ -242,6 +227,10 @@
       categoryKey(categoryLabel(second))
     );
   }
+
+  /* ----------------------------------------------------------
+     CONFIGURATION AND API
+  ---------------------------------------------------------- */
 
   function config() {
     return window.NearAfricaConfig || {};
@@ -399,7 +388,9 @@
 
     if (loading && !App.allBusinesses.length) {
       container.innerHTML =
-        '<div class="loading-state">' + t("actions.loading", "Loading businesses...") + '</div>';
+        '<div class="loading-state">' +
+        escapeHtml(t("actions.loading", "Loading businesses...")) +
+        "</div>";
     }
   }
 
@@ -522,14 +513,33 @@
     return [];
   }
 
+  /*
+   * Corrected duplicate detection:
+   * - Prefer a real business ID or slug.
+   * - When no ID is available, use the business name and location.
+   * - Do not group all businesses in the same state as one record.
+   */
   function deduplicate(list) {
     const seen = new Set();
 
     return list.filter((business) => {
-      const key = String(
-        business.id ||
-        `\( {business.name}| \){business.city}|${business.state}`
+      const id = clean(
+        business.id || business.business_id || business.slug
       ).toLowerCase();
+
+      const fallbackKey = [
+        business.name,
+        business.address,
+        business.city,
+        business.state,
+        business.country
+      ]
+        .map((value) => clean(value).toLowerCase())
+        .join("|");
+
+      const key = id
+        ? "id:" + id
+        : "location:" + fallbackKey;
 
       if (seen.has(key)) return false;
 
@@ -580,7 +590,9 @@
       App.allBusinesses = [];
 
       setStatus(
-        t("errors.unableToLoad", "Unable to load businesses") + ": " + error.message,
+        t("errors.unableToLoad", "Unable to load businesses") +
+        ": " +
+        error.message,
         "error"
       );
 
@@ -590,11 +602,6 @@
     }
   }
 
-  /*
-   * Fetch categories when the API supports it.
-   * Failure is harmless because Home categories and business
-   * categories are also used to build the filter.
-   */
   async function loadCategories() {
     const filter = categoryFilter();
 
@@ -699,11 +706,6 @@
     return false;
   }
 
-  /*
-   * Always include all 12 Home categories, even if some currently
-   * have zero matching businesses. Also preserve additional API
-   * categories that are not in the Home-page list.
-   */
   function populateCategoryOptions() {
     const filter = categoryFilter();
 
@@ -767,9 +769,10 @@
     const cities = uniqueSorted(
       App.allBusinesses
         .filter(
-          (b) => !state || b.state.toLowerCase() === state
+          (business) =>
+            !state || business.state.toLowerCase() === state
         )
-        .map((b) => b.city)
+        .map((business) => business.city)
     );
 
     addOptions(cityFilter(), cities, "All cities");
@@ -804,24 +807,24 @@
     );
   }
 
-  /*
-   * Request a fresh browser location.
-   *
-   * High accuracy is preferred. Readings up to 25 km accuracy
-   * are accepted. If the timer expires, the best position
-   * found so far is used instead of failing completely.
-   */
   function getBrowserLocation() {
     return new Promise((resolve, reject) => {
       if (!window.isSecureContext) {
-        reject(new Error(t("search.locationError", "Location access requires HTTPS.")));
+        reject(
+          new Error(
+            t("search.locationError", "Location access requires HTTPS.")
+          )
+        );
         return;
       }
 
       if (!navigator.geolocation) {
         reject(
           new Error(
-            t("search.locationNotSupported", "This browser does not support location services.")
+            t(
+              "search.locationNotSupported",
+              "This browser does not support location services."
+            )
           )
         );
         return;
@@ -835,6 +838,7 @@
 
       function finish(error, position) {
         if (finished) return;
+
         finished = true;
 
         if (timerId !== null) {
@@ -854,17 +858,21 @@
         }
       }
 
-      // Give the browser up to 30 seconds.
-      // If we have any valid position by then, accept the best one.
       timerId = setTimeout(() => {
-        if (bestPosition) {
+        if (
+          bestPosition &&
+          bestPosition.accuracy <= MAX_LOCATION_ACCURACY_METERS
+        ) {
           finish(null, bestPosition);
           return;
         }
 
         const message = bestAccuracy !== null
           ? `Your browser could not obtain a usable location. Its best reported accuracy was ${Math.round(bestAccuracy)} metres. Try again outdoors or check your device's location settings.`
-          : t("search.locationUnavailable", "Your device could not determine your location. Check location services and try again.");
+          : t(
+              "search.locationUnavailable",
+              "Your device could not determine your location. Check location services and try again."
+            );
 
         finish(new Error(message));
       }, 30000);
@@ -889,7 +897,6 @@
               return;
             }
 
-            // Keep the best (most accurate) reading seen so far
             if (
               bestAccuracy === null ||
               accuracy < bestAccuracy
@@ -902,21 +909,21 @@
               };
             }
 
-            // Accept immediately when accuracy is good enough
             if (accuracy <= MAX_LOCATION_ACCURACY_METERS) {
               finish(null, bestPosition);
             }
           },
           (error) => {
-            // Permission denial cannot be fixed by retrying.
             if (error.code === 1) {
               finish(
                 new Error(
-                  t("search.locationAccessDenied", "Location permission was denied. Allow location access and try again.")
+                  t(
+                    "search.locationAccessDenied",
+                    "Location permission was denied. Allow location access and try again."
+                  )
                 )
               );
             }
-            // Other temporary errors may recover while watching.
           },
           {
             enableHighAccuracy: true,
@@ -927,7 +934,8 @@
       } catch (error) {
         finish(
           new Error(
-            error.message || t("search.locationError", "Unable to start location detection.")
+            error.message ||
+            t("search.locationError", "Unable to start location detection.")
           )
         );
       }
@@ -958,9 +966,6 @@
     return null;
   }
 
-  /*
-   * Persist a usable location for Nearby mode.
-   */
   function saveLocation() {
     if (!App.userLocation) return;
 
@@ -985,7 +990,10 @@
       } catch (_) {}
 
       throw new Error(
-        t("search.locationError", "Your location is too approximate for Nearby search. Please try again.")
+        t(
+          "search.locationError",
+          "Your location is too approximate for Nearby search. Please try again."
+        )
       );
     }
 
@@ -1009,14 +1017,14 @@
       );
 
       throw new Error(
-        t("errors.somethingWentWrong", "Your browser could not save your location. Please check browser storage settings and try again.")
+        t(
+          "errors.somethingWentWrong",
+          "Your browser could not save your location. Please check browser storage settings and try again."
+        )
       );
     }
   }
 
-  /*
-   * Restore a previously saved location if it is still usable.
-   */
   function restoreLocation() {
     let saved = null;
 
@@ -1085,20 +1093,19 @@
 
     if (button) {
       button.disabled = true;
-      button.textContent = t("search.usingYourLocation", "Finding location…");
+      button.textContent = t(
+        "search.usingYourLocation",
+        "Finding location…"
+      );
     }
 
-    setStatus(t("search.usingYourLocation", "Finding your current location…"));
+    setStatus(
+      t("search.usingYourLocation", "Finding your current location…")
+    );
 
     try {
-      // Obtain and validate a new GPS position before saving it.
       App.userLocation = await getBrowserLocation();
-
-      // Reverse geocoding labels the coordinates; it does not
-      // replace the coordinates used in distance calculations.
-      // Failure is non-blocking.
       App.locationInfo = await reverseGeocode(App.userLocation);
-
       App.nearbyMode = true;
 
       saveLocation();
@@ -1118,7 +1125,10 @@
       setStatus(
         label
           ? `${t("explore.businessesNearYou", "Nearby is active")}. ${label}`
-          : t("explore.businessesNearYou", "Nearby is active. Businesses are sorted by GPS distance."),
+          : t(
+              "explore.businessesNearYou",
+              "Nearby is active. Businesses are sorted by GPS distance."
+            ),
         "success"
       );
     } catch (error) {
@@ -1161,7 +1171,9 @@
     updateNearbyControls();
     applyFilters();
 
-    setStatus(t("explore.clearLocation", "Nearby mode turned off."));
+    setStatus(
+      t("explore.clearLocation", "Nearby mode turned off.")
+    );
   }
 
   /* ----------------------------------------------------------
@@ -1188,13 +1200,13 @@
         type="button"
         id="nearbyButton"
         class="filter-button"
-      >${t("search.useMyLocation", "Use My Location")}</button>
+      >${escapeHtml(t("search.useMyLocation", "Use My Location"))}</button>
 
-      <label for="radiusFilter">${t("explore.away", "Within")}</label>
+      <label for="radiusFilter">${escapeHtml(t("explore.away", "Within"))}</label>
 
       <select
         id="radiusFilter"
-        aria-label="${t("explore.businessesNearYou", "Nearby search radius")}"
+        aria-label="${escapeHtml(t("explore.businessesNearYou", "Nearby search radius"))}"
         style="min-height:44px;padding:8px;border-radius:10px;"
       >
         <option value="5">5 km</option>
@@ -1208,20 +1220,13 @@
         type="button"
         id="clearNearby"
         class="filter-button"
-      >${t("explore.clearLocation", "Turn Nearby Off")}</button>
+      >${escapeHtml(t("explore.clearLocation", "Turn Nearby Off"))}</button>
     `;
 
     panel.appendChild(wrapper);
 
-    $("#nearbyButton").addEventListener(
-      "click",
-      enableNearby
-    );
-
-    $("#clearNearby").addEventListener(
-      "click",
-      clearNearby
-    );
+    $("#nearbyButton").addEventListener("click", enableNearby);
+    $("#clearNearby").addEventListener("click", clearNearby);
 
     $("#radiusFilter").addEventListener("change", () => {
       radiusValue();
@@ -1325,10 +1330,7 @@
 
       if (App.nearbyMode) {
         url.searchParams.set("nearby", "1");
-        url.searchParams.set(
-          "radius",
-          String(App.radiusKm)
-        );
+        url.searchParams.set("radius", String(App.radiusKm));
       } else {
         url.searchParams.delete("nearby");
         url.searchParams.delete("radius");
@@ -1420,10 +1422,6 @@
           return false;
         }
 
-        /*
-         * Nearby mode must use real coordinates and enforce
-         * the selected radius. Unknown distances are excluded.
-         */
         if (App.nearbyMode) {
           if (business.distanceKm === null) return false;
           if (business.distanceKm > radius) return false;
@@ -1471,7 +1469,10 @@
 
     setStatus(
       App.nearbyMode
-        ? t("explore.filters", "Search and category filters cleared. Nearby remains active.")
+        ? t(
+            "explore.filters",
+            "Search and category filters cleared. Nearby remains active."
+          )
         : t("explore.filters", "All filters cleared.")
     );
   }
@@ -1515,9 +1516,13 @@
       );
     } catch (_) {
       setStatus(
-        t("errors.somethingWentWrong", "Your browser could not save this business."),
+        t(
+          "errors.somethingWentWrong",
+          "Your browser could not save this business."
+        ),
         "error"
       );
+
       return;
     }
 
@@ -1599,8 +1604,10 @@
       "☆".repeat(5 - rating);
 
     return `
-      <article class="business-card" data-business-id="${escapeHtml(business.id)}">
-
+      <article
+        class="business-card"
+        data-business-id="${escapeHtml(business.id)}"
+      >
         <a
           class="business-card-image"
           href="${escapeHtml(url)}"
@@ -1608,7 +1615,6 @@
         >${image}</a>
 
         <div class="business-card-content">
-
           <span class="business-card-category">
             ${escapeHtml(business.category || "Business")}
           </span>
@@ -1661,16 +1667,21 @@
               aria-pressed="${saved}"
             >${saved ? "★ Saved" : "☆ Save"}</button>
           </div>
-
         </div>
       </article>
     `;
   }
 
-  function renderResults() {
-    const container = resultsContainer();
+  /* ----------------------------------------------------------
+     PAGINATION
+  ---------------------------------------------------------- */
 
-    if (!container) return;
+  function renderPagination() {
+    const container = paginationElement();
+
+    if (!container) {
+      return;
+    }
 
     const total = App.filteredBusinesses.length;
 
@@ -1679,9 +1690,89 @@
       Math.ceil(total / App.pageSize)
     );
 
-    App.currentPage = Math.min(
-      Math.max(1, App.currentPage),
-      App.totalPages
+    App.currentPage = Math.max(
+      1,
+      Math.min(App.currentPage, App.totalPages)
+    );
+
+    if (total <= App.pageSize) {
+      container.replaceChildren();
+      container.hidden = true;
+      return;
+    }
+
+    container.hidden = false;
+
+    const pages = [];
+
+    for (let page = 1; page <= App.totalPages; page++) {
+      pages.push(`
+        <button
+          type="button"
+          data-page="${page}"
+          class="${page === App.currentPage ? "active" : ""}"
+          aria-current="${page === App.currentPage ? "page" : "false"}"
+          aria-label="${page === App.currentPage
+            ? "Page " + page + ", current page"
+            : "Go to page " + page}"
+          ${page === App.currentPage ? 'disabled aria-disabled="true"' : ""}
+        >${page}</button>
+      `);
+    }
+
+    container.innerHTML = `
+      <button
+        type="button"
+        data-page="${App.currentPage - 1}"
+        aria-label="Previous page"
+        ${App.currentPage <= 1 ? "disabled" : ""}
+      >Previous</button>
+
+      ${pages.join("")}
+
+      <button
+        type="button"
+        data-page="${App.currentPage + 1}"
+        aria-label="Next page"
+        ${App.currentPage >= App.totalPages ? "disabled" : ""}
+      >Next</button>
+    `;
+
+    container.style.pointerEvents = "auto";
+  }
+
+  /*
+   * Render only the current page of results.
+   *
+   * If the pagination element happens to be inside the results
+   * container, preserve it while replacing the business cards.
+   */
+  function renderResults() {
+    const container = resultsContainer();
+
+    if (!container) return;
+
+    const pagination = paginationElement();
+
+    const paginationInsideResults =
+      pagination &&
+      pagination !== container &&
+      container.contains(pagination);
+
+    if (paginationInsideResults) {
+      pagination.remove();
+    }
+
+    const total = App.filteredBusinesses.length;
+
+    App.totalPages = Math.max(
+      1,
+      Math.ceil(total / App.pageSize)
+    );
+
+    App.currentPage = Math.max(
+      1,
+      Math.min(App.currentPage, App.totalPages)
     );
 
     const start = (App.currentPage - 1) * App.pageSize;
@@ -1697,15 +1788,29 @@
       const message = App.loading
         ? t("actions.loading", "Loading businesses...")
         : App.nearbyMode
-          ? t("explore.noBusinessesNearby", "No businesses with usable GPS coordinates were found within this radius. Try increasing the radius or reporting a missing business.")
-          : t("explore.noBusinesses", "No businesses match your search. Try changing your search or filters.");
+          ? t(
+              "explore.noBusinessesNearby",
+              "No businesses with usable GPS coordinates were found within this radius. Try increasing the radius or reporting a missing business."
+            )
+          : t(
+              "explore.noBusinesses",
+              "No businesses match your search. Try changing your search or filters."
+            );
 
       container.innerHTML = `
         <div class="empty-state" style="grid-column:1/-1">
-          <h2>${App.loading ? t("actions.loading", "Loading businesses") : t("explore.noBusinesses", "No businesses found")}</h2>
+          <h2>${escapeHtml(
+            App.loading
+              ? t("actions.loading", "Loading businesses")
+              : t("explore.noBusinesses", "No businesses found")
+          )}</h2>
           <p>${escapeHtml(message)}</p>
         </div>
       `;
+    }
+
+    if (paginationInsideResults) {
+      container.appendChild(pagination);
     }
 
     const count = countElement();
@@ -1716,72 +1821,14 @@
           ? t("actions.loading", "Loading businesses...")
           : total === 1
             ? "1 " + t("explore.businesses", "business found")
-            : `${total.toLocaleString()} ${t("explore.businessesFound", "businesses found")}`;
+            : `${total.toLocaleString()} ${t(
+                "explore.businessesFound",
+                "businesses found"
+              )}`;
     }
 
     renderPagination();
   }
-
-
-function renderPagination() {
-  const container = paginationElement();
-
-  if (!container) {
-    console.warn(
-      "NearAfrica pagination: no pagination container found. " +
-      "Expected #pagination, #paginationControls, or [data-pagination]."
-    );
-    return;
-  }
-
-  const total = App.filteredBusinesses.length;
-
-  App.totalPages = Math.max(
-    1,
-    Math.ceil(total / App.pageSize)
-  );
-
-  App.currentPage = Math.max(
-    1,
-    Math.min(App.currentPage, App.totalPages)
-  );
-
-  if (total <= App.pageSize) {
-    container.innerHTML = "";
-    return;
-  }
-
-  const pages = [];
-
-  for (let page = 1; page <= App.totalPages; page++) {
-    pages.push(`
-      <button
-        type="button"
-        data-page="${page}"
-        class="${page === App.currentPage ? "active" : ""}"
-        aria-current="${page === App.currentPage ? "page" : "false"}"
-        ${page === App.currentPage ? 'aria-label="Page ' + page + ', current page"' : 'aria-label="Go to page ' + page + '"'}
-      >${page}</button>
-    `);
-  }
-
-  container.innerHTML = `
-    <button
-      type="button"
-      data-page="${App.currentPage - 1}"
-      ${App.currentPage <= 1 ? "disabled" : ""}
-    >Previous</button>
-    ${pages.join("")}
-    <button
-      type="button"
-      data-page="${App.currentPage + 1}"
-      ${App.currentPage >= App.totalPages ? "disabled" : ""}
-    >Next</button>
-  `;
-
-  // Ensure the pagination container can receive button clicks.
-  container.style.pointerEvents = "auto";
-}
 
   async function recordBusinessView(id) {
     if (!id) return;
@@ -1796,8 +1843,86 @@ function renderPagination() {
         }
       );
     } catch (_) {
-      // Profile navigation should work if analytics fail.
+      // Business profile navigation should still work if analytics fail.
     }
+  }
+
+  /* ----------------------------------------------------------
+     PAGINATION CLICK HANDLER
+  ---------------------------------------------------------- */
+
+  /*
+   * Use document-level event delegation rather than attaching the
+   * handler to one pagination element during initialisation.
+   *
+   * This keeps page buttons functional if another script replaces
+   * the pagination container or creates it after this file loads.
+   */
+  function bindPaginationEvents() {
+    const root = document.documentElement;
+
+    if (
+      root.dataset.nearafricaPaginationDelegated === "1"
+    ) {
+      return;
+    }
+
+    root.dataset.nearafricaPaginationDelegated = "1";
+
+    document.addEventListener("click", (event) => {
+      const target = event.target;
+
+      if (
+        !target ||
+        typeof target.closest !== "function"
+      ) {
+        return;
+      }
+
+      const button = target.closest("button[data-page]");
+
+      if (!button) return;
+
+      const pagination = button.closest(
+        "#pagination, #paginationControls, [data-pagination]"
+      );
+
+      if (!pagination) return;
+
+      event.preventDefault();
+
+      if (button.disabled) return;
+
+      const rawPage = button.getAttribute("data-page");
+
+      if (!/^\d+$/.test(String(rawPage || ""))) {
+        return;
+      }
+
+      const page = Number(rawPage);
+
+      if (
+        !Number.isSafeInteger(page) ||
+        page < 1 ||
+        page > App.totalPages ||
+        page === App.currentPage
+      ) {
+        return;
+      }
+
+      App.currentPage = page;
+
+      renderResults();
+
+      const results = resultsContainer();
+
+      if (results) {
+        results.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+    });
   }
 
   /* ----------------------------------------------------------
@@ -1840,7 +1965,13 @@ function renderPagination() {
 
     if (results) {
       results.addEventListener("click", (event) => {
-        const save = event.target.closest("[data-save-business]");
+        const target = event.target;
+
+        if (!target || typeof target.closest !== "function") {
+          return;
+        }
+
+        const save = target.closest("[data-save-business]");
 
         if (save) {
           event.preventDefault();
@@ -1848,7 +1979,7 @@ function renderPagination() {
           return;
         }
 
-        const view = event.target.closest("[data-view-business]");
+        const view = target.closest("[data-view-business]");
 
         if (view) {
           recordBusinessView(view.dataset.viewBusiness);
@@ -1856,44 +1987,8 @@ function renderPagination() {
       });
     }
 
-    
-const pagination = paginationElement();
-
-if (pagination && pagination.dataset.nearafricaPaginationBound !== "1") {
-  pagination.dataset.nearafricaPaginationBound = "1";
-
-  pagination.addEventListener("click", (event) => {
-    const button = event.target.closest("button[data-page]");
-
-    if (!button || button.disabled || !pagination.contains(button)) {
-      return;
-    }
-
-    const page = Number(button.dataset.page);
-
-    if (
-      !Number.isInteger(page) ||
-      page < 1 ||
-      page > App.totalPages ||
-      page === App.currentPage
-    ) {
-      return;
-    }
-
-    App.currentPage = page;
-    renderResults();
-
-    const results = resultsContainer();
-
-    if (results) {
-      results.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-  });
-}
-
+    // Works even if the pagination element is created later.
+    bindPaginationEvents();
 
     const searchForms = [
       $("#homeSearchForm"),
@@ -1925,25 +2020,33 @@ if (pagination && pagination.dataset.nearafricaPaginationBound !== "1") {
       });
     });
 
-    document.addEventListener("keydown", (event) => {
-      if (
-        event.key !== "/" ||
-        event.ctrlKey ||
-        event.metaKey ||
-        event.altKey
-      ) {
-        return;
-      }
+    if (
+      document.documentElement.dataset.nearafricaSearchShortcutBound !== "1"
+    ) {
+      document.documentElement.dataset.nearafricaSearchShortcutBound = "1";
 
-      const tag = event.target?.tagName?.toLowerCase();
+      document.addEventListener("keydown", (event) => {
+        if (
+          event.key !== "/" ||
+          event.ctrlKey ||
+          event.metaKey ||
+          event.altKey
+        ) {
+          return;
+        }
 
-      if (["input", "textarea", "select"].includes(tag)) return;
+        const tag = event.target?.tagName?.toLowerCase();
 
-      if (searchInput()) {
-        event.preventDefault();
-        searchInput().focus();
-      }
-    });
+        if (["input", "textarea", "select"].includes(tag)) return;
+
+        const input = searchInput();
+
+        if (input) {
+          event.preventDefault();
+          input.focus();
+        }
+      });
+    }
   }
 
   /* ----------------------------------------------------------
@@ -1955,10 +2058,7 @@ if (pagination && pagination.dataset.nearafricaPaginationBound !== "1") {
     setupEvents();
 
     applyUrlParameters();
-
-    // Invalid old saved GPS readings are removed here.
     restoreLocation();
-
     updateNearbyControls();
 
     await loadCategories();
@@ -1968,15 +2068,15 @@ if (pagination && pagination.dataset.nearafricaPaginationBound !== "1") {
     populateCategoryOptions();
     populateCityOptions();
 
-    /*
-     * Restore URL filters AFTER the category options exist.
-     * Category aliases allow slugs and display labels to match.
-     */
+    // Restore URL filters after category options exist.
     applyUrlParameters();
 
     if (App.nearbyMode && !App.userLocation) {
       setStatus(
-        t("search.useMyLocation", "Nearby needs a fresh location. Select Use My Location to obtain one."),
+        t(
+          "search.useMyLocation",
+          "Nearby needs a fresh location. Select Use My Location to obtain one."
+        ),
         "info"
       );
 
@@ -1999,7 +2099,6 @@ if (pagination && pagination.dataset.nearafricaPaginationBound !== "1") {
     ].filter(Boolean);
 
     buttons.forEach((button) => {
-      // Prevent duplicate handlers if initialization is repeated.
       if (button.dataset.nearafricaLocationBound === "1") {
         return;
       }
@@ -2014,11 +2113,16 @@ if (pagination && pagination.dataset.nearafricaPaginationBound !== "1") {
 
         const originalText = button.textContent;
 
-        button.textContent = t("search.usingYourLocation", "Finding location…");
-        setStatus(t("search.usingYourLocation", "Finding your current location…"));
+        button.textContent = t(
+          "search.usingYourLocation",
+          "Finding location…"
+        );
+
+        setStatus(
+          t("search.usingYourLocation", "Finding your current location…")
+        );
 
         try {
-          // Always request a fresh, validated GPS location.
           App.userLocation = await getBrowserLocation();
 
           App.locationInfo = await reverseGeocode(
@@ -2027,7 +2131,6 @@ if (pagination && pagination.dataset.nearafricaPaginationBound !== "1") {
 
           App.nearbyMode = true;
 
-          // saveLocation throws if the location is not usable.
           saveLocation();
 
           const target = new URL(
@@ -2069,7 +2172,10 @@ if (pagination && pagination.dataset.nearafricaPaginationBound !== "1") {
         );
 
         setStatus(
-          t("errors.somethingWentWrong", "NearAfrica could not initialize") + ": " + error.message,
+          t(
+            "errors.somethingWentWrong",
+            "NearAfrica could not initialize"
+          ) + ": " + error.message,
           "error"
         );
       });
@@ -2090,21 +2196,30 @@ if (pagination && pagination.dataset.nearafricaPaginationBound !== "1") {
     };
   }
 
+  /* ----------------------------------------------------------
+     LANGUAGE CHANGE
+  ---------------------------------------------------------- */
 
   window.addEventListener("nearafrica:languagechange", function () {
     try {
-      if (typeof updateNearbyControls === "function") {
-        updateNearbyControls();
-      }
-      if (typeof applyFilters === "function") {
+      updateNearbyControls();
+
+      if (App.allBusinesses.length || App.filteredBusinesses.length) {
         applyFilters();
-      } else if (typeof renderResults === "function") {
+      } else {
         renderResults();
       }
     } catch (error) {
-      console.warn("NearAfrica: language change refresh failed.", error);
+      console.warn(
+        "NearAfrica: language change refresh failed.",
+        error
+      );
     }
   });
+
+  /* ----------------------------------------------------------
+     START
+  ---------------------------------------------------------- */
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initialize, {
