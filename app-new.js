@@ -1722,45 +1722,66 @@
     renderPagination();
   }
 
-  function renderPagination() {
-    const container = paginationElement();
 
-    if (!container) return;
+function renderPagination() {
+  const container = paginationElement();
 
-    const total = App.filteredBusinesses.length;
-
-    if (total <= App.pageSize) {
-      container.innerHTML = "";
-      return;
-    }
-
-    const pages = [];
-
-    for (let page = 1; page <= App.totalPages; page++) {
-      pages.push(`
-        <button
-          type="button"
-          data-page="${page}"
-          class="${page === App.currentPage ? "active" : ""}"
-          aria-current="${page === App.currentPage ? "page" : "false"}"
-        >${page}</button>
-      `);
-    }
-
-    container.innerHTML = `
-      <button
-        type="button"
-        data-page="${App.currentPage - 1}"
-        ${App.currentPage <= 1 ? "disabled" : ""}
-      >Previous</button>
-      ${pages.join("")}
-      <button
-        type="button"
-        data-page="${App.currentPage + 1}"
-        ${App.currentPage >= App.totalPages ? "disabled" : ""}
-      >Next</button>
-    `;
+  if (!container) {
+    console.warn(
+      "NearAfrica pagination: no pagination container found. " +
+      "Expected #pagination, #paginationControls, or [data-pagination]."
+    );
+    return;
   }
+
+  const total = App.filteredBusinesses.length;
+
+  App.totalPages = Math.max(
+    1,
+    Math.ceil(total / App.pageSize)
+  );
+
+  App.currentPage = Math.max(
+    1,
+    Math.min(App.currentPage, App.totalPages)
+  );
+
+  if (total <= App.pageSize) {
+    container.innerHTML = "";
+    return;
+  }
+
+  const pages = [];
+
+  for (let page = 1; page <= App.totalPages; page++) {
+    pages.push(`
+      <button
+        type="button"
+        data-page="${page}"
+        class="${page === App.currentPage ? "active" : ""}"
+        aria-current="${page === App.currentPage ? "page" : "false"}"
+        ${page === App.currentPage ? 'aria-label="Page ' + page + ', current page"' : 'aria-label="Go to page ' + page + '"'}
+      >${page}</button>
+    `);
+  }
+
+  container.innerHTML = `
+    <button
+      type="button"
+      data-page="${App.currentPage - 1}"
+      ${App.currentPage <= 1 ? "disabled" : ""}
+    >Previous</button>
+    ${pages.join("")}
+    <button
+      type="button"
+      data-page="${App.currentPage + 1}"
+      ${App.currentPage >= App.totalPages ? "disabled" : ""}
+    >Next</button>
+  `;
+
+  // Ensure the pagination container can receive button clicks.
+  container.style.pointerEvents = "auto";
+}
 
   async function recordBusinessView(id) {
     if (!id) return;
