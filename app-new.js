@@ -1858,73 +1858,76 @@
    * This keeps page buttons functional if another script replaces
    * the pagination container or creates it after this file loads.
    */
-  function bindPaginationEvents() {
-    const root = document.documentElement;
+function bindPaginationEvents() {
+  const root = document.documentElement;
+
+  if (
+    root.dataset.nearafricaPaginationDelegated === "1"
+  ) {
+    return;
+  }
+
+  root.dataset.nearafricaPaginationDelegated = "1";
+
+  // Capture the click before it reaches i18n.js or other
+  // bubbling handlers that may rebuild the pagination.
+  document.addEventListener("click", (event) => {
+    const target = event.target;
 
     if (
-      root.dataset.nearafricaPaginationDelegated === "1"
+      !target ||
+      typeof target.closest !== "function"
     ) {
       return;
     }
 
-    root.dataset.nearafricaPaginationDelegated = "1";
+    const button = target.closest("button[data-page]");
 
-    document.addEventListener("click", (event) => {
-      const target = event.target;
+    if (!button) return;
 
-      if (
-        !target ||
-        typeof target.closest !== "function"
-      ) {
-        return;
-      }
+    const pagination = button.closest(
+      "#pagination, #paginationControls, [data-pagination]"
+    );
 
-      const button = target.closest("button[data-page]");
+    if (!pagination) return;
 
-      if (!button) return;
+    // Handle pagination here before other scripts process the click.
+    event.preventDefault();
+    event.stopPropagation();
 
-      const pagination = button.closest(
-        "#pagination, #paginationControls, [data-pagination]"
-      );
+    if (button.disabled) return;
 
-      if (!pagination) return;
+    const rawPage = button.getAttribute("data-page");
 
-      event.preventDefault();
+    if (!/^\d+$/.test(String(rawPage || ""))) {
+      return;
+    }
 
-      if (button.disabled) return;
+    const page = Number(rawPage);
 
-      const rawPage = button.getAttribute("data-page");
+    if (
+      !Number.isSafeInteger(page) ||
+      page < 1 ||
+      page > App.totalPages ||
+      page === App.currentPage
+    ) {
+      return;
+    }
 
-      if (!/^\d+$/.test(String(rawPage || ""))) {
-        return;
-      }
+    App.currentPage = page;
 
-      const page = Number(rawPage);
+    renderResults();
 
-      if (
-        !Number.isSafeInteger(page) ||
-        page < 1 ||
-        page > App.totalPages ||
-        page === App.currentPage
-      ) {
-        return;
-      }
+    const results = resultsContainer();
 
-      App.currentPage = page;
-
-      renderResults();
-
-      const results = resultsContainer();
-
-      if (results) {
-        results.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
-    });
-  }
-
+    if (results) {
+      results.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  }, true);
+}
   /* ----------------------------------------------------------
      EVENTS
   ---------------------------------------------------------- */
