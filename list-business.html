@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -144,6 +143,17 @@
 
     button:hover { transform: translateY(-1px); }
     button:disabled { opacity: .65; cursor: not-allowed; transform: none; }
+
+    .submit-note {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: #f8f9fa;
+      border: 1px solid #e5e7eb;
+      border-radius: 9px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #555;
+    }
 
     #submission-status { display: none; margin-top: 15px; text-align: center; font-size: 14px; color: #555; }
 
@@ -356,6 +366,7 @@
 
           <div class="submit-area">
             <button type="submit" id="submit-business">Submit Business</button>
+            <p class="submit-note">📌 Note: If your business submission fails, please try again. Sometimes a temporary error may prevent your listing from going through, and a second attempt may work.</p>
             <div id="submission-status" role="status" aria-live="polite">Submitting your business...</div>
             <div id="form-success" class="message" role="status" aria-live="polite"></div>
             <div id="form-error" class="message" role="alert" aria-live="assertive"></div>
@@ -781,4 +792,4 @@
     })();
   </script>
 </body>
-</html>
+  </html>
