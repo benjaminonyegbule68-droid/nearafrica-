@@ -16,6 +16,9 @@
 
   <title>Explore Businesses | NearAfrica</title>
 
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="shortcut icon" type="image/png" href="logo.png">
+
   <link
     rel="canonical"
     href="https://nearafrica.com.ng/explore.html"
@@ -459,13 +462,13 @@
 
         <div class="filter-group">
 
-          <label for="cityFilter">
+          <label for="cityFilter" data-i18n="explore.city">
             City
           </label>
 
           <select id="cityFilter">
 
-            <option value="">
+            <option value="" data-i18n="explore.allCities">
               All cities
             </option>
 
@@ -475,12 +478,12 @@
 
 
         <button
-          id="clearFilters"
-          type="button"
+          id="applyFilters"
           class="filter-button"
-          data-i18n="actions.cancel"
+          type="button"
+          data-i18n="search.search"
         >
-          Clear
+          Search
         </button>
 
       </div>
@@ -492,29 +495,45 @@
          RESULTS HEADER
          ===================================================== -->
 
-    <section class="results-header">
+    <div class="results-header">
 
-      <h2 id="resultsTitle" data-i18n="explore.businesses">
-        Businesses
+      <h2 data-i18n="explore.results">
+        Results
       </h2>
 
-     <div
-  id="resultCount" data-i18n="actions.loading"
-  class="result-count"
->Loading businesses...</div>
+      <div
+        id="resultsStatus"
+        class="results-status"
+        data-i18n="actions.loading"
+      >
+        Loading businesses...
+      </div>
 
+    </div>
+
+
+    <!-- =====================================================
+         SPONSORED (optional)
+         ===================================================== -->
+
+    <section
+      class="sponsored-section"
+      id="exploreSponsoredSection"
+      aria-label="Sponsored businesses"
+      hidden
+      style="max-width:1200px;margin:0 auto 24px;padding:0 20px;"
+    >
+      <h2 style="font-size:1.1rem;margin:0 0 8px;">Sponsored</h2>
+      <p class="sponsored-note" style="opacity:0.7;font-size:0.85rem;margin:0 0 12px;">
+        Paid placements. Not organic search ranking.
+      </p>
+      <div class="sponsored-grid" id="exploreSponsoredGrid"></div>
     </section>
 
 
     <!-- =====================================================
-         RESULTS
+         BUSINESS GRID
          ===================================================== -->
-
-      <section class="sponsored-section" id="exploreSponsoredSection" aria-label="Sponsored businesses" hidden>
-    <h2>Sponsored</h2>
-    <p class="sponsored-note">Paid placements. Separate from search results below.</p>
-    <div class="sponsored-grid" id="exploreSponsoredGrid"></div>
-  </section>
 
     <section
       id="businessGrid"
@@ -607,4 +626,4 @@
 
 </body>
 
-</html>
+  </html>
