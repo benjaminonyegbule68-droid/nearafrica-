@@ -187,10 +187,6 @@ tbody tr:hover{background:#ffffff05}
 <script>
 "use strict";
 
-/* =========================================================
-   CONFIGURATION AND STATE
-========================================================= */
-
 const API_BASE = "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
 let adminKey = sessionStorage.getItem("nearafrica_admin_key") || "";
@@ -224,18 +220,12 @@ function normalizeStatus(value, fallback) {
     return String(value ?? fallback ?? "pending").trim().toLowerCase();
 }
 
-function isActionableStatus(status) {
-    return !["approved", "rejected", "dismissed", "resolved", "removed", "suspended", "active"].includes(status);
-}
-
 function getHeaders() {
     const headers = { "Accept": "application/json" };
-
     if (adminKey) {
         headers["Authorization"] = `Bearer ${adminKey}`;
         headers["X-Admin-Key"] = adminKey;
     }
-
     return headers;
 }
 
@@ -268,7 +258,6 @@ async function apiRequest(path, options = {}) {
     }
 
     let data = null;
-
     try {
         data = await response.json();
     } catch {
@@ -298,11 +287,9 @@ function getAdminResourcePath(resource) {
     if (resource === "discoveries") {
         return "/admin/discovery?limit=100";
     }
-
     if (resource === "correction_requests") {
         return "/admin/correction-requests?status=pending&limit=100";
     }
-
     return `/admin/${resource}?limit=100`;
 }
 
@@ -312,25 +299,17 @@ function getRecords(data) {
         "reports", "help_wanted", "subscriptions",
         "discoveries", "discovery", "results", "data", "requests"
     ];
-
     for (const key of possibleKeys) {
-        if (Array.isArray(data?.[key])) {
-            return data[key];
-        }
+        if (Array.isArray(data?.[key])) return data[key];
     }
-
     return [];
 }
 
-/* =========================================================
-   LOGIN AND LOGOUT
-========================================================= */
+/* LOGIN / LOGOUT */
 
 loginForm.addEventListener("submit", async event => {
     event.preventDefault();
-
     const key = adminKeyInput.value.trim();
-
     if (!key) {
         loginError.textContent = "Please enter the admin API key.";
         return;
@@ -344,17 +323,14 @@ loginForm.addEventListener("submit", async event => {
 
     try {
         await apiRequest("/admin");
-
         sessionStorage.setItem("nearafrica_admin_key", adminKey);
         loginScreen.style.display = "none";
         adminApp.style.display = "block";
         loginError.textContent = "";
-
         await loadStats();
         await loadResource(currentResource);
     } catch (error) {
         adminKey = previousKey;
-
         loginError.textContent =
             error.status === 401 || error.status === 403
                 ? "Invalid admin API key."
@@ -374,9 +350,7 @@ logoutBtn.addEventListener("click", () => {
     loginError.textContent = "";
 });
 
-/* =========================================================
-   STATISTICS
-========================================================= */
+/* STATS */
 
 async function loadStats() {
     const ids = {
@@ -391,7 +365,6 @@ async function loadStats() {
     try {
         const data = await apiRequest("/admin/stats");
         const stats = data?.stats || data?.statistics || data || {};
-
         document.getElementById(ids.businesses).textContent =
             stats.businesses ?? stats.business_count ?? "—";
         document.getElementById(ids.submissions).textContent =
@@ -406,20 +379,16 @@ async function loadStats() {
             stats.help_wanted ?? stats.help_wanted_count ?? "—";
     } catch (error) {
         console.warn("NearAfrica admin stats unavailable:", error);
-
         Object.values(ids).forEach(id => {
             document.getElementById(id).textContent = "—";
         });
     }
 }
 
-/* =========================================================
-   RESOURCE LOADING
-========================================================= */
+/* RESOURCE LOADING */
 
 async function loadResource(resource) {
     currentResource = resource;
-
     const readableTitle = resource
         .replaceAll("_", " ")
         .replace(/\b\w/g, char => char.toUpperCase());
@@ -429,7 +398,6 @@ async function loadResource(resource) {
 
     try {
         const data = await apiRequest(getAdminResourcePath(resource));
-
         const records =
             resource === "correction_requests" && Array.isArray(data?.requests)
                 ? data.requests
@@ -441,28 +409,23 @@ async function loadResource(resource) {
         if (resource === "reports") return renderReports(records);
         if (resource === "discoveries") return renderDiscoveries(records);
         if (resource === "correction_requests") return renderCorrectionRequests(records);
-
         renderGeneric(records, resource);
     } catch (error) {
         content.innerHTML = `
             <div class="error">
                 <strong>Unable to load ${escapeHtml(readableTitle)}</strong>
                 <div style="margin-top:10px">${escapeHtml(error.message || "Unknown error.")}</div>
-            </div>
-        `;
+            </div>`;
     }
 }
 
-/* =========================================================
-   BUSINESSES
-========================================================= */
+/* BUSINESSES */
 
 async function deleteBusinessFromAdmin(businessId, businessName, button) {
     if (!businessId) {
         alert("This business does not have a valid ID.");
         return;
     }
-
     if (!confirm(
         `Delete "${businessName}" permanently?\n\nThis may remove related records. This action cannot be undone.`
     )) return;
@@ -475,7 +438,6 @@ async function deleteBusinessFromAdmin(businessId, businessName, button) {
             `/admin/businesses/${encodeURIComponent(businessId)}`,
             { method: "DELETE" }
         );
-
         alert(response.message || "Business deleted successfully.");
         await loadStats();
         await loadResource("businesses");
@@ -534,9 +496,7 @@ function renderBusinesses(businesses) {
         </table></div>`;
 }
 
-/* =========================================================
-   DISCOVERY RUNNER
-========================================================= */
+/* DISCOVERY RUNNER */
 
 function getDiscoveryRunnerMarkup() {
     return `
@@ -544,74 +504,56 @@ function getDiscoveryRunnerMarkup() {
             <h3>Run OpenStreetMap Discovery</h3>
             <p>
                 Search a specific area for possible business listings.
-                Results are imported as discovery candidates for manual review;
-                they are not automatically approved as public businesses.
+                Results are imported as <strong>pending discovery candidates</strong> for manual review.
+                They are <strong>not</strong> automatically published as public businesses.
             </p>
-
             <form id="discoveryRunForm">
                 <div class="discovery-form-grid">
                     <div class="discovery-field">
-                        <label for="discoveryLatitude">Latitude *</label>
-                        <input id="discoveryLatitude" name="latitude"
-                               type="number" step="any" min="-90" max="90"
-                               placeholder="Enter latitude" required>
-                        <span class="discovery-help">Between -90 and 90.</span>
+                        <label for="discoveryLatitude">Search center latitude *</label>
+                        <input id="discoveryLatitude" name="latitude" type="number" step="any" min="-90" max="90" placeholder="Enter latitude" required>
+                        <span class="discovery-help">Search area only. Between -90 and 90.</span>
                     </div>
                     <div class="discovery-field">
-                        <label for="discoveryLongitude">Longitude *</label>
-                        <input id="discoveryLongitude" name="longitude"
-                               type="number" step="any" min="-180" max="180"
-                               placeholder="Enter longitude" required>
-                        <span class="discovery-help">Between -180 and 180.</span>
+                        <label for="discoveryLongitude">Search center longitude *</label>
+                        <input id="discoveryLongitude" name="longitude" type="number" step="any" min="-180" max="180" placeholder="Enter longitude" required>
+                        <span class="discovery-help">Search area only. Between -180 and 180.</span>
                     </div>
                     <div class="discovery-field">
                         <label for="discoveryRadius">Search radius (metres) *</label>
-                        <input id="discoveryRadius" name="radius"
-                               type="number" min="500" max="50000"
-                               step="500" value="1000" required>
+                        <input id="discoveryRadius" name="radius" type="number" min="500" max="50000" step="500" value="1000" required>
                         <span class="discovery-help">Allowed range: 500–50,000 metres.</span>
                     </div>
                     <div class="discovery-field">
                         <label for="discoveryTargetCount">Target count *</label>
-                        <input id="discoveryTargetCount" name="target_count"
-                               type="number" min="1" max="5000"
-                               step="1" value="5" required>
+                        <input id="discoveryTargetCount" name="target_count" type="number" min="1" max="5000" step="1" value="5" required>
                         <span class="discovery-help">For your first test, leave this at 5.</span>
                     </div>
                     <div class="discovery-field">
-                        <label for="discoveryCountry">Country *</label>
-                        <input id="discoveryCountry" name="country"
-                               type="text" maxlength="100" value="Nigeria" required>
+                        <label for="discoveryCountry">Search country *</label>
+                        <input id="discoveryCountry" name="country" type="text" maxlength="100" value="Nigeria" required>
                     </div>
                     <div class="discovery-field">
-                        <label for="discoveryState">State / Region</label>
-                        <input id="discoveryState" name="state"
-                               type="text" maxlength="100" placeholder="e.g. Rivers">
+                        <label for="discoveryState">Search state / region</label>
+                        <input id="discoveryState" name="state" type="text" maxlength="100" placeholder="e.g. Rivers">
                     </div>
                     <div class="discovery-field">
-                        <label for="discoveryCity">City</label>
-                        <input id="discoveryCity" name="city"
-                               type="text" maxlength="100" placeholder="e.g. Port Harcourt">
+                        <label for="discoveryCity">Search city</label>
+                        <input id="discoveryCity" name="city" type="text" maxlength="100" placeholder="e.g. Port Harcourt">
                     </div>
                     <div class="discovery-field">
-                        <label for="discoveryCategory">Category (optional)</label>
-                        <input id="discoveryCategory" name="category"
-                               type="text" maxlength="120" placeholder="e.g. Restaurants &amp; Food">
-                        <span class="discovery-help">Leave blank to search without a category filter.</span>
+                        <label for="discoveryCategory">Category filter (optional)</label>
+                        <input id="discoveryCategory" name="category" type="text" maxlength="120" placeholder="e.g. Restaurants &amp; Food">
                     </div>
                 </div>
-
                 <div class="discovery-warning">
-                    This action can add actual records to the discovery queue.
-                    Imported candidates may be incomplete, incorrectly categorized,
-                    or duplicated. Review each candidate before approving it.
+                    This action can add real pending records to the discovery queue.
+                    Always review name, coordinates, address, category, and source before approving.
+                    Never approve a record that has missing or invalid latitude/longitude if it should appear in Nearby results.
                 </div>
-
                 <div class="discovery-submit-row">
-                    <button id="discoveryRunButton" class="discovery-run-btn"
-                            type="submit">Run Discovery</button>
-                    <div id="discoveryRunMessage" class="discovery-message"
-                         role="status" aria-live="polite"></div>
+                    <button id="discoveryRunButton" class="discovery-run-btn" type="submit">Run Discovery</button>
+                    <div id="discoveryRunMessage" class="discovery-message" role="status" aria-live="polite"></div>
                 </div>
             </form>
         </section>`;
@@ -624,7 +566,6 @@ function attachDiscoveryRunForm() {
 
 async function runDiscoveryFromAdmin(event) {
     event.preventDefault();
-
     const form = document.getElementById("discoveryRunForm");
     const message = document.getElementById("discoveryRunMessage");
     const button = document.getElementById("discoveryRunButton");
@@ -652,17 +593,14 @@ async function runDiscoveryFromAdmin(event) {
         showError("Enter valid coordinates. Latitude must be -90 to 90 and longitude -180 to 180.");
         return;
     }
-
     if (!Number.isFinite(radius) || radius < 500 || radius > 50000) {
         showError("Search radius must be between 500 and 50,000 metres.");
         return;
     }
-
     if (!Number.isInteger(targetCount) || targetCount < 1 || targetCount > 5000) {
         showError("Target count must be a whole number between 1 and 5,000.");
         return;
     }
-
     if (!country) {
         showError("Enter a country.");
         return;
@@ -681,9 +619,7 @@ async function runDiscoveryFromAdmin(event) {
         const response = await apiRequest("/admin/discovery/run", {
             method: "POST",
             body: JSON.stringify({
-                latitude,
-                longitude,
-                radius,
+                latitude, longitude, radius,
                 category: category || null,
                 country,
                 state: state || null,
@@ -702,39 +638,79 @@ async function runDiscoveryFromAdmin(event) {
             `Discovery run completed. Found: ${found}; imported: ${imported}; duplicates skipped: ${duplicates}. Refreshing candidates...`;
 
         alert(
-            "Discovery run completed.\n\n" +
-            "Found: " + found + "\n" +
-            "Imported: " + imported + "\n" +
-            "Duplicates skipped: " + duplicates +
+            "Discovery run completed.\n\nFound: " + found +
+            "\nImported: " + imported +
+            "\nDuplicates skipped: " + duplicates +
             "\n\nCheck the Discoveries table for the imported candidates."
         );
 
         await loadResource("discoveries");
     } catch (error) {
-        showError(
-            (error.message || "Discovery run failed.") +
-            " Check the API response and Worker logs before retrying."
-        );
+        showError((error.message || "Discovery run failed.") + " Check the API response and Worker logs before retrying.");
         button.disabled = false;
         button.textContent = "Run Discovery";
     }
 }
 
-/* =========================================================
-   DISCOVERY MODERATION
-========================================================= */
+/* DISCOVERY MODERATION — fixed (single async) */
+
+function assessCoordinates(discovery) {
+    const rawLat = discovery.latitude ?? discovery.lat ?? discovery.location_latitude;
+    const rawLng = discovery.longitude ?? discovery.lng ?? discovery.lon ?? discovery.location_longitude;
+
+    const hasLat = rawLat !== null && rawLat !== undefined && String(rawLat).trim() !== "";
+    const hasLng = rawLng !== null && rawLng !== undefined && String(rawLng).trim() !== "";
+
+    if (!hasLat && !hasLng) {
+        return { status: "missing", label: "Missing coords", lat: null, lng: null };
+    }
+    if (!hasLat || !hasLng) {
+        return {
+            status: "invalid",
+            label: "Incomplete pair",
+            lat: hasLat ? Number(rawLat) : null,
+            lng: hasLng ? Number(rawLng) : null
+        };
+    }
+
+    const lat = Number(rawLat);
+    const lng = Number(rawLng);
+
+    if (
+        !Number.isFinite(lat) || !Number.isFinite(lng) ||
+        lat < -90 || lat > 90 || lng < -180 || lng > 180
+    ) {
+        return { status: "invalid", label: "Out of range", lat, lng };
+    }
+
+    return { status: "ok", label: "OK", lat, lng };
+}
 
 async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
     if (!discoveryId) {
         alert("This discovery does not have a valid ID.");
         return;
     }
-
     if (action !== "approve" && action !== "reject") return;
 
-    if (!confirm(action === "approve"
-        ? "Approve this discovery? It will become a public business listing."
-        : "Reject this discovery?")) return;
+    if (action === "approve") {
+        const row = button ? button.closest("tr") : null;
+        const coordStatus = row ? (row.getAttribute("data-coord-status") || "") : "";
+
+        if (coordStatus === "missing" || coordStatus === "invalid") {
+            const proceed = confirm(
+                "WARNING: This discovery has missing or invalid coordinates.\n\n" +
+                "Approving it will publish a business that cannot be used reliably in Nearby / GPS search.\n\n" +
+                "Only approve if you intentionally accept that limitation.\n\n" +
+                "Continue with approval?"
+            );
+            if (!proceed) return;
+        } else if (!confirm("Approve this discovery and publish it as a public business?")) {
+            return;
+        }
+    } else {
+        if (!confirm("Reject this discovery?")) return;
+    }
 
     const actionButtons = document.querySelectorAll(
         `.discovery-action[data-discovery-id="${CSS.escape(String(discoveryId))}"]`
@@ -750,13 +726,11 @@ async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
             `/admin/discovery/\( {encodeURIComponent(discoveryId)}/ \){action}`,
             { method: "POST" }
         );
-
         alert(response.message || (
             action === "approve"
                 ? "Discovery approved successfully."
                 : "Discovery rejected successfully."
         ));
-
         await loadStats();
         await loadResource("discoveries");
     } catch (error) {
@@ -784,24 +758,36 @@ function renderDiscoveries(discoveries) {
         const description = discovery.description || "—";
         const category = discovery.category || "—";
         const location = [
+            discovery.address || "",
             discovery.city || "",
             discovery.state || "",
             discovery.country || ""
         ].filter(value => value && value !== "—").join(", ") || "—";
         const sourceUrl = discovery.source_url || discovery.url || "";
+        const sourceId = discovery.source_id || discovery.osm_id || "";
         const status = normalizeStatus(discovery.status, "pending");
-        const canModerate = isActionableStatus(status) && id;
+        const isPending = !["approved", "rejected"].includes(status);
+        const coords = assessCoordinates(discovery);
 
-        const actions = canModerate ? `
+        const coordBadgeColor =
+            coords.status === "ok" ? "#4ade80" :
+            coords.status === "missing" ? "#fbbf24" : "#f87171";
+
+        const coordCell = `
+            <div style="font-family:Consolas,Monaco,monospace;font-size:11px;line-height:1.5">
+                <div style="color:\( {coordBadgeColor};font-weight:800;margin-bottom:4px"> \){escapeHtml(coords.label)}</div>
+                <div>lat: ${coords.lat === null || coords.lat === undefined ? "—" : escapeHtml(String(coords.lat))}</div>
+                <div>lng: ${coords.lng === null || coords.lng === undefined ? "—" : escapeHtml(String(coords.lng))}</div>
+            </div>`;
+
+        const actions = isPending && id ? `
             <div class="actions">
-                <button type="button"
-                    class="action-btn primary discovery-action"
+                <button type="button" class="action-btn primary discovery-action"
                     data-discovery-id="${escapeAttribute(String(id))}"
                     onclick="moderateDiscoveryFromAdmin('${escapeAttribute(String(id))}','approve',this)">
                     Approve
                 </button>
-                <button type="button"
-                    class="action-btn dismiss discovery-action"
+                <button type="button" class="action-btn dismiss discovery-action"
                     data-discovery-id="${escapeAttribute(String(id))}"
                     onclick="moderateDiscoveryFromAdmin('${escapeAttribute(String(id))}','reject',this)">
                     Reject
@@ -811,12 +797,16 @@ function renderDiscoveries(discoveries) {
         const safeSource = /^https?:\/\//i.test(String(sourceUrl)) ? sourceUrl : "";
 
         return `
-            <tr>
-                <td><strong>${escapeHtml(title)}</strong>
-                    <div class="business-id" style="margin-top:6px">${escapeHtml(id)}</div></td>
+            <tr data-coord-status="${escapeAttribute(coords.status)}">
+                <td>
+                    <strong>${escapeHtml(title)}</strong>
+                    <div class="business-id" style="margin-top:6px">${escapeHtml(id)}</div>
+                    ${sourceId ? `<div class="business-id" style="margin-top:4px">source: ${escapeHtml(String(sourceId))}</div>` : ""}
+                </td>
                 <td>${escapeHtml(category)}</td>
                 <td>${escapeHtml(location)}</td>
-                <td><div style="max-width:300px;white-space:normal;line-height:1.5;color:#aaa">${escapeHtml(description)}</div></td>
+                <td>${coordCell}</td>
+                <td><div style="max-width:260px;white-space:normal;line-height:1.5;color:#aaa">${escapeHtml(description)}</div></td>
                 <td><span class="status \( {escapeAttribute(status)}"> \){escapeHtml(status)}</span></td>
                 <td>${safeSource
                     ? `<a href="${escapeAttribute(safeSource)}" target="_blank" rel="noopener noreferrer" style="color:#d4af37;text-decoration:none;font-weight:700">Open Source</a>`
@@ -827,13 +817,15 @@ function renderDiscoveries(discoveries) {
 
     content.innerHTML = runner + `
         <div class="section-caption">
-            ${discoveries.length} candidate(s) loaded. Review names, categories, locations and sources before approving.
+            ${discoveries.length} candidate(s) loaded.
+            Review name, category, address, <strong>coordinates</strong>, and source before approving.
+            Records with missing or invalid coordinates will show a warning on Approve.
         </div>
         <div class="table-wrap">
             <table>
                 <thead><tr>
-                    <th>Discovery</th><th>Category</th><th>Location</th>
-                    <th>Description</th><th>Status</th><th>Source</th><th>Actions</th>
+                    <th>Discovery</th><th>Category</th><th>Address / Locality</th>
+                    <th>Coordinates</th><th>Description</th><th>Status</th><th>Source</th><th>Actions</th>
                 </tr></thead>
                 <tbody>${rows}</tbody>
             </table>
@@ -842,23 +834,19 @@ function renderDiscoveries(discoveries) {
     attachDiscoveryRunForm();
 }
 
-/* =========================================================
-   REPORT MODERATION
-========================================================= */
+/* REPORTS */
 
 async function moderateReportFromAdmin(reportId, action, button) {
     if (!reportId) {
         alert("This report does not have a valid ID.");
         return;
     }
-
     if (action !== "resolve" && action !== "dismiss") return;
 
     const noteInput = document.querySelector(
         `.report-note[data-report-id="${CSS.escape(String(reportId))}"]`
     );
     const note = noteInput ? noteInput.value.trim() : "";
-
     if (!confirm(`Are you sure you want to ${action} this report?`)) return;
 
     const actionButtons = document.querySelectorAll(
@@ -869,7 +857,6 @@ async function moderateReportFromAdmin(reportId, action, button) {
     const messageElement = document.querySelector(
         `.report-action-message[data-report-id="${CSS.escape(String(reportId))}"]`
     );
-
     if (messageElement) {
         messageElement.className = "report-action-message info";
         messageElement.textContent = "Saving moderation decision...";
@@ -878,22 +865,16 @@ async function moderateReportFromAdmin(reportId, action, button) {
     try {
         const response = await apiRequest(
             `/admin/reports/\( {encodeURIComponent(reportId)}/ \){action}`,
-            {
-                method: "POST",
-                body: JSON.stringify({ admin_notes: note })
-            }
+            { method: "POST", body: JSON.stringify({ admin_notes: note }) }
         );
-
         if (messageElement) {
             messageElement.className = "report-action-message success";
             messageElement.textContent = response.message || "Report updated successfully.";
         }
-
         await loadStats();
         await loadResource("reports");
     } catch (error) {
         actionButtons.forEach(item => item.disabled = false);
-
         if (messageElement) {
             messageElement.className = "report-action-message error";
             messageElement.textContent = error.message || "Unable to update report.";
@@ -958,16 +939,13 @@ function renderReports(reports) {
         </table></div>`;
 }
 
-/* =========================================================
-   CLAIM MODERATION  (FIXED: Approve for pending + verified)
-========================================================= */
+/* CLAIMS — FIXED: Approve for pending AND verified */
 
 async function moderateClaimFromAdmin(claimId, action, button) {
     if (!claimId) {
         alert("This claim does not have a valid ID.");
         return;
     }
-
     if (action !== "approve" && action !== "reject") return;
     if (!confirm(action === "approve" ? "Approve this claim?" : "Reject this claim?")) return;
 
@@ -975,7 +953,6 @@ async function moderateClaimFromAdmin(claimId, action, button) {
         `.claim-action[data-claim-id="${CSS.escape(String(claimId))}"]`
     );
     actionButtons.forEach(item => item.disabled = true);
-
     if (button) {
         button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
     }
@@ -985,11 +962,9 @@ async function moderateClaimFromAdmin(claimId, action, button) {
             `/admin/claims/\( {encodeURIComponent(claimId)}/ \){action}`,
             { method: "POST" }
         );
-
         alert(response.message || (action === "approve"
             ? "Claim approved successfully."
             : "Claim rejected successfully."));
-
         await loadStats();
         await loadResource("claims");
     } catch (error) {
@@ -1026,7 +1001,6 @@ function renderClaims(claims) {
                    style="color:#d4af37;text-decoration:none;font-weight:700">Open Business</a>
             </div>` : "";
 
-        // FIXED: Approve for both pending and verified (not only verified)
         let actions = "—";
         if (id && (status === "pending" || status === "verified")) {
             actions = `
@@ -1058,29 +1032,21 @@ function renderClaims(claims) {
 
     content.querySelectorAll(".claim-action").forEach(button => {
         button.addEventListener("click", () => {
-            moderateClaimFromAdmin(
-                button.dataset.claimId,
-                button.dataset.action,
-                button
-            );
+            moderateClaimFromAdmin(button.dataset.claimId, button.dataset.action, button);
         });
     });
 }
 
-/* =========================================================
-   SUBMISSION MODERATION
-========================================================= */
+/* SUBMISSIONS */
 
 async function moderateSubmissionFromAdmin(submissionId, action, button) {
     if (!submissionId) {
         alert("This submission does not have a valid ID.");
         return;
     }
-
     if (action !== "approve" && action !== "reject") return;
 
     let reason = "";
-
     if (action === "reject") {
         const answer = prompt("Why are you rejecting this submission? (Optional)");
         if (answer === null) return;
@@ -1095,7 +1061,6 @@ async function moderateSubmissionFromAdmin(submissionId, action, button) {
         `.submission-action[data-submission-id="${CSS.escape(String(submissionId))}"]`
     );
     buttons.forEach(item => item.disabled = true);
-
     if (button) {
         button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
     }
@@ -1103,25 +1068,19 @@ async function moderateSubmissionFromAdmin(submissionId, action, button) {
     try {
         const response = await apiRequest(
             `/admin/submissions/\( {encodeURIComponent(submissionId)}/ \){action}`,
-            {
-                method: "POST",
-                body: JSON.stringify(action === "reject" ? { reason } : {})
-            }
+            { method: "POST", body: JSON.stringify(action === "reject" ? { reason } : {}) }
         );
-
         alert(response.message || (action === "approve"
             ? "Submission approved successfully."
             : "Submission rejected successfully."));
-
         await loadStats();
         await loadResource("submissions");
     } catch (error) {
         buttons.forEach(item => {
             item.disabled = false;
-            if (item.textContent.includes("Approving")) item.textContent = "Approve";
-            if (item.textContent.includes("Rejecting")) item.textContent = "Reject";
+            if (String(item.textContent).includes("Approving")) item.textContent = "Approve";
+            if (String(item.textContent).includes("Rejecting")) item.textContent = "Reject";
         });
-        if (button) button.disabled = false;
         alert(error.message || "Unable to update submission.");
     }
 }
@@ -1174,9 +1133,7 @@ function renderSubmissions(submissions) {
         </table></div>`;
 }
 
-/* =========================================================
-   CORRECTION REQUESTS
-========================================================= */
+/* CORRECTION REQUESTS */
 
 function renderCorrectionRequests(requests) {
     if (!Array.isArray(requests) || requests.length === 0) {
@@ -1191,25 +1148,14 @@ function renderCorrectionRequests(requests) {
     const rows = requests.map(item => {
         const id = item.id || "";
         const status = normalizeStatus(item.status, "pending");
-        const businessName =
-            item.business_name ||
-            item.business_slug ||
-            item.business_id ||
-            "Business not found";
-
-        const location = [
-            item.city,
-            item.state,
-            item.country
-        ].filter(Boolean).join(", ") || "—";
-
+        const businessName = item.business_name || item.business_slug || item.business_id || "Business not found";
+        const location = [item.city, item.state, item.country].filter(Boolean).join(", ") || "—";
         const requesterName = item.requester_name || "Not provided";
         const requesterEmail = item.requester_email || "Not provided";
         const reason = item.reason || "No reason provided";
         const createdAt = item.created_at || "—";
 
         let requestedChanges = {};
-
         if (item.requested_changes && typeof item.requested_changes === "object") {
             requestedChanges = item.requested_changes;
         } else {
@@ -1229,18 +1175,10 @@ function renderCorrectionRequests(requests) {
 
         const actions = id && status === "pending" ? `
             <div class="actions">
-                <button type="button"
-                    class="action-btn primary correction-action"
-                    data-correction-id="${escapeAttribute(id)}"
-                    data-action="approve">
-                    Approve
-                </button>
-                <button type="button"
-                    class="action-btn dismiss correction-action"
-                    data-correction-id="${escapeAttribute(id)}"
-                    data-action="reject">
-                    Reject
-                </button>
+                <button type="button" class="action-btn primary correction-action"
+                    data-correction-id="${escapeAttribute(id)}" data-action="approve">Approve</button>
+                <button type="button" class="action-btn dismiss correction-action"
+                    data-correction-id="${escapeAttribute(id)}" data-action="reject">Reject</button>
             </div>
         ` : `<span class="muted">Already processed</span>`;
 
@@ -1255,9 +1193,7 @@ function renderCorrectionRequests(requests) {
                     <strong>${escapeHtml(requesterName)}</strong>
                     <div style="margin-top:6px;word-break:break-word">${escapeHtml(requesterEmail)}</div>
                 </td>
-                <td>
-                    <div style="max-width:300px;white-space:normal;line-height:1.5">${escapeHtml(reason)}</div>
-                </td>
+                <td><div style="max-width:300px;white-space:normal;line-height:1.5">${escapeHtml(reason)}</div></td>
                 <td>
                     **Summary:**
 View requested changes
@@ -1271,8 +1207,7 @@ View requested changes
                     ${actions}
                     ${status === "pending" ? `<div class="correction-review-hint">Approval records the decision only. Apply profile changes separately after reviewing them.</div>` : ""}
                 </td>
-            </tr>
-        `;
+            </tr>`;
     }).join("");
 
     content.innerHTML = `
@@ -1283,12 +1218,8 @@ View requested changes
             <table>
                 <thead>
                     <tr>
-                        <th>Business</th>
-                        <th>Requester</th>
-                        <th>Reason</th>
-                        <th>Requested Changes</th>
-                        <th>Status / Date</th>
-                        <th>Actions</th>
+                        <th>Business</th><th>Requester</th><th>Reason</th>
+                        <th>Requested Changes</th><th>Status / Date</th><th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>${rows}</tbody>
@@ -1311,21 +1242,16 @@ async function moderateCorrectionRequestFromAdmin(requestId, action, button) {
         alert("This correction request has no valid ID.");
         return;
     }
-
     if (action !== "approve" && action !== "reject") return;
 
     const question = action === "approve"
         ? "Approve this correction request?\n\nThis records approval only. It will not automatically change the public business listing."
         : "Reject this correction request?\n\nThe public business listing will not be changed.";
-
     if (!confirm(question)) return;
 
-    const relatedButtons = [
-        ...content.querySelectorAll(".correction-action")
-    ].filter(item => item.dataset.correctionId === String(requestId));
-
+    const relatedButtons = [...content.querySelectorAll(".correction-action")]
+        .filter(item => item.dataset.correctionId === String(requestId));
     relatedButtons.forEach(item => { item.disabled = true; });
-
     if (button) {
         button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
     }
@@ -1335,7 +1261,6 @@ async function moderateCorrectionRequestFromAdmin(requestId, action, button) {
             `/admin/correction-requests/\( {encodeURIComponent(requestId)}/ \){action}`,
             { method: "POST" }
         );
-
         alert(response.message || `Correction request ${action === "approve" ? "approved" : "rejected"}.`);
         await loadResource("correction_requests");
     } catch (error) {
@@ -1348,24 +1273,18 @@ async function moderateCorrectionRequestFromAdmin(requestId, action, button) {
     }
 }
 
-/* =========================================================
-   GENERIC TABLE
-========================================================= */
+/* GENERIC */
 
 function renderGeneric(records, resource) {
     if (!records.length) {
         content.innerHTML = `<div class="empty">No ${escapeHtml(resource)} records found.</div>`;
         return;
     }
-
     const keys = Object.keys(records[0]).slice(0, 8);
-    const headers = keys.map(key =>
-        `<th>${escapeHtml(key.replaceAll("_", " "))}</th>`
+    const headers = keys.map(key => `<th>${escapeHtml(key.replaceAll("_", " "))}</th>`).join("");
+    const rows = records.map(record =>
+        `<tr>\( {keys.map(key => `<td> \){escapeHtml(record[key] ?? "—")}</td>`).join("")}</tr>`
     ).join("");
-    const rows = records.map(record => `
-        <tr>\( {keys.map(key => `<td> \){escapeHtml(record[key] ?? "—")}</td>`).join("")}</tr>
-    `).join("");
-
     content.innerHTML = `
         <div class="table-wrap"><table>
             <thead><tr>${headers}</tr></thead>
@@ -1373,9 +1292,7 @@ function renderGeneric(records, resource) {
         </table></div>`;
 }
 
-/* =========================================================
-   TABS + REFRESH + INIT
-========================================================= */
+/* TABS / REFRESH / INIT */
 
 document.querySelectorAll(".tab").forEach(tab => {
     tab.addEventListener("click", async () => {
@@ -1388,7 +1305,6 @@ document.querySelectorAll(".tab").forEach(tab => {
 refreshBtn.addEventListener("click", async () => {
     refreshBtn.disabled = true;
     refreshBtn.textContent = "Refreshing...";
-
     try {
         await loadStats();
         await loadResource(currentResource);
@@ -1413,7 +1329,6 @@ async function initialize() {
         await loadResource(currentResource);
     } catch (error) {
         console.error("NearAfrica admin initialization failed:", error);
-
         if (error.status === 401 || error.status === 403) {
             sessionStorage.removeItem("nearafrica_admin_key");
             adminKey = "";
@@ -1435,4 +1350,4 @@ async function initialize() {
 initialize();
 </script>
 </body>
-    </html>
+                    </html>
