@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>NearAfrica Admin</title>
 
@@ -10,99 +10,87 @@
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#080808;color:#f5f5f5;font-family:Arial,Helvetica,sans-serif}
 body{min-height:100vh}
-a{color:inherit}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.55;cursor:wait}
-.topbar{position:sticky;top:0;z-index:1000;min-height:72px;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:#0b0b0b;border-bottom:1px solid #3d3215}
+a{color:inherit}
+.topbar{position:sticky;top:0;z-index:1000;min-height:70px;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:#0b0b0b;border-bottom:1px solid #3d3215}
 .brand{display:flex;align-items:center;gap:12px}
 .brand-mark,.login-logo{display:flex;align-items:center;justify-content:center;border:1px solid #d4af37;border-radius:10px;color:#d4af37;font-weight:900;background:#151207}
-.brand-mark{width:42px;height:42px;font-size:15px}
+.brand-mark{width:42px;height:42px}
 .brand-text strong,.brand-text span{display:block}
-.brand-text strong{font-size:17px;color:#fff}
-.brand-text span{margin-top:2px;color:#888;font-size:12px}
+.brand-text strong{font-size:17px}
+.brand-text span{margin-top:3px;color:#888;font-size:12px}
 .logout-btn,.refresh-btn{padding:10px 15px;border:1px solid #51431c;background:transparent;color:#d4af37;border-radius:8px}
 .logout-btn:hover,.refresh-btn:hover{background:#1b170a}
-.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.login-card{width:100%;max-width:430px;padding:34px;background:#101010;border:1px solid #51431c;border-radius:16px;box-shadow:0 25px 70px #0008}
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-card{width:100%;max-width:430px;padding:32px;background:#101010;border:1px solid #51431c;border-radius:16px;box-shadow:0 25px 70px #0008}
 .login-logo{width:58px;height:58px;margin-bottom:20px;border-radius:14px}
 .login-card h1{margin:0 0 8px;font-size:27px}
 .login-card p{margin:0 0 25px;color:#999;line-height:1.6}
 .field{margin-bottom:16px}
-.field label{display:block;margin-bottom:7px;color:#ccc;font-size:13px;font-weight:700}
-.field input,.field textarea,.field select{width:100%;padding:12px 13px;color:#fff;background:#080808;border:1px solid #333;border-radius:8px;outline:none}
-.field input:focus,.field textarea:focus,.field select:focus{border-color:#d4af37}
+.field label{display:block;margin-bottom:7px;color:#ccc;font-size:13px;font-weight:bold}
+.field input{width:100%;padding:12px;color:#fff;background:#080808;border:1px solid #333;border-radius:8px;outline:none}
+.field input:focus{border-color:#d4af37}
 .login-btn{width:100%;padding:13px;border:0;border-radius:8px;background:#d4af37;color:#090909;font-weight:800}
-.login-btn:hover,.action-btn.primary:hover{background:#e4c45a}
-.login-error{margin-top:15px;color:#f87171;font-size:13px;line-height:1.5}
+.login-btn:hover{background:#e4c45a}
+.login-error{margin-top:15px;color:#f87171;font-size:13px;line-height:1.6;overflow-wrap:anywhere}
 #adminApp{display:none}
-.container{width:min(1500px,calc(100% - 32px));margin:0 auto;padding:30px 0 60px}
-.page-heading{margin-bottom:25px}
+.container{width:min(1500px,calc(100% - 32px));margin:auto;padding:28px 0 60px}
+.page-heading{margin-bottom:24px}
 .page-heading h1{margin:0 0 7px;font-size:30px}
 .page-heading p{margin:0;color:#888;line-height:1.5}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:25px}
-.stat-card{padding:18px;background:#101010;border:1px solid #252525;border-radius:12px}
-.stat-label{color:#888;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
-.stat-value{margin-top:8px;color:#d4af37;font-size:27px;font-weight:800}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-bottom:24px}
+.stat-card{padding:17px;background:#101010;border:1px solid #252525;border-radius:12px}
+.stat-label{color:#888;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+.stat-value{margin-top:8px;color:#d4af37;font-size:26px;font-weight:800}
 .tabs-wrap{overflow-x:auto;margin-bottom:18px}
 .tabs{display:flex;gap:8px;min-width:max-content}
-.tab{padding:10px 15px;background:#111;color:#aaa;border:1px solid #292929;border-radius:8px;white-space:nowrap}
+.tab{padding:10px 14px;background:#111;color:#aaa;border:1px solid #292929;border-radius:8px;white-space:nowrap}
 .tab:hover{color:#fff;border-color:#705b20}
 .tab.active{color:#090909;background:#d4af37;border-color:#d4af37;font-weight:800}
 .panel{background:#101010;border:1px solid #292929;border-radius:14px;overflow:hidden}
 .panel-header{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:18px 20px;border-bottom:1px solid #292929}
 .panel-title{margin:0;font-size:17px}
 #content{min-height:200px}
-.loading,.empty,.error{padding:45px 20px;text-align:center;color:#888}
-.error{color:#f87171}
+.loading,.empty,.error{padding:40px 20px;text-align:center;color:#999;line-height:1.6}
+.error{color:#f87171;overflow-wrap:anywhere}
 .table-wrap{width:100%;overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:850px}
-th{padding:13px 15px;text-align:left;color:#999;background:#0b0b0b;border-bottom:1px solid #292929;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
-td{padding:15px;vertical-align:top;border-bottom:1px solid #242424;color:#ddd;font-size:13px}
+table{width:100%;border-collapse:collapse;min-width:800px}
+th{padding:13px 14px;text-align:left;color:#999;background:#0b0b0b;border-bottom:1px solid #292929;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+td{padding:14px;vertical-align:top;border-bottom:1px solid #242424;color:#ddd;font-size:13px}
 tbody tr:hover{background:#ffffff05}
 .muted{color:#777}
 .business-id,.claim-id{color:#777;font-family:Consolas,Monaco,monospace;font-size:11px;word-break:break-all}
-.status{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800;text-transform:capitalize}
-.status.pending{color:#fbbf24;background:#fbbf241a}
-.status.approved,.status.active,.status.verified,.status.resolved{color:#4ade80;background:#4ade801a}
-.status.rejected,.status.dismissed,.status.removed,.status.suspended{color:#f87171;background:#f871711a}
+.status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800;text-transform:capitalize;overflow-wrap:anywhere}
+.status.pending,.status.awaiting_review,.status.email_verified{color:#fbbf24;background:#fbbf241a}
+.status.approved,.status.active,.status.verified,.status.resolved,.status.completed{color:#4ade80;background:#4ade801a}
+.status.rejected,.status.dismissed,.status.removed,.status.suspended,.status.failed{color:#f87171;background:#f871711a}
 .actions{display:flex;flex-wrap:wrap;gap:7px}
 .action-btn{padding:7px 10px;border-radius:6px;background:transparent;color:#ccc;border:1px solid #333}
 .action-btn:hover{border-color:#d4af37;color:#d4af37}
 .action-btn.primary{color:#090909;background:#d4af37;border-color:#d4af37}
-.action-btn.resolve{color:#4ade80;border-color:#285e3c;background:#4ade800d}
-.action-btn.resolve:hover{color:#090909;background:#4ade80}
-.action-btn.dismiss{color:#f87171;border-color:#713333;background:#f871710d}
-.action-btn.dismiss:hover{color:#090909;background:#f87171}
-.report-moderation{min-width:260px}
-.report-note{width:100%;min-height:72px;padding:9px 10px;resize:vertical;color:#fff;background:#080808;border:1px solid #333;border-radius:7px;outline:none;line-height:1.45}
-.report-note:focus{border-color:#d4af37}
-.report-note::placeholder{color:#666}
-.report-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
-.report-action-message{margin-top:8px;font-size:12px;line-height:1.45}
-.report-action-message.success{color:#4ade80}
-.report-action-message.error{color:#f87171}
-.report-action-message.info{color:#aaa}
+.action-btn.resolve{color:#4ade80;border-color:#285e3c}
+.action-btn.dismiss{color:#f87171;border-color:#713333}
+.section-caption{padding:15px 18px;color:#aaa;font-size:13px;line-height:1.6;border-bottom:1px solid #252525}
 .discovery-runner{padding:20px;border-bottom:1px solid #292929;background:#0d0d0d}
 .discovery-runner h3{margin:0 0 7px;font-size:17px}
 .discovery-runner p{margin:0 0 16px;color:#999;font-size:13px;line-height:1.6}
 .discovery-form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
-.discovery-field label{display:block;margin-bottom:7px;color:#ccc;font-size:12px;font-weight:700}
-.discovery-field input{width:100%;min-width:0;padding:11px 12px;background:#080808;color:#fff;border:1px solid #333;border-radius:7px;outline:none}
-.discovery-field input:focus{border-color:#d4af37}
+.discovery-field label{display:block;margin-bottom:7px;color:#ccc;font-size:12px;font-weight:bold}
+.discovery-field input{width:100%;min-width:0;padding:11px 12px;background:#080808;color:#fff;border:1px solid #333;border-radius:7px}
 .discovery-help{display:block;margin-top:5px;color:#777;font-size:11px;line-height:1.4}
+.discovery-warning{margin-top:15px;padding:11px 12px;border:1px solid #5b481b;border-radius:7px;color:#e7cb77;font-size:12px;line-height:1.5}
 .discovery-submit-row{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:15px}
 .discovery-run-btn{padding:11px 16px;border:0;border-radius:7px;background:#d4af37;color:#080808;font-weight:800}
-.discovery-run-btn:hover{background:#e4c45a}
 .discovery-message{font-size:13px;line-height:1.5;color:#aaa}
 .discovery-message.error{padding:0;text-align:left;color:#f87171}
 .discovery-message.success{color:#4ade80}
-.discovery-warning{margin-top:15px;padding:11px 12px;border:1px solid #5b481b;border-radius:7px;color:#e7cb77;background:#d4af3709;font-size:12px;line-height:1.5}
-.section-caption{padding:15px 18px;color:#aaa;font-size:13px;border-bottom:1px solid #252525}
-.correction-changes{max-width:450px;margin-top:8px;padding:12px;background:#080808;border:1px solid #292929;border-radius:8px;color:#ddd;font:12px/1.6 Consolas,Monaco,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
-.correction-review-hint{margin-top:10px;color:#aaa;font-size:12px;line-height:1.5}
+.report-note{width:100%;min-height:70px;padding:9px;color:#fff;background:#080808;border:1px solid #333;border-radius:7px;resize:vertical}
+.report-action-message{margin-top:8px;font-size:12px;line-height:1.5}
+.correction-changes{max-width:450px;padding:12px;background:#080808;border:1px solid #292929;border-radius:8px;color:#ddd;font:12px/1.6 Consolas,Monaco,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
 @media(max-width:700px){
-.topbar{padding:12px 15px}
+.topbar{padding:12px 14px}
 .brand-text span{display:none}
 .container{width:calc(100% - 20px);padding-top:20px}
 .page-heading h1{font-size:25px}
@@ -120,7 +108,7 @@ tbody tr:hover{background:#ffffff05}
     <div class="login-card">
         <div class="login-logo">NA</div>
         <h1>NearAfrica Admin</h1>
-        <p>Secure administration dashboard for managing the NearAfrica platform.</p>
+        <p>Secure administration dashboard for managing NearAfrica.</p>
 
         <form id="loginForm">
             <div class="field">
@@ -129,6 +117,7 @@ tbody tr:hover{background:#ffffff05}
             </div>
             <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
         </form>
+
         <div id="loginError" class="login-error" role="status" aria-live="polite"></div>
     </div>
 </section>
@@ -148,10 +137,10 @@ tbody tr:hover{background:#ffffff05}
     <main class="container">
         <div class="page-heading">
             <h1>Admin Dashboard</h1>
-            <p>Manage NearAfrica businesses, submissions, claims, correction requests, reports and platform activity.</p>
+            <p>Manage businesses, submissions, claims, reports, discoveries and subscriptions.</p>
         </div>
 
-        <section id="statsGrid" class="stats-grid">
+        <section class="stats-grid">
             <div class="stat-card"><div class="stat-label">Businesses</div><div id="statBusinesses" class="stat-value">—</div></div>
             <div class="stat-card"><div class="stat-label">Submissions</div><div id="statSubmissions" class="stat-value">—</div></div>
             <div class="stat-card"><div class="stat-label">Claims</div><div id="statClaims" class="stat-value">—</div></div>
@@ -179,7 +168,7 @@ tbody tr:hover{background:#ffffff05}
                 <h2 id="panelTitle" class="panel-title">Businesses</h2>
                 <button id="refreshBtn" class="refresh-btn" type="button">Refresh</button>
             </div>
-            <div id="content"><div class="loading">Loading...</div></div>
+            <div id="content"><div class="loading">Waiting for admin access...</div></div>
         </section>
     </main>
 </div>
@@ -187,21 +176,26 @@ tbody tr:hover{background:#ffffff05}
 <script>
 "use strict";
 
+/*
+ * NearAfrica Admin frontend.
+ * Canonical API: do not replace with the old Worker URL.
+ */
 const API_BASE = "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
 let adminKey = sessionStorage.getItem("nearafrica_admin_key") || "";
 let currentResource = "businesses";
 
-const loginScreen = document.getElementById("loginScreen");
-const adminApp = document.getElementById("adminApp");
-const loginForm = document.getElementById("loginForm");
-const adminKeyInput = document.getElementById("adminKey");
-const loginError = document.getElementById("loginError");
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const content = document.getElementById("content");
-const panelTitle = document.getElementById("panelTitle");
-const refreshBtn = document.getElementById("refreshBtn");
+const $ = id => document.getElementById(id);
+const loginScreen = $("loginScreen");
+const adminApp = $("adminApp");
+const loginForm = $("loginForm");
+const adminKeyInput = $("adminKey");
+const loginError = $("loginError");
+const loginBtn = $("loginBtn");
+const logoutBtn = $("logoutBtn");
+const content = $("content");
+const panelTitle = $("panelTitle");
+const refreshBtn = $("refreshBtn");
 
 function escapeHtml(value) {
     return String(value ?? "")
@@ -212,129 +206,174 @@ function escapeHtml(value) {
         .replaceAll("'", "&#039;");
 }
 
-function escapeAttribute(value) {
-    return escapeHtml(value);
-}
-
-function normalizeStatus(value, fallback) {
-    return String(value ?? fallback ?? "pending").trim().toLowerCase();
+function normalizeStatus(value, fallback = "pending") {
+    return String(value ?? fallback).trim().toLowerCase();
 }
 
 function getHeaders() {
     const headers = { "Accept": "application/json" };
+
     if (adminKey) {
-        headers["Authorization"] = `Bearer ${adminKey}`;
+        headers["Authorization"] = "Bearer " + adminKey;
         headers["X-Admin-Key"] = adminKey;
     }
+
     return headers;
 }
 
 async function apiRequest(path, options = {}) {
-    const requestOptions = {
-        ...options,
-        headers: {
-            ...getHeaders(),
-            ...(options.headers || {})
-        }
+    const headers = {
+        ...getHeaders(),
+        ...(options.headers || {})
     };
 
-    if (
-        options.body !== undefined &&
-        options.body !== null &&
-        !requestOptions.headers["Content-Type"]
-    ) {
-        requestOptions.headers["Content-Type"] = "application/json";
+    if (options.body != null && !headers["Content-Type"]) {
+        headers["Content-Type"] = "application/json";
     }
 
     let response;
 
     try {
-        response = await fetch(API_BASE + path, requestOptions);
+        response = await fetch(API_BASE + path, {
+            ...options,
+            headers
+        });
     } catch (error) {
-        const networkError = new Error("Unable to connect to the NearAfrica API.");
-        networkError.status = 0;
-        networkError.cause = error;
-        throw networkError;
+        const e = new Error(
+            "Cannot connect to the NearAfrica API. Check your internet connection, API availability and Worker CORS configuration."
+        );
+        e.status = 0;
+        e.cause = error;
+        throw e;
     }
 
+    const responseText = await response.text();
     let data = null;
-    try {
-        data = await response.json();
-    } catch {
-        data = null;
+
+    if (responseText) {
+        try {
+            data = JSON.parse(responseText);
+        } catch {
+            data = null;
+        }
     }
 
     if (response.status === 401 || response.status === 403) {
-        const error = new Error("Admin authentication failed.");
-        error.status = response.status;
-        throw error;
+        const e = new Error(
+            data?.error || data?.message || "The API rejected the admin credentials."
+        );
+        e.status = response.status;
+        throw e;
     }
 
     if (!response.ok) {
-        const error = new Error(
+        const e = new Error(
             data?.error ||
             data?.message ||
-            `Request failed with HTTP ${response.status}`
+            "Request failed with HTTP " + response.status +
+            (responseText && !data ? ". The server returned a non-JSON response." : "")
         );
-        error.status = response.status;
-        throw error;
+        e.status = response.status;
+        throw e;
     }
 
-    return data;
+    return data ?? {};
 }
 
-function getAdminResourcePath(resource) {
+function getResourcePath(resource) {
     if (resource === "discoveries") {
         return "/admin/discovery?limit=100";
     }
+
     if (resource === "correction_requests") {
         return "/admin/correction-requests?status=pending&limit=100";
     }
-    return `/admin/${resource}?limit=100`;
+
+    return "/admin/" + encodeURIComponent(resource) + "?limit=100";
 }
 
 function getRecords(data) {
-    const possibleKeys = [
-        "businesses", "submissions", "claims", "reviews",
-        "reports", "help_wanted", "subscriptions",
-        "discoveries", "discovery", "results", "data", "requests"
+    if (Array.isArray(data)) return data;
+
+    const keys = [
+        "businesses", "submissions", "claims", "reviews", "reports",
+        "help_wanted", "helpWanted", "subscriptions", "discoveries",
+        "discovery", "results", "data", "requests", "records", "items"
     ];
-    for (const key of possibleKeys) {
+
+    for (const key of keys) {
         if (Array.isArray(data?.[key])) return data[key];
     }
+
+    if (Array.isArray(data?.data?.records)) return data.data.records;
+
     return [];
 }
 
-/* LOGIN / LOGOUT */
+function showLogin(message = "") {
+    loginScreen.style.display = "flex";
+    adminApp.style.display = "none";
+    loginError.textContent = message;
+}
+
+function showDashboard() {
+    loginScreen.style.display = "none";
+    adminApp.style.display = "block";
+}
+
+function showContentError(title, error) {
+    content.innerHTML = `
+        <div class="error">
+            <strong>${escapeHtml(title)}</strong>
+            <div style="margin-top:10px">${escapeHtml(error?.message || "Unknown error.")}</div>
+            <div style="margin-top:10px;color:#999">
+                If this is a network error, check the Worker and CORS configuration.
+                If it is HTTP 401 or 403, verify the admin key and Worker authentication logic.
+            </div>
+        </div>`;
+}
+
+/* LOGIN */
 
 loginForm.addEventListener("submit", async event => {
     event.preventDefault();
+
     const key = adminKeyInput.value.trim();
+
     if (!key) {
-        loginError.textContent = "Please enter the admin API key.";
+        loginError.textContent = "Enter your admin API key.";
         return;
     }
 
     const previousKey = adminKey;
+
     adminKey = key;
     loginBtn.disabled = true;
     loginBtn.textContent = "Checking...";
-    loginError.textContent = "Checking admin access...";
+    loginError.textContent = "Verifying admin access...";
 
     try {
+        /*
+         * This route must be protected by the Worker's admin middleware.
+         * A successful response confirms that the key was accepted.
+         */
         await apiRequest("/admin");
+
         sessionStorage.setItem("nearafrica_admin_key", adminKey);
-        loginScreen.style.display = "none";
-        adminApp.style.display = "block";
+        showDashboard();
         loginError.textContent = "";
+
         await loadStats();
         await loadResource(currentResource);
     } catch (error) {
         adminKey = previousKey;
+
         loginError.textContent =
             error.status === 401 || error.status === 403
-                ? "Invalid admin API key."
+                ? "Access denied. The Worker rejected this admin key. Check that you are using the correct key configured for this API."
                 : error.message || "Unable to sign in.";
+
+        showLogin(loginError.textContent);
     } finally {
         loginBtn.disabled = false;
         loginBtn.textContent = "Sign In";
@@ -344,43 +383,36 @@ loginForm.addEventListener("submit", async event => {
 logoutBtn.addEventListener("click", () => {
     sessionStorage.removeItem("nearafrica_admin_key");
     adminKey = "";
-    adminApp.style.display = "none";
-    loginScreen.style.display = "flex";
+    currentResource = "businesses";
     adminKeyInput.value = "";
-    loginError.textContent = "";
+    showLogin();
 });
 
 /* STATS */
 
 async function loadStats() {
-    const ids = {
-        businesses: "statBusinesses",
-        submissions: "statSubmissions",
-        claims: "statClaims",
-        reviews: "statReviews",
-        reports: "statReports",
-        help_wanted: "statHelpWanted"
+    const mapping = {
+        businesses: ["statBusinesses", "business_count"],
+        submissions: ["statSubmissions", "submission_count"],
+        claims: ["statClaims", "claim_count"],
+        reviews: ["statReviews", "review_count"],
+        reports: ["statReports", "report_count"],
+        help_wanted: ["statHelpWanted", "help_wanted_count"]
     };
 
     try {
         const data = await apiRequest("/admin/stats");
-        const stats = data?.stats || data?.statistics || data || {};
-        document.getElementById(ids.businesses).textContent =
-            stats.businesses ?? stats.business_count ?? "—";
-        document.getElementById(ids.submissions).textContent =
-            stats.submissions ?? stats.submission_count ?? "—";
-        document.getElementById(ids.claims).textContent =
-            stats.claims ?? stats.claim_count ?? "—";
-        document.getElementById(ids.reviews).textContent =
-            stats.reviews ?? stats.review_count ?? "—";
-        document.getElementById(ids.reports).textContent =
-            stats.reports ?? stats.report_count ?? "—";
-        document.getElementById(ids.help_wanted).textContent =
-            stats.help_wanted ?? stats.help_wanted_count ?? "—";
+        const stats = data.stats || data.statistics || data;
+
+        for (const [key, [elementId, alternate]] of Object.entries(mapping)) {
+            const value = stats[key] ?? stats[alternate];
+            $(elementId).textContent =
+                value === undefined || value === null ? "—" : String(value);
+        }
     } catch (error) {
-        console.warn("NearAfrica admin stats unavailable:", error);
-        Object.values(ids).forEach(id => {
-            document.getElementById(id).textContent = "—";
+        console.warn("Unable to load admin statistics:", error);
+        Object.values(mapping).forEach(([elementId]) => {
+            $(elementId).textContent = "—";
         });
     }
 }
@@ -389,19 +421,28 @@ async function loadStats() {
 
 async function loadResource(resource) {
     currentResource = resource;
-    const readableTitle = resource
+
+    const title = resource
         .replaceAll("_", " ")
         .replace(/\b\w/g, char => char.toUpperCase());
 
-    panelTitle.textContent = readableTitle;
-    content.innerHTML = `<div class="loading">Loading ${escapeHtml(readableTitle)}...</div>`;
+    panelTitle.textContent = title;
+    content.innerHTML = `<div class="loading">Loading ${escapeHtml(title)}...</div>`;
+
+    document.querySelectorAll(".tab").forEach(tab => {
+        tab.classList.toggle("active", tab.dataset.resource === resource);
+    });
 
     try {
-        const data = await apiRequest(getAdminResourcePath(resource));
-        const records =
-            resource === "correction_requests" && Array.isArray(data?.requests)
-                ? data.requests
-                : getRecords(data);
+        const data = await apiRequest(getResourcePath(resource));
+
+        let records;
+
+        if (resource === "correction_requests" && Array.isArray(data.requests)) {
+            records = data.requests;
+        } else {
+            records = getRecords(data);
+        }
 
         if (resource === "businesses") return renderBusinesses(records);
         if (resource === "claims") return renderClaims(records);
@@ -409,902 +450,747 @@ async function loadResource(resource) {
         if (resource === "reports") return renderReports(records);
         if (resource === "discoveries") return renderDiscoveries(records);
         if (resource === "correction_requests") return renderCorrectionRequests(records);
+
         renderGeneric(records, resource);
     } catch (error) {
-        content.innerHTML = `
-            <div class="error">
-                <strong>Unable to load ${escapeHtml(readableTitle)}</strong>
-                <div style="margin-top:10px">${escapeHtml(error.message || "Unknown error.")}</div>
-            </div>`;
+        showContentError("Unable to load " + title, error);
     }
 }
 
-/* BUSINESSES */
+/* BUSINESS LISTINGS */
 
-async function deleteBusinessFromAdmin(businessId, businessName, button) {
-    if (!businessId) {
-        alert("This business does not have a valid ID.");
+function renderBusinesses(records) {
+    if (!records.length) {
+        content.innerHTML = `<div class="empty">No businesses found.</div>`;
         return;
     }
-    if (!confirm(
-        `Delete "${businessName}" permanently?\n\nThis may remove related records. This action cannot be undone.`
-    )) return;
+
+    const rows = records.map(item => {
+        const id = item.id || item.business_id || "";
+        const name = item.business_name || item.name || "Unnamed business";
+        const status = normalizeStatus(item.status, "active");
+        const location = [
+            item.city, item.state, item.country
+        ].filter(Boolean).join(", ") || "—";
+
+        const link = id
+            ? `<a href="https://nearafrica.com.ng/pages/business.html?id=${encodeURIComponent(id)}" target="_blank" rel="noopener noreferrer" style="color:#d4af37">Open Listing</a>`
+            : "—";
+
+        return `
+            <tr>
+                <td><strong>${escapeHtml(name)}</strong><div class="business-id">${escapeHtml(id)}</div></td>
+                <td>${escapeHtml(item.category || "—")}</td>
+                <td>${escapeHtml(location)}</td>
+                <td><span class="status">${escapeHtml(status)}</span></td>
+                <td>${escapeHtml(item.owner_id || item.owner_email || "—")}</td>
+                <td>
+                    <div class="actions">
+                        ${link}
+                        ${id ? `<button class="action-btn dismiss" data-action="delete-business" data-id="${escapeHtml(id)}" data-name="${escapeHtml(name)}">Delete</button>` : ""}
+                    </div>
+                </td>
+            </tr>`;
+    }).join("");
+
+    content.innerHTML = `
+        <div class="table-wrap"><table>
+        <thead><tr><th>Business</th><th>Category</th><th>Location</th><th>Status</th><th>Owner</th><th>Actions</th></tr></thead>
+        <tbody>${rows}</tbody>
+        </table></div>`;
+}
+
+async function deleteBusiness(id, name, button) {
+    if (!id || !confirm(`Delete "${name}" permanently?\n\nThis action may remove related records and cannot be undone.`)) return;
 
     button.disabled = true;
     button.textContent = "Deleting...";
 
     try {
-        const response = await apiRequest(
-            `/admin/businesses/${encodeURIComponent(businessId)}`,
-            { method: "DELETE" }
-        );
-        alert(response.message || "Business deleted successfully.");
+        const result = await apiRequest("/admin/businesses/" + encodeURIComponent(id), {
+            method: "DELETE"
+        });
+
+        alert(result.message || "Business deleted.");
         await loadStats();
         await loadResource("businesses");
     } catch (error) {
         button.disabled = false;
         button.textContent = "Delete";
-        alert(error.message || "Unable to delete business.");
+        alert(error.message || "Unable to delete the business.");
     }
 }
 
-function renderBusinesses(businesses) {
-    if (!businesses.length) {
-        content.innerHTML = `<div class="empty">No businesses found.</div>`;
-        return;
-    }
+/* CLAIMS — SHOW ACTIONS FOR NON-FINAL STATUSES */
 
-    const rows = businesses.map(business => {
-        const id = business.id || business.business_id || "";
-        const name = business.business_name || business.name || "Unnamed business";
-        const category = business.category || "—";
-        const city = business.city || "—";
-        const state = business.state || "—";
-        const country = business.country || "—";
-        const status = normalizeStatus(business.status, "active");
-        const owner = business.owner_id || "—";
-
-        const publicLink = id ? `
-            <a href="https://nearafrica.pages.dev/pages/business.html?id=${encodeURIComponent(id)}"
-               target="_blank" rel="noopener noreferrer"
-               style="display:inline-block;padding:7px 10px;border:1px solid #51431c;border-radius:6px;color:#d4af37;text-decoration:none">
-                Open Listing
-            </a>` : "";
-
-        const deleteButton = id ? `
-            <button type="button" class="action-btn dismiss"
-                onclick="deleteBusinessFromAdmin('\( {escapeAttribute(id)}',' \){escapeAttribute(name)}',this)">
-                Delete
-            </button>` : "";
-
-        return `
-            <tr>
-                <td><strong>${escapeHtml(name)}</strong>
-                    <div class="business-id" style="margin-top:6px">${escapeHtml(id)}</div></td>
-                <td>${escapeHtml(category)}</td>
-                <td>\( {escapeHtml(city)}<div class="muted" style="margin-top:4px"> \){escapeHtml(state)}, ${escapeHtml(country)}</div></td>
-                <td><span class="status \( {escapeAttribute(status)}"> \){escapeHtml(status)}</span></td>
-                <td><div class="muted" style="max-width:220px;word-break:break-word">${escapeHtml(owner)}</div></td>
-                <td><div class="actions">\( {publicLink} \){deleteButton}</div></td>
-            </tr>`;
-    }).join("");
-
-    content.innerHTML = `
-        <div class="table-wrap"><table>
-            <thead><tr><th>Business</th><th>Category</th><th>Location</th><th>Status</th><th>Owner</th><th>Actions</th></tr></thead>
-            <tbody>${rows}</tbody>
-        </table></div>`;
+function isFinalClaimStatus(status) {
+    return [
+        "approved", "rejected", "declined", "cancelled",
+        "canceled", "deleted", "closed"
+    ].includes(normalizeStatus(status));
 }
 
-/* DISCOVERY RUNNER */
-
-function getDiscoveryRunnerMarkup() {
-    return `
-        <section class="discovery-runner">
-            <h3>Run OpenStreetMap Discovery</h3>
-            <p>
-                Search a specific area for possible business listings.
-                Results are imported as <strong>pending discovery candidates</strong> for manual review.
-                They are <strong>not</strong> automatically published as public businesses.
-            </p>
-            <form id="discoveryRunForm">
-                <div class="discovery-form-grid">
-                    <div class="discovery-field">
-                        <label for="discoveryLatitude">Search center latitude *</label>
-                        <input id="discoveryLatitude" name="latitude" type="number" step="any" min="-90" max="90" placeholder="Enter latitude" required>
-                        <span class="discovery-help">Search area only. Between -90 and 90.</span>
-                    </div>
-                    <div class="discovery-field">
-                        <label for="discoveryLongitude">Search center longitude *</label>
-                        <input id="discoveryLongitude" name="longitude" type="number" step="any" min="-180" max="180" placeholder="Enter longitude" required>
-                        <span class="discovery-help">Search area only. Between -180 and 180.</span>
-                    </div>
-                    <div class="discovery-field">
-                        <label for="discoveryRadius">Search radius (metres) *</label>
-                        <input id="discoveryRadius" name="radius" type="number" min="500" max="50000" step="500" value="1000" required>
-                        <span class="discovery-help">Allowed range: 500–50,000 metres.</span>
-                    </div>
-                    <div class="discovery-field">
-                        <label for="discoveryTargetCount">Target count *</label>
-                        <input id="discoveryTargetCount" name="target_count" type="number" min="1" max="5000" step="1" value="5" required>
-                        <span class="discovery-help">For your first test, leave this at 5.</span>
-                    </div>
-                    <div class="discovery-field">
-                        <label for="discoveryCountry">Search country *</label>
-                        <input id="discoveryCountry" name="country" type="text" maxlength="100" value="Nigeria" required>
-                    </div>
-                    <div class="discovery-field">
-                        <label for="discoveryState">Search state / region</label>
-                        <input id="discoveryState" name="state" type="text" maxlength="100" placeholder="e.g. Rivers">
-                    </div>
-                    <div class="discovery-field">
-                        <label for="discoveryCity">Search city</label>
-                        <input id="discoveryCity" name="city" type="text" maxlength="100" placeholder="e.g. Port Harcourt">
-                    </div>
-                    <div class="discovery-field">
-                        <label for="discoveryCategory">Category filter (optional)</label>
-                        <input id="discoveryCategory" name="category" type="text" maxlength="120" placeholder="e.g. Restaurants &amp; Food">
-                    </div>
-                </div>
-                <div class="discovery-warning">
-                    This action can add real pending records to the discovery queue.
-                    Always review name, coordinates, address, category, and source before approving.
-                    Never approve a record that has missing or invalid latitude/longitude if it should appear in Nearby results.
-                </div>
-                <div class="discovery-submit-row">
-                    <button id="discoveryRunButton" class="discovery-run-btn" type="submit">Run Discovery</button>
-                    <div id="discoveryRunMessage" class="discovery-message" role="status" aria-live="polite"></div>
-                </div>
-            </form>
-        </section>`;
-}
-
-function attachDiscoveryRunForm() {
-    const form = document.getElementById("discoveryRunForm");
-    if (form) form.addEventListener("submit", runDiscoveryFromAdmin);
-}
-
-async function runDiscoveryFromAdmin(event) {
-    event.preventDefault();
-    const form = document.getElementById("discoveryRunForm");
-    const message = document.getElementById("discoveryRunMessage");
-    const button = document.getElementById("discoveryRunButton");
-    if (!form || !message || !button) return;
-
-    const field = name => form.elements.namedItem(name);
-    const latitude = Number(field("latitude").value);
-    const longitude = Number(field("longitude").value);
-    const radius = Number(field("radius").value);
-    const targetCount = Number(field("target_count").value);
-    const country = field("country").value.trim();
-    const state = field("state").value.trim();
-    const city = field("city").value.trim();
-    const category = field("category").value.trim();
-
-    const showError = text => {
-        message.className = "discovery-message error";
-        message.textContent = text;
-    };
-
-    if (
-        !Number.isFinite(latitude) || latitude < -90 || latitude > 90 ||
-        !Number.isFinite(longitude) || longitude < -180 || longitude > 180
-    ) {
-        showError("Enter valid coordinates. Latitude must be -90 to 90 and longitude -180 to 180.");
-        return;
-    }
-    if (!Number.isFinite(radius) || radius < 500 || radius > 50000) {
-        showError("Search radius must be between 500 and 50,000 metres.");
-        return;
-    }
-    if (!Number.isInteger(targetCount) || targetCount < 1 || targetCount > 5000) {
-        showError("Target count must be a whole number between 1 and 5,000.");
-        return;
-    }
-    if (!country) {
-        showError("Enter a country.");
-        return;
-    }
-
-    if (!confirm(
-        `Start a real discovery run?\n\nCountry: ${country}\nState/region: ${state || "Not specified"}\nCity: ${city || "Not specified"}\nRadius: ${radius} metres\nTarget count: ${targetCount}\n\nThis may add pending discovery records to your database.`
-    )) return;
-
-    button.disabled = true;
-    button.textContent = "Running...";
-    message.className = "discovery-message";
-    message.textContent = "Searching OpenStreetMap and checking for duplicates. Please wait...";
-
-    try {
-        const response = await apiRequest("/admin/discovery/run", {
-            method: "POST",
-            body: JSON.stringify({
-                latitude, longitude, radius,
-                category: category || null,
-                country,
-                state: state || null,
-                city: city || null,
-                target_count: targetCount
-            })
-        });
-
-        const stats = response?.stats || response?.result || response?.data || response || {};
-        const found = stats.found_count ?? stats.found ?? stats.total_found ?? stats.total ?? "Not reported";
-        const imported = stats.imported_count ?? stats.added_count ?? stats.saved_count ?? stats.imported ?? stats.inserted ?? "Not reported";
-        const duplicates = stats.duplicate_count ?? stats.duplicates_skipped ?? stats.duplicates ?? "Not reported";
-
-        message.className = "discovery-message success";
-        message.textContent =
-            `Discovery run completed. Found: ${found}; imported: ${imported}; duplicates skipped: ${duplicates}. Refreshing candidates...`;
-
-        alert(
-            "Discovery run completed.\n\nFound: " + found +
-            "\nImported: " + imported +
-            "\nDuplicates skipped: " + duplicates +
-            "\n\nCheck the Discoveries table for the imported candidates."
-        );
-
-        await loadResource("discoveries");
-    } catch (error) {
-        showError((error.message || "Discovery run failed.") + " Check the API response and Worker logs before retrying.");
-        button.disabled = false;
-        button.textContent = "Run Discovery";
-    }
-}
-
-/* DISCOVERY MODERATION — fixed (single async) */
-
-function assessCoordinates(discovery) {
-    const rawLat = discovery.latitude ?? discovery.lat ?? discovery.location_latitude;
-    const rawLng = discovery.longitude ?? discovery.lng ?? discovery.lon ?? discovery.location_longitude;
-
-    const hasLat = rawLat !== null && rawLat !== undefined && String(rawLat).trim() !== "";
-    const hasLng = rawLng !== null && rawLng !== undefined && String(rawLng).trim() !== "";
-
-    if (!hasLat && !hasLng) {
-        return { status: "missing", label: "Missing coords", lat: null, lng: null };
-    }
-    if (!hasLat || !hasLng) {
-        return {
-            status: "invalid",
-            label: "Incomplete pair",
-            lat: hasLat ? Number(rawLat) : null,
-            lng: hasLng ? Number(rawLng) : null
-        };
-    }
-
-    const lat = Number(rawLat);
-    const lng = Number(rawLng);
-
-    if (
-        !Number.isFinite(lat) || !Number.isFinite(lng) ||
-        lat < -90 || lat > 90 || lng < -180 || lng > 180
-    ) {
-        return { status: "invalid", label: "Out of range", lat, lng };
-    }
-
-    return { status: "ok", label: "OK", lat, lng };
-}
-
-async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
-    if (!discoveryId) {
-        alert("This discovery does not have a valid ID.");
-        return;
-    }
-    if (action !== "approve" && action !== "reject") return;
-
-    if (action === "approve") {
-        const row = button ? button.closest("tr") : null;
-        const coordStatus = row ? (row.getAttribute("data-coord-status") || "") : "";
-
-        if (coordStatus === "missing" || coordStatus === "invalid") {
-            const proceed = confirm(
-                "WARNING: This discovery has missing or invalid coordinates.\n\n" +
-                "Approving it will publish a business that cannot be used reliably in Nearby / GPS search.\n\n" +
-                "Only approve if you intentionally accept that limitation.\n\n" +
-                "Continue with approval?"
-            );
-            if (!proceed) return;
-        } else if (!confirm("Approve this discovery and publish it as a public business?")) {
-            return;
-        }
-    } else {
-        if (!confirm("Reject this discovery?")) return;
-    }
-
-    const actionButtons = document.querySelectorAll(
-        `.discovery-action[data-discovery-id="${CSS.escape(String(discoveryId))}"]`
-    );
-    actionButtons.forEach(item => item.disabled = true);
-
-    if (button) {
-        button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
-    }
-
-    try {
-        const response = await apiRequest(
-            `/admin/discovery/\( {encodeURIComponent(discoveryId)}/ \){action}`,
-            { method: "POST" }
-        );
-        alert(response.message || (
-            action === "approve"
-                ? "Discovery approved successfully."
-                : "Discovery rejected successfully."
-        ));
-        await loadStats();
-        await loadResource("discoveries");
-    } catch (error) {
-        actionButtons.forEach(item => item.disabled = false);
-        if (button) {
-            button.textContent = action === "approve" ? "Approve" : "Reject";
-        }
-        alert(error.message || "Unable to update discovery.");
-    }
-}
-
-function renderDiscoveries(discoveries) {
-    const runner = getDiscoveryRunnerMarkup();
-
-    if (!Array.isArray(discoveries) || !discoveries.length) {
-        content.innerHTML = runner +
-            `<div class="empty">No discovery candidates found yet. You can run a discovery search above.</div>`;
-        attachDiscoveryRunForm();
-        return;
-    }
-
-    const rows = discoveries.map(discovery => {
-        const id = discovery.id || discovery.discovery_id || "";
-        const title = discovery.business_name || discovery.title || discovery.name || "Untitled discovery";
-        const description = discovery.description || "—";
-        const category = discovery.category || "—";
-        const location = [
-            discovery.address || "",
-            discovery.city || "",
-            discovery.state || "",
-            discovery.country || ""
-        ].filter(value => value && value !== "—").join(", ") || "—";
-        const sourceUrl = discovery.source_url || discovery.url || "";
-        const sourceId = discovery.source_id || discovery.osm_id || "";
-        const status = normalizeStatus(discovery.status, "pending");
-        const isPending = !["approved", "rejected"].includes(status);
-        const coords = assessCoordinates(discovery);
-
-        const coordBadgeColor =
-            coords.status === "ok" ? "#4ade80" :
-            coords.status === "missing" ? "#fbbf24" : "#f87171";
-
-        const coordCell = `
-            <div style="font-family:Consolas,Monaco,monospace;font-size:11px;line-height:1.5">
-                <div style="color:\( {coordBadgeColor};font-weight:800;margin-bottom:4px"> \){escapeHtml(coords.label)}</div>
-                <div>lat: ${coords.lat === null || coords.lat === undefined ? "—" : escapeHtml(String(coords.lat))}</div>
-                <div>lng: ${coords.lng === null || coords.lng === undefined ? "—" : escapeHtml(String(coords.lng))}</div>
-            </div>`;
-
-        const actions = isPending && id ? `
-            <div class="actions">
-                <button type="button" class="action-btn primary discovery-action"
-                    data-discovery-id="${escapeAttribute(String(id))}"
-                    onclick="moderateDiscoveryFromAdmin('${escapeAttribute(String(id))}','approve',this)">
-                    Approve
-                </button>
-                <button type="button" class="action-btn dismiss discovery-action"
-                    data-discovery-id="${escapeAttribute(String(id))}"
-                    onclick="moderateDiscoveryFromAdmin('${escapeAttribute(String(id))}','reject',this)">
-                    Reject
-                </button>
-            </div>` : `<span class="muted">No actions</span>`;
-
-        const safeSource = /^https?:\/\//i.test(String(sourceUrl)) ? sourceUrl : "";
-
-        return `
-            <tr data-coord-status="${escapeAttribute(coords.status)}">
-                <td>
-                    <strong>${escapeHtml(title)}</strong>
-                    <div class="business-id" style="margin-top:6px">${escapeHtml(id)}</div>
-                    ${sourceId ? `<div class="business-id" style="margin-top:4px">source: ${escapeHtml(String(sourceId))}</div>` : ""}
-                </td>
-                <td>${escapeHtml(category)}</td>
-                <td>${escapeHtml(location)}</td>
-                <td>${coordCell}</td>
-                <td><div style="max-width:260px;white-space:normal;line-height:1.5;color:#aaa">${escapeHtml(description)}</div></td>
-                <td><span class="status \( {escapeAttribute(status)}"> \){escapeHtml(status)}</span></td>
-                <td>${safeSource
-                    ? `<a href="${escapeAttribute(safeSource)}" target="_blank" rel="noopener noreferrer" style="color:#d4af37;text-decoration:none;font-weight:700">Open Source</a>`
-                    : `<span class="muted">—</span>`}</td>
-                <td>${actions}</td>
-            </tr>`;
-    }).join("");
-
-    content.innerHTML = runner + `
-        <div class="section-caption">
-            ${discoveries.length} candidate(s) loaded.
-            Review name, category, address, <strong>coordinates</strong>, and source before approving.
-            Records with missing or invalid coordinates will show a warning on Approve.
-        </div>
-        <div class="table-wrap">
-            <table>
-                <thead><tr>
-                    <th>Discovery</th><th>Category</th><th>Address / Locality</th>
-                    <th>Coordinates</th><th>Description</th><th>Status</th><th>Source</th><th>Actions</th>
-                </tr></thead>
-                <tbody>${rows}</tbody>
-            </table>
-        </div>`;
-
-    attachDiscoveryRunForm();
-}
-
-/* REPORTS */
-
-async function moderateReportFromAdmin(reportId, action, button) {
-    if (!reportId) {
-        alert("This report does not have a valid ID.");
-        return;
-    }
-    if (action !== "resolve" && action !== "dismiss") return;
-
-    const noteInput = document.querySelector(
-        `.report-note[data-report-id="${CSS.escape(String(reportId))}"]`
-    );
-    const note = noteInput ? noteInput.value.trim() : "";
-    if (!confirm(`Are you sure you want to ${action} this report?`)) return;
-
-    const actionButtons = document.querySelectorAll(
-        `.report-action[data-report-id="${CSS.escape(String(reportId))}"]`
-    );
-    actionButtons.forEach(item => item.disabled = true);
-
-    const messageElement = document.querySelector(
-        `.report-action-message[data-report-id="${CSS.escape(String(reportId))}"]`
-    );
-    if (messageElement) {
-        messageElement.className = "report-action-message info";
-        messageElement.textContent = "Saving moderation decision...";
-    }
-
-    try {
-        const response = await apiRequest(
-            `/admin/reports/\( {encodeURIComponent(reportId)}/ \){action}`,
-            { method: "POST", body: JSON.stringify({ admin_notes: note }) }
-        );
-        if (messageElement) {
-            messageElement.className = "report-action-message success";
-            messageElement.textContent = response.message || "Report updated successfully.";
-        }
-        await loadStats();
-        await loadResource("reports");
-    } catch (error) {
-        actionButtons.forEach(item => item.disabled = false);
-        if (messageElement) {
-            messageElement.className = "report-action-message error";
-            messageElement.textContent = error.message || "Unable to update report.";
-        }
-    }
-}
-
-function renderReports(reports) {
-    if (!reports.length) {
-        content.innerHTML = `<div class="empty">No reports found.</div>`;
-        return;
-    }
-
-    const rows = reports.map(report => {
-        const status = normalizeStatus(report.status, "pending");
-        const id = report.id || report.report_id || "";
-        const businessId = report.business_id || "";
-        const reporterName = report.reporter_name || "Anonymous";
-        const reporterEmail = report.reporter_email || "—";
-        const reason = report.reason || "—";
-        const details = report.details || report.message || "—";
-        const adminNotes = report.admin_notes || "—";
-        const createdAt = report.created_at || "";
-
-        const businessLink = businessId ? `
-            <a href="https://nearafrica.pages.dev/pages/business.html?id=${encodeURIComponent(businessId)}"
-               target="_blank" rel="noopener noreferrer"
-               style="color:#d4af37;text-decoration:none;font-weight:700">Open Business</a>` : "—";
-
-        const controls = status === "pending" ? `
-            <div class="report-moderation">
-                <textarea class="report-note" data-report-id="${escapeAttribute(id)}"
-                    maxlength="2000" placeholder="Optional admin note..."></textarea>
-                <div class="report-actions">
-                    <button type="button" class="action-btn resolve report-action"
-                        data-report-id="${escapeAttribute(id)}"
-                        onclick="moderateReportFromAdmin('${escapeAttribute(id)}','resolve',this)">Resolve</button>
-                    <button type="button" class="action-btn dismiss report-action"
-                        data-report-id="${escapeAttribute(id)}"
-                        onclick="moderateReportFromAdmin('${escapeAttribute(id)}','dismiss',this)">Dismiss</button>
-                </div>
-                <div class="report-action-message" data-report-id="${escapeAttribute(id)}"></div>
-            </div>` : `<div class="muted">Report already ${escapeHtml(status)}.</div>`;
-
-        return `
-            <tr>
-                <td><strong>\( {escapeHtml(reason)}</strong><div class="claim-id" style="margin-top:6px"> \){escapeHtml(id)}</div></td>
-                <td><div class="business-id">\( {escapeHtml(businessId)}</div><div style="margin-top:8px"> \){businessLink}</div></td>
-                <td><strong>\( {escapeHtml(reporterName)}</strong><div class="muted" style="margin-top:5px"> \){escapeHtml(reporterEmail)}</div></td>
-                <td><div style="max-width:350px;white-space:normal;line-height:1.5">${escapeHtml(details)}</div></td>
-                <td><span class="status \( {escapeAttribute(status)}"> \){escapeHtml(status)}</span>
-                    \( {createdAt ? `<div class="muted" style="margin-top:7px;font-size:11px"> \){escapeHtml(createdAt)}</div>` : ""}</td>
-                <td><div style="max-width:220px;white-space:normal;color:#aaa;line-height:1.5">${escapeHtml(adminNotes)}</div></td>
-                <td>${controls}</td>
-            </tr>`;
-    }).join("");
-
-    content.innerHTML = `
-        <div class="table-wrap"><table>
-            <thead><tr><th>Report</th><th>Business</th><th>Reporter</th><th>Details</th><th>Status</th><th>Admin Notes</th><th>Actions</th></tr></thead>
-            <tbody>${rows}</tbody>
-        </table></div>`;
-}
-
-/* CLAIMS — FIXED: Approve for pending AND verified */
-
-async function moderateClaimFromAdmin(claimId, action, button) {
-    if (!claimId) {
-        alert("This claim does not have a valid ID.");
-        return;
-    }
-    if (action !== "approve" && action !== "reject") return;
-    if (!confirm(action === "approve" ? "Approve this claim?" : "Reject this claim?")) return;
-
-    const actionButtons = document.querySelectorAll(
-        `.claim-action[data-claim-id="${CSS.escape(String(claimId))}"]`
-    );
-    actionButtons.forEach(item => item.disabled = true);
-    if (button) {
-        button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
-    }
-
-    try {
-        const response = await apiRequest(
-            `/admin/claims/\( {encodeURIComponent(claimId)}/ \){action}`,
-            { method: "POST" }
-        );
-        alert(response.message || (action === "approve"
-            ? "Claim approved successfully."
-            : "Claim rejected successfully."));
-        await loadStats();
-        await loadResource("claims");
-    } catch (error) {
-        actionButtons.forEach(item => {
-            item.disabled = false;
-            if (item.dataset.action === "approve") item.textContent = "Approve";
-            if (item.dataset.action === "reject") item.textContent = "Reject";
-        });
-        alert(error.message || "Unable to update claim.");
-    }
-}
-
-function renderClaims(claims) {
-    if (!claims.length) {
+function renderClaims(records) {
+    if (!records.length) {
         content.innerHTML = `<div class="empty">No claims found.</div>`;
         return;
     }
 
-    const rows = claims.map(claim => {
-        const status = normalizeStatus(claim.status, "pending");
+    const rows = records.map(claim => {
         const id = claim.id || claim.claim_id || "";
         const businessId = claim.business_id || claim.business?.id || "";
-        const businessName = claim.business?.business_name || claim.business_name || businessId || "—";
-        const claimant = claim.claimant_name || claim.name || claim.claimant_email || "—";
+        const businessName =
+            claim.business?.business_name ||
+            claim.business_name ||
+            businessId ||
+            "—";
+
+        const status = normalizeStatus(claim.status, "pending");
+        const claimant =
+            claim.claimant_name ||
+            claim.name ||
+            claim.claimant_email ||
+            claim.email ||
+            "—";
+
         const email = claim.claimant_email || claim.email || "—";
-        const notes = claim.reviewer_notes || claim.admin_notes || claim.notes ||
-                      claim.message || claim.evidence_details || "—";
-        const verified = status === "verified" || Boolean(claim.verified) || Boolean(claim.email_verified);
+        const notes =
+            claim.reviewer_notes ||
+            claim.admin_notes ||
+            claim.notes ||
+            claim.message ||
+            claim.evidence_details ||
+            "—";
 
-        const businessLink = businessId ? `
-            <div style="margin-top:8px">
-                <a href="https://nearafrica.pages.dev/pages/business.html?id=${encodeURIComponent(businessId)}"
-                   target="_blank" rel="noopener noreferrer"
-                   style="color:#d4af37;text-decoration:none;font-weight:700">Open Business</a>
-            </div>` : "";
+        const verified =
+            claim.email_verified === true ||
+            claim.verified === true ||
+            status === "verified" ||
+            status === "email_verified";
 
-        let actions = "—";
-        if (id && (status === "pending" || status === "verified")) {
-            actions = `
-                <div class="actions">
-                    <button type="button" class="action-btn primary claim-action"
-                        data-claim-id="${escapeAttribute(id)}" data-action="approve">Approve</button>
-                    <button type="button" class="action-btn dismiss claim-action"
-                        data-claim-id="${escapeAttribute(id)}" data-action="reject">Reject</button>
-                </div>`;
-        }
+        const finalStatus = isFinalClaimStatus(status);
+
+        /*
+         * IMPORTANT:
+         * A status such as "verified" may mean email verification,
+         * not that an administrator approved the claim.
+         *
+         * Therefore, keep moderation buttons visible unless the claim
+         * is already in a final status.
+         */
+        const actions = id && !finalStatus
+            ? `<div class="actions">
+                <button type="button" class="action-btn primary" data-action="moderate-claim" data-id="${escapeHtml(id)}" data-decision="approve">Approve</button>
+                <button type="button" class="action-btn dismiss" data-action="moderate-claim" data-id="${escapeHtml(id)}" data-decision="reject">Reject</button>
+               </div>`
+            : `<span class="muted">${finalStatus ? "Already processed" : "Missing claim ID"}</span>`;
+
+        const businessLink = businessId
+            ? `<div style="margin-top:7px"><a href="https://nearafrica.com.ng/pages/business.html?id=${encodeURIComponent(businessId)}" target="_blank" rel="noopener noreferrer" style="color:#d4af37">Open Business</a></div>`
+            : "";
 
         return `
             <tr>
-                <td><strong>\( {escapeHtml(claimant)}</strong><div class="claim-id" style="margin-top:6px"> \){escapeHtml(id)}</div></td>
-                <td><strong>\( {escapeHtml(businessName)}</strong><div class="business-id" style="margin-top:6px"> \){escapeHtml(businessId)}</div>${businessLink}</td>
+                <td><strong>${escapeHtml(claimant)}</strong><div class="claim-id">${escapeHtml(id)}</div></td>
+                <td><strong>${escapeHtml(businessName)}</strong><div class="business-id">${escapeHtml(businessId)}</div>${businessLink}</td>
                 <td>${escapeHtml(email)}</td>
-                <td><span class="status \( {escapeAttribute(status)}"> \){escapeHtml(status)}</span>
-                    ${verified ? `<div style="margin-top:6px;font-size:12px;opacity:.75">Email verified</div>` : ""}</td>
-                <td><div style="max-width:300px;white-space:normal;line-height:1.5">${escapeHtml(notes)}</div></td>
+                <td>
+                    <span class="status">${escapeHtml(status)}</span>
+                    ${verified ? `<div class="muted" style="margin-top:7px">Email verified</div>` : ""}
+                </td>
+                <td>${escapeHtml(notes)}</td>
+                <td>${actions}</td>
+            </tr>`;
+    }).join("");
+
+    content.innerHTML = `
+        <div class="section-caption">
+            Claims that have not been approved or rejected show moderation buttons.
+            Email verification and administrator approval are different things.
+        </div>
+        <div class="table-wrap"><table>
+        <thead><tr><th>Claimant</th><th>Business</th><th>Email</th><th>Status</th><th>Notes</th><th>Actions</th></tr></thead>
+        <tbody>${rows}</tbody>
+        </table></div>`;
+}
+
+async function moderateClaim(id, action, button) {
+    if (!id || !["approve", "reject"].includes(action)) return;
+
+    const promptText = action === "approve"
+        ? "Approve this business ownership claim?"
+        : "Reject this business ownership claim?";
+
+    if (!confirm(promptText)) return;
+
+    const buttons = [...content.querySelectorAll('[data-action="moderate-claim"]')]
+        .filter(item => item.dataset.id === String(id));
+
+    buttons.forEach(item => item.disabled = true);
+
+    if (button) {
+        button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
+    }
+
+    try {
+        /*
+         * This URL must match a real route in the Cloudflare Worker.
+         * If the Worker uses different route names, the backend must be checked.
+         */
+        const result = await apiRequest(
+            "/admin/claims/" + encodeURIComponent(id) + "/" + action,
+            { method: "POST" }
+        );
+
+        alert(result.message || `Claim ${action === "approve" ? "approved" : "rejected"}.`);
+        await loadStats();
+        await loadResource("claims");
+    } catch (error) {
+        buttons.forEach(item => {
+            item.disabled = false;
+            if (item.dataset.decision === "approve") item.textContent = "Approve";
+            if (item.dataset.decision === "reject") item.textContent = "Reject";
+        });
+
+        alert(
+            "The claim could not be updated.\n\n" +
+            (error.message || "Unknown error.") +
+            "\n\nIf the API returns HTTP 404 or 405, the Worker route or HTTP method needs to be checked."
+        );
+    }
+}
+
+/* BUSINESS SUBMISSIONS */
+
+function renderSubmissions(records) {
+    if (!records.length) {
+        content.innerHTML = `<div class="empty">No submissions found.</div>`;
+        return;
+    }
+
+    const rows = records.map(item => {
+        const id = item.id || item.submission_id || "";
+        const status = normalizeStatus(item.status);
+        const name = item.business_name || item.name || "—";
+        const location = [item.city, item.state, item.country].filter(Boolean).join(", ") || "—";
+        const pending = ["pending", "submitted", "awaiting_review"].includes(status);
+
+        const actions = id && pending
+            ? `<div class="actions">
+                <button class="action-btn primary" data-action="moderate-submission" data-id="${escapeHtml(id)}" data-decision="approve">Approve</button>
+                <button class="action-btn dismiss" data-action="moderate-submission" data-id="${escapeHtml(id)}" data-decision="reject">Reject</button>
+               </div>`
+            : `<span class="muted">No actions</span>`;
+
+        return `
+            <tr>
+                <td><strong>${escapeHtml(name)}</strong><div class="claim-id">${escapeHtml(id)}</div></td>
+                <td>${escapeHtml(item.category || "—")}</td>
+                <td>${escapeHtml(location)}</td>
+                <td>${escapeHtml(item.email || "—")}<div class="muted">${escapeHtml(item.phone || "")}</div></td>
+                <td><span class="status">${escapeHtml(status)}</span></td>
                 <td>${actions}</td>
             </tr>`;
     }).join("");
 
     content.innerHTML = `
         <div class="table-wrap"><table>
-            <thead><tr><th>Claimant</th><th>Business</th><th>Email</th><th>Status</th><th>Notes</th><th>Actions</th></tr></thead>
-            <tbody>${rows}</tbody>
+        <thead><tr><th>Business</th><th>Category</th><th>Location</th><th>Contact</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>${rows}</tbody>
         </table></div>`;
-
-    content.querySelectorAll(".claim-action").forEach(button => {
-        button.addEventListener("click", () => {
-            moderateClaimFromAdmin(button.dataset.claimId, button.dataset.action, button);
-        });
-    });
 }
 
-/* SUBMISSIONS */
-
-async function moderateSubmissionFromAdmin(submissionId, action, button) {
-    if (!submissionId) {
-        alert("This submission does not have a valid ID.");
-        return;
-    }
-    if (action !== "approve" && action !== "reject") return;
+async function moderateSubmission(id, action, button) {
+    if (!id || !["approve", "reject"].includes(action)) return;
 
     let reason = "";
+
     if (action === "reject") {
-        const answer = prompt("Why are you rejecting this submission? (Optional)");
+        const answer = prompt("Reason for rejection (optional):");
         if (answer === null) return;
         reason = answer.trim();
     }
 
     if (!confirm(action === "approve"
-        ? "Approve this business submission? It will become a public listing."
-        : "Reject this business submission?")) return;
+        ? "Approve this submission and publish the business?"
+        : "Reject this submission?")) return;
 
-    const buttons = document.querySelectorAll(
-        `.submission-action[data-submission-id="${CSS.escape(String(submissionId))}"]`
-    );
-    buttons.forEach(item => item.disabled = true);
-    if (button) {
-        button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
-    }
+    button.disabled = true;
+    button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
 
     try {
-        const response = await apiRequest(
-            `/admin/submissions/\( {encodeURIComponent(submissionId)}/ \){action}`,
-            { method: "POST", body: JSON.stringify(action === "reject" ? { reason } : {}) }
+        const result = await apiRequest(
+            "/admin/submissions/" + encodeURIComponent(id) + "/" + action,
+            {
+                method: "POST",
+                body: JSON.stringify(action === "reject" ? { reason } : {})
+            }
         );
-        alert(response.message || (action === "approve"
-            ? "Submission approved successfully."
-            : "Submission rejected successfully."));
+
+        alert(result.message || "Submission updated.");
         await loadStats();
         await loadResource("submissions");
     } catch (error) {
-        buttons.forEach(item => {
-            item.disabled = false;
-            if (String(item.textContent).includes("Approving")) item.textContent = "Approve";
-            if (String(item.textContent).includes("Rejecting")) item.textContent = "Reject";
-        });
+        button.disabled = false;
+        button.textContent = action === "approve" ? "Approve" : "Reject";
         alert(error.message || "Unable to update submission.");
     }
 }
 
-function renderSubmissions(submissions) {
-    if (!Array.isArray(submissions) || !submissions.length) {
-        content.innerHTML = `<div class="empty">No submissions found.</div>`;
+/* REPORTS */
+
+function renderReports(records) {
+    if (!records.length) {
+        content.innerHTML = `<div class="empty">No reports found.</div>`;
         return;
     }
 
-    const rows = submissions.map(submission => {
-        const status = normalizeStatus(submission.status, "pending");
-        const id = submission.id || submission.submission_id || "";
-        const name = submission.name || submission.business_name || "—";
-        const category = submission.category || "—";
-        const city = submission.city || "—";
-        const state = submission.state || "—";
-        const country = submission.country || "Nigeria";
-        const email = submission.email || "—";
-        const phone = submission.phone || "—";
-        const canModerate = status === "pending" && id;
+    const rows = records.map(item => {
+        const id = item.id || item.report_id || "";
+        const status = normalizeStatus(item.status);
+        const pending = status === "pending";
+        const details = item.details || item.message || "—";
 
-        const actions = canModerate ? `
-            <div class="actions">
-                <button type="button" class="action-btn primary submission-action"
-                    data-submission-id="${escapeAttribute(id)}"
-                    onclick="moderateSubmissionFromAdmin('${escapeAttribute(id)}','approve',this)">Approve</button>
-                <button type="button" class="action-btn dismiss submission-action"
-                    data-submission-id="${escapeAttribute(id)}"
-                    onclick="moderateSubmissionFromAdmin('${escapeAttribute(id)}','reject',this)">Reject</button>
-            </div>` : `<span class="muted">No actions</span>`;
+        const actions = id && pending
+            ? `<textarea class="report-note" data-report-note="${escapeHtml(id)}" maxlength="2000" placeholder="Optional admin note"></textarea>
+               <div class="actions" style="margin-top:8px">
+               <button class="action-btn resolve" data-action="moderate-report" data-id="${escapeHtml(id)}" data-decision="resolve">Resolve</button>
+               <button class="action-btn dismiss" data-action="moderate-report" data-id="${escapeHtml(id)}" data-decision="dismiss">Dismiss</button>
+               </div>`
+            : `<span class="muted">Already processed</span>`;
 
         return `
             <tr>
-                <td><strong>${escapeHtml(name)}</strong>
-                    <div class="claim-id" style="margin-top:6px">ID: ${escapeHtml(id || "Not provided")}</div></td>
-                <td>${escapeHtml(category)}</td>
-                <td>\( {escapeHtml(city)}<div class="muted" style="margin-top:4px"> \){escapeHtml(state)}, ${escapeHtml(country)}</div></td>
-                <td>\( {email !== "—" ? `<div> \){escapeHtml(email)}</div>` : ""}
-                    \( {phone !== "—" ? `<div class="muted" style="margin-top:5px"> \){escapeHtml(phone)}</div>` : ""}</td>
-                <td><span class="status \( {escapeAttribute(status)}"> \){escapeHtml(status)}</span></td>
+                <td><strong>${escapeHtml(item.reason || "Report")}</strong><div class="claim-id">${escapeHtml(id)}</div></td>
+                <td>${escapeHtml(item.business_id || "—")}</td>
+                <td>${escapeHtml(item.reporter_name || "Anonymous")}<div class="muted">${escapeHtml(item.reporter_email || "")}</div></td>
+                <td>${escapeHtml(details)}</td>
+                <td><span class="status">${escapeHtml(status)}</span></td>
                 <td>${actions}</td>
             </tr>`;
     }).join("");
 
     content.innerHTML = `
         <div class="table-wrap"><table>
-            <thead><tr><th>Business</th><th>Category</th><th>Location</th><th>Contact</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody>${rows}</tbody>
+        <thead><tr><th>Report</th><th>Business ID</th><th>Reporter</th><th>Details</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>${rows}</tbody>
         </table></div>`;
+}
+
+async function moderateReport(id, action, button) {
+    if (!id || !["resolve", "dismiss"].includes(action)) return;
+    if (!confirm(`${action === "resolve" ? "Resolve" : "Dismiss"} this report?`)) return;
+
+    const noteInput = content.querySelector(`[data-report-note="${CSS.escape(String(id))}"]`);
+    const note = noteInput ? noteInput.value.trim() : "";
+
+    button.disabled = true;
+    button.textContent = action === "resolve" ? "Resolving..." : "Dismissing...";
+
+    try {
+        const result = await apiRequest(
+            "/admin/reports/" + encodeURIComponent(id) + "/" + action,
+            { method: "POST", body: JSON.stringify({ admin_notes: note }) }
+        );
+
+        alert(result.message || "Report updated.");
+        await loadStats();
+        await loadResource("reports");
+    } catch (error) {
+        button.disabled = false;
+        button.textContent = action === "resolve" ? "Resolve" : "Dismiss";
+        alert(error.message || "Unable to update report.");
+    }
+}
+
+/* DISCOVERY SEARCH */
+
+function discoveryFormMarkup() {
+    return `
+        <section class="discovery-runner">
+            <h3>Run OpenStreetMap Discovery</h3>
+            <p>Search an area for possible businesses. Results should enter the pending discovery queue for manual review.</p>
+            <form id="discoveryRunForm">
+                <div class="discovery-form-grid">
+                    <div class="discovery-field">
+                        <label for="discoveryLatitude">Latitude *</label>
+                        <input id="discoveryLatitude" name="latitude" type="number" min="-90" max="90" step="any" required>
+                    </div>
+                    <div class="discovery-field">
+                        <label for="discoveryLongitude">Longitude *</label>
+                        <input id="discoveryLongitude" name="longitude" type="number" min="-180" max="180" step="any" required>
+                    </div>
+                    <div class="discovery-field">
+                        <label for="discoveryRadius">Radius (metres) *</label>
+                        <input name="radius" type="number" min="500" max="50000" step="500" value="1000" required>
+                    </div>
+                    <div class="discovery-field">
+                        <label for="discoveryTargetCount">Target count *</label>
+                        <input name="target_count" type="number" min="1" max="5000" step="1" value="5" required>
+                    </div>
+                    <div class="discovery-field">
+                        <label for="discoveryCountry">Country *</label>
+                        <input name="country" type="text" maxlength="100" value="Nigeria" required>
+                    </div>
+                    <div class="discovery-field">
+                        <label for="discoveryState">State / region</label>
+                        <input name="state" type="text" maxlength="100" placeholder="e.g. Abia">
+                    </div>
+                    <div class="discovery-field">
+                        <label for="discoveryCity">City</label>
+                        <input name="city" type="text" maxlength="100" placeholder="e.g. Aba">
+                    </div>
+                    <div class="discovery-field">
+                        <label for="discoveryCategory">Category filter</label>
+                        <input name="category" type="text" maxlength="120" placeholder="Optional">
+                    </div>
+                </div>
+                <div class="discovery-warning">
+                    Discovery can create database records. Check names, addresses, sources and coordinates before approving candidates.
+                    This form does not automatically publish candidates.
+                </div>
+                <div class="discovery-submit-row">
+                    <button id="discoveryRunButton" class="discovery-run-btn" type="submit">Run Discovery</button>
+                    <div id="discoveryRunMessage" class="discovery-message" role="status"></div>
+                </div>
+            </form>
+        </section>`;
+}
+
+function assessCoordinates(item) {
+    const rawLat = item.latitude ?? item.lat ?? item.location_latitude;
+    const rawLng = item.longitude ?? item.lng ?? item.lon ?? item.location_longitude;
+
+    if (rawLat == null || String(rawLat).trim() === "" ||
+        rawLng == null || String(rawLng).trim() === "") {
+        return { status: "missing", lat: rawLat, lng: rawLng };
+    }
+
+    const lat = Number(rawLat);
+    const lng = Number(rawLng);
+
+    if (!Number.isFinite(lat) || !Number.isFinite(lng) ||
+        lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+        return { status: "invalid", lat, lng };
+    }
+
+    return { status: "ok", lat, lng };
+}
+
+function renderDiscoveries(records) {
+    const runner = discoveryFormMarkup();
+
+    if (!records.length) {
+        content.innerHTML = runner + `<div class="empty">No discovery candidates loaded.</div>`;
+        return;
+    }
+
+    const rows = records.map(item => {
+        const id = item.id || item.discovery_id || "";
+        const status = normalizeStatus(item.status);
+        const coords = assessCoordinates(item);
+        const finalStatus = ["approved", "rejected"].includes(status);
+
+        const actions = id && !finalStatus
+            ? `<div class="actions">
+                <button class="action-btn primary" data-action="moderate-discovery" data-id="${escapeHtml(id)}" data-decision="approve">Approve</button>
+                <button class="action-btn dismiss" data-action="moderate-discovery" data-id="${escapeHtml(id)}" data-decision="reject">Reject</button>
+               </div>`
+            : `<span class="muted">No actions</span>`;
+
+        const source = item.source_url || item.url || "";
+        const safeSource = /^https?:\/\//i.test(source)
+            ? `<a href="${escapeHtml(source)}" target="_blank" rel="noopener noreferrer" style="color:#d4af37">Open Source</a>`
+            : "—";
+
+        return `
+            <tr data-coordinate-status="${coords.status}">
+                <td><strong>${escapeHtml(item.business_name || item.name || item.title || "Untitled")}</strong><div class="business-id">${escapeHtml(id)}</div></td>
+                <td>${escapeHtml(item.category || "—")}</td>
+                <td>${escapeHtml([item.address,item.city,item.state,item.country].filter(Boolean).join(", ") || "—")}</td>
+                <td>${escapeHtml(coords.status)}<div class="business-id">lat: ${escapeHtml(coords.lat ?? "—")}<br>lng: ${escapeHtml(coords.lng ?? "—")}</div></td>
+                <td>${escapeHtml(item.description || "—")}</td>
+                <td><span class="status">${escapeHtml(status)}</span></td>
+                <td>${safeSource}</td>
+                <td>${actions}</td>
+            </tr>`;
+    }).join("");
+
+    content.innerHTML = runner + `
+        <div class="section-caption">${records.length} candidate(s). Review the source and coordinates before approving.</div>
+        <div class="table-wrap"><table>
+        <thead><tr><th>Discovery</th><th>Category</th><th>Address</th><th>Coordinates</th><th>Description</th><th>Status</th><th>Source</th><th>Actions</th></tr></thead>
+        <tbody>${rows}</tbody>
+        </table></div>`;
+}
+
+async function runDiscovery(event) {
+    event.preventDefault();
+
+    const form = $("discoveryRunForm");
+    const message = $("discoveryRunMessage");
+    const button = $("discoveryRunButton");
+
+    if (!form || !message || !button) return;
+
+    const value = name => form.elements.namedItem(name).value.trim();
+    const latitude = Number(value("latitude"));
+    const longitude = Number(value("longitude"));
+    const radius = Number(value("radius"));
+    const target_count = Number(value("target_count"));
+    const country = value("country");
+
+    if (latitude < -90 || latitude > 90 ||
+        longitude < -180 || longitude > 180 ||
+        !Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+        message.className = "discovery-message error";
+        message.textContent = "Enter valid latitude and longitude.";
+        return;
+    }
+
+    if (!Number.isFinite(radius) || radius < 500 || radius > 50000) {
+        message.className = "discovery-message error";
+        message.textContent = "Radius must be between 500 and 50,000 metres.";
+        return;
+    }
+
+    if (!Number.isInteger(target_count) || target_count < 1 || target_count > 5000) {
+        message.className = "discovery-message error";
+        message.textContent = "Target count must be between 1 and 5,000.";
+        return;
+    }
+
+    if (!country) {
+        message.className = "discovery-message error";
+        message.textContent = "Enter a country.";
+        return;
+    }
+
+    if (!confirm("Run a real discovery search? This can add pending records to the database.")) return;
+
+    button.disabled = true;
+    button.textContent = "Running...";
+    message.className = "discovery-message";
+    message.textContent = "Searching. Please wait...";
+
+    try {
+        const result = await apiRequest("/admin/discovery/run", {
+            method: "POST",
+            body: JSON.stringify({
+                latitude,
+                longitude,
+                radius,
+                target_count,
+                country,
+                state: value("state") || null,
+                city: value("city") || null,
+                category: value("category") || null
+            })
+        });
+
+        const stats = result.stats || result.result || result.data || result;
+
+        message.className = "discovery-message success";
+        message.textContent =
+            "Discovery completed. Found: " +
+            (stats.found_count ?? stats.found ?? "not reported") +
+            "; imported: " +
+            (stats.imported_count ?? stats.imported ?? stats.inserted ?? "not reported") +
+            "; duplicates: " +
+            (stats.duplicate_count ?? stats.duplicates ?? "not reported");
+
+        await loadResource("discoveries");
+    } catch (error) {
+        message.className = "discovery-message error";
+        message.textContent = error.message || "Discovery failed.";
+        button.disabled = false;
+        button.textContent = "Run Discovery";
+    }
+}
+
+async function moderateDiscovery(id, action, button) {
+    if (!id || !["approve", "reject"].includes(action)) return;
+
+    const row = button.closest("tr");
+    const coordinateStatus = row?.dataset.coordinateStatus;
+
+    if (action === "approve") {
+        if (coordinateStatus !== "ok") {
+            alert("This candidate has missing or invalid coordinates. Correct its location before approving it for Nearby/GPS search.");
+            return;
+        }
+
+        if (!confirm("Approve this discovery and publish it as a business?")) return;
+    } else if (!confirm("Reject this discovery candidate?")) {
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
+
+    try {
+        const result = await apiRequest(
+            "/admin/discovery/" + encodeURIComponent(id) + "/" + action,
+            { method: "POST" }
+        );
+
+        alert(result.message || "Discovery updated.");
+        await loadStats();
+        await loadResource("discoveries");
+    } catch (error) {
+        button.disabled = false;
+        button.textContent = action === "approve" ? "Approve" : "Reject";
+        alert(error.message || "Unable to update discovery.");
+    }
 }
 
 /* CORRECTION REQUESTS */
 
-function renderCorrectionRequests(requests) {
-    if (!Array.isArray(requests) || requests.length === 0) {
-        content.innerHTML = `
-            <div class="empty">
-                <h3>No pending correction requests</h3>
-                <p>New requests submitted through business profiles will appear here.</p>
-            </div>`;
+function renderCorrectionRequests(records) {
+    if (!records.length) {
+        content.innerHTML = `<div class="empty">No pending correction requests.</div>`;
         return;
     }
 
-    const rows = requests.map(item => {
+    const rows = records.map(item => {
         const id = item.id || "";
-        const status = normalizeStatus(item.status, "pending");
-        const businessName = item.business_name || item.business_slug || item.business_id || "Business not found";
-        const location = [item.city, item.state, item.country].filter(Boolean).join(", ") || "—";
-        const requesterName = item.requester_name || "Not provided";
-        const requesterEmail = item.requester_email || "Not provided";
-        const reason = item.reason || "No reason provided";
-        const createdAt = item.created_at || "—";
+        const status = normalizeStatus(item.status);
+        const changes = item.requested_changes ??
+            (() => {
+                try {
+                    return JSON.parse(item.requested_changes_json || "{}");
+                } catch {
+                    return { error: "Could not parse requested changes." };
+                }
+            })();
 
-        let requestedChanges = {};
-        if (item.requested_changes && typeof item.requested_changes === "object") {
-            requestedChanges = item.requested_changes;
-        } else {
-            try {
-                requestedChanges = JSON.parse(item.requested_changes_json || "{}");
-            } catch {
-                requestedChanges = { error: "Could not parse the requested changes." };
-            }
-        }
+        const changesText = typeof changes === "string"
+            ? changes
+            : JSON.stringify(changes, null, 2);
 
-        let changesText = "";
-        try {
-            changesText = JSON.stringify(requestedChanges, null, 2);
-        } catch {
-            changesText = "Unable to display requested changes.";
-        }
-
-        const actions = id && status === "pending" ? `
-            <div class="actions">
-                <button type="button" class="action-btn primary correction-action"
-                    data-correction-id="${escapeAttribute(id)}" data-action="approve">Approve</button>
-                <button type="button" class="action-btn dismiss correction-action"
-                    data-correction-id="${escapeAttribute(id)}" data-action="reject">Reject</button>
-            </div>
-        ` : `<span class="muted">Already processed</span>`;
+        const actions = id && status === "pending"
+            ? `<div class="actions">
+                <button class="action-btn primary" data-action="moderate-correction" data-id="${escapeHtml(id)}" data-decision="approve">Approve</button>
+                <button class="action-btn dismiss" data-action="moderate-correction" data-id="${escapeHtml(id)}" data-decision="reject">Reject</button>
+               </div>`
+            : `<span class="muted">Already processed</span>`;
 
         return `
             <tr>
-                <td>
-                    <strong>${escapeHtml(businessName)}</strong>
-                    <div class="business-id" style="margin-top:6px">${escapeHtml(item.business_id || "—")}</div>
-                    <div class="muted" style="margin-top:6px">${escapeHtml(location)}</div>
-                </td>
-                <td>
-                    <strong>${escapeHtml(requesterName)}</strong>
-                    <div style="margin-top:6px;word-break:break-word">${escapeHtml(requesterEmail)}</div>
-                </td>
-                <td><div style="max-width:300px;white-space:normal;line-height:1.5">${escapeHtml(reason)}</div></td>
-                <td>
-                    **Summary:**
-View requested changes
-                        <pre class="correction-changes">${escapeHtml(changesText)}</pre>
-                </td>
-                <td>
-                    <span class="status \( {escapeAttribute(status)}"> \){escapeHtml(status)}</span>
-                    <div class="muted" style="margin-top:7px">${escapeHtml(createdAt)}</div>
-                </td>
-                <td>
-                    ${actions}
-                    ${status === "pending" ? `<div class="correction-review-hint">Approval records the decision only. Apply profile changes separately after reviewing them.</div>` : ""}
-                </td>
+                <td><strong>${escapeHtml(item.business_name || item.business_id || "Unknown business")}</strong><div class="business-id">${escapeHtml(item.business_id || "")}</div></td>
+                <td>${escapeHtml(item.requester_name || "Not provided")}<div class="muted">${escapeHtml(item.requester_email || "")}</div></td>
+                <td>${escapeHtml(item.reason || "No reason provided")}</td>
+                <td><pre class="correction-changes">${escapeHtml(changesText)}</pre></td>
+                <td><span class="status">${escapeHtml(status)}</span><div class="muted">${escapeHtml(item.created_at || "")}</div></td>
+                <td>${actions}<div class="muted" style="margin-top:7px">Approval may record the decision only; verify whether the Worker applies changes.</div></td>
             </tr>`;
     }).join("");
 
     content.innerHTML = `
-        <div class="section-caption">
-            ${requests.length} pending correction request(s). Inspect the requested changes before deciding.
-        </div>
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Business</th><th>Requester</th><th>Reason</th>
-                        <th>Requested Changes</th><th>Status / Date</th><th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>${rows}</tbody>
-            </table>
-        </div>`;
-
-    content.querySelectorAll(".correction-action").forEach(button => {
-        button.addEventListener("click", () => {
-            moderateCorrectionRequestFromAdmin(
-                button.dataset.correctionId,
-                button.dataset.action,
-                button
-            );
-        });
-    });
-}
-
-async function moderateCorrectionRequestFromAdmin(requestId, action, button) {
-    if (!requestId) {
-        alert("This correction request has no valid ID.");
-        return;
-    }
-    if (action !== "approve" && action !== "reject") return;
-
-    const question = action === "approve"
-        ? "Approve this correction request?\n\nThis records approval only. It will not automatically change the public business listing."
-        : "Reject this correction request?\n\nThe public business listing will not be changed.";
-    if (!confirm(question)) return;
-
-    const relatedButtons = [...content.querySelectorAll(".correction-action")]
-        .filter(item => item.dataset.correctionId === String(requestId));
-    relatedButtons.forEach(item => { item.disabled = true; });
-    if (button) {
-        button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
-    }
-
-    try {
-        const response = await apiRequest(
-            `/admin/correction-requests/\( {encodeURIComponent(requestId)}/ \){action}`,
-            { method: "POST" }
-        );
-        alert(response.message || `Correction request ${action === "approve" ? "approved" : "rejected"}.`);
-        await loadResource("correction_requests");
-    } catch (error) {
-        relatedButtons.forEach(item => {
-            item.disabled = false;
-            if (item.dataset.action === "approve") item.textContent = "Approve";
-            if (item.dataset.action === "reject") item.textContent = "Reject";
-        });
-        alert(error.message || "Unable to process this correction request.");
-    }
-}
-
-/* GENERIC */
-
-function renderGeneric(records, resource) {
-    if (!records.length) {
-        content.innerHTML = `<div class="empty">No ${escapeHtml(resource)} records found.</div>`;
-        return;
-    }
-    const keys = Object.keys(records[0]).slice(0, 8);
-    const headers = keys.map(key => `<th>${escapeHtml(key.replaceAll("_", " "))}</th>`).join("");
-    const rows = records.map(record =>
-        `<tr>\( {keys.map(key => `<td> \){escapeHtml(record[key] ?? "—")}</td>`).join("")}</tr>`
-    ).join("");
-    content.innerHTML = `
         <div class="table-wrap"><table>
-            <thead><tr>${headers}</tr></thead>
-            <tbody>${rows}</tbody>
+        <thead><tr><th>Business</th><th>Requester</th><th>Reason</th><th>Requested Changes</th><th>Status / Date</th><th>Actions</th></tr></thead>
+        <tbody>${rows}</tbody>
         </table></div>`;
 }
 
-/* TABS / REFRESH / INIT */
+async function moderateCorrection(id, action, button) {
+    if (!id || !["approve", "reject"].includes(action)) return;
+
+    const warning = action === "approve"
+        ? "Approve this correction request? Check the requested changes carefully."
+        : "Reject this correction request?";
+
+    if (!confirm(warning)) return;
+
+    button.disabled = true;
+    button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
+
+    try {
+        const result = await apiRequest(
+            "/admin/correction-requests/" + encodeURIComponent(id) + "/" + action,
+            { method: "POST" }
+        );
+
+        alert(result.message || "Correction request updated.");
+        await loadResource("correction_requests");
+    } catch (error) {
+        button.disabled = false;
+        button.textContent = action === "approve" ? "Approve" : "Reject";
+        alert(error.message || "Unable to process correction request.");
+    }
+}
+
+/* GENERIC TABLES: reviews, subscriptions and help wanted */
+
+function renderGeneric(records, resource) {
+    if (!records.length) {
+        content.innerHTML = `<div class="empty">No ${escapeHtml(resource.replaceAll("_", " "))} records found.</div>`;
+        return;
+    }
+
+    const keys = Object.keys(records[0]).slice(0, 8);
+
+    const headers = keys
+        .map(key => `<th>${escapeHtml(key.replaceAll("_", " "))}</th>`)
+        .join("");
+
+    const rows = records.map(record => `
+        <tr>
+            ${keys.map(key => {
+                const value = record[key];
+                const display = value && typeof value === "object"
+                    ? JSON.stringify(value)
+                    : value ?? "—";
+                return `<td>${escapeHtml(display)}</td>`;
+            }).join("")}
+        </tr>`).join("");
+
+    content.innerHTML = `
+        <div class="table-wrap"><table>
+        <thead><tr>${headers}</tr></thead>
+        <tbody>${rows}</tbody>
+        </table></div>`;
+}
+
+/* ACTION DISPATCHER */
+
+content.addEventListener("click", async event => {
+    const button = event.target.closest("button[data-action]");
+    if (!button) return;
+
+    const { action, id, decision } = button.dataset;
+
+    if (action === "delete-business") {
+        await deleteBusiness(id, button.dataset.name || "this business", button);
+    } else if (action === "moderate-claim") {
+        await moderateClaim(id, decision, button);
+    } else if (action === "moderate-submission") {
+        await moderateSubmission(id, decision, button);
+    } else if (action === "moderate-report") {
+        await moderateReport(id, decision, button);
+    } else if (action === "moderate-discovery") {
+        await moderateDiscovery(id, decision, button);
+    } else if (action === "moderate-correction") {
+        await moderateCorrection(id, decision, button);
+    }
+});
+
+content.addEventListener("submit", async event => {
+    if (event.target.id === "discoveryRunForm") {
+        await runDiscovery(event);
+    }
+});
+
+/* TABS AND REFRESH */
 
 document.querySelectorAll(".tab").forEach(tab => {
-    tab.addEventListener("click", async () => {
-        document.querySelectorAll(".tab").forEach(item => item.classList.remove("active"));
-        tab.classList.add("active");
-        await loadResource(tab.dataset.resource);
-    });
+    tab.addEventListener("click", () => loadResource(tab.dataset.resource));
 });
 
 refreshBtn.addEventListener("click", async () => {
     refreshBtn.disabled = true;
     refreshBtn.textContent = "Refreshing...";
+
     try {
         await loadStats();
         await loadResource(currentResource);
@@ -1314,40 +1200,39 @@ refreshBtn.addEventListener("click", async () => {
     }
 });
 
+/* INITIALIZATION */
+
 async function initialize() {
     if (!adminKey) {
-        loginScreen.style.display = "flex";
-        adminApp.style.display = "none";
+        showLogin();
         return;
     }
 
     try {
         await apiRequest("/admin");
-        loginScreen.style.display = "none";
-        adminApp.style.display = "block";
+        showDashboard();
         await loadStats();
         await loadResource(currentResource);
     } catch (error) {
-        console.error("NearAfrica admin initialization failed:", error);
+        console.error("Admin initialization failed:", error);
+
         if (error.status === 401 || error.status === 403) {
             sessionStorage.removeItem("nearafrica_admin_key");
             adminKey = "";
-            loginScreen.style.display = "flex";
-            adminApp.style.display = "none";
-            loginError.textContent = "Your saved admin key is no longer valid.";
-        } else {
-            loginScreen.style.display = "none";
-            adminApp.style.display = "block";
-            content.innerHTML = `
-                <div class="error">
-                    <strong>Unable to verify admin access</strong>
-                    <div style="margin-top:10px">${escapeHtml(error.message || "Connection error.")}</div>
-                </div>`;
+            showLogin("Your saved admin key was rejected. Enter your admin key again.");
+            return;
         }
+
+        /*
+         * A connection error does not prove that the key is wrong.
+         * Keep the saved key and display the actual connection error.
+         */
+        showLogin(error.message || "Unable to connect to the admin API.");
     }
 }
 
 initialize();
 </script>
+
 </body>
-                    </html>
+</html>
