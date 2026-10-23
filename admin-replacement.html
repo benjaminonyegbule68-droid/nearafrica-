@@ -187,10 +187,6 @@ tbody tr:hover{background:#ffffff05}
 <script>
 "use strict";
 
-/* =========================================================
-   CONFIGURATION AND STATE
-========================================================= */
-
 const API_BASE = "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
 
 let adminKey = sessionStorage.getItem("nearafrica_admin_key") || "";
@@ -220,14 +216,16 @@ function escapeAttribute(value) {
     return escapeHtml(value);
 }
 
+function normalizeStatus(value, fallback) {
+    return String(value ?? fallback ?? "pending").trim().toLowerCase();
+}
+
 function getHeaders() {
     const headers = { "Accept": "application/json" };
-
     if (adminKey) {
         headers["Authorization"] = `Bearer ${adminKey}`;
         headers["X-Admin-Key"] = adminKey;
     }
-
     return headers;
 }
 
@@ -260,7 +258,6 @@ async function apiRequest(path, options = {}) {
     }
 
     let data = null;
-
     try {
         data = await response.json();
     } catch {
@@ -290,11 +287,9 @@ function getAdminResourcePath(resource) {
     if (resource === "discoveries") {
         return "/admin/discovery?limit=100";
     }
-
     if (resource === "correction_requests") {
         return "/admin/correction-requests?status=pending&limit=100";
     }
-
     return `/admin/${resource}?limit=100`;
 }
 
@@ -302,27 +297,19 @@ function getRecords(data) {
     const possibleKeys = [
         "businesses", "submissions", "claims", "reviews",
         "reports", "help_wanted", "subscriptions",
-        "discoveries", "discovery", "results", "data"
+        "discoveries", "discovery", "results", "data", "requests"
     ];
-
     for (const key of possibleKeys) {
-        if (Array.isArray(data?.[key])) {
-            return data[key];
-        }
+        if (Array.isArray(data?.[key])) return data[key];
     }
-
     return [];
 }
 
-/* =========================================================
-   LOGIN AND LOGOUT
-========================================================= */
+/* LOGIN / LOGOUT */
 
 loginForm.addEventListener("submit", async event => {
     event.preventDefault();
-
     const key = adminKeyInput.value.trim();
-
     if (!key) {
         loginError.textContent = "Please enter the admin API key.";
         return;
@@ -336,17 +323,14 @@ loginForm.addEventListener("submit", async event => {
 
     try {
         await apiRequest("/admin");
-
         sessionStorage.setItem("nearafrica_admin_key", adminKey);
         loginScreen.style.display = "none";
         adminApp.style.display = "block";
         loginError.textContent = "";
-
         await loadStats();
         await loadResource(currentResource);
     } catch (error) {
         adminKey = previousKey;
-
         loginError.textContent =
             error.status === 401 || error.status === 403
                 ? "Invalid admin API key."
@@ -366,9 +350,7 @@ logoutBtn.addEventListener("click", () => {
     loginError.textContent = "";
 });
 
-/* =========================================================
-   STATISTICS
-========================================================= */
+/* STATS */
 
 async function loadStats() {
     const ids = {
@@ -383,7 +365,6 @@ async function loadStats() {
     try {
         const data = await apiRequest("/admin/stats");
         const stats = data?.stats || data?.statistics || data || {};
-
         document.getElementById(ids.businesses).textContent =
             stats.businesses ?? stats.business_count ?? "—";
         document.getElementById(ids.submissions).textContent =
@@ -398,20 +379,16 @@ async function loadStats() {
             stats.help_wanted ?? stats.help_wanted_count ?? "—";
     } catch (error) {
         console.warn("NearAfrica admin stats unavailable:", error);
-
         Object.values(ids).forEach(id => {
             document.getElementById(id).textContent = "—";
         });
     }
 }
 
-/* =========================================================
-   RESOURCE LOADING
-========================================================= */
+/* RESOURCE LOADING */
 
 async function loadResource(resource) {
     currentResource = resource;
-
     const readableTitle = resource
         .replaceAll("_", " ")
         .replace(/\b\w/g, char => char.toUpperCase());
@@ -421,7 +398,6 @@ async function loadResource(resource) {
 
     try {
         const data = await apiRequest(getAdminResourcePath(resource));
-
         const records =
             resource === "correction_requests" && Array.isArray(data?.requests)
                 ? data.requests
@@ -433,28 +409,23 @@ async function loadResource(resource) {
         if (resource === "reports") return renderReports(records);
         if (resource === "discoveries") return renderDiscoveries(records);
         if (resource === "correction_requests") return renderCorrectionRequests(records);
-
         renderGeneric(records, resource);
     } catch (error) {
         content.innerHTML = `
             <div class="error">
                 <strong>Unable to load ${escapeHtml(readableTitle)}</strong>
                 <div style="margin-top:10px">${escapeHtml(error.message || "Unknown error.")}</div>
-            </div>
-        `;
+            </div>`;
     }
 }
 
-/* =========================================================
-   BUSINESSES
-========================================================= */
+/* BUSINESSES */
 
 async function deleteBusinessFromAdmin(businessId, businessName, button) {
     if (!businessId) {
         alert("This business does not have a valid ID.");
         return;
     }
-
     if (!confirm(
         `Delete "${businessName}" permanently?\n\nThis may remove related records. This action cannot be undone.`
     )) return;
@@ -467,7 +438,6 @@ async function deleteBusinessFromAdmin(businessId, businessName, button) {
             `/admin/businesses/${encodeURIComponent(businessId)}`,
             { method: "DELETE" }
         );
-
         alert(response.message || "Business deleted successfully.");
         await loadStats();
         await loadResource("businesses");
@@ -491,7 +461,7 @@ function renderBusinesses(businesses) {
         const city = business.city || "—";
         const state = business.state || "—";
         const country = business.country || "—";
-        const status = String(business.status || "active").trim().toLowerCase();
+        const status = normalizeStatus(business.status, "active");
         const owner = business.owner_id || "—";
 
         const publicLink = id ? `
@@ -503,7 +473,7 @@ function renderBusinesses(businesses) {
 
         const deleteButton = id ? `
             <button type="button" class="action-btn dismiss"
-                onclick="deleteBusinessFromAdmin('${escapeAttribute(id)}','${escapeAttribute(name)}',this)">
+                onclick="deleteBusinessFromAdmin('\( {escapeAttribute(id)}',' \){escapeAttribute(name)}',this)">
                 Delete
             </button>` : "";
 
@@ -512,10 +482,10 @@ function renderBusinesses(businesses) {
                 <td><strong>${escapeHtml(name)}</strong>
                     <div class="business-id" style="margin-top:6px">${escapeHtml(id)}</div></td>
                 <td>${escapeHtml(category)}</td>
-                <td>${escapeHtml(city)}<div class="muted" style="margin-top:4px">${escapeHtml(state)}, ${escapeHtml(country)}</div></td>
-                <td><span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span></td>
+                <td>\( {escapeHtml(city)}<div class="muted" style="margin-top:4px"> \){escapeHtml(state)}, ${escapeHtml(country)}</div></td>
+                <td><span class="status \( {escapeAttribute(status)}"> \){escapeHtml(status)}</span></td>
                 <td><div class="muted" style="max-width:220px;word-break:break-word">${escapeHtml(owner)}</div></td>
-                <td><div class="actions">${publicLink}${deleteButton}</div></td>
+                <td><div class="actions">\( {publicLink} \){deleteButton}</div></td>
             </tr>`;
     }).join("");
 
@@ -526,10 +496,7 @@ function renderBusinesses(businesses) {
         </table></div>`;
 }
 
-/* =========================================================
-   DISCOVERY RUNNER
-   NOTE: A successful run writes real pending records.
-========================================================= */
+/* DISCOVERY RUNNER */
 
 function getDiscoveryRunnerMarkup() {
     return `
@@ -540,83 +507,53 @@ function getDiscoveryRunnerMarkup() {
                 Results are imported as <strong>pending discovery candidates</strong> for manual review.
                 They are <strong>not</strong> automatically published as public businesses.
             </p>
-
             <form id="discoveryRunForm">
                 <div class="discovery-form-grid">
-
                     <div class="discovery-field">
                         <label for="discoveryLatitude">Search center latitude *</label>
-                        <input id="discoveryLatitude" name="latitude"
-                               type="number" step="any" min="-90" max="90"
-                               placeholder="Enter latitude" required>
-                        <span class="discovery-help">Search area only. Between -90 and 90. Not used as a business address.</span>
+                        <input id="discoveryLatitude" name="latitude" type="number" step="any" min="-90" max="90" placeholder="Enter latitude" required>
+                        <span class="discovery-help">Search area only. Between -90 and 90.</span>
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryLongitude">Search center longitude *</label>
-                        <input id="discoveryLongitude" name="longitude"
-                               type="number" step="any" min="-180" max="180"
-                               placeholder="Enter longitude" required>
-                        <span class="discovery-help">Search area only. Between -180 and 180. Not used as a business address.</span>
+                        <input id="discoveryLongitude" name="longitude" type="number" step="any" min="-180" max="180" placeholder="Enter longitude" required>
+                        <span class="discovery-help">Search area only. Between -180 and 180.</span>
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryRadius">Search radius (metres) *</label>
-                        <input id="discoveryRadius" name="radius"
-                               type="number" min="500" max="50000"
-                               step="500" value="1000" required>
+                        <input id="discoveryRadius" name="radius" type="number" min="500" max="50000" step="500" value="1000" required>
                         <span class="discovery-help">Allowed range: 500–50,000 metres.</span>
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryTargetCount">Target count *</label>
-                        <input id="discoveryTargetCount" name="target_count"
-                               type="number" min="1" max="5000"
-                               step="1" value="5" required>
+                        <input id="discoveryTargetCount" name="target_count" type="number" min="1" max="5000" step="1" value="5" required>
                         <span class="discovery-help">For your first test, leave this at 5.</span>
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryCountry">Search country *</label>
-                        <input id="discoveryCountry" name="country"
-                               type="text" maxlength="100" value="Nigeria" required>
-                        <span class="discovery-help">Search context only — not proof of each business address.</span>
+                        <input id="discoveryCountry" name="country" type="text" maxlength="100" value="Nigeria" required>
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryState">Search state / region</label>
-                        <input id="discoveryState" name="state"
-                               type="text" maxlength="100" placeholder="e.g. Rivers">
-                        <span class="discovery-help">Search context only — not copied as the business state.</span>
+                        <input id="discoveryState" name="state" type="text" maxlength="100" placeholder="e.g. Rivers">
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryCity">Search city</label>
-                        <input id="discoveryCity" name="city"
-                               type="text" maxlength="100" placeholder="e.g. Port Harcourt">
-                        <span class="discovery-help">Search context only — not copied as the business city.</span>
+                        <input id="discoveryCity" name="city" type="text" maxlength="100" placeholder="e.g. Port Harcourt">
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryCategory">Category filter (optional)</label>
-                        <input id="discoveryCategory" name="category"
-                               type="text" maxlength="120" placeholder="e.g. Restaurants &amp; Food">
-                        <span class="discovery-help">Leave blank to search without a category filter.</span>
+                        <input id="discoveryCategory" name="category" type="text" maxlength="120" placeholder="e.g. Restaurants &amp; Food">
                     </div>
                 </div>
-
                 <div class="discovery-warning">
                     This action can add real pending records to the discovery queue.
-                    Imported candidates may be incomplete, mis-categorized, or missing coordinates.
                     Always review name, coordinates, address, category, and source before approving.
                     Never approve a record that has missing or invalid latitude/longitude if it should appear in Nearby results.
                 </div>
-
                 <div class="discovery-submit-row">
-                    <button id="discoveryRunButton" class="discovery-run-btn"
-                            type="submit">Run Discovery</button>
-                    <div id="discoveryRunMessage" class="discovery-message"
-                         role="status" aria-live="polite"></div>
+                    <button id="discoveryRunButton" class="discovery-run-btn" type="submit">Run Discovery</button>
+                    <div id="discoveryRunMessage" class="discovery-message" role="status" aria-live="polite"></div>
                 </div>
             </form>
         </section>`;
@@ -624,28 +561,21 @@ function getDiscoveryRunnerMarkup() {
 
 function attachDiscoveryRunForm() {
     const form = document.getElementById("discoveryRunForm");
-
-    if (form) {
-        form.addEventListener("submit", runDiscoveryFromAdmin);
-    }
+    if (form) form.addEventListener("submit", runDiscoveryFromAdmin);
 }
 
 async function runDiscoveryFromAdmin(event) {
     event.preventDefault();
-
     const form = document.getElementById("discoveryRunForm");
     const message = document.getElementById("discoveryRunMessage");
     const button = document.getElementById("discoveryRunButton");
-
     if (!form || !message || !button) return;
 
     const field = name => form.elements.namedItem(name);
-
     const latitude = Number(field("latitude").value);
     const longitude = Number(field("longitude").value);
     const radius = Number(field("radius").value);
     const targetCount = Number(field("target_count").value);
-
     const country = field("country").value.trim();
     const state = field("state").value.trim();
     const city = field("city").value.trim();
@@ -663,17 +593,14 @@ async function runDiscoveryFromAdmin(event) {
         showError("Enter valid coordinates. Latitude must be -90 to 90 and longitude -180 to 180.");
         return;
     }
-
     if (!Number.isFinite(radius) || radius < 500 || radius > 50000) {
         showError("Search radius must be between 500 and 50,000 metres.");
         return;
     }
-
     if (!Number.isInteger(targetCount) || targetCount < 1 || targetCount > 5000) {
         showError("Target count must be a whole number between 1 and 5,000.");
         return;
     }
-
     if (!country) {
         showError("Enter a country.");
         return;
@@ -681,9 +608,7 @@ async function runDiscoveryFromAdmin(event) {
 
     if (!confirm(
         `Start a real discovery run?\n\nCountry: ${country}\nState/region: ${state || "Not specified"}\nCity: ${city || "Not specified"}\nRadius: ${radius} metres\nTarget count: ${targetCount}\n\nThis may add pending discovery records to your database.`
-    )) {
-        return;
-    }
+    )) return;
 
     button.disabled = true;
     button.textContent = "Running...";
@@ -694,9 +619,7 @@ async function runDiscoveryFromAdmin(event) {
         const response = await apiRequest("/admin/discovery/run", {
             method: "POST",
             body: JSON.stringify({
-                latitude,
-                longitude,
-                radius,
+                latitude, longitude, radius,
                 category: category || null,
                 country,
                 state: state || null,
@@ -706,65 +629,73 @@ async function runDiscoveryFromAdmin(event) {
         });
 
         const stats = response?.stats || response?.result || response?.data || response || {};
-
-        const found = stats.found_count ??
-                      stats.found ??
-                      stats.total_found ??
-                      stats.total ??
-                      "Not reported";
-
-        const imported = stats.imported_count ??
-                         stats.added_count ??
-                         stats.saved_count ??
-                         stats.imported ??
-                         stats.inserted ??
-                         "Not reported";
-
-        const duplicates = stats.duplicate_count ??
-                           stats.duplicates_skipped ??
-                           stats.duplicates ??
-                           "Not reported";
+        const found = stats.found_count ?? stats.found ?? stats.total_found ?? stats.total ?? "Not reported";
+        const imported = stats.imported_count ?? stats.added_count ?? stats.saved_count ?? stats.imported ?? stats.inserted ?? "Not reported";
+        const duplicates = stats.duplicate_count ?? stats.duplicates_skipped ?? stats.duplicates ?? "Not reported";
 
         message.className = "discovery-message success";
         message.textContent =
             `Discovery run completed. Found: ${found}; imported: ${imported}; duplicates skipped: ${duplicates}. Refreshing candidates...`;
 
         alert(
-            "Discovery run completed.\n\n" +
-            "Found: " + found + "\n" +
-            "Imported: " + imported + "\n" +
-            "Duplicates skipped: " + duplicates +
+            "Discovery run completed.\n\nFound: " + found +
+            "\nImported: " + imported +
+            "\nDuplicates skipped: " + duplicates +
             "\n\nCheck the Discoveries table for the imported candidates."
         );
 
         await loadResource("discoveries");
     } catch (error) {
-        showError(
-            (error.message || "Discovery run failed.") +
-            " Check the API response and Worker logs before retrying."
-        );
+        showError((error.message || "Discovery run failed.") + " Check the API response and Worker logs before retrying.");
         button.disabled = false;
         button.textContent = "Run Discovery";
     }
 }
 
-/* =========================================================
-   DISCOVERY MODERATION
-========================================================= */
+/* DISCOVERY MODERATION — fixed (single async) */
 
-async async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
+function assessCoordinates(discovery) {
+    const rawLat = discovery.latitude ?? discovery.lat ?? discovery.location_latitude;
+    const rawLng = discovery.longitude ?? discovery.lng ?? discovery.lon ?? discovery.location_longitude;
+
+    const hasLat = rawLat !== null && rawLat !== undefined && String(rawLat).trim() !== "";
+    const hasLng = rawLng !== null && rawLng !== undefined && String(rawLng).trim() !== "";
+
+    if (!hasLat && !hasLng) {
+        return { status: "missing", label: "Missing coords", lat: null, lng: null };
+    }
+    if (!hasLat || !hasLng) {
+        return {
+            status: "invalid",
+            label: "Incomplete pair",
+            lat: hasLat ? Number(rawLat) : null,
+            lng: hasLng ? Number(rawLng) : null
+        };
+    }
+
+    const lat = Number(rawLat);
+    const lng = Number(rawLng);
+
+    if (
+        !Number.isFinite(lat) || !Number.isFinite(lng) ||
+        lat < -90 || lat > 90 || lng < -180 || lng > 180
+    ) {
+        return { status: "invalid", label: "Out of range", lat, lng };
+    }
+
+    return { status: "ok", label: "OK", lat, lng };
+}
+
+async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
     if (!discoveryId) {
         alert("This discovery does not have a valid ID.");
         return;
     }
-
     if (action !== "approve" && action !== "reject") return;
 
     if (action === "approve") {
         const row = button ? button.closest("tr") : null;
-        const coordStatus = row
-            ? (row.getAttribute("data-coord-status") || "")
-            : "";
+        const coordStatus = row ? (row.getAttribute("data-coord-status") || "") : "";
 
         if (coordStatus === "missing" || coordStatus === "invalid") {
             const proceed = confirm(
@@ -784,7 +715,6 @@ async async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
     const actionButtons = document.querySelectorAll(
         `.discovery-action[data-discovery-id="${CSS.escape(String(discoveryId))}"]`
     );
-
     actionButtons.forEach(item => item.disabled = true);
 
     if (button) {
@@ -793,66 +723,23 @@ async async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
 
     try {
         const response = await apiRequest(
-            `/admin/discovery/${encodeURIComponent(discoveryId)}/${action}`,
+            `/admin/discovery/\( {encodeURIComponent(discoveryId)}/ \){action}`,
             { method: "POST" }
         );
-
         alert(response.message || (
             action === "approve"
                 ? "Discovery approved successfully."
                 : "Discovery rejected successfully."
         ));
-
+        await loadStats();
         await loadResource("discoveries");
     } catch (error) {
         actionButtons.forEach(item => item.disabled = false);
-
         if (button) {
             button.textContent = action === "approve" ? "Approve" : "Reject";
         }
-
         alert(error.message || "Unable to update discovery.");
     }
-}
-
-function assessCoordinates(discovery) {
-    const rawLat = discovery.latitude ?? discovery.lat ?? discovery.location_latitude;
-    const rawLng = discovery.longitude ?? discovery.lng ?? discovery.lon ?? discovery.location_longitude;
-
-    const hasLat = rawLat !== null && rawLat !== undefined && String(rawLat).trim() !== "";
-    const hasLng = rawLng !== null && rawLng !== undefined && String(rawLng).trim() !== "";
-
-    if (!hasLat && !hasLng) {
-        return { status: "missing", label: "Missing coords", lat: null, lng: null };
-    }
-
-    if (!hasLat || !hasLng) {
-        return {
-            status: "invalid",
-            label: "Incomplete pair",
-            lat: hasLat ? Number(rawLat) : null,
-            lng: hasLng ? Number(rawLng) : null
-        };
-    }
-
-    const lat = Number(rawLat);
-    const lng = Number(rawLng);
-
-    if (
-        !Number.isFinite(lat) ||
-        !Number.isFinite(lng) ||
-        lat < -90 || lat > 90 ||
-        lng < -180 || lng > 180
-    ) {
-        return { status: "invalid", label: "Out of range", lat, lng };
-    }
-
-    return {
-        status: "ok",
-        label: "OK",
-        lat,
-        lng
-    };
 }
 
 function renderDiscoveries(discoveries) {
@@ -870,43 +757,37 @@ function renderDiscoveries(discoveries) {
         const title = discovery.business_name || discovery.title || discovery.name || "Untitled discovery";
         const description = discovery.description || "—";
         const category = discovery.category || "—";
-
         const location = [
             discovery.address || "",
             discovery.city || "",
             discovery.state || "",
             discovery.country || ""
         ].filter(value => value && value !== "—").join(", ") || "—";
-
         const sourceUrl = discovery.source_url || discovery.url || "";
         const sourceId = discovery.source_id || discovery.osm_id || "";
-        const status = String(discovery.status || "pending").trim().toLowerCase();
+        const status = normalizeStatus(discovery.status, "pending");
         const isPending = !["approved", "rejected"].includes(status);
-
         const coords = assessCoordinates(discovery);
 
         const coordBadgeColor =
             coords.status === "ok" ? "#4ade80" :
-            coords.status === "missing" ? "#fbbf24" :
-            "#f87171";
+            coords.status === "missing" ? "#fbbf24" : "#f87171";
 
         const coordCell = `
             <div style="font-family:Consolas,Monaco,monospace;font-size:11px;line-height:1.5">
-                <div style="color:${coordBadgeColor};font-weight:800;margin-bottom:4px">${escapeHtml(coords.label)}</div>
+                <div style="color:\( {coordBadgeColor};font-weight:800;margin-bottom:4px"> \){escapeHtml(coords.label)}</div>
                 <div>lat: ${coords.lat === null || coords.lat === undefined ? "—" : escapeHtml(String(coords.lat))}</div>
                 <div>lng: ${coords.lng === null || coords.lng === undefined ? "—" : escapeHtml(String(coords.lng))}</div>
             </div>`;
 
         const actions = isPending && id ? `
             <div class="actions">
-                <button type="button"
-                    class="action-btn primary discovery-action"
+                <button type="button" class="action-btn primary discovery-action"
                     data-discovery-id="${escapeAttribute(String(id))}"
                     onclick="moderateDiscoveryFromAdmin('${escapeAttribute(String(id))}','approve',this)">
                     Approve
                 </button>
-                <button type="button"
-                    class="action-btn dismiss discovery-action"
+                <button type="button" class="action-btn dismiss discovery-action"
                     data-discovery-id="${escapeAttribute(String(id))}"
                     onclick="moderateDiscoveryFromAdmin('${escapeAttribute(String(id))}','reject',this)">
                     Reject
@@ -926,7 +807,7 @@ function renderDiscoveries(discoveries) {
                 <td>${escapeHtml(location)}</td>
                 <td>${coordCell}</td>
                 <td><div style="max-width:260px;white-space:normal;line-height:1.5;color:#aaa">${escapeHtml(description)}</div></td>
-                <td><span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span></td>
+                <td><span class="status \( {escapeAttribute(status)}"> \){escapeHtml(status)}</span></td>
                 <td>${safeSource
                     ? `<a href="${escapeAttribute(safeSource)}" target="_blank" rel="noopener noreferrer" style="color:#d4af37;text-decoration:none;font-weight:700">Open Source</a>`
                     : `<span class="muted">—</span>`}</td>
@@ -943,14 +824,8 @@ function renderDiscoveries(discoveries) {
         <div class="table-wrap">
             <table>
                 <thead><tr>
-                    <th>Discovery</th>
-                    <th>Category</th>
-                    <th>Address / Locality</th>
-                    <th>Coordinates</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Source</th>
-                    <th>Actions</th>
+                    <th>Discovery</th><th>Category</th><th>Address / Locality</th>
+                    <th>Coordinates</th><th>Description</th><th>Status</th><th>Source</th><th>Actions</th>
                 </tr></thead>
                 <tbody>${rows}</tbody>
             </table>
@@ -959,23 +834,19 @@ function renderDiscoveries(discoveries) {
     attachDiscoveryRunForm();
 }
 
-/* =========================================================
-   REPORT MODERATION
-========================================================= */
+/* REPORTS */
 
 async function moderateReportFromAdmin(reportId, action, button) {
     if (!reportId) {
         alert("This report does not have a valid ID.");
         return;
     }
-
     if (action !== "resolve" && action !== "dismiss") return;
 
     const noteInput = document.querySelector(
         `.report-note[data-report-id="${CSS.escape(String(reportId))}"]`
     );
     const note = noteInput ? noteInput.value.trim() : "";
-
     if (!confirm(`Are you sure you want to ${action} this report?`)) return;
 
     const actionButtons = document.querySelectorAll(
@@ -986,7 +857,6 @@ async function moderateReportFromAdmin(reportId, action, button) {
     const messageElement = document.querySelector(
         `.report-action-message[data-report-id="${CSS.escape(String(reportId))}"]`
     );
-
     if (messageElement) {
         messageElement.className = "report-action-message info";
         messageElement.textContent = "Saving moderation decision...";
@@ -994,23 +864,17 @@ async function moderateReportFromAdmin(reportId, action, button) {
 
     try {
         const response = await apiRequest(
-            `/admin/reports/${encodeURIComponent(reportId)}/${action}`,
-            {
-                method: "POST",
-                body: JSON.stringify({ admin_notes: note })
-            }
+            `/admin/reports/\( {encodeURIComponent(reportId)}/ \){action}`,
+            { method: "POST", body: JSON.stringify({ admin_notes: note }) }
         );
-
         if (messageElement) {
             messageElement.className = "report-action-message success";
             messageElement.textContent = response.message || "Report updated successfully.";
         }
-
         await loadStats();
         await loadResource("reports");
     } catch (error) {
         actionButtons.forEach(item => item.disabled = false);
-
         if (messageElement) {
             messageElement.className = "report-action-message error";
             messageElement.textContent = error.message || "Unable to update report.";
@@ -1025,7 +889,7 @@ function renderReports(reports) {
     }
 
     const rows = reports.map(report => {
-        const status = String(report.status || "pending").toLowerCase();
+        const status = normalizeStatus(report.status, "pending");
         const id = report.id || report.report_id || "";
         const businessId = report.business_id || "";
         const reporterName = report.reporter_name || "Anonymous";
@@ -1057,12 +921,12 @@ function renderReports(reports) {
 
         return `
             <tr>
-                <td><strong>${escapeHtml(reason)}</strong><div class="claim-id" style="margin-top:6px">${escapeHtml(id)}</div></td>
-                <td><div class="business-id">${escapeHtml(businessId)}</div><div style="margin-top:8px">${businessLink}</div></td>
-                <td><strong>${escapeHtml(reporterName)}</strong><div class="muted" style="margin-top:5px">${escapeHtml(reporterEmail)}</div></td>
+                <td><strong>\( {escapeHtml(reason)}</strong><div class="claim-id" style="margin-top:6px"> \){escapeHtml(id)}</div></td>
+                <td><div class="business-id">\( {escapeHtml(businessId)}</div><div style="margin-top:8px"> \){businessLink}</div></td>
+                <td><strong>\( {escapeHtml(reporterName)}</strong><div class="muted" style="margin-top:5px"> \){escapeHtml(reporterEmail)}</div></td>
                 <td><div style="max-width:350px;white-space:normal;line-height:1.5">${escapeHtml(details)}</div></td>
-                <td><span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span>
-                    ${createdAt ? `<div class="muted" style="margin-top:7px;font-size:11px">${escapeHtml(createdAt)}</div>` : ""}</td>
+                <td><span class="status \( {escapeAttribute(status)}"> \){escapeHtml(status)}</span>
+                    \( {createdAt ? `<div class="muted" style="margin-top:7px;font-size:11px"> \){escapeHtml(createdAt)}</div>` : ""}</td>
                 <td><div style="max-width:220px;white-space:normal;color:#aaa;line-height:1.5">${escapeHtml(adminNotes)}</div></td>
                 <td>${controls}</td>
             </tr>`;
@@ -1075,35 +939,40 @@ function renderReports(reports) {
         </table></div>`;
 }
 
-/* =========================================================
-   CLAIM MODERATION
-========================================================= */
+/* CLAIMS — FIXED: Approve for pending AND verified */
 
 async function moderateClaimFromAdmin(claimId, action, button) {
     if (!claimId) {
         alert("This claim does not have a valid ID.");
         return;
     }
-
     if (action !== "approve" && action !== "reject") return;
     if (!confirm(action === "approve" ? "Approve this claim?" : "Reject this claim?")) return;
 
-    if (button) button.disabled = true;
+    const actionButtons = document.querySelectorAll(
+        `.claim-action[data-claim-id="${CSS.escape(String(claimId))}"]`
+    );
+    actionButtons.forEach(item => item.disabled = true);
+    if (button) {
+        button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
+    }
 
     try {
         const response = await apiRequest(
-            `/admin/claims/${encodeURIComponent(claimId)}/${action}`,
+            `/admin/claims/\( {encodeURIComponent(claimId)}/ \){action}`,
             { method: "POST" }
         );
-
         alert(response.message || (action === "approve"
             ? "Claim approved successfully."
             : "Claim rejected successfully."));
-
         await loadStats();
         await loadResource("claims");
     } catch (error) {
-        if (button) button.disabled = false;
+        actionButtons.forEach(item => {
+            item.disabled = false;
+            if (item.dataset.action === "approve") item.textContent = "Approve";
+            if (item.dataset.action === "reject") item.textContent = "Reject";
+        });
         alert(error.message || "Unable to update claim.");
     }
 }
@@ -1115,7 +984,7 @@ function renderClaims(claims) {
     }
 
     const rows = claims.map(claim => {
-        const status = String(claim.status || "pending").toLowerCase();
+        const status = normalizeStatus(claim.status, "pending");
         const id = claim.id || claim.claim_id || "";
         const businessId = claim.business_id || claim.business?.id || "";
         const businessName = claim.business?.business_name || claim.business_name || businessId || "—";
@@ -1133,8 +1002,7 @@ function renderClaims(claims) {
             </div>` : "";
 
         let actions = "—";
-
-        if (status === "verified" && id) {
+        if (id && (status === "pending" || status === "verified")) {
             actions = `
                 <div class="actions">
                     <button type="button" class="action-btn primary claim-action"
@@ -1142,17 +1010,14 @@ function renderClaims(claims) {
                     <button type="button" class="action-btn dismiss claim-action"
                         data-claim-id="${escapeAttribute(id)}" data-action="reject">Reject</button>
                 </div>`;
-        } else if (status === "pending" && id) {
-            actions = `<button type="button" class="action-btn dismiss claim-action"
-                data-claim-id="${escapeAttribute(id)}" data-action="reject">Reject</button>`;
         }
 
         return `
             <tr>
-                <td><strong>${escapeHtml(claimant)}</strong><div class="claim-id" style="margin-top:6px">${escapeHtml(id)}</div></td>
-                <td><strong>${escapeHtml(businessName)}</strong><div class="business-id" style="margin-top:6px">${escapeHtml(businessId)}</div>${businessLink}</td>
+                <td><strong>\( {escapeHtml(claimant)}</strong><div class="claim-id" style="margin-top:6px"> \){escapeHtml(id)}</div></td>
+                <td><strong>\( {escapeHtml(businessName)}</strong><div class="business-id" style="margin-top:6px"> \){escapeHtml(businessId)}</div>${businessLink}</td>
                 <td>${escapeHtml(email)}</td>
-                <td><span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span>
+                <td><span class="status \( {escapeAttribute(status)}"> \){escapeHtml(status)}</span>
                     ${verified ? `<div style="margin-top:6px;font-size:12px;opacity:.75">Email verified</div>` : ""}</td>
                 <td><div style="max-width:300px;white-space:normal;line-height:1.5">${escapeHtml(notes)}</div></td>
                 <td>${actions}</td>
@@ -1167,29 +1032,21 @@ function renderClaims(claims) {
 
     content.querySelectorAll(".claim-action").forEach(button => {
         button.addEventListener("click", () => {
-            moderateClaimFromAdmin(
-                button.dataset.claimId,
-                button.dataset.action,
-                button
-            );
+            moderateClaimFromAdmin(button.dataset.claimId, button.dataset.action, button);
         });
     });
 }
 
-/* =========================================================
-   SUBMISSION MODERATION
-========================================================= */
+/* SUBMISSIONS */
 
 async function moderateSubmissionFromAdmin(submissionId, action, button) {
     if (!submissionId) {
         alert("This submission does not have a valid ID.");
         return;
     }
-
     if (action !== "approve" && action !== "reject") return;
 
     let reason = "";
-
     if (action === "reject") {
         const answer = prompt("Why are you rejecting this submission? (Optional)");
         if (answer === null) return;
@@ -1197,32 +1054,33 @@ async function moderateSubmissionFromAdmin(submissionId, action, button) {
     }
 
     if (!confirm(action === "approve"
-        ? "Approve this business submission?"
+        ? "Approve this business submission? It will become a public listing."
         : "Reject this business submission?")) return;
 
     const buttons = document.querySelectorAll(
         `.submission-action[data-submission-id="${CSS.escape(String(submissionId))}"]`
     );
     buttons.forEach(item => item.disabled = true);
+    if (button) {
+        button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
+    }
 
     try {
         const response = await apiRequest(
-            `/admin/submissions/${encodeURIComponent(submissionId)}/${action}`,
-            {
-                method: "POST",
-                body: JSON.stringify(action === "reject" ? { reason } : {})
-            }
+            `/admin/submissions/\( {encodeURIComponent(submissionId)}/ \){action}`,
+            { method: "POST", body: JSON.stringify(action === "reject" ? { reason } : {}) }
         );
-
         alert(response.message || (action === "approve"
             ? "Submission approved successfully."
             : "Submission rejected successfully."));
-
         await loadStats();
         await loadResource("submissions");
     } catch (error) {
-        buttons.forEach(item => item.disabled = false);
-        if (button) button.disabled = false;
+        buttons.forEach(item => {
+            item.disabled = false;
+            if (String(item.textContent).includes("Approving")) item.textContent = "Approve";
+            if (String(item.textContent).includes("Rejecting")) item.textContent = "Reject";
+        });
         alert(error.message || "Unable to update submission.");
     }
 }
@@ -1234,7 +1092,7 @@ function renderSubmissions(submissions) {
     }
 
     const rows = submissions.map(submission => {
-        const status = String(submission.status || "pending").trim().toLowerCase();
+        const status = normalizeStatus(submission.status, "pending");
         const id = submission.id || submission.submission_id || "";
         const name = submission.name || submission.business_name || "—";
         const category = submission.category || "—";
@@ -1243,8 +1101,9 @@ function renderSubmissions(submissions) {
         const country = submission.country || "Nigeria";
         const email = submission.email || "—";
         const phone = submission.phone || "—";
+        const canModerate = status === "pending" && id;
 
-        const actions = status === "pending" && id ? `
+        const actions = canModerate ? `
             <div class="actions">
                 <button type="button" class="action-btn primary submission-action"
                     data-submission-id="${escapeAttribute(id)}"
@@ -1259,10 +1118,10 @@ function renderSubmissions(submissions) {
                 <td><strong>${escapeHtml(name)}</strong>
                     <div class="claim-id" style="margin-top:6px">ID: ${escapeHtml(id || "Not provided")}</div></td>
                 <td>${escapeHtml(category)}</td>
-                <td>${escapeHtml(city)}<div class="muted" style="margin-top:4px">${escapeHtml(state)}, ${escapeHtml(country)}</div></td>
-                <td>${email !== "—" ? `<div>${escapeHtml(email)}</div>` : ""}
-                    ${phone !== "—" ? `<div class="muted" style="margin-top:5px">${escapeHtml(phone)}</div>` : ""}</td>
-                <td><span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span></td>
+                <td>\( {escapeHtml(city)}<div class="muted" style="margin-top:4px"> \){escapeHtml(state)}, ${escapeHtml(country)}</div></td>
+                <td>\( {email !== "—" ? `<div> \){escapeHtml(email)}</div>` : ""}
+                    \( {phone !== "—" ? `<div class="muted" style="margin-top:5px"> \){escapeHtml(phone)}</div>` : ""}</td>
+                <td><span class="status \( {escapeAttribute(status)}"> \){escapeHtml(status)}</span></td>
                 <td>${actions}</td>
             </tr>`;
     }).join("");
@@ -1274,9 +1133,7 @@ function renderSubmissions(submissions) {
         </table></div>`;
 }
 
-/* =========================================================
-   CORRECTION REQUESTS
-========================================================= */
+/* CORRECTION REQUESTS */
 
 function renderCorrectionRequests(requests) {
     if (!Array.isArray(requests) || requests.length === 0) {
@@ -1290,26 +1147,15 @@ function renderCorrectionRequests(requests) {
 
     const rows = requests.map(item => {
         const id = item.id || "";
-        const status = String(item.status || "pending").toLowerCase();
-        const businessName =
-            item.business_name ||
-            item.business_slug ||
-            item.business_id ||
-            "Business not found";
-
-        const location = [
-            item.city,
-            item.state,
-            item.country
-        ].filter(Boolean).join(", ") || "—";
-
+        const status = normalizeStatus(item.status, "pending");
+        const businessName = item.business_name || item.business_slug || item.business_id || "Business not found";
+        const location = [item.city, item.state, item.country].filter(Boolean).join(", ") || "—";
         const requesterName = item.requester_name || "Not provided";
         const requesterEmail = item.requester_email || "Not provided";
         const reason = item.reason || "No reason provided";
         const createdAt = item.created_at || "—";
 
         let requestedChanges = {};
-
         if (item.requested_changes && typeof item.requested_changes === "object") {
             requestedChanges = item.requested_changes;
         } else {
@@ -1321,7 +1167,6 @@ function renderCorrectionRequests(requests) {
         }
 
         let changesText = "";
-
         try {
             changesText = JSON.stringify(requestedChanges, null, 2);
         } catch {
@@ -1330,18 +1175,10 @@ function renderCorrectionRequests(requests) {
 
         const actions = id && status === "pending" ? `
             <div class="actions">
-                <button type="button"
-                    class="action-btn primary correction-action"
-                    data-correction-id="${escapeAttribute(id)}"
-                    data-action="approve">
-                    Approve
-                </button>
-                <button type="button"
-                    class="action-btn dismiss correction-action"
-                    data-correction-id="${escapeAttribute(id)}"
-                    data-action="reject">
-                    Reject
-                </button>
+                <button type="button" class="action-btn primary correction-action"
+                    data-correction-id="${escapeAttribute(id)}" data-action="approve">Approve</button>
+                <button type="button" class="action-btn dismiss correction-action"
+                    data-correction-id="${escapeAttribute(id)}" data-action="reject">Reject</button>
             </div>
         ` : `<span class="muted">Already processed</span>`;
 
@@ -1356,25 +1193,21 @@ function renderCorrectionRequests(requests) {
                     <strong>${escapeHtml(requesterName)}</strong>
                     <div style="margin-top:6px;word-break:break-word">${escapeHtml(requesterEmail)}</div>
                 </td>
+                <td><div style="max-width:300px;white-space:normal;line-height:1.5">${escapeHtml(reason)}</div></td>
                 <td>
-                    <div style="max-width:300px;white-space:normal;line-height:1.5">${escapeHtml(reason)}</div>
-                </td>
-                <td>
-                    <details>
-                        <summary style="color:#d4af37;cursor:pointer">View requested changes</summary>
+                    **Summary:**
+View requested changes
                         <pre class="correction-changes">${escapeHtml(changesText)}</pre>
-                    </details>
                 </td>
                 <td>
-                    <span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span>
+                    <span class="status \( {escapeAttribute(status)}"> \){escapeHtml(status)}</span>
                     <div class="muted" style="margin-top:7px">${escapeHtml(createdAt)}</div>
                 </td>
                 <td>
                     ${actions}
                     ${status === "pending" ? `<div class="correction-review-hint">Approval records the decision only. Apply profile changes separately after reviewing them.</div>` : ""}
                 </td>
-            </tr>
-        `;
+            </tr>`;
     }).join("");
 
     content.innerHTML = `
@@ -1385,12 +1218,8 @@ function renderCorrectionRequests(requests) {
             <table>
                 <thead>
                     <tr>
-                        <th>Business</th>
-                        <th>Requester</th>
-                        <th>Reason</th>
-                        <th>Requested Changes</th>
-                        <th>Status / Date</th>
-                        <th>Actions</th>
+                        <th>Business</th><th>Requester</th><th>Reason</th>
+                        <th>Requested Changes</th><th>Status / Date</th><th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>${rows}</tbody>
@@ -1413,71 +1242,49 @@ async function moderateCorrectionRequestFromAdmin(requestId, action, button) {
         alert("This correction request has no valid ID.");
         return;
     }
+    if (action !== "approve" && action !== "reject") return;
 
-    if (action !== "approve" && action !== "reject") {
-        return;
-    }
-
-    const decision = action === "approve" ? "approve" : "reject";
     const question = action === "approve"
         ? "Approve this correction request?\n\nThis records approval only. It will not automatically change the public business listing."
         : "Reject this correction request?\n\nThe public business listing will not be changed.";
-
     if (!confirm(question)) return;
 
-    const relatedButtons = [
-        ...content.querySelectorAll(".correction-action")
-    ].filter(item => item.dataset.correctionId === String(requestId));
-
-    relatedButtons.forEach(item => {
-        item.disabled = true;
-    });
-
+    const relatedButtons = [...content.querySelectorAll(".correction-action")]
+        .filter(item => item.dataset.correctionId === String(requestId));
+    relatedButtons.forEach(item => { item.disabled = true; });
     if (button) {
         button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
     }
 
     try {
         const response = await apiRequest(
-            `/admin/correction-requests/${encodeURIComponent(requestId)}/${decision}`,
+            `/admin/correction-requests/\( {encodeURIComponent(requestId)}/ \){action}`,
             { method: "POST" }
         );
-
         alert(response.message || `Correction request ${action === "approve" ? "approved" : "rejected"}.`);
         await loadResource("correction_requests");
     } catch (error) {
         relatedButtons.forEach(item => {
             item.disabled = false;
+            if (item.dataset.action === "approve") item.textContent = "Approve";
+            if (item.dataset.action === "reject") item.textContent = "Reject";
         });
-
-        if (button) {
-            button.textContent = action === "approve" ? "Approve" : "Reject";
-        }
-
         alert(error.message || "Unable to process this correction request.");
     }
 }
 
-/* =========================================================
-   GENERIC TABLE
-========================================================= */
+/* GENERIC */
 
 function renderGeneric(records, resource) {
     if (!records.length) {
         content.innerHTML = `<div class="empty">No ${escapeHtml(resource)} records found.</div>`;
         return;
     }
-
     const keys = Object.keys(records[0]).slice(0, 8);
-
-    const headers = keys.map(key =>
-        `<th>${escapeHtml(key.replaceAll("_", " "))}</th>`
+    const headers = keys.map(key => `<th>${escapeHtml(key.replaceAll("_", " "))}</th>`).join("");
+    const rows = records.map(record =>
+        `<tr>\( {keys.map(key => `<td> \){escapeHtml(record[key] ?? "—")}</td>`).join("")}</tr>`
     ).join("");
-
-    const rows = records.map(record => `
-        <tr>${keys.map(key => `<td>${escapeHtml(record[key] ?? "—")}</td>`).join("")}</tr>
-    `).join("");
-
     content.innerHTML = `
         <div class="table-wrap"><table>
             <thead><tr>${headers}</tr></thead>
@@ -1485,9 +1292,7 @@ function renderGeneric(records, resource) {
         </table></div>`;
 }
 
-/* =========================================================
-   TABS
-========================================================= */
+/* TABS / REFRESH / INIT */
 
 document.querySelectorAll(".tab").forEach(tab => {
     tab.addEventListener("click", async () => {
@@ -1497,14 +1302,9 @@ document.querySelectorAll(".tab").forEach(tab => {
     });
 });
 
-/* =========================================================
-   REFRESH
-========================================================= */
-
 refreshBtn.addEventListener("click", async () => {
     refreshBtn.disabled = true;
     refreshBtn.textContent = "Refreshing...";
-
     try {
         await loadStats();
         await loadResource(currentResource);
@@ -1513,10 +1313,6 @@ refreshBtn.addEventListener("click", async () => {
         refreshBtn.textContent = "Refresh";
     }
 });
-
-/* =========================================================
-   INITIALIZATION
-========================================================= */
 
 async function initialize() {
     if (!adminKey) {
@@ -1527,15 +1323,12 @@ async function initialize() {
 
     try {
         await apiRequest("/admin");
-
         loginScreen.style.display = "none";
         adminApp.style.display = "block";
-
         await loadStats();
         await loadResource(currentResource);
     } catch (error) {
         console.error("NearAfrica admin initialization failed:", error);
-
         if (error.status === 401 || error.status === 403) {
             sessionStorage.removeItem("nearafrica_admin_key");
             adminKey = "";
