@@ -1817,6 +1817,16 @@
     }
     .referral-history-row:last-child { border-bottom: none; }
 
+    /*
+     * Controlled launch: hide Referrals, Membership, and Promote
+     * from the owner dashboard navigation. Sections and JS remain.
+     */
+    .tab[data-tab="referrals"],
+    .tab[data-tab="membership"],
+    .tab[data-tab="promote"] {
+      display: none !important;
+    }
+
   </style>
 
 </head>
@@ -7029,14 +7039,17 @@ loadMembershipStatus();
         });
 
       // A Paystack return URL is not proof of payment. Show a safe pending message only.
+      // Controlled launch: do not open the Membership tab (hidden from owners).
       const paymentQuery = new URLSearchParams(window.location.search);
       if (paymentQuery.has("reference") || paymentQuery.has("trxref")) {
         const membershipStatus = document.getElementById("membershipStatus");
         if (membershipStatus) {
           membershipStatus.textContent = "Payment return detected. This page cannot confirm payment by itself. Your membership should change only after the Worker verifies the transaction and processes the webhook. If your plan does not update, refresh later or contact NearAfrica support.";
         }
-        const membershipTab = document.querySelector('[data-tab="membership"]');
-        if (membershipTab) membershipTab.click();
+        showStatus(
+          "Payment return detected. NearAfrica will update membership only after the server verifies the payment. Contact support if your plan does not update.",
+          "info"
+        );
       }
 
 
@@ -7082,6 +7095,18 @@ loadMembershipStatus();
 
                 const tabName = button.dataset.tab;
                 if (!tabName) return;
+
+                /*
+                 * Controlled launch: block opening Referrals, Membership,
+                 * and Promote even if triggered programmatically.
+                 */
+                if (
+                  tabName === "referrals" ||
+                  tabName === "membership" ||
+                  tabName === "promote"
+                ) {
+                  return;
+                }
 
                 // Update active tab UI
                 document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
