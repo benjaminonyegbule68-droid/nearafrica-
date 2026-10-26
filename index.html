@@ -538,7 +538,7 @@
     @media (max-width:760px) {
       .home-header-inner { min-height:62px; }
       .home-nav { display:none; }
-      .mobile-menu-toggle { display:block; }
+     .mobile-menu-toggle { display:flex; }
       .home-language { margin-left:auto; }
       .na-auth-area { display:none; }
       .na-mobile-auth { display:block; }
@@ -1209,28 +1209,35 @@
   }
 
   function setupMobileMenu() {
-    const toggle = $("mobileMenuToggle");
-    const mobileNav = $("mobileNav");
+  const toggle = $("mobileMenuToggle");
+  const mobileNav = $("mobileNav");
+  const menuIcon = $("mobileMenuIcon");
 
-    if (!toggle || !mobileNav) return;
+  if (!toggle || !mobileNav || !menuIcon) return;
 
-    toggle.addEventListener("click", () => {
-      const open = mobileNav.classList.toggle("open");
+  toggle.addEventListener("click", () => {
+    const open = mobileNav.classList.toggle("open");
 
-      toggle.setAttribute("aria-expanded", String(open));
-      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-      toggle.textContent = open ? "✕" : "☰";
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute(
+      "aria-label",
+      open ? "Close menu" : "Open menu"
+    );
+
+    menuIcon.textContent = open ? "✕" : "☰";
+  });
+
+  mobileNav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileNav.classList.remove("open");
+
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Open menu");
+
+      menuIcon.textContent = "☰";
     });
-
-    mobileNav.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => {
-        mobileNav.classList.remove("open");
-        toggle.setAttribute("aria-expanded", "false");
-        toggle.setAttribute("aria-label", "Open menu");
-        toggle.textContent = "☰";
-      });
-    });
-  }
+  });
+}
 
   function setupSignOutButtons() {
     const desktopSignOut = $("naSignOut");
