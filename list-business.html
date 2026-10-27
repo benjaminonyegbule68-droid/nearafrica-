@@ -19,13 +19,42 @@
       color: #111;
     }
 
-    .page { min-height: 100vh; padding: 40px 20px 70px; }
-    .container { width: 100%; max-width: 850px; margin: 0 auto; }
-    .header { text-align: center; margin-bottom: 30px; }
-    .logo { font-size: 32px; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
+    .page {
+      min-height: 100vh;
+      padding: 40px 20px 70px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 10px;
+    }
+
     .logo span { color: #c99a2e; }
-    .header h1 { margin: 0 0 10px; font-size: 32px; }
-    .header p { margin: 0 auto; max-width: 620px; color: #666; line-height: 1.6; }
+
+    .header h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+    }
+
+    .header p {
+      margin: 0 auto;
+      max-width: 620px;
+      color: #666;
+      line-height: 1.6;
+    }
 
     .card {
       background: #fff;
@@ -35,6 +64,7 @@
     }
 
     .section { margin-bottom: 30px; }
+
     .section-title {
       font-size: 19px;
       font-weight: 700;
@@ -49,10 +79,20 @@
       gap: 18px;
     }
 
-    .field { display: flex; flex-direction: column; min-width: 0; }
+    .field {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
     .field.full { grid-column: 1 / -1; }
 
-    label { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    label {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
     label span { color: #d12f2f; }
 
     input, select, textarea {
@@ -71,9 +111,115 @@
       box-shadow: 0 0 0 3px rgba(201,154,46,.12);
     }
 
-    input:disabled, select:disabled { background: #f1f1f1; cursor: not-allowed; }
-    textarea { min-height: 130px; resize: vertical; }
-    .hint { font-size: 12px; color: #777; margin-top: 6px; line-height: 1.4; }
+    input:disabled, select:disabled {
+      background: #f1f1f1;
+      cursor: not-allowed;
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #777;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    /* Website design promotion card */
+    .website-promo {
+      margin-top: 15px;
+      padding: 20px;
+      border: 1px solid #e7d5a6;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #171717, #29251b);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .website-promo::before {
+      content: "";
+      position: absolute;
+      top: -45px;
+      right: -35px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(201,154,46,.13);
+      pointer-events: none;
+    }
+
+    .website-promo-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .website-promo-label {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 6px 10px;
+      border-radius: 20px;
+      background: rgba(201,154,46,.16);
+      color: #e6bd61;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+
+    .website-promo h3 {
+      margin: 0 0 9px;
+      color: #fff;
+      font-size: 19px;
+      line-height: 1.45;
+    }
+
+    .website-promo p {
+      margin: 0 0 17px;
+      color: #dedbd3;
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .website-promo-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      width: 100%;
+      padding: 14px 15px;
+      border-radius: 9px;
+      background: #25d366;
+      color: #102417;
+      text-align: center;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.5;
+      transition: background .2s, transform .2s;
+    }
+
+    .website-promo-button:hover {
+      background: #20bd5a;
+      transform: translateY(-1px);
+    }
+
+    .website-promo-button:focus-visible {
+      outline: 3px solid #fff;
+      outline-offset: 3px;
+    }
+
+    .website-promo-note {
+      display: block;
+      margin-top: 11px;
+      color: #c7c0b0;
+      font-size: 11px;
+      line-height: 1.6;
+      text-align: center;
+    }
 
     .location-box {
       border: 1px solid #e3e3e3;
@@ -82,7 +228,11 @@
       background: #fafafa;
     }
 
-    .location-actions { display: flex; gap: 10px; margin-bottom: 14px; }
+    .location-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
 
     .location-button {
       width: auto;
@@ -94,7 +244,12 @@
       font-size: 14px;
     }
 
-    .location-button.secondary { background: #fff; color: #111; border: 1px solid #d8d8d8; }
+    .location-button.secondary {
+      background: #fff;
+      color: #111;
+      border: 1px solid #d8d8d8;
+    }
+
     .location-button:hover { transform: translateY(-1px); }
 
     .location-status {
@@ -106,9 +261,26 @@
       line-height: 1.4;
     }
 
-    .location-status.success { display: block; background: #eaf8ee; border: 1px solid #b7e4c3; color: #1d6b32; }
-    .location-status.error { display: block; background: #fff0f0; border: 1px solid #efbcbc; color: #a32929; }
-    .location-status.info { display: block; background: #f1f5f9; border: 1px solid #d9e1ea; color: #475569; }
+    .location-status.success {
+      display: block;
+      background: #eaf8ee;
+      border: 1px solid #b7e4c3;
+      color: #1d6b32;
+    }
+
+    .location-status.error {
+      display: block;
+      background: #fff0f0;
+      border: 1px solid #efbcbc;
+      color: #a32929;
+    }
+
+    .location-status.info {
+      display: block;
+      background: #f1f5f9;
+      border: 1px solid #d9e1ea;
+      color: #475569;
+    }
 
     #location-map {
       width: 100%;
@@ -120,11 +292,37 @@
       cursor: crosshair;
     }
 
-    .coordinates { display: none; margin-top: 10px; font-size: 12px; color: #666; word-break: break-word; }
+    .coordinates {
+      display: none;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #666;
+      word-break: break-word;
+    }
+
     .coordinates strong { color: #111; }
-    .terms { display: flex; align-items: flex-start; gap: 10px; margin-top: 5px; }
-    .terms input { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; }
-    .terms label { font-weight: 400; margin: 0; line-height: 1.5; font-size: 13px; color: #555; }
+
+    .terms {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 5px;
+    }
+
+    .terms input {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .terms label {
+      font-weight: 400;
+      margin: 0;
+      line-height: 1.5;
+      font-size: 13px;
+      color: #555;
+    }
 
     .submit-area { margin-top: 10px; }
 
@@ -142,7 +340,12 @@
     }
 
     button:hover { transform: translateY(-1px); }
-    button:disabled { opacity: .65; cursor: not-allowed; transform: none; }
+
+    button:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+      transform: none;
+    }
 
     .submit-note {
       margin-top: 12px;
@@ -155,7 +358,13 @@
       color: #555;
     }
 
-    #submission-status { display: none; margin-top: 15px; text-align: center; font-size: 14px; color: #555; }
+    #submission-status {
+      display: none;
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+    }
 
     .message {
       display: none;
@@ -166,8 +375,17 @@
       font-size: 14px;
     }
 
-    #form-success { background: #eaf8ee; border: 1px solid #b7e4c3; color: #1d6b32; }
-    #form-error { background: #fff0f0; border: 1px solid #efbcbc; color: #a32929; }
+    #form-success {
+      background: #eaf8ee;
+      border: 1px solid #b7e4c3;
+      color: #1d6b32;
+    }
+
+    #form-error {
+      background: #fff0f0;
+      border: 1px solid #efbcbc;
+      color: #a32929;
+    }
 
     .back-link {
       display: block;
@@ -182,13 +400,29 @@
 
     @media (max-width: 700px) {
       .page { padding: 25px 14px 50px; }
-      .card { padding: 20px; border-radius: 14px; }
+
+      .card {
+        padding: 20px;
+        border-radius: 14px;
+      }
+
       .grid { grid-template-columns: 1fr; }
+
       .field.full { grid-column: auto; }
+
       .header h1 { font-size: 26px; }
+
       .location-actions { flex-direction: column; }
+
       .location-button { width: 100%; }
+
       #location-map { height: 320px; }
+
+      .website-promo { padding: 17px; }
+
+      .website-promo h3 { font-size: 18px; }
+
+      .website-promo-button { font-size: 13px; }
     }
   </style>
 </head>
@@ -196,24 +430,42 @@
 <body>
   <main class="page">
     <div class="container">
+
       <header class="header">
         <div class="logo">Near<span>Africa</span></div>
         <h1>List Your Business</h1>
-        <p>Help people discover your business on NearAfrica. Submit your business information below for review.</p>
+        <p>
+          Help people discover your business on NearAfrica.
+          Submit your business information below for review.
+        </p>
       </header>
 
       <div class="card">
         <form id="business-form" novalidate>
+
+          <!-- BUSINESS INFORMATION -->
           <section class="section">
             <div class="section-title">Business Information</div>
+
             <div class="grid">
               <div class="field full">
-                <label for="business-name">Business Name <span>*</span></label>
-                <input type="text" id="business-name" name="business_name" placeholder="e.g. Ambrose Boutique" required>
+                <label for="business-name">
+                  Business Name <span>*</span>
+                </label>
+                <input
+                  type="text"
+                  id="business-name"
+                  name="business_name"
+                  placeholder="e.g. Ambrose Boutique"
+                  required
+                >
               </div>
 
               <div class="field">
-                <label for="category">Category <span>*</span></label>
+                <label for="category">
+                  Category <span>*</span>
+                </label>
+
                 <select id="category" name="category" required>
                   <option value="">Select a category</option>
                   <option>Restaurants &amp; Food</option>
@@ -242,7 +494,10 @@
               </div>
 
               <div class="field">
-                <label for="country">Country <span>*</span></label>
+                <label for="country">
+                  Country <span>*</span>
+                </label>
+
                 <select id="country" name="country" required>
                   <option value="">Select country</option>
                   <option>Nigeria</option>
@@ -269,112 +524,298 @@
               </div>
 
               <div class="field">
-                <label for="state-select">State / Region <span>*</span></label>
+                <label for="state-select">
+                  State / Region <span>*</span>
+                </label>
+
                 <select id="state-select" name="state" required disabled>
                   <option value="">Select state</option>
-                  <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option>
-                  <option>Anambra</option><option>Bauchi</option><option>Bayelsa</option>
-                  <option>Benue</option><option>Borno</option><option>Cross River</option>
-                  <option>Delta</option><option>Ebonyi</option><option>Edo</option>
-                  <option>Ekiti</option><option>Enugu</option><option>Gombe</option>
-                  <option>Imo</option><option>Jigawa</option><option>Kaduna</option>
-                  <option>Kano</option><option>Katsina</option><option>Kebbi</option>
-                  <option>Kogi</option><option>Kwara</option><option>Lagos</option>
-                  <option>Nasarawa</option><option>Niger</option><option>Ogun</option>
-                  <option>Ondo</option><option>Osun</option><option>Oyo</option>
-                  <option>Plateau</option><option>Rivers</option><option>Sokoto</option>
-                  <option>Taraba</option><option>Yobe</option><option>Zamfara</option>
+                  <option>Abia</option>
+                  <option>Adamawa</option>
+                  <option>Akwa Ibom</option>
+                  <option>Anambra</option>
+                  <option>Bauchi</option>
+                  <option>Bayelsa</option>
+                  <option>Benue</option>
+                  <option>Borno</option>
+                  <option>Cross River</option>
+                  <option>Delta</option>
+                  <option>Ebonyi</option>
+                  <option>Edo</option>
+                  <option>Ekiti</option>
+                  <option>Enugu</option>
+                  <option>Gombe</option>
+                  <option>Imo</option>
+                  <option>Jigawa</option>
+                  <option>Kaduna</option>
+                  <option>Kano</option>
+                  <option>Katsina</option>
+                  <option>Kebbi</option>
+                  <option>Kogi</option>
+                  <option>Kwara</option>
+                  <option>Lagos</option>
+                  <option>Nasarawa</option>
+                  <option>Niger</option>
+                  <option>Ogun</option>
+                  <option>Ondo</option>
+                  <option>Osun</option>
+                  <option>Oyo</option>
+                  <option>Plateau</option>
+                  <option>Rivers</option>
+                  <option>Sokoto</option>
+                  <option>Taraba</option>
+                  <option>Yobe</option>
+                  <option>Zamfara</option>
                   <option value="FCT">Federal Capital Territory</option>
                 </select>
-                <input type="text" id="state-other" placeholder="Enter state / region" style="display:none;">
+
+                <input
+                  type="text"
+                  id="state-other"
+                  placeholder="Enter state / region"
+                  style="display:none;"
+                >
               </div>
 
               <div class="field">
-                <label for="city">City <span>*</span></label>
-                <input type="text" id="city" name="city" placeholder="e.g. Lagos" required>
+                <label for="city">
+                  City <span>*</span>
+                </label>
+                <input
+                  type="text"
+                  id="city"
+                  name="city"
+                  placeholder="e.g. Lagos"
+                  required
+                >
               </div>
 
               <div class="field full">
-                <label for="address">Business Address <span>*</span></label>
-                <input type="text" id="address" name="address" placeholder="Full business address" required>
+                <label for="address">
+                  Business Address <span>*</span>
+                </label>
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  placeholder="Full business address"
+                  required
+                >
               </div>
             </div>
           </section>
 
+          <!-- BUSINESS LOCATION -->
           <section class="section">
             <div class="section-title">Business Location</div>
+
             <div class="location-box">
               <div class="hint" style="margin-top:0;margin-bottom:12px;">
-                Add the exact business location so customers can find the business on the NearAfrica map.
-                <strong>You can use your current location or select the business location manually on the map.</strong>
+                Add the exact business location so customers can find the
+                business on the NearAfrica map.
+                <strong>
+                  You can use your current location or select the business
+                  location manually on the map.
+                </strong>
               </div>
 
               <div class="location-actions">
-                <button type="button" id="use-location" class="location-button">📍 Use My Current Location</button>
-                <button type="button" id="clear-location" class="location-button secondary">Clear Location</button>
+                <button
+                  type="button"
+                  id="use-location"
+                  class="location-button"
+                >
+                  📍 Use My Current Location
+                </button>
+
+                <button
+                  type="button"
+                  id="clear-location"
+                  class="location-button secondary"
+                >
+                  Clear Location
+                </button>
               </div>
 
-              <div id="location-status" class="location-status" role="status" aria-live="polite"></div>
+              <div
+                id="location-status"
+                class="location-status"
+                role="status"
+                aria-live="polite"
+              ></div>
+
               <div id="location-map"></div>
               <div id="coordinates" class="coordinates"></div>
+
               <input type="hidden" id="latitude" name="latitude">
               <input type="hidden" id="longitude" name="longitude">
             </div>
           </section>
 
+          <!-- CONTACT INFORMATION -->
           <section class="section">
             <div class="section-title">Contact Information</div>
+
             <div class="grid">
               <div class="field">
                 <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="+234...">
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="+234..."
+                >
               </div>
+
               <div class="field">
                 <label for="whatsapp">WhatsApp Number</label>
-                <input type="tel" id="whatsapp" name="whatsapp" placeholder="+234...">
+                <input
+                  type="tel"
+                  id="whatsapp"
+                  name="whatsapp"
+                  placeholder="+234..."
+                >
               </div>
+
               <div class="field">
                 <label for="email">Business Email</label>
-                <input type="email" id="email" name="email" placeholder="business@example.com">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="business@example.com"
+                >
               </div>
+
+              <!-- WEBSITE FIELD AND WHATSAPP PROMOTION -->
               <div class="field">
                 <label for="website">Website</label>
-                <input type="url" id="website" name="website" placeholder="https://example.com">
-                <div class="hint">Leave blank if the business does not have a website.</div>
+
+                <input
+                  type="url"
+                  id="website"
+                  name="website"
+                  placeholder="https://example.com"
+                >
+
+                <div class="hint">
+                  Leave blank if the business does not have a website.
+                </div>
+
+                <div class="website-promo">
+                  <div class="website-promo-content">
+
+                    <span class="website-promo-label">
+                      Grow Your Business Online
+                    </span>
+
+                    <h3>🌐 Don't Have a Website Yet?</h3>
+
+                    <p>
+                      Give your business a professional online presence.
+                      Get a website designed to showcase your services,
+                      build customer trust, and help more people discover
+                      your business.
+                    </p>
+
+                    <a
+                      class="website-promo-button"
+                      href="https://wa.me/2349134827121?text=Hello%21%20I%20found%20you%20on%20NearAfrica.%20I%27m%20interested%20in%20getting%20a%20website%20designed%20for%20my%20business.%20Please%20tell%20me%20more%20about%20your%20services%20and%20pricing."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Chat on WhatsApp about website design"
+                    >
+                      <span aria-hidden="true">💬</span>
+                      Need a Website? Chat on WhatsApp
+                    </a>
+
+                    <span class="website-promo-note">
+                      Your NearAfrica business listing is free.
+                      Website design is a separate service.
+                    </span>
+
+                  </div>
+                </div>
               </div>
             </div>
           </section>
 
+          <!-- ABOUT THE BUSINESS -->
           <section class="section">
             <div class="section-title">About the Business</div>
+
             <div class="field">
               <label for="description">Business Description</label>
-              <textarea id="description" name="description" placeholder="Tell people what this business offers..."></textarea>
-              <div class="hint">Keep the description clear and useful to potential customers.</div>
+
+              <textarea
+                id="description"
+                name="description"
+                placeholder="Tell people what this business offers..."
+              ></textarea>
+
+              <div class="hint">
+                Keep the description clear and useful to potential customers.
+              </div>
             </div>
           </section>
 
+          <!-- TERMS -->
           <section class="section">
             <div class="terms">
               <input type="checkbox" id="terms" name="terms" required>
+
               <label for="terms">
-                I confirm that the information submitted is accurate to the best of my knowledge and I agree that NearAfrica may review and publish the listing according to its listing policies.
+                I confirm that the information submitted is accurate to
+                the best of my knowledge and I agree that NearAfrica may
+                review and publish the listing according to its listing
+                policies.
                 <span>*</span>
               </label>
             </div>
           </section>
 
+          <!-- SUBMISSION -->
           <div class="submit-area">
-            <button type="submit" id="submit-business">Submit Business</button>
-            <p class="submit-note">📌 Note: If your business submission fails, please try again. Sometimes a temporary error may prevent your listing from going through, and a second attempt may work.</p>
-            <div id="submission-status" role="status" aria-live="polite">Submitting your business...</div>
-            <div id="form-success" class="message" role="status" aria-live="polite"></div>
-            <div id="form-error" class="message" role="alert" aria-live="assertive"></div>
+            <button type="submit" id="submit-business">
+              Submit Business
+            </button>
+
+            <p class="submit-note">
+              📌 Note: If your business submission fails, please try again.
+              Sometimes a temporary error may prevent your listing from
+              going through, and a second attempt may work.
+            </p>
+
+            <div
+              id="submission-status"
+              role="status"
+              aria-live="polite"
+            >
+              Submitting your business...
+            </div>
+
+            <div
+              id="form-success"
+              class="message"
+              role="status"
+              aria-live="polite"
+            ></div>
+
+            <div
+              id="form-error"
+              class="message"
+              role="alert"
+              aria-live="assertive"
+            ></div>
           </div>
+
         </form>
       </div>
 
-      <a href="https://www.nearafrica.com.ng/">Back to home</a>
+      <a class="back-link" href="https://www.nearafrica.com.ng/">
+        Back to home
+      </a>
+
     </div>
   </main>
 
@@ -388,7 +829,7 @@
     };
   </script>
 
-  <!-- Country and state selection -->
+  <!-- COUNTRY AND STATE SELECTION -->
   <script>
     (function () {
       const country = document.getElementById("country");
@@ -424,7 +865,7 @@
     })();
   </script>
 
-  <!-- Business location picker -->
+  <!-- BUSINESS LOCATION PICKER -->
   <script>
     (function () {
       const useLocationButton = document.getElementById("use-location");
@@ -447,8 +888,12 @@
       }
 
       function validCoordinates(lat, lng) {
-        return Number.isFinite(lat) && Number.isFinite(lng) &&
-          lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+        return Number.isFinite(lat) &&
+          Number.isFinite(lng) &&
+          lat >= -90 &&
+          lat <= 90 &&
+          lng >= -180 &&
+          lng <= 180;
       }
 
       function saveCoordinates(lat, lng) {
@@ -456,40 +901,65 @@
         longitudeInput.value = Number(lng).toFixed(8);
 
         coordinatesBox.textContent = "";
+
         const latLabel = document.createElement("strong");
         latLabel.textContent = "Latitude: ";
+
         const lngLabel = document.createElement("strong");
         lngLabel.textContent = " Longitude: ";
 
-        coordinatesBox.append(latLabel, Number(lat).toFixed(6), " ", lngLabel, Number(lng).toFixed(6));
+        coordinatesBox.append(
+          latLabel,
+          Number(lat).toFixed(6),
+          " ",
+          lngLabel,
+          Number(lng).toFixed(6)
+        );
+
         coordinatesBox.style.display = "block";
       }
 
       function placeMarker(lat, lng) {
         if (!map) return;
 
-        if (marker) map.removeLayer(marker);
+        if (marker) {
+          map.removeLayer(marker);
+        }
 
-        marker = L.marker([lat, lng], { draggable: true })
+        marker = L.marker([lat, lng], {
+          draggable: true
+        })
           .addTo(map)
           .bindPopup("Business location");
 
         marker.on("dragend", function (event) {
           const point = event.target.getLatLng();
+
           saveCoordinates(point.lat, point.lng);
-          setStatus("Business location updated. You can drag the marker again if needed.", "success");
+
+          setStatus(
+            "Business location updated. You can drag the marker again if needed.",
+            "success"
+          );
         });
       }
 
       function selectPoint(lat, lng) {
         saveCoordinates(lat, lng);
         placeMarker(lat, lng);
-        setStatus("Business location selected. You can drag the marker to fine-tune the exact position.", "success");
+
+        setStatus(
+          "Business location selected. You can drag the marker to fine-tune the exact position.",
+          "success"
+        );
       }
 
       function ensureMap(lat, lng, zoom) {
         if (typeof L === "undefined") {
-          setStatus("The map library could not be loaded. Refresh the page or try again later.", "error");
+          setStatus(
+            "The map library could not be loaded. Refresh the page or try again later.",
+            "error"
+          );
           return false;
         }
 
@@ -498,43 +968,64 @@
         if (!map) {
           map = L.map(locationMap).setView([lat, lng], zoom);
 
-          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 19,
-            attribution: "&copy; OpenStreetMap contributors"
-          }).addTo(map);
+          L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+              maxZoom: 19,
+              attribution: "&copy; OpenStreetMap contributors"
+            }
+          ).addTo(map);
 
           map.on("click", function (event) {
-            selectPoint(event.latlng.lat, event.latlng.lng);
+            selectPoint(
+              event.latlng.lat,
+              event.latlng.lng
+            );
           });
         } else {
           map.setView([lat, lng], zoom);
         }
 
         window.setTimeout(function () {
-          if (map) map.invalidateSize();
+          if (map) {
+            map.invalidateSize();
+          }
         }, 250);
 
         return true;
       }
 
       function showMapForSelection() {
-        if (!ensureMap(DEFAULT_LAT, DEFAULT_LNG, 6)) return;
+        if (!ensureMap(DEFAULT_LAT, DEFAULT_LNG, 6)) {
+          return;
+        }
 
         if (!latitudeInput.value || !longitudeInput.value) {
-          setStatus("Click the map to select the actual business location. You can zoom in to find the correct area.", "info");
+          setStatus(
+            "Click the map to select the actual business location. You can zoom in to find the correct area.",
+            "info"
+          );
         }
       }
 
       function useCurrentLocation() {
         if (!navigator.geolocation) {
-          setStatus("Location services are not supported by this browser. You can select the business location manually on the map.", "error");
+          setStatus(
+            "Location services are not supported by this browser. You can select the business location manually on the map.",
+            "error"
+          );
+
           showMapForSelection();
           return;
         }
 
         useLocationButton.disabled = true;
         useLocationButton.textContent = "Getting location...";
-        setStatus("Requesting your current location. Please allow location access when your browser asks.", "info");
+
+        setStatus(
+          "Requesting your current location. Please allow location access when your browser asks.",
+          "info"
+        );
 
         navigator.geolocation.getCurrentPosition(
           function (position) {
@@ -542,47 +1033,75 @@
             const lng = Number(position.coords.longitude);
 
             if (!validCoordinates(lat, lng)) {
-              setStatus("The browser returned invalid coordinates.", "error");
+              setStatus(
+                "The browser returned invalid coordinates.",
+                "error"
+              );
             } else if (ensureMap(lat, lng, 16)) {
               selectPoint(lat, lng);
-              setStatus("Location captured. Confirm that the marker represents the actual business location. You can drag it or select another point.", "success");
+
+              setStatus(
+                "Location captured. Confirm that the marker represents the actual business location. You can drag it or select another point.",
+                "success"
+              );
+
               useLocationButton.textContent = "📍 Update My Location";
             }
 
             useLocationButton.disabled = false;
           },
+
           function (error) {
-            let message = "We couldn't get your location. You can select the business location manually on the map.";
+            let message =
+              "We couldn't get your location. You can select the business location manually on the map.";
 
             if (error.code === error.PERMISSION_DENIED) {
-              message = "Location permission was denied. You can select the business location manually on the map.";
+              message =
+                "Location permission was denied. You can select the business location manually on the map.";
             } else if (error.code === error.POSITION_UNAVAILABLE) {
-              message = "Your location is currently unavailable. You can select the business location manually on the map.";
+              message =
+                "Your location is currently unavailable. You can select the business location manually on the map.";
             } else if (error.code === error.TIMEOUT) {
-              message = "Location request timed out. You can select the business location manually on the map.";
+              message =
+                "Location request timed out. You can select the business location manually on the map.";
             }
 
             setStatus(message, "error");
             showMapForSelection();
+
             useLocationButton.disabled = false;
             useLocationButton.textContent = "📍 Use My Current Location";
+
             console.error("NearAfrica geolocation error:", error);
           },
-          { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+
+          {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0
+          }
         );
       }
 
       function clearLocation() {
         latitudeInput.value = "";
         longitudeInput.value = "";
+
         coordinatesBox.textContent = "";
         coordinatesBox.style.display = "none";
 
-        if (marker && map) map.removeLayer(marker);
+        if (marker && map) {
+          map.removeLayer(marker);
+        }
+
         marker = null;
         locationMap.style.display = "none";
 
-        setStatus("Location cleared. You can submit without coordinates.", "info");
+        setStatus(
+          "Location cleared. You can submit without coordinates.",
+          "info"
+        );
+
         useLocationButton.disabled = false;
         useLocationButton.textContent = "📍 Use My Current Location";
       }
@@ -592,14 +1111,16 @@
 
       window.nearAfricaLocation = {
         reset: clearLocation,
+
         hasCoordinates: function () {
-          return latitudeInput.value !== "" && longitudeInput.value !== "";
+          return latitudeInput.value !== "" &&
+            longitudeInput.value !== "";
         }
       };
     })();
   </script>
 
-  <!-- Business submission and referral-code capture -->
+  <!-- BUSINESS SUBMISSION AND REFERRAL-CODE CAPTURE -->
   <script>
     (function () {
       const form = document.getElementById("business-form");
@@ -610,7 +1131,8 @@
 
       /*
        * Capture the referral code from ?ref=CODE.
-       * This code is only attribution data; the Worker must validate it.
+       * This code is attribution data only.
+       * The Worker must validate it.
        */
       const referralCode = (
         new URLSearchParams(window.location.search).get("ref") || ""
@@ -635,41 +1157,94 @@
           return;
         }
 
-        const apiBase = window.NearAfricaConfig &&
+        const apiBase =
+          window.NearAfricaConfig &&
           window.NearAfricaConfig.api &&
           window.NearAfricaConfig.api.baseUrl
-          ? window.NearAfricaConfig.api.baseUrl.replace(/\/$/, "")
-          : "";
+            ? window.NearAfricaConfig.api.baseUrl.replace(/\/$/, "")
+            : "";
 
         if (!apiBase) {
-          showMessage(errorBox, "NearAfrica API is not configured.");
+          showMessage(
+            errorBox,
+            "NearAfrica API is not configured."
+          );
           return;
         }
 
         const formData = new FormData(form);
 
-        const latitudeValue = String(formData.get("latitude") || "").trim();
-        const longitudeValue = String(formData.get("longitude") || "").trim();
-        const latitude = latitudeValue ? Number(latitudeValue) : null;
-        const longitude = longitudeValue ? Number(longitudeValue) : null;
+        const latitudeValue = String(
+          formData.get("latitude") || ""
+        ).trim();
+
+        const longitudeValue = String(
+          formData.get("longitude") || ""
+        ).trim();
+
+        const latitude = latitudeValue
+          ? Number(latitudeValue)
+          : null;
+
+        const longitude = longitudeValue
+          ? Number(longitudeValue)
+          : null;
 
         const submission = {
-          name: String(formData.get("business_name") || "").trim(),
-          category: String(formData.get("category") || "").trim(),
-          country: String(formData.get("country") || "").trim(),
-          state: String(formData.get("state") || "").trim(),
-          city: String(formData.get("city") || "").trim(),
-          address: String(formData.get("address") || "").trim(),
-          phone: String(formData.get("phone") || "").trim(),
-          whatsapp: String(formData.get("whatsapp") || "").trim(),
-          website: String(formData.get("website") || "").trim(),
-          description: String(formData.get("description") || "").trim(),
-          email: String(formData.get("email") || "").trim(),
-          latitude: Number.isFinite(latitude) ? latitude : null,
-          longitude: Number.isFinite(longitude) ? longitude : null,
+          name: String(
+            formData.get("business_name") || ""
+          ).trim(),
+
+          category: String(
+            formData.get("category") || ""
+          ).trim(),
+
+          country: String(
+            formData.get("country") || ""
+          ).trim(),
+
+          state: String(
+            formData.get("state") || ""
+          ).trim(),
+
+          city: String(
+            formData.get("city") || ""
+          ).trim(),
+
+          address: String(
+            formData.get("address") || ""
+          ).trim(),
+
+          phone: String(
+            formData.get("phone") || ""
+          ).trim(),
+
+          whatsapp: String(
+            formData.get("whatsapp") || ""
+          ).trim(),
+
+          website: String(
+            formData.get("website") || ""
+          ).trim(),
+
+          description: String(
+            formData.get("description") || ""
+          ).trim(),
+
+          email: String(
+            formData.get("email") || ""
+          ).trim(),
+
+          latitude: Number.isFinite(latitude)
+            ? latitude
+            : null,
+
+          longitude: Number.isFinite(longitude)
+            ? longitude
+            : null,
+
           terms: formData.get("terms") !== null,
 
-          /* NEW: forward referral attribution to the Worker */
           referral_code: referralCode || null
         };
 
@@ -690,46 +1265,71 @@
         }
 
         if (
-          (submission.latitude !== null && submission.longitude === null) ||
-          (submission.latitude === null && submission.longitude !== null)
+          (submission.latitude !== null &&
+            submission.longitude === null) ||
+          (submission.latitude === null &&
+            submission.longitude !== null)
         ) {
-          showMessage(errorBox, "The business location is incomplete. Please set the location again or clear it.");
+          showMessage(
+            errorBox,
+            "The business location is incomplete. Please set the location again or clear it."
+          );
           return;
         }
 
-        if (submission.latitude !== null && submission.longitude !== null) {
+        if (
+          submission.latitude !== null &&
+          submission.longitude !== null
+        ) {
           if (
             !Number.isFinite(submission.latitude) ||
             !Number.isFinite(submission.longitude) ||
-            submission.latitude < -90 || submission.latitude > 90 ||
-            submission.longitude < -180 || submission.longitude > 180
+            submission.latitude < -90 ||
+            submission.latitude > 90 ||
+            submission.longitude < -180 ||
+            submission.longitude > 180
           ) {
-            showMessage(errorBox, "The business coordinates are invalid. Please set the location again.");
+            showMessage(
+              errorBox,
+              "The business coordinates are invalid. Please set the location again."
+            );
             return;
           }
         }
 
         if (!submission.terms) {
-          showMessage(errorBox, "Please agree to the confirmation before submitting.");
+          showMessage(
+            errorBox,
+            "Please agree to the confirmation before submitting."
+          );
           return;
         }
 
         submitButton.disabled = true;
         submitButton.textContent = "Submitting...";
-        statusBox.textContent = "Submitting your business for review...";
+
+        statusBox.textContent =
+          "Submitting your business for review.";
+
         statusBox.style.display = "block";
 
         try {
-          const response = await fetch(`${apiBase}/submissions`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json"
-            },
-            body: JSON.stringify(submission)
-          });
+          const response = await fetch(
+            `${apiBase}/submissions`,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+              },
+
+              body: JSON.stringify(submission)
+            }
+          );
 
           let data = null;
+
           try {
             data = await response.json();
           } catch (_) {
@@ -744,11 +1344,22 @@
             );
           }
 
-          if (data && (data.success === false || data.status === "error")) {
-            throw new Error(data.error || data.message || "The business could not be submitted.");
+          if (
+            data &&
+            (
+              data.success === false ||
+              data.status === "error"
+            )
+          ) {
+            throw new Error(
+              data.error ||
+              data.message ||
+              "The business could not be submitted."
+            );
           }
 
           statusBox.style.display = "none";
+
           showMessage(
             successBox,
             "Your business has been submitted successfully and is now awaiting review. Thank you for helping build NearAfrica."
@@ -756,8 +1367,11 @@
 
           form.reset();
 
-          const stateSelect = document.getElementById("state-select");
-          const stateOther = document.getElementById("state-other");
+          const stateSelect =
+            document.getElementById("state-select");
+
+          const stateOther =
+            document.getElementById("state-other");
 
           stateSelect.style.display = "block";
           stateSelect.disabled = true;
@@ -770,20 +1384,33 @@
           stateOther.removeAttribute("name");
           stateOther.value = "";
 
-          if (window.nearAfricaLocation && typeof window.nearAfricaLocation.reset === "function") {
+          if (
+            window.nearAfricaLocation &&
+            typeof window.nearAfricaLocation.reset === "function"
+          ) {
             window.nearAfricaLocation.reset();
           }
 
-          successBox.scrollIntoView({ behavior: "smooth", block: "center" });
+          successBox.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+
         } catch (error) {
           statusBox.style.display = "none";
+
           showMessage(
             errorBox,
             error && error.message
               ? error.message
               : "Something went wrong while submitting your business. Please try again."
           );
-          console.error("NearAfrica submission error:", error);
+
+          console.error(
+            "NearAfrica submission error:",
+            error
+          );
+
         } finally {
           submitButton.disabled = false;
           submitButton.textContent = "Submit Business";
