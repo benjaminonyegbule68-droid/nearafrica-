@@ -1180,14 +1180,15 @@
       t("search.usingYourLocation", "Finding your current location…")
     );
 
-    try {
-      App.userLocation = await getBrowserLocation();
+          App.userLocation = await getBrowserLocation();
       App.locationInfo = await reverseGeocode(App.userLocation);
       App.nearbyMode = true;
 
       saveLocation();
       clearGeographicFilters();
       updateNearbyControls();
+      App.currentPage = 1;
+      await loadBusinesses();
       applyFilters();
 
       const info = App.locationInfo || {};
