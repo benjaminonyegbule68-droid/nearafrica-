@@ -1499,11 +1499,27 @@
           return false;
         }
 
-        if (App.nearbyMode) {
-          if (business.distanceKm === null) return false;
+                if (App.nearbyMode) {
+          // API already applied radius when loadBusinesses used lat/lng.
+          // Client distance is a safety net when API distance is missing.
+          if (
+            business.distanceKm == null &&
+            App.userLocation &&
+            business.latitude != null &&
+            business.longitude != null
+          ) {
+            const d = distanceKm(
+              App.userLocation.latitude,
+              App.userLocation.longitude,
+              business.latitude,
+              business.longitude
+            );
+            business.distanceKm = d;
+          }
+
+          if (business.distanceKm == null) return false;
           if (business.distanceKm > radius) return false;
         }
-
         return true;
       })
       .sort((a, b) => {
