@@ -975,7 +975,7 @@
               finish(null, bestPosition);
             }
           },
-          (error) => {
+                  (error) => {
             if (error.code === 1) {
               finish(
                 new Error(
@@ -985,9 +985,24 @@
                   )
                 )
               );
+              return;
             }
+
+            if (error.code === 2) {
+              finish(
+                new Error(
+                  t(
+                    "search.locationUnavailable",
+                    "Your device could not determine your location. Check location services and try again."
+                  )
+                )
+              );
+              return;
+            }
+
+            // code 3 (timeout) or unknown: keep watching until outer timer;
+            // outer timer may still resolve with bestPosition if any.
           },
-          {
             enableHighAccuracy: true,
             timeout: 60000,
             maximumAge: 0
