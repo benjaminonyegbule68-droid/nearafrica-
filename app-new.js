@@ -869,6 +869,7 @@
     );
   }
 
+  
   function getBrowserLocation() {
     return new Promise((resolve, reject) => {
       if (!window.isSecureContext) {
@@ -929,15 +930,16 @@
           return;
         }
 
-        const message = bestAccuracy !== null
-          ? `Your browser could not obtain a usable location. Its best reported accuracy was ${Math.round(bestAccuracy)} metres. Try again outdoors or check your device's location settings.`
-          : t(
-              "search.locationUnavailable",
-              "Your device could not determine your location. Check location services and try again."
-            );
+        const message =
+          bestAccuracy !== null
+            ? `Your browser could not obtain a usable location. Its best reported accuracy was ${Math.round(bestAccuracy)} metres. Try again outdoors or check your device's location settings.`
+            : t(
+                "search.locationUnavailable",
+                "Your device could not determine your location. Check location services and try again."
+              );
 
         finish(new Error(message));
-           }, 15000);
+      }, 15000);
 
       try {
         watchId = navigator.geolocation.watchPosition(
@@ -975,7 +977,7 @@
               finish(null, bestPosition);
             }
           },
-                  (error) => {
+          (error) => {
             if (error.code === 1) {
               finish(
                 new Error(
@@ -1000,9 +1002,10 @@
               return;
             }
 
-            // code 3 (timeout) or unknown: keep watching until outer timer;
-            // outer timer may still resolve with bestPosition if any.
+            // For a timeout or unknown error, keep watching until
+            // the outer timer expires.
           },
+          {
             enableHighAccuracy: true,
             timeout: 60000,
             maximumAge: 0
@@ -1012,12 +1015,16 @@
         finish(
           new Error(
             error.message ||
-            t("search.locationError", "Unable to start location detection.")
+              t(
+                "search.locationError",
+                "Unable to start location detection."
+              )
           )
         );
       }
     });
   }
+
 
   async function reverseGeocode(location) {
     try {
