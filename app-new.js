@@ -552,7 +552,7 @@
      LOAD BUSINESSES AND FILTER OPTIONS
   ---------------------------------------------------------- */
 
-  async function loadBusinesses() {
+   async function loadBusinesses() {
     setLoading(true);
 
     try {
@@ -560,9 +560,50 @@
         apiUrl(endpoint("businesses", "businesses"))
       );
 
-      url.searchParams.set("limit", "100");
-      url.searchParams.set("page", "1");
-      url.searchParams.set("country", "Nigeria");
+      url.searchParams.set("limit", "48");
+      url.searchParams.set("page", String(App.currentPage || 1));
+
+      const category = clean(categoryFilter()?.value);
+      const query = clean(searchInput()?.value);
+
+      if (category) {
+        url.searchParams.set("category", category);
+      }
+
+      /*
+       * Nearby: ask the API for businesses near the user.
+       * Do not force country when doing radius search — coords define the area.
+       */
+      if (
+        App.nearbyMode &&
+        App.userLocation &&
+        Number.isFinite(App.userLocation.latitude) &&
+        Number.isFinite(App.userLocation.longitude)
+      ) {
+        url.searchParams.set(
+          "latitude",
+          String(App.userLocation.latitude)
+        );
+        url.searchParams.set(
+          "longitude",
+          String(App.userLocation.longitude)
+        );
+        url.searchParams.set(
+          "radius",
+          String(radiusValue())
+        );
+      } else {
+        url.searchParams.set("country", "Nigeria");
+
+        const state = clean(stateFilter()?.value);
+        const city = clean(cityFilter()?.value);
+
+        if (state) url.searchParams.set("state", state);
+        if (city) url.searchParams.set("city", city);
+      }
+
+      // Text search still uses client filter below if API has no q on this path.
+      // Optional: if you later wire /search, use it when query is set.
 
       const payload = await fetchJson(url.toString());
 
@@ -570,18 +611,39 @@
         extractBusinesses(payload).map(normalizeBusiness)
       );
 
+      // Prefer API distance when present.
+      App.allBusinesses = App.allBusinesses.map((business) => {
+        const apiDistance = number(
+          business.distance_km ?? business.distanceKm,
+          null
+        );
+
+        if (apiDistance !== null) {
+          return { ...business, distanceKm: apiDistance };
+        }
+
+        return business;
+      });
+
       if (!App.allBusinesses.length) {
         setStatus(
-          "The API responded, but no businesses were returned. Check the API response and country filter.",
+          App.nearbyMode
+            ? t(
+                "explore.noBusinessesNearby",
+                "No businesses with usable GPS coordinates were found within this radius."
+              )
+            : "The API responded, but no businesses were returned.",
           "info"
         );
       } else {
         setStatus("");
       }
 
-      populateStateOptions();
-      populateCategoryOptions();
-      populateCityOptions();
+      if (!App.nearbyMode) {
+        populateStateOptions();
+        populateCategoryOptions();
+        populateCityOptions();
+      }
 
       return App.allBusinesses;
     } catch (error) {
