@@ -1305,14 +1305,15 @@
     $("#nearbyButton").addEventListener("click", enableNearby);
     $("#clearNearby").addEventListener("click", clearNearby);
 
-    $("#radiusFilter").addEventListener("change", () => {
+       $("#radiusFilter").addEventListener("change", async () => {
       radiusValue();
 
       if (App.nearbyMode) {
+        App.currentPage = 1;
+        await loadBusinesses();
         applyFilters();
       }
     });
-
     updateNearbyControls();
   }
 
