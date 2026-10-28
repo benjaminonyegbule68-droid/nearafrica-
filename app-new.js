@@ -937,7 +937,7 @@
             );
 
         finish(new Error(message));
-      }, 30000);
+           }, 15000);
 
       try {
         watchId = navigator.geolocation.watchPosition(
