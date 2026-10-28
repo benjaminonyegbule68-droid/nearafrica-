@@ -1,36 +1,34 @@
 /*
  * NearAfrica — app-new.js
- * Category matching, Explore functionality and pagination fixes.
+ * Cleaned replacement.
  *
  * Preserves:
- * - API business data; no fictional listings
- * - Search and category/state/city filters
- * - Nearby/GPS location search
- * - Pagination
+ * - NearAfrica API configuration
+ * - Category matching and filters
+ * - Search, state, city and nearby GPS
  * - Saved businesses
  * - Business profile links and view tracking
+ * - Pagination
  * - URL filters and language-change refreshes
- * - The existing NearAfrica API and configuration
+ *
+ * Uses real API records only. Does not create fictional businesses.
  */
 
 (function () {
   "use strict";
 
   /* ----------------------------------------------------------
-     TRANSLATION
+     TRANSLATIONS AND CONFIGURATION
   ---------------------------------------------------------- */
 
   function t(key, fallback) {
     try {
-      if (
-        typeof window !== "undefined" &&
-        window.NearAfricaI18n &&
-        typeof window.NearAfricaI18n.translate === "function"
-      ) {
-        const value = window.NearAfricaI18n.translate(key, fallback);
+      const i18n = window.NearAfricaI18n;
 
-        if (value !== undefined && value !== null && value !== "") {
-          return value;
+      if (i18n && typeof i18n.translate === "function") {
+        const result = i18n.translate(key, fallback);
+        if (result !== undefined && result !== null && result !== "") {
+          return result;
         }
       }
     } catch (_) {}
@@ -46,6 +44,7 @@
   const SAVED_KEY = "nearafrica_saved_businesses";
 
   const MAX_LOCATION_ACCURACY_METERS = 25000;
+  const API_PAGE_SIZE = 48;
 
   const HOME_CATEGORIES = [
     "Restaurants & Food",
@@ -157,10 +156,7 @@
     Array.from(root.querySelectorAll(selector));
 
   function clean(value, fallback = "") {
-    if (value === null || value === undefined) {
-      return fallback;
-    }
-
+    if (value === null || value === undefined) return fallback;
     return String(value).trim() || fallback;
   }
 
@@ -170,7 +166,6 @@
     }
 
     const result = Number(value);
-
     return Number.isFinite(result) ? result : fallback;
   }
 
@@ -200,18 +195,17 @@
 
   function categoryLabel(value) {
     const key = categoryKey(value);
-
     if (!key) return "";
 
     if (CATEGORY_ALIASES[key]) {
       return CATEGORY_ALIASES[key];
     }
 
-    const homeMatch = HOME_CATEGORIES.find(
-      (item) => categoryKey(item) === key
+    const match = HOME_CATEGORIES.find(
+      (category) => categoryKey(category) === key
     );
 
-    if (homeMatch) return homeMatch;
+    if (match) return match;
 
     return String(value)
       .trim()
@@ -222,14 +216,12 @@
   function categoriesMatch(first, second) {
     if (!clean(first) || !clean(second)) return false;
 
-    return (
-      categoryKey(categoryLabel(first)) ===
-      categoryKey(categoryLabel(second))
-    );
+    return categoryKey(categoryLabel(first)) ===
+      categoryKey(categoryLabel(second));
   }
 
   /* ----------------------------------------------------------
-     CONFIGURATION AND API
+     API
   ---------------------------------------------------------- */
 
   function config() {
@@ -249,8 +241,7 @@
     const cfg = config();
 
     return clean(
-      cfg.api &&
-      cfg.api.endpoints &&
+      cfg.api && cfg.api.endpoints &&
       cfg.api.endpoints[name],
       fallback
     ).replace(/^\/+/, "");
@@ -288,8 +279,7 @@
     }
 
     if (!response.ok) {
-      const message =
-        payload &&
+      const message = payload &&
         (payload.message || payload.error || payload.details);
 
       throw new Error(
@@ -305,50 +295,38 @@
   ---------------------------------------------------------- */
 
   const searchInput = () =>
-    $("#searchInput") ||
-    $("#search") ||
-    $("input[name='q']");
+    $("#searchInput") || $("#search") || $("input[name='q']");
 
   const categoryFilter = () =>
-    $("#categoryFilter") ||
-    $("#category") ||
+    $("#categoryFilter") || $("#category") ||
     $("select[name='category']");
 
   const stateFilter = () =>
-    $("#stateFilter") ||
-    $("#state") ||
+    $("#stateFilter") || $("#state") ||
     $("select[name='state']");
 
   const cityFilter = () =>
-    $("#cityFilter") ||
-    $("#city") ||
+    $("#cityFilter") || $("#city") ||
     $("select[name='city']");
 
   const resultsContainer = () =>
-    $("#businessGrid") ||
-    $("#businessesGrid") ||
-    $("#resultsGrid") ||
-    $("#businessResults") ||
+    $("#businessGrid") || $("#businessesGrid") ||
+    $("#resultsGrid") || $("#businessResults") ||
     $("[data-business-results]");
 
   const countElement = () =>
-    $("#resultCount") ||
-    $("#resultsCount") ||
-    $("#resultsStatus") ||
-    $("#businessCount") ||
+    $("#resultCount") || $("#resultsCount") ||
+    $("#resultsStatus") || $("#businessCount") ||
     $("[data-results-count]");
 
   const paginationElement = () =>
-    $("#pagination") ||
-    $("#paginationControls") ||
+    $("#pagination") || $("#paginationControls") ||
     $("[data-pagination]");
 
   function statusElement() {
     let element =
-      $("#locationStatus") ||
-      $("#nearbyStatus") ||
-      $("#locationMessage") ||
-      $("#statusMessage") ||
+      $("#locationStatus") || $("#nearbyStatus") ||
+      $("#locationMessage") || $("#statusMessage") ||
       $("[data-location-status]");
 
     if (!element) {
@@ -380,13 +358,12 @@
   }
 
   function setLoading(loading) {
-    App.loading = loading;
+    App.loading = Boolean(loading);
 
     const container = resultsContainer();
-
     if (!container) return;
 
-    if (loading && !App.allBusinesses.length) {
+    if (App.loading && !App.allBusinesses.length) {
       container.innerHTML =
         '<div class="loading-state">' +
         escapeHtml(t("actions.loading", "Loading businesses...")) +
@@ -402,11 +379,9 @@
   }
 
   function isHomePage() {
-    return (
-      location.pathname === "/" ||
+    return location.pathname === "/" ||
       /index\.html$/i.test(location.pathname) ||
-      Boolean($("#homeSearchForm"))
-    );
+      Boolean($("#homeSearchForm"));
   }
 
   /* ----------------------------------------------------------
@@ -415,7 +390,6 @@
 
   function normalizeBusiness(raw) {
     const b = raw || {};
-
     const id = clean(
       b.id || b.business_id || b.businessId || b.slug
     );
@@ -426,7 +400,7 @@
       ? (
           typeof images[0] === "string"
             ? images[0]
-            : images[0].image_url || images[0].url
+            : images[0]?.image_url || images[0]?.url
         )
       : "";
 
@@ -454,19 +428,13 @@
         "Unnamed Business"
       ),
       category: categoryLabel(rawCategory),
-      address: clean(
-        b.address || b.address_line || b.location
-      ),
+      address: clean(b.address || b.address_line || b.location),
       city: clean(b.city || b.town),
       state: clean(b.state || b.region),
       country: clean(b.country, "Nigeria"),
       description: clean(b.description),
-      phone: clean(
-        b.phone || b.phone_number || b.contact_phone
-      ),
-      website: clean(
-        b.website || b.website_url || b.site
-      ),
+      phone: clean(b.phone || b.phone_number || b.contact_phone),
+      website: clean(b.website || b.website_url || b.site),
       image: clean(
         b.image_url || b.image || b.logo_url || b.logo || firstImage
       ),
@@ -486,13 +454,16 @@
       ),
       verified,
       claimed,
-      featured: number(b.featured, 0)
+      featured: number(b.featured, 0),
+      distanceKm: number(
+        b.distance_km ?? b.distanceKm,
+        null
+      )
     };
   }
 
   function extractBusinesses(payload) {
     if (Array.isArray(payload)) return payload;
-
     if (!payload || typeof payload !== "object") return [];
 
     for (const key of ["businesses", "results", "items"]) {
@@ -501,10 +472,7 @@
 
     if (Array.isArray(payload.data)) return payload.data;
 
-    if (
-      payload.data &&
-      Array.isArray(payload.data.businesses)
-    ) {
+    if (payload.data && Array.isArray(payload.data.businesses)) {
       return payload.data.businesses;
     }
 
@@ -513,12 +481,6 @@
     return [];
   }
 
-  /*
-   * Corrected duplicate detection:
-   * - Prefer a real business ID or slug.
-   * - When no ID is available, use the business name and location.
-   * - Do not group all businesses in the same state as one record.
-   */
   function deduplicate(list) {
     const seen = new Set();
 
@@ -537,9 +499,7 @@
         .map((value) => clean(value).toLowerCase())
         .join("|");
 
-      const key = id
-        ? "id:" + id
-        : "location:" + fallbackKey;
+      const key = id ? "id:" + id : "location:" + fallbackKey;
 
       if (seen.has(key)) return false;
 
@@ -549,10 +509,10 @@
   }
 
   /* ----------------------------------------------------------
-     LOAD BUSINESSES AND FILTER OPTIONS
+     LOAD BUSINESSES
   ---------------------------------------------------------- */
 
-   async function loadBusinesses() {
+  async function loadBusinesses() {
     setLoading(true);
 
     try {
@@ -560,20 +520,20 @@
         apiUrl(endpoint("businesses", "businesses"))
       );
 
-      url.searchParams.set("limit", "48");
-      url.searchParams.set("page", String(App.currentPage || 1));
+      /*
+       * Load one API batch. Frontend pagination operates on the
+       * records returned here. A larger catalogue may require
+       * server-side pagination support from the Worker.
+       */
+      url.searchParams.set("limit", String(API_PAGE_SIZE));
+      url.searchParams.set("page", "1");
 
       const category = clean(categoryFilter()?.value);
-      const query = clean(searchInput()?.value);
 
       if (category) {
         url.searchParams.set("category", category);
       }
 
-      /*
-       * Nearby: ask the API for businesses near the user.
-       * Do not force country when doing radius search — coords define the area.
-       */
       if (
         App.nearbyMode &&
         App.userLocation &&
@@ -588,10 +548,7 @@
           "longitude",
           String(App.userLocation.longitude)
         );
-        url.searchParams.set(
-          "radius",
-          String(radiusValue())
-        );
+        url.searchParams.set("radius", String(radiusValue()));
       } else {
         url.searchParams.set("country", "Nigeria");
 
@@ -602,35 +559,18 @@
         if (city) url.searchParams.set("city", city);
       }
 
-      // Text search still uses client filter below if API has no q on this path.
-      // Optional: if you later wire /search, use it when query is set.
-
       const payload = await fetchJson(url.toString());
 
       App.allBusinesses = deduplicate(
         extractBusinesses(payload).map(normalizeBusiness)
       );
 
-      // Prefer API distance when present.
-      App.allBusinesses = App.allBusinesses.map((business) => {
-        const apiDistance = number(
-          business.distance_km ?? business.distanceKm,
-          null
-        );
-
-        if (apiDistance !== null) {
-          return { ...business, distanceKm: apiDistance };
-        }
-
-        return business;
-      });
-
       if (!App.allBusinesses.length) {
         setStatus(
           App.nearbyMode
             ? t(
                 "explore.noBusinessesNearby",
-                "No businesses with usable GPS coordinates were found within this radius."
+                "No businesses were returned for this nearby search."
               )
             : "The API responded, but no businesses were returned.",
           "info"
@@ -653,8 +593,7 @@
 
       setStatus(
         t("errors.unableToLoad", "Unable to load businesses") +
-        ": " +
-        error.message,
+        ": " + clean(error.message, "Unknown error"),
         "error"
       );
 
@@ -666,7 +605,6 @@
 
   async function loadCategories() {
     const filter = categoryFilter();
-
     if (!filter) return;
 
     try {
@@ -684,27 +622,21 @@
         items = payload.data;
       }
 
-      const previous = filter.value;
-
       items.forEach((item) => {
-        const rawValue = clean(
-          typeof item === "string" ? item : item.name
+        const raw = clean(
+          typeof item === "string" ? item : item?.name
         );
 
-        if (!rawValue) return;
+        if (!raw) return;
 
-        const value = categoryLabel(rawValue);
+        const value = categoryLabel(raw);
 
         const exists = Array.from(filter.options).some(
           (option) => categoriesMatch(option.value, value)
         );
 
-        if (!exists) {
-          filter.add(new Option(value, value));
-        }
+        if (!exists) filter.add(new Option(value, value));
       });
-
-      if (previous) selectCategoryOption(previous);
     } catch (error) {
       console.warn(
         "NearAfrica: category endpoint unavailable.",
@@ -713,11 +645,14 @@
     }
   }
 
+  /* ----------------------------------------------------------
+     FILTER OPTIONS
+  ---------------------------------------------------------- */
+
   function addOptions(select, values, placeholder) {
     if (!select) return;
 
     const previous = select.value;
-
     select.replaceChildren(new Option(placeholder, ""));
 
     values.forEach((value) => {
@@ -744,7 +679,6 @@
 
   function selectCategoryOption(requestedValue) {
     const filter = categoryFilter();
-
     if (!filter) return false;
 
     const requested = clean(requestedValue);
@@ -754,23 +688,19 @@
       return true;
     }
 
-    const matchingOption = Array.from(filter.options).find(
-      (option) =>
-        option.value &&
-        categoriesMatch(option.value, requested)
+    const option = Array.from(filter.options).find(
+      (item) => item.value &&
+        categoriesMatch(item.value, requested)
     );
 
-    if (matchingOption) {
-      filter.value = matchingOption.value;
-      return true;
-    }
+    if (!option) return false;
 
-    return false;
+    filter.value = option.value;
+    return true;
   }
 
   function populateCategoryOptions() {
     const filter = categoryFilter();
-
     if (!filter) return;
 
     const previous = clean(filter.value);
@@ -781,48 +711,34 @@
     });
 
     App.allBusinesses.forEach((business) => {
-      const category = clean(business.category);
-
-      if (!category) return;
-
-      const label = categoryLabel(category);
-      const key = categoryKey(label);
-
-      if (!options.has(key)) {
-        options.set(key, label);
-      }
+      const label = categoryLabel(business.category);
+      if (label) options.set(categoryKey(label), label);
     });
 
     Array.from(filter.options).forEach((option) => {
       if (!option.value) return;
 
       const label = categoryLabel(option.value);
-      const key = categoryKey(label);
-
-      if (!options.has(key)) {
-        options.set(key, label);
-      }
+      if (label) options.set(categoryKey(label), label);
     });
 
     filter.replaceChildren(new Option("All categories", ""));
 
     [...options.values()]
       .sort((a, b) => {
-        const aHome = HOME_CATEGORIES.includes(a);
-        const bHome = HOME_CATEGORIES.includes(b);
+        const ah = HOME_CATEGORIES.includes(a);
+        const bh = HOME_CATEGORIES.includes(b);
 
-        if (aHome && !bHome) return -1;
-        if (!aHome && bHome) return 1;
+        if (ah && !bh) return -1;
+        if (!ah && bh) return 1;
 
         return a.localeCompare(b);
       })
-      .forEach((category) => {
-        filter.add(new Option(category, category));
+      .forEach((value) => {
+        filter.add(new Option(value, value));
       });
 
-    if (previous) {
-      selectCategoryOption(previous);
-    }
+    if (previous) selectCategoryOption(previous);
   }
 
   function populateCityOptions() {
@@ -830,9 +746,8 @@
 
     const cities = uniqueSorted(
       App.allBusinesses
-        .filter(
-          (business) =>
-            !state || business.state.toLowerCase() === state
+        .filter((business) =>
+          !state || business.state.toLowerCase() === state
         )
         .map((business) => business.city)
     );
@@ -841,15 +756,13 @@
   }
 
   /* ----------------------------------------------------------
-     DISTANCE AND LOCATION
+     DISTANCE AND GPS
   ---------------------------------------------------------- */
 
   function distanceKm(lat1, lon1, lat2, lon2) {
     const values = [lat1, lon1, lat2, lon2].map(Number);
 
-    if (
-      values.some((value) => !Number.isFinite(value))
-    ) {
+    if (values.some((value) => !Number.isFinite(value))) {
       return null;
     }
 
@@ -869,27 +782,22 @@
     );
   }
 
-  
   function getBrowserLocation() {
     return new Promise((resolve, reject) => {
       if (!window.isSecureContext) {
-        reject(
-          new Error(
-            t("search.locationError", "Location access requires HTTPS.")
-          )
-        );
+        reject(new Error(
+          t("search.locationError", "Location access requires HTTPS.")
+        ));
         return;
       }
 
       if (!navigator.geolocation) {
-        reject(
-          new Error(
-            t(
-              "search.locationNotSupported",
-              "This browser does not support location services."
-            )
+        reject(new Error(
+          t(
+            "search.locationNotSupported",
+            "This browser does not support location services."
           )
-        );
+        ));
         return;
       }
 
@@ -901,12 +809,9 @@
 
       function finish(error, position) {
         if (finished) return;
-
         finished = true;
 
-        if (timerId !== null) {
-          clearTimeout(timerId);
-        }
+        if (timerId !== null) clearTimeout(timerId);
 
         if (watchId !== null) {
           try {
@@ -914,11 +819,8 @@
           } catch (_) {}
         }
 
-        if (error) {
-          reject(error);
-        } else {
-          resolve(position);
-        }
+        if (error) reject(error);
+        else resolve(position);
       }
 
       timerId = setTimeout(() => {
@@ -930,13 +832,12 @@
           return;
         }
 
-        const message =
-          bestAccuracy !== null
-            ? `Your browser could not obtain a usable location. Its best reported accuracy was ${Math.round(bestAccuracy)} metres. Try again outdoors or check your device's location settings.`
-            : t(
-                "search.locationUnavailable",
-                "Your device could not determine your location. Check location services and try again."
-              );
+        const message = bestAccuracy !== null
+          ? `Your browser could not obtain a usable location. Best reported accuracy: ${Math.round(bestAccuracy)} metres. Try again outdoors or check location settings.`
+          : t(
+              "search.locationUnavailable",
+              "Your device could not determine your location. Check location services and try again."
+            );
 
         finish(new Error(message));
       }, 15000);
@@ -951,12 +852,9 @@
             if (
               latitude === null ||
               longitude === null ||
-              latitude < -90 ||
-              latitude > 90 ||
-              longitude < -180 ||
-              longitude > 180 ||
-              accuracy === null ||
-              accuracy < 0
+              latitude < -90 || latitude > 90 ||
+              longitude < -180 || longitude > 180 ||
+              accuracy === null || accuracy < 0
             ) {
               return;
             }
@@ -979,31 +877,21 @@
           },
           (error) => {
             if (error.code === 1) {
-              finish(
-                new Error(
-                  t(
-                    "search.locationAccessDenied",
-                    "Location permission was denied. Allow location access and try again."
-                  )
+              finish(new Error(
+                t(
+                  "search.locationAccessDenied",
+                  "Location permission was denied. Allow location access and try again."
                 )
-              );
-              return;
-            }
-
-            if (error.code === 2) {
-              finish(
-                new Error(
-                  t(
-                    "search.locationUnavailable",
-                    "Your device could not determine your location. Check location services and try again."
-                  )
+              ));
+            } else if (error.code === 2) {
+              finish(new Error(
+                t(
+                  "search.locationUnavailable",
+                  "Your device could not determine your location. Check location services and try again."
                 )
-              );
-              return;
+              ));
             }
-
-            // For a timeout or unknown error, keep watching until
-            // the outer timer expires.
+            // Other errors are allowed to reach the outer timer.
           },
           {
             enableHighAccuracy: true,
@@ -1012,19 +900,13 @@
           }
         );
       } catch (error) {
-        finish(
-          new Error(
-            error.message ||
-              t(
-                "search.locationError",
-                "Unable to start location detection."
-              )
-          )
-        );
+        finish(new Error(
+          error.message ||
+          t("search.locationError", "Unable to start location detection.")
+        ));
       }
     });
   }
-
 
   async function reverseGeocode(location) {
     try {
@@ -1032,14 +914,12 @@
         apiUrl(endpoint("location", "location/reverse"))
       );
 
-      url.searchParams.set("latitude", location.latitude);
-      url.searchParams.set("longitude", location.longitude);
+      url.searchParams.set("latitude", String(location.latitude));
+      url.searchParams.set("longitude", String(location.longitude));
 
       const payload = await fetchJson(url.toString());
 
-      if (payload?.location) {
-        return payload.location;
-      }
+      if (payload?.location) return payload.location;
     } catch (error) {
       console.warn(
         "NearAfrica: reverse geocoding failed.",
@@ -1051,20 +931,19 @@
   }
 
   function saveLocation() {
-    if (!App.userLocation) return;
+    if (!App.userLocation) {
+      throw new Error("No location is available to save.");
+    }
 
-    const latitude = number(App.userLocation.latitude);
-    const longitude = number(App.userLocation.longitude);
-    const accuracy = number(App.userLocation.accuracy);
+    const { latitude, longitude, accuracy } = App.userLocation;
 
     const valid =
-      latitude !== null &&
-      longitude !== null &&
-      latitude >= -90 &&
-      latitude <= 90 &&
-      longitude >= -180 &&
-      longitude <= 180 &&
-      accuracy !== null &&
+      Number.isFinite(latitude) &&
+      Number.isFinite(longitude) &&
+      latitude >= -90 && latitude <= 90 &&
+      longitude >= -180 && longitude <= 180 &&
+      Number.isFinite(accuracy) &&
+      accuracy >= 0 &&
       accuracy <= MAX_LOCATION_ACCURACY_METERS;
 
     if (!valid) {
@@ -1095,15 +974,12 @@
 
       sessionStorage.setItem(NEARBY_KEY, "1");
     } catch (error) {
-      console.warn(
-        "NearAfrica: could not save location.",
-        error
-      );
+      console.warn("NearAfrica: location could not be saved.", error);
 
       throw new Error(
         t(
           "errors.somethingWentWrong",
-          "Your browser could not save your location. Please check browser storage settings and try again."
+          "Your browser could not save your location. Check browser storage settings."
         )
       );
     }
@@ -1116,23 +992,20 @@
       saved = JSON.parse(
         sessionStorage.getItem(LOCATION_KEY) || "null"
       );
-    } catch (_) {
-      saved = null;
-    }
+    } catch (_) {}
 
     const latitude = number(saved?.latitude);
     const longitude = number(saved?.longitude);
     const accuracy = number(saved?.accuracy);
 
     const valid =
-      saved &&
+      Boolean(saved) &&
       latitude !== null &&
       longitude !== null &&
-      latitude >= -90 &&
-      latitude <= 90 &&
-      longitude >= -180 &&
-      longitude <= 180 &&
+      latitude >= -90 && latitude <= 90 &&
+      longitude >= -180 && longitude <= 180 &&
       accuracy !== null &&
+      accuracy >= 0 &&
       accuracy <= MAX_LOCATION_ACCURACY_METERS;
 
     if (!valid) {
@@ -1143,16 +1016,10 @@
 
       App.userLocation = null;
       App.locationInfo = null;
-
       return false;
     }
 
-    App.userLocation = {
-      latitude,
-      longitude,
-      accuracy
-    };
-
+    App.userLocation = { latitude, longitude, accuracy };
     App.locationInfo = saved.locationInfo || null;
 
     return true;
@@ -1160,13 +1027,18 @@
 
   function radiusValue() {
     const control = $("#radiusFilter");
+    const value = control ? Number(control.value) : App.radiusKm;
 
-    if (control && Number(control.value) > 0) {
-      App.radiusKm = Number(control.value);
+    if (Number.isFinite(value) && value > 0) {
+      App.radiusKm = value;
     }
 
     return App.radiusKm;
   }
+
+  /* ----------------------------------------------------------
+     NEARBY MODE
+  ---------------------------------------------------------- */
 
   async function enableNearby() {
     if (App.locationLoading) return;
@@ -1174,6 +1046,7 @@
     App.locationLoading = true;
 
     const button = $("#nearbyButton");
+    const originalText = button?.textContent;
 
     if (button) {
       button.disabled = true;
@@ -1187,19 +1060,21 @@
       t("search.usingYourLocation", "Finding your current location…")
     );
 
-          App.userLocation = await getBrowserLocation();
+    try {
+      App.userLocation = await getBrowserLocation();
       App.locationInfo = await reverseGeocode(App.userLocation);
       App.nearbyMode = true;
 
       saveLocation();
       clearGeographicFilters();
-      updateNearbyControls();
       App.currentPage = 1;
+
+      updateNearbyControls();
+
       await loadBusinesses();
       applyFilters();
 
       const info = App.locationInfo || {};
-
       const label = [
         info.area,
         info.city,
@@ -1222,11 +1097,29 @@
         error
       );
 
-      setStatus(error.message, "error");
+      App.nearbyMode = false;
+      App.userLocation = null;
+      App.locationInfo = null;
+
+      try {
+        sessionStorage.removeItem(LOCATION_KEY);
+        sessionStorage.removeItem(NEARBY_KEY);
+      } catch (_) {}
+
+      setStatus(
+        clean(error.message, "Unable to activate Nearby."),
+        "error"
+      );
     } finally {
       App.locationLoading = false;
 
-      if (button) button.disabled = false;
+      if (button) {
+        button.disabled = false;
+        button.textContent = originalText || t(
+          "search.useMyLocation",
+          "Use My Location"
+        );
+      }
 
       updateNearbyControls();
     }
@@ -1238,15 +1131,13 @@
 
     if (state) state.value = "";
     if (city) city.value = "";
-
-    App.currentState = "";
-    App.currentCity = "";
   }
 
   function clearNearby() {
     App.nearbyMode = false;
     App.userLocation = null;
     App.locationInfo = null;
+    App.currentPage = 1;
 
     try {
       sessionStorage.removeItem(LOCATION_KEY);
@@ -1254,40 +1145,36 @@
     } catch (_) {}
 
     updateNearbyControls();
-    applyFilters();
+    loadBusinesses().then(applyFilters);
 
-    setStatus(
-      t("explore.clearLocation", "Nearby mode turned off.")
-    );
+    setStatus(t("explore.clearLocation", "Nearby mode turned off."));
   }
 
   /* ----------------------------------------------------------
-     DYNAMIC NEARBY CONTROLS
+     NEARBY CONTROLS
   ---------------------------------------------------------- */
 
   function installNearbyControls() {
     if ($("#nearafricaNearbyControls")) return;
 
     const panel = $(".filter-panel");
-
     if (!panel) return;
 
     const wrapper = document.createElement("div");
 
     wrapper.id = "nearafricaNearbyControls";
     wrapper.className = "filter-group";
-
     wrapper.style.cssText =
       "grid-column:1/-1;display:flex;flex-direction:row;gap:10px;align-items:center;flex-wrap:wrap;";
 
     wrapper.innerHTML = `
-      <button
-        type="button"
-        id="nearbyButton"
-        class="filter-button"
-      >${escapeHtml(t("search.useMyLocation", "Use My Location"))}</button>
+      <button type="button" id="nearbyButton" class="filter-button">
+        ${escapeHtml(t("search.useMyLocation", "Use My Location"))}
+      </button>
 
-      <label for="radiusFilter">${escapeHtml(t("explore.away", "Within"))}</label>
+      <label for="radiusFilter">
+        ${escapeHtml(t("explore.away", "Within"))}
+      </label>
 
       <select
         id="radiusFilter"
@@ -1296,32 +1183,31 @@
       >
         <option value="5">5 km</option>
         <option value="10">10 km</option>
-        <option value="25" selected>25 km</option>
+        <option value="25">25 km</option>
         <option value="50">50 km</option>
         <option value="100">100 km</option>
       </select>
 
-      <button
-        type="button"
-        id="clearNearby"
-        class="filter-button"
-      >${escapeHtml(t("explore.clearLocation", "Turn Nearby Off"))}</button>
+      <button type="button" id="clearNearby" class="filter-button">
+        ${escapeHtml(t("explore.clearLocation", "Turn Nearby Off"))}
+      </button>
     `;
 
     panel.appendChild(wrapper);
 
-    $("#nearbyButton").addEventListener("click", enableNearby);
-    $("#clearNearby").addEventListener("click", clearNearby);
+    $("#nearbyButton")?.addEventListener("click", enableNearby);
+    $("#clearNearby")?.addEventListener("click", clearNearby);
 
-       $("#radiusFilter").addEventListener("change", async () => {
+    $("#radiusFilter")?.addEventListener("change", async () => {
       radiusValue();
 
-      if (App.nearbyMode) {
+      if (App.nearbyMode && App.userLocation) {
         App.currentPage = 1;
         await loadBusinesses();
         applyFilters();
       }
     });
+
     updateNearbyControls();
   }
 
@@ -1341,41 +1227,30 @@
       clear.style.display = App.nearbyMode ? "" : "none";
     }
 
-    if (radius) {
-      radius.value = String(App.radiusKm);
-    }
+    if (radius) radius.value = String(App.radiusKm);
   }
 
   /* ----------------------------------------------------------
-     FILTERS AND URL STATE
+     URL FILTERS
   ---------------------------------------------------------- */
 
   function applyUrlParameters() {
     const params = new URLSearchParams(location.search);
 
-    if (searchInput()) {
-      searchInput().value = params.get("q") || "";
-    }
+    if (searchInput()) searchInput().value = params.get("q") || "";
 
     if (categoryFilter()) {
       selectCategoryOption(params.get("category") || "");
     }
 
-    if (stateFilter()) {
-      stateFilter().value = params.get("state") || "";
-    }
+    if (stateFilter()) stateFilter().value = params.get("state") || "";
 
     populateCityOptions();
 
-    if (cityFilter()) {
-      cityFilter().value = params.get("city") || "";
-    }
+    if (cityFilter()) cityFilter().value = params.get("city") || "";
 
     const radius = number(params.get("radius"));
-
-    if (radius && radius > 0) {
-      App.radiusKm = radius;
-    }
+    if (radius && radius > 0) App.radiusKm = radius;
 
     App.nearbyMode =
       params.get("nearby") === "1" ||
@@ -1388,30 +1263,16 @@
     try {
       const url = new URL(location.href);
 
-      const query = clean(searchInput()?.value);
-      const category = clean(categoryFilter()?.value);
-
-      const state = App.nearbyMode
-        ? ""
-        : clean(stateFilter()?.value);
-
-      const city = App.nearbyMode
-        ? ""
-        : clean(cityFilter()?.value);
-
       const values = {
-        q: query,
-        category,
-        state,
-        city
+        q: clean(searchInput()?.value),
+        category: clean(categoryFilter()?.value),
+        state: App.nearbyMode ? "" : clean(stateFilter()?.value),
+        city: App.nearbyMode ? "" : clean(cityFilter()?.value)
       };
 
       Object.entries(values).forEach(([key, value]) => {
-        if (value) {
-          url.searchParams.set(key, value);
-        } else {
-          url.searchParams.delete(key);
-        }
+        if (value) url.searchParams.set(key, value);
+        else url.searchParams.delete(key);
       });
 
       if (App.nearbyMode) {
@@ -1424,46 +1285,50 @@
 
       history.replaceState({}, "", url.toString());
     } catch (error) {
-      console.warn(
-        "NearAfrica: URL update failed.",
-        error
-      );
+      console.warn("NearAfrica: URL update failed.", error);
     }
   }
+
+  /* ----------------------------------------------------------
+     FILTERING
+  ---------------------------------------------------------- */
 
   function applyFilters() {
     const query = clean(searchInput()?.value).toLowerCase();
     const category = clean(categoryFilter()?.value);
-
     const state = App.nearbyMode
       ? ""
       : clean(stateFilter()?.value).toLowerCase();
-
     const city = App.nearbyMode
       ? ""
       : clean(cityFilter()?.value).toLowerCase();
 
     const radius = radiusValue();
 
-    if (App.nearbyMode) {
-      clearGeographicFilters();
-    }
+    if (App.nearbyMode) clearGeographicFilters();
 
     App.filteredBusinesses = App.allBusinesses
       .map((business) => {
-        const distance = App.userLocation
-          ? distanceKm(
-              App.userLocation.latitude,
-              App.userLocation.longitude,
-              business.latitude,
-              business.longitude
-            )
-          : null;
+        let distance = null;
 
-        return {
-          ...business,
-          distanceKm: distance
-        };
+        if (App.userLocation &&
+            business.latitude !== null &&
+            business.longitude !== null) {
+          distance = distanceKm(
+            App.userLocation.latitude,
+            App.userLocation.longitude,
+            business.latitude,
+            business.longitude
+          );
+        }
+
+        /*
+         * Prefer a locally calculated distance when coordinates
+         * exist. Otherwise retain a valid API-provided distance.
+         */
+        if (distance === null) distance = business.distanceKm;
+
+        return { ...business, distanceKm: distance };
       })
       .filter((business) => {
         const searchable = [
@@ -1476,59 +1341,36 @@
           business.description,
           business.phone,
           business.website
-        ]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
+        ].filter(Boolean).join(" ").toLowerCase();
 
-        if (query && !searchable.includes(query)) {
-          return false;
-        }
+        if (query && !searchable.includes(query)) return false;
 
         if (
           category &&
           !categoriesMatch(business.category, category)
-        ) {
-          return false;
-        }
+        ) return false;
 
         if (
           !App.nearbyMode &&
           state &&
           business.state.toLowerCase() !== state
-        ) {
-          return false;
-        }
+        ) return false;
 
         if (
           !App.nearbyMode &&
           city &&
           business.city.toLowerCase() !== city
-        ) {
-          return false;
-        }
+        ) return false;
 
-                if (App.nearbyMode) {
-          // API already applied radius when loadBusinesses used lat/lng.
-          // Client distance is a safety net when API distance is missing.
-          if (
-            business.distanceKm == null &&
-            App.userLocation &&
-            business.latitude != null &&
-            business.longitude != null
-          ) {
-            const d = distanceKm(
-              App.userLocation.latitude,
-              App.userLocation.longitude,
-              business.latitude,
-              business.longitude
-            );
-            business.distanceKm = d;
+        if (App.nearbyMode) {
+          if (business.distanceKm === null ||
+              !Number.isFinite(business.distanceKm)) {
+            return false;
           }
 
-          if (business.distanceKm == null) return false;
           if (business.distanceKm > radius) return false;
         }
+
         return true;
       })
       .sort((a, b) => {
@@ -1543,13 +1385,14 @@
         return a.name.localeCompare(b.name);
       });
 
-    App.currentPage = 1;
-
     App.totalPages = Math.max(
       1,
-      Math.ceil(
-        App.filteredBusinesses.length / App.pageSize
-      )
+      Math.ceil(App.filteredBusinesses.length / App.pageSize)
+    );
+
+    App.currentPage = Math.max(
+      1,
+      Math.min(App.currentPage, App.totalPages)
     );
 
     syncUrl();
@@ -1566,7 +1409,6 @@
     if (cityFilter()) cityFilter().value = "";
 
     App.currentPage = 1;
-
     applyFilters();
 
     setStatus(
@@ -1590,9 +1432,7 @@
       );
 
       return new Set(
-        Array.isArray(value)
-          ? value.map(String)
-          : []
+        Array.isArray(value) ? value.map(String) : []
       );
     } catch (_) {
       return new Set();
@@ -1605,18 +1445,12 @@
     const saved = getSavedIds();
     const key = String(id);
 
-    if (saved.has(key)) {
-      saved.delete(key);
-    } else {
-      saved.add(key);
-    }
+    if (saved.has(key)) saved.delete(key);
+    else saved.add(key);
 
     try {
-      localStorage.setItem(
-        SAVED_KEY,
-        JSON.stringify([...saved])
-      );
-    } catch (_) {
+      localStorage.setItem(SAVED_KEY, JSON.stringify([...saved]));
+    } catch (error) {
       setStatus(
         t(
           "errors.somethingWentWrong",
@@ -1624,7 +1458,6 @@
         ),
         "error"
       );
-
       return;
     }
 
@@ -1639,7 +1472,7 @@
   }
 
   /* ----------------------------------------------------------
-     BUSINESS LINKS AND CARDS
+     BUSINESS CARDS
   ---------------------------------------------------------- */
 
   function businessUrl(business) {
@@ -1653,11 +1486,8 @@
 
     const url = new URL(profilePage, location.href);
 
-    if (business.id) {
-      url.searchParams.set("id", business.id);
-    } else if (business.slug) {
-      url.searchParams.set("slug", business.slug);
-    }
+    if (business.id) url.searchParams.set("id", business.id);
+    else if (business.slug) url.searchParams.set("slug", business.slug);
 
     return url.toString();
   }
@@ -1680,10 +1510,7 @@
       business.state
     ]
       .filter(Boolean)
-      .filter(
-        (value, index, array) =>
-          array.indexOf(value) === index
-      )
+      .filter((value, index, array) => array.indexOf(value) === index)
       .join(", ");
 
     const image = business.image
@@ -1694,27 +1521,24 @@
            onerror="this.style.display='none';this.nextElementSibling.hidden=false;"
          >
          <div class="card-image-placeholder" hidden>NA</div>`
-      : `<div class="card-image-placeholder">NA</div>`;
+      : '<div class="card-image-placeholder">NA</div>';
 
     const rating = Math.max(
       0,
       Math.min(5, Math.round(business.rating || 0))
     );
 
-    const stars =
-      "★".repeat(rating) +
-      "☆".repeat(5 - rating);
+    const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
 
     return `
-      <article
-        class="business-card"
-        data-business-id="${escapeHtml(business.id)}"
-      >
-        <a
-          class="business-card-image"
+      <article class="business-card"
+        data-business-id="${escapeHtml(business.id)}">
+
+        <a class="business-card-image"
           href="${escapeHtml(url)}"
-          aria-label="View ${escapeHtml(business.name)}"
-        >${image}</a>
+          aria-label="View ${escapeHtml(business.name)}">
+          ${image}
+        </a>
 
         <div class="business-card-content">
           <span class="business-card-category">
@@ -1756,18 +1580,18 @@
             : ""}
 
           <div class="business-card-actions">
-            <a
-              class="btn btn-primary"
+            <a class="btn btn-primary"
               href="${escapeHtml(url)}"
-              data-view-business="${escapeHtml(business.id)}"
-            >View Business</a>
+              data-view-business="${escapeHtml(business.id)}">
+              View Business
+            </a>
 
-            <button
-              type="button"
+            <button type="button"
               class="btn btn-save ${saved ? "saved" : ""}"
               data-save-business="${escapeHtml(business.id)}"
-              aria-pressed="${saved}"
-            >${saved ? "★ Saved" : "☆ Save"}</button>
+              aria-pressed="${saved}">
+              ${saved ? "★ Saved" : "☆ Save"}
+            </button>
           </div>
         </div>
       </article>
@@ -1775,15 +1599,12 @@
   }
 
   /* ----------------------------------------------------------
-     PAGINATION
+     PAGINATION AND RESULTS
   ---------------------------------------------------------- */
 
   function renderPagination() {
     const container = paginationElement();
-
-    if (!container) {
-      return;
-    }
+    if (!container) return;
 
     const total = App.filteredBusinesses.length;
 
@@ -1809,61 +1630,42 @@
 
     for (let page = 1; page <= App.totalPages; page++) {
       pages.push(`
-        <button
-          type="button"
+        <button type="button"
           data-page="${page}"
           class="${page === App.currentPage ? "active" : ""}"
           aria-current="${page === App.currentPage ? "page" : "false"}"
-          aria-label="${page === App.currentPage
-            ? "Page " + page + ", current page"
-            : "Go to page " + page}"
-          ${page === App.currentPage ? 'disabled aria-disabled="true"' : ""}
-        >${page}</button>
+          ${page === App.currentPage ? "disabled" : ""}>
+          ${page}
+        </button>
       `);
     }
 
     container.innerHTML = `
-      <button
-        type="button"
+      <button type="button"
         data-page="${App.currentPage - 1}"
-        aria-label="Previous page"
-        ${App.currentPage <= 1 ? "disabled" : ""}
-      >Previous</button>
-
+        ${App.currentPage <= 1 ? "disabled" : ""}>
+        Previous
+      </button>
       ${pages.join("")}
-
-      <button
-        type="button"
+      <button type="button"
         data-page="${App.currentPage + 1}"
-        aria-label="Next page"
-        ${App.currentPage >= App.totalPages ? "disabled" : ""}
-      >Next</button>
+        ${App.currentPage >= App.totalPages ? "disabled" : ""}>
+        Next
+      </button>
     `;
-
-    container.style.pointerEvents = "auto";
   }
 
-  /*
-   * Render only the current page of results.
-   *
-   * If the pagination element happens to be inside the results
-   * container, preserve it while replacing the business cards.
-   */
   function renderResults() {
     const container = resultsContainer();
-
     if (!container) return;
 
     const pagination = paginationElement();
-
     const paginationInsideResults =
       pagination &&
       pagination !== container &&
       container.contains(pagination);
 
-    if (paginationInsideResults) {
-      pagination.remove();
-    }
+    if (paginationInsideResults) pagination.remove();
 
     const total = App.filteredBusinesses.length;
 
@@ -1878,7 +1680,6 @@
     );
 
     const start = (App.currentPage - 1) * App.pageSize;
-
     const items = App.filteredBusinesses.slice(
       start,
       start + App.pageSize
@@ -1892,7 +1693,7 @@
         : App.nearbyMode
           ? t(
               "explore.noBusinessesNearby",
-              "No businesses with usable GPS coordinates were found within this radius. Try increasing the radius or reporting a missing business."
+              "No businesses with usable location data were found within this radius. Try increasing the radius."
             )
           : t(
               "explore.noBusinesses",
@@ -1911,22 +1712,19 @@
       `;
     }
 
-    if (paginationInsideResults) {
-      container.appendChild(pagination);
-    }
+    if (paginationInsideResults) container.appendChild(pagination);
 
     const count = countElement();
 
     if (count) {
-      count.textContent =
-        App.loading && !App.allBusinesses.length
-          ? t("actions.loading", "Loading businesses...")
-          : total === 1
-            ? "1 " + t("explore.businesses", "business found")
-            : `${total.toLocaleString()} ${t(
-                "explore.businessesFound",
-                "businesses found"
-              )}`;
+      count.textContent = App.loading && !App.allBusinesses.length
+        ? t("actions.loading", "Loading businesses...")
+        : total === 1
+          ? "1 " + t("explore.businesses", "business found")
+          : `${total.toLocaleString()} ${t(
+              "explore.businessesFound",
+              "businesses found"
+            )}`;
     }
 
     renderPagination();
@@ -1945,91 +1743,61 @@
         }
       );
     } catch (_) {
-      // Business profile navigation should still work if analytics fail.
+      // Analytics failure must not prevent profile navigation.
     }
   }
 
-  /* ----------------------------------------------------------
-     PAGINATION CLICK HANDLER
-  ---------------------------------------------------------- */
+  function bindPaginationEvents() {
+    const root = document.documentElement;
 
-  /*
-   * Use document-level event delegation rather than attaching the
-   * handler to one pagination element during initialisation.
-   *
-   * This keeps page buttons functional if another script replaces
-   * the pagination container or creates it after this file loads.
-   */
-function bindPaginationEvents() {
-  const root = document.documentElement;
+    if (root.dataset.nearafricaPaginationDelegated === "1") return;
+    root.dataset.nearafricaPaginationDelegated = "1";
 
-  if (
-    root.dataset.nearafricaPaginationDelegated === "1"
-  ) {
-    return;
+    document.addEventListener("click", (event) => {
+      const target = event.target;
+
+      if (!target || typeof target.closest !== "function") return;
+
+      const button = target.closest("button[data-page]");
+      if (!button) return;
+
+      const pagination = button.closest(
+        "#pagination, #paginationControls, [data-pagination]"
+      );
+
+      if (!pagination) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (button.disabled) return;
+
+      const rawPage = button.getAttribute("data-page");
+      if (!/^\d+$/.test(String(rawPage || ""))) return;
+
+      const page = Number(rawPage);
+
+      if (
+        !Number.isSafeInteger(page) ||
+        page < 1 ||
+        page > App.totalPages ||
+        page === App.currentPage
+      ) return;
+
+      App.currentPage = page;
+      renderResults();
+
+      const results = resultsContainer();
+
+      if (results) {
+        results.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+    }, true);
   }
 
-  root.dataset.nearafricaPaginationDelegated = "1";
-
-  // Capture the click before it reaches i18n.js or other
-  // bubbling handlers that may rebuild the pagination.
-  document.addEventListener("click", (event) => {
-    const target = event.target;
-
-    if (
-      !target ||
-      typeof target.closest !== "function"
-    ) {
-      return;
-    }
-
-    const button = target.closest("button[data-page]");
-
-    if (!button) return;
-
-    const pagination = button.closest(
-      "#pagination, #paginationControls, [data-pagination]"
-    );
-
-    if (!pagination) return;
-
-    // Handle pagination here before other scripts process the click.
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (button.disabled) return;
-
-    const rawPage = button.getAttribute("data-page");
-
-    if (!/^\d+$/.test(String(rawPage || ""))) {
-      return;
-    }
-
-    const page = Number(rawPage);
-
-    if (
-      !Number.isSafeInteger(page) ||
-      page < 1 ||
-      page > App.totalPages ||
-      page === App.currentPage
-    ) {
-      return;
-    }
-
-    App.currentPage = page;
-
-    renderResults();
-
-    const results = resultsContainer();
-
-    if (results) {
-      results.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-  }, true);
-}
   /* ----------------------------------------------------------
      EVENTS
   ---------------------------------------------------------- */
@@ -2041,40 +1809,53 @@ function bindPaginationEvents() {
     const city = cityFilter();
 
     if (search) {
-      search.addEventListener("input", applyFilters);
-      search.addEventListener("search", applyFilters);
+      search.addEventListener("input", () => {
+        App.currentPage = 1;
+        applyFilters();
+      });
+
+      search.addEventListener("search", () => {
+        App.currentPage = 1;
+        applyFilters();
+      });
     }
 
     if (category) {
-      category.addEventListener("change", applyFilters);
+      category.addEventListener("change", async () => {
+        App.currentPage = 1;
+        await loadBusinesses();
+        applyFilters();
+      });
     }
 
     if (state) {
-      state.addEventListener("change", () => {
+      state.addEventListener("change", async () => {
+        App.currentPage = 1;
         populateCityOptions();
+        await loadBusinesses();
         applyFilters();
       });
     }
 
     if (city) {
-      city.addEventListener("change", applyFilters);
+      city.addEventListener("change", async () => {
+        App.currentPage = 1;
+        await loadBusinesses();
+        applyFilters();
+      });
     }
 
-    const clear = $("#clearFilters");
-
-    if (clear) {
-      clear.addEventListener("click", clearFilters);
-    }
+    $("#clearFilters")?.addEventListener("click", clearFilters);
 
     const results = resultsContainer();
 
-    if (results) {
+    if (results && results.dataset.nearafricaCardEvents !== "1") {
+      results.dataset.nearafricaCardEvents = "1";
+
       results.addEventListener("click", (event) => {
         const target = event.target;
 
-        if (!target || typeof target.closest !== "function") {
-          return;
-        }
+        if (!target || typeof target.closest !== "function") return;
 
         const save = target.closest("[data-save-business]");
 
@@ -2086,24 +1867,20 @@ function bindPaginationEvents() {
 
         const view = target.closest("[data-view-business]");
 
-        if (view) {
-          recordBusinessView(view.dataset.viewBusiness);
-        }
+        if (view) recordBusinessView(view.dataset.viewBusiness);
       });
     }
 
-    // Works even if the pagination element is created later.
     bindPaginationEvents();
 
-    const searchForms = [
+    const forms = [
       $("#homeSearchForm"),
       $("#searchForm"),
       $("form[data-search-form]")
     ].filter(Boolean);
 
-    searchForms.forEach((form) => {
+    forms.forEach((form) => {
       if (form.dataset.nearafricaBound === "1") return;
-
       form.dataset.nearafricaBound = "1";
 
       form.addEventListener("submit", (event) => {
@@ -2117,9 +1894,7 @@ function bindPaginationEvents() {
         const query = clean(input?.value);
         const target = new URL("explore.html", location.href);
 
-        if (query) {
-          target.searchParams.set("q", query);
-        }
+        if (query) target.searchParams.set("q", query);
 
         location.href = target.toString();
       });
@@ -2136,9 +1911,7 @@ function bindPaginationEvents() {
           event.ctrlKey ||
           event.metaKey ||
           event.altKey
-        ) {
-          return;
-        }
+        ) return;
 
         const tag = event.target?.tagName?.toLowerCase();
 
@@ -2173,10 +1946,12 @@ function bindPaginationEvents() {
     populateCategoryOptions();
     populateCityOptions();
 
-    // Restore URL filters after category options exist.
+    // Apply URL filters after the select options have been built.
     applyUrlParameters();
 
     if (App.nearbyMode && !App.userLocation) {
+      App.nearbyMode = false;
+
       setStatus(
         t(
           "search.useMyLocation",
@@ -2184,8 +1959,6 @@ function bindPaginationEvents() {
         ),
         "info"
       );
-
-      App.nearbyMode = false;
     }
 
     updateNearbyControls();
@@ -2204,9 +1977,7 @@ function bindPaginationEvents() {
     ].filter(Boolean);
 
     buttons.forEach((button) => {
-      if (button.dataset.nearafricaLocationBound === "1") {
-        return;
-      }
+      if (button.dataset.nearafricaLocationBound === "1") return;
 
       button.dataset.nearafricaLocationBound = "1";
 
@@ -2229,25 +2000,15 @@ function bindPaginationEvents() {
 
         try {
           App.userLocation = await getBrowserLocation();
-
-          App.locationInfo = await reverseGeocode(
-            App.userLocation
-          );
-
+          App.locationInfo = await reverseGeocode(App.userLocation);
           App.nearbyMode = true;
 
           saveLocation();
 
-          const target = new URL(
-            "explore.html",
-            location.href
-          );
+          const target = new URL("explore.html", location.href);
 
           target.searchParams.set("nearby", "1");
-          target.searchParams.set(
-            "radius",
-            String(App.radiusKm)
-          );
+          target.searchParams.set("radius", String(App.radiusKm));
 
           location.href = target.toString();
         } catch (error) {
@@ -2256,7 +2017,11 @@ function bindPaginationEvents() {
             error
           );
 
-          setStatus(error.message, "error");
+          setStatus(
+            clean(error.message, "Unable to determine your location."),
+            "error"
+          );
+
           button.textContent = originalText;
         } finally {
           App.locationLoading = false;
@@ -2271,16 +2036,13 @@ function bindPaginationEvents() {
 
     if (isExplorePage()) {
       initializeExplore().catch((error) => {
-        console.error(
-          "NearAfrica initialization failed:",
-          error
-        );
+        console.error("NearAfrica initialization failed:", error);
 
         setStatus(
           t(
             "errors.somethingWentWrong",
             "NearAfrica could not initialize"
-          ) + ": " + error.message,
+          ) + ": " + clean(error.message, "Unknown error"),
           "error"
         );
       });
@@ -2302,10 +2064,10 @@ function bindPaginationEvents() {
   }
 
   /* ----------------------------------------------------------
-     LANGUAGE CHANGE
+     LANGUAGE CHANGES
   ---------------------------------------------------------- */
 
-  window.addEventListener("nearafrica:languagechange", function () {
+  window.addEventListener("nearafrica:languagechange", () => {
     try {
       updateNearbyControls();
 
