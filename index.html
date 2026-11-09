@@ -8,15 +8,12 @@
   <title>NearAfrica — Discover Businesses Across Nigeria &amp; Africa</title>
   <meta name="description" content="Discover local businesses, shops, restaurants, hotels, and professional services across Nigeria and Africa. Find businesses near you with NearAfrica.">
 
+  <!-- Canonical URL -->
   <link rel="canonical" href="https://nearafrica.com.ng/">
 
-  <meta name="theme-color" content="#111111">
+  <!-- Search engine indexing -->
   <meta name="robots" content="index, follow">
-</head>
-
-
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://www.nearafrica.com.ng/">
+  <meta name="theme-color" content="#111111">
 
   <!-- Website Icon -->
   <link rel="icon" type="image/png" href="logo.png">
@@ -26,16 +23,16 @@
   <meta property="og:site_name" content="NearAfrica">
   <meta property="og:title" content="NearAfrica — Discover Businesses Across Nigeria &amp; Africa">
   <meta property="og:description" content="Find businesses, shops, restaurants, hotels, and professional services across Nigeria and Africa.">
-  <meta property="og:url" content="https://www.nearafrica.com.ng/">
-  <meta property="og:image" content="https://www.nearafrica.com.ng/logo.png">
+  <meta property="og:url" content="https://nearafrica.com.ng/">
+  <meta property="og:image" content="https://nearafrica.com.ng/logo.png">
   <meta property="og:image:alt" content="NearAfrica business discovery platform logo">
   <meta property="og:locale" content="en_NG">
 
   <!-- X (Twitter) social sharing -->
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="NearAfrica — Discover Businesses Across Nigeria &amp; Africa">
   <meta name="twitter:description" content="Discover businesses and services across Nigeria and Africa with NearAfrica.">
-  <meta name="twitter:image" content="https://www.nearafrica.com.ng/logo.png">
+  <meta name="twitter:image" content="https://nearafrica.com.ng/logo.png">
 
   <!-- Font performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -77,7 +74,7 @@
       display:flex; align-items:center; gap:15px;
       font-size:12px; font-weight:600;
     }
-  
+
     .home-nav a { color:#555; transition:color .2s; white-space:nowrap; }
     .home-nav a:hover,.home-nav a.active { color:#111; }
 
@@ -91,35 +88,36 @@
       background:#fff; color:#222; font-size:12px; font-weight:600;
     }
 
-   .mobile-menu-toggle {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  min-width: 0;
-  height: 36px;
-  padding: 0;
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  color: #111;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  box-shadow: none;
-}
+    .mobile-menu-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      min-width: 0;
+      height: 36px;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      color: #111;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: none;
+    }
 
-.mobile-menu-icon {
-  display: inline-block;
-  font-size: 21px;
-  line-height: 1;
-}
+    .mobile-menu-icon {
+      display: inline-block;
+      font-size: 21px;
+      line-height: 1;
+    }
 
-.mobile-menu-label {
-  font-size: 11px;
-  font-weight: 600;
-}
+    .mobile-menu-label {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
     .home-mobile-nav {
       display:none; border-top:1px solid #eee;
       background:#fff; padding:8px 16px 14px;
@@ -539,7 +537,7 @@
     @media (max-width:760px) {
       .home-header-inner { min-height:62px; }
       .home-nav { display:none; }
-     .mobile-menu-toggle { display:flex; }
+      .mobile-menu-toggle { display:flex; }
       .home-language { margin-left:auto; }
       .na-auth-area { display:none; }
       .na-mobile-auth { display:block; }
@@ -619,16 +617,16 @@
       <p id="naAuthMessage" class="na-auth-message" role="status" aria-live="polite"></p>
     </div>
 
-<button
-  id="mobileMenuToggle"
-  class="mobile-menu-toggle"
-  type="button"
-  aria-label="Open menu"
-  aria-expanded="false"
->
-  <span class="mobile-menu-icon" id="mobileMenuIcon" aria-hidden="true">☰</span>
-  <span class="mobile-menu-label">Menu</span>
-</button>
+    <button
+      id="mobileMenuToggle"
+      class="mobile-menu-toggle"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+    >
+      <span class="mobile-menu-icon" id="mobileMenuIcon" aria-hidden="true">☰</span>
+      <span class="mobile-menu-label">Menu</span>
+    </button>
   </div>
 
   <nav id="mobileNav" class="home-mobile-nav" aria-label="Mobile navigation">
@@ -721,7 +719,7 @@
     </div>
   </section>
 
-   <section class="sponsored-section" id="homeSponsoredSection" aria-label="Sponsored businesses" hidden>
+  <section class="sponsored-section" id="homeSponsoredSection" aria-label="Sponsored businesses" hidden>
     <h2>Sponsored</h2>
     <p class="sponsored-note">Paid placements. Not organic search ranking.</p>
     <div class="sponsored-grid" id="homeSponsoredGrid"></div>
@@ -1210,35 +1208,35 @@
   }
 
   function setupMobileMenu() {
-  const toggle = $("mobileMenuToggle");
-  const mobileNav = $("mobileNav");
-  const menuIcon = $("mobileMenuIcon");
+    const toggle = $("mobileMenuToggle");
+    const mobileNav = $("mobileNav");
+    const menuIcon = $("mobileMenuIcon");
 
-  if (!toggle || !mobileNav || !menuIcon) return;
+    if (!toggle || !mobileNav || !menuIcon) return;
 
-  toggle.addEventListener("click", () => {
-    const open = mobileNav.classList.toggle("open");
+    toggle.addEventListener("click", () => {
+      const open = mobileNav.classList.toggle("open");
 
-    toggle.setAttribute("aria-expanded", String(open));
-    toggle.setAttribute(
-      "aria-label",
-      open ? "Close menu" : "Open menu"
-    );
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute(
+        "aria-label",
+        open ? "Close menu" : "Open menu"
+      );
 
-    menuIcon.textContent = open ? "✕" : "☰";
-  });
-
-  mobileNav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      mobileNav.classList.remove("open");
-
-      toggle.setAttribute("aria-expanded", "false");
-      toggle.setAttribute("aria-label", "Open menu");
-
-      menuIcon.textContent = "☰";
+      menuIcon.textContent = open ? "✕" : "☰";
     });
-  });
-}
+
+    mobileNav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileNav.classList.remove("open");
+
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "Open menu");
+
+        menuIcon.textContent = "☰";
+      });
+    });
+  }
 
   function setupSignOutButtons() {
     const desktopSignOut = $("naSignOut");
@@ -1288,7 +1286,7 @@
 })();
 </script>
 
-  <script>
+<script>
 (function () {
   var API = "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
   var section = document.getElementById("homeSponsoredSection");
@@ -1337,4 +1335,4 @@
 </script>
 
 </body>
-  </html>
+                                     </html>
