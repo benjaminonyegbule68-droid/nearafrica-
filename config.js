@@ -52,10 +52,8 @@ const NearAfricaConfig = {
     description:
       "Discover trusted businesses, services, shops and places across Africa.",
 
-    // Current live frontend.
-    // Change this when the custom domain is connected.
-    baseUrl: "https://nearafrica.pages.dev",
-
+    // Permanent primary domain.
+baseUrl: "https://nearafrica.com.ng",
     supportEmail: "contactnearafrica43@gmail.com",
 
     environment: "production",
