@@ -69,8 +69,8 @@ const NearAfricaTranslations = {
       noBusinessesNearby:
         "No businesses were found within your selected area.",
       distanceUnavailable: "Distance unavailable",
-      away: "away",
-      clearLocation: "Clear Location",
+      away: "Within",
+      clearLocation: "Turn Nearby Off",
       filters: "Filters",
       category: "Category",
       state: "State",
@@ -326,8 +326,8 @@ const NearAfricaTranslations = {
       noBusinessesNearby:
         "Aucune entreprise n'a été trouvée dans votre zone.",
       distanceUnavailable: "Distance indisponible",
-      away: "de distance",
-      clearLocation: "Effacer la position",
+      away: "Dans un rayon de",
+      clearLocation: "Désactiver à proximité",
       filters: "Filtres",
       category: "Catégorie",
       state: "État",
@@ -583,8 +583,8 @@ const NearAfricaTranslations = {
       noBusinessesNearby:
         "لم يتم العثور على أنشطة تجارية ضمن منطقتك.",
       distanceUnavailable: "المسافة غير متاحة",
-      away: "بعيدًا",
-      clearLocation: "مسح الموقع",
+      away: "ضمن",
+      clearLocation: "إيقاف البحث القريب",
       filters: "الفلاتر",
       category: "الفئة",
       state: "الولاية",
@@ -840,8 +840,8 @@ const NearAfricaTranslations = {
       noBusinessesNearby:
         "Nenhuma empresa foi encontrada na sua área.",
       distanceUnavailable: "Distância indisponível",
-      away: "de distância",
-      clearLocation: "Limpar localização",
+      away: "Dentro de",
+      clearLocation: "Desativar Perto de Mim",
       filters: "Filtros",
       category: "Categoria",
       state: "Estado",
@@ -1097,8 +1097,8 @@ const NearAfricaTranslations = {
       noBusinessesNearby:
         "Hakuna biashara zilizopatikana katika eneo lako.",
       distanceUnavailable: "Umbali haupatikani",
-      away: "mbali",
-      clearLocation: "Futa Mahali",
+      away: "Ndani ya",
+      clearLocation: "Zima Karibu Nami",
       filters: "Vichujio",
       category: "Aina",
       state: "Jimbo",
@@ -1300,6 +1300,7 @@ const NearAfricaTranslations = {
     }
   },
 
+  // =========================================================
   // HAUSA
   // =========================================================
 
@@ -1341,8 +1342,8 @@ const NearAfricaTranslations = {
       noBusinesses: "Ba a sami kasuwanci ba.",
       noBusinessesNearby: "Babu kasuwanci a kusa da wurinka.",
       distanceUnavailable: "Ba a iya kididdige nisa ba",
-      away: "nisa",
-      clearLocation: "Share wuri",
+      away: "A cikin",
+      clearLocation: "Kashe Kusa da Ni",
       filters: "Tacewa",
       category: "Rukuni",
       state: "Jiha",
@@ -1562,8 +1563,8 @@ const NearAfricaTranslations = {
       noBusinesses: "Ko si iṣowo ti a ri.",
       noBusinessesNearby: "Ko si iṣowo nitosi ibi rẹ.",
       distanceUnavailable: "A ko le ṣe iṣiro ijinna",
-      away: "jinna",
-      clearLocation: "Pa ibi rẹ",
+      away: "Laarin",
+      clearLocation: "Pa Nitosi Mi",
       filters: "Alẹmọ",
       category: "Ẹka",
       state: "Ipinle",
@@ -1783,8 +1784,8 @@ const NearAfricaTranslations = {
       noBusinesses: "Achọtaghị azụmahịa ọ bụla.",
       noBusinessesNearby: "Enweghị azụmahịa dị nso ebe gị.",
       distanceUnavailable: "Enweghị ike ịgbakọ anya",
-      away: "dị anya",
-      clearLocation: "Hichaa ebe",
+      away: "N'ime",
+      clearLocation: "Gbanyụọ Nso M",
       filters: "Nzacha",
       category: "Udi",
       state: "Steeti",
