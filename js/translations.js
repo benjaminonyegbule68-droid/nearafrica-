@@ -1,2496 +1,1985 @@
-/*
- * NearAfrica — app-new.js
- * Clean replacement: syntax, loading, filters, GPS and pagination.
+/**
+ * NearAfrica - Translation Dictionary
+ * ===================================
+ * Interface translations for the NearAfrica platform.
  *
- * Preserves:
- * - Real API business data only; no fictional listings
- * - Search and category/state/city filters
- * - Nearby/GPS search
- * - Client-side pagination
- * - Saved businesses
- * - Business profile links and view tracking
- * - URL filters and language-change refreshes
- * - Existing NearAfrica API configuration
+ * Languages:
+ * en = English (default)
+ * fr = French
+ * ar = Arabic
+ * pt = Portuguese
+ * sw = Swahili
+ * ha = Hausa
+ * yo = Yoruba
+ * ig = Igbo
  */
 
-(function () {
-  "use strict";
+const NearAfricaTranslations = {
 
-  /* ==========================================================
-     TRANSLATION
-  ========================================================== */
+  // =========================================================
+  // ENGLISH
+  // =========================================================
 
-  function t(key, fallback) {
-    try {
-      const i18n = window.NearAfricaI18n;
+  en: {
 
-      if (i18n && typeof i18n.translate === "function") {
-        const result = i18n.translate(key, fallback);
+    siteName: "NearAfrica",
+    tagline: "Find Great Businesses Near You.",
+    description:
+      "Discover trusted businesses, services, shops and places across Africa.",
 
-        if (result !== undefined && result !== null && result !== "") {
-          return result;
-        }
+    nav: {
+      home: "Home",
+      explore: "Explore",
+      listBusiness: "List Your Business",
+      claimBusiness: "Claim Business",
+      helpWanted: "Help Wanted",
+      about: "About",
+      contact: "Contact"
+    },
+
+    search: {
+      title: "Discover Africa. Start Local.",
+      whatLookingFor: "What are you looking for?",
+      location: "Location",
+      searchPlaceholder: "e.g. barber, hotel, restaurant...",
+      locationPlaceholder: "e.g. Aba, Lagos, Abuja...",
+      search: "Search",
+      useMyLocation: "Use My Location",
+      usingYourLocation: "Using your current location",
+      locationAccessDenied:
+        "Location access was denied. You can search by area instead.",
+      locationUnavailable:
+        "Your location could not be determined.",
+      locationError:
+        "Unable to access your location. Please try again.",
+      locationNotSupported:
+        "Location services are not supported by this browser."
+    },
+
+    explore: {
+      title: "Explore Businesses",
+      subtitle:
+        "Discover businesses, services and places near you.",
+      businesses: "Businesses",
+      businessesFound: "businesses found",
+      businessesFoundNearby: "businesses found nearby",
+      businessesNearYou: "Businesses Near You",
+      allBusinesses: "Businesses",
+      noBusinesses: "No businesses found.",
+      noBusinessesNearby:
+        "No businesses were found within your selected area.",
+      distanceUnavailable: "Distance unavailable",
+      away: "Within",
+      clearLocation: "Turn Nearby Off",
+      filters: "Filters",
+      category: "Category",
+      state: "State",
+      rating: "Rating",
+      verifiedOnly: "Verified only",
+      allCategories: "All Categories",
+      allStates: "All States",
+      anyRating: "Any Rating",
+      fourPlus: "4+ stars",
+      threePlus: "3+ stars",
+      twoPlus: "2+ stars",
+      verified: "Verified",
+      previous: "Previous",
+      next: "Next"
+    },
+
+    categories: {
+      restaurants: "Restaurants & Food",
+      hotels: "Hotels & Accommodation",
+      beauty: "Beauty & Spa",
+      health: "Health & Medical",
+      gyms: "Gyms & Fitness",
+      shopping: "Shopping & Retail",
+      supermarkets: "Supermarkets",
+      banks: "Banks & Finance",
+      professional: "Professional Services",
+      education: "Education",
+      realEstate: "Real Estate",
+      automotive: "Automotive",
+      travel: "Travel & Tourism",
+      logistics: "Logistics & Delivery",
+      technology: "Technology",
+      entertainment: "Entertainment",
+      fitness: "Fitness & Sports",
+      construction: "Construction & Home Services",
+      fashion: "Fashion",
+      agriculture: "Agriculture",
+      religious: "Religious Organizations",
+      government: "Government & Public Services",
+      other: "Other"
+    },
+
+    business: {
+      verified: "Verified",
+      unverified: "Unverified",
+      claimed: "Claimed",
+      unclaimed: "Unclaimed",
+      viewBusiness: "View Business",
+      call: "Call",
+      whatsapp: "WhatsApp",
+      website: "Website",
+      directions: "Directions",
+      reviews: "Reviews",
+      review: "Review",
+      hours: "Business Hours",
+      services: "Services",
+      products: "Products",
+      about: "About This Business",
+      contact: "Contact",
+      address: "Address",
+      phone: "Phone",
+      email: "Email",
+      openNow: "Open now",
+      closedNow: "Closed",
+      openingSoon: "Opening soon",
+      closingSoon: "Closing soon"
+    },
+
+    owner: {
+      listBusiness: "List Your Business",
+      claimBusiness: "Claim Your Business",
+      ownerDashboard: "Owner Dashboard",
+      manageBusiness: "Manage Your Business",
+      editBusiness: "Edit Business",
+      businessAnalytics: "Business Analytics"
+    },
+
+    reviews: {
+      title: "Reviews",
+      writeReview: "Write a Review",
+      rating: "Rating",
+      comment: "Comment",
+      submit: "Submit Review",
+      report: "Report Review",
+      noReviews: "No reviews yet.",
+      reviewSubmitted: "Your review has been submitted."
+    },
+
+    helpWanted: {
+      title: "Help Wanted",
+      subtitle:
+        "Discover job and work opportunities from local businesses.",
+      postOpportunity: "Post an Opportunity",
+      viewOpportunity: "View Opportunity",
+      apply: "Apply",
+      location: "Location",
+      type: "Type",
+      description: "Description"
+    },
+
+    account: {
+      login: "Login",
+      logout: "Logout",
+      register: "Create Account",
+      profile: "Profile",
+      favorites: "Favorites",
+      savedSearches: "Saved Searches",
+      recentlyViewed: "Recently Viewed",
+      notifications: "Notifications"
+    },
+
+    payments: {
+      free: "Free",
+      pro: "NearAfrica Pro",
+      premium: "Premium",
+      monthly: "Monthly",
+      subscribe: "Subscribe",
+      manageSubscription: "Manage Subscription",
+      paymentSuccessful: "Payment successful.",
+      paymentFailed: "Payment failed.",
+      subscriptionActive: "Your subscription is active."
+    },
+
+    contact: {
+      title: "Contact NearAfrica",
+      subtitle:
+        "Have a question, need support, want to list a business, or need to report an issue? We're here to help.",
+      emailTitle: "Email Us",
+      emailDescription:
+        "For general questions, support, partnerships, listings and corrections.",
+      emailAction: "Send Email",
+      businessTitle: "Business Support",
+      businessDescription:
+        "Need help with a business listing, claiming a business, or correcting information?",
+      businessAction: "List or Claim a Business",
+      supportTitle: "Platform Support",
+      supportDescription:
+        "Contact us about website issues, reports, suggestions or other NearAfrica matters.",
+      supportAction: "Contact Support",
+      formTitle: "Send Us a Message",
+      name: "Your Name",
+      email: "Your Email",
+      subject: "Subject",
+      message: "Message",
+      namePlaceholder: "Enter your name",
+      emailPlaceholder: "Enter your email address",
+      subjectPlaceholder: "What is your message about?",
+      messagePlaceholder: "Write your message here...",
+      sendMessage: "Send Message",
+      formNote:
+        "Your email application will open so you can send your message.",
+      success:
+        "Your email application should now be open.",
+      validation:
+        "Please complete all required fields before sending.",
+      backHome: "Back to Home"
+    },
+
+    actions: {
+      save: "Save",
+      cancel: "Cancel",
+      close: "Close",
+      back: "Back",
+      continue: "Continue",
+      submit: "Submit",
+      confirm: "Confirm",
+      delete: "Delete",
+      edit: "Edit",
+      report: "Report",
+      viewMore: "View More",
+      learnMore: "Learn More",
+      loading: "Loading...",
+      retry: "Try Again"
+    },
+
+    legal: {
+      privacy: "Privacy Policy",
+      terms: "Terms of Service",
+      listingPolicy: "Listing Policy",
+      cookiePolicy: "Cookie Policy",
+      reviewGuidelines: "Review Guidelines"
+    },
+
+    footer: {
+      copyright: "© 2026 NearAfrica. All rights reserved.",
+      discover: "Discover businesses across Africa.",
+      contactUs: "Contact Us"
+    },
+
+    errors: {
+      somethingWentWrong:
+        "Something went wrong. Please try again.",
+      unableToLoad:
+        "Unable to load businesses.",
+      network:
+        "Network error. Please check your connection.",
+      notFound:
+        "The requested business could not be found."
+    }
+  },
+
+
+  // =========================================================
+  // FRENCH
+  // =========================================================
+
+  fr: {
+
+    siteName: "NearAfrica",
+    tagline: "Trouvez de bonnes entreprises près de chez vous.",
+    description:
+      "Découvrez des entreprises, services, commerces et lieux de confiance à travers l'Afrique.",
+
+    nav: {
+      home: "Accueil",
+      explore: "Explorer",
+      listBusiness: "Ajouter votre entreprise",
+      claimBusiness: "Revendiquer une entreprise",
+      helpWanted: "Emplois",
+      about: "À propos",
+      contact: "Contact"
+    },
+
+    search: {
+      title: "Découvrez l'Afrique. Commencez près de chez vous.",
+      whatLookingFor: "Que recherchez-vous ?",
+      location: "Lieu",
+      searchPlaceholder: "ex. coiffeur, hôtel, restaurant...",
+      locationPlaceholder: "ex. Abidjan, Dakar, Lagos...",
+      search: "Rechercher",
+      useMyLocation: "Utiliser ma position",
+      usingYourLocation: "Utilisation de votre position",
+      locationAccessDenied:
+        "L'accès à votre position a été refusé. Vous pouvez rechercher par zone.",
+      locationUnavailable:
+        "Votre position n'a pas pu être déterminée.",
+      locationError:
+        "Impossible d'accéder à votre position. Veuillez réessayer.",
+      locationNotSupported:
+        "Les services de localisation ne sont pas pris en charge par ce navigateur."
+    },
+
+    explore: {
+      title: "Explorer les entreprises",
+      subtitle:
+        "Découvrez des entreprises, services et lieux près de chez vous.",
+      businesses: "Entreprises",
+      businessesFound: "entreprises trouvées",
+      businessesFoundNearby: "entreprises trouvées à proximité",
+      businessesNearYou: "Entreprises près de chez vous",
+      allBusinesses: "Entreprises",
+      noBusinesses: "Aucune entreprise trouvée.",
+      noBusinessesNearby:
+        "Aucune entreprise n'a été trouvée dans votre zone.",
+      distanceUnavailable: "Distance indisponible",
+      away: "Dans un rayon de",
+      clearLocation: "Désactiver à proximité",
+      filters: "Filtres",
+      category: "Catégorie",
+      state: "État",
+      rating: "Note",
+      verifiedOnly: "Vérifiées uniquement",
+      allCategories: "Toutes les catégories",
+      allStates: "Tous les États",
+      anyRating: "Toutes les notes",
+      fourPlus: "4 étoiles et plus",
+      threePlus: "3 étoiles et plus",
+      twoPlus: "2 étoiles et plus",
+      verified: "Vérifiée",
+      previous: "Précédent",
+      next: "Suivant"
+    },
+
+    categories: {
+      restaurants: "Restaurants et alimentation",
+      hotels: "Hôtels et hébergement",
+      beauty: "Beauté et spa",
+      health: "Santé et médical",
+      gyms: "Salles de sport et fitness",
+      shopping: "Shopping et commerce",
+      supermarkets: "Supermarchés",
+      banks: "Banques et finance",
+      professional: "Services professionnels",
+      education: "Éducation",
+      realEstate: "Immobilier",
+      automotive: "Automobile",
+      travel: "Voyages et tourisme",
+      logistics: "Logistique et livraison",
+      technology: "Technologie",
+      entertainment: "Divertissement",
+      fitness: "Fitness et sports",
+      construction: "Construction et services à domicile",
+      fashion: "Mode",
+      agriculture: "Agriculture",
+      religious: "Organisations religieuses",
+      government: "Services gouvernementaux et publics",
+      other: "Autre"
+    },
+
+    business: {
+      verified: "Vérifiée",
+      unverified: "Non vérifiée",
+      claimed: "Revendiquée",
+      unclaimed: "Non revendiquée",
+      viewBusiness: "Voir l'entreprise",
+      call: "Appeler",
+      whatsapp: "WhatsApp",
+      website: "Site web",
+      directions: "Itinéraire",
+      reviews: "Avis",
+      review: "Avis",
+      hours: "Horaires",
+      services: "Services",
+      products: "Produits",
+      about: "À propos de cette entreprise",
+      contact: "Contact",
+      address: "Adresse",
+      phone: "Téléphone",
+      email: "E-mail",
+      openNow: "Ouvert maintenant",
+      closedNow: "Fermé",
+      openingSoon: "Ouverture prochaine",
+      closingSoon: "Fermeture prochaine"
+    },
+
+    owner: {
+      listBusiness: "Ajouter votre entreprise",
+      claimBusiness: "Revendiquer votre entreprise",
+      ownerDashboard: "Tableau de bord",
+      manageBusiness: "Gérer votre entreprise",
+      editBusiness: "Modifier l'entreprise",
+      businessAnalytics: "Analyses de l'entreprise"
+    },
+
+    reviews: {
+      title: "Avis",
+      writeReview: "Écrire un avis",
+      rating: "Note",
+      comment: "Commentaire",
+      submit: "Publier l'avis",
+      report: "Signaler l'avis",
+      noReviews: "Aucun avis pour le moment.",
+      reviewSubmitted: "Votre avis a été envoyé."
+    },
+
+    helpWanted: {
+      title: "Emplois",
+      subtitle:
+        "Découvrez des opportunités de travail proposées par des entreprises locales.",
+      postOpportunity: "Publier une opportunité",
+      viewOpportunity: "Voir l'opportunité",
+      apply: "Postuler",
+      location: "Lieu",
+      type: "Type",
+      description: "Description"
+    },
+
+    account: {
+      login: "Connexion",
+      logout: "Déconnexion",
+      register: "Créer un compte",
+      profile: "Profil",
+      favorites: "Favoris",
+      savedSearches: "Recherches enregistrées",
+      recentlyViewed: "Consultés récemment",
+      notifications: "Notifications"
+    },
+
+    payments: {
+      free: "Gratuit",
+      pro: "NearAfrica Pro",
+      premium: "Premium",
+      monthly: "Mensuel",
+      subscribe: "S'abonner",
+      manageSubscription: "Gérer l'abonnement",
+      paymentSuccessful: "Paiement réussi.",
+      paymentFailed: "Échec du paiement.",
+      subscriptionActive: "Votre abonnement est actif."
+    },
+
+    contact: {
+      title: "Contacter NearAfrica",
+      subtitle:
+        "Vous avez une question, besoin d'aide, souhaitez ajouter une entreprise ou signaler un problème ? Nous sommes là pour vous aider.",
+      emailTitle: "Envoyez-nous un e-mail",
+      emailDescription:
+        "Pour les questions générales, l'assistance, les partenariats, les annonces et les corrections.",
+      emailAction: "Envoyer un e-mail",
+      businessTitle: "Assistance aux entreprises",
+      businessDescription:
+        "Besoin d'aide concernant une fiche d'entreprise, une revendication ou une correction d'informations ?",
+      businessAction: "Ajouter ou revendiquer une entreprise",
+      supportTitle: "Assistance de la plateforme",
+      supportDescription:
+        "Contactez-nous concernant les problèmes du site, les signalements, les suggestions ou d'autres questions NearAfrica.",
+      supportAction: "Contacter l'assistance",
+      formTitle: "Envoyez-nous un message",
+      name: "Votre nom",
+      email: "Votre e-mail",
+      subject: "Objet",
+      message: "Message",
+      namePlaceholder: "Entrez votre nom",
+      emailPlaceholder: "Entrez votre adresse e-mail",
+      subjectPlaceholder: "Quel est le sujet de votre message ?",
+      messagePlaceholder: "Écrivez votre message ici...",
+      sendMessage: "Envoyer le message",
+      formNote:
+        "Votre application e-mail s'ouvrira afin que vous puissiez envoyer votre message.",
+      success:
+        "Votre application e-mail devrait maintenant être ouverte.",
+      validation:
+        "Veuillez remplir tous les champs obligatoires avant l'envoi.",
+      backHome: "Retour à l'accueil"
+    },
+
+    actions: {
+      save: "Enregistrer",
+      cancel: "Annuler",
+      close: "Fermer",
+      back: "Retour",
+      continue: "Continuer",
+      submit: "Envoyer",
+      confirm: "Confirmer",
+      delete: "Supprimer",
+      edit: "Modifier",
+      report: "Signaler",
+      viewMore: "Voir plus",
+      learnMore: "En savoir plus",
+      loading: "Chargement...",
+      retry: "Réessayer"
+    },
+
+    legal: {
+      privacy: "Politique de confidentialité",
+      terms: "Conditions d'utilisation",
+      listingPolicy: "Politique des annonces",
+      cookiePolicy: "Politique relative aux cookies",
+      reviewGuidelines: "Règles des avis"
+    },
+
+    footer: {
+      copyright: "© 2026 NearAfrica. Tous droits réservés.",
+      discover: "Découvrez des entreprises à travers l'Afrique.",
+      contactUs: "Nous contacter"
+    },
+
+    errors: {
+      somethingWentWrong:
+        "Une erreur s'est produite. Veuillez réessayer.",
+      unableToLoad:
+        "Impossible de charger les entreprises.",
+      network:
+        "Erreur réseau. Vérifiez votre connexion.",
+      notFound:
+        "L'entreprise demandée est introuvable."
+    }
+  },
+
+
+  // =========================================================
+  // ARABIC
+  // =========================================================
+
+  ar: {
+
+    siteName: "NearAfrica",
+    tagline: "اكتشف أفضل الأنشطة التجارية القريبة منك.",
+    description:
+      "اكتشف الشركات والخدمات والمتاجر والأماكن الموثوقة في جميع أنحاء أفريقيا.",
+
+    nav: {
+      home: "الرئيسية",
+      explore: "استكشف",
+      listBusiness: "أضف نشاطك التجاري",
+      claimBusiness: "المطالبة بنشاط تجاري",
+      helpWanted: "فرص العمل",
+      about: "حول",
+      contact: "اتصل بنا"
+    },
+
+    search: {
+      title: "اكتشف أفريقيا. ابدأ من منطقتك.",
+      whatLookingFor: "ما الذي تبحث عنه؟",
+      location: "الموقع",
+      searchPlaceholder: "مثال: حلاق، فندق، مطعم...",
+      locationPlaceholder: "مثال: أبوجا، لاغوس، القاهرة...",
+      search: "بحث",
+      useMyLocation: "استخدم موقعي",
+      usingYourLocation: "يتم استخدام موقعك الحالي",
+      locationAccessDenied:
+        "تم رفض الوصول إلى موقعك. يمكنك البحث حسب المنطقة.",
+      locationUnavailable:
+        "تعذر تحديد موقعك.",
+      locationError:
+        "تعذر الوصول إلى موقعك. يرجى المحاولة مرة أخرى.",
+      locationNotSupported:
+        "خدمات الموقع غير مدعومة في هذا المتصفح."
+    },
+
+    explore: {
+      title: "استكشف الأنشطة التجارية",
+      subtitle:
+        "اكتشف الشركات والخدمات والأماكن القريبة منك.",
+      businesses: "الأنشطة التجارية",
+      businessesFound: "نشاط تجاري تم العثور عليه",
+      businessesFoundNearby: "نشاط تجاري قريب تم العثور عليه",
+      businessesNearYou: "الأنشطة التجارية القريبة منك",
+      allBusinesses: "الأنشطة التجارية",
+      noBusinesses: "لم يتم العثور على أنشطة تجارية.",
+      noBusinessesNearby:
+        "لم يتم العثور على أنشطة تجارية ضمن منطقتك.",
+      distanceUnavailable: "المسافة غير متاحة",
+      away: "ضمن",
+      clearLocation: "إيقاف البحث القريب",
+      filters: "الفلاتر",
+      category: "الفئة",
+      state: "الولاية",
+      rating: "التقييم",
+      verifiedOnly: "موثقة فقط",
+      allCategories: "جميع الفئات",
+      allStates: "جميع الولايات",
+      anyRating: "أي تقييم",
+      fourPlus: "4 نجوم فأعلى",
+      threePlus: "3 نجوم فأعلى",
+      twoPlus: "نجمتان فأعلى",
+      verified: "موثق",
+      previous: "السابق",
+      next: "التالي"
+    },
+
+    categories: {
+      restaurants: "المطاعم والطعام",
+      hotels: "الفنادق والإقامة",
+      beauty: "التجميل والسبا",
+      health: "الصحة والطب",
+      gyms: "اللياقة البدنية",
+      shopping: "التسوق والتجزئة",
+      supermarkets: "محلات السوبر ماركت",
+      banks: "البنوك والتمويل",
+      professional: "الخدمات المهنية",
+      education: "التعليم",
+      realEstate: "العقارات",
+      automotive: "السيارات",
+      travel: "السفر والسياحة",
+      logistics: "الخدمات اللوجستية والتوصيل",
+      technology: "التكنولوجيا",
+      entertainment: "الترفيه",
+      fitness: "اللياقة والرياضة",
+      construction: "البناء وخدمات المنزل",
+      fashion: "الأزياء",
+      agriculture: "الزراعة",
+      religious: "المنظمات الدينية",
+      government: "الخدمات الحكومية والعامة",
+      other: "أخرى"
+    },
+
+    business: {
+      verified: "موثق",
+      unverified: "غير موثق",
+      claimed: "تمت المطالبة به",
+      unclaimed: "غير مطالب به",
+      viewBusiness: "عرض النشاط التجاري",
+      call: "اتصال",
+      whatsapp: "واتساب",
+      website: "الموقع الإلكتروني",
+      directions: "الاتجاهات",
+      reviews: "التقييمات",
+      review: "تقييم",
+      hours: "ساعات العمل",
+      services: "الخدمات",
+      products: "المنتجات",
+      about: "حول هذا النشاط التجاري",
+      contact: "اتصل",
+      address: "العنوان",
+      phone: "الهاتف",
+      email: "البريد الإلكتروني",
+      openNow: "مفتوح الآن",
+      closedNow: "مغلق",
+      openingSoon: "يفتح قريبًا",
+      closingSoon: "يغلق قريبًا"
+    },
+
+    owner: {
+      listBusiness: "أضف نشاطك التجاري",
+      claimBusiness: "طالب بملكية نشاطك التجاري",
+      ownerDashboard: "لوحة تحكم المالك",
+      manageBusiness: "إدارة نشاطك التجاري",
+      editBusiness: "تعديل النشاط التجاري",
+      businessAnalytics: "تحليلات النشاط التجاري"
+    },
+
+    reviews: {
+      title: "التقييمات",
+      writeReview: "اكتب تقييمًا",
+      rating: "التقييم",
+      comment: "التعليق",
+      submit: "إرسال التقييم",
+      report: "الإبلاغ عن التقييم",
+      noReviews: "لا توجد تقييمات حتى الآن.",
+      reviewSubmitted: "تم إرسال تقييمك."
+    },
+
+    helpWanted: {
+      title: "فرص العمل",
+      subtitle:
+        "اكتشف فرص العمل التي تقدمها الشركات المحلية.",
+      postOpportunity: "نشر فرصة",
+      viewOpportunity: "عرض الفرصة",
+      apply: "تقديم طلب",
+      location: "الموقع",
+      type: "النوع",
+      description: "الوصف"
+    },
+
+    account: {
+      login: "تسجيل الدخول",
+      logout: "تسجيل الخروج",
+      register: "إنشاء حساب",
+      profile: "الملف الشخصي",
+      favorites: "المفضلة",
+      savedSearches: "عمليات البحث المحفوظة",
+      recentlyViewed: "شوهدت مؤخرًا",
+      notifications: "الإشعارات"
+    },
+
+    payments: {
+      free: "مجاني",
+      pro: "NearAfrica Pro",
+      premium: "Premium",
+      monthly: "شهري",
+      subscribe: "اشتراك",
+      manageSubscription: "إدارة الاشتراك",
+      paymentSuccessful: "تم الدفع بنجاح.",
+      paymentFailed: "فشل الدفع.",
+      subscriptionActive: "اشتراكك نشط."
+    },
+
+    contact: {
+      title: "اتصل بـ NearAfrica",
+      subtitle:
+        "هل لديك سؤال أو تحتاج إلى دعم أو تريد إضافة نشاط تجاري أو الإبلاغ عن مشكلة؟ نحن هنا لمساعدتك.",
+      emailTitle: "راسلنا عبر البريد الإلكتروني",
+      emailDescription:
+        "للأسئلة العامة والدعم والشراكات والقوائم وتصحيح المعلومات.",
+      emailAction: "إرسال بريد إلكتروني",
+      businessTitle: "دعم أصحاب الأعمال",
+      businessDescription:
+        "هل تحتاج إلى مساعدة بشأن قائمة تجارية أو المطالبة بنشاط تجاري أو تصحيح معلومات؟",
+      businessAction: "إضافة أو المطالبة بنشاط تجاري",
+      supportTitle: "دعم المنصة",
+      supportDescription:
+        "تواصل معنا بشأن مشكلات الموقع أو البلاغات أو الاقتراحات أو أي أمور أخرى تخص NearAfrica.",
+      supportAction: "التواصل مع الدعم",
+      formTitle: "أرسل لنا رسالة",
+      name: "اسمك",
+      email: "بريدك الإلكتروني",
+      subject: "الموضوع",
+      message: "الرسالة",
+      namePlaceholder: "أدخل اسمك",
+      emailPlaceholder: "أدخل عنوان بريدك الإلكتروني",
+      subjectPlaceholder: "ما موضوع رسالتك؟",
+      messagePlaceholder: "اكتب رسالتك هنا...",
+      sendMessage: "إرسال الرسالة",
+      formNote:
+        "سيتم فتح تطبيق البريد الإلكتروني حتى تتمكن من إرسال رسالتك.",
+      success:
+        "من المفترض أن يكون تطبيق البريد الإلكتروني قد تم فتحه الآن.",
+      validation:
+        "يرجى إكمال جميع الحقول المطلوبة قبل الإرسال.",
+      backHome: "العودة إلى الرئيسية"
+    },
+
+    actions: {
+      save: "حفظ",
+      cancel: "إلغاء",
+      close: "إغلاق",
+      back: "رجوع",
+      continue: "متابعة",
+      submit: "إرسال",
+      confirm: "تأكيد",
+      delete: "حذف",
+      edit: "تعديل",
+      report: "إبلاغ",
+      viewMore: "عرض المزيد",
+      learnMore: "اعرف المزيد",
+      loading: "جارٍ التحميل...",
+      retry: "حاول مرة أخرى"
+    },
+
+    legal: {
+      privacy: "سياسة الخصوصية",
+      terms: "شروط الخدمة",
+      listingPolicy: "سياسة القوائم",
+      cookiePolicy: "سياسة ملفات تعريف الارتباط",
+      reviewGuidelines: "إرشادات التقييمات"
+    },
+
+    footer: {
+      copyright: "© 2026 NearAfrica. جميع الحقوق محفوظة.",
+      discover: "اكتشف الشركات في جميع أنحاء أفريقيا.",
+      contactUs: "اتصل بنا"
+    },
+
+    errors: {
+      somethingWentWrong:
+        "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+      unableToLoad:
+        "تعذر تحميل الأنشطة التجارية.",
+      network:
+        "خطأ في الشبكة. يرجى التحقق من اتصالك.",
+      notFound:
+        "تعذر العثور على النشاط التجاري المطلوب."
+    }
+  },
+
+
+  // =========================================================
+  // PORTUGUESE
+  // =========================================================
+
+  pt: {
+
+    siteName: "NearAfrica",
+    tagline: "Encontre ótimos negócios perto de você.",
+    description:
+      "Descubra empresas, serviços, lojas e lugares confiáveis em toda a África.",
+
+    nav: {
+      home: "Início",
+      explore: "Explorar",
+      listBusiness: "Cadastrar empresa",
+      claimBusiness: "Reivindicar empresa",
+      helpWanted: "Oportunidades",
+      about: "Sobre",
+      contact: "Contato"
+    },
+
+    search: {
+      title: "Descubra a África. Comece perto de você.",
+      whatLookingFor: "O que você está procurando?",
+      location: "Localização",
+      searchPlaceholder: "ex.: barbeiro, hotel, restaurante...",
+      locationPlaceholder: "ex.: Luanda, Maputo, Lagos...",
+      search: "Pesquisar",
+      useMyLocation: "Usar minha localização",
+      usingYourLocation: "Usando sua localização atual",
+      locationAccessDenied:
+        "O acesso à sua localização foi negado. Você pode pesquisar por área.",
+      locationUnavailable:
+        "Não foi possível determinar sua localização.",
+      locationError:
+        "Não foi possível acessar sua localização. Tente novamente.",
+      locationNotSupported:
+        "Os serviços de localização não são compatíveis com este navegador."
+    },
+
+    explore: {
+      title: "Explorar empresas",
+      subtitle:
+        "Descubra empresas, serviços e lugares perto de você.",
+      businesses: "Empresas",
+      businessesFound: "empresas encontradas",
+      businessesFoundNearby: "empresas encontradas próximas",
+      businessesNearYou: "Empresas perto de você",
+      allBusinesses: "Empresas",
+      noBusinesses: "Nenhuma empresa encontrada.",
+      noBusinessesNearby:
+        "Nenhuma empresa foi encontrada na sua área.",
+      distanceUnavailable: "Distância indisponível",
+      away: "Dentro de",
+      clearLocation: "Desativar Perto de Mim",
+      filters: "Filtros",
+      category: "Categoria",
+      state: "Estado",
+      rating: "Avaliação",
+      verifiedOnly: "Somente verificadas",
+      allCategories: "Todas as categorias",
+      allStates: "Todos os estados",
+      anyRating: "Qualquer avaliação",
+      fourPlus: "4 estrelas ou mais",
+      threePlus: "3 estrelas ou mais",
+      twoPlus: "2 estrelas ou mais",
+      verified: "Verificada",
+      previous: "Anterior",
+      next: "Próximo"
+    },
+
+    categories: {
+      restaurants: "Restaurantes e alimentação",
+      hotels: "Hotéis e hospedagem",
+      beauty: "Beleza e spa",
+      health: "Saúde e medicina",
+      gyms: "Academias e fitness",
+      shopping: "Compras e varejo",
+      supermarkets: "Supermercados",
+      banks: "Bancos e finanças",
+      professional: "Serviços profissionais",
+      education: "Educação",
+      realEstate: "Imobiliário",
+      automotive: "Automotivo",
+      travel: "Viagens e turismo",
+      logistics: "Logística e entrega",
+      technology: "Tecnologia",
+      entertainment: "Entretenimento",
+      fitness: "Fitness e esportes",
+      construction: "Construção e serviços domésticos",
+      fashion: "Moda",
+      agriculture: "Agricultura",
+      religious: "Organizações religiosas",
+      government: "Serviços governamentais e públicos",
+      other: "Outro"
+    },
+
+    business: {
+      verified: "Verificada",
+      unverified: "Não verificada",
+      claimed: "Reivindicada",
+      unclaimed: "Não reivindicada",
+      viewBusiness: "Ver empresa",
+      call: "Ligar",
+      whatsapp: "WhatsApp",
+      website: "Site",
+      directions: "Direções",
+      reviews: "Avaliações",
+      review: "Avaliação",
+      hours: "Horário de funcionamento",
+      services: "Serviços",
+      products: "Produtos",
+      about: "Sobre esta empresa",
+      contact: "Contato",
+      address: "Endereço",
+      phone: "Telefone",
+      email: "E-mail",
+      openNow: "Aberto agora",
+      closedNow: "Fechado",
+      openingSoon: "Abrindo em breve",
+      closingSoon: "Fechando em breve"
+    },
+
+    owner: {
+      listBusiness: "Cadastrar sua empresa",
+      claimBusiness: "Reivindicar sua empresa",
+      ownerDashboard: "Painel do proprietário",
+      manageBusiness: "Gerenciar sua empresa",
+      editBusiness: "Editar empresa",
+      businessAnalytics: "Análises da empresa"
+    },
+
+    reviews: {
+      title: "Avaliações",
+      writeReview: "Escrever uma avaliação",
+      rating: "Avaliação",
+      comment: "Comentário",
+      submit: "Enviar avaliação",
+      report: "Denunciar avaliação",
+      noReviews: "Ainda não há avaliações.",
+      reviewSubmitted: "Sua avaliação foi enviada."
+    },
+
+    helpWanted: {
+      title: "Oportunidades",
+      subtitle:
+        "Descubra oportunidades de trabalho de empresas locais.",
+      postOpportunity: "Publicar oportunidade",
+      viewOpportunity: "Ver oportunidade",
+      apply: "Candidatar-se",
+      location: "Localização",
+      type: "Tipo",
+      description: "Descrição"
+    },
+
+    account: {
+      login: "Entrar",
+      logout: "Sair",
+      register: "Criar conta",
+      profile: "Perfil",
+      favorites: "Favoritos",
+      savedSearches: "Pesquisas salvas",
+      recentlyViewed: "Vistos recentemente",
+      notifications: "Notificações"
+    },
+
+    payments: {
+      free: "Grátis",
+      pro: "NearAfrica Pro",
+      premium: "Premium",
+      monthly: "Mensal",
+      subscribe: "Assinar",
+      manageSubscription: "Gerenciar assinatura",
+      paymentSuccessful: "Pagamento realizado com sucesso.",
+      paymentFailed: "Falha no pagamento.",
+      subscriptionActive: "Sua assinatura está ativa."
+    },
+
+    contact: {
+      title: "Entre em contato com a NearAfrica",
+      subtitle:
+        "Tem uma pergunta, precisa de suporte, quer cadastrar uma empresa ou deseja relatar um problema? Estamos aqui para ajudar.",
+      emailTitle: "Envie um e-mail",
+      emailDescription:
+        "Para perguntas gerais, suporte, parcerias, anúncios e correções.",
+      emailAction: "Enviar e-mail",
+      businessTitle: "Suporte para empresas",
+      businessDescription:
+        "Precisa de ajuda com uma página de empresa, reivindicação ou correção de informações?",
+      businessAction: "Cadastrar ou reivindicar uma empresa",
+      supportTitle: "Suporte da plataforma",
+      supportDescription:
+        "Entre em contato sobre problemas no site, denúncias, sugestões ou outras questões relacionadas à NearAfrica.",
+      supportAction: "Contatar suporte",
+      formTitle: "Envie uma mensagem",
+      name: "Seu nome",
+      email: "Seu e-mail",
+      subject: "Assunto",
+      message: "Mensagem",
+      namePlaceholder: "Digite seu nome",
+      emailPlaceholder: "Digite seu endereço de e-mail",
+      subjectPlaceholder: "Sobre o que é sua mensagem?",
+      messagePlaceholder: "Escreva sua mensagem aqui...",
+      sendMessage: "Enviar mensagem",
+      formNote:
+        "Seu aplicativo de e-mail será aberto para que você possa enviar sua mensagem.",
+      success:
+        "Seu aplicativo de e-mail deve estar aberto agora.",
+      validation:
+        "Preencha todos os campos obrigatórios antes de enviar.",
+      backHome: "Voltar ao início"
+    },
+
+    actions: {
+      save: "Salvar",
+      cancel: "Cancelar",
+      close: "Fechar",
+      back: "Voltar",
+      continue: "Continuar",
+      submit: "Enviar",
+      confirm: "Confirmar",
+      delete: "Excluir",
+      edit: "Editar",
+      report: "Denunciar",
+      viewMore: "Ver mais",
+      learnMore: "Saiba mais",
+      loading: "Carregando...",
+      retry: "Tentar novamente"
+    },
+
+    legal: {
+      privacy: "Política de privacidade",
+      terms: "Termos de serviço",
+      listingPolicy: "Política de listagens",
+      cookiePolicy: "Política de cookies",
+      reviewGuidelines: "Diretrizes de avaliações"
+    },
+
+    footer: {
+      copyright: "© 2026 NearAfrica. Todos os direitos reservados.",
+      discover: "Descubra empresas em toda a África.",
+      contactUs: "Fale conosco"
+    },
+
+    errors: {
+      somethingWentWrong:
+        "Algo deu errado. Tente novamente.",
+      unableToLoad:
+        "Não foi possível carregar as empresas.",
+      network:
+        "Erro de rede. Verifique sua conexão.",
+      notFound:
+        "A empresa solicitada não foi encontrada."
+    }
+  },
+
+
+  // =========================================================
+  // SWAHILI
+  // =========================================================
+
+  sw: {
+
+    siteName: "NearAfrica",
+    tagline: "Pata biashara nzuri karibu nawe.",
+    description:
+      "Gundua biashara, huduma, maduka na maeneo yanayoaminika kote Afrika.",
+
+    nav: {
+      home: "Nyumbani",
+      explore: "Chunguza",
+      listBusiness: "Orodhesha Biashara Yako",
+      claimBusiness: "Dai Biashara",
+      helpWanted: "Nafasi za Kazi",
+      about: "Kuhusu",
+      contact: "Wasiliana Nasi"
+    },
+
+    search: {
+      title: "Gundua Afrika. Anza Karibu.",
+      whatLookingFor: "Unatafuta nini?",
+      location: "Mahali",
+      searchPlaceholder: "mfano: kinyozi, hoteli, mkahawa...",
+      locationPlaceholder: "mfano: Nairobi, Kampala, Dar es Salaam...",
+      search: "Tafuta",
+      useMyLocation: "Tumia Mahali Nilipo",
+      usingYourLocation: "Tunatumia eneo lako la sasa",
+      locationAccessDenied:
+        "Ufikiaji wa eneo lako umekataliwa. Unaweza kutafuta kwa eneo.",
+      locationUnavailable:
+        "Haikuwezekana kubaini eneo lako.",
+      locationError:
+        "Haikuwezekana kufikia eneo lako. Tafadhali jaribu tena.",
+      locationNotSupported:
+        "Huduma za eneo hazitumiki kwenye kivinjari hiki."
+    },
+
+    explore: {
+      title: "Chunguza Biashara",
+      subtitle:
+        "Gundua biashara, huduma na maeneo karibu nawe.",
+      businesses: "Biashara",
+      businessesFound: "biashara zimepatikana",
+      businessesFoundNearby: "biashara zimepatikana karibu",
+      businessesNearYou: "Biashara Karibu Nawe",
+      allBusinesses: "Biashara",
+      noBusinesses: "Hakuna biashara zilizopatikana.",
+      noBusinessesNearby:
+        "Hakuna biashara zilizopatikana katika eneo lako.",
+      distanceUnavailable: "Umbali haupatikani",
+      away: "Ndani ya",
+      clearLocation: "Zima Karibu Nami",
+      filters: "Vichujio",
+      category: "Aina",
+      state: "Jimbo",
+      rating: "Ukadiriaji",
+      verifiedOnly: "Zilizothibitishwa pekee",
+      allCategories: "Aina Zote",
+      allStates: "Majimbo Yote",
+      anyRating: "Ukadiriaji Wowote",
+      fourPlus: "Nyota 4 au zaidi",
+      threePlus: "Nyota 3 au zaidi",
+      twoPlus: "Nyota 2 au zaidi",
+      verified: "Imethibitishwa",
+      previous: "Iliyotangulia",
+      next: "Ifuatayo"
+    },
+
+    categories: {
+      restaurants: "Mikahawa na Chakula",
+      hotels: "Hoteli na Malazi",
+      beauty: "Urembo na Spa",
+      health: "Afya na Tiba",
+      gyms: "Mazoezi na Fitness",
+      shopping: "Ununuzi na Rejareja",
+      supermarkets: "Maduka Makubwa",
+      banks: "Benki na Fedha",
+      professional: "Huduma za Kitaalamu",
+      education: "Elimu",
+      realEstate: "Mali Isiyohamishika",
+      automotive: "Magari",
+      travel: "Usafiri na Utalii",
+      logistics: "Usafirishaji na Uwasilishaji",
+      technology: "Teknolojia",
+      entertainment: "Burudani",
+      fitness: "Fitness na Michezo",
+      construction: "Ujenzi na Huduma za Nyumbani",
+      fashion: "Mitindo",
+      agriculture: "Kilimo",
+      religious: "Mashirika ya Kidini",
+      government: "Huduma za Serikali na Umma",
+      other: "Nyingine"
+    },
+
+    business: {
+      verified: "Imethibitishwa",
+      unverified: "Haijathibitishwa",
+      claimed: "Imedaiwa",
+      unclaimed: "Haijadaiwa",
+      viewBusiness: "Tazama Biashara",
+      call: "Piga Simu",
+      whatsapp: "WhatsApp",
+      website: "Tovuti",
+      directions: "Maelekezo",
+      reviews: "Maoni",
+      review: "Maoni",
+      hours: "Saa za Biashara",
+      services: "Huduma",
+      products: "Bidhaa",
+      about: "Kuhusu Biashara Hii",
+      contact: "Wasiliana",
+      address: "Anwani",
+      phone: "Simu",
+      email: "Barua pepe",
+      openNow: "Imefunguliwa sasa",
+      closedNow: "Imefungwa",
+      openingSoon: "Inafunguliwa hivi karibuni",
+      closingSoon: "Inafungwa hivi karibuni"
+    },
+
+    owner: {
+      listBusiness: "Orodhesha Biashara Yako",
+      claimBusiness: "Dai Biashara Yako",
+      ownerDashboard: "Dashibodi ya Mmiliki",
+      manageBusiness: "Simamia Biashara Yako",
+      editBusiness: "Hariri Biashara",
+      businessAnalytics: "Takwimu za Biashara"
+    },
+
+    reviews: {
+      title: "Maoni",
+      writeReview: "Andika Maoni",
+      rating: "Ukadiriaji",
+      comment: "Maoni",
+      submit: "Tuma Maoni",
+      report: "Ripoti Maoni",
+      noReviews: "Hakuna maoni bado.",
+      reviewSubmitted: "Maoni yako yametumwa."
+    },
+
+    helpWanted: {
+      title: "Nafasi za Kazi",
+      subtitle:
+        "Gundua fursa za kazi kutoka kwa biashara za karibu.",
+      postOpportunity: "Chapisha Fursa",
+      viewOpportunity: "Tazama Fursa",
+      apply: "Omba",
+      location: "Mahali",
+      type: "Aina",
+      description: "Maelezo"
+    },
+
+    account: {
+      login: "Ingia",
+      logout: "Toka",
+      register: "Fungua Akaunti",
+      profile: "Wasifu",
+      favorites: "Vipendwa",
+      savedSearches: "Utafutaji Uliotunzwa",
+      recentlyViewed: "Zilizotazamwa Hivi Karibuni",
+      notifications: "Arifa"
+    },
+
+    payments: {
+      free: "Bure",
+      pro: "NearAfrica Pro",
+      premium: "Premium",
+      monthly: "Kila Mwezi",
+      subscribe: "Jisajili",
+      manageSubscription: "Simamia Usajili",
+      paymentSuccessful: "Malipo yamefanikiwa.",
+      paymentFailed: "Malipo yameshindwa.",
+      subscriptionActive: "Usajili wako unatumika."
+    },
+
+    contact: {
+      title: "Wasiliana na NearAfrica",
+      subtitle:
+        "Una swali, unahitaji msaada, unataka kuorodhesha biashara au kuripoti tatizo? Tuko hapa kukusaidia.",
+      emailTitle: "Tutumie Barua Pepe",
+      emailDescription:
+        "Kwa maswali ya jumla, msaada, ushirikiano, matangazo na marekebisho.",
+      emailAction: "Tuma Barua Pepe",
+      businessTitle: "Msaada wa Biashara",
+      businessDescription:
+        "Unahitaji msaada kuhusu orodha ya biashara, kudai biashara au kurekebisha taarifa?",
+      businessAction: "Orodhesha au Dai Biashara",
+      supportTitle: "Msaada wa Jukwaa",
+      supportDescription:
+        "Wasiliana nasi kuhusu matatizo ya tovuti, ripoti, mapendekezo au mambo mengine ya NearAfrica.",
+      supportAction: "Wasiliana na Msaada",
+      formTitle: "Tutumie Ujumbe",
+      name: "Jina Lako",
+      email: "Barua Pepe Yako",
+      subject: "Mada",
+      message: "Ujumbe",
+      namePlaceholder: "Ingiza jina lako",
+      emailPlaceholder: "Ingiza anwani yako ya barua pepe",
+      subjectPlaceholder: "Ujumbe wako unahusu nini?",
+      messagePlaceholder: "Andika ujumbe wako hapa...",
+      sendMessage: "Tuma Ujumbe",
+      formNote:
+        "Programu yako ya barua pepe itafunguliwa ili uweze kutuma ujumbe wako.",
+      success:
+        "Programu yako ya barua pepe inapaswa kuwa imefunguliwa sasa.",
+      validation:
+        "Tafadhali jaza sehemu zote zinazohitajika kabla ya kutuma.",
+      backHome: "Rudi Nyumbani"
+    },
+
+    actions: {
+      save: "Hifadhi",
+      cancel: "Ghairi",
+      close: "Funga",
+      back: "Rudi",
+      continue: "Endelea",
+      submit: "Tuma",
+      confirm: "Thibitisha",
+      delete: "Futa",
+      edit: "Hariri",
+      report: "Ripoti",
+      viewMore: "Tazama Zaidi",
+      learnMore: "Jifunze Zaidi",
+      loading: "Inapakia...",
+      retry: "Jaribu Tena"
+    },
+
+    legal: {
+      privacy: "Sera ya Faragha",
+      terms: "Masharti ya Huduma",
+      listingPolicy: "Sera ya Orodha",
+      cookiePolicy: "Sera ya Vidakuzi",
+      reviewGuidelines: "Mwongozo wa Maoni"
+    },
+
+    footer: {
+      copyright: "© 2026 NearAfrica. Haki zote zimehifadhiwa.",
+      discover: "Gundua biashara kote Afrika.",
+      contactUs: "Wasiliana Nasi"
+    },
+
+    errors: {
+      somethingWentWrong:
+        "Kuna tatizo. Tafadhali jaribu tena.",
+      unableToLoad:
+        "Imeshindikana kupakia biashara.",
+      network:
+        "Hitilafu ya mtandao. Tafadhali angalia muunganisho wako.",
+      notFound:
+        "Biashara uliyoomba haikupatikana."
+    }
+  },
+
+  // =========================================================
+  // HAUSA
+  // =========================================================
+
+  ha: {
+    siteName: "NearAfrica",
+    tagline: "Nemo Manyan Kasuwancin da ke Kusa da Kai.",
+    description: "Gano kasuwancin da ake amincewa da su, ayyuka, shaguna da wurare a duk fadin Afirka.",
+    nav: {
+      home: "Gida",
+      explore: "Bincika",
+      listBusiness: "Jera Kasuwancinka",
+      claimBusiness: "Yi Da'awar Kasuwanci",
+      helpWanted: "Ana Bukatar Taimako",
+      about: "Game da Mu",
+      contact: "Tuntube Mu"
+    },
+    search: {
+      title: "Gano Afirka. Fara Daga Gida.",
+      whatLookingFor: "Me kake nema?",
+      location: "Wuri",
+      searchPlaceholder: "misali: wanzami, otal, gidan abinci...",
+      locationPlaceholder: "misali: Aba, Lagos, Abuja...",
+      search: "Nema",
+      useMyLocation: "Yi amfani da wurina",
+      usingYourLocation: "Ana amfani da wurinka...",
+      locationAccessDenied: "An hana damar samun wuri.",
+      locationUnavailable: "Ba a iya samun wurinka ba.",
+      locationError: "An sami kuskure wajen samun wuri.",
+      locationNotSupported: "Mai bincikenka baya tallafawa wurin GPS."
+    },
+    explore: {
+      title: "Bincika Kasuwanni",
+      subtitle: "Nemo kasuwancin da ake amincewa da su a kusa da kai.",
+      businesses: "Kasuwanni",
+      businessesFound: "kasuwanni da aka samo",
+      businessesFoundNearby: "kasuwanni da aka samo a kusa",
+      businessesNearYou: "Kasuwanni a kusa da kai",
+      allBusinesses: "Duk kasuwanni",
+      noBusinesses: "Ba a sami kasuwanci ba.",
+      noBusinessesNearby: "Babu kasuwanci a kusa da wurinka.",
+      distanceUnavailable: "Ba a iya kididdige nisa ba",
+      away: "A cikin",
+      clearLocation: "Kashe Kusa da Ni",
+      filters: "Tacewa",
+      category: "Rukuni",
+      state: "Jiha",
+      rating: "Kima",
+      verifiedOnly: "Tabbatattu kawai",
+      allCategories: "Duk rukunoni",
+      allStates: "Duk jihohi",
+      anyRating: "Kowace kima",
+      fourPlus: "4+ taurari",
+      threePlus: "3+ taurari",
+      twoPlus: "2+ taurari",
+      verified: "An tabbatar",
+      previous: "Na baya",
+      next: "Na gaba"
+    },
+    categories: {
+      restaurants: "Gidajen Abinci",
+      hotels: "Otaloli",
+      beauty: "Kyau & Kula da Kai",
+      health: "Lafiya",
+      gyms: "Wuraren motsa jiki",
+      shopping: "Saye da Sayarwa",
+      supermarkets: "Manyan Kanti",
+      banks: "Bankuna",
+      professional: "Ayyukan Kwararru",
+      education: "Ilimi",
+      realEstate: "Kayan Gida",
+      automotive: "Motoci",
+      travel: "Tafiya",
+      logistics: "Sauraro & Safara",
+      technology: "Fasaha",
+      entertainment: "Nishadi",
+      fitness: "Motsa jiki",
+      construction: "Gine-gine",
+      fashion: "Salon Tufafi",
+      agriculture: "Noma",
+      religious: "Addini",
+      government: "Gwamnati",
+      other: "Sauran"
+    },
+    business: {
+      verified: "An tabbatar",
+      unverified: "Ba a tabbatar ba",
+      claimed: "An yi da'awa",
+      unclaimed: "Ba a yi da'awa ba",
+      viewBusiness: "Duba Kasuwanci",
+      call: "Kira",
+      whatsapp: "WhatsApp",
+      website: "Gidan yanar gizo",
+      directions: "Hanyoyi",
+      reviews: "Ra'ayoyi",
+      review: "Ra'ayi",
+      hours: "Lokutan aiki",
+      services: "Ayyuka",
+      products: "Kayayyaki",
+      about: "Game da",
+      contact: "Tuntuba",
+      address: "Adireshi",
+      phone: "Waya",
+      email: "Imel",
+      openNow: "A bude yanzu",
+      closedNow: "A rufe yanzu",
+      openingSoon: "Zai bude nan ba da jimawa ba",
+      closingSoon: "Zai rufe nan ba da jimawa ba"
+    },
+    owner: {
+      listBusiness: "Jera Kasuwancinka",
+      claimBusiness: "Yi Da'awar Kasuwanci",
+      ownerDashboard: "Allon Mai shi",
+      manageBusiness: "Sarrafa Kasuwanci",
+      editBusiness: "Gyara Kasuwanci",
+      businessAnalytics: "Nazari na Kasuwanci"
+    },
+    reviews: {
+      title: "Ra'ayoyi",
+      writeReview: "Rubuta Ra'ayi",
+      rating: "Kima",
+      comment: "Sharhi",
+      submit: "Aika",
+      report: "Kai rahoto",
+      noReviews: "Babu ra'ayoyi tukuna.",
+      reviewSubmitted: "An aika ra'ayinka."
+    },
+    helpWanted: {
+      title: "Ana Bukatar Taimako",
+      subtitle: "Nemo damar aiki da ayyuka a Afirka.",
+      postOpportunity: "Buga Dama",
+      viewOpportunity: "Duba Dama",
+      apply: "Nema",
+      location: "Wuri",
+      type: "Nau'i",
+      description: "Bayani"
+    },
+    account: {
+      login: "Shiga",
+      logout: "Fita",
+      register: "Yi rijista",
+      profile: "Bayanan sirri",
+      favorites: "Abubuwan da aka fi so",
+      savedSearches: "Neman da aka adana",
+      recentlyViewed: "Wanda aka duba kwanan nan",
+      notifications: "Sanarwa"
+    },
+    payments: {
+      free: "Kyauta",
+      pro: "Pro",
+      premium: "Premium",
+      monthly: "Kowane wata",
+      subscribe: "Yi rajista",
+      manageSubscription: "Sarrafa rajista",
+      paymentSuccessful: "An biya cikin nasara",
+      paymentFailed: "Biyan kudi ya gaza",
+      subscriptionActive: "Rajista tana aiki"
+    },
+    contact: {
+      title: "Tuntube Mu",
+      subtitle: "Muna nan don taimaka maka.",
+      emailTitle: "Imel",
+      emailDescription: "Aika mana sako ta imel.",
+      emailAction: "Aika imel",
+      businessTitle: "Kasuwanci",
+      businessDescription: "Tambayoyi game da jera ko da'awar kasuwanci.",
+      businessAction: "Tuntubi tallafi",
+      supportTitle: "Tallafi",
+      supportDescription: "Samu taimako da amsa tambayoyi.",
+      supportAction: "Nemi tallafi",
+      formTitle: "Aika mana sako",
+      name: "Suna",
+      email: "Imel",
+      subject: "Jigo",
+      message: "Sako",
+      namePlaceholder: "Sunan ka",
+      emailPlaceholder: "imel@misali.com",
+      subjectPlaceholder: "Me game da?",
+      messagePlaceholder: "Rubuta sakonka nan...",
+      sendMessage: "Aika Sako",
+      formNote: "Za mu mayar da martani da wuri-wuri.",
+      success: "An aika sakonka. Na gode!",
+      validation: "Da fatan za a cika duk filayen da ake bukata.",
+      backHome: "Koma gida"
+    },
+    actions: {
+      save: "Ajiye",
+      cancel: "Soke",
+      close: "Rufe",
+      back: "Baya",
+      continue: "Ci gaba",
+      submit: "Aika",
+      confirm: "Tabbatar",
+      delete: "Share",
+      edit: "Gyara",
+      report: "Kai rahoto",
+      viewMore: "Duba kari",
+      learnMore: "Kara koyo",
+      loading: "Ana lodawa...",
+      retry: "Sake gwadawa"
+    },
+    legal: {
+      privacy: "Kebantawa",
+      terms: "Sharudda",
+      listingPolicy: "Manufar Jerawa",
+      cookiePolicy: "Manufar Cookie",
+      reviewGuidelines: "Jagororin Ra'ayi"
+    },
+    footer: {
+      copyright: "© NearAfrica. Duk hakkoki sun kebe.",
+      discover: "Gano",
+      contactUs: "Tuntube mu"
+    },
+    errors: {
+      somethingWentWrong: "Wani abu ya yi kuskure.",
+      unableToLoad: "An kasa lodawa.",
+      network: "Matsalar hanyar sadarwa. Da fatan za a sake gwadawa.",
+      notFound: "Ba a samu ba."
+    }
+  },
+
+  // =========================================================
+  // YORUBA
+  // =========================================================
+
+  yo: {
+    siteName: "NearAfrica",
+    tagline: "Wa Awọn Iṣowo Nla Nitosi Rẹ.",
+    description: "Ṣawari awọn iṣowo to ni igbẹkẹle, awọn iṣẹ, awọn ile itaja ati awọn ibi kọja Afirika.",
+    nav: {
+      home: "Ile",
+      explore: "Ṣawari",
+      listBusiness: "Ṣe Akojọ Iṣowo Rẹ",
+      claimBusiness: "Beere Iṣowo",
+      helpWanted: "A Nilo Iranlọwọ",
+      about: "Nipa Wa",
+      contact: "Kan Si Wa"
+    },
+    search: {
+      title: "Ṣawari Afirika. Bẹrẹ Lati Ile.",
+      whatLookingFor: "Kini o n wa?",
+      location: "Ibi",
+      searchPlaceholder: "fun apẹẹrẹ: onirun, hotẹẹli, ile ounjẹ...",
+      locationPlaceholder: "fun apẹẹrẹ: Aba, Lagos, Abuja...",
+      search: "Wa",
+      useMyLocation: "Lo ibi mi",
+      usingYourLocation: "Nlo ibi rẹ...",
+      locationAccessDenied: "A kọ iraye si ibi.",
+      locationUnavailable: "Ko le ri ibi rẹ.",
+      locationError: "Aṣiṣe kan ṣẹlẹ nigbati a n wa ibi.",
+      locationNotSupported: "Aṣàwákiri rẹ ko ṣe atilẹyin GPS."
+    },
+    explore: {
+      title: "Ṣawari Awọn Iṣowo",
+      subtitle: "Wa awọn iṣowo to ni igbẹkẹle nitosi rẹ.",
+      businesses: "Awọn iṣowo",
+      businessesFound: "awọn iṣowo ti a ri",
+      businessesFoundNearby: "awọn iṣowo ti a ri nitosi",
+      businessesNearYou: "Awọn iṣowo nitosi rẹ",
+      allBusinesses: "Gbogbo awọn iṣowo",
+      noBusinesses: "Ko si iṣowo ti a ri.",
+      noBusinessesNearby: "Ko si iṣowo nitosi ibi rẹ.",
+      distanceUnavailable: "A ko le ṣe iṣiro ijinna",
+      away: "Laarin",
+      clearLocation: "Pa Nitosi Mi",
+      filters: "Alẹmọ",
+      category: "Ẹka",
+      state: "Ipinle",
+      rating: "Iye",
+      verifiedOnly: "Ti a jẹrisi nikan",
+      allCategories: "Gbogbo awọn ẹka",
+      allStates: "Gbogbo awọn ipinle",
+      anyRating: "Eyikeyi iye",
+      fourPlus: "Irawọ 4+",
+      threePlus: "Irawọ 3+",
+      twoPlus: "Irawọ 2+",
+      verified: "Ti a jẹrisi",
+      previous: "Ti tẹlẹ",
+      next: "Eyi ti nbọ"
+    },
+    categories: {
+      restaurants: "Awọn Ile Ounjẹ",
+      hotels: "Awọn Hotẹẹli",
+      beauty: "Ẹwa & Itọju Ara",
+      health: "Ilera",
+      gyms: "Ile idaraya",
+      shopping: "Rira",
+      supermarkets: "Awọn Supermarket",
+      banks: "Awọn Banki",
+      professional: "Awọn Iṣẹ Ọjọgbọn",
+      education: "Ẹkọ",
+      realEstate: "Ile ati Ilẹ",
+      automotive: "Mọto",
+      travel: "Irin-ajo",
+      logistics: "Eto gbigbe",
+      technology: "Imọ-ẹrọ",
+      entertainment: "Idanilaraya",
+      fitness: "Idaraya",
+      construction: "Ikole",
+      fashion: "Aṣa Aṣọ",
+      agriculture: "Iṣẹ-ogbin",
+      religious: "Ẹsin",
+      government: "Ijoba",
+      other: "Miiran"
+    },
+    business: {
+      verified: "Ti a jẹrisi",
+      unverified: "Ti a ko jẹrisi",
+      claimed: "Ti a beere",
+      unclaimed: "Ti a ko beere",
+      viewBusiness: "Wo Iṣowo",
+      call: "Pe",
+      whatsapp: "WhatsApp",
+      website: "Oju-opo wẹẹbu",
+      directions: "Itọsọna",
+      reviews: "Awọn atunwo",
+      review: "Atunwo",
+      hours: "Awọn wakati iṣẹ",
+      services: "Awọn iṣẹ",
+      products: "Awọn ọja",
+      about: "Nipa",
+      contact: "Kan si",
+      address: "Adirẹsi",
+      phone: "Foonu",
+      email: "Imeeli",
+      openNow: "Ṣi silẹ bayi",
+      closedNow: "Ti di bayi",
+      openingSoon: "Yoo ṣi laipẹ",
+      closingSoon: "Yoo di laipẹ"
+    },
+    owner: {
+      listBusiness: "Ṣe Akojọ Iṣowo Rẹ",
+      claimBusiness: "Beere Iṣowo",
+      ownerDashboard: "Dasibodu Oniwun",
+      manageBusiness: "Ṣakoso Iṣowo",
+      editBusiness: "Ṣatunkọ Iṣowo",
+      businessAnalytics: "Itupalẹ Iṣowo"
+    },
+    reviews: {
+      title: "Awọn Atunwo",
+      writeReview: "Kọ Atunwo",
+      rating: "Iye",
+      comment: "Ọrọìwòye",
+      submit: "Fi ranṣẹ",
+      report: "Fi iroyin",
+      noReviews: "Ko si atunwo sibẹsibẹ.",
+      reviewSubmitted: "A ti fi atunwo rẹ ranṣẹ."
+    },
+    helpWanted: {
+      title: "A Nilo Iranlọwọ",
+      subtitle: "Wa awọn anfani iṣẹ kọja Afirika.",
+      postOpportunity: "Fi Anfani Silẹ",
+      viewOpportunity: "Wo Anfani",
+      apply: "Lo",
+      location: "Ibi",
+      type: "Iru",
+      description: "Apejuwe"
+    },
+    account: {
+      login: "Wọle",
+      logout: "Jade",
+      register: "Forukọsilẹ",
+      profile: "Profaili",
+      favorites: "Awọn ayanfẹ",
+      savedSearches: "Awọn wiwa ti a fipamọ",
+      recentlyViewed: "Ti a wo laipẹ",
+      notifications: "Awọn iwifunni"
+    },
+    payments: {
+      free: "Ọfẹ",
+      pro: "Pro",
+      premium: "Premium",
+      monthly: "Oṣooṣu",
+      subscribe: "Ṣe alabapin",
+      manageSubscription: "Ṣakoso alabapin",
+      paymentSuccessful: "Isanwo ṣaṣeyọri",
+      paymentFailed: "Isanwo kuna",
+      subscriptionActive: "Alabapin nṣiṣẹ"
+    },
+    contact: {
+      title: "Kan Si Wa",
+      subtitle: "A wa nibi lati ran ọ lọwọ.",
+      emailTitle: "Imeeli",
+      emailDescription: "Fi ifiranṣẹ imeeli ranṣẹ si wa.",
+      emailAction: "Fi imeeli ranṣẹ",
+      businessTitle: "Iṣowo",
+      businessDescription: "Awọn ibeere nipa akojọ tabi beere iṣowo.",
+      businessAction: "Kan si atilẹyin",
+      supportTitle: "Atilẹyin",
+      supportDescription: "Gba iranlọwọ ati awọn idahun.",
+      supportAction: "Wa atilẹyin",
+      formTitle: "Fi ifiranṣẹ ranṣẹ si wa",
+      name: "Orukọ",
+      email: "Imeeli",
+      subject: "Koko",
+      message: "Ifiranṣẹ",
+      namePlaceholder: "Orukọ rẹ",
+      emailPlaceholder: "imeeli@apeere.com",
+      subjectPlaceholder: "Nipa kini?",
+      messagePlaceholder: "Kọ ifiranṣẹ rẹ nibi...",
+      sendMessage: "Fi Ifiranṣẹ Ranṣẹ",
+      formNote: "A yoo dahun ni kiakia.",
+      success: "A ti fi ifiranṣẹ rẹ ranṣẹ. O ṣeun!",
+      validation: "Jọwọ kun gbogbo awọn aaye ti a nilo.",
+      backHome: "Pada si ile"
+    },
+    actions: {
+      save: "Fipamọ",
+      cancel: "Fagilee",
+      close: "Pa",
+      back: "Ẹhin",
+      continue: "Tẹsiwaju",
+      submit: "Fi ranṣẹ",
+      confirm: "Jẹrisi",
+      delete: "Paarẹ",
+      edit: "Ṣatunkọ",
+      report: "Fi iroyin",
+      viewMore: "Wo diẹ sii",
+      learnMore: "Kọ ẹkọ diẹ sii",
+      loading: "Nkojọpọ...",
+      retry: "Gbiyanju lẹẹkansi"
+    },
+    legal: {
+      privacy: "Aṣiri",
+      terms: "Awọn ofin",
+      listingPolicy: "Eto Akojọ",
+      cookiePolicy: "Eto Cookie",
+      reviewGuidelines: "Itọsọna Atunwo"
+    },
+    footer: {
+      copyright: "© NearAfrica. Gbogbo ẹtọ ni a pamọ.",
+      discover: "Ṣawari",
+      contactUs: "Kan si wa"
+    },
+    errors: {
+      somethingWentWrong: "Nkankan ko tọ.",
+      unableToLoad: "Ko le kojọpọ.",
+      network: "Aṣiṣe nẹtiwọọki. Jọwọ gbiyanju lẹẹkansi.",
+      notFound: "A ko ri."
+    }
+  },
+
+  // =========================================================
+  // IGBO
+  // =========================================================
+
+  ig: {
+    siteName: "NearAfrica",
+    tagline: "Chọta Azụmahịa Dị Mma Dị Nso Gị.",
+    description: "Chọpụta azụmahịa a pụrụ ịtụkwasị obi, ọrụ, ụlọ ahịa na ebe dị n'ofe Africa.",
+    nav: {
+      home: "Ụlọ",
+      explore: "Chọgharịa",
+      listBusiness: "Depụta Azụmahịa Gị",
+      claimBusiness: "Kwuo Azụmahịa",
+      helpWanted: "A Chọrọ Enyemaka",
+      about: "Banyere Anyị",
+      contact: "Kpọtụrụ Anyị"
+    },
+    search: {
+      title: "Chọpụta Africa. Malite n'Ụlọ.",
+      whatLookingFor: "Gịnị ka ị na-achọ?",
+      location: "Ebe",
+      searchPlaceholder: "dịka: onye na-akpụ isi, hotel, ụlọ nri...",
+      locationPlaceholder: "dịka: Aba, Lagos, Abuja...",
+      search: "Chọọ",
+      useMyLocation: "Jiri ebe m",
+      usingYourLocation: "Na-eji ebe gị...",
+      locationAccessDenied: "Ajụrụ ohere ebe.",
+      locationUnavailable: "Enweghị ike ịchọta ebe gị.",
+      locationError: "Njehie mere mgbe a na-achọta ebe.",
+      locationNotSupported: "Ihe nchọgharị gị anaghị akwado GPS."
+    },
+    explore: {
+      title: "Chọgharịa Azụmahịa",
+      subtitle: "Chọta azụmahịa a pụrụ ịtụkwasị obi dị nso gị.",
+      businesses: "Azụmahịa",
+      businessesFound: "azụmahịa achọtara",
+      businessesFoundNearby: "azụmahịa achọtara nso",
+      businessesNearYou: "Azụmahịa dị nso gị",
+      allBusinesses: "Azụmahịa niile",
+      noBusinesses: "Achọtaghị azụmahịa ọ bụla.",
+      noBusinessesNearby: "Enweghị azụmahịa dị nso ebe gị.",
+      distanceUnavailable: "Enweghị ike ịgbakọ anya",
+      away: "N'ime",
+      clearLocation: "Gbanyụọ Nso M",
+      filters: "Nzacha",
+      category: "Udi",
+      state: "Steeti",
+      rating: "Ọkwa",
+      verifiedOnly: "Naanị ndị e mere nkwenye",
+      allCategories: "Udi niile",
+      allStates: "Steeti niile",
+      anyRating: "Ọkwa ọ bụla",
+      fourPlus: "Kpakpando 4+",
+      threePlus: "Kpakpando 3+",
+      twoPlus: "Kpakpando 2+",
+      verified: "E mere nkwenye",
+      previous: "Nke gara aga",
+      next: "Osote"
+    },
+    categories: {
+      restaurants: "Ụlọ Nri",
+      hotels: "Hotel",
+      beauty: "Mma & Nlekọta Onwe",
+      health: "Ahụike",
+      gyms: "Ebe mmega ahụ",
+      shopping: "Ịzụ ahịa",
+      supermarkets: "Supermarket",
+      banks: "Ụlọ Akụ",
+      professional: "Ọrụ Ọkachamara",
+      education: "Agụmakwụkwọ",
+      realEstate: "Ala na Ụlọ",
+      automotive: "Ụgbọala",
+      travel: "Njem",
+      logistics: "Njem ngwaahịa",
+      technology: "Teknụzụ",
+      entertainment: "Ntụrụndụ",
+      fitness: "Mmega ahụ",
+      construction: "Owuwu",
+      fashion: "Ejiji",
+      agriculture: "Ọrụ ugbo",
+      religious: "Okpukpe",
+      government: "Gọọmentị",
+      other: "Ndị ọzọ"
+    },
+    business: {
+      verified: "E mere nkwenye",
+      unverified: "E meghị nkwenye",
+      claimed: "E kwuru ya",
+      unclaimed: "E kwughị ya",
+      viewBusiness: "Lee Azụmahịa",
+      call: "Kpọọ",
+      whatsapp: "WhatsApp",
+      website: "Weebụsaịtị",
+      directions: "Ụzọ",
+      reviews: "Nyocha",
+      review: "Nyocha",
+      hours: "Oge ọrụ",
+      services: "Ọrụ",
+      products: "Ngwaahịa",
+      about: "Banyere",
+      contact: "Kpọtụrụ",
+      address: "Adreesị",
+      phone: "Ekwentị",
+      email: "Email",
+      openNow: "Mepee ugbu a",
+      closedNow: "Emechiri ugbu a",
+      openingSoon: "Ga-emepe n'oge na-adịghị anya",
+      closingSoon: "Ga-emechi n'oge na-adịghị anya"
+    },
+    owner: {
+      listBusiness: "Depụta Azụmahịa Gị",
+      claimBusiness: "Kwuo Azụmahịa",
+      ownerDashboard: "Dashboard Onye Nwe",
+      manageBusiness: "Jikwaa Azụmahịa",
+      editBusiness: "Dezie Azụmahịa",
+      businessAnalytics: "Nyocha Azụmahịa"
+    },
+    reviews: {
+      title: "Nyocha",
+      writeReview: "Dee Nyocha",
+      rating: "Ọkwa",
+      comment: "Nkwupụta",
+      submit: "Zipu",
+      report: "Kọọ",
+      noReviews: "Enweghị nyocha ma.",
+      reviewSubmitted: "E zipụrụ nyocha gị."
+    },
+    helpWanted: {
+      title: "A Chọrọ Enyemaka",
+      subtitle: "Chọta ohere ọrụ n'ofe Africa.",
+      postOpportunity: "Tinye Ohere",
+      viewOpportunity: "Lee Ohere",
+      apply: "Tinye akwụkwọ",
+      location: "Ebe",
+      type: "Ụdị",
+      description: "Nkọwa"
+    },
+    account: {
+      login: "Banye",
+      logout: "Pụọ",
+      register: "Debanye aha",
+      profile: "Profaịlụ",
+      favorites: "Ọkacha mmasị",
+      savedSearches: "Nchọta echekwara",
+      recentlyViewed: "Nke a lere anya n'oge na-adịbeghị anya",
+      notifications: "Ịmaa ọkwa"
+    },
+    payments: {
+      free: "N'efu",
+      pro: "Pro",
+      premium: "Premium",
+      monthly: "Kwa ọnwa",
+      subscribe: "Debanye aha",
+      manageSubscription: "Jikwaa ndenye aha",
+      paymentSuccessful: "Ịkwụ ụgwọ gara nke ọma",
+      paymentFailed: "Ịkwụ ụgwọ dara",
+      subscriptionActive: "Ndenye aha na-arụ ọrụ"
+    },
+    contact: {
+      title: "Kpọtụrụ Anyị",
+      subtitle: "Anyị nọ ebe a iji nyere gị aka.",
+      emailTitle: "Email",
+      emailDescription: "Zipu anyị ozi email.",
+      emailAction: "Zipu email",
+      businessTitle: "Azụmahịa",
+      businessDescription: "Ajụjụ gbasara ndepụta ma ọ bụ ịkwuo azụmahịa.",
+      businessAction: "Kpọtụrụ nkwado",
+      supportTitle: "Nkwado",
+      supportDescription: "Nweta enyemaka na azịza.",
+      supportAction: "Chọọ nkwado",
+      formTitle: "Zipu anyị ozi",
+      name: "Aha",
+      email: "Email",
+      subject: "Isiokwu",
+      message: "Ozi",
+      namePlaceholder: "Aha gị",
+      emailPlaceholder: "email@omumaatu.com",
+      subjectPlaceholder: "Gbasara gịnị?",
+      messagePlaceholder: "Dee ozi gị ebe a...",
+      sendMessage: "Zipu Ozi",
+      formNote: "Anyị ga-aza ngwa ngwa.",
+      success: "E zipụrụ ozi gị. Daalụ!",
+      validation: "Biko jupụta oghere niile a chọrọ.",
+      backHome: "Laghachi n'ụlọ"
+    },
+    actions: {
+      save: "Chekwa",
+      cancel: "Kagbuo",
+      close: "Mechie",
+      back: "Azụ",
+      continue: "Gaa n'ihu",
+      submit: "Zipu",
+      confirm: "Kwenye",
+      delete: "Hichapụ",
+      edit: "Dezie",
+      report: "Kọọ",
+      viewMore: "Lee ọzọ",
+      learnMore: "Mụtakwuo",
+      loading: "Na-ebunye...",
+      retry: "Nwaa ọzọ"
+    },
+    legal: {
+      privacy: "Nzuzo",
+      terms: "Usoro",
+      listingPolicy: "Iwu Ndepụta",
+      cookiePolicy: "Iwu Cookie",
+      reviewGuidelines: "Ntuziaka Nyocha"
+    },
+    footer: {
+      copyright: "© NearAfrica. Ikike niile echekwara.",
+      discover: "Chọpụta",
+      contactUs: "Kpọtụrụ anyị"
+    },
+    errors: {
+      somethingWentWrong: "Ọ dịghị mma.",
+      unableToLoad: "Enweghị ike ibunye.",
+      network: "Njehie netwọk. Biko nwaa ọzọ.",
+      notFound: "Achọtaghị."
+    }
+  }
+
+};
+
+// MAKE TRANSLATIONS AVAILABLE TO THE FRONTEND
+// =============================================================
+
+if (typeof window !== "undefined") {
+  window.NearAfricaTranslations = NearAfricaTranslations;
+}
+
+
+// =============================================================
+// SUPPORT MODULE SYSTEMS
+// =============================================================
+
+if (
+  typeof module !== "undefined" &&
+  module.exports
+) {
+  module.exports = NearAfricaTranslations;
       }
-    } catch (_) {}
-
-    return fallback != null ? fallback : key || "";
-  }
-
-  const API_FALLBACK =
-    "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
-
-  const LOCATION_KEY = "nearafrica_user_location";
-  const NEARBY_KEY = "nearafrica_nearby_mode";
-  const SAVED_KEY = "nearafrica_saved_businesses";
-
-  const MAX_LOCATION_ACCURACY_METERS = 5000; // Improved from 25000
-  const API_PAGE_SIZE = 48;
-  const MAX_API_PAGES = 50;
-
-  const HOME_CATEGORIES = [
-    "Restaurants & Food",
-    "Hotels & Accommodation",
-    "Beauty & Spa",
-    "Health & Medical",
-    "Shopping & Retail",
-    "Supermarkets",
-    "Professional Services",
-    "Education",
-    "Real Estate",
-    "Automotive",
-    "Travel & Tourism",
-    "Technology"
-  ];
-
-  const CATEGORY_ALIASES = {
-    "restaurants and food": "Restaurants & Food",
-    "restaurant and food": "Restaurants & Food",
-    "restaurant food": "Restaurants & Food",
-    "restaurants food": "Restaurants & Food",
-    "food and drink": "Restaurants & Food",
-    "food drink": "Restaurants & Food",
-    "restaurant": "Restaurants & Food",
-    "restaurants": "Restaurants & Food",
-
-    "hotel and accommodation": "Hotels & Accommodation",
-    "hotels and accommodation": "Hotels & Accommodation",
-    "hotel accommodation": "Hotels & Accommodation",
-    "hotels accommodation": "Hotels & Accommodation",
-    "hotel": "Hotels & Accommodation",
-    "hotels": "Hotels & Accommodation",
-    "accommodation": "Hotels & Accommodation",
-
-    "beauty and spa": "Beauty & Spa",
-    "beauty spa": "Beauty & Spa",
-    "beauty salon": "Beauty & Spa",
-    "beauty salons": "Beauty & Spa",
-    "salon and spa": "Beauty & Spa",
-    "salons and spa": "Beauty & Spa",
-    "spa": "Beauty & Spa",
-    "salon": "Beauty & Spa",
-
-    "health and medical": "Health & Medical",
-    "health medical": "Health & Medical",
-    "healthcare": "Health & Medical",
-    "health care": "Health & Medical",
-    "medical": "Health & Medical",
-    "health": "Health & Medical",
-
-    "shopping and retail": "Shopping & Retail",
-    "shopping retail": "Shopping & Retail",
-    "retail": "Shopping & Retail",
-    "shopping": "Shopping & Retail",
-
-    "supermarket": "Supermarkets",
-    "supermarkets": "Supermarkets",
-
-    "professional service": "Professional Services",
-    "professional services": "Professional Services",
-    "professional service providers": "Professional Services",
-
-    "education": "Education",
-    "educational services": "Education",
-    "schools": "Education",
-    "school": "Education",
-
-    "real estate": "Real Estate",
-    "property": "Real Estate",
-    "property services": "Real Estate",
-    "properties": "Real Estate",
-
-    "automotive": "Automotive",
-    "automotive services": "Automotive",
-    "auto services": "Automotive",
-    "car services": "Automotive",
-    "cars": "Automotive",
-
-    "travel and tourism": "Travel & Tourism",
-    "travel tourism": "Travel & Tourism",
-    "tourism": "Travel & Tourism",
-    "travel": "Travel & Tourism",
-
-    "technology": "Technology",
-    "technologies": "Technology",
-    "tech": "Technology",
-    "information technology": "Technology"
-  };
-
-  const App = {
-    allBusinesses: [],
-    filteredBusinesses: [],
-    userLocation: null,
-    locationInfo: null,
-    nearbyMode: false,
-    radiusKm: 25,
-    currentPage: 1,
-    pageSize: 12,
-    totalPages: 1,
-    loading: false,
-    locationLoading: false,
-    initialized: false
-  };
-
-  /* ==========================================================
-     UTILITIES
-  ========================================================== */
-
-  const $ = (selector, root = document) =>
-    root.querySelector(selector);
-
-  const $$ = (selector, root = document) =>
-    Array.from(root.querySelectorAll(selector));
-
-  function clean(value, fallback = "") {
-    if (value === null || value === undefined) {
-      return fallback;
-    }
-
-    return String(value).trim() || fallback;
-  }
-
-  function number(value, fallback = null) {
-    if (value === null || value === undefined || value === "") {
-      return fallback;
-    }
-
-    const result = Number(value);
-
-    return Number.isFinite(result) ? result : fallback;
-  }
-
-  function escapeHtml(value) {
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-
-  /* ==========================================================
-     CATEGORY NORMALIZATION
-  ========================================================== */
-
-  function categoryKey(value) {
-    return String(value ?? "")
-      .trim()
-      .toLowerCase()
-      .replace(/&/g, " and ")
-      .replace(/[-_]+/g, " ")
-      .replace(/[^\p{L}\p{N}\s]/gu, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
-  function categoryLabel(value) {
-    const key = categoryKey(value);
-
-    if (!key) return "";
-
-    if (CATEGORY_ALIASES[key]) {
-      return CATEGORY_ALIASES[key];
-    }
-
-    const match = HOME_CATEGORIES.find(
-      item => categoryKey(item) === key
-    );
-
-    if (match) return match;
-
-    return String(value)
-      .trim()
-      .replace(/[-_]+/g, " ")
-      .replace(/\s+/g, " ");
-  }
-
-  function categoriesMatch(first, second) {
-    if (!clean(first) || !clean(second)) {
-      return false;
-    }
-
-    return (
-      categoryKey(categoryLabel(first)) ===
-      categoryKey(categoryLabel(second))
-    );
-  }
-
-  /* ==========================================================
-     API CONFIGURATION
-  ========================================================== */
-
-  function config() {
-    return window.NearAfricaConfig || {};
-  }
-
-  function apiBase() {
-    const cfg = config();
-
-    return clean(
-      cfg.api && cfg.api.baseUrl,
-      API_FALLBACK
-    ).replace(/\/+$/, "");
-  }
-
-  function endpoint(name, fallback) {
-    const cfg = config();
-
-    return clean(
-      cfg.api &&
-      cfg.api.endpoints &&
-      cfg.api.endpoints[name],
-      fallback
-    ).replace(/^\/+/, "");
-  }
-
-  function apiUrl(path) {
-    const value = String(path || "");
-
-    if (/^https?:\/\//i.test(value)) {
-      return value;
-    }
-
-    return apiBase() + "/" + value.replace(/^\/+/, "");
-  }
-
-  async function fetchJson(url, options = {}) {
-    const response = await fetch(url, {
-      ...options,
-      headers: {
-        Accept: "application/json",
-        ...(options.headers || {})
-      },
-      cache: options.cache || "no-store"
-    });
-
-    const body = await response.text();
-    let payload = null;
-
-    if (body) {
-      try {
-        payload = JSON.parse(body);
-      } catch (_) {
-        throw new Error(
-          "The server returned an invalid response. Check the API endpoint."
-        );
-      }
-    }
-
-    if (!response.ok) {
-      const message =
-        payload &&
-        (
-          payload.message ||
-          payload.error ||
-          payload.details
-        );
-
-      throw new Error(
-        clean(message, `Request failed (HTTP ${response.status}).`)
-      );
-    }
-
-    return payload;
-  }
-
-  /* ==========================================================
-     DOM ELEMENTS
-  ========================================================== */
-
-  const searchInput = () =>
-    $("#searchInput") ||
-    $("#search") ||
-    $("input[name='q']");
-
-  const categoryFilter = () =>
-    $("#categoryFilter") ||
-    $("#category") ||
-    $("select[name='category']");
-
-  const stateFilter = () =>
-    $("#stateFilter") ||
-    $("#state") ||
-    $("select[name='state']");
-
-  const cityFilter = () =>
-    $("#cityFilter") ||
-    $("#city") ||
-    $("select[name='city']");
-
-  const resultsContainer = () =>
-    $("#businessGrid") ||
-    $("#businessesGrid") ||
-    $("#resultsGrid") ||
-    $("#businessResults") ||
-    $("[data-business-results]");
-
-  const countElement = () =>
-    $("#resultCount") ||
-    $("#resultsCount") ||
-    $("#resultsStatus") ||
-    $("#businessCount") ||
-    $("[data-results-count]");
-
-  const paginationElement = () =>
-    $("#pagination") ||
-    $("#paginationControls") ||
-    $("[data-pagination]");
-
-  function statusElement() {
-    let element =
-      $("#locationStatus") ||
-      $("#nearbyStatus") ||
-      $("#locationMessage") ||
-      $("#statusMessage") ||
-      $("[data-location-status]");
-
-    if (!element) {
-      element = document.createElement("p");
-      element.id = "locationStatus";
-      element.setAttribute("role", "status");
-      element.style.cssText =
-        "max-width:1200px;margin:12px auto;padding:0 20px;";
-
-      const controls = $(".explore-controls");
-
-      if (controls) {
-        controls.insertAdjacentElement("afterend", element);
-      } else if (document.body) {
-        document.body.prepend(element);
-      }
-    }
-
-    return element;
-  }
-
-  function setStatus(message, type = "info") {
-    const element = statusElement();
-
-    element.textContent = clean(message);
-    element.dataset.statusType = type;
-    element.hidden = !message;
-    element.style.display = message ? "" : "none";
-  }
-
-  function setLoading(loading) {
-    App.loading = Boolean(loading);
-
-    const container = resultsContainer();
-
-    if (!container) return;
-
-    if (loading && !App.allBusinesses.length) {
-      container.innerHTML =
-        '<div class="loading-state">' +
-        escapeHtml(t("actions.loading", "Loading businesses...")) +
-        "</div>";
-    }
-  }
-
-  function isExplorePage() {
-    return Boolean(
-      resultsContainer() ||
-      /explore|search/i.test(location.pathname)
-    );
-  }
-
-  function isHomePage() {
-    return (
-      location.pathname === "/" ||
-      /index\.html$/i.test(location.pathname) ||
-      Boolean($("#homeSearchForm"))
-    );
-  }
-
-  /* ==========================================================
-     BUSINESS NORMALIZATION
-  ========================================================== */
-
-  function normalizeBusiness(raw) {
-    const b = raw || {};
-
-    const id = clean(
-      b.id ||
-      b.business_id ||
-      b.businessId ||
-      b.slug
-    );
-
-    const images = Array.isArray(b.images) ? b.images : [];
-
-    const firstImage = images.length
-      ? (
-          typeof images[0] === "string"
-            ? images[0]
-            : images[0]?.image_url || images[0]?.url
-        )
-      : "";
-
-    const verified =
-      b.verified === true ||
-      b.is_verified === true ||
-      Number(b.verified || b.is_verified || 0) === 1;
-
-    const claimed =
-      b.claimed === true ||
-      b.is_claimed === true ||
-      Number(b.claimed || b.is_claimed || 0) === 1;
-
-    const rawCategory =
-      typeof b.category === "object"
-        ? b.category?.name
-        : b.category;
-
-    return {
-      ...b,
-
-      id,
-      slug: clean(b.slug),
-
-      name: clean(
-        b.business_name || b.name || b.title,
-        "Unnamed Business"
-      ),
-
-      category: categoryLabel(rawCategory),
-
-      address: clean(
-        b.address || b.address_line || b.location
-      ),
-
-      city: clean(b.city || b.town),
-      state: clean(b.state || b.region),
-      country: clean(b.country, "Nigeria"),
-      description: clean(b.description),
-
-      phone: clean(
-        b.phone || b.phone_number || b.contact_phone
-      ),
-
-      website: clean(
-        b.website || b.website_url || b.site
-      ),
-
-      image: clean(
-        b.image_url ||
-        b.image ||
-        b.logo_url ||
-        b.logo ||
-        firstImage
-      ),
-
-      latitude: number(
-        b.latitude ?? b.lat ?? b.location_latitude
-      ),
-
-      longitude: number(
-        b.longitude ??
-        b.lng ??
-        b.lon ??
-        b.location_longitude
-      ),
-
-      rating: number(
-        b.average_rating ??
-        b.rating ??
-        b.avg_rating,
-        0
-      ),
-
-      reviewCount: number(
-        b.review_count ??
-        b.reviews_count ??
-        b.total_reviews,
-        0
-      ),
-
-      verified,
-      claimed,
-
-      featured: number(b.featured, 0),
-
-      distanceKm: number(
-        b.distance_km ?? b.distanceKm,
-        null
-      )
-    };
-  }
-
-  function extractBusinesses(payload) {
-    if (Array.isArray(payload)) {
-      return payload;
-    }
-
-    if (!payload || typeof payload !== "object") {
-      return [];
-    }
-
-    for (const key of ["businesses", "results", "items"]) {
-      if (Array.isArray(payload[key])) {
-        return payload[key];
-      }
-    }
-
-    if (payload.data && !Array.isArray(payload.data)) {
-      for (const key of ["businesses", "results", "items"]) {
-        if (Array.isArray(payload.data[key])) {
-          return payload.data[key];
-        }
-      }
-    }
-
-    if (Array.isArray(payload.data)) {
-      return payload.data;
-    }
-
-    if (payload.business && typeof payload.business === "object") {
-      return [payload.business];
-    }
-
-    return [];
-  }
-
-  function reportedTotalPages(payload) {
-    if (!payload || typeof payload !== "object") {
-      return null;
-    }
-
-    const sources = [
-      payload.pagination,
-      payload.meta,
-      payload.data?.pagination,
-      payload.data?.meta,
-      payload
-    ].filter(Boolean);
-
-    for (const source of sources) {
-      const value = number(
-        source.total_pages ??
-        source.totalPages ??
-        source.last_page ??
-        source.lastPage ??
-        source.pages,
-        null
-      );
-
-      if (value !== null && value >= 1) {
-        return Math.floor(value);
-      }
-    }
-
-    return null;
-  }
-
-  function businessIdentity(raw) {
-    const b = raw || {};
-
-    const id = clean(
-      b.id ||
-      b.business_id ||
-      b.businessId ||
-      b.slug
-    ).toLowerCase();
-
-    if (id) return "id:" + id;
-
-    return [
-      b.business_name || b.name || b.title,
-      b.address || b.address_line || b.location,
-      b.city || b.town,
-      b.state || b.region,
-      b.country
-    ]
-      .map(value => clean(value).toLowerCase())
-      .join("|");
-  }
-
-  function deduplicate(list) {
-    const seen = new Set();
-
-    return list.filter(business => {
-      const key = businessIdentity(business);
-
-      if (seen.has(key)) return false;
-
-      seen.add(key);
-      return true;
-    });
-  }
-
-  /* ==========================================================
-     LOAD BUSINESSES
-  ========================================================== */
-
-  async function loadBusinesses() {
-    setLoading(true);
-
-    try {
-      const baseUrl = apiUrl(
-        endpoint("businesses", "businesses")
-      );
-
-      const collected = [];
-      const pageSignatures = new Set();
-
-      let page = 1;
-      let totalPages = null;
-
-      /*
-       * Fetch API pages into one dataset.
-       * Frontend pagination is then applied to that dataset.
-       */
-      while (page <= MAX_API_PAGES) {
-        const url = new URL(baseUrl);
-
-        url.searchParams.set("limit", String(API_PAGE_SIZE));
-        url.searchParams.set("page", String(page));
-
-        if (
-          App.nearbyMode &&
-          App.userLocation &&
-          Number.isFinite(App.userLocation.latitude) &&
-          Number.isFinite(App.userLocation.longitude)
-        ) {
-          url.searchParams.set(
-            "latitude",
-            String(App.userLocation.latitude)
-          );
-
-          url.searchParams.set(
-            "longitude",
-            String(App.userLocation.longitude)
-          );
-
-          url.searchParams.set(
-            "radius",
-            String(radiusValue())
-          );
-        } else {
-          url.searchParams.set("country", "Nigeria");
-        }
-
-        const payload = await fetchJson(url.toString());
-        const batch = extractBusinesses(payload);
-
-        totalPages = reportedTotalPages(payload) ?? totalPages;
-
-        if (!batch.length) {
-          break;
-        }
-
-        const signature = batch
-          .map(businessIdentity)
-          .join("||");
-
-        /*
-         * Protect against APIs that ignore the page parameter
-         * and return the same batch repeatedly.
-         */
-        if (pageSignatures.has(signature)) {
-          console.warn(
-            "NearAfrica: API repeated a page; stopping pagination."
-          );
-          break;
-        }
-
-        pageSignatures.add(signature);
-        collected.push(...batch);
-
-        if (totalPages !== null) {
-          if (page >= totalPages) break;
-        } else if (batch.length < API_PAGE_SIZE) {
-          break;
-        }
-
-        page++;
-      }
-
-      App.allBusinesses = deduplicate(
-        collected.map(normalizeBusiness)
-      );
-
-      if (!App.allBusinesses.length) {
-        setStatus(
-          App.nearbyMode
-            ? t(
-                "explore.noBusinessesNearby",
-                "No businesses with usable GPS coordinates were found within this radius."
-              )
-            : "The API responded, but no businesses were returned.",
-          "info"
-        );
-      } else {
-        setStatus("");
-      }
-
-      if (!App.nearbyMode) {
-        populateStateOptions();
-        populateCategoryOptions();
-        populateCityOptions();
-      }
-
-      return App.allBusinesses;
-    } catch (error) {
-      console.error(
-        "NearAfrica: business loading failed.",
-        error
-      );
-
-      App.allBusinesses = [];
-
-      setStatus(
-        t("errors.unableToLoad", "Unable to load businesses") +
-        ": " +
-        error.message,
-        "error"
-      );
-
-      return [];
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function loadCategories() {
-    const filter = categoryFilter();
-
-    if (!filter) return;
-
-    try {
-      const payload = await fetchJson(
-        apiUrl(endpoint("categories", "categories"))
-      );
-
-      let items = [];
-
-      if (Array.isArray(payload)) {
-        items = payload;
-      } else if (Array.isArray(payload?.categories)) {
-        items = payload.categories;
-      } else if (Array.isArray(payload?.data)) {
-        items = payload.data;
-      } else if (Array.isArray(payload?.data?.categories)) {
-        items = payload.data.categories;
-      }
-
-      const previous = filter.value;
-
-      items.forEach(item => {
-        const rawValue = clean(
-          typeof item === "string" ? item : item?.name
-        );
-
-        if (!rawValue) return;
-
-        const value = categoryLabel(rawValue);
-
-        const exists = Array.from(filter.options).some(
-          option => categoriesMatch(option.value, value)
-        );
-
-        if (!exists) {
-          filter.add(new Option(value, value));
-        }
-      });
-
-      if (previous) {
-        selectCategoryOption(previous);
-      }
-    } catch (error) {
-      console.warn(
-        "NearAfrica: category endpoint unavailable.",
-        error
-      );
-    }
-  }
-
-  function addOptions(select, values, placeholder) {
-    if (!select) return;
-
-    const previous = select.value;
-
-    select.replaceChildren(new Option(placeholder, ""));
-
-    values.forEach(value => {
-      select.add(new Option(value, value));
-    });
-
-    if (values.includes(previous)) {
-      select.value = previous;
-    }
-  }
-
-  function uniqueSorted(values) {
-    return [...new Set(values.map(clean).filter(Boolean))]
-      .sort((a, b) => a.localeCompare(b));
-  }
-
-  function populateStateOptions() {
-    addOptions(
-      stateFilter(),
-      uniqueSorted(App.allBusinesses.map(b => b.state)),
-      "All states"
-    );
-  }
-
-  function selectCategoryOption(requestedValue) {
-    const filter = categoryFilter();
-
-    if (!filter) return false;
-
-    const requested = clean(requestedValue);
-
-    if (!requested) {
-      filter.value = "";
-      return true;
-    }
-
-    const matchingOption = Array.from(filter.options).find(
-      option =>
-        option.value &&
-        categoriesMatch(option.value, requested)
-    );
-
-    if (matchingOption) {
-      filter.value = matchingOption.value;
-      return true;
-    }
-
-    return false;
-  }
-
-  function populateCategoryOptions() {
-    const filter = categoryFilter();
-
-    if (!filter) return;
-
-    const previous = clean(filter.value);
-    const options = new Map();
-
-    HOME_CATEGORIES.forEach(category => {
-      options.set(categoryKey(category), category);
-    });
-
-    App.allBusinesses.forEach(business => {
-      const category = clean(business.category);
-
-      if (!category) return;
-
-      const label = categoryLabel(category);
-      options.set(categoryKey(label), label);
-    });
-
-    Array.from(filter.options).forEach(option => {
-      if (!option.value) return;
-
-      const label = categoryLabel(option.value);
-      options.set(categoryKey(label), label);
-    });
-
-    filter.replaceChildren(new Option("All categories", ""));
-
-    [...options.values()]
-      .sort((a, b) => {
-        const aHome = HOME_CATEGORIES.includes(a);
-        const bHome = HOME_CATEGORIES.includes(b);
-
-        if (aHome && !bHome) return -1;
-        if (!aHome && bHome) return 1;
-
-        return a.localeCompare(b);
-      })
-      .forEach(category => {
-        filter.add(new Option(category, category));
-      });
-
-    if (previous) {
-      selectCategoryOption(previous);
-    }
-  }
-
-  function populateCityOptions() {
-    const state = clean(stateFilter()?.value).toLowerCase();
-
-    const cities = uniqueSorted(
-      App.allBusinesses
-        .filter(
-          business =>
-            !state ||
-            business.state.toLowerCase() === state
-        )
-        .map(business => business.city)
-    );
-
-    addOptions(cityFilter(), cities, "All cities");
-  }
-
-  /* ==========================================================
-     DISTANCE AND GPS LOCATION
-  ========================================================== */
-
-  function distanceKm(lat1, lon1, lat2, lon2) {
-    const values = [lat1, lon1, lat2, lon2].map(Number);
-
-    if (values.some(value => !Number.isFinite(value))) {
-      return null;
-    }
-
-    const radians = value => value * Math.PI / 180;
-
-    const dLat = radians(lat2 - lat1);
-    const dLon = radians(lon2 - lon1);
-
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos(radians(lat1)) *
-      Math.cos(radians(lat2)) *
-      Math.sin(dLon / 2) ** 2;
-
-    return 6371 * 2 * Math.atan2(
-      Math.sqrt(a),
-      Math.sqrt(Math.max(0, 1 - a))
-    );
-  }
-
-  function getBrowserLocation() {
-    return new Promise((resolve, reject) => {
-      if (!window.isSecureContext) {
-        reject(
-          new Error(
-            t(
-              "search.locationError",
-              "Location access requires HTTPS."
-            )
-          )
-        );
-        return;
-      }
-
-      if (!navigator.geolocation) {
-        reject(
-          new Error(
-            t(
-              "search.locationNotSupported",
-              "This browser does not support location services."
-            )
-          )
-        );
-        return;
-      }
-
-      let watchId = null;
-      let timerId = null;
-      let finished = false;
-      let bestAccuracy = null;
-      let bestPosition = null;
-
-      function finish(error, position) {
-        if (finished) return;
-
-        finished = true;
-
-        if (timerId !== null) {
-          clearTimeout(timerId);
-        }
-
-        if (watchId !== null) {
-          try {
-            navigator.geolocation.clearWatch(watchId);
-          } catch (_) {}
-        }
-
-        if (error) {
-          reject(error);
-        } else {
-          resolve(position);
-        }
-      }
-
-      timerId = setTimeout(() => {
-        if (
-          bestPosition &&
-          bestPosition.accuracy <= MAX_LOCATION_ACCURACY_METERS
-        ) {
-          finish(null, bestPosition);
-          return;
-        }
-
-        const message = bestAccuracy !== null
-          ? `Your browser could not obtain a usable location. Its best reported accuracy was ${Math.round(bestAccuracy)} metres. Try again outdoors or check your device's location settings.`
-          : t(
-              "search.locationUnavailable",
-              "Your device could not determine your location. Check location services and try again."
-            );
-
-        finish(new Error(message));
-      }, 15000);
-
-      try {
-        watchId = navigator.geolocation.watchPosition(
-          position => {
-            const latitude = number(position.coords.latitude);
-            const longitude = number(position.coords.longitude);
-            const accuracy = number(position.coords.accuracy);
-
-            if (
-              latitude === null ||
-              longitude === null ||
-              latitude < -90 ||
-              latitude > 90 ||
-              longitude < -180 ||
-              longitude > 180 ||
-              accuracy === null ||
-              accuracy < 0
-            ) {
-              return;
-            }
-
-            if (
-              bestAccuracy === null ||
-              accuracy < bestAccuracy
-            ) {
-              bestAccuracy = accuracy;
-
-              bestPosition = {
-                latitude,
-                longitude,
-                accuracy
-              };
-            }
-
-            if (accuracy <= MAX_LOCATION_ACCURACY_METERS) {
-              finish(null, bestPosition);
-            }
-          },
-
-          error => {
-            if (error.code === 1) {
-              finish(
-                new Error(
-                  t(
-                    "search.locationAccessDenied",
-                    "Location permission was denied. Allow location access and try again."
-                  )
-                )
-              );
-            } else if (error.code === 2) {
-              finish(
-                new Error(
-                  t(
-                    "search.locationUnavailable",
-                    "Your device could not determine your location. Check location services and try again."
-                  )
-                )
-              );
-            }
-
-            /*
-             * For timeout errors, keep waiting until the outer
-             * timer can use a previously received position.
-             */
-          },
-
-          {
-            enableHighAccuracy: true,
-            timeout: 60000,
-            maximumAge: 0
-          }
-        );
-      } catch (error) {
-        finish(
-          new Error(
-            error.message ||
-            t(
-              "search.locationError",
-              "Unable to start location detection."
-            )
-          )
-        );
-      }
-    });
-  }
-
-  async function reverseGeocode(location) {
-    try {
-      const url = new URL(
-        apiUrl(endpoint("location", "location/reverse"))
-      );
-
-      url.searchParams.set("latitude", location.latitude);
-      url.searchParams.set("longitude", location.longitude);
-
-      const payload = await fetchJson(url.toString());
-
-      if (payload?.location) {
-        return payload.location;
-      }
-    } catch (error) {
-      console.warn(
-        "NearAfrica: reverse geocoding failed.",
-        error
-      );
-    }
-
-    return null;
-  }
-
-  function saveLocation() {
-    if (!App.userLocation) return;
-
-    const latitude = number(App.userLocation.latitude);
-    const longitude = number(App.userLocation.longitude);
-    const accuracy = number(App.userLocation.accuracy);
-
-    const valid =
-      latitude !== null &&
-      longitude !== null &&
-      latitude >= -90 &&
-      latitude <= 90 &&
-      longitude >= -180 &&
-      longitude <= 180 &&
-      accuracy !== null &&
-      accuracy <= MAX_LOCATION_ACCURACY_METERS;
-
-    if (!valid) {
-      try {
-        sessionStorage.removeItem(LOCATION_KEY);
-        sessionStorage.removeItem(NEARBY_KEY);
-      } catch (_) {}
-
-      throw new Error(
-        t(
-          "search.locationError",
-          "Your location is too approximate for Nearby search. Please try again."
-        )
-      );
-    }
-
-    try {
-      sessionStorage.setItem(
-        LOCATION_KEY,
-        JSON.stringify({
-          latitude,
-          longitude,
-          accuracy,
-          locationInfo: App.locationInfo,
-          savedAt: Date.now()
-        })
-      );
-
-      sessionStorage.setItem(NEARBY_KEY, "1");
-    } catch (error) {
-      console.warn(
-        "NearAfrica: could not save location.",
-        error
-      );
-
-      throw new Error(
-        t(
-          "errors.somethingWentWrong",
-          "Your browser could not save your location. Check browser storage settings and try again."
-        )
-      );
-    }
-  }
-
-  function restoreLocation() {
-    let saved = null;
-
-    try {
-      saved = JSON.parse(
-        sessionStorage.getItem(LOCATION_KEY) || "null"
-      );
-    } catch (_) {
-      saved = null;
-    }
-
-    const latitude = number(saved?.latitude);
-    const longitude = number(saved?.longitude);
-    const accuracy = number(saved?.accuracy);
-
-    const valid =
-      Boolean(saved) &&
-      latitude !== null &&
-      longitude !== null &&
-      latitude >= -90 &&
-      latitude <= 90 &&
-      longitude >= -180 &&
-      longitude <= 180 &&
-      accuracy !== null &&
-      accuracy >= 0 &&
-      accuracy <= MAX_LOCATION_ACCURACY_METERS;
-
-    if (!valid) {
-      try {
-        sessionStorage.removeItem(LOCATION_KEY);
-        sessionStorage.removeItem(NEARBY_KEY);
-      } catch (_) {}
-
-      App.userLocation = null;
-      App.locationInfo = null;
-
-      return false;
-    }
-
-    App.userLocation = {
-      latitude,
-      longitude,
-      accuracy
-    };
-
-    App.locationInfo = saved.locationInfo || null;
-
-    return true;
-  }
-
-  function radiusValue() {
-    const control = $("#radiusFilter");
-
-    if (control && Number(control.value) > 0) {
-      App.radiusKm = Number(control.value);
-    }
-
-    return App.radiusKm;
-  }
-
-  /* ==========================================================
-     NEARBY MODE
-  ========================================================== */
-
-  async function enableNearby() {
-    if (App.locationLoading) return;
-
-    App.locationLoading = true;
-
-    const button = $("#nearbyButton");
-
-    if (button) {
-      button.disabled = true;
-      button.textContent = t(
-        "search.usingYourLocation",
-        "Finding location…"
-      );
-    }
-
-    setStatus(
-      t(
-        "search.usingYourLocation",
-        "Finding your current location…"
-      )
-    );
-
-    try {
-      App.userLocation = await getBrowserLocation();
-
-      App.locationInfo = await reverseGeocode(
-        App.userLocation
-      );
-
-      App.nearbyMode = true;
-
-      saveLocation();
-      clearGeographicFilters();
-      updateNearbyControls();
-
-      App.currentPage = 1;
-
-      await loadBusinesses();
-      applyFilters();
-
-      const info = App.locationInfo || {};
-
-      const label = [
-        info.area,
-        info.city,
-        info.state,
-        info.country
-      ].filter(Boolean).join(", ");
-
-      setStatus(
-        label
-          ? `${t("explore.businessesNearYou", "Nearby is active")}. ${label}`
-          : t(
-              "explore.businessesNearYou",
-              "Nearby is active. Businesses are sorted by GPS distance."
-            ),
-        "success"
-      );
-    } catch (error) {
-      console.error(
-        "NearAfrica: unable to activate Nearby.",
-        error
-      );
-
-      setStatus(error.message, "error");
-    } finally {
-      App.locationLoading = false;
-
-      if (button) {
-        button.disabled = false;
-      }
-
-      updateNearbyControls();
-    }
-  }
-
-  function clearGeographicFilters() {
-    const state = stateFilter();
-    const city = cityFilter();
-
-    if (state) state.value = "";
-    if (city) city.value = "";
-
-    App.currentState = "";
-    App.currentCity = "";
-  }
-
-  function clearNearby() {
-    App.nearbyMode = false;
-    App.userLocation = null;
-    App.locationInfo = null;
-
-    try {
-      sessionStorage.removeItem(LOCATION_KEY);
-      sessionStorage.removeItem(NEARBY_KEY);
-    } catch (_) {}
-
-    updateNearbyControls();
-
-    App.currentPage = 1;
-
-    loadBusinesses().then(() => {
-      applyFilters();
-    });
-
-    setStatus(
-      t("explore.clearLocation", "Nearby mode turned off.")
-    );
-  }
-
-  /* ==========================================================
-     NEARBY CONTROLS
-  ========================================================== */
-
-  function installNearbyControls() {
-    if ($("#nearafricaNearbyControls")) return;
-
-    const panel =
-      $(".filter-panel") ||
-      $(".explore-controls");
-
-    if (!panel) return;
-
-    const wrapper = document.createElement("div");
-
-    wrapper.id = "nearafricaNearbyControls";
-    wrapper.className = "filter-group";
-
-    wrapper.style.cssText =
-      "grid-column:1/-1;display:flex;flex-direction:row;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px;";
-
-    wrapper.innerHTML = `
-      <button
-        type="button"
-        id="nearbyButton"
-        class="filter-button"
-      >${escapeHtml(t("search.useMyLocation", "Use My Location"))}</button>
-
-      <label for="radiusFilter" style="white-space:nowrap;font-weight:500;">
-        ${escapeHtml(t("explore.away", "Within"))}
-      </label>
-
-      <select
-        id="radiusFilter"
-        aria-label="${escapeHtml(t("explore.businessesNearYou", "Nearby search radius"))}"
-        style="min-height:44px;padding:8px 12px;border-radius:10px;min-width:100px;"
-      >
-        <option value="5">5 km</option>
-        <option value="10">10 km</option>
-        <option value="25" selected>25 km</option>
-        <option value="50">50 km</option>
-        <option value="100">100 km</option>
-      </select>
-
-      <button
-        type="button"
-        id="clearNearby"
-        class="filter-button"
-        style="display:none;"
-      >${escapeHtml(t("explore.clearLocation", "Turn Nearby Off"))}</button>
-    `;
-
-    panel.appendChild(wrapper);
-
-    $("#nearbyButton")?.addEventListener("click", enableNearby);
-    $("#clearNearby")?.addEventListener("click", clearNearby);
-
-    $("#radiusFilter")?.addEventListener("change", async () => {
-      radiusValue();
-
-      if (App.nearbyMode) {
-        App.currentPage = 1;
-
-        await loadBusinesses();
-        applyFilters();
-      }
-    });
-
-    updateNearbyControls();
-  }
-
-  function updateNearbyControls() {
-    const button = $("#nearbyButton");
-    const clear = $("#clearNearby");
-    const radius = $("#radiusFilter");
-
-    if (button) {
-      button.textContent = App.nearbyMode
-        ? t("search.useMyLocation", "Refresh My Location")
-        : t("search.useMyLocation", "Use My Location");
-    }
-
-    if (clear) {
-      clear.hidden = !App.nearbyMode;
-      clear.style.display = App.nearbyMode ? "" : "none";
-    }
-
-    if (radius) {
-      radius.value = String(App.radiusKm);
-    }
-  }
-
-  /* ==========================================================
-     URL FILTERS
-  ========================================================== */
-
-  function applyUrlParameters() {
-    const params = new URLSearchParams(location.search);
-
-    if (searchInput()) {
-      searchInput().value = params.get("q") || "";
-    }
-
-    if (categoryFilter()) {
-      selectCategoryOption(params.get("category") || "");
-    }
-
-    if (stateFilter()) {
-      stateFilter().value = params.get("state") || "";
-    }
-
-    populateCityOptions();
-
-    if (cityFilter()) {
-      cityFilter().value = params.get("city") || "";
-    }
-
-    const radius = number(params.get("radius"));
-
-    if (radius && radius > 0) {
-      App.radiusKm = radius;
-    }
-
-    App.nearbyMode =
-      params.get("nearby") === "1" ||
-      params.get("nearby") === "true";
-  }
-
-  function syncUrl() {
-    if (!isExplorePage()) return;
-
-    try {
-      const url = new URL(location.href);
-
-      const values = {
-        q: clean(searchInput()?.value),
-        category: clean(categoryFilter()?.value),
-        state: App.nearbyMode
-          ? ""
-          : clean(stateFilter()?.value),
-        city: App.nearbyMode
-          ? ""
-          : clean(cityFilter()?.value)
-      };
-
-      Object.entries(values).forEach(([key, value]) => {
-        if (value) {
-          url.searchParams.set(key, value);
-        } else {
-          url.searchParams.delete(key);
-        }
-      });
-
-      if (App.nearbyMode) {
-        url.searchParams.set("nearby", "1");
-        url.searchParams.set("radius", String(App.radiusKm));
-      } else {
-        url.searchParams.delete("nearby");
-        url.searchParams.delete("radius");
-      }
-
-      history.replaceState({}, "", url.toString());
-    } catch (error) {
-      console.warn(
-        "NearAfrica: URL update failed.",
-        error
-      );
-    }
-  }
-
-  /* ==========================================================
-     FILTERS
-  ========================================================== */
-
-  function applyFilters() {
-    const query = clean(searchInput()?.value).toLowerCase();
-    const category = clean(categoryFilter()?.value);
-
-    const state = App.nearbyMode
-      ? ""
-      : clean(stateFilter()?.value).toLowerCase();
-
-    const city = App.nearbyMode
-      ? ""
-      : clean(cityFilter()?.value).toLowerCase();
-
-    const radius = radiusValue();
-
-    if (App.nearbyMode) {
-      clearGeographicFilters();
-    }
-
-    App.filteredBusinesses = App.allBusinesses
-      .map(business => {
-        const calculatedDistance = App.userLocation
-          ? distanceKm(
-              App.userLocation.latitude,
-              App.userLocation.longitude,
-              business.latitude,
-              business.longitude
-            )
-          : null;
-
-        /*
-         * Keep a distance supplied by the API if coordinates
-         * are missing from the business record.
-         */
-        const existingDistance = number(
-          business.distanceKm ?? business.distance_km,
-          null
-        );
-
-        return {
-          ...business,
-          distanceKm:
-            calculatedDistance !== null
-              ? calculatedDistance
-              : existingDistance
-        };
-      })
-      .filter(business => {
-        const searchable = [
-          business.name,
-          business.category,
-          business.address,
-          business.city,
-          business.state,
-          business.country,
-          business.description,
-          business.phone,
-          business.website
-        ]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
-
-        if (query && !searchable.includes(query)) {
-          return false;
-        }
-
-        if (
-          category &&
-          !categoriesMatch(business.category, category)
-        ) {
-          return false;
-        }
-
-        if (
-          !App.nearbyMode &&
-          state &&
-          business.state.toLowerCase() !== state
-        ) {
-          return false;
-        }
-
-        if (
-          !App.nearbyMode &&
-          city &&
-          business.city.toLowerCase() !== city
-        ) {
-          return false;
-        }
-
-        if (App.nearbyMode) {
-          if (business.distanceKm === null) {
-            return false;
-          }
-
-          if (business.distanceKm > radius) {
-            return false;
-          }
-        }
-
-        return true;
-      })
-      .sort((a, b) => {
-        if (App.nearbyMode) {
-          return (
-            (a.distanceKm ?? Infinity) -
-            (b.distanceKm ?? Infinity)
-          );
-        }
-
-        if (a.featured !== b.featured) {
-          return b.featured - a.featured;
-        }
-
-        return a.name.localeCompare(b.name);
-      });
-
-    App.currentPage = 1;
-
-    App.totalPages = Math.max(
-      1,
-      Math.ceil(
-        App.filteredBusinesses.length / App.pageSize
-      )
-    );
-
-    syncUrl();
-    renderResults();
-  }
-
-  function clearFilters() {
-    if (searchInput()) searchInput().value = "";
-    if (categoryFilter()) categoryFilter().value = "";
-    if (stateFilter()) stateFilter().value = "";
-
-    populateCityOptions();
-
-    if (cityFilter()) cityFilter().value = "";
-
-    App.currentPage = 1;
-
-    applyFilters();
-
-    setStatus(
-      App.nearbyMode
-        ? t(
-            "explore.filters",
-            "Search and category filters cleared. Nearby remains active."
-          )
-        : t("explore.filters", "All filters cleared.")
-    );
-  }
-
-  /* ==========================================================
-     SAVED BUSINESSES
-  ========================================================== */
-
-  function getSavedIds() {
-    try {
-      const value = JSON.parse(
-        localStorage.getItem(SAVED_KEY) || "[]"
-      );
-
-      return new Set(
-        Array.isArray(value)
-          ? value.map(String)
-          : []
-      );
-    } catch (_) {
-      return new Set();
-    }
-  }
-
-  function toggleSaved(id) {
-    if (!id) return;
-
-    const saved = getSavedIds();
-    const key = String(id);
-
-    if (saved.has(key)) {
-      saved.delete(key);
-    } else {
-      saved.add(key);
-    }
-
-    try {
-      localStorage.setItem(
-        SAVED_KEY,
-        JSON.stringify([...saved])
-      );
-    } catch (_) {
-      setStatus(
-        t(
-          "errors.somethingWentWrong",
-          "Your browser could not save this business."
-        ),
-        "error"
-      );
-
-      return;
-    }
-
-    renderResults();
-
-    setStatus(
-      saved.has(key)
-        ? t("actions.save", "Business saved.")
-        : t("actions.delete", "Business removed from saved items."),
-      "success"
-    );
-  }
-
-  /* ==========================================================
-     BUSINESS CARDS
-  ========================================================== */
-
-  function businessUrl(business) {
-    const cfg = config();
-
-    const profilePage = clean(
-      cfg.profilePage ||
-      (cfg.pages && cfg.pages.businessProfile),
-      "business-profile-fixed.html"
-    );
-
-    const url = new URL(profilePage, location.href);
-
-    if (business.id) {
-      url.searchParams.set("id", business.id);
-    } else if (business.slug) {
-      url.searchParams.set("slug", business.slug);
-    }
-
-    return url.toString();
-  }
-
-  function formatDistance(distance) {
-    if (!Number.isFinite(distance)) return "";
-
-    return distance < 1
-      ? `${Math.round(distance * 1000)} m away`
-      : `${distance.toFixed(distance < 10 ? 1 : 0)} km away`;
-  }
-
-  function renderCard(business) {
-    const saved = getSavedIds().has(String(business.id));
-    const url = businessUrl(business);
-
-    const locationText = [
-      business.address,
-      business.city,
-      business.state
-    ]
-      .filter(Boolean)
-      .filter(
-        (value, index, array) =>
-          array.indexOf(value) === index
-      )
-      .join(", ");
-
-    const image = business.image
-      ? `
-        <img
-          src="${escapeHtml(business.image)}"
-          alt="${escapeHtml(business.name)}"
-          loading="lazy"
-          onerror="this.style.display='none';this.nextElementSibling.hidden=false;"
-        >
-        <div class="card-image-placeholder" hidden>NA</div>
-      `
-      : '<div class="card-image-placeholder">NA</div>';
-
-    const rating = Math.max(
-      0,
-      Math.min(5, Math.round(business.rating || 0))
-    );
-
-    const stars =
-      "★".repeat(rating) +
-      "☆".repeat(5 - rating);
-
-    return `
-      <article
-        class="business-card"
-        data-business-id="${escapeHtml(business.id)}"
-      >
-        <a
-          class="business-card-image"
-          href="${escapeHtml(url)}"
-          aria-label="View ${escapeHtml(business.name)}"
-        >${image}</a>
-
-        <div class="business-card-content">
-          <span class="business-card-category">
-            ${escapeHtml(business.category || "Business")}
-          </span>
-
-          ${
-            business.verified
-              ? '<span class="business-verified">✓ Verified</span>'
-              : ""
-          }
-
-          <h3 class="business-card-title">
-            <a href="${escapeHtml(url)}">
-              ${escapeHtml(business.name)}
-            </a>
-          </h3>
-
-          <p class="business-card-location">
-            ${escapeHtml(locationText || "Location unavailable")}
-          </p>
-
-          ${
-            business.description
-              ? `<p class="business-card-description">
-                   ${escapeHtml(business.description)}
-                 </p>`
-              : ""
-          }
-
-          <div class="business-card-rating" aria-label="Rating">
-            <span>${stars}</span>
-            <span>
-              ${
-                business.rating > 0
-                  ? Number(business.rating).toFixed(1)
-                  : "No rating"
-              }
-            </span>
-            <span>
-              (${Number(business.reviewCount || 0).toLocaleString()})
-            </span>
-          </div>
-
-          ${
-            App.nearbyMode
-              ? `<p class="business-card-distance">
-                   ${escapeHtml(formatDistance(business.distanceKm))}
-                 </p>`
-              : ""
-          }
-
-          <div class="business-card-actions">
-            <a
-              class="btn btn-primary"
-              href="${escapeHtml(url)}"
-              data-view-business="${escapeHtml(business.id)}"
-            >View Business</a>
-
-            <button
-              type="button"
-              class="btn btn-save ${saved ? "saved" : ""}"
-              data-save-business="${escapeHtml(business.id)}"
-              aria-pressed="${saved}"
-            >${saved ? "★ Saved" : "☆ Save"}</button>
-          </div>
-        </div>
-      </article>
-    `;
-  }
-
-  /* ==========================================================
-     PAGINATION
-  ========================================================== */
-
-  function renderPagination() {
-    const container = paginationElement();
-
-    if (!container) return;
-
-    const total = App.filteredBusinesses.length;
-
-    App.totalPages = Math.max(
-      1,
-      Math.ceil(total / App.pageSize)
-    );
-
-    App.currentPage = Math.max(
-      1,
-      Math.min(App.currentPage, App.totalPages)
-    );
-
-    if (total <= App.pageSize) {
-      container.replaceChildren();
-      container.hidden = true;
-      return;
-    }
-
-    container.hidden = false;
-
-    const pages = [];
-
-    for (let page = 1; page <= App.totalPages; page++) {
-      pages.push(`
-        <button
-          type="button"
-          data-page="${page}"
-          class="${page === App.currentPage ? "active" : ""}"
-          aria-current="${page === App.currentPage ? "page" : "false"}"
-          aria-label="${
-            page === App.currentPage
-              ? "Page " + page + ", current page"
-              : "Go to page " + page
-          }"
-          ${page === App.currentPage ? "disabled" : ""}
-        >${page}</button>
-      `);
-    }
-
-    container.innerHTML = `
-      <button
-        type="button"
-        data-page="${App.currentPage - 1}"
-        aria-label="Previous page"
-        ${App.currentPage <= 1 ? "disabled" : ""}
-      >Previous</button>
-
-      ${pages.join("")}
-
-      <button
-        type="button"
-        data-page="${App.currentPage + 1}"
-        aria-label="Next page"
-        ${App.currentPage >= App.totalPages ? "disabled" : ""}
-      >Next</button>
-    `;
-
-    container.style.pointerEvents = "auto";
-  }
-
-  function renderResults() {
-    const container = resultsContainer();
-
-    if (!container) return;
-
-    const pagination = paginationElement();
-
-    const paginationInsideResults =
-      pagination &&
-      pagination !== container &&
-      container.contains(pagination);
-
-    if (paginationInsideResults) {
-      pagination.remove();
-    }
-
-    const total = App.filteredBusinesses.length;
-
-    App.totalPages = Math.max(
-      1,
-      Math.ceil(total / App.pageSize)
-    );
-
-    App.currentPage = Math.max(
-      1,
-      Math.min(App.currentPage, App.totalPages)
-    );
-
-    const start = (App.currentPage - 1) * App.pageSize;
-
-    const items = App.filteredBusinesses.slice(
-      start,
-      start + App.pageSize
-    );
-
-    if (items.length) {
-      container.innerHTML = items.map(renderCard).join("");
-    } else {
-      const message = App.loading
-        ? t("actions.loading", "Loading businesses...")
-        : App.nearbyMode
-          ? t(
-              "explore.noBusinessesNearby",
-              "No businesses with usable GPS coordinates were found within this radius. Try increasing the radius."
-            )
-          : t(
-              "explore.noBusinesses",
-              "No businesses match your search. Try changing your search or filters."
-            );
-
-      container.innerHTML = `
-        <div class="empty-state" style="grid-column:1/-1">
-          <h2>${escapeHtml(
-            App.loading
-              ? t("actions.loading", "Loading businesses")
-              : t("explore.noBusinesses", "No businesses found")
-          )}</h2>
-          <p>${escapeHtml(message)}</p>
-        </div>
-      `;
-    }
-
-    if (paginationInsideResults) {
-      container.appendChild(pagination);
-    }
-
-    const count = countElement();
-
-    if (count) {
-      count.textContent =
-        App.loading && !App.allBusinesses.length
-          ? t("actions.loading", "Loading businesses...")
-          : total === 1
-            ? "1 " + t("explore.businesses", "business found")
-            : `${total.toLocaleString()} ${t(
-                "explore.businessesFound",
-                "businesses found"
-              )}`;
-    }
-
-    renderPagination();
-  }
-
-  async function recordBusinessView(id) {
-    if (!id) return;
-
-    try {
-      await fetch(
-        apiUrl(`businesses/${encodeURIComponent(id)}/view`),
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json"
-          },
-          keepalive: true
-        }
-      );
-    } catch (_) {
-      // Navigation should work even if analytics fail.
-    }
-  }
-
-  /* ==========================================================
-     PAGINATION EVENTS
-  ========================================================== */
-
-  function bindPaginationEvents() {
-    const root = document.documentElement;
-
-    if (
-      root.dataset.nearafricaPaginationDelegated === "1"
-    ) {
-      return;
-    }
-
-    root.dataset.nearafricaPaginationDelegated = "1";
-
-    document.addEventListener("click", event => {
-      const target = event.target;
-
-      if (
-        !target ||
-        typeof target.closest !== "function"
-      ) {
-        return;
-      }
-
-      const button = target.closest("button[data-page]");
-
-      if (!button) return;
-
-      const pagination = button.closest(
-        "#pagination, #paginationControls, [data-pagination]"
-      );
-
-      if (!pagination) return;
-
-      event.preventDefault();
-      event.stopPropagation();
-
-      if (button.disabled) return;
-
-      const rawPage = button.getAttribute("data-page");
-
-      if (!/^\d+$/.test(String(rawPage || ""))) {
-        return;
-      }
-
-      const page = Number(rawPage);
-
-      if (
-        !Number.isSafeInteger(page) ||
-        page < 1 ||
-        page > App.totalPages ||
-        page === App.currentPage
-      ) {
-        return;
-      }
-
-      App.currentPage = page;
-
-      renderResults();
-
-      const results = resultsContainer();
-
-      if (results) {
-        results.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
-    }, true);
-  }
-
-  /* ==========================================================
-     EVENT SETUP
-  ========================================================== */
-
-  function setupEvents() {
-    const search = searchInput();
-    const category = categoryFilter();
-    const state = stateFilter();
-    const city = cityFilter();
-
-    if (search) {
-      search.addEventListener("input", applyFilters);
-      search.addEventListener("search", applyFilters);
-    }
-
-    if (category) {
-      category.addEventListener("change", applyFilters);
-    }
-
-    if (state) {
-      state.addEventListener("change", () => {
-        populateCityOptions();
-        applyFilters();
-      });
-    }
-
-    if (city) {
-      city.addEventListener("change", applyFilters);
-    }
-
-    const clear = $("#clearFilters");
-
-    if (clear) {
-      clear.addEventListener("click", clearFilters);
-    }
-
-    const results = resultsContainer();
-
-    if (
-      results &&
-      results.dataset.nearafricaEventsBound !== "1"
-    ) {
-      results.dataset.nearafricaEventsBound = "1";
-
-      results.addEventListener("click", event => {
-        const target = event.target;
-
-        if (!target || typeof target.closest !== "function") {
-          return;
-        }
-
-        const save = target.closest("[data-save-business]");
-
-        if (save) {
-          event.preventDefault();
-          toggleSaved(save.dataset.saveBusiness);
-          return;
-        }
-
-        const view = target.closest("[data-view-business]");
-
-        if (view) {
-          recordBusinessView(view.dataset.viewBusiness);
-        }
-      });
-    }
-
-    bindPaginationEvents();
-
-    const searchForms = [
-      $("#homeSearchForm"),
-      $("#searchForm"),
-      $("form[data-search-form]")
-    ].filter(Boolean);
-
-    searchForms.forEach(form => {
-      if (form.dataset.nearafricaBound === "1") return;
-
-      form.dataset.nearafricaBound = "1";
-
-      form.addEventListener("submit", event => {
-        event.preventDefault();
-
-        const input =
-          $("input[name='q']", form) ||
-          $("#searchInput", form) ||
-          $("input[type='search']", form);
-
-        const query = clean(input?.value);
-        const target = new URL("explore.html", location.href);
-
-        if (query) {
-          target.searchParams.set("q", query);
-        }
-
-        location.href = target.toString();
-      });
-    });
-
-    if (
-      document.documentElement.dataset.nearafricaSearchShortcutBound !== "1"
-    ) {
-      document.documentElement.dataset.nearafricaSearchShortcutBound = "1";
-
-      document.addEventListener("keydown", event => {
-        if (
-          event.key !== "/" ||
-          event.ctrlKey ||
-          event.metaKey ||
-          event.altKey
-        ) {
-          return;
-        }
-
-        const tag = event.target?.tagName?.toLowerCase();
-
-        if (["input", "textarea", "select"].includes(tag)) {
-          return;
-        }
-
-        const input = searchInput();
-
-        if (input) {
-          event.preventDefault();
-          input.focus();
-        }
-      });
-    }
-  }
-
-  /* ==========================================================
-     INITIALIZATION
-  ========================================================== */
-
-  async function initializeExplore() {
-    installNearbyControls();
-    setupEvents();
-
-    applyUrlParameters();
-    restoreLocation();
-
-    /*
-     * If the URL asks for Nearby but there is no saved location,
-     * don't accidentally run a normal search as a Nearby search.
-     */
-    if (App.nearbyMode && !App.userLocation) {
-      App.nearbyMode = false;
-    }
-
-    updateNearbyControls();
-
-    await loadCategories();
-    await loadBusinesses();
-
-    populateStateOptions();
-    populateCategoryOptions();
-    populateCityOptions();
-
-    // Restore URL selections after options have been populated.
-    applyUrlParameters();
-
-    if (App.nearbyMode && !App.userLocation) {
-      App.nearbyMode = false;
-
-      setStatus(
-        t(
-          "search.useMyLocation",
-          "Nearby needs a fresh location. Select Use My Location to obtain one."
-        ),
-        "info"
-      );
-    }
-
-    updateNearbyControls();
-    applyFilters();
-
-    App.initialized = true;
-  }
-
-  function initializeHome() {
-    setupEvents();
-
-    const buttons = [
-      $("#useMyLocation"),
-      $("#useLocation"),
-      $("[data-use-location]")
-    ].filter(Boolean);
-
-    buttons.forEach(button => {
-      if (button.dataset.nearafricaLocationBound === "1") {
-        return;
-      }
-
-      button.dataset.nearafricaLocationBound = "1";
-
-      button.addEventListener("click", async () => {
-        if (App.locationLoading) return;
-
-        App.locationLoading = true;
-        button.disabled = true;
-
-        const originalText = button.textContent;
-
-        button.textContent = t(
-          "search.usingYourLocation",
-          "Finding location…"
-        );
-
-        setStatus(
-          t(
-            "search.usingYourLocation",
-            "Finding your current location…"
-          )
-        );
-
-        try {
-          App.userLocation = await getBrowserLocation();
-
-          App.locationInfo = await reverseGeocode(
-            App.userLocation
-          );
-
-          App.nearbyMode = true;
-
-          saveLocation();
-
-          const target = new URL(
-            "explore.html",
-            location.href
-          );
-
-          target.searchParams.set("nearby", "1");
-          target.searchParams.set(
-            "radius",
-            String(App.radiusKm)
-          );
-
-          location.href = target.toString();
-        } catch (error) {
-          console.error(
-            "NearAfrica: home location request failed.",
-            error
-          );
-
-          setStatus(error.message, "error");
-          button.textContent = originalText;
-        } finally {
-          App.locationLoading = false;
-          button.disabled = false;
-        }
-      });
-    });
-  }
-
-  function initialize() {
-    if (App.initialized) return;
-
-    if (isExplorePage()) {
-      initializeExplore().catch(error => {
-        console.error(
-          "NearAfrica initialization failed:",
-          error
-        );
-
-        setStatus(
-          t(
-            "errors.somethingWentWrong",
-            "NearAfrica could not initialize"
-          ) + ": " + error.message,
-          "error"
-        );
-      });
-    } else if (isHomePage()) {
-      initializeHome();
-      App.initialized = true;
-    }
-
-    window.NearAfricaApp = {
-      state: App,
-      refresh: loadBusinesses,
-      search: applyFilters,
-      filter: applyFilters,
-      useLocation: enableNearby,
-      clearLocation: clearNearby,
-      clearFilters,
-      getBusinessUrl: businessUrl
-    };
-  }
-
-  /* ==========================================================
-     LANGUAGE CHANGE
-  ========================================================== */
-
-  window.addEventListener(
-    "nearafrica:languagechange",
-    function () {
-      try {
-        updateNearbyControls();
-
-        if (
-          App.allBusinesses.length ||
-          App.filteredBusinesses.length
-        ) {
-          applyFilters();
-        } else {
-          renderResults();
-        }
-      } catch (error) {
-        console.warn(
-          "NearAfrica: language change refresh failed.",
-          error
-        );
-      }
-    }
-  );
-
-  /* ==========================================================
-     START
-  ========================================================== */
-
-  if (document.readyState === "loading") {
-    document.addEventListener(
-      "DOMContentLoaded",
-      initialize,
-      { once: true }
-    );
-  } else {
-    initialize();
-  }
-})();
