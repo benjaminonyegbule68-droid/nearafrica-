@@ -43,7 +43,7 @@
   const NEARBY_KEY = "nearafrica_nearby_mode";
   const SAVED_KEY = "nearafrica_saved_businesses";
 
-  const MAX_LOCATION_ACCURACY_METERS = 25000;
+  const MAX_LOCATION_ACCURACY_METERS = 5000; // Improved from 25000
   const API_PAGE_SIZE = 48;
   const MAX_API_PAGES = 50;
 
@@ -1405,7 +1405,7 @@
     wrapper.className = "filter-group";
 
     wrapper.style.cssText =
-      "grid-column:1/-1;display:flex;flex-direction:row;gap:10px;align-items:center;flex-wrap:wrap;";
+      "grid-column:1/-1;display:flex;flex-direction:row;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px;";
 
     wrapper.innerHTML = `
       <button
@@ -1414,14 +1414,14 @@
         class="filter-button"
       >${escapeHtml(t("search.useMyLocation", "Use My Location"))}</button>
 
-      <label for="radiusFilter">
+      <label for="radiusFilter" style="white-space:nowrap;font-weight:500;">
         ${escapeHtml(t("explore.away", "Within"))}
       </label>
 
       <select
         id="radiusFilter"
         aria-label="${escapeHtml(t("explore.businessesNearYou", "Nearby search radius"))}"
-        style="min-height:44px;padding:8px;border-radius:10px;"
+        style="min-height:44px;padding:8px 12px;border-radius:10px;min-width:100px;"
       >
         <option value="5">5 km</option>
         <option value="10">10 km</option>
@@ -1434,6 +1434,7 @@
         type="button"
         id="clearNearby"
         class="filter-button"
+        style="display:none;"
       >${escapeHtml(t("explore.clearLocation", "Turn Nearby Off"))}</button>
     `;
 
