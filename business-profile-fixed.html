@@ -4,30 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="robots" content="index,follow,max-image-preview:large">
-<meta name="theme-color" content="#080808">
-<meta name="description" content="Discover business information, services, contact details, opening hours and directions on NearAfrica.">
-
+<!-- Initial SEO metadata -->
 <title>Business Profile | NearAfrica</title>
 
-<link rel="canonical" id="canonicalUrl" href="https://nearafrica.com.ng/business-profile-fixed.html">
+<meta name="description" content="Discover local businesses, services, contact information, opening hours and directions across Africa with NearAfrica.">
 
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#080808">
+
+<!-- Canonical URL: normalized to the primary domain -->
+<link rel="canonical" id="canonicalUrl"
+      href="https://nearafrica.com.ng/business-profile-fixed">
+
+<!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="NearAfrica">
 <meta property="og:title" content="Business Profile | NearAfrica">
-<meta property="og:description" content="Discover business information, services and contact details on NearAfrica.">
-<meta property="og:url" content="https://nearafrica.com.ng/business-profile-fixed.html">
+<meta property="og:description" content="Discover businesses and services across Africa with NearAfrica.">
+<meta property="og:url" content="https://nearafrica.com.ng/business-profile-fixed">
 <meta property="og:image" content="https://nearafrica.com.ng/logo.png">
+<meta property="og:image:alt" content="NearAfrica business discovery platform">
 
+<!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Business Profile | NearAfrica">
 <meta name="twitter:description" content="Discover businesses across Africa with NearAfrica.">
 <meta name="twitter:image" content="https://nearafrica.com.ng/logo.png">
 
+<!-- Favicon -->
 <link rel="icon" type="image/png" href="/logo.png">
 <link rel="apple-touch-icon" href="/logo.png">
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<!-- Leaflet -->
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
 :root{
@@ -37,7 +47,7 @@
   --gold2:#f0c75e;
   --white:#f5f5f5;
   --muted:#a7a7a7;
-  --border:#292929
+  --border:#292929;
 }
 
 *{box-sizing:border-box}
@@ -49,7 +59,7 @@ body{
   background:radial-gradient(circle at top right,rgba(212,175,55,.08),transparent 32%),var(--bg);
   color:var(--white);
   font-family:Arial,Helvetica,sans-serif;
-  line-height:1.6
+  line-height:1.6;
 }
 
 a{color:inherit}
@@ -58,9 +68,15 @@ button,input,textarea,select{font:inherit}
 
 button{cursor:pointer}
 
-button:disabled{opacity:.6;cursor:not-allowed}
+button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
 
-.container{width:min(1180px,92%);margin:auto}
+.container{
+  width:min(1180px,92%);
+  margin:auto;
+}
 
 .site-header{
   position:sticky;
@@ -68,7 +84,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
   z-index:1000;
   background:rgba(8,8,8,.96);
   border-bottom:1px solid var(--border);
-  backdrop-filter:blur(12px)
+  backdrop-filter:blur(12px);
 }
 
 .header-inner{
@@ -76,7 +92,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:20px
+  gap:20px;
 }
 
 .logo{
@@ -86,7 +102,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
   text-decoration:none;
   font-size:22px;
   font-weight:800;
-  white-space:nowrap
+  white-space:nowrap;
 }
 
 .logo-mark{
@@ -97,17 +113,21 @@ button:disabled{opacity:.6;cursor:not-allowed}
   place-items:center;
   color:#111;
   background:linear-gradient(135deg,var(--gold2),var(--gold));
-  font-weight:900
+  font-weight:900;
 }
 
 .logo span{color:var(--gold2)}
 
-.nav{display:flex;align-items:center;gap:22px}
+.nav{
+  display:flex;
+  align-items:center;
+  gap:22px;
+}
 
 .nav a{
   text-decoration:none;
   color:#ddd;
-  font-size:14px
+  font-size:14px;
 }
 
 .nav a:hover{color:var(--gold2)}
@@ -118,7 +138,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
   border:1px solid var(--border);
   color:white;
   border-radius:8px;
-  padding:8px 11px
+  padding:8px 11px;
 }
 
 .page{padding:40px 0 80px}
@@ -127,7 +147,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
   min-height:60vh;
   display:grid;
   place-items:center;
-  text-align:center
+  text-align:center;
 }
 
 .spinner{
@@ -137,10 +157,12 @@ button:disabled{opacity:.6;cursor:not-allowed}
   border-top-color:var(--gold);
   border-radius:50%;
   animation:spin .8s linear infinite;
-  margin:0 auto 15px
+  margin:0 auto 15px;
 }
 
-@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
 
 .hidden{display:none!important}
 
@@ -150,10 +172,14 @@ button:disabled{opacity:.6;cursor:not-allowed}
   border-radius:10px;
   margin-bottom:22px;
   border:1px solid var(--border);
-  background:var(--card)
+  background:var(--card);
 }
 
-.empty{padding:35px 20px;text-align:center;color:#888}
+.empty{
+  padding:35px 20px;
+  text-align:center;
+  color:#888;
+}
 
 .empty h2{color:#ddd}
 
@@ -162,10 +188,14 @@ button:disabled{opacity:.6;cursor:not-allowed}
   border-radius:22px;
   background:radial-gradient(circle at 85% 15%,rgba(212,175,55,.16),transparent 28%),linear-gradient(145deg,#171717,#0e0e0e);
   padding:30px;
-  margin-bottom:25px
+  margin-bottom:25px;
 }
 
-.profile-top{display:flex;align-items:flex-start;gap:24px}
+.profile-top{
+  display:flex;
+  align-items:flex-start;
+  gap:24px;
+}
 
 .business-logo{
   width:130px;
@@ -179,23 +209,26 @@ button:disabled{opacity:.6;cursor:not-allowed}
   place-items:center;
   color:var(--gold2);
   font-size:40px;
-  font-weight:800
+  font-weight:800;
 }
 
 .business-logo img{
   width:100%;
   height:100%;
   object-fit:cover;
-  display:block
+  display:block;
 }
 
-.profile-main{flex:1;min-width:0}
+.profile-main{
+  flex:1;
+  min-width:0;
+}
 
 .profile-main h1{
   margin:0 0 8px;
   font-size:clamp(30px,5vw,48px);
   line-height:1.1;
-  overflow-wrap:anywhere
+  overflow-wrap:anywhere;
 }
 
 .meta{
@@ -203,10 +236,14 @@ button:disabled{opacity:.6;cursor:not-allowed}
   flex-wrap:wrap;
   gap:10px;
   color:var(--muted);
-  margin:10px 0 15px
+  margin:10px 0 15px;
 }
 
-.badges{display:flex;flex-wrap:wrap;gap:8px}
+.badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
 
 .badge{
   display:inline-flex;
@@ -216,26 +253,26 @@ button:disabled{opacity:.6;cursor:not-allowed}
   font-size:12px;
   font-weight:700;
   background:#202020;
-  border:1px solid #333
+  border:1px solid #333;
 }
 
 .badge.gold{
   color:#111;
   background:var(--gold2);
-  border-color:var(--gold2)
+  border-color:var(--gold2);
 }
 
 .badge.green{
   color:#a9f0c4;
   border-color:#285b3d;
-  background:#122319
+  background:#122319;
 }
 
 .profile-actions{
   display:flex;
   flex-wrap:wrap;
   gap:9px;
-  margin-top:20px
+  margin-top:20px;
 }
 
 .btn{
@@ -249,22 +286,25 @@ button:disabled{opacity:.6;cursor:not-allowed}
   align-items:center;
   justify-content:center;
   gap:7px;
-  transition:background .2s,border-color .2s,color .2s,transform .2s
+  transition:background .2s,border-color .2s,color .2s,transform .2s;
 }
 
-.btn:hover{border-color:var(--gold);color:var(--gold2)}
+.btn:hover{
+  border-color:var(--gold);
+  color:var(--gold2);
+}
 
 .btn-primary{
   background:linear-gradient(135deg,var(--gold2),var(--gold));
   color:#111;
   border-color:var(--gold2);
-  font-weight:800
+  font-weight:800;
 }
 
 .btn-primary:hover{
   color:#111;
   background:var(--gold2);
-  transform:translateY(-1px)
+  transform:translateY(-1px);
 }
 
 .directions-btn{
@@ -279,16 +319,20 @@ button:disabled{opacity:.6;cursor:not-allowed}
   background:linear-gradient(135deg,var(--gold2),var(--gold));
   color:#111;
   text-decoration:none;
-  font-weight:800
+  font-weight:800;
 }
 
-.directions-note{margin:9px 0 16px;color:#888;font-size:12px}
+.directions-note{
+  margin:9px 0 16px;
+  color:#888;
+  font-size:12px;
+}
 
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:10px;
-  margin-top:24px
+  margin-top:24px;
 }
 
 .stat{
@@ -296,21 +340,24 @@ button:disabled{opacity:.6;cursor:not-allowed}
   border:1px solid var(--border);
   border-radius:12px;
   padding:15px;
-  text-align:center
+  text-align:center;
 }
 
 .stat strong{
   display:block;
   font-size:24px;
-  color:var(--gold2)
+  color:var(--gold2);
 }
 
-.stat span{color:var(--muted);font-size:12px}
+.stat span{
+  color:var(--muted);
+  font-size:12px;
+}
 
 .profile-grid{
   display:grid;
   grid-template-columns:minmax(0,2fr) minmax(280px,1fr);
-  gap:22px
+  gap:22px;
 }
 
 .profile-card{
@@ -319,19 +366,27 @@ button:disabled{opacity:.6;cursor:not-allowed}
   border-radius:16px;
   padding:24px;
   margin-bottom:22px;
-  min-width:0
+  min-width:0;
 }
 
-.profile-card h2{margin:0 0 18px;color:var(--gold2);font-size:22px}
+.profile-card h2{
+  margin:0 0 18px;
+  color:var(--gold2);
+  font-size:22px;
+}
 
 .profile-card h3{color:#eee}
 
-.description{color:#ccc;white-space:pre-line;overflow-wrap:anywhere}
+.description{
+  color:#ccc;
+  white-space:pre-line;
+  overflow-wrap:anywhere;
+}
 
 .info-grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px
+  gap:12px;
 }
 
 .info-item{
@@ -339,7 +394,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
   border:1px solid var(--border);
   border-radius:11px;
   background:#111;
-  min-width:0
+  min-width:0;
 }
 
 .info-label{
@@ -347,40 +402,52 @@ button:disabled{opacity:.6;cursor:not-allowed}
   font-size:12px;
   text-transform:uppercase;
   letter-spacing:.6px;
-  margin-bottom:5px
+  margin-bottom:5px;
 }
 
-.info-value{color:#eee;word-break:break-word}
+.info-value{
+  color:#eee;
+  word-break:break-word;
+}
 
 .product-grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px
+  gap:14px;
 }
 
 .product{
   border:1px solid var(--border);
   border-radius:12px;
   overflow:hidden;
-  background:#101010
+  background:#101010;
 }
 
 .product img{
   width:100%;
   height:180px;
   object-fit:cover;
-  display:block
+  display:block;
 }
 
 .product-body{padding:15px}
 
 .product-body h3{margin:0 0 6px}
 
-.product-body p{color:#aaa;margin:0 0 10px}
+.product-body p{
+  color:#aaa;
+  margin:0 0 10px;
+}
 
-.price{color:var(--gold2);font-weight:800}
+.price{
+  color:var(--gold2);
+  font-weight:800;
+}
 
-.hours{display:grid;gap:7px}
+.hours{
+  display:grid;
+  gap:7px;
+}
 
 .hours-row{
   display:flex;
@@ -389,15 +456,18 @@ button:disabled{opacity:.6;cursor:not-allowed}
   padding:10px 12px;
   border-radius:8px;
   background:#111;
-  border:1px solid #202020
+  border:1px solid #202020;
 }
 
-.hours-time{color:#aaa;text-align:right}
+.hours-time{
+  color:#aaa;
+  text-align:right;
+}
 
 .photo-grid{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:9px
+  gap:9px;
 }
 
 .photo-grid img{
@@ -406,74 +476,102 @@ button:disabled{opacity:.6;cursor:not-allowed}
   object-fit:cover;
   border-radius:10px;
   border:1px solid var(--border);
-  cursor:pointer
+  cursor:pointer;
 }
 
-.review-list{display:grid;gap:13px}
+.review-list{
+  display:grid;
+  gap:13px;
+}
 
 .review{
   padding:15px;
   border:1px solid var(--border);
   border-radius:11px;
-  background:#101010
+  background:#101010;
 }
 
-.review-header{display:flex;justify-content:space-between;gap:15px}
+.review-header{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+}
 
-.review-name{font-weight:700;overflow-wrap:anywhere}
+.review-name{
+  font-weight:700;
+  overflow-wrap:anywhere;
+}
 
-.review-rating{color:var(--gold2);white-space:nowrap}
+.review-rating{
+  color:var(--gold2);
+  white-space:nowrap;
+}
 
 .review-comment{
   color:#bbb;
   margin-top:8px;
   white-space:pre-line;
-  overflow-wrap:anywhere
+  overflow-wrap:anywhere;
 }
 
-.review-date{color:#777;font-size:12px;margin-top:8px}
+.review-date{
+  color:#777;
+  font-size:12px;
+  margin-top:8px;
+}
 
 .review-form-wrap{
   margin-top:24px;
   padding-top:20px;
-  border-top:1px solid var(--border)
+  border-top:1px solid var(--border);
 }
 
-.review-form-wrap h3{margin:0 0 12px;color:#eee}
+.review-form-wrap h3{
+  margin:0 0 12px;
+  color:#eee;
+}
 
 .review-form-message{
   display:none;
   padding:10px 12px;
   margin:0 0 12px;
   border-radius:8px;
-  font-size:14px
+  font-size:14px;
 }
 
 .review-form-message.success{
   display:block;
   color:#9ee8b9;
   background:#122319;
-  border:1px solid #285b3d
+  border:1px solid #285b3d;
 }
 
 .review-form-message.error{
   display:block;
   color:#ffb1ad;
   background:#211212;
-  border:1px solid #65312f
+  border:1px solid #65312f;
 }
 
-.review-note{font-size:12px;color:#888;margin:8px 0 0}
+.review-note{
+  font-size:12px;
+  color:#888;
+  margin:8px 0 0;
+}
 
 #businessMap{
   height:350px;
   border-radius:12px;
   overflow:hidden;
   border:1px solid var(--border);
-  background:#111
+  background:#111;
 }
 
-.map-directions-tools{display:grid;gap:12px;margin:16px 0}
+.map-directions-tools{
+  display:grid;
+  gap:12px;
+  margin:16px 0;
+}
 
 .route-status,.route-summary{
   margin:0;
@@ -483,16 +581,30 @@ button:disabled{opacity:.6;cursor:not-allowed}
   background:#111;
   color:#bbb;
   font-size:13px;
-  overflow-wrap:anywhere
+  overflow-wrap:anywhere;
 }
 
-.route-status.success{color:#9ee8b9;border-color:#285b3d}
+.route-status.success{
+  color:#9ee8b9;
+  border-color:#285b3d;
+}
 
-.route-status.error{color:#ffb1ad;border-color:#65312f}
+.route-status.error{
+  color:#ffb1ad;
+  border-color:#65312f;
+}
 
-.route-summary{color:#ddd;font-size:14px}
+.route-summary{
+  color:#ddd;
+  font-size:14px;
+}
 
-.route-steps{margin:0;padding-left:28px;display:grid;gap:9px}
+.route-steps{
+  margin:0;
+  padding-left:28px;
+  display:grid;
+  gap:9px;
+}
 
 .route-steps li{
   padding:11px 12px;
@@ -500,16 +612,33 @@ button:disabled{opacity:.6;cursor:not-allowed}
   border:1px solid var(--border);
   border-radius:9px;
   color:#ddd;
-  font-size:14px
+  font-size:14px;
 }
 
-.route-step-distance{display:block;margin-top:4px;color:#aaa;font-size:12px}
+.route-step-distance{
+  display:block;
+  margin-top:4px;
+  color:#aaa;
+  font-size:12px;
+}
 
-.leaflet-routing-note{font-size:11px;color:#888;margin:9px 0 0}
+.leaflet-routing-note{
+  font-size:11px;
+  color:#888;
+  margin:9px 0 0;
+}
 
-.form{display:grid;gap:11px}
+.form{
+  display:grid;
+  gap:11px;
+}
 
-.form label{display:grid;gap:5px;color:#bbb;font-size:14px}
+.form label{
+  display:grid;
+  gap:5px;
+  color:#bbb;
+  font-size:14px;
+}
 
 .form input,.form textarea,.form select{
   width:100%;
@@ -518,25 +647,39 @@ button:disabled{opacity:.6;cursor:not-allowed}
   border:1px solid #333;
   border-radius:8px;
   padding:12px;
-  outline:none
+  outline:none;
 }
 
-.form textarea{min-height:120px;resize:vertical}
+.form textarea{
+  min-height:120px;
+  resize:vertical;
+}
 
-.form input:focus,.form textarea:focus,.form select:focus{border-color:var(--gold)}
+.form input:focus,
+.form textarea:focus,
+.form select:focus{
+  border-color:var(--gold);
+}
 
-.form select option{background:#111;color:#eee}
+.form select option{
+  background:#111;
+  color:#eee;
+}
 
 footer{
   border-top:1px solid var(--border);
   padding:28px 0;
   color:#777;
-  text-align:center
+  text-align:center;
 }
 
-footer a{color:var(--gold2);text-decoration:none}
+footer a{
+  color:var(--gold2);
+  text-decoration:none;
+}
 
 @media(max-width:850px){
+
   .nav{
     display:none;
     position:absolute;
@@ -546,28 +689,59 @@ footer a{color:var(--gold2);text-decoration:none}
     padding:15px;
     background:#0c0c0c;
     border-bottom:1px solid var(--border);
-    flex-direction:column
+    flex-direction:column;
   }
 
   .nav.open{display:flex}
+
   .mobile-menu{display:block}
+
   .profile-grid{grid-template-columns:1fr}
+
   .profile-top{flex-direction:column}
-  .business-logo{width:105px;height:105px;flex-basis:105px}
+
+  .business-logo{
+    width:105px;
+    height:105px;
+    flex-basis:105px;
+  }
+
   .info-grid,.product-grid{grid-template-columns:1fr}
-  .photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+  .photo-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
 }
 
 @media(max-width:550px){
+
   .page{padding-top:22px}
+
   .profile-hero{padding:20px}
+
   .profile-card{padding:18px}
+
   .stats{grid-template-columns:1fr}
+
   .photo-grid img{height:145px}
+
   #businessMap{height:280px}
-  .review-header{flex-direction:column;gap:3px}
+
+  .review-header{
+    flex-direction:column;
+    gap:3px;
+  }
+
   .directions-btn{width:100%}
+
   .map-directions-tools .btn{width:100%}
+}
+
+@media(prefers-reduced-motion:reduce){
+
+  html{scroll-behavior:auto}
+
+  .spinner{animation:none}
 }
 </style>
 </head>
@@ -576,122 +750,231 @@ footer a{color:var(--gold2);text-decoration:none}
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="logo" href="index.html">
+
+    <a class="logo" href="/">
       <div class="logo-mark">NA</div>
       Near<span>Africa</span>
     </a>
 
-    <nav class="nav" id="mainNav">
-      <a href="index.html">Home</a>
-      <a href="explore.html">Explore</a>
-      <a href="list-business.html">List Your Business</a>
-      <a href="claim-business.html">Claim Business</a>
+    <nav class="nav" id="mainNav" aria-label="Main navigation">
+
+      <a href="/">Home</a>
+
+      <a href="/explore.html">Explore</a>
+
+      <a href="/list-business.html">List Your Business</a>
+
+      <a href="/claim-business.html">Claim Business</a>
+
     </nav>
 
-    <button class="mobile-menu" id="mobileMenuButton" type="button"
-      aria-label="Open menu" aria-expanded="false">☰</button>
+    <button
+      class="mobile-menu"
+      id="mobileMenuButton"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+    >☰</button>
+
   </div>
 </header>
 
 <main class="page">
+
   <div class="container">
 
-    <div id="statusMessage" role="status" aria-live="polite"></div>
+    <div
+      id="statusMessage"
+      role="status"
+      aria-live="polite"
+    ></div>
 
     <div id="loadingState" class="loading">
+
       <div>
         <div class="spinner"></div>
         <div>Loading business profile...</div>
       </div>
+
     </div>
 
     <div id="notFoundState" class="empty hidden">
+
       <h2>Business Not Found</h2>
-      <p id="notFoundMessage">This business could not be loaded.</p>
-      <a class="btn btn-primary" href="explore.html">Back to Explore</a>
+
+      <p id="notFoundMessage">
+        This business could not be loaded.
+      </p>
+
+      <a class="btn btn-primary" href="/explore.html">
+        Back to Explore
+      </a>
+
     </div>
 
     <div id="businessContent" class="hidden"></div>
 
   </div>
+
 </main>
 
 <footer>
+
   <div class="container">
-    © <span id="year"></span> NearAfrica. Find Great Businesses Near You.
+    © <span id="year"></span> NearAfrica.
+    Find Great Businesses Near You.
   </div>
+
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 (() => {
+
 "use strict";
 
-const API_URL = "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
-const ROUTING_URL = "https://router.project-osrm.org/route/v1/driving/";
-const SITE_URL = "https://nearafrica.com.ng";
+/* ==========================================================
+   CONFIGURATION
+========================================================== */
+
+const API_URL =
+  "https://nearafrica-api.nearafrica-onyxtech.workers.dev";
+
+const ROUTING_URL =
+  "https://router.project-osrm.org/route/v1/driving/";
+
+const SITE_URL =
+  "https://nearafrica.com.ng";
 
 let activeBusiness = null;
+
 let activeMap = null;
+
 let activeRouteLine = null;
+
 let activeUserMarker = null;
+
 let activeDestinationMarker = null;
+
 let routeRequestInProgress = false;
 
-const clean = value => String(value ?? "").trim();
+const clean = value =>
+  String(value ?? "").trim();
+
+
+/* ==========================================================
+   BASIC UTILITIES
+========================================================== */
 
 function escapeHtml(value){
+
   return String(value ?? "")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
+
 }
 
 const escapeAttribute = escapeHtml;
 
+
 function safeUrl(value){
+
   const input = clean(value);
+
   if(!input) return "";
 
   try{
-    const parsed = new URL(
-      /^https?:\/\//i.test(input) ? input : "https://" + input
-    );
 
-    return ["https:","http:"].includes(parsed.protocol)
-      ? parsed.href
-      : "";
-  }catch{
+    let candidate = input;
+
+    if(/^\/\//.test(input)){
+
+      candidate = "https:" + input;
+
+    }else if(/^https?:\/\//i.test(input)){
+
+      candidate = input;
+
+    }else if(input.startsWith("/")){
+
+      candidate = new URL(input,SITE_URL).href;
+
+    }else if(
+      /^[a-z0-9.-]+\.[a-z]{2,}/i.test(input)
+    ){
+
+      candidate = "https://" + input;
+
+    }else{
+
+      candidate = new URL(input,SITE_URL).href;
+
+    }
+
+    const parsed = new URL(candidate);
+
+    if(
+      parsed.protocol === "https:" ||
+      parsed.protocol === "http:"
+    ){
+
+      return parsed.href;
+
+    }
+
     return "";
+
+  }catch{
+
+    return "";
+
   }
+
 }
+
 
 function absoluteUrl(value){
-  const safe = safeUrl(value);
-  if(!safe) return "";
 
-  try{
-    return new URL(safe).href;
-  }catch{
-    return "";
-  }
+  return safeUrl(value);
+
 }
+
 
 function formatNumber(value){
+
   const n = Number(value);
-  return Number.isFinite(n) ? n.toLocaleString() : "0";
+
+  return Number.isFinite(n)
+    ? n.toLocaleString()
+    : "0";
+
 }
+
 
 function stars(rating){
-  const n = Math.max(0,Math.min(5,Math.round(Number(rating)||0)));
+
+  const n = Math.max(
+    0,
+    Math.min(5,Math.round(Number(rating)||0))
+  );
+
   return "★".repeat(n) + "☆".repeat(5-n);
+
 }
 
+
+/* ==========================================================
+   BUSINESS IDENTIFIER
+========================================================== */
+
 function getIdentifier(){
-  const params = new URLSearchParams(location.search);
+
+  const params =
+    new URLSearchParams(location.search);
 
   return (
     params.get("id") ||
@@ -699,295 +982,1014 @@ function getIdentifier(){
     params.get("slug") ||
     ""
   ).trim();
+
 }
 
-/* --------------------------------------------------
-   DYNAMIC SEO
--------------------------------------------------- */
+
+/* ==========================================================
+   SEO METADATA MANAGEMENT
+========================================================== */
 
 function setMeta(selector,attribute,value){
+
   let element = document.querySelector(selector);
 
   if(!element){
+
+    const parts = selector.match(
+      /\[(name|property)="([^"]+)"\]/
+    );
+
+    if(!parts) return;
+
     element = document.createElement("meta");
 
-    const parts = selector.match(/\[(name|property)="([^"]+)"\]/);
+    element.setAttribute(
+      parts[1],
+      parts[2]
+    );
 
-    if(parts){
-      element.setAttribute(parts[1],parts[2]);
-      document.head.appendChild(element);
-    }
+    document.head.appendChild(element);
+
   }
 
-  if(element) element.setAttribute(attribute,value);
+  element.setAttribute(
+    attribute,
+    String(value ?? "")
+  );
+
 }
 
+
+/* ==========================================================
+   CANONICAL URL
+========================================================== */
+
+function buildCanonicalUrl(business=null){
+
+  const params =
+    new URLSearchParams(location.search);
+
+  /*
+   * Prefer the actual database ID.
+   * Normalize business_id to id.
+   * Use slug only when no database ID exists.
+   */
+
+  const id = clean(
+    business?.id ||
+    business?.business_id ||
+    params.get("id") ||
+    params.get("business_id")
+  );
+
+  const slug = clean(
+    business?.slug ||
+    params.get("slug")
+  );
+
+  /*
+   * The extensionless public route is used consistently.
+   * www and non-www versions are not mixed.
+   */
+
+  const canonical = new URL(
+    "/business-profile-fixed",
+    SITE_URL
+  );
+
+  if(id){
+
+    canonical.searchParams.set(
+      "id",
+      id
+    );
+
+  }else if(slug){
+
+    canonical.searchParams.set(
+      "slug",
+      slug
+    );
+
+  }
+
+  return canonical.href;
+
+}
+
+
 function setCanonical(url){
-  let canonical = document.getElementById("canonicalUrl");
+
+  let canonical =
+    document.getElementById("canonicalUrl");
 
   if(!canonical){
+
     canonical = document.createElement("link");
+
     canonical.id = "canonicalUrl";
+
     canonical.rel = "canonical";
+
     document.head.appendChild(canonical);
+
   }
 
   canonical.href = url;
 
-  setMeta('meta[property="og:url"]',"content",url);
-}
-
-function buildCanonicalUrl(){
-  const params = new URLSearchParams(location.search);
-
-  const identifier =
-    params.get("id") ||
-    params.get("business_id") ||
-    params.get("slug") ||
-    "";
-
-  const identifierType =
-    params.has("id") ? "id" :
-    params.has("business_id") ? "business_id" :
-    params.has("slug") ? "slug" :
-    "";
-
-  const canonical = new URL(
-    "/business-profile-fixed.html",
-    SITE_URL
+  setMeta(
+    'meta[property="og:url"]',
+    "content",
+    url
   );
 
-  if(identifier && identifierType){
-    canonical.searchParams.set(identifierType,identifier);
-  }
-
-  return canonical.href;
 }
 
-function updateBusinessSEO(business,averageRating,reviewCount){
-  const name = getBusinessName(business);
-  const category = clean(business.category);
-  const location = getLocation(business);
-  const description = clean(business.description);
 
-  const titleParts = [name];
+/* ==========================================================
+   TEXT CLEANING FOR SEO
+========================================================== */
 
-  if(category) titleParts.push(category);
+function plainText(value){
 
-  const titleLocation = location
-    ? location.split(",").slice(-2).join(",").trim()
-    : "";
+  return String(value ?? "")
 
-  const title = titleParts.join(" | ") +
-    (titleLocation ? " in " + titleLocation : "") +
-    " | NearAfrica";
+    .replace(/<script[\s\S]*?<\/script>/gi," ")
 
-  let metaDescription = description || "";
+    .replace(/<style[\s\S]*?<\/style>/gi," ")
 
-  if(!metaDescription){
-    metaDescription = [
-      `Discover ${name}`,
-      category ? `a ${category}` : "a business",
-      location ? `in ${location}` : "",
-      "on NearAfrica. View contact details, services, opening hours and directions."
-    ].filter(Boolean).join(" ");
-  }else{
-    metaDescription = `${name}. ${metaDescription}`;
+    .replace(/<[^>]*>/g," ")
 
-    if(location) metaDescription += ` Location: ${location}.`;
+    .replace(/&nbsp;/gi," ")
 
-    metaDescription += " Find more information on NearAfrica.";
-  }
+    .replace(/&amp;/gi,"&")
 
-  metaDescription = metaDescription
+    .replace(/&quot;/gi,'"')
+
+    .replace(/&#039;/gi,"'")
+
     .replace(/\s+/g," ")
-    .trim()
-    .slice(0,300);
 
-  const canonical = buildCanonicalUrl();
+    .trim();
 
-  const image = absoluteUrl(getImage(business)) ||
-    `${SITE_URL}/logo.png`;
-
-  document.title = title;
-
-  setMeta('meta[name="description"]',"content",metaDescription);
-
-  setMeta('meta[property="og:type"]',"content","website");
-  setMeta('meta[property="og:site_name"]',"content","NearAfrica");
-  setMeta('meta[property="og:title"]',"content",title);
-  setMeta('meta[property="og:description"]',"content",metaDescription);
-  setMeta('meta[property="og:image"]',"content",image);
-
-  setMeta('meta[name="twitter:card"]',"content","summary_large_image");
-  setMeta('meta[name="twitter:title"]',"content",title);
-  setMeta('meta[name="twitter:description"]',"content",metaDescription);
-  setMeta('meta[name="twitter:image"]',"content",image);
-
-  setCanonical(canonical);
-
-  updateStructuredData(
-    business,
-    title,
-    metaDescription,
-    image,
-    averageRating,
-    reviewCount
-  );
 }
 
-function updateStructuredData(
-  business,
-  title,
-  description,
-  image,
-  averageRating,
-  reviewCount
-){
-  const schema = {
-    "@context":"https://schema.org",
-    "@type":"LocalBusiness",
-    "name":getBusinessName(business),
-    "description":description,
-    "url":buildCanonicalUrl()
-  };
 
-  const category = clean(business.category);
+function shortenText(value,maxLength=160){
 
-  if(category){
-    schema.additionalType = category;
+  const text = plainText(value);
+
+  if(text.length <= maxLength){
+
+    return text;
+
   }
 
-  if(image){
-    schema.image = image;
-  }
+  const shortened =
+    text.slice(0,maxLength-1);
 
-  const phone = clean(business.phone);
-  if(phone) schema.telephone = phone;
+  const lastSpace =
+    shortened.lastIndexOf(" ");
 
-  const email = clean(business.email);
-  if(email) schema.email = email;
+  return (
+    (
+      lastSpace > 80
+        ? shortened.slice(0,lastSpace)
+        : shortened
+    ).trim() + "…"
+  );
 
-  const website = safeUrl(business.website);
-  if(website) schema.sameAs = [website];
+}
 
-  const address = {};
 
-  if(clean(business.address)){
-    address.streetAddress = clean(business.address);
-  }
+/* ==========================================================
+   SEO IMAGE
+========================================================== */
 
-  if(clean(business.city)){
-    address.addressLocality = clean(business.city);
-  }
+function getSEOImage(business){
 
-  if(clean(business.state)){
-    address.addressRegion = clean(business.state);
-  }
+  const image = absoluteUrl(
+    getImage(business)
+  );
 
-  if(clean(business.country)){
-    address.addressCountry = clean(business.country);
-  }
+  return image || `${SITE_URL}/logo.png`;
 
-  if(Object.keys(address).length){
-    schema.address = {
-      "@type":"PostalAddress",
-      ...address
-    };
-  }
+}
 
-  const coordinates = getBusinessCoordinates(business);
 
-  if(coordinates){
-    schema.geo = {
-      "@type":"GeoCoordinates",
-      latitude:coordinates.latitude,
-      longitude:coordinates.longitude
-    };
+/* ==========================================================
+   SCHEMA.ORG BUSINESS TYPES
+========================================================== */
+
+function getBusinessSchemaType(category){
+
+  const value =
+    clean(category).toLowerCase();
+
+  if(
+    value.includes("restaurant") ||
+    value.includes("food") ||
+    value.includes("catering")
+  ){
+
+    return "FoodEstablishment";
+
   }
 
   if(
-    Number(reviewCount) > 0 &&
-    Number.isFinite(Number(averageRating)) &&
-    Number(averageRating) > 0 &&
-    Number(averageRating) <= 5
+    value.includes("hotel") ||
+    value.includes("accommodation")
   ){
-    schema.aggregateRating = {
-      "@type":"AggregateRating",
-      ratingValue:Number(averageRating).toFixed(1),
-      reviewCount:Number(reviewCount),
-      bestRating:5,
-      worstRating:1
-    };
+
+    return "Hotel";
+
   }
 
-  let script = document.getElementById("businessStructuredData");
+  if(
+    value.includes("beauty") ||
+    value.includes("spa")
+  ){
 
-  if(!script){
-    script = document.createElement("script");
-    script.id = "businessStructuredData";
-    script.type = "application/ld+json";
-    document.head.appendChild(script);
+    return "HealthAndBeautyBusiness";
+
   }
 
-  script.textContent = JSON.stringify(schema);
+  if(
+    value.includes("health") ||
+    value.includes("medical")
+  ){
+
+    return "MedicalBusiness";
+
+  }
+
+  if(value.includes("supermarket")){
+
+    return "GroceryStore";
+
+  }
+
+  if(
+    value.includes("shopping") ||
+    value.includes("retail")
+  ){
+
+    return "Store";
+
+  }
+
+  if(value.includes("professional")){
+
+    return "ProfessionalService";
+
+  }
+
+  if(value.includes("real estate")){
+
+    return "RealEstateAgent";
+
+  }
+
+  if(value.includes("automotive")){
+
+    return "AutomotiveBusiness";
+
+  }
+
+  if(value.includes("education")){
+
+    return "EducationalOrganization";
+
+  }
+
+  return "LocalBusiness";
+
 }
 
-/* --------------------------------------------------
-   API AND BUSINESS DATA
--------------------------------------------------- */
+
+/* ==========================================================
+   NORMALIZE WEEKDAY NAMES
+========================================================== */
+
+function getWeekdayName(hour){
+
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ];
+
+  const raw = clean(
+    hour.day ||
+    hour.day_name ||
+    hour.weekday ||
+    hour.day_of_week
+  );
+
+  if(!raw) return "";
+
+  const numeric = Number(raw);
+
+  if(
+    Number.isInteger(numeric) &&
+    numeric >= 0 &&
+    numeric <= 6
+  ){
+
+    return days[numeric];
+
+  }
+
+  if(numeric === 7){
+
+    return "Sunday";
+
+  }
+
+  return (
+    days.find(
+      day => day.toLowerCase() === raw.toLowerCase()
+    ) || ""
+  );
+
+}
+
+
+/* ==========================================================
+   OPENING HOURS STRUCTURED DATA
+========================================================== */
+
+function buildOpeningHoursSchema(hours){
+
+  if(!Array.isArray(hours) || !hours.length){
+
+    return [];
+
+  }
+
+  function parseTime(value){
+
+    const match = clean(value).match(
+      /^([01]?\d|2[0-3]):([0-5]\d)(?::[0-5]\d)?$/
+    );
+
+    if(!match) return null;
+
+    const formatted =
+      match[1].padStart(2,"0") +
+      ":" +
+      match[2];
+
+    return {
+
+      formatted,
+
+      minutes:
+        Number(match[1])*60 +
+        Number(match[2])
+
+    };
+
+  }
+
+  return hours.map(hour => {
+
+    const day = getWeekdayName(hour);
+
+    if(!day) return null;
+
+    const closed =
+      hour.closed === true ||
+      hour.is_closed === true ||
+      Number(hour.closed) === 1 ||
+      Number(hour.is_closed) === 1;
+
+    if(closed) return null;
+
+    const is24Hours =
+      hour.is_24_hours === true ||
+      Number(hour.is_24_hours) === 1 ||
+      hour.is24Hours === true ||
+      Number(hour.is24Hours) === 1;
+
+    if(is24Hours){
+
+      return {
+
+        "@type":"OpeningHoursSpecification",
+
+        "dayOfWeek":`https://schema.org/${day}`,
+
+        "opens":"00:00",
+
+        "closes":"23:59"
+
+      };
+
+    }
+
+    const opening = parseTime(
+      hour.open ||
+      hour.open_time ||
+      hour.opening_time
+    );
+
+    const closing = parseTime(
+      hour.close ||
+      hour.close_time ||
+      hour.closing_time
+    );
+
+    /*
+     * Invalid, incomplete or inconsistent times
+     * are deliberately excluded from structured data.
+     */
+
+    if(
+      !opening ||
+      !closing ||
+      closing.minutes <= opening.minutes
+    ){
+
+      return null;
+
+    }
+
+    return {
+
+      "@type":"OpeningHoursSpecification",
+
+      "dayOfWeek":`https://schema.org/${day}`,
+
+      "opens":opening.formatted,
+
+      "closes":closing.formatted
+
+    };
+
+  }).filter(Boolean);
+
+}
+
+
+/* ==========================================================
+   BUSINESS STRUCTURED DATA
+========================================================== */
+
+function updateStructuredData(
+  business,
+  description,
+  image,
+  averageRating,
+  reviewCount,
+  hours=[]
+){
+
+  const canonical =
+    buildCanonicalUrl(business);
+
+  const schema = {
+
+    "@context":"https://schema.org",
+
+    "@type":getBusinessSchemaType(
+      business.category
+    ),
+
+    "@id":canonical + "#business",
+
+    "name":getBusinessName(business),
+
+    "description":plainText(
+      business.description || description
+    ).slice(0,1000),
+
+    "mainEntityOfPage":{
+
+      "@type":"WebPage",
+
+      "@id":canonical
+
+    },
+
+    "url":canonical,
+
+    "image":image
+
+  };
+
+  /* Telephone */
+
+  const phone = clean(
+    business.phone ||
+    business.phone_number ||
+    business.contact_phone
+  );
+
+  if(phone){
+
+    schema.telephone = phone;
+
+  }
+
+  /* Email */
+
+  const email = clean(business.email);
+
+  if(email){
+
+    schema.email = email;
+
+  }
+
+  /* Official website */
+
+  const website = safeUrl(
+    business.website ||
+    business.website_url
+  );
+
+  if(website){
+
+    schema.sameAs = [website];
+
+  }
+
+  /* Postal address */
+
+  const address = {};
+
+  const streetParts = [
+    clean(business.address),
+    clean(business.area)
+  ].filter(Boolean);
+
+  if(streetParts.length){
+
+    address.streetAddress = [
+      ...new Set(streetParts)
+    ].join(", ");
+
+  }
+
+  if(clean(business.city)){
+
+    address.addressLocality =
+      clean(business.city);
+
+  }
+
+  if(clean(business.state)){
+
+    address.addressRegion =
+      clean(business.state);
+
+  }
+
+  if(clean(business.country)){
+
+    address.addressCountry =
+      clean(business.country);
+
+  }
+
+  if(Object.keys(address).length){
+
+    schema.address = {
+
+      "@type":"PostalAddress",
+
+      ...address
+
+    };
+
+  }
+
+  /* GPS coordinates */
+
+  const coordinates =
+    getBusinessCoordinates(business);
+
+  if(coordinates){
+
+    schema.geo = {
+
+      "@type":"GeoCoordinates",
+
+      "latitude":coordinates.latitude,
+
+      "longitude":coordinates.longitude
+
+    };
+
+  }
+
+  /* Opening hours */
+
+  const openingHours =
+    buildOpeningHoursSchema(hours);
+
+  if(openingHours.length){
+
+    schema.openingHoursSpecification =
+      openingHours;
+
+  }
+
+  /* Actual aggregate rating */
+
+  const rating = Number(averageRating);
+
+  const count = Math.floor(
+    Number(reviewCount)
+  );
+
+  if(
+    Number.isFinite(rating) &&
+    rating >= 1 &&
+    rating <= 5 &&
+    Number.isFinite(count) &&
+    count > 0
+  ){
+
+    schema.aggregateRating = {
+
+      "@type":"AggregateRating",
+
+      "ratingValue":Number(
+        rating.toFixed(1)
+      ),
+
+      "reviewCount":count,
+
+      "bestRating":5,
+
+      "worstRating":1
+
+    };
+
+  }
+
+  let script = document.getElementById(
+    "businessStructuredData"
+  );
+
+  if(!script){
+
+    script = document.createElement("script");
+
+    script.id = "businessStructuredData";
+
+    script.type = "application/ld+json";
+
+    document.head.appendChild(script);
+
+  }
+
+  script.textContent = JSON.stringify(schema)
+    .replace(/</g,"\\u003c");
+
+}
+
+
+/* ==========================================================
+   DYNAMIC BUSINESS SEO
+========================================================== */
+
+function updateBusinessSEO(
+  business,
+  averageRating,
+  reviewCount,
+  hours=[]
+){
+
+  const name =
+    getBusinessName(business);
+
+  const category =
+    clean(business.category);
+
+  const city =
+    clean(business.city);
+
+  const state =
+    clean(business.state);
+
+  const country =
+    clean(business.country);
+
+  const location = [
+    city,
+    state,
+    country
+  ].filter(Boolean);
+
+  const shortLocation =
+    [city,state].filter(Boolean).join(", ") ||
+    country;
+
+  /*
+   * BUSINESS PAGE TITLE
+   */
+
+  let title =
+    name +
+    (shortLocation ? " in " + shortLocation : "") +
+    " | NearAfrica";
+
+  /*
+   * Keep titles reasonably concise.
+   * Do not remove the actual business name.
+   */
+
+  if(title.length > 70 && shortLocation){
+
+    title = name + " | NearAfrica";
+
+  }
+
+  /*
+   * BUSINESS DESCRIPTION
+   */
+
+  const originalDescription =
+    plainText(business.description);
+
+  let descriptionSource;
+
+  if(originalDescription){
+
+    descriptionSource =
+      `${name}${category ? " — " + category : ""}. ` +
+      `${originalDescription}`;
+
+  }else{
+
+    descriptionSource = [
+      `Discover ${name}`,
+      category,
+      location.length
+        ? "in " + location.join(", ")
+        : "",
+      "on NearAfrica. View business information, contact details, services and directions."
+    ].filter(Boolean).join(" ");
+
+  }
+
+  const metaDescription =
+    shortenText(descriptionSource,160);
+
+  /*
+   * CANONICAL URL
+   */
+
+  const canonical =
+    buildCanonicalUrl(business);
+
+  /*
+   * BUSINESS IMAGE
+   */
+
+  const image =
+    getSEOImage(business);
+
+  /*
+   * INDEXING
+   */
+
+  setMeta(
+    'meta[name="robots"]',
+    "content",
+    "index,follow,max-image-preview:large"
+  );
+
+  /*
+   * TITLE
+   */
+
+  document.title = title;
+
+  /*
+   * DESCRIPTION
+   */
+
+  setMeta(
+    'meta[name="description"]',
+    "content",
+    metaDescription
+  );
+
+  /*
+   * OPEN GRAPH
+   */
+
+  setMeta(
+    'meta[property="og:type"]',
+    "content",
+    "website"
+  );
+
+  setMeta(
+    'meta[property="og:site_name"]',
+    "content",
+    "NearAfrica"
+  );
+
+  setMeta(
+    'meta[property="og:title"]',
+    "content",
+    title
+  );
+
+  setMeta(
+    'meta[property="og:description"]',
+    "content",
+    metaDescription
+  );
+
+  setMeta(
+    'meta[property="og:image"]',
+    "content",
+    image
+  );
+
+  setMeta(
+    'meta[property="og:image:alt"]',
+    "content",
+    `${name} business profile on NearAfrica`
+  );
+
+  setMeta(
+    'meta[property="og:locale"]',
+    "content",
+    "en_NG"
+  );
+
+  /*
+   * TWITTER / X
+   */
+
+  setMeta(
+    'meta[name="twitter:card"]',
+    "content",
+    "summary_large_image"
+  );
+
+  setMeta(
+    'meta[name="twitter:title"]',
+    "content",
+    title
+  );
+
+  setMeta(
+    'meta[name="twitter:description"]',
+    "content",
+    metaDescription
+  );
+
+  setMeta(
+    'meta[name="twitter:image"]',
+    "content",
+    image
+  );
+
+  setMeta(
+    'meta[name="twitter:image:alt"]',
+    "content",
+    `${name} business profile on NearAfrica`
+  );
+
+  /*
+   * CANONICAL
+   */
+
+  setCanonical(canonical);
+
+  /*
+   * STRUCTURED DATA
+   */
+
+  updateStructuredData(
+    business,
+    metaDescription,
+    image,
+    averageRating,
+    reviewCount,
+    hours
+  );
+
+}
+
+
+/* ==========================================================
+   API REQUESTS
+========================================================== */
 
 async function apiRequest(path,options={}){
+
   let response;
 
   try{
-    response = await fetch(API_URL + path,{
-      ...options,
-      cache:"no-store",
-      headers:{
-        Accept:"application/json",
-        ...(options.headers||{})
+
+    response = await fetch(
+      API_URL + path,
+      {
+        ...options,
+
+        cache:"no-store",
+
+        headers:{
+          Accept:"application/json",
+          ...(options.headers||{})
+        }
+
       }
-    });
+    );
+
   }catch{
+
     throw new Error(
       "Unable to connect to NearAfrica right now. Please check your connection."
     );
+
   }
 
   let data = {};
 
   try{
-    data = await response.json();
-  }catch{}
 
-  if(!response.ok || data.status==="error"){
+    data = await response.json();
+
+  }catch{
+
+    data = {};
+
+  }
+
+  if(
+    !response.ok ||
+    data.status === "error"
+  ){
+
     throw new Error(
       data.message ||
       data.error ||
       `Request failed (${response.status})`
     );
+
   }
 
   return data;
+
 }
+
+
+/* ==========================================================
+   BUSINESS INFORMATION HELPERS
+========================================================== */
 
 function getBusinessName(business){
-  return business.business_name || business.name || "Business";
+
+  return (
+    business.business_name ||
+    business.name ||
+    "Business"
+  );
+
 }
 
+
 function getLocation(business){
+
   return [
     business.address,
     business.area,
     business.city,
     business.state,
     business.country
-  ].map(clean).filter(Boolean).join(", ");
+  ]
+  .map(clean)
+  .filter(Boolean)
+  .join(", ");
+
 }
 
+
 function getBusinessCoordinates(business){
-  if(!business || typeof business!=="object") return null;
+
+  if(
+    !business ||
+    typeof business !== "object"
+  ){
+
+    return null;
+
+  }
 
   const rawLat =
     business.latitude ??
@@ -1001,13 +2003,18 @@ function getBusinessCoordinates(business){
     business.location_longitude;
 
   if(
-    rawLat==null ||
-    rawLng==null ||
-    String(rawLat).trim()==="" ||
-    String(rawLng).trim()===""
-  ) return null;
+    rawLat == null ||
+    rawLng == null ||
+    String(rawLat).trim() === "" ||
+    String(rawLng).trim() === ""
+  ){
+
+    return null;
+
+  }
 
   const latitude = Number(rawLat);
+
   const longitude = Number(rawLng);
 
   if(
@@ -1017,78 +2024,170 @@ function getBusinessCoordinates(business){
     latitude > 90 ||
     longitude < -180 ||
     longitude > 180
-  ) return null;
+  ){
 
-  return {latitude,longitude};
+    return null;
+
+  }
+
+  return {
+    latitude,
+    longitude
+  };
+
 }
 
-function buildBusinessDirectionsUrl(business,origin=null){
+
+/* ==========================================================
+   GOOGLE MAPS DIRECTIONS
+========================================================== */
+
+function buildBusinessDirectionsUrl(
+  business,
+  origin=null
+){
+
   if(!business) return "";
 
-  const coords = getBusinessCoordinates(business);
-  const location = getLocation(business);
+  const coordinates =
+    getBusinessCoordinates(business);
 
-  const destination = coords
-    ? `${coords.latitude},${coords.longitude}`
-    : [getBusinessName(business),location].filter(Boolean).join(", ");
+  const location =
+    getLocation(business);
+
+  const destination = coordinates
+
+    ? `${coordinates.latitude},${coordinates.longitude}`
+
+    : [
+        getBusinessName(business),
+        location
+      ].filter(Boolean).join(", ");
 
   if(!destination.trim()) return "";
 
-  const url = new URL("https://www.google.com/maps/dir/");
+  const url = new URL(
+    "https://www.google.com/maps/dir/"
+  );
 
   url.searchParams.set("api","1");
-  url.searchParams.set("destination",destination);
-  url.searchParams.set("travelmode","driving");
-  url.searchParams.set("dir_action","navigate");
+
+  url.searchParams.set(
+    "destination",
+    destination
+  );
+
+  url.searchParams.set(
+    "travelmode",
+    "driving"
+  );
+
+  url.searchParams.set(
+    "dir_action",
+    "navigate"
+  );
 
   if(origin){
+
     url.searchParams.set(
       "origin",
       `${origin.latitude},${origin.longitude}`
     );
+
   }
 
   return url.toString();
+
 }
 
+
+/* ==========================================================
+   BUSINESS IMAGES
+========================================================== */
+
 function getImage(business){
+
   const candidates = [
+
     business.logo_url,
+
     business.logo,
+
     business.image_url,
+
     business.image,
+
     business.imageUrl
+
   ];
 
   for(const value of candidates){
-    if(clean(value)) return clean(value);
+
+    if(clean(value)){
+
+      return clean(value);
+
+    }
+
   }
 
   if(Array.isArray(business.images)){
+
     for(const image of business.images){
-      if(typeof image==="string" && clean(image)){
+
+      if(
+        typeof image === "string" &&
+        clean(image)
+      ){
+
         return clean(image);
+
       }
 
-      if(image && typeof image==="object"){
+      if(
+        image &&
+        typeof image === "object"
+      ){
+
         const value =
           image.url ||
           image.image_url ||
           image.public_url ||
           image.src;
 
-        if(clean(value)) return clean(value);
+        if(clean(value)){
+
+          return clean(value);
+
+        }
+
       }
+
     }
+
   }
 
   return "";
+
 }
 
-function getImageUrl(image){
-  if(typeof image==="string") return clean(image);
 
-  if(!image || typeof image!=="object") return "";
+function getImageUrl(image){
+
+  if(typeof image === "string"){
+
+    return clean(image);
+
+  }
+
+  if(
+    !image ||
+    typeof image !== "object"
+  ){
+
+    return "";
+
+  }
 
   return clean(
     image.url ||
@@ -1097,86 +2196,159 @@ function getImageUrl(image){
     image.src ||
     ""
   );
+
 }
 
+
+/* ==========================================================
+   STATUS MESSAGES
+========================================================== */
+
 function showStatus(message,type="info"){
-  const element = document.getElementById("statusMessage");
+
+  const element =
+    document.getElementById("statusMessage");
 
   if(!element) return;
 
   if(!message){
-    element.style.display="none";
-    element.textContent="";
+
+    element.style.display = "none";
+
+    element.textContent = "";
+
     return;
+
   }
 
-  element.style.display="block";
-  element.textContent=message;
+  element.style.display = "block";
+
+  element.textContent = message;
 
   element.style.color =
-    type==="error" ? "#ffb1ad" :
-    type==="success" ? "#9ee8b9" :
-    "#ccc";
+    type === "error"
+      ? "#ffb1ad"
+      : type === "success"
+        ? "#9ee8b9"
+        : "#ccc";
 
   element.style.borderColor =
-    type==="error" ? "#65312f" :
-    type==="success" ? "#285b3d" :
-    "#292929";
+    type === "error"
+      ? "#65312f"
+      : type === "success"
+        ? "#285b3d"
+        : "#292929";
+
 }
 
+
 function setRouteStatus(message,type="info"){
-  const element = document.getElementById("routeStatus");
+
+  const element =
+    document.getElementById("routeStatus");
 
   if(!element) return;
 
   element.className =
     "route-status" +
-    (type==="success" ? " success" :
-    type==="error" ? " error" : "");
+    (
+      type === "success"
+        ? " success"
+        : type === "error"
+          ? " error"
+          : ""
+    );
 
-  element.textContent=message;
+  element.textContent = message;
+
 }
 
-/* --------------------------------------------------
+
+/* ==========================================================
    ROUTE FORMATTING
--------------------------------------------------- */
+========================================================== */
 
 function formatRouteDistance(metres){
+
   const n = Number(metres);
 
-  if(!Number.isFinite(n) || n<0) return "";
+  if(
+    !Number.isFinite(n) ||
+    n < 0
+  ){
 
-  return n<1000
+    return "";
+
+  }
+
+  return n < 1000
+
     ? `${Math.round(n)} m`
+
     : `${(n/1000).toFixed(n<10000?1:0)} km`;
+
 }
+
 
 function formatRouteDuration(seconds){
+
   const n = Number(seconds);
 
-  if(!Number.isFinite(n) || n<0) return "";
+  if(
+    !Number.isFinite(n) ||
+    n < 0
+  ){
 
-  const minutes = Math.max(1,Math.round(n/60));
+    return "";
 
-  if(minutes<60) return `${minutes} min`;
+  }
 
-  const hours = Math.floor(minutes/60);
-  const remaining = minutes%60;
+  const minutes = Math.max(
+    1,
+    Math.round(n/60)
+  );
+
+  if(minutes < 60){
+
+    return `${minutes} min`;
+
+  }
+
+  const hours =
+    Math.floor(minutes/60);
+
+  const remaining =
+    minutes%60;
 
   return remaining
+
     ? `${hours} hr ${remaining} min`
+
     : `${hours} hr`;
+
 }
 
+
 function formatRouteInstruction(step){
-  const m = step.maneuver || {};
-  const type = clean(m.type).toLowerCase();
-  const modifier = clean(m.modifier).replace(/_/g," ");
-  const road = clean(step.name);
+
+  const maneuver =
+    step.maneuver || {};
+
+  const type =
+    clean(maneuver.type).toLowerCase();
+
+  const modifier =
+    clean(maneuver.modifier).replace(/_/g," ");
+
+  const road =
+    clean(step.name);
 
   switch(type){
+
     case "depart":
-      return road ? `Start on ${road}` : "Start your journey";
+      return road
+        ? `Start on ${road}`
+        : "Start your journey";
 
     case "arrive":
       return "Arrive at your destination";
@@ -1186,7 +2358,9 @@ function formatRouteInstruction(step){
 
     case "continue":
     case "new name":
-      return road ? `Continue on ${road}` : "Continue straight";
+      return road
+        ? `Continue on ${road}`
+        : "Continue straight";
 
     case "merge":
       return `Merge${modifier?" "+modifier:""}${road?" onto "+road:""}`;
@@ -1211,99 +2385,183 @@ function formatRouteInstruction(step){
       return `Exit the roundabout${road?" onto "+road:""}`;
 
     default:
-      return `${type?type.replace(/_/g," "):"Continue"}${road?" on "+road:""}`;
+      return `${
+        type
+          ? type.replace(/_/g," ")
+          : "Continue"
+      }${road?" on "+road:""}`;
+
   }
+
 }
 
+
 function displayRouteSteps(steps){
-  const element = document.getElementById("routeSteps");
+
+  const element =
+    document.getElementById("routeSteps");
 
   if(!element) return;
 
-  if(!Array.isArray(steps) || !steps.length){
+  if(
+    !Array.isArray(steps) ||
+    !steps.length
+  ){
+
     element.replaceChildren();
+
     element.classList.add("hidden");
+
     return;
+
   }
 
   element.innerHTML = steps.map(step=>{
-    const instruction = formatRouteInstruction(step);
-    const distance = formatRouteDistance(step.distance);
+
+    const instruction =
+      formatRouteInstruction(step);
+
+    const distance =
+      formatRouteDistance(step.distance);
 
     return `
       <li>
         ${escapeHtml(instruction)}
-        ${distance
-          ? `<span class="route-step-distance">${escapeHtml(distance)}</span>`
-          : ""}
+
+        ${
+          distance
+            ? `<span class="route-step-distance">${escapeHtml(distance)}</span>`
+            : ""
+        }
+
       </li>
     `;
+
   }).join("");
 
   element.classList.remove("hidden");
+
 }
 
+
+/* ==========================================================
+   CLEAR EXISTING ROUTE
+========================================================== */
+
 function clearCurrentRoute(){
+
   if(activeMap && activeRouteLine){
+
     activeMap.removeLayer(activeRouteLine);
+
   }
 
   if(activeMap && activeUserMarker){
+
     activeMap.removeLayer(activeUserMarker);
+
   }
 
-  activeRouteLine=null;
-  activeUserMarker=null;
+  activeRouteLine = null;
 
-  const summary = document.getElementById("routeSummary");
-  const steps = document.getElementById("routeSteps");
-  const navigation = document.getElementById("openNavigationButton");
+  activeUserMarker = null;
+
+  const summary =
+    document.getElementById("routeSummary");
+
+  const steps =
+    document.getElementById("routeSteps");
+
+  const navigation =
+    document.getElementById("openNavigationButton");
 
   if(summary){
-    summary.textContent="";
+
+    summary.textContent = "";
+
     summary.classList.add("hidden");
+
   }
 
   if(steps){
+
     steps.replaceChildren();
+
     steps.classList.add("hidden");
+
   }
 
   if(navigation){
+
     navigation.classList.add("hidden");
+
     navigation.removeAttribute("href");
+
   }
+
 }
 
-/* --------------------------------------------------
+
+/* ==========================================================
    MAP INITIALIZATION
--------------------------------------------------- */
+========================================================== */
 
 function initializeMap(business){
-  const element = document.getElementById("businessMap");
 
-  if(!element || typeof L==="undefined") return;
+  const element =
+    document.getElementById("businessMap");
 
-  const coords = getBusinessCoordinates(business);
+  if(
+    !element ||
+    typeof L === "undefined"
+  ){
 
-  if(!coords){
+    return;
+
+  }
+
+  const coordinates =
+    getBusinessCoordinates(business);
+
+  if(!coordinates){
+
     element.innerHTML = `
-      <div style="height:100%;display:grid;place-items:center;background:#111;color:#aaa;text-align:center;padding:20px">
+
+      <div style="
+        height:100%;
+        display:grid;
+        place-items:center;
+        background:#111;
+        color:#aaa;
+        text-align:center;
+        padding:20px;
+      ">
+
         Precise map coordinates are not available for this listing.
         Please report or correct the business location.
         You can still try Google Maps directions if an address is available.
+
       </div>
+
     `;
+
     return;
+
   }
 
   if(activeMap){
+
     activeMap.remove();
-    activeMap=null;
+
+    activeMap = null;
+
   }
 
   activeMap = L.map(element).setView(
-    [coords.latitude,coords.longitude],
+    [
+      coordinates.latitude,
+      coordinates.longitude
+    ],
     15
   );
 
@@ -1316,90 +2574,138 @@ function initializeMap(business){
   ).addTo(activeMap);
 
   activeDestinationMarker = L.marker([
-    coords.latitude,
-    coords.longitude
-  ]).addTo(activeMap)
-    .bindPopup(escapeHtml(getBusinessName(business)));
+    coordinates.latitude,
+    coordinates.longitude
+  ])
+  .addTo(activeMap)
+  .bindPopup(
+    escapeHtml(getBusinessName(business))
+  );
 
   activeDestinationMarker.openPopup();
 
   setTimeout(()=>{
-    if(activeMap) activeMap.invalidateSize();
+
+    if(activeMap){
+
+      activeMap.invalidateSize();
+
+    }
+
   },100);
+
 }
 
-/* --------------------------------------------------
+
+/* ==========================================================
    GPS ROUTING
--------------------------------------------------- */
+========================================================== */
 
 async function showRouteFromCurrentLocation(){
+
   if(routeRequestInProgress) return;
 
-  const button = document.getElementById("showRouteButton");
-  const summary = document.getElementById("routeSummary");
-  const navigation = document.getElementById("openNavigationButton");
+  const button =
+    document.getElementById("showRouteButton");
+
+  const summary =
+    document.getElementById("routeSummary");
+
+  const navigation =
+    document.getElementById("openNavigationButton");
 
   if(!activeBusiness){
+
     setRouteStatus(
       "The business profile is not ready. Reload and try again.",
       "error"
     );
+
     return;
+
   }
 
   if(!activeMap){
+
     setRouteStatus(
       "A route on this map requires valid business GPS coordinates.",
       "error"
     );
+
     return;
+
   }
 
-  const destination = getBusinessCoordinates(activeBusiness);
+  const destination =
+    getBusinessCoordinates(activeBusiness);
 
   if(!destination){
+
     setRouteStatus(
       "This business has no valid GPS coordinates. Please report or correct its location.",
       "error"
     );
+
     return;
+
   }
 
-  if(!window.isSecureContext || !navigator.geolocation){
+  if(
+    !window.isSecureContext ||
+    !navigator.geolocation
+  ){
+
     setRouteStatus(
       "Location access is unavailable. Open the page over HTTPS or use Google Maps directions.",
       "error"
     );
+
     return;
+
   }
 
-  routeRequestInProgress=true;
+  routeRequestInProgress = true;
 
   if(button){
-    button.disabled=true;
-    button.textContent="Finding your location…";
+
+    button.disabled = true;
+
+    button.textContent = "Finding your location…";
+
   }
 
   clearCurrentRoute();
-  setRouteStatus("Requesting your current location…");
+
+  setRouteStatus(
+    "Requesting your current location…"
+  );
 
   try{
-    const position = await new Promise((resolve,reject)=>{
-      navigator.geolocation.getCurrentPosition(
-        resolve,
-        reject,
-        {
-          enableHighAccuracy:true,
-          timeout:30000,
-          maximumAge:10000
-        }
-      );
-    });
+
+    const position = await new Promise(
+      (resolve,reject)=>{
+
+        navigator.geolocation.getCurrentPosition(
+          resolve,
+          reject,
+          {
+            enableHighAccuracy:true,
+            timeout:30000,
+            maximumAge:10000
+          }
+        );
+
+      }
+    );
 
     const origin = {
+
       latitude:Number(position.coords.latitude),
+
       longitude:Number(position.coords.longitude),
+
       accuracy:Number(position.coords.accuracy)
+
     };
 
     if(
@@ -1412,124 +2718,186 @@ async function showRouteFromCurrentLocation(){
       !Number.isFinite(origin.accuracy) ||
       origin.accuracy < 0
     ){
+
       throw new Error(
         "The browser returned invalid coordinates. Please try again."
       );
+
     }
 
-    if(origin.accuracy>5000){
+    if(origin.accuracy > 5000){
+
       throw new Error(
         `Your location accuracy is approximately ${formatRouteDistance(origin.accuracy)}. A more precise location is needed. You can still use Google Maps directions.`
       );
+
     }
 
-    setRouteStatus("Calculating the driving route…");
+    setRouteStatus(
+      "Calculating the driving route…"
+    );
 
     const routeUrl = new URL(
       ROUTING_URL +
       `${origin.longitude},${origin.latitude};${destination.longitude},${destination.latitude}`
     );
 
-    routeUrl.searchParams.set("overview","full");
-    routeUrl.searchParams.set("geometries","geojson");
-    routeUrl.searchParams.set("steps","true");
+    routeUrl.searchParams.set(
+      "overview",
+      "full"
+    );
 
-    const response = await fetch(routeUrl.toString(),{
-      headers:{Accept:"application/json"},
-      cache:"no-store"
-    });
+    routeUrl.searchParams.set(
+      "geometries",
+      "geojson"
+    );
+
+    routeUrl.searchParams.set(
+      "steps",
+      "true"
+    );
+
+    const response = await fetch(
+      routeUrl.toString(),
+      {
+        headers:{
+          Accept:"application/json"
+        },
+        cache:"no-store"
+      }
+    );
 
     if(!response.ok){
+
       throw new Error(
         "The routing service is unavailable. Please try again or use Google Maps."
       );
+
     }
 
-    const payload = await response.json();
+    const payload =
+      await response.json();
 
     if(
-      payload.code!=="Ok" ||
+      payload.code !== "Ok" ||
       !Array.isArray(payload.routes) ||
       !payload.routes.length
     ){
+
       throw new Error(
         "No driving route was found. Try Google Maps or check the business map pin."
       );
+
     }
 
-    const route = payload.routes[0];
-    const pairs = route.geometry?.coordinates;
+    const route =
+      payload.routes[0];
 
-    if(!Array.isArray(pairs) || pairs.length<2){
+    const pairs =
+      route.geometry?.coordinates;
+
+    if(
+      !Array.isArray(pairs) ||
+      pairs.length < 2
+    ){
+
       throw new Error(
         "The routing service returned an invalid route."
       );
+
     }
 
     const points = pairs.map(pair=>[
+
       Number(pair[1]),
+
       Number(pair[0])
+
     ]).filter(pair=>
+
       Number.isFinite(pair[0]) &&
       Number.isFinite(pair[1]) &&
-      pair[0]>=-90 &&
-      pair[0]<=90 &&
-      pair[1]>=-180 &&
-      pair[1]<=180
+      pair[0] >= -90 &&
+      pair[0] <= 90 &&
+      pair[1] >= -180 &&
+      pair[1] <= 180
+
     );
 
-    if(points.length<2){
+    if(points.length < 2){
+
       throw new Error(
         "The route contains insufficient valid map points."
       );
+
     }
 
-    activeRouteLine = L.polyline(points,{
-      color:"#d4af37",
-      weight:6,
-      opacity:.92,
-      lineCap:"round",
-      lineJoin:"round"
-    }).addTo(activeMap);
+    activeRouteLine = L.polyline(
+      points,
+      {
+        color:"#d4af37",
+        weight:6,
+        opacity:.92,
+        lineCap:"round",
+        lineJoin:"round"
+      }
+    ).addTo(activeMap);
 
-    activeUserMarker = L.circleMarker([
-      origin.latitude,
-      origin.longitude
-    ],{
-      radius:8,
-      color:"#fff",
-      weight:3,
-      fillColor:"#2585ff",
-      fillOpacity:1
-    }).addTo(activeMap).bindPopup("Your starting point");
+    activeUserMarker = L.circleMarker(
+      [
+        origin.latitude,
+        origin.longitude
+      ],
+      {
+        radius:8,
+        color:"#fff",
+        weight:3,
+        fillColor:"#2585ff",
+        fillOpacity:1
+      }
+    )
+    .addTo(activeMap)
+    .bindPopup("Your starting point");
 
     activeMap.fitBounds(
       activeRouteLine.getBounds(),
-      {padding:[30,30],maxZoom:15}
+      {
+        padding:[30,30],
+        maxZoom:15
+      }
     );
 
     if(summary){
+
       summary.textContent =
         `Estimated driving distance: ${formatRouteDistance(route.distance)}. Estimated driving time: ${formatRouteDuration(route.duration)}. Actual time may vary with traffic and road conditions.`;
 
       summary.classList.remove("hidden");
+
     }
 
     const steps = Array.isArray(route.legs)
+
       ? route.legs.flatMap(leg=>
-          Array.isArray(leg.steps) ? leg.steps : []
+          Array.isArray(leg.steps)
+            ? leg.steps
+            : []
         )
+
       : [];
 
     displayRouteSteps(steps);
 
     if(navigation){
-      navigation.href = buildBusinessDirectionsUrl(
-        activeBusiness,
-        origin
-      );
+
+      navigation.href =
+        buildBusinessDirectionsUrl(
+          activeBusiness,
+          origin
+        );
 
       navigation.classList.remove("hidden");
+
     }
 
     setRouteStatus(
@@ -1538,77 +2906,137 @@ async function showRouteFromCurrentLocation(){
     );
 
   }catch(error){
-    let message = error.message || "Unable to calculate the route.";
 
-    if(typeof error.code==="number"){
-      if(error.code===1){
-        message = "Location permission was denied. Allow location access and try again, or use Google Maps directions.";
+    let message =
+      error.message ||
+      "Unable to calculate the route.";
+
+    if(typeof error.code === "number"){
+
+      if(error.code === 1){
+
+        message =
+          "Location permission was denied. Allow location access and try again, or use Google Maps directions.";
+
       }
 
-      if(error.code===2){
-        message = "Your device could not determine your location. Try again or use Google Maps directions.";
+      if(error.code === 2){
+
+        message =
+          "Your device could not determine your location. Try again or use Google Maps directions.";
+
       }
 
-      if(error.code===3){
-        message = "Getting your location timed out. Try again in an area with better reception.";
+      if(error.code === 3){
+
+        message =
+          "Getting your location timed out. Try again in an area with better reception.";
+
       }
+
     }
 
-    console.error("NearAfrica directions error:",error);
+    console.error(
+      "NearAfrica directions error:",
+      error
+    );
 
-    setRouteStatus(message,"error");
+    setRouteStatus(
+      message,
+      "error"
+    );
 
     if(navigation){
-      navigation.href = buildBusinessDirectionsUrl(activeBusiness);
+
+      navigation.href =
+        buildBusinessDirectionsUrl(activeBusiness);
+
       navigation.classList.remove("hidden");
+
     }
 
   }finally{
-    routeRequestInProgress=false;
+
+    routeRequestInProgress = false;
 
     if(button){
-      button.disabled=false;
-      button.textContent="🧭 Show Route From My Location";
+
+      button.disabled = false;
+
+      button.textContent =
+        "🧭 Show Route From My Location";
+
     }
+
   }
+
 }
-  /* --------------------------------------------------
+
+
+/* ==========================================================
    PRODUCTS AND SERVICES
--------------------------------------------------- */
+========================================================== */
 
 function renderProducts(products){
-  if(!Array.isArray(products) || !products.length) return "";
+
+  if(
+    !Array.isArray(products) ||
+    !products.length
+  ){
+
+    return "";
+
+  }
 
   return `
+
     <section class="profile-card">
+
       <h2>Products &amp; Services</h2>
 
       <div class="product-grid">
+
         ${products.map(product=>{
+
           const image = getImageUrl(
             product.image_url ||
             product.image ||
             product.public_url
           );
 
-          const name = product.name || product.title || "Product";
-          const description = product.description || "";
-          const price = product.price;
+          const imageUrl =
+            safeUrl(image);
+
+          const name =
+            product.name ||
+            product.title ||
+            "Product";
+
+          const description =
+            product.description || "";
+
+          const price =
+            product.price;
 
           return `
+
             <article class="product">
+
               ${
-                image && safeUrl(image)
-                  ? `<img
-                      src="${escapeAttribute(safeUrl(image))}"
+                imageUrl
+                  ? `
+                    <img
+                      src="${escapeAttribute(imageUrl)}"
                       alt="${escapeAttribute(name)}"
                       loading="lazy"
                       onerror="this.style.display='none'"
-                    >`
+                    >
+                  `
                   : ""
               }
 
               <div class="product-body">
+
                 <h3>${escapeHtml(name)}</h3>
 
                 ${
@@ -1618,71 +3046,117 @@ function renderProducts(products){
                 }
 
                 ${
-                  price!==undefined &&
-                  price!==null &&
+                  price !== undefined &&
+                  price !== null &&
                   clean(price)
-                    ? `<div class="price">${escapeHtml(product.currency||"NGN")} ${escapeHtml(price)}</div>`
+                    ? `
+                      <div class="price">
+                        ${escapeHtml(product.currency || "NGN")}
+                        ${escapeHtml(price)}
+                      </div>
+                    `
                     : ""
                 }
+
               </div>
+
             </article>
+
           `;
+
         }).join("")}
+
       </div>
+
     </section>
+
   `;
+
 }
 
-/* --------------------------------------------------
+
+/* ==========================================================
    BUSINESS PHOTOS
--------------------------------------------------- */
+========================================================== */
 
 function renderImages(images,businessName){
-  if(!Array.isArray(images) || !images.length) return "";
+
+  if(
+    !Array.isArray(images) ||
+    !images.length
+  ){
+
+    return "";
+
+  }
 
   const html = images.map(image=>{
-    const source = getImageUrl(image);
-    const imageUrl = safeUrl(source);
+
+    const source =
+      getImageUrl(image);
+
+    const imageUrl =
+      safeUrl(source);
 
     if(!imageUrl) return "";
 
     return `
+
       <a
         href="${escapeAttribute(imageUrl)}"
         target="_blank"
         rel="noopener noreferrer"
       >
+
         <img
           src="${escapeAttribute(imageUrl)}"
           alt="${escapeAttribute(businessName)}"
           loading="lazy"
           onerror="this.style.display='none'"
         >
+
       </a>
+
     `;
+
   }).join("");
 
   if(!html) return "";
 
   return `
+
     <section class="profile-card">
+
       <h2>Photos</h2>
-      <div class="photo-grid">${html}</div>
+
+      <div class="photo-grid">
+        ${html}
+      </div>
+
     </section>
+
   `;
+
 }
 
-/* --------------------------------------------------
-   OPENING HOURS
-   Supports:
-   day_of_week, is_24_hours, opening_time,
-   closing_time and is_closed.
--------------------------------------------------- */
+
+/* ==========================================================
+   OPENING HOURS DISPLAY
+========================================================== */
 
 function renderHours(hours){
-  if(!Array.isArray(hours) || !hours.length) return "";
+
+  if(
+    !Array.isArray(hours) ||
+    !hours.length
+  ){
+
+    return "";
+
+  }
 
   const weekdayNames = [
+
     "Sunday",
     "Monday",
     "Tuesday",
@@ -1690,111 +3164,171 @@ function renderHours(hours){
     "Thursday",
     "Friday",
     "Saturday"
+
   ];
 
-  const normalizedHours = hours.map(hour=>{
-    const rawDay = hour.day_of_week;
-    const numericDay = Number(rawDay);
+  const normalizedHours = hours.map(hour=>({
 
-    const day =
-      clean(hour.day || hour.day_name || hour.weekday) ||
-      (
-        rawDay!==undefined &&
-        rawDay!==null &&
-        rawDay!=="" &&
-        Number.isInteger(numericDay) &&
-        numericDay>=0 &&
-        numericDay<=6
-          ? weekdayNames[numericDay]
-          : ""
-      );
+    ...hour,
 
-    return {...hour,_displayDay:day};
-  });
+    _displayDay:getWeekdayName(hour)
+
+  }));
 
   normalizedHours.sort((a,b)=>{
-    const dayOrder = weekdayNames.indexOf(a._displayDay);
-    const otherOrder = weekdayNames.indexOf(b._displayDay);
 
-    if(dayOrder===-1 && otherOrder===-1) return 0;
-    if(dayOrder===-1) return 1;
-    if(otherOrder===-1) return -1;
+    const dayOrder =
+      weekdayNames.indexOf(a._displayDay);
 
-    return dayOrder-otherOrder;
+    const otherOrder =
+      weekdayNames.indexOf(b._displayDay);
+
+    if(
+      dayOrder === -1 &&
+      otherOrder === -1
+    ){
+
+      return 0;
+
+    }
+
+    if(dayOrder === -1) return 1;
+
+    if(otherOrder === -1) return -1;
+
+    return dayOrder - otherOrder;
+
   });
 
   return `
+
     <section class="profile-card">
+
       <h2>Opening Hours</h2>
 
       <div class="hours">
+
         ${normalizedHours.map(hour=>{
-          const day = hour._displayDay || "Day not specified";
+
+          const day =
+            hour._displayDay ||
+            "Day not specified";
 
           const open = clean(
+
             hour.open ||
+
             hour.open_time ||
+
             hour.opening_time ||
+
             ""
+
           );
 
           const close = clean(
+
             hour.close ||
+
             hour.close_time ||
+
             hour.closing_time ||
+
             ""
+
           );
 
           const closed =
-            hour.closed===true ||
-            hour.is_closed===true ||
-            Number(hour.closed)===1 ||
-            Number(hour.is_closed)===1;
+
+            hour.closed === true ||
+
+            hour.is_closed === true ||
+
+            Number(hour.closed) === 1 ||
+
+            Number(hour.is_closed) === 1;
 
           const open24Hours =
-            hour.is_24_hours===true ||
-            Number(hour.is_24_hours)===1 ||
-            hour.is24Hours===true ||
-            Number(hour.is24Hours)===1;
 
-          let displayHours = "Hours unavailable";
+            hour.is_24_hours === true ||
+
+            Number(hour.is_24_hours) === 1 ||
+
+            hour.is24Hours === true ||
+
+            Number(hour.is24Hours) === 1;
+
+          let displayHours =
+            "Hours unavailable";
 
           if(closed){
+
             displayHours = "Closed";
+
           }else if(open24Hours){
+
             displayHours = "Open 24 hours";
+
           }else if(open && close){
-            displayHours = `${open} — ${close}`;
+
+            displayHours =
+              `${open} — ${close}`;
+
           }
 
           return `
+
             <div class="hours-row">
-              <strong>${escapeHtml(day)}</strong>
-              <span class="hours-time">${escapeHtml(displayHours)}</span>
+
+              <strong>
+                ${escapeHtml(day)}
+              </strong>
+
+              <span class="hours-time">
+                ${escapeHtml(displayHours)}
+              </span>
+
             </div>
+
           `;
+
         }).join("")}
+
       </div>
+
     </section>
+
   `;
+
 }
 
-/* --------------------------------------------------
+
+/* ==========================================================
    CUSTOMER REVIEWS
--------------------------------------------------- */
+========================================================== */
 
 function renderReviews(reviews){
-  const list = Array.isArray(reviews) ? reviews : [];
+
+  const list =
+    Array.isArray(reviews)
+      ? reviews
+      : [];
 
   return `
+
     <section class="profile-card" id="reviewsSection">
+
       <h2>Customer Reviews (${list.length})</h2>
 
       ${
         list.length
+
           ? `
+
             <div class="review-list">
+
               ${list.map(review=>{
+
                 const name =
                   review.name ||
                   review.reviewer_name ||
@@ -1808,16 +3342,25 @@ function renderReviews(reviews){
                 let dateText = "";
 
                 if(review.created_at){
-                  const date = new Date(review.created_at);
+
+                  const date =
+                    new Date(review.created_at);
 
                   if(!Number.isNaN(date.getTime())){
-                    dateText = date.toLocaleDateString();
+
+                    dateText =
+                      date.toLocaleDateString();
+
                   }
+
                 }
 
                 return `
+
                   <article class="review">
+
                     <div class="review-header">
+
                       <div class="review-name">
                         ${escapeHtml(name)}
                       </div>
@@ -1828,6 +3371,7 @@ function renderReviews(reviews){
                       >
                         ${stars(review.rating)}
                       </div>
+
                     </div>
 
                     <div class="review-comment">
@@ -1836,26 +3380,44 @@ function renderReviews(reviews){
 
                     ${
                       dateText
-                        ? `<div class="review-date">${escapeHtml(dateText)}</div>`
+                        ? `
+                          <div class="review-date">
+                            ${escapeHtml(dateText)}
+                          </div>
+                        `
                         : ""
                     }
+
                   </article>
+
                 `;
+
               }).join("")}
+
             </div>
+
           `
+
           : `
+
             <div class="empty">
-              No approved reviews yet. Be the first to share your experience.
+              No approved reviews yet.
+              Be the first to share your experience.
             </div>
+
           `
+
       }
 
       <div class="review-form-wrap">
+
         <h3>Write a Review</h3>
 
         <p style="color:#999;font-size:14px;margin-top:-6px">
-          Share an honest experience to help other people make informed decisions.
+
+          Share an honest experience to help other people
+          make informed decisions.
+
         </p>
 
         <div
@@ -1868,6 +3430,7 @@ function renderReviews(reviews){
         <form id="reviewForm" class="form">
 
           <label for="reviewerName">
+
             Your name
 
             <input
@@ -1879,22 +3442,49 @@ function renderReviews(reviews){
               required
               placeholder="Enter your name"
             >
+
           </label>
 
           <label for="reviewRating">
+
             Your rating
 
-            <select id="reviewRating" name="rating" required>
-              <option value="">Choose a rating</option>
-              <option value="5">★★★★★ — Excellent</option>
-              <option value="4">★★★★☆ — Very good</option>
-              <option value="3">★★★☆☆ — Good</option>
-              <option value="2">★★☆☆☆ — Fair</option>
-              <option value="1">★☆☆☆☆ — Poor</option>
+            <select
+              id="reviewRating"
+              name="rating"
+              required
+            >
+
+              <option value="">
+                Choose a rating
+              </option>
+
+              <option value="5">
+                ★★★★★ — Excellent
+              </option>
+
+              <option value="4">
+                ★★★★☆ — Very good
+              </option>
+
+              <option value="3">
+                ★★★☆☆ — Good
+              </option>
+
+              <option value="2">
+                ★★☆☆☆ — Fair
+              </option>
+
+              <option value="1">
+                ★☆☆☆☆ — Poor
+              </option>
+
             </select>
+
           </label>
 
           <label for="reviewComment">
+
             Your review
 
             <textarea
@@ -1905,6 +3495,7 @@ function renderReviews(reviews){
               required
               placeholder="Describe your experience with this business..."
             ></textarea>
+
           </label>
 
           <button
@@ -1918,45 +3509,89 @@ function renderReviews(reviews){
         </form>
 
         <p class="review-note">
-          Reviews are checked by NearAfrica before appearing publicly.
-          Please do not include private or sensitive information.
+
+          Reviews are checked by NearAfrica before appearing
+          publicly. Please do not include private or sensitive information.
+
         </p>
+
       </div>
+
     </section>
+
   `;
+
 }
 
-/* --------------------------------------------------
+
+/* ==========================================================
    DISPLAY BUSINESS PROFILE
--------------------------------------------------- */
+========================================================== */
 
 function displayBusiness(business,result){
+
   activeBusiness = business;
 
-  const name = getBusinessName(business);
-  const location = getLocation(business);
-  const coordinates = getBusinessCoordinates(business);
+  const name =
+    getBusinessName(business);
 
-  const directionsUrl = buildBusinessDirectionsUrl(business);
+  const location =
+    getLocation(business);
 
-  const category = clean(business.category);
-  const description = clean(business.description);
-  const phone = clean(business.phone);
+  const coordinates =
+    getBusinessCoordinates(business);
 
-  const whatsapp = clean(business.whatsapp)
-    .replace(/[^\d+]/g,"");
+  const directionsUrl =
+    buildBusinessDirectionsUrl(business);
 
-  const email = clean(business.email);
-  const website = clean(business.website);
-  const websiteUrl = safeUrl(website);
+  const category =
+    clean(business.category);
 
-  const image = getImage(business);
+  const description =
+    clean(business.description);
 
-  const verified = Number(business.verified)===1;
-  const claimed = Number(business.claimed)===1;
-  const featured = Number(business.featured)===1;
+  const phone =
+    clean(
+      business.phone ||
+      business.phone_number ||
+      business.contact_phone
+    );
 
-  const statistics = result.statistics || {};
+  const whatsapp =
+    clean(
+      business.whatsapp ||
+      business.whatsapp_number
+    ).replace(/\D/g,"");
+
+  const email =
+    clean(business.email);
+
+  const website =
+    clean(
+      business.website ||
+      business.website_url
+    );
+
+  const websiteUrl =
+    safeUrl(website);
+
+  const image =
+    getImage(business);
+
+  const verified =
+    Number(business.verified) === 1 ||
+    business.verified === true;
+
+  const claimed =
+    Number(business.claimed) === 1 ||
+    business.claimed === true;
+
+  const featured =
+    Number(business.featured) === 1 ||
+    business.featured === true;
+
+  const statistics =
+    result.statistics || {};
 
   const views = Number(
     statistics.views ??
@@ -1964,9 +3599,10 @@ function displayBusiness(business,result){
     0
   );
 
-  const reviews = Array.isArray(result.reviews)
-    ? result.reviews
-    : [];
+  const reviews =
+    Array.isArray(result.reviews)
+      ? result.reviews
+      : [];
 
   const averageRating = Number(
     statistics.average_rating ??
@@ -1974,7 +3610,8 @@ function displayBusiness(business,result){
     (
       reviews.length
         ? reviews.reduce(
-            (sum,review)=>sum+(Number(review.rating)||0),
+            (sum,review)=>
+              sum+(Number(review.rating)||0),
             0
           ) / reviews.length
         : 0
@@ -1990,23 +3627,28 @@ function displayBusiness(business,result){
     )
   );
 
-  const products = Array.isArray(result.products)
-    ? result.products
-    : [];
-
-  const hours = Array.isArray(result.hours)
-    ? result.hours
-    : [];
-
-  const images = Array.isArray(result.images)
-    ? result.images
-    : Array.isArray(business.images)
-      ? business.images
+  const products =
+    Array.isArray(result.products)
+      ? result.products
       : [];
 
-  const initial = name.charAt(0).toUpperCase() || "B";
+  const hours =
+    Array.isArray(result.hours)
+      ? result.hours
+      : [];
 
-  const content = document.getElementById("businessContent");
+  const images =
+    Array.isArray(result.images)
+      ? result.images
+      : Array.isArray(business.images)
+        ? business.images
+        : [];
+
+  const initial =
+    name.charAt(0).toUpperCase() || "B";
+
+  const content =
+    document.getElementById("businessContent");
 
   const claimIdentifier =
     business.id ||
@@ -2014,11 +3656,15 @@ function displayBusiness(business,result){
     business.slug ||
     "";
 
-  /* Update search and social metadata after loading the business. */
+  /*
+   * Update metadata using actual business data.
+   */
+
   updateBusinessSEO(
     business,
     averageRating,
-    reviewCount
+    reviewCount,
+    hours
   );
 
   content.innerHTML = `
@@ -2031,14 +3677,19 @@ function displayBusiness(business,result){
 
           ${
             image && safeUrl(image)
+
               ? `
+
                 <img
                   src="${escapeAttribute(safeUrl(image))}"
                   alt="${escapeAttribute(name)}"
                   onerror="this.onerror=null;this.style.display='none';this.parentElement.textContent='${escapeAttribute(initial)}'"
                 >
+
               `
+
               : escapeHtml(initial)
+
           }
 
         </div>
@@ -2048,25 +3699,42 @@ function displayBusiness(business,result){
           <h1>${escapeHtml(name)}</h1>
 
           <div class="meta">
-            ${category ? `<span>${escapeHtml(category)}</span>` : ""}
-            ${location ? `<span>•</span><span>${escapeHtml(location)}</span>` : ""}
+
+            ${
+              category
+                ? `<span>${escapeHtml(category)}</span>`
+                : ""
+            }
+
+            ${
+              location
+                ? `
+                  <span>•</span>
+                  <span>${escapeHtml(location)}</span>
+                `
+                : ""
+            }
+
           </div>
 
           <div class="badges">
 
-            ${verified
-              ? '<span class="badge green">✓ Verified</span>'
-              : ""
+            ${
+              verified
+                ? '<span class="badge green">✓ Verified</span>'
+                : ""
             }
 
-            ${claimed
-              ? '<span class="badge gold">✓ Claimed</span>'
-              : ""
+            ${
+              claimed
+                ? '<span class="badge gold">✓ Claimed</span>'
+                : ""
             }
 
-            ${featured
-              ? '<span class="badge gold">Featured</span>'
-              : ""
+            ${
+              featured
+                ? '<span class="badge gold">Featured</span>'
+                : ""
             }
 
           </div>
@@ -2075,56 +3743,114 @@ function displayBusiness(business,result){
 
             ${
               phone
-                ? `<a class="btn btn-primary" href="tel:${escapeAttribute(phone)}">Call</a>`
+                ? `
+                  <a
+                    class="btn btn-primary"
+                    href="tel:${escapeAttribute(phone)}"
+                  >Call</a>
+                `
                 : ""
             }
 
             ${
               whatsapp
-                ? `<a class="btn" href="https://wa.me/${escapeAttribute(whatsapp.replace(/^\+/,""))}" target="_blank" rel="noopener noreferrer">WhatsApp</a>`
+                ? `
+                  <a
+                    class="btn"
+                    href="https://wa.me/${escapeAttribute(whatsapp)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >WhatsApp</a>
+                `
                 : ""
             }
 
             ${
               email
-                ? `<a class="btn" href="mailto:${escapeAttribute(email)}">Email</a>`
+                ? `
+                  <a
+                    class="btn"
+                    href="mailto:${escapeAttribute(email)}"
+                  >Email</a>
+                `
                 : ""
             }
 
             ${
               websiteUrl
-                ? `<a class="btn" href="${escapeAttribute(websiteUrl)}" target="_blank" rel="noopener noreferrer">Website</a>`
+                ? `
+                  <a
+                    class="btn"
+                    href="${escapeAttribute(websiteUrl)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >Website</a>
+                `
                 : ""
             }
 
             ${
               directionsUrl
-                ? `<a class="directions-btn" href="${escapeAttribute(directionsUrl)}" target="_blank" rel="noopener noreferrer">🧭 Get GPS Directions</a>`
+                ? `
+                  <a
+                    class="directions-btn"
+                    href="${escapeAttribute(directionsUrl)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >🧭 Get GPS Directions</a>
+                `
                 : ""
             }
 
           </div>
+
         </div>
+
       </div>
 
       <div class="stats">
 
         <div class="stat">
-          <strong>${formatNumber(views)}</strong>
+
+          <strong>
+            ${formatNumber(views)}
+          </strong>
+
           <span>Views</span>
+
         </div>
 
         <div class="stat">
-          <strong>${averageRating>0 ? averageRating.toFixed(1) : "—"}</strong>
-          <span>${averageRating>0 ? stars(averageRating) : "No rating yet"}</span>
+
+          <strong>
+            ${averageRating > 0
+              ? averageRating.toFixed(1)
+              : "—"
+            }
+          </strong>
+
+          <span>
+            ${
+              averageRating > 0
+                ? stars(averageRating)
+                : "No rating yet"
+            }
+          </span>
+
         </div>
 
         <div class="stat">
-          <strong>${formatNumber(reviewCount)}</strong>
+
+          <strong>
+            ${formatNumber(reviewCount)}
+          </strong>
+
           <span>Reviews</span>
+
         </div>
 
       </div>
+
     </section>
 
     <div class="profile-grid">
@@ -2134,10 +3860,17 @@ function displayBusiness(business,result){
         ${
           description
             ? `
+
               <section class="profile-card">
+
                 <h2>About</h2>
-                <div class="description">${escapeHtml(description)}</div>
+
+                <div class="description">
+                  ${escapeHtml(description)}
+                </div>
+
               </section>
+
             `
             : ""
         }
@@ -2154,13 +3887,18 @@ function displayBusiness(business,result){
 
           ${
             location
-              ? `<p style="color:#aaa">${escapeHtml(location)}</p>`
+              ? `
+                <p style="color:#aaa">
+                  ${escapeHtml(location)}
+                </p>
+              `
               : ""
           }
 
           ${
             directionsUrl
               ? `
+
                 <a
                   class="directions-btn"
                   href="${escapeAttribute(directionsUrl)}"
@@ -2171,14 +3909,19 @@ function displayBusiness(business,result){
                 </a>
 
                 <p class="directions-note">
-                  Open Google Maps for navigation, or display the driving route on the NearAfrica map below.
+                  Open Google Maps for navigation,
+                  or display the driving route on the NearAfrica map below.
                 </p>
+
               `
               : `
+
                 <p class="directions-note">
-                  Directions are unavailable because this listing does not have enough location information.
+                  Directions are unavailable because this listing
+                  does not have enough location information.
                   Please check the address before travelling.
                 </p>
+
               `
           }
 
@@ -2209,25 +3952,35 @@ function displayBusiness(business,result){
               role="status"
               aria-live="polite"
             >
+
               ${
                 coordinates
                   ? "Tap the button to use your current location and calculate a driving route."
                   : "An on-map route requires valid GPS coordinates for this business."
               }
+
             </p>
 
-            <div id="routeSummary" class="route-summary hidden"></div>
+            <div
+              id="routeSummary"
+              class="route-summary hidden"
+            ></div>
 
-            <ol id="routeSteps" class="route-steps hidden"></ol>
+            <ol
+              id="routeSteps"
+              class="route-steps hidden"
+            ></ol>
 
           </div>
 
           <div id="businessMap"></div>
 
           <p class="leaflet-routing-note">
+
             Map data © OpenStreetMap contributors.
             Routes are calculated by an external routing service.
             Your coordinates are sent to that service when you request a route.
+
           </p>
 
         </section>
@@ -2246,8 +3999,15 @@ function displayBusiness(business,result){
               category
                 ? `
                   <div class="info-item">
-                    <div class="info-label">Category</div>
-                    <div class="info-value">${escapeHtml(category)}</div>
+
+                    <div class="info-label">
+                      Category
+                    </div>
+
+                    <div class="info-value">
+                      ${escapeHtml(category)}
+                    </div>
+
                   </div>
                 `
                 : ""
@@ -2257,8 +4017,15 @@ function displayBusiness(business,result){
               location
                 ? `
                   <div class="info-item">
-                    <div class="info-label">Address</div>
-                    <div class="info-value">${escapeHtml(location)}</div>
+
+                    <div class="info-label">
+                      Address
+                    </div>
+
+                    <div class="info-value">
+                      ${escapeHtml(location)}
+                    </div>
+
                   </div>
                 `
                 : ""
@@ -2268,8 +4035,15 @@ function displayBusiness(business,result){
               phone
                 ? `
                   <div class="info-item">
-                    <div class="info-label">Phone</div>
-                    <div class="info-value">${escapeHtml(phone)}</div>
+
+                    <div class="info-label">
+                      Phone
+                    </div>
+
+                    <div class="info-value">
+                      ${escapeHtml(phone)}
+                    </div>
+
                   </div>
                 `
                 : ""
@@ -2279,8 +4053,15 @@ function displayBusiness(business,result){
               email
                 ? `
                   <div class="info-item">
-                    <div class="info-label">Email</div>
-                    <div class="info-value">${escapeHtml(email)}</div>
+
+                    <div class="info-label">
+                      Email
+                    </div>
+
+                    <div class="info-value">
+                      ${escapeHtml(email)}
+                    </div>
+
                   </div>
                 `
                 : ""
@@ -2290,14 +4071,22 @@ function displayBusiness(business,result){
               website
                 ? `
                   <div class="info-item">
-                    <div class="info-label">Website</div>
-                    <div class="info-value">${escapeHtml(website)}</div>
+
+                    <div class="info-label">
+                      Website
+                    </div>
+
+                    <div class="info-value">
+                      ${escapeHtml(website)}
+                    </div>
+
                   </div>
                 `
                 : ""
             }
 
           </div>
+
         </section>
 
         ${renderHours(hours)}
@@ -2310,7 +4099,9 @@ function displayBusiness(business,result){
 
             ${
               !claimed
+
                 ? `
+
                   <a
                     class="btn btn-primary"
                     href="claim-business.html?business_id=${encodeURIComponent(claimIdentifier)}"
@@ -2320,22 +4111,40 @@ function displayBusiness(business,result){
                   </a>
 
                   <p style="font-size:12px;color:#999;margin:0">
+
                     Are you the owner or an authorized representative?
                     Start a claim to request control of this listing.
+
                   </p>
+
                 `
+
                 : `
-                  <div class="badge green" style="justify-content:center;padding:10px">
+
+                  <div
+                    class="badge green"
+                    style="justify-content:center;padding:10px"
+                  >
                     ✓ This listing is already marked as claimed
                   </div>
+
                 `
+
             }
 
-            <button type="button" class="btn" id="reportButton">
+            <button
+              type="button"
+              class="btn"
+              id="reportButton"
+            >
               Report Listing
             </button>
 
-            <button type="button" class="btn" id="correctionButton">
+            <button
+              type="button"
+              class="btn"
+              id="correctionButton"
+            >
               Suggest a Correction
             </button>
 
@@ -2346,175 +4155,304 @@ function displayBusiness(business,result){
       </aside>
 
     </div>
+
   `;
 
-  document.getElementById("loadingState").classList.add("hidden");
+  document.getElementById("loadingState")
+    .classList.add("hidden");
 
   content.classList.remove("hidden");
 
   initializeMap(business);
 
   setupActions();
-  }
-  /* --------------------------------------------------
+
+}
+
+
+/* ==========================================================
    REVIEW FORM MESSAGES
--------------------------------------------------- */
+========================================================== */
 
 function showReviewMessage(message,type){
-  const element = document.getElementById("reviewFormMessage");
+
+  const element =
+    document.getElementById("reviewFormMessage");
 
   if(!element) return;
 
-  element.className = "review-form-message " + type;
+  element.className =
+    "review-form-message " + type;
+
   element.textContent = message;
+
 }
 
-/* --------------------------------------------------
+
+/* ==========================================================
    BUTTONS AND FORM ACTIONS
--------------------------------------------------- */
+========================================================== */
 
 function setupActions(){
-  const reportButton = document.getElementById("reportButton");
-  const correctionButton = document.getElementById("correctionButton");
-  const showRouteButton = document.getElementById("showRouteButton");
-  const reviewForm = document.getElementById("reviewForm");
+
+  const reportButton =
+    document.getElementById("reportButton");
+
+  const correctionButton =
+    document.getElementById("correctionButton");
+
+  const showRouteButton =
+    document.getElementById("showRouteButton");
+
+  const reviewForm =
+    document.getElementById("reviewForm");
 
   if(showRouteButton){
+
     showRouteButton.addEventListener(
       "click",
       showRouteFromCurrentLocation
     );
+
   }
 
   if(reportButton){
+
     reportButton.addEventListener("click",()=>{
+
       const reason = window.prompt(
         "Why are you reporting this listing?"
       );
 
-      if(!reason || !reason.trim()) return;
+      if(
+        !reason ||
+        !reason.trim()
+      ){
+
+        return;
+
+      }
 
       submitReport(reason.trim());
+
     });
+
   }
 
   if(correctionButton){
+
     correctionButton.addEventListener("click",()=>{
+
       const correction = window.prompt(
         "What information should be corrected?"
       );
 
-      if(!correction || !correction.trim()) return;
+      if(
+        !correction ||
+        !correction.trim()
+      ){
+
+        return;
+
+      }
 
       submitCorrection(correction.trim());
+
     });
+
   }
 
   if(reviewForm){
-    reviewForm.addEventListener("submit",async event=>{
-      event.preventDefault();
 
-      const name = clean(
-        document.getElementById("reviewerName").value
-      );
+    reviewForm.addEventListener(
+      "submit",
+      async event=>{
 
-      const rating = Number(
-        document.getElementById("reviewRating").value
-      );
+        event.preventDefault();
 
-      const comment = clean(
-        document.getElementById("reviewComment").value
-      );
+        const name = clean(
+          document.getElementById("reviewerName").value
+        );
 
-      const button = document.getElementById("submitReviewButton");
+        const rating = Number(
+          document.getElementById("reviewRating").value
+        );
 
-      if(!name){
-        showReviewMessage("Please enter your name.","error");
-        return;
+        const comment = clean(
+          document.getElementById("reviewComment").value
+        );
+
+        const button =
+          document.getElementById("submitReviewButton");
+
+        if(!name){
+
+          showReviewMessage(
+            "Please enter your name.",
+            "error"
+          );
+
+          return;
+
+        }
+
+        if(
+          !Number.isInteger(rating) ||
+          rating < 1 ||
+          rating > 5
+        ){
+
+          showReviewMessage(
+            "Please choose a rating from 1 to 5 stars.",
+            "error"
+          );
+
+          return;
+
+        }
+
+        if(comment.length < 3){
+
+          showReviewMessage(
+            "Please write a little more about your experience.",
+            "error"
+          );
+
+          return;
+
+        }
+
+        if(
+          !activeBusiness ||
+          !(
+            activeBusiness.id ||
+            activeBusiness.business_id
+          )
+        ){
+
+          showReviewMessage(
+            "The business ID is unavailable. Please reload and try again.",
+            "error"
+          );
+
+          return;
+
+        }
+
+        const businessId =
+          activeBusiness.id ||
+          activeBusiness.business_id;
+
+        button.disabled = true;
+
+        button.textContent = "Submitting...";
+
+        try{
+
+          await apiRequest(
+            `/businesses/${encodeURIComponent(businessId)}/reviews`,
+            {
+              method:"POST",
+
+              headers:{
+                "Content-Type":"application/json"
+              },
+
+              body:JSON.stringify({
+                name,
+                rating,
+                comment
+              })
+
+            }
+          );
+
+          reviewForm.reset();
+
+          showReviewMessage(
+
+            "Thank you! Your review was submitted and is awaiting moderation. It will appear publicly after approval.",
+
+            "success"
+
+          );
+
+        }catch(error){
+
+          showReviewMessage(
+
+            error.message ||
+            "We could not submit your review. Please try again.",
+
+            "error"
+
+          );
+
+        }finally{
+
+          button.disabled = false;
+
+          button.textContent = "Submit Review";
+
+        }
+
       }
+    );
 
-      if(!Number.isInteger(rating) || rating<1 || rating>5){
-        showReviewMessage(
-          "Please choose a rating from 1 to 5 stars.",
-          "error"
-        );
-        return;
-      }
-
-      if(comment.length<3){
-        showReviewMessage(
-          "Please write a little more about your experience.",
-          "error"
-        );
-        return;
-      }
-
-      if(!activeBusiness || !activeBusiness.id){
-        showReviewMessage(
-          "The business ID is unavailable. Please reload and try again.",
-          "error"
-        );
-        return;
-      }
-
-      button.disabled=true;
-      button.textContent="Submitting...";
-
-      try{
-        await apiRequest(
-          `/businesses/${encodeURIComponent(activeBusiness.id)}/reviews`,
-          {
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({
-              name,
-              rating,
-              comment
-            })
-          }
-        );
-
-        reviewForm.reset();
-
-        showReviewMessage(
-          "Thank you! Your review was submitted and is awaiting moderation. It will appear publicly after approval.",
-          "success"
-        );
-
-      }catch(error){
-        showReviewMessage(
-          error.message || "We could not submit your review. Please try again.",
-          "error"
-        );
-
-      }finally{
-        button.disabled=false;
-        button.textContent="Submit Review";
-      }
-    });
   }
+
 }
 
-/* --------------------------------------------------
+
+/* ==========================================================
    REPORT LISTING
--------------------------------------------------- */
+========================================================== */
 
 async function submitReport(reason){
-  if(!activeBusiness || !activeBusiness.id){
-    showStatus("The business ID is unavailable.","error");
+
+  if(
+    !activeBusiness ||
+    !(
+      activeBusiness.id ||
+      activeBusiness.business_id
+    )
+  ){
+
+    showStatus(
+      "The business ID is unavailable.",
+      "error"
+    );
+
     return;
+
   }
 
+  const businessId =
+    activeBusiness.id ||
+    activeBusiness.business_id;
+
   try{
-    await apiRequest("/reports",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        business_id:activeBusiness.id,
-        report_type:"listing_report",
-        reason
-      })
-    });
+
+    await apiRequest(
+      "/reports",
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+          business_id:businessId,
+
+          report_type:"listing_report",
+
+          reason
+
+        })
+      }
+    );
 
     showStatus(
       "Report submitted successfully.",
@@ -2522,34 +4460,65 @@ async function submitReport(reason){
     );
 
   }catch(error){
+
     showStatus(
-      error.message || "Unable to submit report.",
+      error.message ||
+      "Unable to submit report.",
       "error"
     );
+
   }
+
 }
 
-/* --------------------------------------------------
+
+/* ==========================================================
    SUGGEST A CORRECTION
--------------------------------------------------- */
+========================================================== */
 
 async function submitCorrection(correction){
-  if(!activeBusiness || !activeBusiness.id){
-    showStatus("The business ID is unavailable.","error");
+
+  if(
+    !activeBusiness ||
+    !(
+      activeBusiness.id ||
+      activeBusiness.business_id
+    )
+  ){
+
+    showStatus(
+      "The business ID is unavailable.",
+      "error"
+    );
+
     return;
+
   }
 
+  const businessId =
+    activeBusiness.id ||
+    activeBusiness.business_id;
+
   try{
+
     await apiRequest(
-      `/businesses/${encodeURIComponent(activeBusiness.id)}/corrections`,
+      `/businesses/${encodeURIComponent(businessId)}/corrections`,
       {
+
         method:"POST",
-        headers:{"Content-Type":"application/json"},
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
         body:JSON.stringify({
+
           requested_changes:{
             description:correction
           }
+
         })
+
       }
     );
 
@@ -2559,95 +4528,168 @@ async function submitCorrection(correction){
     );
 
   }catch(error){
+
     showStatus(
-      error.message || "Unable to submit correction.",
+      error.message ||
+      "Unable to submit correction.",
       "error"
     );
+
   }
+
 }
 
-/* --------------------------------------------------
+
+/* ==========================================================
    BUSINESS VIEW TRACKING
--------------------------------------------------- */
+========================================================== */
 
 async function recordView(id){
+
+  if(!id) return;
+
   try{
+
     await fetch(
+
       `${API_URL}/businesses/${encodeURIComponent(id)}/view`,
+
       {
         method:"POST",
         cache:"no-store"
       }
+
     );
 
   }catch(error){
+
     console.warn(
       "Business view tracking failed:",
       error
     );
+
   }
+
 }
 
-/* --------------------------------------------------
-   NOT FOUND STATE
--------------------------------------------------- */
+
+/* ==========================================================
+   NOT FOUND STATE AND INDEXING
+========================================================== */
 
 function showNotFound(message){
-  document.getElementById("loadingState").classList.add("hidden");
 
-  document.getElementById("businessContent").classList.add("hidden");
+  document.getElementById("loadingState")
+    .classList.add("hidden");
 
-  document.getElementById("notFoundState").classList.remove("hidden");
+  document.getElementById("businessContent")
+    .classList.add("hidden");
 
-  document.getElementById("notFoundMessage").textContent =
-    message || "This business could not be found.";
+  document.getElementById("notFoundState")
+    .classList.remove("hidden");
+
+  document.getElementById("notFoundMessage")
+    .textContent =
+      message ||
+      "This business could not be found.";
+
+  /*
+   * Do not allow a missing business page
+   * to be indexed as a genuine business profile.
+   */
+
+  document.title =
+    "Business Not Found | NearAfrica";
+
+  setMeta(
+    'meta[name="robots"]',
+    "content",
+    "noindex,follow"
+  );
+
+  const structuredData =
+    document.getElementById("businessStructuredData");
+
+  if(structuredData){
+
+    structuredData.remove();
+
+  }
+
 }
 
-/* --------------------------------------------------
+
+/* ==========================================================
    LOAD BUSINESS PROFILE
--------------------------------------------------- */
+========================================================== */
 
 async function loadBusiness(){
-  const identifier = getIdentifier();
+
+  const identifier =
+    getIdentifier();
 
   if(!identifier){
+
     showNotFound(
       "No business ID or slug was provided."
     );
+
     return;
+
   }
 
   try{
+
     const result = await apiRequest(
+
       `/businesses/${encodeURIComponent(identifier)}?_=${Date.now()}`
+
     );
 
     if(!result.business){
+
       showNotFound(
-        result.message || "This business could not be found."
+        result.message ||
+        "This business could not be found."
       );
+
       return;
+
     }
 
+    /*
+     * Fetch reviews separately.
+     * Failure to load reviews does not prevent
+     * the actual business profile from loading.
+     */
+
     try{
+
       const reviewIdentifier =
-        result.business.id || identifier;
+        result.business.id ||
+        result.business.business_id ||
+        identifier;
 
       const reviewResult = await apiRequest(
+
         `/businesses/${encodeURIComponent(reviewIdentifier)}/reviews`
+
       );
 
-      result.reviews = Array.isArray(reviewResult.reviews)
-        ? reviewResult.reviews
-        : [];
+      result.reviews =
+        Array.isArray(reviewResult.reviews)
+          ? reviewResult.reviews
+          : [];
 
     }catch(error){
+
       console.error(
         "Reviews could not be loaded:",
         error
       );
 
-      result.reviews=[];
+      result.reviews = [];
+
     }
 
     displayBusiness(
@@ -2656,24 +4698,33 @@ async function loadBusiness(){
     );
 
     recordView(
-      result.business.id || identifier
+      result.business.id ||
+      result.business.business_id ||
+      identifier
     );
 
   }catch(error){
+
     console.error(
       "Business loading failed:",
       error
     );
 
     showNotFound(
-      error.message || "Unable to load this business right now."
+
+      error.message ||
+      "Unable to load this business right now."
+
     );
+
   }
+
 }
 
-/* --------------------------------------------------
+
+/* ==========================================================
    MOBILE NAVIGATION
--------------------------------------------------- */
+========================================================== */
 
 const mobileMenuButton =
   document.getElementById("mobileMenuButton");
@@ -2681,9 +4732,15 @@ const mobileMenuButton =
 const mainNav =
   document.getElementById("mainNav");
 
-if(mobileMenuButton && mainNav){
+if(
+  mobileMenuButton &&
+  mainNav
+){
+
   mobileMenuButton.addEventListener("click",()=>{
-    const open = mainNav.classList.toggle("open");
+
+    const open =
+      mainNav.classList.toggle("open");
 
     mobileMenuButton.setAttribute(
       "aria-expanded",
@@ -2695,25 +4752,34 @@ if(mobileMenuButton && mainNav){
       open ? "Close menu" : "Open menu"
     );
 
-    mobileMenuButton.textContent = open ? "✕" : "☰";
+    mobileMenuButton.textContent =
+      open ? "✕" : "☰";
+
   });
+
 }
 
-/* --------------------------------------------------
+
+/* ==========================================================
    INITIAL PAGE SETUP
--------------------------------------------------- */
+========================================================== */
 
 document.getElementById("year").textContent =
   new Date().getFullYear();
 
 /*
- * Set a correct fallback canonical URL immediately.
- * The business-specific title, description, social
- * metadata and structured data are added after the
- * business information is loaded.
+ * Set the initial canonical URL immediately.
+ * Business-specific metadata is updated after
+ * the actual API business information is loaded.
  */
 
-setCanonical(buildCanonicalUrl());
+setCanonical(
+  buildCanonicalUrl()
+);
+
+/*
+ * Load the actual business profile.
+ */
 
 loadBusiness();
 
@@ -2721,4 +4787,4 @@ loadBusiness();
 </script>
 
 </body>
-</html>
+  </html>
