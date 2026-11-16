@@ -1,6 +1,7 @@
+
 /*
  * NearAfrica — app-new.js
- * Clean replacement: syntax, loading, filters, GPS and pagination.
+ * Complete replacement.
  *
  * Preserves:
  * - Real API business data only; no fictional listings
@@ -11,6 +12,15 @@
  * - Business profile links and view tracking
  * - URL filters and language-change refreshes
  * - Existing NearAfrica API configuration
+ *
+ * Location improvements:
+ * - Supports precise_address
+ * - Supports directions_url
+ * - Displays the best available street address
+ * - Generates Google Maps directions from existing addresses
+ * - Includes country in location display
+ * - Searches precise addresses
+ * - Never invents missing GPS coordinates
  */
 
 (function () {
@@ -43,7 +53,7 @@
   const NEARBY_KEY = "nearafrica_nearby_mode";
   const SAVED_KEY = "nearafrica_saved_businesses";
 
-  const MAX_LOCATION_ACCURACY_METERS = 5000; // Improved from 25000
+  const MAX_LOCATION_ACCURACY_METERS = 5000;
   const API_PAGE_SIZE = 48;
   const MAX_API_PAGES = 50;
 
@@ -460,6 +470,15 @@
         ? b.category?.name
         : b.category;
 
+    const address = clean(
+      b.address || b.address_line || b.location
+    );
+
+    const preciseAddress = clean(
+      b.precise_address ||
+      b.preciseAddress
+    );
+
     return {
       ...b,
 
@@ -473,8 +492,16 @@
 
       category: categoryLabel(rawCategory),
 
-      address: clean(
-        b.address || b.address_line || b.location
+      // Keep the original and precise addresses separate.
+      address,
+      preciseAddress,
+
+      // Used for the main location display.
+      displayAddress: preciseAddress || address,
+
+      // Saved directions URL, if supplied by the API.
+      directionsUrl: clean(
+        b.directions_url || b.directionsUrl
       ),
 
       city: clean(b.city || b.town),
@@ -614,7 +641,7 @@
 
     return [
       b.business_name || b.name || b.title,
-      b.address || b.address_line || b.location,
+      b.precise_address || b.address || b.address_line || b.location,
       b.city || b.town,
       b.state || b.region,
       b.country
@@ -654,10 +681,6 @@
       let page = 1;
       let totalPages = null;
 
-      /*
-       * Fetch API pages into one dataset.
-       * Frontend pagination is then applied to that dataset.
-       */
       while (page <= MAX_API_PAGES) {
         const url = new URL(baseUrl);
 
@@ -701,10 +724,6 @@
           .map(businessIdentity)
           .join("||");
 
-        /*
-         * Protect against APIs that ignore the page parameter
-         * and return the same batch repeatedly.
-         */
         if (pageSignatures.has(signature)) {
           console.warn(
             "NearAfrica: API repeated a page; stopping pagination."
@@ -1102,11 +1121,6 @@
                 )
               );
             }
-
-            /*
-             * For timeout errors, keep waiting until the outer
-             * timer can use a previously received position.
-             */
           },
 
           {
@@ -1580,19 +1594,24 @@
 
     App.filteredBusinesses = App.allBusinesses
       .map(business => {
-        const calculatedDistance = App.userLocation
-          ? distanceKm(
-              App.userLocation.latitude,
-              App.userLocation.longitude,
-              business.latitude,
-              business.longitude
-            )
-          : null;
+        const hasBusinessCoordinates =
+          Number.isFinite(business.latitude) &&
+          Number.isFinite(business.longitude) &&
+          business.latitude >= -90 &&
+          business.latitude <= 90 &&
+          business.longitude >= -180 &&
+          business.longitude <= 180;
 
-        /*
-         * Keep a distance supplied by the API if coordinates
-         * are missing from the business record.
-         */
+        const calculatedDistance =
+          App.userLocation && hasBusinessCoordinates
+            ? distanceKm(
+                App.userLocation.latitude,
+                App.userLocation.longitude,
+                business.latitude,
+                business.longitude
+              )
+            : null;
+
         const existingDistance = number(
           business.distanceKm ?? business.distance_km,
           null
@@ -1611,6 +1630,7 @@
           business.name,
           business.category,
           business.address,
+          business.preciseAddress,
           business.city,
           business.state,
           business.country,
@@ -1772,7 +1792,7 @@
   }
 
   /* ==========================================================
-     BUSINESS CARDS
+     BUSINESS CARDS AND DIRECTIONS
   ========================================================== */
 
   function businessUrl(business) {
@@ -1803,21 +1823,80 @@
       : `${distance.toFixed(distance < 10 ? 1 : 0)} km away`;
   }
 
+  function businessLocationText(business) {
+    return [
+      business.displayAddress ||
+      business.preciseAddress ||
+      business.address,
+      business.city,
+      business.state,
+      business.country
+    ]
+      .map(value => clean(value))
+      .filter(Boolean)
+      .filter(
+        (value, index, array) =>
+          array.findIndex(
+            item => item.toLowerCase() === value.toLowerCase()
+          ) === index
+      )
+      .join(", ");
+  }
+
+  /*
+   * Only accept saved Google Maps links.
+   * Otherwise create a Google Maps destination from the
+   * business's existing address and locality.
+   */
+  function getDirectionsUrl(business) {
+    const savedUrl = clean(
+      business.directionsUrl ||
+      business.directions_url
+    );
+
+    if (savedUrl) {
+      try {
+        const parsed = new URL(savedUrl);
+
+        const host = parsed.hostname.toLowerCase();
+
+        const isGoogleMaps =
+          host === "google.com" ||
+          host.endsWith(".google.com") ||
+          host === "maps.app.goo.gl" ||
+          host === "goo.gl";
+
+        if (
+          parsed.protocol === "https:" &&
+          isGoogleMaps
+        ) {
+          return parsed.toString();
+        }
+      } catch (_) {}
+    }
+
+    const destination = businessLocationText(business);
+
+    if (!destination) {
+      return "";
+    }
+
+    const url = new URL(
+      "https://www.google.com/maps/dir/"
+    );
+
+    url.searchParams.set("api", "1");
+    url.searchParams.set("destination", destination);
+
+    return url.toString();
+  }
+
   function renderCard(business) {
     const saved = getSavedIds().has(String(business.id));
     const url = businessUrl(business);
 
-    const locationText = [
-      business.address,
-      business.city,
-      business.state
-    ]
-      .filter(Boolean)
-      .filter(
-        (value, index, array) =>
-          array.indexOf(value) === index
-      )
-      .join(", ");
+    const locationText = businessLocationText(business);
+    const directionsUrl = getDirectionsUrl(business);
 
     const image = business.image
       ? `
@@ -1908,6 +1987,18 @@
               href="${escapeHtml(url)}"
               data-view-business="${escapeHtml(business.id)}"
             >View Business</a>
+
+            ${
+              directionsUrl
+                ? `<a
+                     class="btn btn-directions"
+                     href="${escapeHtml(directionsUrl)}"
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     aria-label="Get directions to ${escapeHtml(business.name)}"
+                   >Get Directions</a>`
+                : ""
+            }
 
             <button
               type="button"
@@ -2305,10 +2396,6 @@
     applyUrlParameters();
     restoreLocation();
 
-    /*
-     * If the URL asks for Nearby but there is no saved location,
-     * don't accidentally run a normal search as a Nearby search.
-     */
     if (App.nearbyMode && !App.userLocation) {
       App.nearbyMode = false;
     }
@@ -2322,7 +2409,6 @@
     populateCategoryOptions();
     populateCityOptions();
 
-    // Restore URL selections after options have been populated.
     applyUrlParameters();
 
     if (App.nearbyMode && !App.userLocation) {
@@ -2449,7 +2535,8 @@
       useLocation: enableNearby,
       clearLocation: clearNearby,
       clearFilters,
-      getBusinessUrl: businessUrl
+      getBusinessUrl: businessUrl,
+      getDirectionsUrl
     };
   }
 
