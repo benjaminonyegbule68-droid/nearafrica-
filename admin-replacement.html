@@ -752,7 +752,7 @@ async function runDiscoveryFromAdmin(event) {
    DISCOVERY MODERATION
 ========================================================= */
 
-async async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
+async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
     if (!discoveryId) {
         alert("This discovery does not have a valid ID.");
         return;
