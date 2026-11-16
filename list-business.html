@@ -1264,12 +1264,31 @@
           }
         }
 
-        if (
-          (submission.latitude !== null &&
-            submission.longitude === null) ||
-          (submission.latitude === null &&
-            submission.longitude !== null)
-        ) {
+       if (
+  submission.latitude === null ||
+  submission.longitude === null
+) {
+  showMessage(
+    errorBox,
+    "Please select the exact business location on the map before submitting. You can use GPS or select the location manually."
+  );
+
+  document.getElementById("location-map").style.display = "block";
+
+  if (
+    window.nearAfricaLocation &&
+    typeof window.nearAfricaLocation.showMap === "function"
+  ) {
+    window.nearAfricaLocation.showMap();
+  }
+
+  document.getElementById("location-map").scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+
+  return;
+}
           showMessage(
             errorBox,
             "The business location is incomplete. Please set the location again or clear it."
