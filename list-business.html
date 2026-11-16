@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -128,7 +129,6 @@
       line-height: 1.5;
     }
 
-    /* Website design promotion card */
     .website-promo {
       margin-top: 15px;
       padding: 20px;
@@ -443,7 +443,6 @@
       <div class="card">
         <form id="business-form" novalidate>
 
-          <!-- BUSINESS INFORMATION -->
           <section class="section">
             <div class="section-title">Business Information</div>
 
@@ -462,10 +461,7 @@
               </div>
 
               <div class="field">
-                <label for="category">
-                  Category <span>*</span>
-                </label>
-
+                <label for="category">Category <span>*</span></label>
                 <select id="category" name="category" required>
                   <option value="">Select a category</option>
                   <option>Restaurants &amp; Food</option>
@@ -494,10 +490,7 @@
               </div>
 
               <div class="field">
-                <label for="country">
-                  Country <span>*</span>
-                </label>
-
+                <label for="country">Country <span>*</span></label>
                 <select id="country" name="country" required>
                   <option value="">Select country</option>
                   <option>Nigeria</option>
@@ -524,9 +517,7 @@
               </div>
 
               <div class="field">
-                <label for="state-select">
-                  State / Region <span>*</span>
-                </label>
+                <label for="state-select">State / Region <span>*</span></label>
 
                 <select id="state-select" name="state" required disabled>
                   <option value="">Select state</option>
@@ -578,9 +569,7 @@
               </div>
 
               <div class="field">
-                <label for="city">
-                  City <span>*</span>
-                </label>
+                <label for="city">City <span>*</span></label>
                 <input
                   type="text"
                   id="city"
@@ -591,9 +580,7 @@
               </div>
 
               <div class="field full">
-                <label for="address">
-                  Business Address <span>*</span>
-                </label>
+                <label for="address">Business Address <span>*</span></label>
                 <input
                   type="text"
                   id="address"
@@ -605,7 +592,6 @@
             </div>
           </section>
 
-          <!-- BUSINESS LOCATION -->
           <section class="section">
             <div class="section-title">Business Location</div>
 
@@ -620,19 +606,11 @@
               </div>
 
               <div class="location-actions">
-                <button
-                  type="button"
-                  id="use-location"
-                  class="location-button"
-                >
+                <button type="button" id="use-location" class="location-button">
                   📍 Use My Current Location
                 </button>
 
-                <button
-                  type="button"
-                  id="clear-location"
-                  class="location-button secondary"
-                >
+                <button type="button" id="clear-location" class="location-button secondary">
                   Clear Location
                 </button>
               </div>
@@ -652,51 +630,28 @@
             </div>
           </section>
 
-          <!-- CONTACT INFORMATION -->
           <section class="section">
             <div class="section-title">Contact Information</div>
 
             <div class="grid">
               <div class="field">
                 <label for="phone">Phone Number</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  placeholder="+234..."
-                >
+                <input type="tel" id="phone" name="phone" placeholder="+234...">
               </div>
 
               <div class="field">
                 <label for="whatsapp">WhatsApp Number</label>
-                <input
-                  type="tel"
-                  id="whatsapp"
-                  name="whatsapp"
-                  placeholder="+234..."
-                >
+                <input type="tel" id="whatsapp" name="whatsapp" placeholder="+234...">
               </div>
 
               <div class="field">
                 <label for="email">Business Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="business@example.com"
-                >
+                <input type="email" id="email" name="email" placeholder="business@example.com">
               </div>
 
-              <!-- WEBSITE FIELD AND WHATSAPP PROMOTION -->
               <div class="field">
                 <label for="website">Website</label>
-
-                <input
-                  type="url"
-                  id="website"
-                  name="website"
-                  placeholder="https://example.com"
-                >
+                <input type="url" id="website" name="website" placeholder="https://example.com">
 
                 <div class="hint">
                   Leave blank if the business does not have a website.
@@ -704,10 +659,7 @@
 
                 <div class="website-promo">
                   <div class="website-promo-content">
-
-                    <span class="website-promo-label">
-                      Grow Your Business Online
-                    </span>
+                    <span class="website-promo-label">Grow Your Business Online</span>
 
                     <h3>🌐 Don't Have a Website Yet?</h3>
 
@@ -733,20 +685,17 @@
                       Your NearAfrica business listing is free.
                       Website design is a separate service.
                     </span>
-
                   </div>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- ABOUT THE BUSINESS -->
           <section class="section">
             <div class="section-title">About the Business</div>
 
             <div class="field">
               <label for="description">Business Description</label>
-
               <textarea
                 id="description"
                 name="description"
@@ -759,7 +708,6 @@
             </div>
           </section>
 
-          <!-- TERMS -->
           <section class="section">
             <div class="terms">
               <input type="checkbox" id="terms" name="terms" required>
@@ -774,11 +722,8 @@
             </div>
           </section>
 
-          <!-- SUBMISSION -->
           <div class="submit-area">
-            <button type="submit" id="submit-business">
-              Submit Business
-            </button>
+            <button type="submit" id="submit-business">Submit Business</button>
 
             <p class="submit-note">
               📌 Note: If your business submission fails, please try again.
@@ -786,27 +731,12 @@
               going through, and a second attempt may work.
             </p>
 
-            <div
-              id="submission-status"
-              role="status"
-              aria-live="polite"
-            >
+            <div id="submission-status" role="status" aria-live="polite">
               Submitting your business...
             </div>
 
-            <div
-              id="form-success"
-              class="message"
-              role="status"
-              aria-live="polite"
-            ></div>
-
-            <div
-              id="form-error"
-              class="message"
-              role="alert"
-              aria-live="assertive"
-            ></div>
+            <div id="form-success" class="message" role="status" aria-live="polite"></div>
+            <div id="form-error" class="message" role="alert" aria-live="assertive"></div>
           </div>
 
         </form>
@@ -1033,10 +963,7 @@
             const lng = Number(position.coords.longitude);
 
             if (!validCoordinates(lat, lng)) {
-              setStatus(
-                "The browser returned invalid coordinates.",
-                "error"
-              );
+              setStatus("The browser returned invalid coordinates.", "error");
             } else if (ensureMap(lat, lng, 16)) {
               selectPoint(lat, lng);
 
@@ -1111,6 +1038,7 @@
 
       window.nearAfricaLocation = {
         reset: clearLocation,
+        showMap: showMapForSelection,
 
         hasCoordinates: function () {
           return latitudeInput.value !== "" &&
@@ -1129,11 +1057,6 @@
       const successBox = document.getElementById("form-success");
       const errorBox = document.getElementById("form-error");
 
-      /*
-       * Capture the referral code from ?ref=CODE.
-       * This code is attribution data only.
-       * The Worker must validate it.
-       */
       const referralCode = (
         new URLSearchParams(window.location.search).get("ref") || ""
       ).trim().toUpperCase().slice(0, 100);
@@ -1165,10 +1088,7 @@
             : "";
 
         if (!apiBase) {
-          showMessage(
-            errorBox,
-            "NearAfrica API is not configured."
-          );
+          showMessage(errorBox, "NearAfrica API is not configured.");
           return;
         }
 
@@ -1182,69 +1102,26 @@
           formData.get("longitude") || ""
         ).trim();
 
-        const latitude = latitudeValue
-          ? Number(latitudeValue)
-          : null;
-
-        const longitude = longitudeValue
-          ? Number(longitudeValue)
-          : null;
+        const latitude = latitudeValue ? Number(latitudeValue) : null;
+        const longitude = longitudeValue ? Number(longitudeValue) : null;
 
         const submission = {
-          name: String(
-            formData.get("business_name") || ""
-          ).trim(),
+          name: String(formData.get("business_name") || "").trim(),
+          category: String(formData.get("category") || "").trim(),
+          country: String(formData.get("country") || "").trim(),
+          state: String(formData.get("state") || "").trim(),
+          city: String(formData.get("city") || "").trim(),
+          address: String(formData.get("address") || "").trim(),
+          phone: String(formData.get("phone") || "").trim(),
+          whatsapp: String(formData.get("whatsapp") || "").trim(),
+          website: String(formData.get("website") || "").trim(),
+          description: String(formData.get("description") || "").trim(),
+          email: String(formData.get("email") || "").trim(),
 
-          category: String(
-            formData.get("category") || ""
-          ).trim(),
-
-          country: String(
-            formData.get("country") || ""
-          ).trim(),
-
-          state: String(
-            formData.get("state") || ""
-          ).trim(),
-
-          city: String(
-            formData.get("city") || ""
-          ).trim(),
-
-          address: String(
-            formData.get("address") || ""
-          ).trim(),
-
-          phone: String(
-            formData.get("phone") || ""
-          ).trim(),
-
-          whatsapp: String(
-            formData.get("whatsapp") || ""
-          ).trim(),
-
-          website: String(
-            formData.get("website") || ""
-          ).trim(),
-
-          description: String(
-            formData.get("description") || ""
-          ).trim(),
-
-          email: String(
-            formData.get("email") || ""
-          ).trim(),
-
-          latitude: Number.isFinite(latitude)
-            ? latitude
-            : null,
-
-          longitude: Number.isFinite(longitude)
-            ? longitude
-            : null,
+          latitude: Number.isFinite(latitude) ? latitude : null,
+          longitude: Number.isFinite(longitude) ? longitude : null,
 
           terms: formData.get("terms") !== null,
-
           referral_code: referralCode || null
         };
 
@@ -1264,56 +1141,45 @@
           }
         }
 
-       if (
-  submission.latitude === null ||
-  submission.longitude === null
-) {
-  showMessage(
-    errorBox,
-    "Please select the exact business location on the map before submitting. You can use GPS or select the location manually."
-  );
-
-  document.getElementById("location-map").style.display = "block";
-
-  if (
-    window.nearAfricaLocation &&
-    typeof window.nearAfricaLocation.showMap === "function"
-  ) {
-    window.nearAfricaLocation.showMap();
-  }
-
-  document.getElementById("location-map").scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
-
-  return;
-}
+        // Coordinates are mandatory for every business listing.
+        if (
+          submission.latitude === null ||
+          submission.longitude === null
+        ) {
           showMessage(
             errorBox,
-            "The business location is incomplete. Please set the location again or clear it."
+            "Please select the exact business location on the map before submitting. You can use GPS or select the location manually."
           );
+
+          if (
+            window.nearAfricaLocation &&
+            typeof window.nearAfricaLocation.showMap === "function"
+          ) {
+            window.nearAfricaLocation.showMap();
+          }
+
+          document.getElementById("location-map").scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+
           return;
         }
 
+        // Validate coordinate ranges.
         if (
-          submission.latitude !== null &&
-          submission.longitude !== null
+          !Number.isFinite(submission.latitude) ||
+          !Number.isFinite(submission.longitude) ||
+          submission.latitude < -90 ||
+          submission.latitude > 90 ||
+          submission.longitude < -180 ||
+          submission.longitude > 180
         ) {
-          if (
-            !Number.isFinite(submission.latitude) ||
-            !Number.isFinite(submission.longitude) ||
-            submission.latitude < -90 ||
-            submission.latitude > 90 ||
-            submission.longitude < -180 ||
-            submission.longitude > 180
-          ) {
-            showMessage(
-              errorBox,
-              "The business coordinates are invalid. Please set the location again."
-            );
-            return;
-          }
+          showMessage(
+            errorBox,
+            "The business coordinates are invalid. Please set the location again."
+          );
+          return;
         }
 
         if (!submission.terms) {
@@ -1327,25 +1193,20 @@
         submitButton.disabled = true;
         submitButton.textContent = "Submitting...";
 
-        statusBox.textContent =
-          "Submitting your business for review.";
-
+        statusBox.textContent = "Submitting your business for review.";
         statusBox.style.display = "block";
 
         try {
-          const response = await fetch(
-            `${apiBase}/submissions`,
-            {
-              method: "POST",
+          const response = await fetch(`${apiBase}/submissions`, {
+            method: "POST",
 
-              headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-              },
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
 
-              body: JSON.stringify(submission)
-            }
-          );
+            body: JSON.stringify(submission)
+          });
 
           let data = null;
 
@@ -1386,22 +1247,10 @@
 
           form.reset();
 
-          const stateSelect =
-            document.getElementById("state-select");
-
-          const stateOther =
-            document.getElementById("state-other");
-
-          stateSelect.style.display = "block";
-          stateSelect.disabled = true;
-          stateSelect.required = true;
-          stateSelect.name = "state";
-          stateSelect.value = "";
-
-          stateOther.style.display = "none";
-          stateOther.required = false;
-          stateOther.removeAttribute("name");
-          stateOther.value = "";
+          // Restore the correct country/state field configuration.
+          document.getElementById("country").dispatchEvent(
+            new Event("change")
+          );
 
           if (
             window.nearAfricaLocation &&
@@ -1425,10 +1274,7 @@
               : "Something went wrong while submitting your business. Please try again."
           );
 
-          console.error(
-            "NearAfrica submission error:",
-            error
-          );
+          console.error("NearAfrica submission error:", error);
 
         } finally {
           submitButton.disabled = false;
@@ -1438,4 +1284,4 @@
     })();
   </script>
 </body>
-  </html>
+</html>
