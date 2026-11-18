@@ -455,7 +455,11 @@ async function loadResource(resource) {
     }
 
     content.innerHTML = `<div class="loading">Loading ${escapeHtml(readableTitle)}...</div>`;
-
+    
+if (resource === "location_repair") {
+    renderLocationRepairHome();
+    return;
+}
     try {
         const data = await apiRequest(getAdminResourcePath(resource));
 
