@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,6 +102,28 @@ tbody tr:hover{background:#ffffff05}
 .section-caption{padding:15px 18px;color:#aaa;font-size:13px;border-bottom:1px solid #252525}
 .correction-changes{max-width:450px;margin-top:8px;padding:12px;background:#080808;border:1px solid #292929;border-radius:8px;color:#ddd;font:12px/1.6 Consolas,Monaco,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
 .correction-review-hint{margin-top:10px;color:#aaa;font-size:12px;line-height:1.5}
+
+/* LOCATION REPAIR */
+.location-repair-intro{padding:20px;border-bottom:1px solid #292929;background:#0d0d0d}
+.location-repair-intro h3{margin:0 0 8px;font-size:17px}
+.location-repair-intro p{margin:0;color:#999;font-size:13px;line-height:1.6}
+.location-repair-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:end;padding:18px 20px;border-bottom:1px solid #292929}
+.location-repair-controls .field{flex:1;min-width:220px;margin:0}
+.location-repair-controls input{width:100%;padding:11px 12px;color:#fff;background:#080808;border:1px solid #333;border-radius:7px}
+.location-repair-message{padding:18px 20px;color:#aaa;font-size:13px;line-height:1.6}
+.location-repair-message.error{color:#f87171}
+.location-repair-message.success{color:#4ade80}
+.location-business-card{margin:18px 20px;padding:16px;background:#0b0b0b;border:1px solid #333;border-radius:9px}
+.location-business-card h3{margin:0 0 8px;font-size:16px}
+.location-business-card p{margin:5px 0;color:#aaa;font-size:13px;line-height:1.5}
+.location-candidate-wrap{padding:0 20px 20px}
+.location-candidate-wrap h3{font-size:15px;margin:18px 0 10px}
+.location-candidate{padding:16px;margin-bottom:12px;background:#0b0b0b;border:1px solid #333;border-radius:9px}
+.location-candidate h4{margin:0 0 10px;color:#f5f5f5;font-size:14px}
+.location-candidate p{margin:6px 0;color:#aaa;font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+.location-candidate .actions{margin-top:13px}
+.location-repair-warning{margin:18px 20px;padding:13px;border:1px solid #5b481b;border-radius:8px;color:#e7cb77;background:#d4af3709;font-size:12px;line-height:1.6}
+.location-repair-empty{padding:25px 20px;color:#999;font-size:13px;line-height:1.6}
 @media(max-width:700px){
 .topbar{padding:12px 15px}
 .brand-text span{display:none}
@@ -110,6 +133,9 @@ tbody tr:hover{background:#ffffff05}
 .panel-header{align-items:flex-start;flex-direction:column}
 .login-card{padding:25px}
 .discovery-runner{padding:15px}
+.location-repair-controls{padding:15px}
+.location-business-card{margin:15px}
+.location-candidate-wrap{padding:0 15px 15px}
 }
 </style>
 </head>
@@ -121,7 +147,6 @@ tbody tr:hover{background:#ffffff05}
         <div class="login-logo">NA</div>
         <h1>NearAfrica Admin</h1>
         <p>Secure administration dashboard for managing the NearAfrica platform.</p>
-
         <form id="loginForm">
             <div class="field">
                 <label for="adminKey">Admin API Key</label>
@@ -418,6 +443,17 @@ async function loadResource(resource) {
         .replace(/\b\w/g, char => char.toUpperCase());
 
     panelTitle.textContent = readableTitle;
+
+    /*
+       LOCATION REPAIR IS A CUSTOM ADMIN INTERFACE.
+       It is not a normal /admin/{resource} database table.
+       This branch must run before the generic API request.
+    */
+    if (resource === "location_repair") {
+        renderLocationRepairHome();
+        return;
+    }
+
     content.innerHTML = `<div class="loading">Loading ${escapeHtml(readableTitle)}...</div>`;
 
     try {
@@ -529,7 +565,6 @@ function renderBusinesses(businesses) {
 
 /* =========================================================
    DISCOVERY RUNNER
-   NOTE: A successful run writes real pending records.
 ========================================================= */
 
 function getDiscoveryRunnerMarkup() {
@@ -544,65 +579,41 @@ function getDiscoveryRunnerMarkup() {
 
             <form id="discoveryRunForm">
                 <div class="discovery-form-grid">
-
                     <div class="discovery-field">
                         <label for="discoveryLatitude">Search center latitude *</label>
-                        <input id="discoveryLatitude" name="latitude"
-                               type="number" step="any" min="-90" max="90"
-                               placeholder="Enter latitude" required>
-                        <span class="discovery-help">Search area only. Between -90 and 90. Not used as a business address.</span>
+                        <input id="discoveryLatitude" name="latitude" type="number" step="any" min="-90" max="90" placeholder="Enter latitude" required>
+                        <span class="discovery-help">Search area only. Between -90 and 90.</span>
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryLongitude">Search center longitude *</label>
-                        <input id="discoveryLongitude" name="longitude"
-                               type="number" step="any" min="-180" max="180"
-                               placeholder="Enter longitude" required>
-                        <span class="discovery-help">Search area only. Between -180 and 180. Not used as a business address.</span>
+                        <input id="discoveryLongitude" name="longitude" type="number" step="any" min="-180" max="180" placeholder="Enter longitude" required>
+                        <span class="discovery-help">Search area only. Between -180 and 180.</span>
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryRadius">Search radius (metres) *</label>
-                        <input id="discoveryRadius" name="radius"
-                               type="number" min="500" max="50000"
-                               step="500" value="1000" required>
+                        <input id="discoveryRadius" name="radius" type="number" min="500" max="50000" step="500" value="1000" required>
                         <span class="discovery-help">Allowed range: 500–50,000 metres.</span>
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryTargetCount">Target count *</label>
-                        <input id="discoveryTargetCount" name="target_count"
-                               type="number" min="1" max="5000"
-                               step="1" value="5" required>
+                        <input id="discoveryTargetCount" name="target_count" type="number" min="1" max="5000" step="1" value="5" required>
                         <span class="discovery-help">For your first test, leave this at 5.</span>
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryCountry">Search country *</label>
-                        <input id="discoveryCountry" name="country"
-                               type="text" maxlength="100" value="Nigeria" required>
-                        <span class="discovery-help">Search context only — not proof of each business address.</span>
+                        <input id="discoveryCountry" name="country" type="text" maxlength="100" value="Nigeria" required>
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryState">Search state / region</label>
-                        <input id="discoveryState" name="state"
-                               type="text" maxlength="100" placeholder="e.g. Rivers">
-                        <span class="discovery-help">Search context only — not copied as the business state.</span>
+                        <input id="discoveryState" name="state" type="text" maxlength="100" placeholder="e.g. Rivers">
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryCity">Search city</label>
-                        <input id="discoveryCity" name="city"
-                               type="text" maxlength="100" placeholder="e.g. Port Harcourt">
-                        <span class="discovery-help">Search context only — not copied as the business city.</span>
+                        <input id="discoveryCity" name="city" type="text" maxlength="100" placeholder="e.g. Port Harcourt">
                     </div>
-
                     <div class="discovery-field">
                         <label for="discoveryCategory">Category filter (optional)</label>
-                        <input id="discoveryCategory" name="category"
-                               type="text" maxlength="120" placeholder="e.g. Restaurants &amp; Food">
-                        <span class="discovery-help">Leave blank to search without a category filter.</span>
+                        <input id="discoveryCategory" name="category" type="text" maxlength="120" placeholder="e.g. Restaurants &amp; Food">
                     </div>
                 </div>
 
@@ -614,10 +625,8 @@ function getDiscoveryRunnerMarkup() {
                 </div>
 
                 <div class="discovery-submit-row">
-                    <button id="discoveryRunButton" class="discovery-run-btn"
-                            type="submit">Run Discovery</button>
-                    <div id="discoveryRunMessage" class="discovery-message"
-                         role="status" aria-live="polite"></div>
+                    <button id="discoveryRunButton" class="discovery-run-btn" type="submit">Run Discovery</button>
+                    <div id="discoveryRunMessage" class="discovery-message" role="status" aria-live="polite"></div>
                 </div>
             </form>
         </section>`;
@@ -625,10 +634,7 @@ function getDiscoveryRunnerMarkup() {
 
 function attachDiscoveryRunForm() {
     const form = document.getElementById("discoveryRunForm");
-
-    if (form) {
-        form.addEventListener("submit", runDiscoveryFromAdmin);
-    }
+    if (form) form.addEventListener("submit", runDiscoveryFromAdmin);
 }
 
 async function runDiscoveryFromAdmin(event) {
@@ -682,9 +688,7 @@ async function runDiscoveryFromAdmin(event) {
 
     if (!confirm(
         `Start a real discovery run?\n\nCountry: ${country}\nState/region: ${state || "Not specified"}\nCity: ${city || "Not specified"}\nRadius: ${radius} metres\nTarget count: ${targetCount}\n\nThis may add pending discovery records to your database.`
-    )) {
-        return;
-    }
+    )) return;
 
     button.disabled = true;
     button.textContent = "Running...";
@@ -695,9 +699,7 @@ async function runDiscoveryFromAdmin(event) {
         const response = await apiRequest("/admin/discovery/run", {
             method: "POST",
             body: JSON.stringify({
-                latitude,
-                longitude,
-                radius,
+                latitude, longitude, radius,
                 category: category || null,
                 country,
                 state: state || null,
@@ -707,28 +709,12 @@ async function runDiscoveryFromAdmin(event) {
         });
 
         const stats = response?.stats || response?.result || response?.data || response || {};
-
-        const found = stats.found_count ??
-                      stats.found ??
-                      stats.total_found ??
-                      stats.total ??
-                      "Not reported";
-
-        const imported = stats.imported_count ??
-                         stats.added_count ??
-                         stats.saved_count ??
-                         stats.imported ??
-                         stats.inserted ??
-                         "Not reported";
-
-        const duplicates = stats.duplicate_count ??
-                           stats.duplicates_skipped ??
-                           stats.duplicates ??
-                           "Not reported";
+        const found = stats.found_count ?? stats.found ?? stats.total_found ?? stats.total ?? "Not reported";
+        const imported = stats.imported_count ?? stats.added_count ?? stats.saved_count ?? stats.imported ?? stats.inserted ?? "Not reported";
+        const duplicates = stats.duplicate_count ?? stats.duplicates_skipped ?? stats.duplicates ?? "Not reported";
 
         message.className = "discovery-message success";
-        message.textContent =
-            `Discovery run completed. Found: ${found}; imported: ${imported}; duplicates skipped: ${duplicates}. Refreshing candidates...`;
+        message.textContent = `Discovery run completed. Found: ${found}; imported: ${imported}; duplicates skipped: ${duplicates}.`;
 
         alert(
             "Discovery run completed.\n\n" +
@@ -740,10 +726,7 @@ async function runDiscoveryFromAdmin(event) {
 
         await loadResource("discoveries");
     } catch (error) {
-        showError(
-            (error.message || "Discovery run failed.") +
-            " Check the API response and Worker logs before retrying."
-        );
+        showError((error.message || "Discovery run failed.") + " Check the API response and Worker logs before retrying.");
         button.disabled = false;
         button.textContent = "Run Discovery";
     }
@@ -763,34 +746,25 @@ async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
 
     if (action === "approve") {
         const row = button ? button.closest("tr") : null;
-        const coordStatus = row
-            ? (row.getAttribute("data-coord-status") || "")
-            : "";
+        const coordStatus = row ? (row.getAttribute("data-coord-status") || "") : "";
 
         if (coordStatus === "missing" || coordStatus === "invalid") {
-            const proceed = confirm(
-                "WARNING: This discovery has missing or invalid coordinates.\n\n" +
-                "Approving it will publish a business that cannot be used reliably in Nearby / GPS search.\n\n" +
-                "Only approve if you intentionally accept that limitation.\n\n" +
-                "Continue with approval?"
-            );
-            if (!proceed) return;
+            if (!confirm(
+                "WARNING: This discovery has missing or invalid coordinates.\n\nApproving it will publish a business that cannot be used reliably in Nearby / GPS search.\n\nContinue?"
+            )) return;
         } else if (!confirm("Approve this discovery and publish it as a public business?")) {
             return;
         }
-    } else {
-        if (!confirm("Reject this discovery?")) return;
+    } else if (!confirm("Reject this discovery?")) {
+        return;
     }
 
     const actionButtons = document.querySelectorAll(
         `.discovery-action[data-discovery-id="${CSS.escape(String(discoveryId))}"]`
     );
-
     actionButtons.forEach(item => item.disabled = true);
 
-    if (button) {
-        button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
-    }
+    if (button) button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
 
     try {
         const response = await apiRequest(
@@ -798,20 +772,11 @@ async function moderateDiscoveryFromAdmin(discoveryId, action, button) {
             { method: "POST" }
         );
 
-        alert(response.message || (
-            action === "approve"
-                ? "Discovery approved successfully."
-                : "Discovery rejected successfully."
-        ));
-
+        alert(response.message || (action === "approve" ? "Discovery approved successfully." : "Discovery rejected successfully."));
         await loadResource("discoveries");
     } catch (error) {
         actionButtons.forEach(item => item.disabled = false);
-
-        if (button) {
-            button.textContent = action === "approve" ? "Approve" : "Reject";
-        }
-
+        if (button) button.textContent = action === "approve" ? "Approve" : "Reject";
         alert(error.message || "Unable to update discovery.");
     }
 }
@@ -839,29 +804,18 @@ function assessCoordinates(discovery) {
     const lat = Number(rawLat);
     const lng = Number(rawLng);
 
-    if (
-        !Number.isFinite(lat) ||
-        !Number.isFinite(lng) ||
-        lat < -90 || lat > 90 ||
-        lng < -180 || lng > 180
-    ) {
+    if (!Number.isFinite(lat) || !Number.isFinite(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
         return { status: "invalid", label: "Out of range", lat, lng };
     }
 
-    return {
-        status: "ok",
-        label: "OK",
-        lat,
-        lng
-    };
+    return { status: "ok", label: "OK", lat, lng };
 }
 
 function renderDiscoveries(discoveries) {
     const runner = getDiscoveryRunnerMarkup();
 
     if (!Array.isArray(discoveries) || !discoveries.length) {
-        content.innerHTML = runner +
-            `<div class="empty">No discovery candidates found yet. You can run a discovery search above.</div>`;
+        content.innerHTML = runner + `<div class="empty">No discovery candidates found yet. You can run a discovery search above.</div>`;
         attachDiscoveryRunForm();
         return;
     }
@@ -871,55 +825,38 @@ function renderDiscoveries(discoveries) {
         const title = discovery.business_name || discovery.title || discovery.name || "Untitled discovery";
         const description = discovery.description || "—";
         const category = discovery.category || "—";
-
-        const location = [
-            discovery.address || "",
-            discovery.city || "",
-            discovery.state || "",
-            discovery.country || ""
-        ].filter(value => value && value !== "—").join(", ") || "—";
-
+        const location = [discovery.address || "", discovery.city || "", discovery.state || "", discovery.country || ""]
+            .filter(value => value && value !== "—").join(", ") || "—";
         const sourceUrl = discovery.source_url || discovery.url || "";
         const sourceId = discovery.source_id || discovery.osm_id || "";
         const status = String(discovery.status || "pending").trim().toLowerCase();
         const isPending = !["approved", "rejected"].includes(status);
-
         const coords = assessCoordinates(discovery);
 
-        const coordBadgeColor =
-            coords.status === "ok" ? "#4ade80" :
-            coords.status === "missing" ? "#fbbf24" :
-            "#f87171";
+        const coordBadgeColor = coords.status === "ok" ? "#4ade80" : coords.status === "missing" ? "#fbbf24" : "#f87171";
 
         const coordCell = `
             <div style="font-family:Consolas,Monaco,monospace;font-size:11px;line-height:1.5">
                 <div style="color:${coordBadgeColor};font-weight:800;margin-bottom:4px">${escapeHtml(coords.label)}</div>
-                <div>lat: ${coords.lat === null || coords.lat === undefined ? "—" : escapeHtml(String(coords.lat))}</div>
-                <div>lng: ${coords.lng === null || coords.lng === undefined ? "—" : escapeHtml(String(coords.lng))}</div>
+                <div>lat: ${coords.lat === null ? "—" : escapeHtml(String(coords.lat))}</div>
+                <div>lng: ${coords.lng === null ? "—" : escapeHtml(String(coords.lng))}</div>
             </div>`;
 
         const actions = isPending && id ? `
             <div class="actions">
-                <button type="button"
-                    class="action-btn primary discovery-action"
+                <button type="button" class="action-btn primary discovery-action"
                     data-discovery-id="${escapeAttribute(String(id))}"
-                    onclick="moderateDiscoveryFromAdmin('${escapeAttribute(String(id))}','approve',this)">
-                    Approve
-                </button>
-                <button type="button"
-                    class="action-btn dismiss discovery-action"
+                    onclick="moderateDiscoveryFromAdmin('${escapeAttribute(String(id))}','approve',this)">Approve</button>
+                <button type="button" class="action-btn dismiss discovery-action"
                     data-discovery-id="${escapeAttribute(String(id))}"
-                    onclick="moderateDiscoveryFromAdmin('${escapeAttribute(String(id))}','reject',this)">
-                    Reject
-                </button>
+                    onclick="moderateDiscoveryFromAdmin('${escapeAttribute(String(id))}','reject',this)">Reject</button>
             </div>` : `<span class="muted">No actions</span>`;
 
         const safeSource = /^https?:\/\//i.test(String(sourceUrl)) ? sourceUrl : "";
 
         return `
             <tr data-coord-status="${escapeAttribute(coords.status)}">
-                <td>
-                    <strong>${escapeHtml(title)}</strong>
+                <td><strong>${escapeHtml(title)}</strong>
                     <div class="business-id" style="margin-top:6px">${escapeHtml(id)}</div>
                     ${sourceId ? `<div class="business-id" style="margin-top:4px">source: ${escapeHtml(String(sourceId))}</div>` : ""}
                 </td>
@@ -928,9 +865,7 @@ function renderDiscoveries(discoveries) {
                 <td>${coordCell}</td>
                 <td><div style="max-width:260px;white-space:normal;line-height:1.5;color:#aaa">${escapeHtml(description)}</div></td>
                 <td><span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span></td>
-                <td>${safeSource
-                    ? `<a href="${escapeAttribute(safeSource)}" target="_blank" rel="noopener noreferrer" style="color:#d4af37;text-decoration:none;font-weight:700">Open Source</a>`
-                    : `<span class="muted">—</span>`}</td>
+                <td>${safeSource ? `<a href="${escapeAttribute(safeSource)}" target="_blank" rel="noopener noreferrer" style="color:#d4af37;text-decoration:none;font-weight:700">Open Source</a>` : `<span class="muted">—</span>`}</td>
                 <td>${actions}</td>
             </tr>`;
     }).join("");
@@ -943,16 +878,7 @@ function renderDiscoveries(discoveries) {
         </div>
         <div class="table-wrap">
             <table>
-                <thead><tr>
-                    <th>Discovery</th>
-                    <th>Category</th>
-                    <th>Address / Locality</th>
-                    <th>Coordinates</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Source</th>
-                    <th>Actions</th>
-                </tr></thead>
+                <thead><tr><th>Discovery</th><th>Category</th><th>Address / Locality</th><th>Coordinates</th><th>Description</th><th>Status</th><th>Source</th><th>Actions</th></tr></thead>
                 <tbody>${rows}</tbody>
             </table>
         </div>`;
@@ -972,21 +898,15 @@ async function moderateReportFromAdmin(reportId, action, button) {
 
     if (action !== "resolve" && action !== "dismiss") return;
 
-    const noteInput = document.querySelector(
-        `.report-note[data-report-id="${CSS.escape(String(reportId))}"]`
-    );
+    const noteInput = document.querySelector(`.report-note[data-report-id="${CSS.escape(String(reportId))}"]`);
     const note = noteInput ? noteInput.value.trim() : "";
 
     if (!confirm(`Are you sure you want to ${action} this report?`)) return;
 
-    const actionButtons = document.querySelectorAll(
-        `.report-action[data-report-id="${CSS.escape(String(reportId))}"]`
-    );
+    const actionButtons = document.querySelectorAll(`.report-action[data-report-id="${CSS.escape(String(reportId))}"]`);
     actionButtons.forEach(item => item.disabled = true);
 
-    const messageElement = document.querySelector(
-        `.report-action-message[data-report-id="${CSS.escape(String(reportId))}"]`
-    );
+    const messageElement = document.querySelector(`.report-action-message[data-report-id="${CSS.escape(String(reportId))}"]`);
 
     if (messageElement) {
         messageElement.className = "report-action-message info";
@@ -996,10 +916,7 @@ async function moderateReportFromAdmin(reportId, action, button) {
     try {
         const response = await apiRequest(
             `/admin/reports/${encodeURIComponent(reportId)}/${action}`,
-            {
-                method: "POST",
-                body: JSON.stringify({ admin_notes: note })
-            }
+            { method: "POST", body: JSON.stringify({ admin_notes: note }) }
         );
 
         if (messageElement) {
@@ -1043,14 +960,11 @@ function renderReports(reports) {
 
         const controls = status === "pending" ? `
             <div class="report-moderation">
-                <textarea class="report-note" data-report-id="${escapeAttribute(id)}"
-                    maxlength="2000" placeholder="Optional admin note..."></textarea>
+                <textarea class="report-note" data-report-id="${escapeAttribute(id)}" maxlength="2000" placeholder="Optional admin note..."></textarea>
                 <div class="report-actions">
-                    <button type="button" class="action-btn resolve report-action"
-                        data-report-id="${escapeAttribute(id)}"
+                    <button type="button" class="action-btn resolve report-action" data-report-id="${escapeAttribute(id)}"
                         onclick="moderateReportFromAdmin('${escapeAttribute(id)}','resolve',this)">Resolve</button>
-                    <button type="button" class="action-btn dismiss report-action"
-                        data-report-id="${escapeAttribute(id)}"
+                    <button type="button" class="action-btn dismiss report-action" data-report-id="${escapeAttribute(id)}"
                         onclick="moderateReportFromAdmin('${escapeAttribute(id)}','dismiss',this)">Dismiss</button>
                 </div>
                 <div class="report-action-message" data-report-id="${escapeAttribute(id)}"></div>
@@ -1062,8 +976,7 @@ function renderReports(reports) {
                 <td><div class="business-id">${escapeHtml(businessId)}</div><div style="margin-top:8px">${businessLink}</div></td>
                 <td><strong>${escapeHtml(reporterName)}</strong><div class="muted" style="margin-top:5px">${escapeHtml(reporterEmail)}</div></td>
                 <td><div style="max-width:350px;white-space:normal;line-height:1.5">${escapeHtml(details)}</div></td>
-                <td><span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span>
-                    ${createdAt ? `<div class="muted" style="margin-top:7px;font-size:11px">${escapeHtml(createdAt)}</div>` : ""}</td>
+                <td><span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span>${createdAt ? `<div class="muted" style="margin-top:7px;font-size:11px">${escapeHtml(createdAt)}</div>` : ""}</td>
                 <td><div style="max-width:220px;white-space:normal;color:#aaa;line-height:1.5">${escapeHtml(adminNotes)}</div></td>
                 <td>${controls}</td>
             </tr>`;
@@ -1097,10 +1010,7 @@ async function moderateClaimFromAdmin(claimId, action, button) {
             { method: "POST" }
         );
 
-        alert(response.message || (action === "approve"
-            ? "Claim approved successfully."
-            : "Claim rejected successfully."));
-
+        alert(response.message || (action === "approve" ? "Claim approved successfully." : "Claim rejected successfully."));
         await loadStats();
         await loadResource("claims");
     } catch (error) {
@@ -1122,8 +1032,7 @@ function renderClaims(claims) {
         const businessName = claim.business?.business_name || claim.business_name || businessId || "—";
         const claimant = claim.claimant_name || claim.name || claim.claimant_email || "—";
         const email = claim.claimant_email || claim.email || "—";
-        const notes = claim.reviewer_notes || claim.admin_notes || claim.notes ||
-                      claim.message || claim.evidence_details || "—";
+        const notes = claim.reviewer_notes || claim.admin_notes || claim.notes || claim.message || claim.evidence_details || "—";
         const verified = status === "verified" || Boolean(claim.verified) || Boolean(claim.email_verified);
 
         const businessLink = businessId ? `
@@ -1138,14 +1047,11 @@ function renderClaims(claims) {
         if (status === "verified" && id) {
             actions = `
                 <div class="actions">
-                    <button type="button" class="action-btn primary claim-action"
-                        data-claim-id="${escapeAttribute(id)}" data-action="approve">Approve</button>
-                    <button type="button" class="action-btn dismiss claim-action"
-                        data-claim-id="${escapeAttribute(id)}" data-action="reject">Reject</button>
+                    <button type="button" class="action-btn primary claim-action" data-claim-id="${escapeAttribute(id)}" data-action="approve">Approve</button>
+                    <button type="button" class="action-btn dismiss claim-action" data-claim-id="${escapeAttribute(id)}" data-action="reject">Reject</button>
                 </div>`;
         } else if (status === "pending" && id) {
-            actions = `<button type="button" class="action-btn dismiss claim-action"
-                data-claim-id="${escapeAttribute(id)}" data-action="reject">Reject</button>`;
+            actions = `<button type="button" class="action-btn dismiss claim-action" data-claim-id="${escapeAttribute(id)}" data-action="reject">Reject</button>`;
         }
 
         return `
@@ -1153,8 +1059,7 @@ function renderClaims(claims) {
                 <td><strong>${escapeHtml(claimant)}</strong><div class="claim-id" style="margin-top:6px">${escapeHtml(id)}</div></td>
                 <td><strong>${escapeHtml(businessName)}</strong><div class="business-id" style="margin-top:6px">${escapeHtml(businessId)}</div>${businessLink}</td>
                 <td>${escapeHtml(email)}</td>
-                <td><span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span>
-                    ${verified ? `<div style="margin-top:6px;font-size:12px;opacity:.75">Email verified</div>` : ""}</td>
+                <td><span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span>${verified ? `<div style="margin-top:6px;font-size:12px;opacity:.75">Email verified</div>` : ""}</td>
                 <td><div style="max-width:300px;white-space:normal;line-height:1.5">${escapeHtml(notes)}</div></td>
                 <td>${actions}</td>
             </tr>`;
@@ -1168,11 +1073,7 @@ function renderClaims(claims) {
 
     content.querySelectorAll(".claim-action").forEach(button => {
         button.addEventListener("click", () => {
-            moderateClaimFromAdmin(
-                button.dataset.claimId,
-                button.dataset.action,
-                button
-            );
+            moderateClaimFromAdmin(button.dataset.claimId, button.dataset.action, button);
         });
     });
 }
@@ -1197,28 +1098,18 @@ async function moderateSubmissionFromAdmin(submissionId, action, button) {
         reason = answer.trim();
     }
 
-    if (!confirm(action === "approve"
-        ? "Approve this business submission?"
-        : "Reject this business submission?")) return;
+    if (!confirm(action === "approve" ? "Approve this business submission?" : "Reject this business submission?")) return;
 
-    const buttons = document.querySelectorAll(
-        `.submission-action[data-submission-id="${CSS.escape(String(submissionId))}"]`
-    );
+    const buttons = document.querySelectorAll(`.submission-action[data-submission-id="${CSS.escape(String(submissionId))}"]`);
     buttons.forEach(item => item.disabled = true);
 
     try {
         const response = await apiRequest(
             `/admin/submissions/${encodeURIComponent(submissionId)}/${action}`,
-            {
-                method: "POST",
-                body: JSON.stringify(action === "reject" ? { reason } : {})
-            }
+            { method: "POST", body: JSON.stringify(action === "reject" ? { reason } : {}) }
         );
 
-        alert(response.message || (action === "approve"
-            ? "Submission approved successfully."
-            : "Submission rejected successfully."));
-
+        alert(response.message || (action === "approve" ? "Submission approved successfully." : "Submission rejected successfully."));
         await loadStats();
         await loadResource("submissions");
     } catch (error) {
@@ -1247,22 +1138,18 @@ function renderSubmissions(submissions) {
 
         const actions = status === "pending" && id ? `
             <div class="actions">
-                <button type="button" class="action-btn primary submission-action"
-                    data-submission-id="${escapeAttribute(id)}"
+                <button type="button" class="action-btn primary submission-action" data-submission-id="${escapeAttribute(id)}"
                     onclick="moderateSubmissionFromAdmin('${escapeAttribute(id)}','approve',this)">Approve</button>
-                <button type="button" class="action-btn dismiss submission-action"
-                    data-submission-id="${escapeAttribute(id)}"
+                <button type="button" class="action-btn dismiss submission-action" data-submission-id="${escapeAttribute(id)}"
                     onclick="moderateSubmissionFromAdmin('${escapeAttribute(id)}','reject',this)">Reject</button>
             </div>` : `<span class="muted">No actions</span>`;
 
         return `
             <tr>
-                <td><strong>${escapeHtml(name)}</strong>
-                    <div class="claim-id" style="margin-top:6px">ID: ${escapeHtml(id || "Not provided")}</div></td>
+                <td><strong>${escapeHtml(name)}</strong><div class="claim-id" style="margin-top:6px">ID: ${escapeHtml(id || "Not provided")}</div></td>
                 <td>${escapeHtml(category)}</td>
                 <td>${escapeHtml(city)}<div class="muted" style="margin-top:4px">${escapeHtml(state)}, ${escapeHtml(country)}</div></td>
-                <td>${email !== "—" ? `<div>${escapeHtml(email)}</div>` : ""}
-                    ${phone !== "—" ? `<div class="muted" style="margin-top:5px">${escapeHtml(phone)}</div>` : ""}</td>
+                <td>${email !== "—" ? `<div>${escapeHtml(email)}</div>` : ""}${phone !== "—" ? `<div class="muted" style="margin-top:5px">${escapeHtml(phone)}</div>` : ""}</td>
                 <td><span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span></td>
                 <td>${actions}</td>
             </tr>`;
@@ -1292,18 +1179,8 @@ function renderCorrectionRequests(requests) {
     const rows = requests.map(item => {
         const id = item.id || "";
         const status = String(item.status || "pending").toLowerCase();
-        const businessName =
-            item.business_name ||
-            item.business_slug ||
-            item.business_id ||
-            "Business not found";
-
-        const location = [
-            item.city,
-            item.state,
-            item.country
-        ].filter(Boolean).join(", ") || "—";
-
+        const businessName = item.business_name || item.business_slug || item.business_id || "Business not found";
+        const location = [item.city, item.state, item.country].filter(Boolean).join(", ") || "—";
         const requesterName = item.requester_name || "Not provided";
         const requesterEmail = item.requester_email || "Not provided";
         const reason = item.reason || "No reason provided";
@@ -1322,7 +1199,6 @@ function renderCorrectionRequests(requests) {
         }
 
         let changesText = "";
-
         try {
             changesText = JSON.stringify(requestedChanges, null, 2);
         } catch {
@@ -1331,80 +1207,35 @@ function renderCorrectionRequests(requests) {
 
         const actions = id && status === "pending" ? `
             <div class="actions">
-                <button type="button"
-                    class="action-btn primary correction-action"
-                    data-correction-id="${escapeAttribute(id)}"
-                    data-action="approve">
-                    Approve
-                </button>
-                <button type="button"
-                    class="action-btn dismiss correction-action"
-                    data-correction-id="${escapeAttribute(id)}"
-                    data-action="reject">
-                    Reject
-                </button>
-            </div>
-        ` : `<span class="muted">Already processed</span>`;
+                <button type="button" class="action-btn primary correction-action" data-correction-id="${escapeAttribute(id)}" data-action="approve">Approve</button>
+                <button type="button" class="action-btn dismiss correction-action" data-correction-id="${escapeAttribute(id)}" data-action="reject">Reject</button>
+            </div>` : `<span class="muted">Already processed</span>`;
 
         return `
             <tr>
-                <td>
-                    <strong>${escapeHtml(businessName)}</strong>
+                <td><strong>${escapeHtml(businessName)}</strong>
                     <div class="business-id" style="margin-top:6px">${escapeHtml(item.business_id || "—")}</div>
-                    <div class="muted" style="margin-top:6px">${escapeHtml(location)}</div>
-                </td>
-                <td>
-                    <strong>${escapeHtml(requesterName)}</strong>
-                    <div style="margin-top:6px;word-break:break-word">${escapeHtml(requesterEmail)}</div>
-                </td>
-                <td>
-                    <div style="max-width:300px;white-space:normal;line-height:1.5">${escapeHtml(reason)}</div>
-                </td>
-                <td>
-                    <details>
-                        <summary style="color:#d4af37;cursor:pointer">View requested changes</summary>
-                        <pre class="correction-changes">${escapeHtml(changesText)}</pre>
-                    </details>
-                </td>
-                <td>
-                    <span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span>
-                    <div class="muted" style="margin-top:7px">${escapeHtml(createdAt)}</div>
-                </td>
-                <td>
-                    ${actions}
-                    ${status === "pending" ? `<div class="correction-review-hint">Approval records the decision only. Apply profile changes separately after reviewing them.</div>` : ""}
-                </td>
-            </tr>
-        `;
+                    <div class="muted" style="margin-top:6px">${escapeHtml(location)}</div></td>
+                <td><strong>${escapeHtml(requesterName)}</strong><div style="margin-top:6px;word-break:break-word">${escapeHtml(requesterEmail)}</div></td>
+                <td><div style="max-width:300px;white-space:normal;line-height:1.5">${escapeHtml(reason)}</div></td>
+                <td><details><summary style="color:#d4af37;cursor:pointer">View requested changes</summary><pre class="correction-changes">${escapeHtml(changesText)}</pre></details></td>
+                <td><span class="status ${escapeAttribute(status)}">${escapeHtml(status)}</span><div class="muted" style="margin-top:7px">${escapeHtml(createdAt)}</div></td>
+                <td>${actions}${status === "pending" ? `<div class="correction-review-hint">Approval records the decision only. Apply profile changes separately after reviewing them.</div>` : ""}</td>
+            </tr>`;
     }).join("");
 
     content.innerHTML = `
-        <div class="section-caption">
-            ${requests.length} pending correction request(s). Inspect the requested changes before deciding.
-        </div>
+        <div class="section-caption">${requests.length} pending correction request(s). Inspect the requested changes before deciding.</div>
         <div class="table-wrap">
             <table>
-                <thead>
-                    <tr>
-                        <th>Business</th>
-                        <th>Requester</th>
-                        <th>Reason</th>
-                        <th>Requested Changes</th>
-                        <th>Status / Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Business</th><th>Requester</th><th>Reason</th><th>Requested Changes</th><th>Status / Date</th><th>Actions</th></tr></thead>
                 <tbody>${rows}</tbody>
             </table>
         </div>`;
 
     content.querySelectorAll(".correction-action").forEach(button => {
         button.addEventListener("click", () => {
-            moderateCorrectionRequestFromAdmin(
-                button.dataset.correctionId,
-                button.dataset.action,
-                button
-            );
+            moderateCorrectionRequestFromAdmin(button.dataset.correctionId, button.dataset.action, button);
         });
     });
 }
@@ -1415,47 +1246,463 @@ async function moderateCorrectionRequestFromAdmin(requestId, action, button) {
         return;
     }
 
-    if (action !== "approve" && action !== "reject") {
-        return;
-    }
+    if (action !== "approve" && action !== "reject") return;
 
-    const decision = action === "approve" ? "approve" : "reject";
     const question = action === "approve"
         ? "Approve this correction request?\n\nThis records approval only. It will not automatically change the public business listing."
         : "Reject this correction request?\n\nThe public business listing will not be changed.";
 
     if (!confirm(question)) return;
 
-    const relatedButtons = [
-        ...content.querySelectorAll(".correction-action")
-    ].filter(item => item.dataset.correctionId === String(requestId));
+    const relatedButtons = [...content.querySelectorAll(".correction-action")]
+        .filter(item => item.dataset.correctionId === String(requestId));
 
-    relatedButtons.forEach(item => {
-        item.disabled = true;
-    });
-
-    if (button) {
-        button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
-    }
+    relatedButtons.forEach(item => item.disabled = true);
+    if (button) button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
 
     try {
         const response = await apiRequest(
-            `/admin/correction-requests/${encodeURIComponent(requestId)}/${decision}`,
+            `/admin/correction-requests/${encodeURIComponent(requestId)}/${action}`,
             { method: "POST" }
         );
 
         alert(response.message || `Correction request ${action === "approve" ? "approved" : "rejected"}.`);
         await loadResource("correction_requests");
     } catch (error) {
-        relatedButtons.forEach(item => {
-            item.disabled = false;
-        });
+        relatedButtons.forEach(item => item.disabled = false);
+        if (button) button.textContent = action === "approve" ? "Approve" : "Reject";
+        alert(error.message || "Unable to process this correction request.");
+    }
+}
 
+/* =========================================================
+   LOCATION REPAIR
+========================================================= */
+
+/*
+   This is a manual-review workflow.
+
+   Preview:
+   GET /admin/locations/repair/preview
+
+   Apply:
+   POST /admin/locations/repair/apply
+   { business_id, candidate_id, confirm: true }
+
+   Reject:
+   POST /admin/locations/repair/reject
+   { business_id, candidate_id, confirm: true, reason }
+
+   All requests use apiRequest(), so the existing admin
+   authentication headers are retained.
+*/
+
+function renderLocationRepairHome() {
+    content.innerHTML = `
+        <div class="location-repair-intro">
+            <h3>Business Location Repair</h3>
+            <p>
+                Find businesses with missing or incomplete coordinates, inspect suggested
+                locations, and manually approve or reject each suggestion.
+                Previewing a result does not change the business listing.
+            </p>
+        </div>
+
+        <div class="location-repair-warning">
+            <strong>Important:</strong> Only approve a suggestion when the business identity
+            and location are correct. The repair process should not guess a location.
+            Applying a candidate changes the business coordinates.
+        </div>
+
+        <div class="location-repair-controls">
+            <div class="field">
+                <label for="locationRepairBusinessId">Business ID (optional)</label>
+                <input id="locationRepairBusinessId" type="text"
+                    placeholder="Leave blank to process the next eligible business">
+            </div>
+            <button id="locationRepairPreviewBtn" type="button"
+                class="action-btn primary" onclick="previewLocationRepairFromForm()">
+                Preview Location
+            </button>
+        </div>
+
+        <div id="locationRepairResult" aria-live="polite">
+            <div class="location-repair-empty">
+                Enter a business ID to inspect a particular business, or leave it blank
+                to let the repair system select the next eligible business.
+                Then select <strong>Preview Location</strong>.
+            </div>
+        </div>
+    `;
+}
+
+function getLocationRepairResultElement() {
+    return document.getElementById("locationRepairResult");
+}
+
+function locationRepairValue(object, keys, fallback = "—") {
+    for (const key of keys) {
+        const value = object?.[key];
+        if (value !== null && value !== undefined && String(value).trim() !== "") {
+            return value;
+        }
+    }
+    return fallback;
+}
+
+function locationRepairGetCandidates(data) {
+    if (Array.isArray(data?.candidates)) return data.candidates;
+    if (Array.isArray(data?.results)) return data.results;
+    if (Array.isArray(data?.data?.candidates)) return data.data.candidates;
+    if (Array.isArray(data?.data?.results)) return data.data.results;
+
+    if (data?.candidate && typeof data.candidate === "object") {
+        return [data.candidate];
+    }
+
+    if (data?.data?.candidate && typeof data.data.candidate === "object") {
+        return [data.data.candidate];
+    }
+
+    return [];
+}
+
+function locationRepairGetBusiness(data) {
+    return data?.business ||
+           data?.data?.business ||
+           data?.business_record ||
+           data?.data?.business_record ||
+           null;
+}
+
+async function previewLocationRepairFromForm() {
+    const input = document.getElementById("locationRepairBusinessId");
+    const businessId = input ? input.value.trim() : "";
+    await previewLocationRepair(businessId);
+}
+
+async function previewLocationRepair(businessId = "") {
+    const result = getLocationRepairResultElement();
+    const button = document.getElementById("locationRepairPreviewBtn");
+
+    if (!result) return;
+
+    if (button) {
+        button.disabled = true;
+        button.textContent = "Searching...";
+    }
+
+    result.innerHTML = `<div class="loading">Searching for an eligible business and checking possible locations...</div>`;
+
+    try {
+        const query = businessId
+            ? `?business_id=${encodeURIComponent(businessId)}`
+            : "";
+
+        const data = await apiRequest(
+            `/admin/locations/repair/preview${query}`,
+            { method: "GET" }
+        );
+
+        renderLocationRepairResponse(data);
+    } catch (error) {
+        result.innerHTML = `
+            <div class="location-repair-message error">
+                <strong>Location preview failed.</strong><br>
+                ${escapeHtml(error.message || "Unknown error.")}
+                <p>Check that the admin session is valid and that the Location Repair API route is deployed.</p>
+            </div>`;
+    } finally {
         if (button) {
-            button.textContent = action === "approve" ? "Approve" : "Reject";
+            button.disabled = false;
+            button.textContent = "Preview Location";
+        }
+    }
+}
+
+function renderLocationRepairResponse(data) {
+    const result = getLocationRepairResultElement();
+    if (!result) return;
+
+    const business = locationRepairGetBusiness(data);
+    const candidates = locationRepairGetCandidates(data);
+
+    const status = String(
+        data?.status ||
+        data?.result ||
+        data?.data?.status ||
+        ""
+    ).toLowerCase();
+
+    const message = data?.message || data?.data?.message || "";
+
+    if (business || candidates.length) {
+        let businessHtml = "";
+
+        if (business) {
+            const businessId = locationRepairValue(business, ["id", "business_id"], "");
+            const name = locationRepairValue(business, ["business_name", "name"], "Unnamed business");
+            const address = locationRepairValue(business, ["address", "full_address"]);
+            const city = locationRepairValue(business, ["city"]);
+            const state = locationRepairValue(business, ["state"]);
+            const country = locationRepairValue(business, ["country"]);
+            const latitude = locationRepairValue(business, ["latitude", "lat"]);
+            const longitude = locationRepairValue(business, ["longitude", "lng", "lon"]);
+
+            businessHtml = `
+                <div class="location-business-card">
+                    <h3>${escapeHtml(name)}</h3>
+                    <p><strong>Business ID:</strong> ${escapeHtml(businessId)}</p>
+                    <p><strong>Address:</strong> ${escapeHtml(address)}</p>
+                    <p><strong>Locality:</strong> ${escapeHtml([city, state, country].filter(v => v !== "—").join(", ") || "—")}</p>
+                    <p><strong>Current latitude:</strong> ${escapeHtml(latitude)}</p>
+                    <p><strong>Current longitude:</strong> ${escapeHtml(longitude)}</p>
+                </div>`;
         }
 
-        alert(error.message || "Unable to process this correction request.");
+        const candidateHtml = candidates.length
+            ? renderLocationRepairCandidates(candidates, business, data)
+            : `<div class="location-repair-empty">No location candidates were returned for this business.</div>`;
+
+        result.innerHTML = `
+            ${message ? `<div class="location-repair-message">${escapeHtml(message)}</div>` : ""}
+            ${businessHtml}
+            ${candidateHtml}`;
+
+        return;
+    }
+
+    if (
+        status.includes("no_match") ||
+        status.includes("not_found") ||
+        status.includes("complete") ||
+        status.includes("no_business")
+    ) {
+        result.innerHTML = `
+            <div class="location-repair-message">
+                <strong>${escapeHtml(message || "No eligible business or location candidate was returned.")}</strong>
+                <p>The preview did not apply any changes to your business records.</p>
+            </div>`;
+        return;
+    }
+
+    result.innerHTML = `
+        <div class="location-repair-message">
+            <strong>${escapeHtml(message || "The preview request completed, but no candidate data was returned.")}</strong>
+            <p>Response status: ${escapeHtml(status || "Not supplied")}</p>
+            <p>No business coordinates have been changed by this preview.</p>
+            <details>
+                <summary style="cursor:pointer;color:#d4af37">View API response</summary>
+                <pre class="correction-changes">${escapeHtml(JSON.stringify(data, null, 2))}</pre>
+            </details>
+        </div>`;
+}
+
+function renderLocationRepairCandidates(candidates, business, responseData) {
+    const businessId = locationRepairValue(
+        business || responseData,
+        ["id", "business_id"],
+        ""
+    );
+
+    const cards = candidates.map((candidate, index) => {
+        const candidateId = locationRepairValue(
+            candidate,
+            ["id", "candidate_id", "location_candidate_id"],
+            ""
+        );
+
+        const latitude = locationRepairValue(candidate, ["latitude", "lat"]);
+        const longitude = locationRepairValue(candidate, ["longitude", "lng", "lon"]);
+        const precision = String(locationRepairValue(
+            candidate,
+            ["precision", "location_precision", "match_precision", "result_precision"],
+            "unknown"
+        )).toLowerCase();
+
+        const confidence = locationRepairValue(candidate, ["confidence", "confidence_score"]);
+        const source = locationRepairValue(candidate, ["source", "provider", "source_name"]);
+        const address = locationRepairValue(candidate, ["formatted_address", "address", "display_name"]);
+        const reason = locationRepairValue(candidate, ["reason", "match_reason", "notes"]);
+        const country = locationRepairValue(candidate, ["country"]);
+        const state = locationRepairValue(candidate, ["state", "region"]);
+        const city = locationRepairValue(candidate, ["city", "town", "locality"]);
+
+        const canApply = ["exact", "building"].includes(precision);
+
+        const applyButton = canApply && businessId && candidateId
+            ? `<button type="button" class="action-btn primary"
+                onclick="applyLocationCandidate('${escapeAttribute(businessId)}','${escapeAttribute(candidateId)}',this)">
+                Approve &amp; Apply
+               </button>`
+            : `<button type="button" class="action-btn" disabled title="Only exact or building precision candidates can be applied">Cannot Apply</button>`;
+
+        const rejectButton = businessId && candidateId
+            ? `<button type="button" class="action-btn dismiss"
+                onclick="rejectLocationCandidate('${escapeAttribute(businessId)}','${escapeAttribute(candidateId)}',this)">
+                Reject
+               </button>`
+            : "";
+
+        return `
+            <div class="location-candidate">
+                <h4>Candidate ${index + 1}</h4>
+                <p><strong>Candidate ID:</strong> ${escapeHtml(candidateId)}</p>
+                <p><strong>Suggested address:</strong> ${escapeHtml(address)}</p>
+                <p><strong>City / State / Country:</strong> ${escapeHtml([city, state, country].filter(v => v !== "—").join(", ") || "—")}</p>
+                <p><strong>Latitude:</strong> ${escapeHtml(latitude)}</p>
+                <p><strong>Longitude:</strong> ${escapeHtml(longitude)}</p>
+                <p><strong>Precision:</strong> ${escapeHtml(precision)}</p>
+                <p><strong>Confidence:</strong> ${escapeHtml(confidence)}</p>
+                <p><strong>Source:</strong> ${escapeHtml(source)}</p>
+                <p><strong>Match notes:</strong> ${escapeHtml(reason)}</p>
+                ${!canApply ? `<p style="color:#fbbf24"><strong>Not eligible for automatic application.</strong> The precision must be exact or building.</p>` : ""}
+                <div class="actions">
+                    ${applyButton}
+                    ${rejectButton}
+                </div>
+            </div>`;
+    }).join("");
+
+    return `
+        <div class="location-candidate-wrap">
+            <h3>${candidates.length} location candidate(s) returned</h3>
+            ${cards}
+        </div>`;
+}
+
+async function applyLocationCandidate(businessId, candidateId, button) {
+    if (!businessId || !candidateId) {
+        alert("Business ID or candidate ID is missing. Nothing was changed.");
+        return;
+    }
+
+    const confirmed = confirm(
+        "Apply this location candidate?\n\n" +
+        "This will update the business latitude and longitude in the NearAfrica database.\n\n" +
+        "Only continue if you have verified that the suggested location belongs to this business."
+    );
+
+    if (!confirmed) return;
+
+    const originalText = button ? button.textContent : "";
+
+    if (button) {
+        button.disabled = true;
+        button.textContent = "Applying...";
+    }
+
+    try {
+        const response = await apiRequest("/admin/locations/repair/apply", {
+            method: "POST",
+            body: JSON.stringify({
+                business_id: businessId,
+                candidate_id: candidateId,
+                confirm: true
+            })
+        });
+
+        const result = getLocationRepairResultElement();
+
+        if (result) {
+            result.innerHTML = `
+                <div class="location-repair-message success">
+                    <strong>${escapeHtml(response.message || "Location candidate applied successfully.")}</strong>
+                    <p>Business ID: ${escapeHtml(businessId)}</p>
+                    <p>The apply endpoint reported success. You can preview the next eligible business below.</p>
+                    <button type="button" class="action-btn primary" onclick="previewLocationRepair('')">
+                        Preview Next Business
+                    </button>
+                    <button type="button" class="action-btn" onclick="previewLocationRepair('${escapeAttribute(businessId)}')">
+                        Preview This Business Again
+                    </button>
+                </div>
+                <details style="margin:0 20px 20px">
+                    <summary style="cursor:pointer;color:#d4af37">View API response</summary>
+                    <pre class="correction-changes">${escapeHtml(JSON.stringify(response, null, 2))}</pre>
+                </details>`;
+        }
+
+        await loadStats();
+    } catch (error) {
+        if (button) {
+            button.disabled = false;
+            button.textContent = originalText || "Approve & Apply";
+        }
+
+        alert(
+            "The location candidate could not be applied.\n\n" +
+            (error.message || "Unknown error.") +
+            "\n\nCheck the API response before trying again."
+        );
+    }
+}
+
+async function rejectLocationCandidate(businessId, candidateId, button) {
+    if (!businessId || !candidateId) {
+        alert("Business ID or candidate ID is missing.");
+        return;
+    }
+
+    const reason = prompt("Why are you rejecting this location candidate?");
+
+    if (reason === null) return;
+
+    if (!reason.trim()) {
+        alert("Please enter a reason for rejecting this candidate.");
+        return;
+    }
+
+    if (!confirm("Reject this location candidate?")) return;
+
+    const originalText = button ? button.textContent : "";
+
+    if (button) {
+        button.disabled = true;
+        button.textContent = "Rejecting...";
+    }
+
+    try {
+        const response = await apiRequest("/admin/locations/repair/reject", {
+            method: "POST",
+            body: JSON.stringify({
+                business_id: businessId,
+                candidate_id: candidateId,
+                confirm: true,
+                reason: reason.trim()
+            })
+        });
+
+        const result = getLocationRepairResultElement();
+
+        if (result) {
+            result.innerHTML = `
+                <div class="location-repair-message success">
+                    <strong>${escapeHtml(response.message || "Location candidate rejected.")}</strong>
+                    <p>The business coordinates were not changed by this rejection.</p>
+                    <button type="button" class="action-btn primary" onclick="previewLocationRepair('${escapeAttribute(businessId)}')">
+                        Preview This Business Again
+                    </button>
+                    <button type="button" class="action-btn" onclick="previewLocationRepair('')">
+                        Preview Next Business
+                    </button>
+                </div>
+                <details style="margin:0 20px 20px">
+                    <summary style="cursor:pointer;color:#d4af37">View API response</summary>
+                    <pre class="correction-changes">${escapeHtml(JSON.stringify(response, null, 2))}</pre>
+                </details>`;
+        }
+    } catch (error) {
+        if (button) {
+            button.disabled = false;
+            button.textContent = originalText || "Reject";
+        }
+
+        alert(
+            "The candidate could not be rejected.\n\n" +
+            (error.message || "Unknown error.") +
+            "\n\nCheck the API response before trying again."
+        );
     }
 }
 
@@ -1558,4 +1805,4 @@ async function initialize() {
 initialize();
 </script>
 </body>
-                    </html>
+</html>
